@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DRadSpace", "3DRadSpace.csproj", "{27B58B60-7D0F-4DA1-8BD7-0D52E9648CD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DRadSpacePlayer", "..\3DRadSpacePlayer\3DRadSpacePlayer.csproj", "{845AC8F7-0F92-435A-861C-814F6CAA1291}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27B58B60-7D0F-4DA1-8BD7-0D52E9648CD3}.Debug|x86.ActiveCfg = Debug|x86
+		{27B58B60-7D0F-4DA1-8BD7-0D52E9648CD3}.Debug|x86.Build.0 = Debug|x86
+		{27B58B60-7D0F-4DA1-8BD7-0D52E9648CD3}.Release|x86.ActiveCfg = Release|x86
+		{27B58B60-7D0F-4DA1-8BD7-0D52E9648CD3}.Release|x86.Build.0 = Release|x86
+		{845AC8F7-0F92-435A-861C-814F6CAA1291}.Debug|x86.ActiveCfg = Debug|x86
+		{845AC8F7-0F92-435A-861C-814F6CAA1291}.Debug|x86.Build.0 = Debug|x86
+		{845AC8F7-0F92-435A-861C-814F6CAA1291}.Release|x86.ActiveCfg = Release|x86
+		{845AC8F7-0F92-435A-861C-814F6CAA1291}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08413D63-4A22-4F21-9A23-331A4C54C391}
+	EndGlobalSection
+EndGlobal
