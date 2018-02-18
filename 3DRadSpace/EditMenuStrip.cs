@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace _3DRadSpace
@@ -19,6 +13,7 @@ namespace _3DRadSpace
         public static string StripResult;
         private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            File.WriteAllText(@"lastobj.data", " ");
             Game1.Focus = true;
             StripResult = null;
             Close();
@@ -43,18 +38,24 @@ namespace _3DRadSpace
             };
             dialog2.ShowDialog();
             StripResult = "2 "+dialog2.FileName;
+            File.WriteAllText(@"lastobj.data", " ");
             Game1.Focus = true;
             Close();
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            File.WriteAllText(@"lastobj.data", " ");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            File.WriteAllText(@"lastobj.data", " ");
+        }
 
+        private void EditMenuStrip_Load(object sender, EventArgs e)
+        {
+            Location = new System.Drawing.Point(40, 30);
         }
     }
 }

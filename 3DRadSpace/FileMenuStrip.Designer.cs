@@ -126,6 +126,7 @@
             this.ShowInTaskbar = false;
             this.Text = "FileMenuStrip";
             this.Activated += new System.EventHandler(this.FileMenuStrip_Activated);
+            this.Load += new System.EventHandler(this.FileMenuStrip_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -44,7 +44,7 @@ namespace _3DRadSpace
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             AboutWindow about = new AboutWindow();
-            about.Show();
+            about.ShowDialog();
             StripResult = null;
             Game1.Focus = true;
             Close();
@@ -56,6 +56,11 @@ namespace _3DRadSpace
             StripResult = null;
             Game1.Focus = true;
             Close();
+        }
+
+        private void HelpMenuStrip_Load(object sender, EventArgs e)
+        {
+            Location = new System.Drawing.Point(150, 30);
         }
     }
 }

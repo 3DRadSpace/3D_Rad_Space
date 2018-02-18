@@ -43,5 +43,12 @@ namespace _3DRadSpace
             camera.ShowDialog();
             Close();
         }
+
+        private void pictureBox9_Click(object sender, EventArgs e)
+        {
+            Skycolor skycolor = new Skycolor();
+            skycolor.ShowDialog();
+            Close();
+        }
     }
 }

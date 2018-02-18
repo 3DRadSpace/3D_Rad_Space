@@ -44,5 +44,10 @@ namespace _3DRadSpace
             Game1.Focus = true;
             Close();
         }
+
+        private void OptionsMenuStrip_Load(object sender, EventArgs e)
+        {
+            Location = new System.Drawing.Point(90, 30);
+        }
     }
 }

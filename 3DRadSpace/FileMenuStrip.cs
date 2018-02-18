@@ -98,5 +98,10 @@ namespace _3DRadSpace
         {
             Application.Exit();
         }
+
+        private void FileMenuStrip_Load(object sender, EventArgs e)
+        {
+            Location = new System.Drawing.Point(10, 30);
+        }
     }
 }

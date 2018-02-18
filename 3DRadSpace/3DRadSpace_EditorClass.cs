@@ -16,7 +16,7 @@ namespace _3DRadSpace
         /// <param name="a">Square up-left corner</param>
         /// <param name="b">Square down-right corner</param>
         /// <returns></returns>
-       public static bool DotInSquare(Vector2 dot, Vector2 a,Vector2 b)
+        public static bool DotInSquare(Vector2 dot, Vector2 a, Vector2 b)
         {
             if (a.X <= dot.X && dot.X <= b.X && a.Y <= dot.Y && dot.Y <= b.Y)
             {

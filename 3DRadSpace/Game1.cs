@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using System;
 
 namespace _3DRadSpace
 {
@@ -21,7 +22,9 @@ namespace _3DRadSpace
         Model Axis;
         SpriteFont Font;
         Model[] GameObjects = new Model[300];
-        string[] GameIDs = new string[300];
+        string[] ObjectsData = new string[300];
+        Texture2D CurrentEdit; //ignore the warning, will be used later.
+        Color skycolor = new Color(100, 100, 255); 
         static public bool Focus = true;
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
@@ -47,12 +50,31 @@ namespace _3DRadSpace
             Window.Title = "3DRadSpace v1.0 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
             base.Initialize();
-            Form GameForm = Form.FromHandle(Window.Handle) as Form;
+            Form GameForm = Form.FromHandle(Window.Handle) as Form; //intptr xd
             GameForm.FormClosing += OnGameEditorClosing;
+            for(int i = 0;i<300;i++)
+            {
+                ObjectsData[i] = null;
+            }
         }
         private void OnGameEditorClosing(object sender, System.EventArgs e)
         {
-
+            string[] data = File.ReadAllLines(@"settings.data");
+            if (data[1] == "True")
+            {
+                DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if(warn1 == DialogResult.Yes)
+                {
+                    SaveFileDialog saveFile = new SaveFileDialog()
+                    {
+                        Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
+                        InitialDirectory = @"/Projects/",
+                        Title = "Save a 3DRadSpace project...",
+                        OverwritePrompt = true
+                    };
+                    saveFile.ShowDialog();
+                }
+            }
         }
         private void NotifyIcon_BalloonTipClicked(object sender, System.EventArgs e)
         {
@@ -92,7 +114,6 @@ namespace _3DRadSpace
                     {
                         Focus = false;
                         FileMenuStrip strip1 = new FileMenuStrip();
-                        strip1.Location = new System.Drawing.Point(10, 10);
                         strip1.ShowDialog();
                     }
                 }
@@ -105,8 +126,19 @@ namespace _3DRadSpace
                     {
                         Focus = false;
                         EditMenuStrip strip2 = new EditMenuStrip();
-                        strip2.Location = new System.Drawing.Point(40, 10);
                         strip2.ShowDialog();
+                        string obj = File.ReadAllText(@"lastobj.data");
+                        if (obj.Split(' ')[0] != null)
+                        {
+                            for (int i = 0; i < 300; i++)
+                            {
+                                if(ObjectsData[i] == null)
+                                {
+                                    ObjectsData[i] = obj;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -118,9 +150,9 @@ namespace _3DRadSpace
                     {
                         Focus = false;
                         OptionsMenuStrip strip3 = new OptionsMenuStrip();
-                        strip3.Location = new System.Drawing.Point(90, 10);
                         strip3.ShowDialog();
                     }
+                   
                 }
             }
             if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(150, 2), new Vector2(170, 18)))
@@ -131,24 +163,36 @@ namespace _3DRadSpace
                     {
                         Focus = false;
                         HelpMenuStrip strip4 = new HelpMenuStrip();
-                        strip4.Location = new System.Drawing.Point(150, 10);
                         strip4.ShowDialog();
                     }
                 }
             }
+            
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
             view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
+            for(int i=0; i < 300;i++)
+            {
+                if (ObjectsData[i] != null)
+                    CreateObject(ObjectsData[i].Split(' '));
+            }
             spriteBatch.Begin(); //rlly
             spriteBatch.Draw(GUI1, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, 25),Color.White);
             spriteBatch.DrawString(Font, "File",new Vector2(3, 2), Color.White);
             spriteBatch.DrawString(Font, "Edit", new Vector2(40, 2), Color.White);
             spriteBatch.DrawString(Font, "Options", new Vector2(80, 2), Color.White);
             spriteBatch.DrawString(Font, "Help", new Vector2(145, 2), Color.White);
+            for(int i=0;i < 300;i++)
+            {
+                if(ObjectsData[i] != null)
+                {
+                    
+                }
+            }
             spriteBatch.End();
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -199,6 +243,37 @@ namespace _3DRadSpace
                 }
                 mesh.Draw();
             }
+        }
+       public void CreateObject(string[] ObjectData)
+        {
+            File.AppendAllText(@"log.txt", "Trying to create object " + ObjectData.ToString());
+            for (int i = 0; i < 300; i++)
+            {
+                if (ObjectsData[i] == null)
+                {
+                    if (ObjectData[0] == "Camera")
+                    {
+                        Matrix objpos = Matrix.CreateTranslation(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])));
+                        Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
+                        objpos *= rotation;
+                        GameObjects[i] = Content.Load<Model>("Camera");
+                        DrawModel(GameObjects[i], objpos, view, projection);
+                        File.AppendAllText(@"log.txt", "Loaded Camera Object ID \r\n" + i.ToString());
+                        break;
+                    }
+                    if(ObjectData[0] == "SkyColor")
+                    {
+                        skycolor.R = Convert.ToByte(Convert.ToInt16(ObjectData[3]));
+                        skycolor.G = Convert.ToByte(Convert.ToInt16(ObjectData[4]));
+                        skycolor.B = Convert.ToByte(Convert.ToInt16(ObjectData[5]));
+                        break;
+                    }
+                }
+            }
+        }
+        float Deg2Rad(float rad)
+        {
+            return rad * 3.141592f / 180;
         }
     }
 }

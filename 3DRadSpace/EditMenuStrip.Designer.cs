@@ -99,6 +99,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gainsboro;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(141, 154);
             this.Controls.Add(this.linkLabel6);
@@ -111,6 +112,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "EditMenuStrip";
+            this.Load += new System.EventHandler(this.EditMenuStrip_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

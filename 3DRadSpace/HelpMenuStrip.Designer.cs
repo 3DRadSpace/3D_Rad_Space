@@ -99,6 +99,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(130, 129);
             this.Controls.Add(this.linkLabel5);
             this.Controls.Add(this.linkLabel4);
@@ -110,6 +111,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "HelpMenuStrip";
+            this.Load += new System.EventHandler(this.HelpMenuStrip_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
