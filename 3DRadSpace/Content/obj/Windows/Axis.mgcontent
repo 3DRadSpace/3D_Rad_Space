@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/Axis.x</SourceFile>
-  <SourceTime>2017-12-06T18:27:22.8551622+02:00</SourceTime>
-  <DestFile>C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/Axis.xnb</DestFile>
-  <DestTime>2018-02-02T12:30:40.9847194+02:00</DestTime>
+  <SourceFile>C:/Users/DELL/Desktop/3D_Rad_Space-master(1)/3D_Rad_Space-master/3DRadSpace/Content/Axis.x</SourceFile>
+  <SourceTime>2018-02-18T08:25:40+00:00</SourceTime>
+  <DestFile>C:/Users/DELL/Desktop/3D_Rad_Space-master(1)/3D_Rad_Space-master/3DRadSpace/Content/bin/Windows/Axis.xnb</DestFile>
+  <DestTime>2018-02-27T14:02:01.8925126+00:00</DestTime>
   <Importer>XImporter</Importer>
-  <ImporterTime>2017-03-01T17:05:36+02:00</ImporterTime>
+  <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
-  <ProcessorTime>2017-03-01T17:05:36+02:00</ProcessorTime>
+  <ProcessorTime>2017-03-01T15:05:36+00:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>0,0,0,0</Value>

@@ -26,6 +26,12 @@ namespace _3DRadSpace
         Texture2D CurrentEdit; //ignore the warning, will be used later.
         Color skycolor = new Color(100, 100, 255); 
         static public bool Focus = true;
+
+        //  Timer for the Objects In Project Dialog
+        Timer objectsInProjectRefresh = new Timer();
+        //  New Objects In Project Dialog
+        ObjectsInProject ObjectsInProjectDialog = new ObjectsInProject();
+
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
@@ -44,8 +50,8 @@ namespace _3DRadSpace
             // TODO: Add your initialization logic here
             base.IsMouseVisible = true;
             base.Window.Position = new Point(0, 0);
-            graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height - 60;
-            graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width - 12;
+            graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height - 75;
+            graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width - 16;
             graphics.ApplyChanges();
             Window.Title = "3DRadSpace v1.0 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
@@ -56,7 +62,37 @@ namespace _3DRadSpace
             {
                 ObjectsData[i] = null;
             }
+            
+            //  Show the Dialog
+            ObjectsInProjectDialog.Show();
+
+            //  Timer Settings
+            objectsInProjectRefresh.Interval = 3000;
+            objectsInProjectRefresh.Tick += ObjectsInProjectRefresh_Tick;
+            objectsInProjectRefresh.Start();
         }
+
+        private void ObjectsInProjectRefresh_Tick(object sender, EventArgs e)
+        {
+            //  Clear the list
+            ObjectsInProjectDialog.list_objects.Items.Clear();
+
+            //  Check if the array is larger than 0
+            if (GameObjects.Length > 0)
+            {
+                //  Loop through each model
+                foreach (Model item in GameObjects)
+                {
+                    //  Check if it isn't null
+                    if (item != null)
+                    {
+                        //  Add it to the Objects In Project List
+                        ObjectsInProjectDialog.list_objects.Items.Add(new ListViewItem(item.ToString()));
+                    }
+                }
+            }
+        }
+
         private void OnGameEditorClosing(object sender, System.EventArgs e)
         {
             string[] data = File.ReadAllLines(@"settings.data");
@@ -197,6 +233,7 @@ namespace _3DRadSpace
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
             base.Draw(gameTime);
         }
         /// <summary>

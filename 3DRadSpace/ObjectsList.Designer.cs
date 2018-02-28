@@ -67,6 +67,8 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label16 = new System.Windows.Forms.Label();
             this.pictureBox16 = new System.Windows.Forms.PictureBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.pictureBox17 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
@@ -89,6 +91,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox17)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -101,7 +104,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(476, 244);
+            this.tabControl1.Size = new System.Drawing.Size(476, 259);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -446,11 +449,13 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.label17);
+            this.tabPage5.Controls.Add(this.pictureBox17);
             this.tabPage5.Controls.Add(this.label16);
             this.tabPage5.Controls.Add(this.pictureBox16);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(468, 218);
+            this.tabPage5.Size = new System.Drawing.Size(468, 233);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Others";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -473,12 +478,30 @@
             this.pictureBox16.TabIndex = 0;
             this.pictureBox16.TabStop = false;
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(113, 83);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(69, 13);
+            this.label17.TabIndex = 3;
+            this.label17.Text = "NetworkChat";
+            // 
+            // pictureBox17
+            // 
+            this.pictureBox17.Location = new System.Drawing.Point(113, 3);
+            this.pictureBox17.Name = "pictureBox17";
+            this.pictureBox17.Size = new System.Drawing.Size(104, 77);
+            this.pictureBox17.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox17.TabIndex = 2;
+            this.pictureBox17.TabStop = false;
+            // 
             // ObjectsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(500, 287);
+            this.ClientSize = new System.Drawing.Size(492, 283);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -515,6 +538,7 @@
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox17)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -559,5 +583,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.PictureBox pictureBox16;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.PictureBox pictureBox17;
     }
 }

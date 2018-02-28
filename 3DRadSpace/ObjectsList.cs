@@ -19,22 +19,31 @@ namespace _3DRadSpace
 
         private void ObjectsList_Load(object sender, EventArgs e)
         {
-            pictureBox1.ImageLocation = @"data\resources\OBJ_Camera.png";
-            pictureBox2.ImageLocation = @"data\resources\OBJ_Script.png";
-            pictureBox3.ImageLocation = @"data\resources\OBJ_Sprite.png";
-            pictureBox4.ImageLocation = @"data\resources\OBJ_TextPrint.png";
-            pictureBox5.ImageLocation = @"data\resources\OBJ_EOL.png";
-            pictureBox6.ImageLocation = @"data\resources\OBJ_EOK.png";
-            pictureBox7.ImageLocation = @"data\resources\OBJ_Timer.png";
-            pictureBox8.ImageLocation = @"data\resources\OBJ_Skinmesh.png";
-            pictureBox9.ImageLocation = @"data\resources\OBJ_SkyColor.png";
-            pictureBox10.ImageLocation = @"data\resources\OBJ_SkyBox.png";
-            pictureBox11.ImageLocation = @"data\resources\OBJ_Sound.png";
-            pictureBox12.ImageLocation = @"data\resources\OBJ_ExitFade.png";
-            pictureBox13.ImageLocation = @"data\resources\OBJ_RigidBody.png";
-            pictureBox14.ImageLocation = @"data\resources\OBJ_Force.png";
-            pictureBox15.ImageLocation = @"data\resources\OBJ_GForce.png";
-            pictureBox16.ImageLocation = @"data\resources\OBJ_GameSettings.png";
+            //  Added by GHGames, just incase any files are missing
+            try
+            {
+                pictureBox1.ImageLocation = @"data\resources\OBJ_Camera.png";
+                pictureBox2.ImageLocation = @"data\resources\OBJ_Script.png";
+                pictureBox3.ImageLocation = @"data\resources\OBJ_Sprite.png";
+                pictureBox4.ImageLocation = @"data\resources\OBJ_TextPrint.png";
+                pictureBox5.ImageLocation = @"data\resources\OBJ_EOL.png";
+                pictureBox6.ImageLocation = @"data\resources\OBJ_EOK.png";
+                pictureBox7.ImageLocation = @"data\resources\OBJ_Timer.png";
+                pictureBox8.ImageLocation = @"data\resources\OBJ_Skinmesh.png";
+                pictureBox9.ImageLocation = @"data\resources\OBJ_SkyColor.png";
+                pictureBox10.ImageLocation = @"data\resources\OBJ_SkyBox.png";
+                pictureBox11.ImageLocation = @"data\resources\OBJ_Sound.png";
+                pictureBox12.ImageLocation = @"data\resources\OBJ_ExitFade.png";
+                pictureBox13.ImageLocation = @"data\resources\OBJ_RigidBody.png";
+                pictureBox14.ImageLocation = @"data\resources\OBJ_Force.png";
+                pictureBox15.ImageLocation = @"data\resources\OBJ_GForce.png";
+                pictureBox16.ImageLocation = @"data\resources\OBJ_GameSettings.png";
+                pictureBox17.ImageLocation = @"data\resources\OBJ_NetworkChat.png";
+            }
+            catch
+            {
+                MessageBox.Show("Failed to find or load one or more Object Icons.", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
