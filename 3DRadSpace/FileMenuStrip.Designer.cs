@@ -52,7 +52,7 @@
             // 
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel2.Location = new System.Drawing.Point(12, 39);
+            this.linkLabel2.Location = new System.Drawing.Point(12, 38);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(69, 13);
             this.linkLabel2.TabIndex = 1;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpacePlayer
 {
@@ -21,6 +22,8 @@ namespace _3DRadSpacePlayer
         }
         protected override void Initialize()
         {
+            string[] defaultcamera = { "Camera", "GENERIC_OBJECT", "0", "0", "0", "0", "0" ,"0","75","True"};
+            GObject.CreateObject(defaultcamera);
             base.Initialize();
         }
         protected override void LoadContent()
@@ -33,7 +36,7 @@ namespace _3DRadSpacePlayer
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+            Exit(); 
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)

@@ -12,7 +12,7 @@ namespace _3DRadSpace
 {
     public partial class FileMenuStrip : Form
     {
-        public static string StripResult;
+        public string StripResult;
         public FileMenuStrip()
         {
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace _3DRadSpace
         {
             OpenFileDialog openproject = new OpenFileDialog()
             {
-                Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp|Text File (*.txt)|*.txt",
                 Multiselect = false,
                 CheckFileExists = true,
                 InitialDirectory = @"/Projects/",
@@ -54,24 +54,16 @@ namespace _3DRadSpace
         {
             SaveFileDialog saveFile = new SaveFileDialog()
             {
-                Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp|Text File (*.txt)|*.txt",
                 InitialDirectory = @"/Projects/",
                 Title = "Save a 3DRadSpace project...",
                 OverwritePrompt = true
             };
             saveFile.ShowDialog();
-            if(saveFile.FileName == null)
-            {
-                StripResult = null;
-                Game1.Focus = true;
-                Close();
-            }
-            else
-            {
-                StripResult = "3 " + saveFile.FileName;
-                Game1.Focus = true;
-                Close();
-            }
+            if(saveFile.FileName == null) StripResult = null;
+            else StripResult = "3 " + saveFile.FileName;
+            Game1.Focus = true;
+            Close();
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

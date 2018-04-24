@@ -52,13 +52,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon1.ico</ApplicationIcon>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="3DRadSpaceCompiler.cs">
@@ -136,11 +137,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Script.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Script.Designer.cs">
+      <DependentUpon>Script.cs</DependentUpon>
+    </Compile>
     <Compile Include="Skycolor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Skycolor.Designer.cs">
       <DependentUpon>Skycolor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sprite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sprite.Designer.cs">
+      <DependentUpon>Sprite.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -158,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
-    <Content Include="Icon1.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb">
@@ -212,8 +224,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Script.resx">
+      <DependentUpon>Script.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Skycolor.resx">
       <DependentUpon>Skycolor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sprite.resx">
+      <DependentUpon>Sprite.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

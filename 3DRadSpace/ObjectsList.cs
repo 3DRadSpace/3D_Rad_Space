@@ -59,5 +59,19 @@ namespace _3DRadSpace
             skycolor.ShowDialog();
             Close();
         }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Script script = new Script();
+            script.ShowDialog();
+            Close();
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            Sprite sprite = new Sprite();
+            sprite.ShowDialog();
+            Close();
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace _3DRadSpace
         {
             this.Location = new Point(25, 25);
         }
+
+        private void list_objects_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

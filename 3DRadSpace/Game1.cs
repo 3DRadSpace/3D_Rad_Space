@@ -22,9 +22,10 @@ namespace _3DRadSpace
         Model Axis;
         SpriteFont Font;
         Model[] GameObjects = new Model[300];
-        string[] ObjectsData = new string[300];
-        Texture2D CurrentEdit; //ignore the warning, will be used later.
-        Color skycolor = new Color(100, 100, 255); 
+        public string[] ObjectsData = new string[300];
+        //Texture2D CurrentEdit; //ignore the warning, will be used later.
+        Color skycolor = new Color(100, 100, 255);
+        bool IsProjectSaved = true;
         static public bool Focus = true;
 
         //  Timer for the Objects In Project Dialog
@@ -56,16 +57,10 @@ namespace _3DRadSpace
             Window.Title = "3DRadSpace v1.0 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
             base.Initialize();
-            Form GameForm = Form.FromHandle(Window.Handle) as Form; //intptr xd
+            Form GameForm = Form.FromHandle(Window.Handle) as Form;
             GameForm.FormClosing += OnGameEditorClosing;
-            for(int i = 0;i<300;i++)
-            {
-                ObjectsData[i] = null;
-            }
-            
             //  Show the Dialog
             ObjectsInProjectDialog.Show();
-
             //  Timer Settings
             objectsInProjectRefresh.Interval = 3000;
             objectsInProjectRefresh.Tick += ObjectsInProjectRefresh_Tick;
@@ -81,13 +76,13 @@ namespace _3DRadSpace
             if (GameObjects.Length > 0)
             {
                 //  Loop through each model
-                foreach (Model item in GameObjects)
+                foreach (string item in ObjectsData)
                 {
                     //  Check if it isn't null
-                    if (item != null)
+                    if (string.IsNullOrWhiteSpace(item) != true)
                     {
                         //  Add it to the Objects In Project List
-                        ObjectsInProjectDialog.list_objects.Items.Add(new ListViewItem(item.ToString()));
+                        ObjectsInProjectDialog.list_objects.Items.Add(item.Split(' ')[1], item.Split(' ')[0]); //GH Games why u had to use Model.ToString()?? xD i fixed this for u
                     }
                 }
             }
@@ -98,17 +93,21 @@ namespace _3DRadSpace
             string[] data = File.ReadAllLines(@"settings.data");
             if (data[1] == "True")
             {
-                DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if(warn1 == DialogResult.Yes)
+                if (IsProjectSaved == false)
                 {
-                    SaveFileDialog saveFile = new SaveFileDialog()
+                    DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (warn1 == DialogResult.Yes)
                     {
-                        Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
-                        InitialDirectory = @"/Projects/",
-                        Title = "Save a 3DRadSpace project...",
-                        OverwritePrompt = true
-                    };
-                    saveFile.ShowDialog();
+                        SaveFileDialog saveFile = new SaveFileDialog()
+                        {
+                            Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
+                            InitialDirectory = @"/Projects/",
+                            Title = "Save a 3DRadSpace project...",
+                            OverwritePrompt = true
+                        };
+                        saveFile.ShowDialog();
+                        File.WriteAllLines(saveFile.FileName, ObjectsData);
+                    }
                 }
             }
         }
@@ -118,16 +117,13 @@ namespace _3DRadSpace
         }
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+           spriteBatch = new SpriteBatch(GraphicsDevice);
             Axis = Content.Load<Model>("Axis");
             GUI1 = Content.Load<Texture2D>("Button");
             Font = Content.Load<SpriteFont>("Font");
-            // TODO: use this.Content to load your game content here
-        }
+         }
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
         protected override void Update(GameTime gameTime)
         {
@@ -151,6 +147,48 @@ namespace _3DRadSpace
                         Focus = false;
                         FileMenuStrip strip1 = new FileMenuStrip();
                         strip1.ShowDialog();
+                        if (strip1.StripResult != null)
+                        {
+                            if (strip1.StripResult.Split(' ')[0] == "1")
+                            {
+                                ResetObjects();
+                                skycolor = new Color(100, 100, 255);
+                            }
+                            if (strip1.StripResult.Split(' ')[0] == "2")
+                            {
+                                ResetObjects();
+                                skycolor = new Color(100, 100, 255);
+                                string path = "";
+                                for (int i = 1; i < strip1.StripResult.Split(' ').Length; i++)
+                                {
+                                    path += strip1.StripResult.Split(' ')[i] + " ";
+                                }
+                                if (string.IsNullOrWhiteSpace(path) != true)
+                                {
+                                    string[] file = File.ReadAllLines(path);
+                                    for (int i = 0;i < file.Length; i++)
+                                    {
+                                        if (string.IsNullOrWhiteSpace(file[i]) != true)
+                                        {
+                                            ObjectsData[i] = file[i];
+                                        }
+                                    }
+                                }
+                            }
+                            if (strip1.StripResult.Split(' ')[0] == "3")
+                            {
+                                string path = ""; 
+                                for (int i = 1; i < strip1.StripResult.Split(' ').Length; i++)
+                                {
+                                    path += strip1.StripResult.Split(' ')[i] + " ";
+                                }
+                                if(string.IsNullOrWhiteSpace(path) != true)
+                                {
+                                    File.WriteAllLines(path, ObjectsData);
+                                }
+                            }
+                        }
+                        strip1.StripResult = null;
                     }
                 }
             }
@@ -188,7 +226,6 @@ namespace _3DRadSpace
                         OptionsMenuStrip strip3 = new OptionsMenuStrip();
                         strip3.ShowDialog();
                     }
-                   
                 }
             }
             if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(150, 2), new Vector2(170, 18)))
@@ -222,18 +259,10 @@ namespace _3DRadSpace
             spriteBatch.DrawString(Font, "Edit", new Vector2(40, 2), Color.White);
             spriteBatch.DrawString(Font, "Options", new Vector2(80, 2), Color.White);
             spriteBatch.DrawString(Font, "Help", new Vector2(145, 2), Color.White);
-            for(int i=0;i < 300;i++)
-            {
-                if(ObjectsData[i] != null)
-                {
-                    
-                }
-            }
             spriteBatch.End();
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
             base.Draw(gameTime);
         }
         /// <summary>
@@ -241,7 +270,15 @@ namespace _3DRadSpace
         /// </summary>
         public static void UpdateV(bool forced)
         {
-            string[] Setting = File.ReadAllLines(@"settings.data");
+            string[]Setting = { "True", "True" };
+            try
+            {
+                Setting = File.ReadAllLines(@"settings.data");
+            }
+            catch (FileNotFoundException)
+            {
+                File.WriteAllLines(@"settings.data",Setting);
+            }
             if (Setting[0] == "True" || forced == true)
             {
                 WebClient vchecker = new WebClient();
@@ -268,6 +305,13 @@ namespace _3DRadSpace
                 }
             }
         }
+        /// <summary>
+        /// Draws a model.
+        /// </summary>
+        /// <param name="model">Model that will be drawn</param>
+        /// <param name="world">Position & Rotation Matrix</param>
+        /// <param name="view">Camera matrix.</param>
+        /// <param name="projection">Other camera matrix.</param>
         void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
         {
             foreach (ModelMesh mesh in model.Meshes)
@@ -281,9 +325,12 @@ namespace _3DRadSpace
                 mesh.Draw();
             }
         }
+        /// <summary>
+        /// Creates an object that has been loaded to the editor.
+        /// </summary>
+        /// <param name="ObjectData"></param>
        public void CreateObject(string[] ObjectData)
         {
-            File.AppendAllText(@"log.txt", "Trying to create object " + ObjectData.ToString());
             for (int i = 0; i < 300; i++)
             {
                 if (ObjectsData[i] == null)
@@ -295,7 +342,6 @@ namespace _3DRadSpace
                         objpos *= rotation;
                         GameObjects[i] = Content.Load<Model>("Camera");
                         DrawModel(GameObjects[i], objpos, view, projection);
-                        File.AppendAllText(@"log.txt", "Loaded Camera Object ID \r\n" + i.ToString());
                         break;
                     }
                     if(ObjectData[0] == "SkyColor")
@@ -308,9 +354,24 @@ namespace _3DRadSpace
                 }
             }
         }
+        /// <summary>
+        /// Converts degrees to radians.
+        /// </summary>
+        /// <param name="rad">Degrees to convert.</param>
+        /// <returns></returns>
         float Deg2Rad(float rad)
         {
             return rad * 3.141592f / 180;
+        }
+        /// <summary>
+        /// Deletes all the objects in the editor.
+        /// </summary>
+        void ResetObjects()
+        {
+            for (int i = 0; i < 300; i++)
+            {
+                ObjectsData[i] = null;
+            }
         }
     }
 }
