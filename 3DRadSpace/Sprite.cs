@@ -11,7 +11,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-
+        private string spriteasset = null;
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog()
@@ -23,8 +23,16 @@ namespace _3DRadSpace
             DialogResult img = openFile.ShowDialog();
             if(img == DialogResult.OK)
             {
-                File.Copy(openFile.FileName, @"data/sprites/"+openFile.SafeFileName);
-                pictureBox1.ImageLocation = openFile.FileName;
+                try
+                {
+                    File.Copy(openFile.FileName, @"Content/sprites/" + openFile.SafeFileName);
+                    pictureBox1.ImageLocation = openFile.FileName;
+                    spriteasset = openFile.SafeFileName;
+                }
+                catch
+                {
+                    
+                }
             }
         }
 
@@ -41,7 +49,7 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobject.data","Sprite "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox5.Text+" "+textBox7+" "+textBox4+" "+textBox6.Text+" "+numericUpDown1.Value+" "+pictureBox1.ImageLocation);
+            File.WriteAllText(@"lastobject.data","Sprite "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox5.Text+" "+textBox7+" "+textBox4+" "+textBox6.Text+" "+numericUpDown1.Value+" "+spriteasset);
             Close();
         }
     }

@@ -7,6 +7,7 @@ using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpace
 {
@@ -21,18 +22,12 @@ namespace _3DRadSpace
         SpriteBatch spriteBatch;
         Model Axis;
         SpriteFont Font;
-        Model[] GameObjects = new Model[300];
-        public string[] ObjectsData = new string[300];
+        Model[] GameObjects = new Model[_3DRadSpaceGame.MAX_OBJECTS];
+        public string[] ObjectsData = new string[_3DRadSpaceGame.MAX_OBJECTS];
         //Texture2D CurrentEdit; //ignore the warning, will be used later.
         Color skycolor = new Color(100, 100, 255);
         bool IsProjectSaved = true;
         static public bool Focus = true;
-
-        //  Timer for the Objects In Project Dialog
-        Timer objectsInProjectRefresh = new Timer();
-        //  New Objects In Project Dialog
-        ObjectsInProject ObjectsInProjectDialog = new ObjectsInProject();
-
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
@@ -59,35 +54,7 @@ namespace _3DRadSpace
             base.Initialize();
             Form GameForm = Form.FromHandle(Window.Handle) as Form;
             GameForm.FormClosing += OnGameEditorClosing;
-            //  Show the Dialog
-            ObjectsInProjectDialog.Show();
-            //  Timer Settings
-            objectsInProjectRefresh.Interval = 3000;
-            objectsInProjectRefresh.Tick += ObjectsInProjectRefresh_Tick;
-            objectsInProjectRefresh.Start();
         }
-
-        private void ObjectsInProjectRefresh_Tick(object sender, EventArgs e)
-        {
-            //  Clear the list
-            ObjectsInProjectDialog.list_objects.Items.Clear();
-
-            //  Check if the array is larger than 0
-            if (GameObjects.Length > 0)
-            {
-                //  Loop through each model
-                foreach (string item in ObjectsData)
-                {
-                    //  Check if it isn't null
-                    if (string.IsNullOrWhiteSpace(item) != true)
-                    {
-                        //  Add it to the Objects In Project List
-                        ObjectsInProjectDialog.list_objects.Items.Add(item.Split(' ')[1], item.Split(' ')[0]); //GH Games why u had to use Model.ToString()?? xD i fixed this for u
-                    }
-                }
-            }
-        }
-
         private void OnGameEditorClosing(object sender, System.EventArgs e)
         {
             string[] data = File.ReadAllLines(@"settings.data");
@@ -248,7 +215,7 @@ namespace _3DRadSpace
             GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
             view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
-            for(int i=0; i < 300;i++)
+            for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] != null)
                     CreateObject(ObjectsData[i].Split(' '));
@@ -331,7 +298,7 @@ namespace _3DRadSpace
         /// <param name="ObjectData"></param>
        public void CreateObject(string[] ObjectData)
         {
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] == null)
                 {
@@ -368,7 +335,7 @@ namespace _3DRadSpace
         /// </summary>
         void ResetObjects()
         {
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 ObjectsData[i] = null;
             }

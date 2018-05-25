@@ -201,6 +201,7 @@ namespace _3DRadSpace
         private void button6_Click(object sender, EventArgs e)
         {
             File.WriteAllText(@"lastobj.data", " ");
+            
             Close();
         }
 

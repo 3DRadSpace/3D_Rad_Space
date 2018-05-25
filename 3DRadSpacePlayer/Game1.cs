@@ -13,22 +13,40 @@ namespace _3DRadSpacePlayer
         Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        string[] Objects = new string[300];
+        string[] gamesettings = { @"Projects/default.3drsp",@"False" };
+        string[] Objects = new string[300] ;
+        Sprite[] sprites = new Sprite[100];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Objects = File.ReadAllLines(@"projects/game.3drsp");
+            try
+            {
+                Objects[0] = "Camera GENERIC_OBJECT 0 0 0 0 0 0 75 True";
+                Objects = File.ReadAllLines(gamesettings[0]);
+            }
+            catch (IOException e) {
+                File.AppendAllText("log.txt", "Could not read the game main project:"+e.ToString());
+            }
         }
         protected override void Initialize()
         {
-            string[] defaultcamera = { "Camera", "GENERIC_OBJECT", "0", "0", "0", "0", "0" ,"0","75","True"};
-            GObject.CreateObject(defaultcamera);
+            for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if(Objects[i].Split(' ')[0] == "Camera")
+                {
+                    //Things to do here if initialisation will be needed.
+                }
+            }
             base.Initialize();
         }
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+               
+            }
         }
         protected override void UnloadContent()
         {
@@ -42,6 +60,16 @@ namespace _3DRadSpacePlayer
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            for(int i =0; i < 300;i++)
+            {
+                if (Objects[i] != null)
+                {
+                    if (Objects[i].Split(' ')[0] == "Camera")
+                    {
+                        Camera.Update(Objects[i],ref view,ref projection);
+                    }
+                }
+            }
             base.Draw(gameTime);
         }
         void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
