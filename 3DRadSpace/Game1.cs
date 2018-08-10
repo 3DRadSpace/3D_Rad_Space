@@ -13,6 +13,7 @@ namespace _3DRadSpace
 {
     public class Game1 : Game
     {
+        Vector2 rotatecamoffset;
         static Vector3 CameraPos = new Vector3(10, 1, 3);
         Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         Matrix view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
@@ -24,10 +25,13 @@ namespace _3DRadSpace
         SpriteFont Font;
         Model[] GameObjects = new Model[_3DRadSpaceGame.MAX_OBJECTS];
         public string[] ObjectsData = new string[_3DRadSpaceGame.MAX_OBJECTS];
-        //Texture2D CurrentEdit; //ignore the warning, will be used later.
+        Texture2D[] GameSprites = new Texture2D[_3DRadSpaceGame.MAX_OBJECTS];
         Color skycolor = new Color(100, 100, 255);
         bool IsProjectSaved = true;
         static public bool Focus = true;
+        Texture2D objimg;
+        BoundingSphere[] boundingSpheres = new BoundingSphere[_3DRadSpaceGame.MAX_OBJECTS];
+        int selectedobj = -1;
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
@@ -49,11 +53,10 @@ namespace _3DRadSpace
             graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height - 75;
             graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width - 16;
             graphics.ApplyChanges();
-            Window.Title = "3DRadSpace v1.0 Pre-Alpha release -Editor-";
+            Window.Title = "3DRadSpace v0.1 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
+            Exiting += OnGameEditorClosing;
             base.Initialize();
-            Form GameForm = Form.FromHandle(Window.Handle) as Form;
-            GameForm.FormClosing += OnGameEditorClosing;
         }
         private void OnGameEditorClosing(object sender, System.EventArgs e)
         {
@@ -88,6 +91,7 @@ namespace _3DRadSpace
             Axis = Content.Load<Model>("Axis");
             GUI1 = Content.Load<Texture2D>("Button");
             Font = Content.Load<SpriteFont>("Font");
+            objimg = Content.Load<Texture2D>("objimg");
          }
         protected override void UnloadContent()
         {
@@ -207,20 +211,48 @@ namespace _3DRadSpace
                     }
                 }
             }
-            
+            if(mouse.Y > 25 && mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                rotatecamoffset = new Vector2(mouse.X, mouse.Y);
+            }
+            if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                Ray objectfinder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, view, projection);
+                for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+                {
+                    if (objectfinder.Intersects(boundingSpheres[i]) != null)
+                    {
+                        selectedobj = i;
+                        world = Matrix.CreateTranslation(boundingSpheres[i].Center);
+                        break;
+                    }
+                    else
+                    {
+                        world = Matrix.CreateTranslation(0, 0, 0);
+                        selectedobj = -1;
+                    }
+                }
+            }
+            if (selectedobj != -1)
+            {
+                if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) == true)
+                {
+                    EditObject(selectedobj);
+                }
+            }
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
+            spriteBatch.Begin();
             view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] != null)
                     CreateObject(ObjectsData[i].Split(' '));
             }
-            spriteBatch.Begin(); //rlly
             spriteBatch.Draw(GUI1, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, 25),Color.White);
             spriteBatch.DrawString(Font, "File",new Vector2(3, 2), Color.White);
             spriteBatch.DrawString(Font, "Edit", new Vector2(40, 2), Color.White);
@@ -237,7 +269,7 @@ namespace _3DRadSpace
         /// </summary>
         public static void UpdateV(bool forced)
         {
-            string[]Setting = { "True", "True" };
+            string[] Setting = { "True", "True" };
             try
             {
                 Setting = File.ReadAllLines(@"settings.data");
@@ -288,6 +320,10 @@ namespace _3DRadSpace
                     effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
+                    effect.FogEnabled = true;
+                    effect.FogColor = new Vector3(255, 255, 255);
+                    effect.FogStart = 400;
+                    effect.FogEnd = 500;
                 }
                 mesh.Draw();
             }
@@ -307,8 +343,9 @@ namespace _3DRadSpace
                         Matrix objpos = Matrix.CreateTranslation(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])));
                         Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
                         objpos *= rotation;
-                        GameObjects[i] = Content.Load<Model>("Camera");
-                        DrawModel(GameObjects[i], objpos, view, projection);
+                        GameObjects[i-1] = Content.Load<Model>("Camera");
+                        DrawModel(GameObjects[i-1], objpos, view, projection);
+                        boundingSpheres[i-1] = new BoundingSphere(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])),1.5f);
                         break;
                     }
                     if(ObjectData[0] == "SkyColor")
@@ -317,6 +354,20 @@ namespace _3DRadSpace
                         skycolor.G = Convert.ToByte(Convert.ToInt16(ObjectData[4]));
                         skycolor.B = Convert.ToByte(Convert.ToInt16(ObjectData[5]));
                         break;
+                    }
+                    if (ObjectData[0] == "TextPrint")
+                    {
+                        string text = "";
+                        for (int j = 8; j < ObjectData.Length; j++)
+                        {
+                            text += ObjectData[j]+" ";
+                        }
+                        spriteBatch.DrawString(Font,text,new Vector2(Convert.ToSingle(ObjectData[3]), 25+Convert.ToSingle(ObjectData[4])), new Color(Convert.ToInt32(ObjectData[5]), Convert.ToInt32(ObjectData[6]), Convert.ToInt32(ObjectData[7])));
+                        break;
+                    }
+                    if (ObjectData[0] == "Sprite")
+                    {
+                        
                     }
                 }
             }
@@ -338,6 +389,50 @@ namespace _3DRadSpace
             for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 ObjectsData[i] = null;
+            }
+        }
+        public static Ray GetMouseRay(Vector2 mousePosition, Viewport viewport,Matrix view,Matrix projection)
+        {
+            Vector3 nearPoint = new Vector3(mousePosition, 0);
+            Vector3 farPoint = new Vector3(mousePosition, 1);
+            nearPoint = viewport.Unproject(nearPoint,projection ,view , Matrix.Identity);
+            farPoint = viewport.Unproject(farPoint, projection,view , Matrix.Identity);
+            Vector3 direction = farPoint - nearPoint;
+            direction.Normalize();
+            return new Ray(nearPoint, direction);
+        }
+        void EditObject(int id)
+        {
+            if (ObjectsData[id] != null)
+            {
+                string[] objdata = ObjectsData[id].Split(' ');
+                bool edit = false;
+                if (objdata[0] == "Camera")
+                {
+                    Camera editcamera = new Camera();
+                    editcamera.textBox1.Text = objdata[1];
+                    editcamera.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    editcamera.textBox2.Text = objdata[3];
+                    editcamera.textBox3.Text = objdata[4];
+                    editcamera.textBox4.Text = objdata[5];
+                    editcamera.textBox5.Text = objdata[6];
+                    editcamera.textBox6.Text = objdata[7];
+                    editcamera.textBox7.Text = objdata[8];
+                    editcamera.numericUpDown1.Value = Convert.ToDecimal(objdata[9]);
+                    for(int i =0; i < objdata.Length - 9; i++)
+                    {
+                        editcamera.OBJR += objdata[9 + i] + " ";
+                    }
+                    editcamera.ShowDialog();
+                    if (editcamera.result == true)
+                    {
+                        edit = true;
+                    }
+                }
+                if(edit == true)
+                {
+                    ObjectsData[id] = File.ReadAllText(@"lastobj.data");
+                }
             }
         }
     }

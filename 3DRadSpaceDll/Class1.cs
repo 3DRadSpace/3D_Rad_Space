@@ -228,17 +228,20 @@ namespace _3DRadSpaceDll
             }
         }
     }
-
-    [Serializable]
-    public class MyException : Exception
+    /// <summary>
+    /// TextPrint class. 
+    /// </summary>
+    public class TextPrint
     {
-        public MyException() { }
-        public MyException(string message) : base(message) { }
-        public MyException(string message, Exception inner) : base(message, inner) { }
-        protected MyException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        SpriteFont font;
+        public void Initialise(ContentManager manager,string fontloc)
+        {
+            font = manager.Load<SpriteFont>(fontloc);
+        }
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            spriteBatch.DrawString(spriteFont, "", new Vector2(0,0),new Color(0,0,0));
+        }
     }
-    
 }
 

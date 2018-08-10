@@ -25,13 +25,23 @@ namespace _3DRadSpace
             {
                 try
                 {
-                    File.Copy(openFile.FileName, @"Content/sprites/" + openFile.SafeFileName);
-                    pictureBox1.ImageLocation = openFile.FileName;
-                    spriteasset = openFile.SafeFileName;
+                    try
+                    {
+                        pictureBox1.ImageLocation = openFile.FileName;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        MessageBox.Show("The selected file does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        File.Copy(openFile.FileName, @"./Content/sprites/" + openFile.SafeFileName);
+                        spriteasset = openFile.SafeFileName;
+                    }
                 }
-                catch
+                catch(IOException)
                 {
-                    
+
                 }
             }
         }
@@ -49,7 +59,7 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobject.data","Sprite "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox5.Text+" "+textBox7+" "+textBox4+" "+textBox6.Text+" "+numericUpDown1.Value+" "+spriteasset);
+            File.WriteAllText(@"lastobject.data","Sprite "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox5.Text+" "+textBox7+" "+textBox4+" "+textBox6.Text+" "+spriteasset);
             Close();
         }
     }

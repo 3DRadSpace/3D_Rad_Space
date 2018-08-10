@@ -14,7 +14,7 @@ namespace _3DRadSpacePlayer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string[] gamesettings = { @"Projects/default.3drsp",@"False" };
-        string[] Objects = new string[300] ;
+        string[] Objects = new string[300];
         Sprite[] sprites = new Sprite[100];
         public Game1()
         {
@@ -85,6 +85,5 @@ namespace _3DRadSpacePlayer
                 mesh.Draw();
             }
         }
-
     }
 }

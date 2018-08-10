@@ -158,6 +158,12 @@
     <Compile Include="Sprite.Designer.cs">
       <DependentUpon>Sprite.cs</DependentUpon>
     </Compile>
+    <Compile Include="TextPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextPrint.Designer.cs">
+      <DependentUpon>TextPrint.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -232,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sprite.resx">
       <DependentUpon>Sprite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextPrint.resx">
+      <DependentUpon>TextPrint.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

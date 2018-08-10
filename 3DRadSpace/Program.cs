@@ -10,9 +10,6 @@ namespace _3DRadSpace
     /// </summary>
     public static class Program
     {
-        /// <summary>
-        /// Loaded file in startup. Used single time.
-        /// </summary>
         static string[] file;
         [STAThread]
         /// <summary>
@@ -20,7 +17,7 @@ namespace _3DRadSpace
         /// </summary>
         static void Main(string[] args)
         {
-            Environment.CurrentDirectory = Application.StartupPath;//if you remove this, crashes will happen if you open a project directly with 3drsp.
+            Environment.CurrentDirectory = Application.StartupPath;
             Application.EnableVisualStyles();
             using (var game = new Game1())
             {
@@ -30,11 +27,25 @@ namespace _3DRadSpace
                     {
                         file = File.ReadAllLines(args[0]);
                     }
-                    for(int i =0; i < file.Length; i++)
+                    if (args[0].Split('.')[1].ToLower() == "3drss")
                     {
-                        if(string.IsNullOrEmpty(file[i]) != true)
+                        Script script = new Script();
+                        script.richTextBox1.Text = "";
+                        for (int i = 0; i < file.Length; i++)
                         {
-                            game.ObjectsData[i] = file[i];
+                            script.richTextBox1.Text += file[i] + "\r\n";
+                        }
+                        script.ShowDialog();
+                        return;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < file.Length; i++)
+                        {
+                            if (string.IsNullOrEmpty(file[i]) != true)
+                            {
+                                game.ObjectsData[i] = file[i];
+                            }
                         }
                     }
                 }

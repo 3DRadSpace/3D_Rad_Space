@@ -24,7 +24,12 @@ namespace _3DRadSpace
 
         private void AboutWindow_Load(object sender, EventArgs e)
         {
-            pictureBox1.ImageLocation = "@/data/resources/Img1.bmp";
+            pictureBox1.ImageLocation = @"data\resources\Img1.bmp";
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -16,7 +16,8 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\bin\Debug\SharpDX
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\bin\Debug\SharpDX.Direct2D1.xml
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\bin\Debug\SharpDX.XInput.xml
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\bin\Debug\SharpDX.MediaFoundation.xml
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csprojResolveAssemblyReference.cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CoreCompileInputs.cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.dll
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.pdb
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csprojAssemblyReference.cache
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CopyComplete

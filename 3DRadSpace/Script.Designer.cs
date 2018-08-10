@@ -43,9 +43,15 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -92,19 +98,19 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.richTextBox1);
-            this.groupBox2.Location = new System.Drawing.Point(163, 12);
+            this.groupBox2.Location = new System.Drawing.Point(178, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(551, 382);
+            this.groupBox2.Size = new System.Drawing.Size(551, 397);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Script Editor";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(6, 19);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(539, 357);
+            this.richTextBox1.Size = new System.Drawing.Size(539, 372);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "void Script()\n{\n  //Add your script here.\n}\n\n";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -154,6 +160,8 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox2.Location = new System.Drawing.Point(12, 203);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(116, 17);
@@ -164,9 +172,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 226);
+            this.button4.Location = new System.Drawing.Point(12, 309);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(145, 23);
+            this.button4.Size = new System.Drawing.Size(160, 23);
             this.button4.TabIndex = 4;
             this.button4.Text = "Help";
             this.button4.UseVisualStyleBackColor = true;
@@ -174,9 +182,9 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(12, 255);
+            this.button5.Location = new System.Drawing.Point(12, 338);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(145, 23);
+            this.button5.Size = new System.Drawing.Size(160, 23);
             this.button5.TabIndex = 5;
             this.button5.Text = "OK";
             this.button5.UseVisualStyleBackColor = true;
@@ -184,19 +192,90 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(12, 284);
+            this.button6.Location = new System.Drawing.Point(11, 367);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(145, 23);
+            this.button6.Size = new System.Drawing.Size(160, 23);
             this.button6.TabIndex = 6;
             this.button6.Text = "Cancel";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(12, 280);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(160, 23);
+            this.button7.TabIndex = 7;
+            this.button7.Text = "Refresh syntax highlighting";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(12, 221);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(159, 30);
+            this.checkBox3.TabIndex = 8;
+            this.checkBox3.Text = "Refresh Syntax Highlighting \r\nwhen typing";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 256);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Zoom";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(49, 254);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(99, 20);
+            this.numericUpDown1.TabIndex = 11;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.domainUpDown1_SelectedItemChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(156, 256);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(15, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "%";
+            // 
             // Script
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(726, 406);
+            this.ClientSize = new System.Drawing.Size(737, 416);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.checkBox3);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -213,6 +292,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -225,7 +305,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
@@ -234,5 +313,11 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

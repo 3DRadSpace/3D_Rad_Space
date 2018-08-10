@@ -93,7 +93,6 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debu
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csprojResolveAssemblyReference.cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace._3DRadSpaceCompiler.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.AboutWindow.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Camera.resources
@@ -157,3 +156,6 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRad
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Sprite.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\3DRadSpaceDll.dll
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\3DRadSpaceDll.pdb
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csprojAssemblyReference.cache
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csproj.CopyComplete
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.TextPrint.resources

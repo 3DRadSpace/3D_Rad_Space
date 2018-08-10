@@ -73,5 +73,17 @@ namespace _3DRadSpace
             sprite.ShowDialog();
             Close();
         }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            TextPrint textPrint = new TextPrint();
+            textPrint.ShowDialog();
+            Close();
+        }
+
+        private void pictureBox18_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

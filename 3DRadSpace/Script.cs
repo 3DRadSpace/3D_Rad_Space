@@ -13,8 +13,7 @@ namespace _3DRadSpace
             InitializeComponent();
         }
         string LoadedScript = "";
-        //Syntax highlighting :D
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        private void SyntaxHighlighting()
         {
             int originalselection = richTextBox1.SelectionStart;
             richTextBox1.SelectionStart = 0;
@@ -177,7 +176,7 @@ namespace _3DRadSpace
 
         private void Script_Load(object sender, EventArgs e)
         {
-            richTextBox1_TextChanged(null, null);
+            SyntaxHighlighting();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -201,13 +200,12 @@ namespace _3DRadSpace
         private void button6_Click(object sender, EventArgs e)
         {
             File.WriteAllText(@"lastobj.data", " ");
-            
             Close();
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            richTextBox1_TextChanged(null, null);
+            SyntaxHighlighting();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -235,6 +233,21 @@ namespace _3DRadSpace
         private void button4_Click(object sender, EventArgs e)
         {
             Process.Start(@".\Help Files\Script.rtf");
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if(checkBox3.Checked == true) SyntaxHighlighting();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SyntaxHighlighting();
+        }
+
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Font = new Font("Microsoft Sans Serif",Convert.ToInt32(numericUpDown1.Value) / 10);
         }
     }
 }
