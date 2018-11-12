@@ -2,6 +2,6 @@ class Script
 {
 public void Main()
 {
-   MessageBox.Show("aa","aa");
+   int a = 3;
 }
 }
