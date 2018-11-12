@@ -34,6 +34,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -103,6 +105,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox8);
+            this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.checkBox2);
             this.groupBox2.Controls.Add(this.numericUpDown1);
@@ -123,14 +127,31 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(12, 91);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(244, 171);
+            this.groupBox2.Size = new System.Drawing.Size(244, 202);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Settings Specific for this object";
             // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(139, 142);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(49, 20);
+            this.textBox8.TabIndex = 18;
+            this.textBox8.Text = "500";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(9, 145);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(124, 13);
+            this.label11.TabIndex = 17;
+            this.label11.Text = "Maximum Draw Distance";
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(9, 134);
+            this.button1.Location = new System.Drawing.Point(9, 168);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(220, 23);
             this.button1.TabIndex = 16;
@@ -303,7 +324,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(15, 268);
+            this.button2.Location = new System.Drawing.Point(15, 299);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -313,7 +334,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(96, 268);
+            this.button3.Location = new System.Drawing.Point(96, 299);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
@@ -323,7 +344,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(177, 268);
+            this.button4.Location = new System.Drawing.Point(177, 299);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 4;
@@ -335,7 +356,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 303);
+            this.ClientSize = new System.Drawing.Size(268, 334);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -384,5 +405,7 @@
         public System.Windows.Forms.NumericUpDown numericUpDown1;
         public System.Windows.Forms.CheckBox checkBox2;
         public System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label11;
+        public System.Windows.Forms.TextBox textBox8;
     }
 }

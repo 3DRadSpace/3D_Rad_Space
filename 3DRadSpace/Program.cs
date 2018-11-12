@@ -34,6 +34,7 @@ namespace _3DRadSpace
                         for (int i = 0; i < file.Length; i++)
                         {
                             script.richTextBox1.Text += file[i] + "\r\n";
+                            script.LoadedScript = args[0];
                         }
                         script.ShowDialog();
                         return;

@@ -1,22 +1,23 @@
-﻿using Microsoft.Xna.Framework;
+﻿using _3DRadSpaceDll;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
-using System.Windows.Forms;
-using System.Net;
-using System.IO;
-using System.Diagnostics;
 using System;
-using _3DRadSpaceDll;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace _3DRadSpace
 {
     public class Game1 : Game
     {
         Vector2 rotatecamoffset;
+        static Vector3 LookAt = new Vector3(0, 0, 0);
         static Vector3 CameraPos = new Vector3(10, 1, 3);
         Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
-        Matrix view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
+        Matrix view = Matrix.CreateLookAt(CameraPos,LookAt, Vector3.UnitY);
         Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f); //Last parameter is maximum view distance
         GraphicsDeviceManager graphics;
         Texture2D GUI1;
@@ -27,7 +28,7 @@ namespace _3DRadSpace
         public string[] ObjectsData = new string[_3DRadSpaceGame.MAX_OBJECTS];
         Texture2D[] GameSprites = new Texture2D[_3DRadSpaceGame.MAX_OBJECTS];
         Color skycolor = new Color(100, 100, 255);
-        bool IsProjectSaved = true;
+        bool IsProjectSaved = true, _3D_OR_2D_MODE = false;
         static public bool Focus = true;
         Texture2D objimg;
         BoundingSphere[] boundingSpheres = new BoundingSphere[_3DRadSpaceGame.MAX_OBJECTS];
@@ -77,6 +78,7 @@ namespace _3DRadSpace
                         };
                         saveFile.ShowDialog();
                         File.WriteAllLines(saveFile.FileName, ObjectsData);
+                        IsProjectSaved = true;
                     }
                 }
             }
@@ -180,6 +182,7 @@ namespace _3DRadSpace
                                 if(ObjectsData[i] == null)
                                 {
                                     ObjectsData[i] = obj;
+                                    IsProjectSaved = false;
                                     break;
                                 }
                             }
@@ -211,10 +214,6 @@ namespace _3DRadSpace
                     }
                 }
             }
-            if(mouse.Y > 25 && mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-            {
-                rotatecamoffset = new Vector2(mouse.X, mouse.Y);
-            }
             if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 Ray objectfinder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, view, projection);
@@ -240,6 +239,9 @@ namespace _3DRadSpace
                     EditObject(selectedobj);
                 }
             }
+            if(mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+            }
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
@@ -247,7 +249,7 @@ namespace _3DRadSpace
             GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
             spriteBatch.Begin();
-            view = Matrix.CreateLookAt(CameraPos, new Vector3(0, 0, 0), Vector3.UnitY);
+            view = Matrix.CreateLookAt(CameraPos, LookAt, Vector3.UnitY);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] != null)
@@ -291,7 +293,9 @@ namespace _3DRadSpace
                     {
                         vchecker.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE", @"3DRadSpace_Installer.exe");
                         Process.Start(@"3DRadSpace_Installer.exe");
-                        MessageBox.Show("To apply the update, manually restart the application.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        notifyIcon.ShowBalloonTip(1000, "3DRadSpace is updating, so the application will close until the update is done.", "Update", ToolTipIcon.Info);
+                        Thread.Sleep(1100);
+                        Application.Exit();
                     }
                     else
                     {
@@ -340,13 +344,16 @@ namespace _3DRadSpace
                 {
                     if (ObjectData[0] == "Camera")
                     {
-                        Matrix objpos = Matrix.CreateTranslation(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])));
-                        Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
-                        objpos *= rotation;
-                        GameObjects[i-1] = Content.Load<Model>("Camera");
-                        DrawModel(GameObjects[i-1], objpos, view, projection);
-                        boundingSpheres[i-1] = new BoundingSphere(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])),1.5f);
-                        break;
+                        if (_3D_OR_2D_MODE == false)
+                        {
+                            Matrix objpos = Matrix.CreateTranslation(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])));
+                            Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
+                            objpos *= rotation;
+                            GameObjects[i - 1] = Content.Load<Model>("Camera");
+                            DrawModel(GameObjects[i - 1], objpos, view, projection);
+                            boundingSpheres[i - 1] = new BoundingSphere(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])), 1.5f);
+                            break;
+                        }
                     }
                     if(ObjectData[0] == "SkyColor")
                     {

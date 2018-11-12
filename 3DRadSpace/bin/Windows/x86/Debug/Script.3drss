@@ -1,0 +1,7 @@
+class Script
+{
+void Main()
+{
+System.Windows.Forms.MessageBox("a","b");
+}
+}

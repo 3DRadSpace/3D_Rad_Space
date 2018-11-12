@@ -96,6 +96,12 @@
     <Compile Include="EditMenuStrip.Designer.cs">
       <DependentUpon>EditMenuStrip.cs</DependentUpon>
     </Compile>
+    <Compile Include="EOL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EOL.Designer.cs">
+      <DependentUpon>EOL.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileMenuStrip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +151,12 @@
     </Compile>
     <Compile Include="Script.Designer.cs">
       <DependentUpon>Script.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Skinmesh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Skinmesh.Designer.cs">
+      <DependentUpon>Skinmesh.cs</DependentUpon>
     </Compile>
     <Compile Include="Skycolor.cs">
       <SubType>Form</SubType>
@@ -208,6 +220,9 @@
     <EmbeddedResource Include="EditMenuStrip.resx">
       <DependentUpon>EditMenuStrip.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EOL.resx">
+      <DependentUpon>EOL.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FileMenuStrip.resx">
       <DependentUpon>FileMenuStrip.cs</DependentUpon>
     </EmbeddedResource>
@@ -232,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Script.resx">
       <DependentUpon>Script.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Skinmesh.resx">
+      <DependentUpon>Skinmesh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Skycolor.resx">
       <DependentUpon>Skycolor.cs</DependentUpon>

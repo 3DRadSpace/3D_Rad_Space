@@ -3,6 +3,8 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
+using _3DRadSpaceDll;
+
 
 namespace _3DRadSpace
 {
@@ -12,7 +14,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        string LoadedScript = "";
+        public string LoadedScript = "";
         private void SyntaxHighlighting()
         {
             int originalselection = richTextBox1.SelectionStart;
@@ -23,17 +25,19 @@ namespace _3DRadSpace
             char[] text = richTextBox1.Text.ToCharArray();
             richTextBox1.SelectionLength = 0;
             if (checkBox2.Checked == false) return;
+
             for (int i=0; i < richTextBox1.Text.Length - 1; i++)
             {
                 try
                 {
-                    if (text[i] == 'i' && text[i + 1] == 'n' && text[i + 2] == 't')
-                    {
-                        richTextBox1.SelectionStart = i;
-                        richTextBox1.SelectionLength = 3;
-                        richTextBox1.SelectionColor = Color.CornflowerBlue;
-                    }
-                    if(text[i] == 'v' && text[i+1] == 'o' && text[i+2] == 'i' && text[i+3] == 'd')
+                     if (text[i] == 'i' && text[i + 1] == 'n' && text[i + 2] == 't')
+                     {
+                         richTextBox1.SelectionStart = i;
+                         richTextBox1.SelectionLength = 3;
+                         richTextBox1.SelectionColor = Color.CornflowerBlue;
+                     }
+                   
+                    if (text[i] == 'v' && text[i+1] == 'o' && text[i+2] == 'i' && text[i+3] == 'd')
                     {
                         richTextBox1.SelectionStart = i;
                         richTextBox1.SelectionLength = 4;
@@ -181,7 +185,12 @@ namespace _3DRadSpace
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //TODO:Use some of 3DRadSpace dll functions.
+            if (string.IsNullOrEmpty(LoadedScript))
+            {
+                File.WriteAllText(@"./CompiledScript/Script.3drss", richTextBox1.Text);
+                LoadedScript = @"./CompiledScript/Script.3drss";
+            }
+            ScriptInterpeter.Run(ScriptInterpeter.Debug(LoadedScript));
         }
 
         private void button3_Click(object sender, EventArgs e)

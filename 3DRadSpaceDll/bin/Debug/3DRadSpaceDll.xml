@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>3DRadSpaceDll</name>
+    </assembly>
+    <members>
+        <member name="T:_3DRadSpaceDll._3DRadSpaceGame">
+            <summary>
+            Constants and functions used by 3DRadSpace
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll._3DRadSpaceGame.MAX_OBJECTS">
+            <summary>
+            Defines maximum number of objects. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll._3DRadSpaceGame.MAX_SCRIPTS">
+            <summary>
+            Defines maximum number of scripts. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.ScriptInterpeter">
+            <summary>
+            3DRadSpace Script Interpeter class
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ScriptInterpeter.scripts">
+            <summary>
+            Compiled scripts.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ScriptInterpeter.Debug(System.String)">
+            <summary>
+            Checks if a script has a error in it's code.
+            </summary>
+            <param name="script">The script file.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ScriptInterpeter.Run(System.Int32)">
+            <summary>
+            Starts running a script.
+            </summary>
+            <param name="ScriptID">Script's unique unsigned number identifier.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.GameObject">
+            <summary>
+            3DRadSpace Base Object Class
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.name">
+            <summary>
+            The object's name.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.IsActive">
+            <summary>
+            If true the object will update each time when Update() or Draw() is called.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Pos">
+            <summary>
+            Position of the object.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Rotation">
+            <summary>
+            Rotation In Quaternion of the object.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.resource">
+            <summary>
+            Resource file.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.ToString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>Returns a string that represents the current object.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Disable">
+            <summary>
+            Disables the object instance from updating.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Enable">
+            <summary>
+            Enables the object, allowing it to update it's properties whem Update() or Draw() is called.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Vector3ToVector2(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Converts a Vector3 to a Vector2.
+            </summary>
+            <param name="vec">Vector3 to be converted.</param>
+            <returns></returns>
+        </member>
+        <member name="T:_3DRadSpaceDll.Camera">
+            <summary>
+            3DRadSpace Camera object class.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.look_at">
+            <summary>
+            Camera look at point.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.FOV">
+            <summary>
+            Camera field of view.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.MaxViewDistance">
+            <summary>
+            Maximum render distance.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            Camera object constructor.
+            </summary>
+            <param name= "objn">Object name.</param>
+            <param name= "isactive">Object name.</param>
+            <param name="pos">Camera position.</param>
+            <param name="lookat">Camera look at 3D point.</param>
+            <param name="FieldOfView">Field Of View in Radians</param>
+            <param name="MaxRenderDistance">Maximum render distance</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.Update(Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
+            <summary>
+            Camera object drawing update logic functoin.
+            </summary>
+            <param name="view">affected view Matrix.</param>
+            <param name="projection">affected projection Matrix.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Script">
+            <summary>
+            3DRadSpace Script object Class. This class is entirely static.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Script.path">
+            <summary>
+            Path to the script.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Script.ScriptID">
+            <summary>
+            Loaded script file.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.#ctor(System.String,System.Boolean,System.String)">
+            <summary>
+            Loads and tests a script for errors then runs it.
+            </summary>
+            <param name= "objn">Object name.</param>
+            <param name= "isactive">If the script is executed.</param>
+            <param name="file">Script file to be loaded.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Update">
+            <summary>
+            Updates the script.
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.Sprite">
+            <summary>
+            3DRadSpace Sprite class. Needs to be initialised firstly (isn't entirely static)
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.sprite">
+            <summary>
+            Loaded Sprite image.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Scale">
+            <summary>
+            Sprite's size.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.effects">
+            <summary>
+            Sprite effects applied to the sprite.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Content.ContentManager,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Sprite constructor.
+            </summary>
+            <param name= "objn">Object name.</param>
+            <param name= "isactive">If this sprite will be drawn</param>
+            <param name="asset">Sprite to be loaded.</param>
+            <param name="manager">Content manager</param>
+            <param name="pos">Sprite's location. Z can have any value.</param>
+            <param name="scale">Sprite's location</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the object.
+            </summary>
+            <param name="batch">SpriteBatch used for drawing.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.TextPrint">
+            <summary>
+            TextPrint class. 
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.TextPrint.font">
+            <summary>
+            Textprint's font.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.TextPrint.Text">
+            <summary>
+            TextPrint's text
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Content.ContentManager,System.String,Microsoft.Xna.Framework.Vector3,System.String)">
+            <summary>
+            Initialises a new TextPrint Object.
+            </summary>
+            <param name= "objn">Object name.</param>
+            <param name= "isactive">If the text will be drawn.</param>
+            <param name="manager">Content manager.</param>
+            <param name="fontloc">Font file.</param>
+            <param name="position">Position. Z can be any value.</param>
+            <param name="text">Text to display.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.TextPrint.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the text.
+            </summary>
+            <param name="spriteBatch">spritebatch.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.ScriptError">
+            <summary>
+            3D Rad Space Script Error Exception
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ScriptError.#ctor(System.String)">
+            <summary>
+            Intilialises a ScriptError exception that can be thrown.
+            </summary>
+            <param name="message">Error message.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ScriptError.#ctor(System.String,System.Exception)">
+            <summary>
+            Initialises a ScriptError from an other Exception
+            </summary>
+            <param name="message">Error message</param>
+            <param name="inner">Base exception</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ScriptError.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            I don't know what is this supposed to do :/ .
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.SkinMesh">
+            <summary>
+            3DRadSpace Skinmesh Class.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.SkinMesh.model">
+            <summary>
+            Loaded model that is drawn.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkinMesh.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Skinmesh object constructor
+            </summary>
+            <param name="objn">Object Name</param>
+            <param name="isactive">If the object will be drawn every frame.</param>
+            <param name="res">Resource file.</param>
+            <param name="location">Position</param>
+            <param name="rotation">Rotation Quaternion</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkinMesh.Initialize(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads a 3d Model so drawing the model can be done.
+            </summary>
+            <param name="manager">Content manager</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkinMesh.Draw(Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Draws the skinmesh object.
+            </summary>
+            <param name="view">View Matrix</param>
+            <param name="projection">Projection Matrix</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.SkyColor">
+            <summary>
+            SkyColor object.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.SkyColor.Color">
+            <summary>
+            Colour of the game backround.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkyColor.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Color)">
+            <summary>
+            SkyColor constructor.
+            </summary>
+            <param name="objn">Object Name</param>
+            <param name="isactive">Is the colour displayed?</param>
+            <param name="colour">The color that will be used.</param>
+        </member>
+    </members>
+</doc>

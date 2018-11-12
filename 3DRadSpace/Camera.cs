@@ -21,7 +21,7 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string ObjData = "Camera " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text + " " + textBox5.Text + " " + textBox6.Text + " " + textBox7.Text + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() + " "+ OBJR;
+            string ObjData = "Camera " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text + " " + textBox5.Text + " " + textBox6.Text + " " + textBox7.Text + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() +" "+textBox8.Text+ " "+ OBJR;
             File.WriteAllText(@"lastobj.data",ObjData);
             result = true;
             Close();

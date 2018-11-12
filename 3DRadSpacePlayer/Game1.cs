@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using System;
 using _3DRadSpaceDll;
 
 namespace _3DRadSpacePlayer
@@ -9,20 +10,20 @@ namespace _3DRadSpacePlayer
     public class Game1 : Game
     {
         static Vector3 CamPos = new Vector3(0, 0, 0);
-        Matrix view = Matrix.CreateLookAt(CamPos,CamPos + new Vector3(0,0,1),Vector3.Up);
+        Matrix view = Matrix.CreateLookAt(CamPos,CamPos + new Vector3(0,0,1),Vector3.UnitY);
         Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string[] gamesettings = { @"Projects/default.3drsp",@"False" };
-        string[] Objects = new string[300];
-        Sprite[] sprites = new Sprite[100];
+        object[] Objects = new object[_3DRadSpaceGame.MAX_OBJECTS];
+        public static Model Error;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             try
             {
-                Objects[0] = "Camera GENERIC_OBJECT 0 0 0 0 0 0 75 True";
+                Objects[0] = new Camera("DefaultCamera",true,new Vector3(10,0,10),Vector3.Zero);
                 Objects = File.ReadAllLines(gamesettings[0]);
             }
             catch (IOException e) {
@@ -31,21 +32,57 @@ namespace _3DRadSpacePlayer
         }
         protected override void Initialize()
         {
-            for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
-            {
-                if(Objects[i].Split(' ')[0] == "Camera")
-                {
-                    //Things to do here if initialisation will be needed.
-                }
-            }
+            AllObjectsInitialize();
             base.Initialize();
         }
         protected override void LoadContent()
         {
+            Error = Content.Load<Model>("Error");
             spriteBatch = new SpriteBatch(GraphicsDevice);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
-               
+                string obj = Objects[i].ToString();
+               switch (obj.Split(' ')[0])
+                {
+                    case "Camera":
+                        {
+                            Vector3 pos = new Vector3(Convert.ToSingle(obj.Split(' ')[3]), Convert.ToSingle(obj.Split(' ')[4]), Convert.ToSingle(obj.Split(' ')[5]));
+                            Objects[i] = new Camera(
+                                    obj.Split(' ')[1],
+                                    Convert.ToBoolean(obj.Split(' ')[2]),
+                                    pos,
+                                    Vector3.Transform(pos, Matrix.CreateFromYawPitchRoll(Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]), Convert.ToSingle(obj.Split(' ')[8]))),
+                                    MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[9])),
+                                    Convert.ToSingle(obj.Split(' ')[11])
+                                );
+                            break;
+                        }
+                    case "SkyColor":
+                        {
+                            Color color = new Color(Convert.ToUInt32(obj.Split(' ')[3]), Convert.ToUInt32(obj.Split(' ')[4]), Convert.ToUInt32(obj.Split(' ')[5]));
+                            Objects[i] = new SkyColor(
+                                    obj.Split(' ')[1],
+                                    Convert.ToBoolean(obj.Split(' ')[2]),
+                                    color
+                                    );
+                            break;
+                        }
+                    case "Skinmesh":
+                        {
+                            Vector3 pos = new Vector3(Convert.ToSingle(obj.Split(' ')[3]), Convert.ToSingle(obj.Split(' ')[4]), Convert.ToSingle(obj.Split(' ')[5]));
+                            Vector3 rot = new Vector3(Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]), Convert.ToSingle(obj.Split(' ')[8]));
+                            string res = "";
+                            for(int j =0; j < obj.Length ;j++)
+                            {
+                                res += obj[j] + " ";
+                            }
+                            Objects[i] = new SkinMesh(obj.Split(' ')[1],
+                                Convert.ToBoolean(obj.Split(' ')[2]),
+                                res, pos, rot);
+                            break;
+                        }
+                    default: break;
+                }
             }
         }
         protected override void UnloadContent()
@@ -54,22 +91,13 @@ namespace _3DRadSpacePlayer
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit(); 
+            Exit();
+            AllObjectsUpdate();
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-            for(int i =0; i < 300;i++)
-            {
-                if (Objects[i] != null)
-                {
-                    if (Objects[i].Split(' ')[0] == "Camera")
-                    {
-                        Camera.Update(Objects[i],ref view,ref projection);
-                    }
-                }
-            }
+            AllObjectsDraw();
             base.Draw(gameTime);
         }
         void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
@@ -83,6 +111,47 @@ namespace _3DRadSpacePlayer
                     effect.Projection = projection;
                 }
                 mesh.Draw();
+            }
+        }
+        void AllObjectsUpdate()
+        {
+            for(int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS;i++)
+            {
+                if (Objects[i] is Camera camera)
+                {
+                    if (camera.IsActive == true) camera.Update(ref view,ref projection);
+                }
+            }
+        }
+        void AllObjectsDraw()
+        {
+            Color clr = Color.Black;
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if (Objects[i] is SkyColor skyc)
+                {
+                    if (skyc.IsActive) clr = skyc.Color;
+                }
+            }
+            GraphicsDevice.Clear(clr);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if (Objects[i] is SkinMesh mesh)
+                {
+                    mesh.Draw(view, projection);
+                }
+            }
+            spriteBatch.End();
+        }
+        void AllObjectsInitialize()
+        {
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if (Objects[i] is SkinMesh mesh)
+                {
+                    mesh.Initialize(Content);
+                }
             }
         }
     }

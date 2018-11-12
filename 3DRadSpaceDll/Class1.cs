@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using System.CodeDom.Compiler;
+using System.Diagnostics;
+using System.Reflection;
+
 namespace _3DRadSpaceDll
 {
     /// <summary>
@@ -10,237 +14,402 @@ namespace _3DRadSpaceDll
     /// </summary>
     public class _3DRadSpaceGame
     {
-        public const int MAX_OBJECTS = 300;
-        public const int MAX_SCRIPTS = 100;
         /// <summary>
-        /// Permamently disables an object without losing it's data.
+        /// Defines maximum number of objects. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
         /// </summary>
-        /// <param name="obj">Object</param>
-        public static void ObjectDestroy(ref string obj)
-        {
-            string oldobj = obj;
-            obj = null;
-            obj = "DESTROYED_OBJECT " + oldobj;
-        }
+        public const int MAX_OBJECTS = 300;
+        /// <summary>
+        /// Defines maximum number of scripts. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
+        /// </summary>
+        public const int MAX_SCRIPTS = 100;
     }
+    /// <summary>
+    /// 3DRadSpace Script Interpeter class
+    /// </summary>
     public class ScriptInterpeter
     {
-        public static string[] Scripts = new string[_3DRadSpaceGame.MAX_SCRIPTS];
+        /// <summary>
+        /// Compiled scripts.
+        /// </summary>
+        public static Assembly[] scripts = new Assembly[_3DRadSpaceGame.MAX_SCRIPTS];
         /// <summary>
         /// Checks if a script has a error in it's code.
         /// </summary>
         /// <param name="script">The script file.</param>
-        public static void Debug(string script)
+        public static int Debug(string script)
         {
-
-        }
-        /// <summary>
-        /// Executes a script.
-        /// </summary>
-        /// <param name="script">The script file.</param>
-        public static bool Load(string script)
-        {
-            for(int i =0; i < _3DRadSpaceGame.MAX_SCRIPTS ; i++)
+            int i = 0;
+            File.Delete(@"compile_errors.txt");
+            CodeDomProvider codeDomProvider = CodeDomProvider.CreateProvider("CSharp");
+            CompilerParameters parameters = new CompilerParameters();
+            if (codeDomProvider.Supports(GeneratorSupport.EntryPointMethod)) parameters.MainClass = "Script";
+            parameters.GenerateExecutable = false;
+            parameters.GenerateInMemory = true;
+            parameters.ReferencedAssemblies.Add("3DRadSpaceDll.dll");
+            parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+            parameters.ReferencedAssemblies.Add("System.Console.dll");
+            parameters.ReferencedAssemblies.Add("mscorlib.dll");
+            parameters.ReferencedAssemblies.Add("netstandard.dll");
+            CompilerResults results = codeDomProvider.CompileAssemblyFromFile(parameters, script);
+            CompilerErrorCollection errors = results.Errors;
+            for (int j = 0; j < errors.Count; j++)
             {
-                if(string.IsNullOrEmpty(Scripts[i]) == true)
+                File.AppendAllText(@"compile_errors.txt", errors[i].ErrorText + " Line:" + errors[i].Line + " Is warning:" + errors[i].IsWarning+" \r\n");
+            }
+            if (errors.HasErrors == false)
+            {
+                Assembly compiledcode = results.CompiledAssembly;
+                for (i=0; i < _3DRadSpaceGame.MAX_SCRIPTS; i++)
                 {
-                    Scripts[i] = script;
-                    return true ;
+                    if (scripts[i] == null)
+                    {
+                        scripts[i] = compiledcode;
+                        break;
+                    }
                 }
             }
-            return false;
-        }
-        public static void Run(string script)
+            else
+            {
+                Process.Start(@"compile_errors.txt");
+                throw new ScriptError(File.ReadAllText(@"compile_errors.txt"));
+            }
+            return i;
+    }
+        /// <summary>
+        /// Starts running a script.
+        /// </summary>
+        /// <param name="ScriptID">Script's unique unsigned number identifier.</param>
+        public static void Run(int ScriptID)
         {
-
+            Type type = scripts[ScriptID].GetType("Script");
+            MethodInfo Main = type.GetMethod("Main");
+            Main.Invoke(null, null);
         }
     }
+    
     /// <summary>
-    /// 3DRadSpace Camera object class. This class is entirely static.
+    /// 3DRadSpace Base Object Class
     /// </summary>
-    public class Camera
+    public class GameObject
     {
+        /// <summary>
+        /// The object's name.
+        /// </summary>
+        public string name = "";
+        /// <summary>
+        /// If true the object will update each time when Update() or Draw() is called.
+        /// </summary>
+        public bool IsActive = false;
+        /// <summary>
+        /// Position of the object.
+        /// </summary>
+        public Vector3 Pos = Vector3.Zero;
+        /// <summary>
+        /// Rotation In Quaternion of the object.
+        /// </summary>
+        public Quaternion Rotation = Quaternion.Identity;
+        /// <summary>
+        /// Resource file.
+        /// </summary>
+        public string resource = "";
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>Returns a string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return name + " " + IsActive + " " + Pos.X + " " + Pos.Y + " " + Pos.Z + " " + Rotation.X + " " + Rotation.Y + " " + Rotation.Z + " " + Rotation.W + " " + resource;
+        }
+        /// <summary>
+        /// Disables the object instance from updating.
+        /// </summary>
+        public void Disable() => IsActive = false;
+        /// <summary>
+        /// Enables the object, allowing it to update it's properties whem Update() or Draw() is called.
+        /// </summary>
+        public void Enable() => IsActive = true;
+        /// <summary>
+        /// Converts a Vector3 to a Vector2.
+        /// </summary>
+        /// <param name="vec">Vector3 to be converted.</param>
+        /// <returns></returns>
+        public static Vector2 Vector3ToVector2(Vector3 vec) => new Vector2(vec.X, vec.Y);
+    }
+    /// <summary>
+    /// 3DRadSpace Camera object class.
+    /// </summary>
+    public class Camera : GameObject
+    {
+        /// <summary>
+        /// Camera look at point.
+        /// </summary>
+        public Vector3 look_at = new Vector3(0, 0, 0);
+        /// <summary>
+        /// Camera field of view.
+        /// </summary>
+        public float FOV = MathHelper.ToRadians(45);
+        /// <summary>
+        /// Maximum render distance.
+        /// </summary>
+        public float MaxViewDistance = 500f;
+        /// <summary>
+        /// Camera object constructor.
+        /// </summary>
+        /// <param name= "objn">Object name.</param>
+        /// <param name= "isactive">Object name.</param>
+        /// <param name="pos">Camera position.</param>
+        /// <param name="lookat">Camera look at 3D point.</param>
+        /// <param name="FieldOfView">Field Of View in Radians</param>
+        /// <param name="MaxRenderDistance">Maximum render distance</param>
+        public Camera(string objn, bool isactive, Vector3 pos,Vector3 lookat,float FieldOfView = 45f * 3.1415926f / 180f, float MaxRenderDistance = 500f)
+        {
+            name = objn;
+            IsActive = isactive;
+            Pos = pos;
+            look_at = lookat;
+            FOV = FieldOfView;
+            MaxViewDistance = MaxRenderDistance;
+        }
         /// <summary>
         /// Camera object drawing update logic functoin.
         /// </summary>
-        /// <param name="Object">Camera object as a string.</param>
-        /// <param name="view">view Matrix.</param>
-        /// <param name="projection">projection Matrix.</param>
-        public static void Update(string Object,ref Matrix view,ref Matrix projection)
+        /// <param name="view">affected view Matrix.</param>
+        /// <param name="projection">affected projection Matrix.</param>
+        public void Update(ref Matrix view,ref Matrix projection)
         {
-            if (Object.Split(' ')[2] == "True")
+            if (IsActive == true)
             {
                 projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
-                view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 0), Vector3.Up);
+                view = Matrix.CreateLookAt(Pos, look_at, Vector3.Up);
             }
         }
-        /// <summary>
-        /// Resets a camera to the settings that are given in the editor.
-        /// </summary>
-        /// <param name="Object">Camera object as a string</param>
-        public static void DefaultSettings(ref string Object)
-        {
-            Object = "Camera Camera True 0 0 0 0 0 0 75 True";
-        }
-        /// <summary>
-        /// Disables the update logic of this object type.
-        /// </summary>
-        /// <param name="obj">object</param>
-        public static void Disable(ref string obj)
-        {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "False";
-            obj = "";
-            for(int i =0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
-            }
-        }
-        /// <summary>
-        /// Enables/Reenables update logic of this object.
-        /// </summary>
-        /// <param name="obj">object.</param>
-        public static void Enable(ref string obj)
-        {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "True";
-            obj = "";
-            for (int i = 0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
-            }
-        }
+
     }
     /// <summary>
     /// 3DRadSpace Script object Class. This class is entirely static.
     /// </summary>
-    public class Script
+    public class Script : GameObject
     {
-        public static void Initialise(string obj)
+        /// <summary>
+        /// Path to the script.
+        /// </summary>
+        public string path;
+        /// <summary>
+        /// Loaded script file.
+        /// </summary>
+        int ScriptID = Int32.MaxValue;
+        /// <summary>
+        /// Loads and tests a script for errors then runs it.
+        /// </summary>
+        /// <param name= "objn">Object name.</param>
+        /// <param name= "isactive">If the script is executed.</param>
+        /// <param name="file">Script file to be loaded.</param>
+        public Script(string objn, bool isactive, string file)
         {
-            string scriptfile = "";
-            for(int i=3; i < obj.Length; i++)
-            {
-                scriptfile += obj.Split(' ')[i];
-            }
-            string scriptdata = File.ReadAllText(scriptfile);
-            ScriptInterpeter.Debug(scriptdata);
-            ScriptInterpeter.Load(scriptdata);
-        }
-        public static void Update(string obj)
-        {
-            if (obj.Split(' ')[2] == "True")
-            {
-                for (int i = 0; i < _3DRadSpaceGame.MAX_SCRIPTS; i++)
-                {
-                    if (ScriptInterpeter.Scripts[i] != null)
-                    {
-                        ScriptInterpeter.Run(ScriptInterpeter.Scripts[i]);
-                    }
-                }
-            }
-        }
-        public static void Disable(ref string obj)
-        {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "False";
-            obj = "";
-            for (int i = 0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
-            }
+            ScriptInterpeter.Debug(file);
         }
         /// <summary>
-        /// Enables/Reenables update logic of this object.
+        /// Updates the script.
         /// </summary>
-        /// <param name="obj">object.</param>
-        public static void Enable(ref string obj)
+        public void Update()
         {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "True";
-            obj = "";
-            for (int i = 0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
-            }
+            ScriptInterpeter.Run(ScriptID);
         }
     }
     /// <summary>
     /// 3DRadSpace Sprite class. Needs to be initialised firstly (isn't entirely static)
     /// </summary>
-    public class Sprite
+    public class Sprite : GameObject
     {
+        /// <summary>
+        /// Loaded Sprite image.
+        /// </summary>
         public Texture2D sprite;
+        /// <summary>
+        /// Sprite's size.
+        /// </summary>
+        public Vector2 Scale = new Vector2(1, 1);
+        /// <summary>
+        /// Sprite effects applied to the sprite.
+        /// </summary>
         public SpriteEffects effects;
         /// <summary>
-        /// Loads the sprite image (Texture2D) used for this class.
+        /// Sprite constructor.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="contentManager"></param>
-        /// <returns></returns>
-        public void Initialise(string obj,ContentManager contentManager)
+        /// <param name= "objn">Object name.</param>
+        /// <param name= "isactive">If this sprite will be drawn</param>
+        /// <param name="asset">Sprite to be loaded.</param>
+        /// <param name="manager">Content manager</param>
+        /// <param name="pos">Sprite's location. Z can have any value.</param>
+        /// <param name="scale">Sprite's location</param>
+        public Sprite(string objn, bool isactive, string asset,ContentManager manager,Vector3 pos, Vector2 scale)
         {
-            string asset = "";
-            for(int i=10; i < obj.Split(' ').Length; i++)
-            {
-                asset += obj.Split(' ')[i];
-            }
-            sprite = contentManager.Load<Texture2D>(asset);
+            name = objn;
+            IsActive = isactive;
+            Pos = pos;
+            Scale = scale;
+            resource = asset;
         }
         /// <summary>
         /// Draws the object.
         /// </summary>
-        /// <param name="obj">object data</param>
         /// <param name="batch">SpriteBatch used for drawing.</param>
-        public void Draw(string obj, SpriteBatch batch)
+        public void Draw(SpriteBatch batch)
         {
-            if (obj.Split(' ')[2] == "True")
+            if (IsActive == true)
             {
-                batch.Draw(sprite, new Vector2(0, 0), new Rectangle(0, 0, 0, 0), Color.White,0,Vector2.Zero,1,effects,0);
-            }
-        }
-        /// <summary>
-        /// Disables update logic of this object.
-        /// </summary>
-        /// <param name="obj">object.</param>
-        public static void Disable(ref string obj)
-        {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "False";
-            obj = "";
-            for (int i = 0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
-            }
-        }
-        /// <summary>
-        /// Enables/Reenables update logic of this object.
-        /// </summary>
-        /// <param name="obj">object.</param>
-        public static void Enable(ref string obj)
-        {
-            string[] newdata = obj.Split(' ');
-            newdata[2] = "True";
-            obj = "";
-            for (int i = 0; i < newdata.Length; i++)
-            {
-                obj += newdata[i] + " ";
+                batch.Draw(sprite, new Rectangle((int)Pos.X, (int)Pos.Y, (int)Scale.X, (int)Scale.Y),new Color(255, 255, 255));
             }
         }
     }
     /// <summary>
     /// TextPrint class. 
     /// </summary>
-    public class TextPrint
+    public class TextPrint : GameObject
     {
-        SpriteFont font;
-        public void Initialise(ContentManager manager,string fontloc)
+        /// <summary>
+        /// Textprint's font.
+        /// </summary>
+        public SpriteFont font;
+        /// <summary>
+        /// TextPrint's text
+        /// </summary>
+        public string Text = "";
+        /// <summary>
+        /// Initialises a new TextPrint Object.
+        /// </summary>
+        /// <param name= "objn">Object name.</param>
+        /// <param name= "isactive">If the text will be drawn.</param>
+        /// <param name="manager">Content manager.</param>
+        /// <param name="fontloc">Font file.</param>
+        /// <param name="position">Position. Z can be any value.</param>
+        /// <param name="text">Text to display.</param>
+        public TextPrint(string objn, bool isactive, ContentManager manager,string fontloc,Vector3 position,string text)
         {
+            name = objn;
+            IsActive = isactive;
             font = manager.Load<SpriteFont>(fontloc);
+            Pos = position;
+            Text = text;
         }
-        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        /// <summary>
+        /// Draws the text.
+        /// </summary>
+        /// <param name="spriteBatch">spritebatch.</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(spriteFont, "", new Vector2(0,0),new Color(0,0,0));
+            spriteBatch.DrawString(font,Text, new Vector2(0,0),new Color(0,0,0));
+        }
+    }
+
+    /// <summary>
+    /// 3D Rad Space Script Error Exception
+    /// </summary>
+    [Serializable]
+    public class ScriptError : Exception
+    {
+        /// <summary>
+        /// Intilialises a ScriptError exception that can be thrown.
+        /// </summary>
+        /// <param name="message">Error message.</param>
+        public ScriptError(string message) : base(message) { }
+        /// <summary>
+        /// Initialises a ScriptError from an other Exception
+        /// </summary>
+        /// <param name="message">Error message</param>
+        /// <param name="inner">Base exception</param>
+        public ScriptError(string message, Exception inner) : base(message, inner) { }
+        /// <summary>
+        /// I don't know what is this supposed to do :/ .
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        protected ScriptError(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    /// <summary>
+    /// 3DRadSpace Skinmesh Class.
+    /// </summary>
+    public class SkinMesh : GameObject
+    {
+        /// <summary>
+        /// Loaded model that is drawn.
+        /// </summary>
+        public Model model;
+        /// <summary>
+        /// Skinmesh object constructor
+        /// </summary>
+        /// <param name="objn">Object Name</param>
+        /// <param name="isactive">If the object will be drawn every frame.</param>
+        /// <param name="res">Resource file.</param>
+        /// <param name="location">Position</param>
+        /// <param name="rotation">Rotation Quaternion</param>
+        public SkinMesh(string objn, bool isactive, string res, Vector3 location, Vector3 rotation)
+        {
+            name = objn;
+            IsActive = isactive;
+            resource = res;
+            Pos = location;
+            Rotation = Quaternion.CreateFromYawPitchRoll(rotation.X, rotation.Y, rotation.Z);
+        }
+        /// <summary>
+        /// Loads a 3d Model so drawing the model can be done.
+        /// </summary>
+        /// <param name="manager">Content manager</param>
+        public void Initialize(ContentManager manager)
+        {
+            try
+            {
+                model = manager.Load<Model>(resource);
+            }
+            catch
+            {
+                model = manager.Load<Model>("error");
+            }
+        }
+        /// <summary>
+        /// Draws the skinmesh object.
+        /// </summary>
+        /// <param name="view">View Matrix</param>
+        /// <param name="projection">Projection Matrix</param>
+        public void Draw( Matrix view, Matrix projection)
+        {
+            Matrix world = Matrix.CreateTranslation(Pos);
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = world;
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.TextureEnabled = true;
+                }
+                mesh.Draw();
+            }
+        }
+    }
+    /// <summary>
+    /// SkyColor object.
+    /// </summary>
+    public class SkyColor : GameObject
+    {
+        /// <summary>
+        /// Colour of the game backround.
+        /// </summary>
+        public Color Color = Color.Black;
+        /// <summary>
+        /// SkyColor constructor.
+        /// </summary>
+        /// <param name="objn">Object Name</param>
+        /// <param name="isactive">Is the colour displayed?</param>
+        /// <param name="colour">The color that will be used.</param>
+        public SkyColor(string objn, bool isactive,Color colour)
+        {
+            name = objn;
+            IsActive = isactive;
+            Color = colour;
         }
     }
 }

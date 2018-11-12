@@ -85,5 +85,12 @@ namespace _3DRadSpace
         {
 
         }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            EOL eol = new EOL();
+            eol.ShowDialog();
+            Close();
+        }
     }
 }

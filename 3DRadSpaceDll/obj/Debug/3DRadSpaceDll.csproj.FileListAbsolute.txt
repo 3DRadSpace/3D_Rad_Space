@@ -21,3 +21,4 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSp
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.pdb
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csprojAssemblyReference.cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CopyComplete
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.xml
