@@ -347,8 +347,9 @@ namespace _3DRadSpace
                         if (_3D_OR_2D_MODE == false)
                         {
                             Matrix objpos = Matrix.CreateTranslation(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])));
-                            Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
-                            objpos *= rotation;
+                            Matrix rotation = Matrix.CreateFromYawPitchRoll(Deg2Rad(Convert.ToSingle(ObjectData[7])), Deg2Rad(Convert.ToSingle(ObjectData[6])), Deg2Rad(Convert.ToSingle(ObjectData[8])));
+                            objpos = rotation * objpos;
+
                             GameObjects[i - 1] = Content.Load<Model>("Camera");
                             DrawModel(GameObjects[i - 1], objpos, view, projection);
                             boundingSpheres[i - 1] = new BoundingSphere(new Vector3(Convert.ToSingle(ObjectData[3]), Convert.ToSingle(ObjectData[4]), Convert.ToSingle(ObjectData[5])), 1.5f);

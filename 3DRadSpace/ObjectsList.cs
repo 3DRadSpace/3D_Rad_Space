@@ -92,5 +92,12 @@ namespace _3DRadSpace
             eol.ShowDialog();
             Close();
         }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
+        {
+            Skinmesh skinmesh = new Skinmesh();
+            skinmesh.ShowDialog();
+            Close();
+        }
     }
 }

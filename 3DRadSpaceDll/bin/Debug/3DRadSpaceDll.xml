@@ -19,6 +19,11 @@
             Defines maximum number of scripts. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll._3DRadSpaceGame.MAX_VARIABLES">
+            <summary>
+            Maximum variables in the project.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.ScriptInterpeter">
             <summary>
             3DRadSpace Script Interpeter class
@@ -304,6 +309,162 @@
             <param name="objn">Object Name</param>
             <param name="isactive">Is the colour displayed?</param>
             <param name="colour">The color that will be used.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.VisualScript">
+            <summary>
+            Visual script compiler, debugger and functions.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScript.data">
+            <summary>
+            The script data.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScript.variables">
+            <summary>
+            Variables in the project.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScript.GLOBALVARIABLES">
+            <summary>
+            Global variables. Can be used in the entire game.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.VisualScript.#ctor(System.String[])">
+            <summary>
+            Script constructor
+            </summary>
+            <param name="script">File string array returned by File.ReadAllLines()</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.VisualScript.Debug">
+            <summary>
+            Checks a script for errors.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.VisualScript.Run">
+            <summary>
+            Executes a script.
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.VisualScriptOpcode">
+            <summary>
+            Contains the function numeric IDs.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.NOP">
+            <summary>
+            Does nothing. No parameters
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJStart">
+            <summary>
+            Starts an object. Parameters: object handle as int
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJStop">
+            <summary>
+            Stops an object. Parameters: object handle as int
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJShow">
+            <summary>
+            Shows an object. Parameters: object handle as int
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJHide">
+            <summary>
+            Hides an object. Parameters: object handle as int
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJDestroy">
+            <summary>
+            Removes an object from the array that contains the objects. Parameters: object handle as int
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJReload">
+            <summary>
+            Reloads the resource of the object. Parameters: string resource, int obj handle
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.var">
+            <summary>
+            Saves a variable into the variables array. int handle, object value
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.varoperatorplus">
+            <summary>
+            Increases the variable by the specified number. Parameters : variable, value , int global
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.varoperatorminus">
+            <summary>
+            Decreases the variable by the specified number. Parameters : variable, value
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.varoperatormultiply">
+            <summary>
+            Multiplies the variable by the specified number. Parameters : variable, value
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.varoperatordivide">
+            <summary>
+            Divides the variable by the specified number. Parameters : variable, value
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.varoperatormodulo">
+            <summary>
+            Gets the modulo of the 2 specified numbers. Parameters : variable, value
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.vardelete">
+            <summary>
+            Removes an variable from the array. Parameters: variable handle
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJMoveTo">
+            <summary>
+            Moves an object to an location. Parameters: object handle, float x, float y,float z, int incr
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJRotate">
+            <summary>
+            Rotates the object using euler angles. Parameters: object handle, float x, float y, float z, int incr
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.OBJPropertySet">
+            <summary>
+            Sets an property specific to the object. Parameters: object handle, int property, object value
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.InvalidOpcodeException">
+            <summary>
+            Thrown when the parser finds an invalid opcode.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.InvalidOpcodeException.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.InvalidOpcodeException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.InvalidOpcodeException.#ctor(System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="inner"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.InvalidOpcodeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
         </member>
     </members>
 </doc>

@@ -22,6 +22,10 @@ namespace _3DRadSpaceDll
         /// Defines maximum number of scripts. Only used in 3DRadSpace Player and in 3DRadSpace Editor.
         /// </summary>
         public const int MAX_SCRIPTS = 100;
+        /// <summary>
+        /// Maximum variables in the project.
+        /// </summary>
+        public const int MAX_VARIABLES = 200;
     }
     /// <summary>
     /// 3DRadSpace Script Interpeter class
@@ -412,5 +416,6 @@ namespace _3DRadSpaceDll
             Color = colour;
         }
     }
+    
 }
 

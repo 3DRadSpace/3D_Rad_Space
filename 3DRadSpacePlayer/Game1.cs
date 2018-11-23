@@ -15,7 +15,7 @@ namespace _3DRadSpacePlayer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string[] gamesettings = { @"Projects/default.3drsp",@"False" };
-        object[] Objects = new object[_3DRadSpaceGame.MAX_OBJECTS];
+        object[] Objects = new object[_3DRadSpaceGame.MAX_OBJECTS],project = new object[_3DRadSpaceGame.MAX_OBJECTS];
         public static Model Error;
         public Game1()
         {
@@ -23,8 +23,8 @@ namespace _3DRadSpacePlayer
             Content.RootDirectory = "Content";
             try
             {
-                Objects[0] = new Camera("DefaultCamera",true,new Vector3(10,0,10),Vector3.Zero);
-                Objects = File.ReadAllLines(gamesettings[0]);
+                project[0] = new Camera("DefaultCamera",true,new Vector3(10,0,10),Vector3.Zero);
+                project = File.ReadAllLines(gamesettings[0]);
             }
             catch (IOException e) {
                 File.AppendAllText("log.txt", "Could not read the game main project:"+e.ToString());
@@ -32,7 +32,6 @@ namespace _3DRadSpacePlayer
         }
         protected override void Initialize()
         {
-            AllObjectsInitialize();
             base.Initialize();
         }
         protected override void LoadContent()
@@ -41,7 +40,7 @@ namespace _3DRadSpacePlayer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
-                string obj = Objects[i].ToString();
+                string obj = project[i].ToString();
                switch (obj.Split(' ')[0])
                 {
                     case "Camera":
@@ -51,7 +50,7 @@ namespace _3DRadSpacePlayer
                                     obj.Split(' ')[1],
                                     Convert.ToBoolean(obj.Split(' ')[2]),
                                     pos,
-                                    Vector3.Transform(pos, Matrix.CreateFromYawPitchRoll(Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]), Convert.ToSingle(obj.Split(' ')[8]))),
+                                    Vector3.Transform(pos, Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[6])),MathHelper.ToRadians( Convert.ToSingle(obj.Split(' ')[7])), MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[8])))),
                                     MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[9])),
                                     Convert.ToSingle(obj.Split(' ')[11])
                                 );
@@ -72,17 +71,19 @@ namespace _3DRadSpacePlayer
                             Vector3 pos = new Vector3(Convert.ToSingle(obj.Split(' ')[3]), Convert.ToSingle(obj.Split(' ')[4]), Convert.ToSingle(obj.Split(' ')[5]));
                             Vector3 rot = new Vector3(Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]), Convert.ToSingle(obj.Split(' ')[8]));
                             string res = "";
-                            for(int j =0; j < obj.Length ;j++)
+                            for(int j =10; j < obj.Split(' ').Length ;j++)
                             {
-                                res += obj[j] + " ";
+                                res += obj.Split(' ')[j];
                             }
                             Objects[i] = new SkinMesh(obj.Split(' ')[1],
                                 Convert.ToBoolean(obj.Split(' ')[2]),
                                 res, pos, rot);
                             break;
+                           
                         }
                     default: break;
                 }
+                AllObjectsInitialize();
             }
         }
         protected override void UnloadContent()
