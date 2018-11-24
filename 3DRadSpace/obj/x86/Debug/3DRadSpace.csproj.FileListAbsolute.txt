@@ -96,13 +96,9 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debu
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace._3DRadSpaceCompiler.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.AboutWindow.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Camera.resources
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.EditMenuStrip.resources
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.FileMenuStrip.resources
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.HelpMenuStrip.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.ObjectsList.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.OBJR.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.OptionsDialog.resources
-C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.OptionsMenuStrip.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Properties.Resources.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csproj.GenerateResource.Cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csproj.CoreCompileInputs.cache

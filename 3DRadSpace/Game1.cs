@@ -33,6 +33,29 @@ namespace _3DRadSpace
         Texture2D objimg;
         BoundingSphere[] boundingSpheres = new BoundingSphere[_3DRadSpaceGame.MAX_OBJECTS];
         int selectedobj = -1;
+        ListBox ObjectsBox = new ListBox();
+        MenuStrip ToolsStrip = new MenuStrip();
+        string ProjectPath = "";
+
+            ToolStripMenuItem fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem saveProjectAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem compileProjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem addAObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem addAAddonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem installResourcesIntoProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem officialWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
@@ -49,16 +72,174 @@ namespace _3DRadSpace
         {
             UpdateV(false);
             // TODO: Add your initialization logic here
-            base.IsMouseVisible = true;
-            base.Window.Position = new Point(0, 0);
+            IsMouseVisible = true;
+            Window.Position = new Point(0, 0);
             graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height - 75;
             graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width - 16;
             graphics.ApplyChanges();
             Window.Title = "3DRadSpace v0.1 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
             Exiting += OnGameEditorClosing;
+            Form gameform = Form.FromHandle(Window.Handle) as Form;
+            ObjectsBox.Location = new System.Drawing.Point(0,25);
+            ObjectsBox.Height = graphics.PreferredBackBufferHeight;
+            ObjectsBox.Width = 150;
+            gameform.Controls.Add(ObjectsBox);
+
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            newProjectToolStripMenuItem,
+            openProjectToolStripMenuItem,
+            saveProjectToolStripMenuItem,
+            saveProjectAsToolStripMenuItem,
+            compileProjectsToolStripMenuItem,
+            exitToolStripMenuItem});
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // newProjectToolStripMenuItem
+            // 
+            newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
+            newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            newProjectToolStripMenuItem.Text = "New Project";
+            newProjectToolStripMenuItem.Click += new EventHandler(NewProjectEvent);
+            // 
+            // openProjectToolStripMenuItem
+            // 
+            openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
+            openProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            openProjectToolStripMenuItem.Text = "Open Project";
+            openProjectToolStripMenuItem.Click += new EventHandler(OpenProjectEvent);
+            // 
+            // saveProjectToolStripMenuItem
+            // 
+            saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
+            saveProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveProjectToolStripMenuItem.Text = "Save Project";
+            saveProjectToolStripMenuItem.Click += new EventHandler(SaveProject);
+            // 
+            // saveProjectAsToolStripMenuItem
+            // 
+            saveProjectAsToolStripMenuItem.Name = "saveProjectAsToolStripMenuItem";
+            saveProjectAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveProjectAsToolStripMenuItem.Text = "Save Project As";
+            saveProjectAsToolStripMenuItem.Click += new EventHandler(SaveProjectAs);
+            // 
+            // compileProjectsToolStripMenuItem
+            // 
+            compileProjectsToolStripMenuItem.Name = "compileProjectsToolStripMenuItem";
+            compileProjectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            compileProjectsToolStripMenuItem.Text = "Compile Project(s)";
+            compileProjectsToolStripMenuItem.Click += new EventHandler(CompileProject);
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += new EventHandler(Exit);
+            // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            addAObjectToolStripMenuItem,
+            addAAddonToolStripMenuItem,
+            installResourcesIntoProjectToolStripMenuItem});
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            editToolStripMenuItem.Text = "Edit";
+            // 
+            // addAObjectToolStripMenuItem
+            // 
+            addAObjectToolStripMenuItem.Name = "addAObjectToolStripMenuItem";
+            addAObjectToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            addAObjectToolStripMenuItem.Text = "Add a object";
+            addAObjectToolStripMenuItem.Click += new EventHandler(AddObject);
+            // 
+            // addAAddonToolStripMenuItem
+            // 
+            addAAddonToolStripMenuItem.Name = "addAAddonToolStripMenuItem";
+            addAAddonToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            addAAddonToolStripMenuItem.Text = "Add a Addon";
+            addAAddonToolStripMenuItem.Click += new EventHandler(AddAddon);
+            // 
+            // installResourcesIntoProjectToolStripMenuItem
+            // 
+            installResourcesIntoProjectToolStripMenuItem.Name = "installResourcesIntoProjectToolStripMenuItem";
+            installResourcesIntoProjectToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            installResourcesIntoProjectToolStripMenuItem.Text = "Install resources into project";
+            installResourcesIntoProjectToolStripMenuItem.Click += new EventHandler(InstallResource);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            checkForUpdatesToolStripMenuItem,
+            settingsToolStripMenuItem});
+            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            optionsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            optionsToolStripMenuItem.Text = "Options";
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            checkForUpdatesToolStripMenuItem.Text = "Check for updates";
+            checkForUpdatesToolStripMenuItem.Click += new EventHandler(UpdateEvent);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += new EventHandler(Settings);
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            aboutToolStripMenuItem,
+            officialWebsiteToolStripMenuItem,
+            reportABugToolStripMenuItem});
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += new EventHandler(About);
+            // 
+            // officialWebsiteToolStripMenuItem
+            // 
+            officialWebsiteToolStripMenuItem.Name = "officialWebsiteToolStripMenuItem";
+            officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            officialWebsiteToolStripMenuItem.Text = "Official Website";
+            officialWebsiteToolStripMenuItem.Click += new EventHandler(Website);
+            // 
+            // reportABugToolStripMenuItem
+            // 
+            reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
+            reportABugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            reportABugToolStripMenuItem.Text = "Report a bug";
+            reportABugToolStripMenuItem.Click += new EventHandler(ReportBug);
+
+            ToolsStrip.Items.AddRange(new ToolStripItem[] {
+            fileToolStripMenuItem,
+            editToolStripMenuItem,
+            optionsToolStripMenuItem,
+            helpToolStripMenuItem});
+
+            gameform.Controls.Add(ToolsStrip);
+
             base.Initialize();
         }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnGameEditorClosing(object sender, System.EventArgs e)
         {
             string[] data = File.ReadAllLines(@"settings.data");
@@ -105,142 +286,45 @@ namespace _3DRadSpace
                 Exit();
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)) CameraPos.X += 1;
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down)) CameraPos.X -= 1;
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) CameraPos.Z -= 1;
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) CameraPos.Z += 1;
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E)) CameraPos.Y += 1;
-            if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q)) CameraPos.Y -= 1;
-            if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(3, 2), new Vector2(30, 18)))
+            if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y),
+                new Vector2(150, 25), new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight)
+                ))
             {
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)) CameraPos.X += 1;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down)) CameraPos.X -= 1;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) CameraPos.Z -= 1;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) CameraPos.Z += 1;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E)) CameraPos.Y += 1;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q)) CameraPos.Y -= 1;
+                
+                if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    if (Focus == true)
+                    Ray objectfinder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, view, projection);
+                    for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
                     {
-                        Focus = false;
-                        FileMenuStrip strip1 = new FileMenuStrip();
-                        strip1.ShowDialog();
-                        if (strip1.StripResult != null)
+                        if (objectfinder.Intersects(boundingSpheres[i]) != null)
                         {
-                            if (strip1.StripResult.Split(' ')[0] == "1")
-                            {
-                                ResetObjects();
-                                skycolor = new Color(100, 100, 255);
-                            }
-                            if (strip1.StripResult.Split(' ')[0] == "2")
-                            {
-                                ResetObjects();
-                                skycolor = new Color(100, 100, 255);
-                                string path = "";
-                                for (int i = 1; i < strip1.StripResult.Split(' ').Length; i++)
-                                {
-                                    path += strip1.StripResult.Split(' ')[i] + " ";
-                                }
-                                if (string.IsNullOrWhiteSpace(path) != true)
-                                {
-                                    string[] file = File.ReadAllLines(path);
-                                    for (int i = 0;i < file.Length; i++)
-                                    {
-                                        if (string.IsNullOrWhiteSpace(file[i]) != true)
-                                        {
-                                            ObjectsData[i] = file[i];
-                                        }
-                                    }
-                                }
-                            }
-                            if (strip1.StripResult.Split(' ')[0] == "3")
-                            {
-                                string path = ""; 
-                                for (int i = 1; i < strip1.StripResult.Split(' ').Length; i++)
-                                {
-                                    path += strip1.StripResult.Split(' ')[i] + " ";
-                                }
-                                if(string.IsNullOrWhiteSpace(path) != true)
-                                {
-                                    File.WriteAllLines(path, ObjectsData);
-                                }
-                            }
+                            selectedobj = i;
+                            world = Matrix.CreateTranslation(boundingSpheres[i].Center);
+                            break;
                         }
-                        strip1.StripResult = null;
-                    }
-                }
-            }
-            if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(40, 2), new Vector2(80, 18)))
-            {
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                {
-                    if (Focus == true)
-                    {
-                        Focus = false;
-                        EditMenuStrip strip2 = new EditMenuStrip();
-                        strip2.ShowDialog();
-                        string obj = File.ReadAllText(@"lastobj.data");
-                        if (obj.Split(' ')[0] != null)
+                        else
                         {
-                            for (int i = 0; i < 300; i++)
-                            {
-                                if(ObjectsData[i] == null)
-                                {
-                                    ObjectsData[i] = obj;
-                                    IsProjectSaved = false;
-                                    break;
-                                }
-                            }
+                            world = Matrix.CreateTranslation(0, 0, 0);
+                            selectedobj = -1;
                         }
                     }
                 }
-            }
-            if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(90, 2), new Vector2(140, 18)))
-            {
+                if (selectedobj != -1)
+                {
+                    if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) == true)
+                    {
+                        EditObject(selectedobj);
+                    }
+                }
                 if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    if (Focus == true)
-                    {
-                        Focus = false;
-                        OptionsMenuStrip strip3 = new OptionsMenuStrip();
-                        strip3.ShowDialog();
-                    }
                 }
-            }
-            if (_3DRadSpace_EditorClass.DotInSquare(new Vector2(mouse.X, mouse.Y), new Vector2(150, 2), new Vector2(170, 18)))
-            {
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                {
-                    if (Focus == true)
-                    {
-                        Focus = false;
-                        HelpMenuStrip strip4 = new HelpMenuStrip();
-                        strip4.ShowDialog();
-                    }
-                }
-            }
-            if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-            {
-                Ray objectfinder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, view, projection);
-                for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
-                {
-                    if (objectfinder.Intersects(boundingSpheres[i]) != null)
-                    {
-                        selectedobj = i;
-                        world = Matrix.CreateTranslation(boundingSpheres[i].Center);
-                        break;
-                    }
-                    else
-                    {
-                        world = Matrix.CreateTranslation(0, 0, 0);
-                        selectedobj = -1;
-                    }
-                }
-            }
-            if (selectedobj != -1)
-            {
-                if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) == true)
-                {
-                    EditObject(selectedobj);
-                }
-            }
-            if(mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-            {
             }
             base.Update(gameTime);
         }
@@ -255,11 +339,6 @@ namespace _3DRadSpace
                 if (ObjectsData[i] != null)
                     CreateObject(ObjectsData[i].Split(' '));
             }
-            spriteBatch.Draw(GUI1, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, 25),Color.White);
-            spriteBatch.DrawString(Font, "File",new Vector2(3, 2), Color.White);
-            spriteBatch.DrawString(Font, "Edit", new Vector2(40, 2), Color.White);
-            spriteBatch.DrawString(Font, "Options", new Vector2(80, 2), Color.White);
-            spriteBatch.DrawString(Font, "Help", new Vector2(145, 2), Color.White);
             spriteBatch.End();
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -398,6 +477,7 @@ namespace _3DRadSpace
             {
                 ObjectsData[i] = null;
             }
+            ObjectsBoxItems();
         }
         public static Ray GetMouseRay(Vector2 mousePosition, Viewport viewport,Matrix view,Matrix projection)
         {
@@ -436,12 +516,156 @@ namespace _3DRadSpace
                     {
                         edit = true;
                     }
+                    ObjectsBoxItems();
                 }
                 if(edit == true)
                 {
                     ObjectsData[id] = File.ReadAllText(@"lastobj.data");
                 }
             }
+        }
+        void ObjectsBoxItems()
+        {
+            ObjectsBox.Items.Clear();
+            for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if (ObjectsData[i] != null)
+                {
+                    ObjectsBox.Items.Add(ObjectsData[i].Split(' ')[1]);
+                }
+            }
+        }
+        void NewProjectEvent(object sender,EventArgs e)
+        {
+            ResetObjects();
+        }
+        void OpenProjectEvent(object sender,EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog()
+            {
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp|Text File (*.txt)|*.txt",
+                Title = "Open a 3DRadSpace Project",
+                Multiselect = false
+            };
+            DialogResult res = openFile.ShowDialog();
+            if(res == DialogResult.OK)
+            {
+                if(File.Exists(openFile.FileName))
+                {
+                    ResetObjects();
+                    string[] file = File.ReadAllLines(openFile.FileName);
+                    for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+                    {
+                        if (!string.IsNullOrEmpty(file[i])) ObjectsData[i] = file[i];
+                        else break;
+                    }
+                    IsProjectSaved = true;
+                    ProjectPath = openFile.FileName;
+                    ObjectsBoxItems();
+                }
+            }
+        }
+        void SaveProject(object sender, EventArgs e)
+        {
+            if (ProjectPath == "")
+            {
+                SaveProjectAs(sender, e);
+            }
+            else
+            {
+                File.WriteAllLines(ProjectPath, ObjectsData);
+                IsProjectSaved = true;
+            }
+        }
+        void SaveProjectAs(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog()
+            {
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp|Text File (*.txt)|*.txt",
+                Title = "Save a 3DRadSpace Project",
+                OverwritePrompt = true
+            };
+            DialogResult result = saveFile.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                File.WriteAllLines(saveFile.FileName, ObjectsData);
+                IsProjectSaved = true;
+            }
+        }
+        void CompileProject(object sender,EventArgs e)
+        {
+            _3DRadSpaceCompiler comp = new _3DRadSpaceCompiler();
+            comp.ShowDialog();
+        }
+        void Exit(object sender,EventArgs e)
+        {
+            Application.Exit();
+        }
+        void AddObject(object sender,EventArgs e)
+        {
+            ObjectsList objectsList = new ObjectsList();
+            objectsList.ShowDialog();
+            for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i ++)
+            {
+                if(ObjectsData[i] == null)
+                {
+                    ObjectsData[i] = File.ReadAllText("lastobj.data");
+                    break;
+                }
+            }
+            ObjectsBoxItems();
+        }
+        void AddAddon(object sender,EventArgs e)
+        {
+            OpenFileDialog AddonDialog = new OpenFileDialog()
+            {
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp|Text File (*.txt)|*.txt",
+                Title = "Install a addon into your project...",
+                Multiselect = false,
+            };
+            if(AddonDialog.ShowDialog() == DialogResult.OK)
+            {
+                int j = 0;
+                string[] file = File.ReadAllLines(AddonDialog.FileName);
+                for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+                {
+                    if(ObjectsData[i] == null)
+                    {
+                        if (string.IsNullOrEmpty(file[j]))
+                        {
+                            ObjectsData[i] = file[j];
+                            j++;
+                        }
+                    }
+                }
+                ObjectsBoxItems();
+            }
+        }
+        void InstallResource(object sender,EventArgs e)
+        {
+
+        }
+        void UpdateEvent(object sender, EventArgs e)
+        {
+            UpdateV(true);
+        }
+        void Settings(object sender, EventArgs e)
+        {
+            OptionsDialog options = new OptionsDialog();
+            options.ShowDialog();
+        }
+        void About(object sender,EventArgs e)
+        {
+            AboutWindow about = new AboutWindow();
+            about.ShowDialog();
+        }
+        void Website(object sender,EventArgs e)
+        {
+            Process.Start("https://3dradspace.000webhostapp.com");
+        }
+        void ReportBug(object sender,EventArgs e)
+        {
+            Process.Start("https://3dradspace.000webhostapp.com/Report-a-bug/");
         }
     }
 }

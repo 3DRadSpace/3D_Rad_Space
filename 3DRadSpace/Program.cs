@@ -43,7 +43,7 @@ namespace _3DRadSpace
                     {
                         for (int i = 0; i < file.Length; i++)
                         {
-                            if (string.IsNullOrEmpty(file[i]) != true)
+                            if (!string.IsNullOrEmpty(file[i]))
                             {
                                 game.ObjectsData[i] = file[i];
                             }

@@ -90,31 +90,13 @@
     <Compile Include="Camera.Designer.cs">
       <DependentUpon>Camera.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditMenuStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditMenuStrip.Designer.cs">
-      <DependentUpon>EditMenuStrip.cs</DependentUpon>
-    </Compile>
     <Compile Include="EOL.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EOL.Designer.cs">
       <DependentUpon>EOL.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileMenuStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FileMenuStrip.Designer.cs">
-      <DependentUpon>FileMenuStrip.cs</DependentUpon>
-    </Compile>
     <Compile Include="Game1.cs" />
-    <Compile Include="HelpMenuStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HelpMenuStrip.Designer.cs">
-      <DependentUpon>HelpMenuStrip.cs</DependentUpon>
-    </Compile>
     <Compile Include="ObjectsList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,12 +114,6 @@
     </Compile>
     <Compile Include="OptionsDialog.Designer.cs">
       <DependentUpon>OptionsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OptionsMenuStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OptionsMenuStrip.Designer.cs">
-      <DependentUpon>OptionsMenuStrip.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,17 +193,8 @@
     <EmbeddedResource Include="Camera.resx">
       <DependentUpon>Camera.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditMenuStrip.resx">
-      <DependentUpon>EditMenuStrip.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EOL.resx">
       <DependentUpon>EOL.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FileMenuStrip.resx">
-      <DependentUpon>FileMenuStrip.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HelpMenuStrip.resx">
-      <DependentUpon>HelpMenuStrip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectsList.resx">
       <DependentUpon>ObjectsList.cs</DependentUpon>
@@ -237,9 +204,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsDialog.resx">
       <DependentUpon>OptionsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionsMenuStrip.resx">
-      <DependentUpon>OptionsMenuStrip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
