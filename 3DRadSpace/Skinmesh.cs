@@ -13,19 +13,25 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", " ");
+            Game1.LastObj = "";
             Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", "Skinmesh "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox4.Text+" "+textBox5.Text+" "+textBox6.Text+" "+textBox7.Text+" "+domainUpDown1.SelectedIndex+" "+textBox8.Text);
+            Game1.LastObj = "Skinmesh "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox4.Text+" "+textBox5.Text+" "+textBox6.Text+" "+textBox7.Text+" "+domainUpDown1.SelectedIndex+" "+textBox8.Text;
+            DialogResult = DialogResult.OK;
             Close();
         }
 
         private void Skinmesh_Load(object sender, EventArgs e)
         {
             domainUpDown1.SelectedIndex = 0;
+        }
+
+        private void Skinmesh_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

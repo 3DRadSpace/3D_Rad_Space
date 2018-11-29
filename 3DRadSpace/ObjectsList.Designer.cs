@@ -532,6 +532,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(500, 287);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(508, 321);
@@ -539,6 +540,7 @@
             this.Name = "ObjectsList";
             this.ShowInTaskbar = false;
             this.Text = "3DRadSpace  -Objects-";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ObjectsList_FormClosing);
             this.Load += new System.EventHandler(this.ObjectsList_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

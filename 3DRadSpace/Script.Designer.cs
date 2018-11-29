@@ -287,6 +287,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Script";
             this.Text = "Script Object v1.0";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Script_FormClosed);
             this.Load += new System.EventHandler(this.Script_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

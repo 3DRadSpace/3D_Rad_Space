@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 
 namespace _3DRadSpace
 {
-    class _3DRadSpace_EditorClass
+    static public class _3DRadSpace_EditorClass
     {
         /// <summary>
         /// Checks if a dot is in a square's interior
@@ -38,6 +35,19 @@ namespace _3DRadSpace
                 return true;
             }
             else return false;
+        }
+        public static void ValidateNumberFields(string arg)
+        {
+            float result;
+            try
+            {
+                result = Convert.ToSingle(arg);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid argument", "Error");
+                result = 0;
+            }
         }
     }
 }

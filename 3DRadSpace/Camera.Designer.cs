@@ -354,6 +354,7 @@
             // 
             // Camera
             // 
+            this.AcceptButton = this.button3;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(268, 334);
@@ -368,6 +369,7 @@
             this.MinimizeBox = false;
             this.Name = "Camera";
             this.Text = "Camera Object v1.0";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Camera_FormClosed);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

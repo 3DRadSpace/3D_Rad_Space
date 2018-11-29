@@ -436,6 +436,11 @@
             Sets an property specific to the object. Parameters: object handle, int property, object value
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.VisualScriptOpcode.ScriptStop">
+            <summary>
+            Stops running the script.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.InvalidOpcodeException">
             <summary>
             Thrown when the parser finds an invalid opcode.

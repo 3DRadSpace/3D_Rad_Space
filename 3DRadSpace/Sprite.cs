@@ -53,13 +53,14 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", " ");
+            Game1.LastObj = "";
             Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", "Sprite "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox5.Text+" "+textBox7+" "+textBox4+" "+textBox6.Text+" "+spriteasset);
+            Game1.LastObj = "Sprite " + textBox1.Text + " " + checkBox1.Checked + " " + textBox2.Text + " " + textBox3.Text + " " + textBox5.Text + " " + textBox7 + " " + textBox4 + " " + textBox6.Text + " " + spriteasset;
+            DialogResult = DialogResult.OK;
             Close();
         }
     }

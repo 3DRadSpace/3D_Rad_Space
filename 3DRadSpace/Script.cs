@@ -208,7 +208,7 @@ namespace _3DRadSpace
 
         private void button6_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", " ");
+            Game1.LastObj = "";
             Close();
         }
 
@@ -219,8 +219,8 @@ namespace _3DRadSpace
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string ObjData = "Script " + textBox1.Text + " " + checkBox1.Checked.ToString() + " "+LoadedScript;
-            File.WriteAllText(@"lastobj.data", ObjData);
+            Game1.LastObj = "Script " + textBox1.Text + " " + checkBox1.Checked.ToString() + " "+LoadedScript;
+            DialogResult = DialogResult.OK;
             Close();
         }
         private void button2_Click(object sender, EventArgs e)
@@ -257,6 +257,11 @@ namespace _3DRadSpace
         private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
         {
             richTextBox1.Font = new Font("Microsoft Sans Serif",Convert.ToInt32(numericUpDown1.Value) / 10);
+        }
+
+        private void Script_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

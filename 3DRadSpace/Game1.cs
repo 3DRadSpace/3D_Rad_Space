@@ -35,7 +35,10 @@ namespace _3DRadSpace
         int selectedobj = -1;
         ListBox ObjectsBox = new ListBox();
         MenuStrip ToolsStrip = new MenuStrip();
+        
         string ProjectPath = "";
+
+        public static string LastObj = "";
 
             ToolStripMenuItem fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,13 +58,14 @@ namespace _3DRadSpace
             ToolStripMenuItem aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem officialWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        ToolStripMenuItem documentationStripMenuItem = new ToolStripMenuItem();
 
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
             Visible = true,
             Text = "3DRadSpace",
-            Tag = "3DRadSpace",
+            Tag = "3DRadSpace v0.1 pre-alpha",
         };
         public Game1()
         {
@@ -84,6 +88,7 @@ namespace _3DRadSpace
             ObjectsBox.Location = new System.Drawing.Point(0,25);
             ObjectsBox.Height = graphics.PreferredBackBufferHeight;
             ObjectsBox.Width = 150;
+            ObjectsBox.DoubleClick += new EventHandler(EditObjectFromList);
             gameform.Controls.Add(ObjectsBox);
 
             fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -197,6 +202,7 @@ namespace _3DRadSpace
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             aboutToolStripMenuItem,
+            documentationStripMenuItem,
             officialWebsiteToolStripMenuItem,
             reportABugToolStripMenuItem});
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -209,6 +215,13 @@ namespace _3DRadSpace
             aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += new EventHandler(About);
+            //
+            // documentationStripMenuItem
+            //
+            documentationStripMenuItem.Name = "documentationStripMenuItem";
+            documentationStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            documentationStripMenuItem.Text = "Documentation";
+            documentationStripMenuItem.Click += new EventHandler(HelpFiles);
             // 
             // officialWebsiteToolStripMenuItem
             // 
@@ -240,7 +253,7 @@ namespace _3DRadSpace
             throw new NotImplementedException();
         }
 
-        private void OnGameEditorClosing(object sender, System.EventArgs e)
+        private void OnGameEditorClosing(object sender, EventArgs e)
         {
             string[] data = File.ReadAllLines(@"settings.data");
             if (data[1] == "True")
@@ -449,7 +462,7 @@ namespace _3DRadSpace
                         {
                             text += ObjectData[j]+" ";
                         }
-                        spriteBatch.DrawString(Font,text,new Vector2(Convert.ToSingle(ObjectData[3]), 25+Convert.ToSingle(ObjectData[4])), new Color(Convert.ToInt32(ObjectData[5]), Convert.ToInt32(ObjectData[6]), Convert.ToInt32(ObjectData[7])));
+                        spriteBatch.DrawString(Font,text,new Vector2(150+Convert.ToSingle(ObjectData[3]), 25+Convert.ToSingle(ObjectData[4])), new Color(Convert.ToInt32(ObjectData[5]), Convert.ToInt32(ObjectData[6]), Convert.ToInt32(ObjectData[7])));
                         break;
                     }
                     if (ObjectData[0] == "Sprite")
@@ -511,17 +524,73 @@ namespace _3DRadSpace
                     {
                         editcamera.OBJR += objdata[9 + i] + " ";
                     }
-                    editcamera.ShowDialog();
-                    if (editcamera.result == true)
-                    {
-                        edit = true;
-                    }
-                    ObjectsBoxItems();
+                    if (editcamera.ShowDialog() == DialogResult.OK) edit = true;
                 }
-                if(edit == true)
+                if(objdata[0] == "SkyColor")
                 {
-                    ObjectsData[id] = File.ReadAllText(@"lastobj.data");
+                    Skycolor editskycolor = new Skycolor();
+                    editskycolor.textBox1.Text = objdata[1];
+                    editskycolor.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    editskycolor.textBox2.Text = objdata[3];
+                    editskycolor.textBox3.Text = objdata[4];
+                    editskycolor.textBox4.Text = objdata[5];
+                    if (editskycolor.ShowDialog() == DialogResult.OK) edit = true;
                 }
+                if(objdata[0] == "EOL")
+                {
+                    EOL eol = new EOL();
+                    eol.textBox1.Text = objdata[1];
+                    eol.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    eol.type = Convert.ToInt32(objdata[3]);
+                    eol.textBox2.Text = objdata[4];
+                    eol.textBox3.Text = objdata[5];
+                    eol.textBox4.Text = objdata[6];
+                    eol.textBox7.Text = objdata[7];
+                    eol.textBox6.Text = objdata[8];
+                    eol.textBox5.Text = objdata[9];
+                    if (eol.ShowDialog() == DialogResult.OK) edit = true;
+                }
+                if (objdata[0] == "Skinmesh")
+                {
+                    Skinmesh skinmesh = new Skinmesh();
+                    skinmesh.textBox1.Text = objdata[1];
+                    skinmesh.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    skinmesh.textBox2.Text = objdata[3];
+                    skinmesh.textBox3.Text = objdata[4];
+                    skinmesh.textBox4.Text = objdata[5];
+                    skinmesh.textBox5.Text = objdata[6];
+                    skinmesh.textBox6.Text = objdata[7];
+                    skinmesh.textBox7.Text = objdata[8];
+                    skinmesh.domainUpDown1.SelectedIndex = Convert.ToInt32(objdata[9]);
+                    skinmesh.textBox8.Text = "";
+                    for (int i = 10; i < objdata.Length; i++)
+                    {
+                        skinmesh.textBox8.Text += objdata[i] + " ";
+                    }
+                    if (skinmesh.ShowDialog() == DialogResult.OK) edit = true;
+                }
+                if(objdata[0] == "TextPrint")
+                {
+                    TextPrint textPrint = new TextPrint();
+                    textPrint.textBox1.Text = objdata[1];
+                    textPrint.textBox2.Text = "";
+                    textPrint.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    textPrint.textBox3.Text = objdata[3];
+                    textPrint.textBox4.Text = objdata[4];
+                    textPrint.Colour = System.Drawing.Color.FromArgb(Convert.ToInt16(objdata[5]),
+                        Convert.ToInt16(objdata[6]), Convert.ToInt16(objdata[7]));
+                    for (int i = 8; i < objdata.Length; i++)
+                    {
+                        textPrint.textBox2.Text += objdata[i] + " ";
+                    }
+                    if (textPrint.ShowDialog() == DialogResult.OK) edit = true;
+                }
+                if(edit)
+                {
+                    ObjectsData[id] = LastObj;
+                    LastObj = "";
+                }
+                ObjectsBoxItems();
             }
         }
         void ObjectsBoxItems()
@@ -604,12 +673,12 @@ namespace _3DRadSpace
         void AddObject(object sender,EventArgs e)
         {
             ObjectsList objectsList = new ObjectsList();
-            objectsList.ShowDialog();
+            DialogResult result = objectsList.ShowDialog();
             for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i ++)
             {
                 if(ObjectsData[i] == null)
                 {
-                    ObjectsData[i] = File.ReadAllText("lastobj.data");
+                    if(LastObj != "" && result == DialogResult.OK) ObjectsData[i] = LastObj;
                     break;
                 }
             }
@@ -647,6 +716,10 @@ namespace _3DRadSpace
         }
         void UpdateEvent(object sender, EventArgs e)
         {
+            notifyIcon.BalloonTipText = "The application will freeze for a little while...";
+            notifyIcon.BalloonTipTitle = "Looking for updates...";
+            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon.ShowBalloonTip(2000);
             UpdateV(true);
         }
         void Settings(object sender, EventArgs e)
@@ -666,6 +739,14 @@ namespace _3DRadSpace
         void ReportBug(object sender,EventArgs e)
         {
             Process.Start("https://3dradspace.000webhostapp.com/Report-a-bug/");
+        }
+        void EditObjectFromList(object sender,EventArgs e)
+        {
+           if(ObjectsBox.SelectedIndex >= 0) EditObject(ObjectsBox.SelectedIndex);
+        }
+        void HelpFiles(object sender,EventArgs e)
+        {
+            
         }
     }
 }

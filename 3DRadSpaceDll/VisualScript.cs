@@ -124,6 +124,10 @@ namespace _3DRadSpaceDll
         /// Sets an property specific to the object. Parameters: object handle, int property, object value
         /// </summary>
         OBJPropertySet = 16,
+        /// <summary>
+        /// Stops running the script.
+        /// </summary>
+        ScriptStop = 17,
     }
     enum VisualScriptType
     {

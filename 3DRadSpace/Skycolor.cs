@@ -26,14 +26,20 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", " ");
+            Game1.LastObj = "";
             Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", "SkyColor "+textBox1.Text+" "+checkBox1.Checked.ToString()+" "+textBox2.Text+" "+textBox3.Text+" "+textBox4.Text);
+           Game1.LastObj = "SkyColor " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text;
+            DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void Skycolor_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

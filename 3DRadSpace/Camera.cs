@@ -11,19 +11,17 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        public bool result = false;
         public string OBJR = null;
         private void button4_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(@"lastobj.data", " ");
+            Game1.LastObj = "";
             Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string ObjData = "Camera " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text + " " + textBox5.Text + " " + textBox6.Text + " " + textBox7.Text + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() +" "+textBox8.Text+ " "+ OBJR;
-            File.WriteAllText(@"lastobj.data",ObjData);
-            result = true;
+            Game1.LastObj = "Camera " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text + " " + textBox5.Text + " " + textBox6.Text + " " + textBox7.Text + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() +" "+textBox8.Text+ " "+ OBJR;
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -38,6 +36,10 @@ namespace _3DRadSpace
         private void button2_Click(object sender, EventArgs e)
         {
             Process.Start(@"Help Files/Camera.rtf");
+        }
+
+        private void Camera_FormClosed(object sender, FormClosedEventArgs e)
+        {
         }
     }
 }
