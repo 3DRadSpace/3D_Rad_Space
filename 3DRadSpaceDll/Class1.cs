@@ -281,6 +281,10 @@ namespace _3DRadSpaceDll
         /// </summary>
         public string Text = "";
         /// <summary>
+        /// Text Color.
+        /// </summary>
+        public Color color;
+        /// <summary>
         /// Initialises a new TextPrint Object.
         /// </summary>
         /// <param name= "objn">Object name.</param>
@@ -289,13 +293,33 @@ namespace _3DRadSpaceDll
         /// <param name="fontloc">Font file.</param>
         /// <param name="position">Position. Z can be any value.</param>
         /// <param name="text">Text to display.</param>
-        public TextPrint(string objn, bool isactive, ContentManager manager,string fontloc,Vector3 position,string text)
+        /// <param name="colour">Text's colour.</param>
+        public TextPrint(string objn, bool isactive, ContentManager manager, string fontloc, Vector3 position, string text, Color colour)
         {
             name = objn;
             IsActive = isactive;
             font = manager.Load<SpriteFont>(fontloc);
             Pos = position;
             Text = text;
+            color = colour;
+        }
+        /// <summary>
+        /// Initialises a new TextPrint Object.
+        /// </summary>
+        /// <param name= "objn">Object name.</param>
+        /// <param name= "isactive">If the text will be drawn.</param>
+        /// <param name="manager">Content manager.</param>
+        /// <param name="position">Position. Z can be any value.</param>
+        /// <param name="text">Text to display.</param>
+        /// <param name="colour">Text's colour.</param>
+        public TextPrint(string objn, bool isactive, ContentManager manager, Vector3 position, string text, Color colour)
+        {
+            name = objn;
+            IsActive = isactive;
+            font = manager.Load<SpriteFont>("DefaultFont");
+            Pos = position;
+            Text = text;
+            color = colour;
         }
         /// <summary>
         /// Draws the text.

@@ -217,7 +217,12 @@
             TextPrint's text
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Content.ContentManager,System.String,Microsoft.Xna.Framework.Vector3,System.String)">
+        <member name="F:_3DRadSpaceDll.TextPrint.color">
+            <summary>
+            Text Color.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Content.ContentManager,System.String,Microsoft.Xna.Framework.Vector3,System.String,Microsoft.Xna.Framework.Color)">
             <summary>
             Initialises a new TextPrint Object.
             </summary>
@@ -227,6 +232,18 @@
             <param name="fontloc">Font file.</param>
             <param name="position">Position. Z can be any value.</param>
             <param name="text">Text to display.</param>
+            <param name="colour">Text's colour.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Content.ContentManager,Microsoft.Xna.Framework.Vector3,System.String,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Initialises a new TextPrint Object.
+            </summary>
+            <param name= "objn">Object name.</param>
+            <param name= "isactive">If the text will be drawn.</param>
+            <param name="manager">Content manager.</param>
+            <param name="position">Position. Z can be any value.</param>
+            <param name="text">Text to display.</param>
+            <param name="colour">Text's colour.</param>
         </member>
         <member name="M:_3DRadSpaceDll.TextPrint.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
             <summary>

@@ -26,6 +26,15 @@ namespace _3DRadSpace
         {
             ParametersNames();
         }
+        public void SelectType()
+        {
+            if(type == 1) radioButton1.Checked = true;
+            if(type == 2) radioButton2.Checked = true;
+            if(type == 3) radioButton3.Checked = true;
+            if(type == 4) radioButton4.Checked = true;
+            if(type == 5) radioButton5.Checked = true;
+            ParametersNames();
+        }
         private void ParametersNames()
         {
             if (radioButton1.Checked == true)
@@ -82,6 +91,8 @@ namespace _3DRadSpace
 
         private void EOL_Load(object sender, EventArgs e)
         {
+            type = 1;
+            SelectType();
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
@@ -92,6 +103,7 @@ namespace _3DRadSpace
         private void button3_Click(object sender, EventArgs e)
         {
             Game1.LastObj = "";
+            Close();
         }
 
         private void button2_Click(object sender, EventArgs e)

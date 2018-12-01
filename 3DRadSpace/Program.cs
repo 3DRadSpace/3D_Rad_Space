@@ -51,6 +51,7 @@ namespace _3DRadSpace
                     }
                 }
                 catch { }
+                game.ObjectsBoxItems();
                 game.Run();
             };
         }

@@ -52,3 +52,4 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpacePlayer\obj\x86\Debug\
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpacePlayer\bin\Windows\x86\Debug\Content\Error.xnb
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpacePlayer\bin\Windows\x86\Debug\Content\missingResourceErrorTexture.xnb
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpacePlayer\bin\Windows\x86\Debug\Content\missingResourceErrorTexture_0.xnb
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpacePlayer\bin\Windows\x86\Debug\Content\DefaultFont.xnb

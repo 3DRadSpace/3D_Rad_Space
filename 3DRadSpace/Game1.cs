@@ -83,8 +83,8 @@ namespace _3DRadSpace
             graphics.ApplyChanges();
             Window.Title = "3DRadSpace v0.1 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
-            Exiting += OnGameEditorClosing;
-            Form gameform = Form.FromHandle(Window.Handle) as Form;
+            Form gameform = Control.FromHandle(Window.Handle) as Form;
+            gameform.FormClosing += new FormClosingEventHandler(OnGameEditorClosing);
             ObjectsBox.Location = new System.Drawing.Point(0,25);
             ObjectsBox.Height = graphics.PreferredBackBufferHeight;
             ObjectsBox.Width = 150;
@@ -253,14 +253,14 @@ namespace _3DRadSpace
             throw new NotImplementedException();
         }
 
-        private void OnGameEditorClosing(object sender, EventArgs e)
+        private void OnGameEditorClosing(object sender, FormClosingEventArgs e)
         {
             string[] data = File.ReadAllLines(@"settings.data");
             if (data[1] == "True")
             {
                 if (IsProjectSaved == false)
                 {
-                    DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                     if (warn1 == DialogResult.Yes)
                     {
                         SaveFileDialog saveFile = new SaveFileDialog()
@@ -273,6 +273,10 @@ namespace _3DRadSpace
                         saveFile.ShowDialog();
                         File.WriteAllLines(saveFile.FileName, ObjectsData);
                         IsProjectSaved = true;
+                    }
+                    else if (warn1 == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
                     }
                 }
             }
@@ -490,6 +494,7 @@ namespace _3DRadSpace
             {
                 ObjectsData[i] = null;
             }
+            skycolor = new Color(100, 100, 255);
             ObjectsBoxItems();
         }
         public static Ray GetMouseRay(Vector2 mousePosition, Viewport viewport,Matrix view,Matrix projection)
@@ -542,6 +547,7 @@ namespace _3DRadSpace
                     eol.textBox1.Text = objdata[1];
                     eol.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
                     eol.type = Convert.ToInt32(objdata[3]);
+                    eol.SelectType();
                     eol.textBox2.Text = objdata[4];
                     eol.textBox3.Text = objdata[5];
                     eol.textBox4.Text = objdata[6];
@@ -593,7 +599,7 @@ namespace _3DRadSpace
                 ObjectsBoxItems();
             }
         }
-        void ObjectsBoxItems()
+        public void ObjectsBoxItems()
         {
             ObjectsBox.Items.Clear();
             for(int i =0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
@@ -606,6 +612,7 @@ namespace _3DRadSpace
         }
         void NewProjectEvent(object sender,EventArgs e)
         {
+            IsProjectSaved = false;
             ResetObjects();
         }
         void OpenProjectEvent(object sender,EventArgs e)
@@ -683,6 +690,7 @@ namespace _3DRadSpace
                 }
             }
             ObjectsBoxItems();
+            IsProjectSaved = false;
         }
         void AddAddon(object sender,EventArgs e)
         {
@@ -700,13 +708,14 @@ namespace _3DRadSpace
                 {
                     if(ObjectsData[i] == null)
                     {
-                        if (string.IsNullOrEmpty(file[j]))
+                        if (!string.IsNullOrEmpty(file[j]))
                         {
                             ObjectsData[i] = file[j];
                             j++;
                         }
                     }
                 }
+                IsProjectSaved = false;
                 ObjectsBoxItems();
             }
         }

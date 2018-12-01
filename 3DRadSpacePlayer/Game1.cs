@@ -14,11 +14,16 @@ namespace _3DRadSpacePlayer
         Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        string[] gamesettings = { @"Projects/default.3drsp",@"False" };
+        string[] gamesettings = { @"Projects/default.3drsp",@"False",null };
         object[] Objects = new object[_3DRadSpaceGame.MAX_OBJECTS],project = new object[_3DRadSpaceGame.MAX_OBJECTS];
         public static Model Error;
         public Game1()
         {
+            if(File.Exists(@"settings.data"))
+            {
+                gamesettings = File.ReadAllLines(@"settings.data");
+                Window.Title = gamesettings[2];
+            }
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             try
@@ -81,6 +86,23 @@ namespace _3DRadSpacePlayer
                             break;
                            
                         }
+                    case "TextPrint":
+                        {
+                            Color clr = new Color(Convert.ToInt32(obj.Split(' ')[5]),
+                                Convert.ToInt32(obj.Split(' ')[6])
+                                , Convert.ToInt32(obj.Split(' ')[7])
+                                );
+                            string text = "";
+                            for (int j = 8; j < obj.Split(' ').Length; j++)
+                            {
+                                text += obj.Split(' ')[j];
+                            }
+                            Vector3 loc = new Vector3(Convert.ToInt32(obj.Split(' ')[4]),
+                               Convert.ToInt32(obj.Split(' ')[5]), 0);
+
+                            Objects[i] = new TextPrint(obj.Split(' ')[1], Convert.ToBoolean(obj.Split(' ')[2]), Content, loc, text, clr);
+                            break;
+                        }
                     default: break;
                 }
                 AllObjectsInitialize();
@@ -126,6 +148,7 @@ namespace _3DRadSpacePlayer
         }
         void AllObjectsDraw()
         {
+            spriteBatch.Begin();
             Color clr = Color.Black;
             for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
@@ -133,16 +156,16 @@ namespace _3DRadSpacePlayer
                 {
                     if (skyc.IsActive) clr = skyc.Color;
                 }
-            }
-            GraphicsDevice.Clear(clr);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
-            {
                 if (Objects[i] is SkinMesh mesh)
                 {
                     mesh.Draw(view, projection);
                 }
+                if(Objects[i] is TextPrint text)
+                {
+                    text.Draw(spriteBatch);
+                }
             }
+            GraphicsDevice.Clear(clr);
             spriteBatch.End();
         }
         void AllObjectsInitialize()

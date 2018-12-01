@@ -127,7 +127,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(90, 39);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(80, 55);
+            this.pictureBox1.Size = new System.Drawing.Size(67, 55);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
@@ -138,6 +138,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(208, 20);
             this.textBox1.TabIndex = 2;
+            this.textBox1.Text = "game";
             // 
             // button1
             // 
@@ -180,6 +181,7 @@
             // 
             // progressBar1
             // 
+            this.progressBar1.BackColor = System.Drawing.SystemColors.Control;
             this.progressBar1.Location = new System.Drawing.Point(11, 300);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(305, 23);
@@ -190,9 +192,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(92, 332);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 13);
+            this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Status:Ready!";
+            this.label3.Text = "Status: Ready!";
             // 
             // _3DRadSpaceCompiler
             // 
