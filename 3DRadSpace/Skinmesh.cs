@@ -19,7 +19,7 @@ namespace _3DRadSpace
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Game1.LastObj = "Skinmesh "+textBox1.Text+" "+checkBox1.Checked+" "+textBox2.Text+" "+textBox3.Text+" "+textBox4.Text+" "+textBox5.Text+" "+textBox6.Text+" "+textBox7.Text+" "+domainUpDown1.SelectedIndex+" "+textBox8.Text;
+            Game1.LastObj = "Skinmesh "+ _3DRadSpace_EditorClass.ValidateText(textBox1.Text)+" "+checkBox1.Checked+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox2.Text)+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox3.Text)+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox4.Text)+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox5.Text)+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox6.Text)+" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox7.Text)+" "+domainUpDown1.SelectedIndex+" "+textBox8.Text;
             DialogResult = DialogResult.OK;
             Close();
         }

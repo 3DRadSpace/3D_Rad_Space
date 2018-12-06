@@ -20,7 +20,7 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Game1.LastObj = "Camera " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text + " " + textBox5.Text + " " + textBox6.Text + " " + textBox7.Text + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() +" "+textBox8.Text+ " "+ OBJR;
+            Game1.LastObj = "Camera " + _3DRadSpace_EditorClass.ValidateText( textBox1.Text) + " " + checkBox1.Checked.ToString() + " " +  _3DRadSpace_EditorClass.ValidateNumberBox(textBox2.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox3.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox4.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox5.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox6.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox7.Text) + " "+ numericUpDown1.Value.ToString() + " "+ checkBox2.Checked.ToString() +" "+ _3DRadSpace_EditorClass.ValidateNumberBox(textBox8.Text) + " "+ OBJR;
             DialogResult = DialogResult.OK;
             Close();
         }

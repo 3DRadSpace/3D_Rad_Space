@@ -36,18 +36,38 @@ namespace _3DRadSpace
             }
             else return false;
         }
-        public static void ValidateNumberFields(string arg)
+        public static string ValidateNumberBox(string input)
         {
-            float result;
-            try
+            string output = "";
+            foreach(char inp in input)
             {
-                result = Convert.ToSingle(arg);
+                if(IsCharNumber(inp))
+                {
+                    output += inp;
+                }
             }
-            catch (FormatException)
+            if (output == "") output = "0";
+            return output;
+        }
+        static bool IsCharNumber(char character)
+        {
+            if (character >= '0' && character <= '9')
             {
-                MessageBox.Show("Invalid argument", "Error");
-                result = 0;
+                return true;
             }
+            else return false;
+        }
+        public static string ValidateText(string text)
+        {
+            string output = "";
+            for(int i =0; i < text.Length; i++)
+            {
+                char chr = text[i];
+                if (chr == ' ') chr = '_';
+                output += chr;
+            }
+            if (output == "") output = "abc";
+            return output;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace _3DRadSpace
 
         private void button2_Click(object sender, EventArgs e)
         {
-           Game1.LastObj = "SkyColor " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox2.Text + " " + textBox3.Text + " " + textBox4.Text;
+           Game1.LastObj = "SkyColor " + _3DRadSpace_EditorClass.ValidateText(textBox1.Text )+ " " + checkBox1.Checked.ToString() + " " + _3DRadSpace_EditorClass.ValidateNumberBox( textBox2.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox3.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox4.Text);
             DialogResult = DialogResult.OK;
             Close();
         }

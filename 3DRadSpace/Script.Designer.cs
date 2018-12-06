@@ -112,7 +112,8 @@
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(539, 372);
             this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "void Script()\n{\n  //Add your script here.\n}\n\n";
+            this.richTextBox1.Text = "class Script\n{\n    public static void Main()\n    {\n         //insert your code th" +
+    "ere\n    }\n}\n";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // groupBox3

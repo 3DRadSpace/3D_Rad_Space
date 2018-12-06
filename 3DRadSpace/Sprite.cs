@@ -59,7 +59,7 @@ namespace _3DRadSpace
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Game1.LastObj = "Sprite " + textBox1.Text + " " + checkBox1.Checked + " " + textBox2.Text + " " + textBox3.Text + " " + textBox5.Text + " " + textBox7 + " " + textBox4 + " " + textBox6.Text + " " + spriteasset;
+            Game1.LastObj = "Sprite " + _3DRadSpace_EditorClass.ValidateText(textBox1.Text) + " " + checkBox1.Checked + " " + _3DRadSpace_EditorClass.ValidateNumberBox( textBox2.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox3.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox5.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox7.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox4.Text) + " " + _3DRadSpace_EditorClass.ValidateNumberBox(textBox6.Text) + " " + spriteasset;
             DialogResult = DialogResult.OK;
             Close();
         }

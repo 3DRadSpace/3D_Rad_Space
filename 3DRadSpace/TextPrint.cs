@@ -15,7 +15,7 @@ namespace _3DRadSpace
         public Color Colour;
         private void button4_Click(object sender, EventArgs e)
         {
-            Game1.LastObj = "TextPrint " + textBox1.Text + " " + checkBox1.Checked.ToString() + " " + textBox3.Text + " " + textBox4.Text + " " + Colour.R + " " + Colour.G + " " + Colour.B + " " + textBox2.Text;
+            Game1.LastObj = "TextPrint " + _3DRadSpace_EditorClass.ValidateText(textBox1.Text) + " " + checkBox1.Checked.ToString() + " " + textBox3.Text + " " + textBox4.Text + " " + Colour.R + " " + Colour.G + " " + Colour.B + " " + textBox2.Text;
             DialogResult = DialogResult.OK;
             Close();
         }

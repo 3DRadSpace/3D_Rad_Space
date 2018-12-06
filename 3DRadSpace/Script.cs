@@ -219,7 +219,7 @@ namespace _3DRadSpace
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Game1.LastObj = "Script " + textBox1.Text + " " + checkBox1.Checked.ToString() + " "+LoadedScript;
+            Game1.LastObj = "Script " + _3DRadSpace_EditorClass.ValidateText( textBox1.Text )+ " " + checkBox1.Checked.ToString() + " "+LoadedScript;
             DialogResult = DialogResult.OK;
             Close();
         }
