@@ -158,3 +158,4 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRad
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\3DRadSpaceDll.xml
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.EOL.resources
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Skinmesh.resources
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.Fog.resources

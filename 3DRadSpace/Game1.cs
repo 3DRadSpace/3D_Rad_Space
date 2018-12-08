@@ -11,9 +11,9 @@ using System.Threading;
 
 namespace _3DRadSpace
 {
-    public class Game1 : Game
+    public class Game1 : Game 
     {
-        Vector2 rotatecamoffset;
+        //Vector2 rotatecamoffset;
         static Vector3 LookAt = new Vector3(0, 0, 0);
         static Vector3 CameraPos = new Vector3(10, 1, 3);
         Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
@@ -84,7 +84,10 @@ namespace _3DRadSpace
             Window.Title = "3DRadSpace v0.1 Pre-Alpha release -Editor-";
             notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
             Form gameform = Control.FromHandle(Window.Handle) as Form;
+            gameform.AllowDrop = true;
             gameform.FormClosing += new FormClosingEventHandler(OnGameEditorClosing);
+            gameform.DragDrop += new DragEventHandler(DragDropProject);
+            gameform.DragEnter += new DragEventHandler(DragEnter);
             ObjectsBox.Location = new System.Drawing.Point(0,25);
             ObjectsBox.Height = graphics.PreferredBackBufferHeight;
             ObjectsBox.Width = 150;
@@ -420,10 +423,10 @@ namespace _3DRadSpace
                     effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
-                    effect.FogEnabled = true;
-                    effect.FogColor = new Vector3(255, 255, 255);
-                    effect.FogStart = 400;
-                    effect.FogEnd = 500;
+                    effect.FogEnabled = FogEnabled;
+                    effect.FogColor = FogColor;
+                    effect.FogStart = StartDistance;
+                    effect.FogEnd = EndDistance;
                 }
                 mesh.Draw();
             }
@@ -471,7 +474,19 @@ namespace _3DRadSpace
                     }
                     if (ObjectData[0] == "Sprite")
                     {
-                        
+                        break;
+                    }
+                    if (ObjectData[0] == "Fog")
+                    {
+                        FogEnabled = Convert.ToBoolean(ObjectData[2]);
+                        StartDistance = Convert.ToSingle(ObjectData[3]);
+                        EndDistance = Convert.ToSingle(ObjectData[4]);
+                        Vector3 col = new Vector3(
+                            Convert.ToSingle(ObjectData[5]),
+                            Convert.ToSingle(ObjectData[6]),
+                            Convert.ToSingle(ObjectData[7])
+                            );
+                        break;
                     }
                 }
             }
@@ -757,5 +772,36 @@ namespace _3DRadSpace
         {
             
         }
+        void DragDropProject(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string[] file = File.ReadAllLines(files[0]);
+            string[] pathdata = files[0].Split('.');
+            if(pathdata[pathdata.Length -1] != "3drsp")
+            {
+                MessageBox.Show("Invaild file dropped!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            ResetObjects();
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
+                if (!string.IsNullOrEmpty(file[i])) ObjectsData[i] = file[i];
+                else break;
+            }
+            IsProjectSaved = true;
+            ProjectPath = files[0] ;
+            ObjectsBoxItems();
+        }
+        void DragEnter(object sender,DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+        Vector3 FogColor = new Vector3(255, 255, 255);
+        bool FogEnabled = false;
+        float StartDistance = 250;
+        float EndDistance = 250;
     }
 }

@@ -16,7 +16,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        DialogResult result;
+        DialogResult result = DialogResult.None;
         private void ObjectsList_Load(object sender, EventArgs e)
         {
             //  Added by GHGames, just incase any files are missing
@@ -83,7 +83,9 @@ namespace _3DRadSpace
 
         private void pictureBox18_Click(object sender, EventArgs e)
         {
-
+            Fog fog = new Fog();
+            result = fog.ShowDialog();
+            Close();
         }
 
         private void pictureBox5_Click(object sender, EventArgs e)

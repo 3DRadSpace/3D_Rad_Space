@@ -97,6 +97,12 @@
     <Compile Include="EOL.Designer.cs">
       <DependentUpon>EOL.cs</DependentUpon>
     </Compile>
+    <Compile Include="Fog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fog.Designer.cs">
+      <DependentUpon>Fog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Game1.cs" />
     <Compile Include="ObjectsList.cs">
       <SubType>Form</SubType>
@@ -196,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EOL.resx">
       <DependentUpon>EOL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fog.resx">
+      <DependentUpon>Fog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectsList.resx">
       <DependentUpon>ObjectsList.cs</DependentUpon>
