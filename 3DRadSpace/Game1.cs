@@ -36,7 +36,7 @@ namespace _3DRadSpace
         ListBox ObjectsBox = new ListBox();
         MenuStrip ToolsStrip = new MenuStrip();
         
-        string ProjectPath = "";
+       public string ProjectPath = "";
 
         public static string LastObj = "";
 
@@ -59,7 +59,6 @@ namespace _3DRadSpace
             ToolStripMenuItem officialWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         ToolStripMenuItem documentationStripMenuItem = new ToolStripMenuItem();
-
         public static NotifyIcon notifyIcon = new NotifyIcon()
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon("Icon.ico"),
@@ -92,6 +91,7 @@ namespace _3DRadSpace
             ObjectsBox.Height = graphics.PreferredBackBufferHeight;
             ObjectsBox.Width = 150;
             ObjectsBox.DoubleClick += new EventHandler(EditObjectFromList);
+            
             gameform.Controls.Add(ObjectsBox);
 
             fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -245,7 +245,6 @@ namespace _3DRadSpace
             editToolStripMenuItem,
             optionsToolStripMenuItem,
             helpToolStripMenuItem});
-
             gameform.Controls.Add(ToolsStrip);
 
             base.Initialize();
@@ -266,16 +265,7 @@ namespace _3DRadSpace
                     DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                     if (warn1 == DialogResult.Yes)
                     {
-                        SaveFileDialog saveFile = new SaveFileDialog()
-                        {
-                            Filter = "3DRadSpace Project | *.3drsp | Text File | *.txt",
-                            InitialDirectory = @"/Projects/",
-                            Title = "Save a 3DRadSpace project...",
-                            OverwritePrompt = true
-                        };
-                        saveFile.ShowDialog();
-                        File.WriteAllLines(saveFile.FileName, ObjectsData);
-                        IsProjectSaved = true;
+                        SaveProject(null, null);
                     }
                     else if (warn1 == DialogResult.Cancel)
                     {
@@ -344,6 +334,24 @@ namespace _3DRadSpace
                 }
                 if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
+                }
+            }
+            if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
+            {
+                int a = ObjectsBox.SelectedIndex;
+                if(a != -1)
+                {
+                    if (ObjectsData[a] != null)
+                    {
+                        if (ObjectsData[a].Split(' ')[0] == "SkyColor") skycolor = new Color(100, 100, 255);
+                        if (ObjectsData[a].Split(' ')[0] == "Fog") FogEnabled = false;
+                    }
+                    ObjectsData[a] = null;
+                    for (int i =a; i < _3DRadSpaceGame.MAX_OBJECTS -1 ;i++)
+                    {
+                        ObjectsData[i] = ObjectsData[i + 1];
+                    }
+                    ObjectsBoxItems();
                 }
             }
             base.Update(gameTime);
@@ -481,7 +489,7 @@ namespace _3DRadSpace
                         FogEnabled = Convert.ToBoolean(ObjectData[2]);
                         StartDistance = Convert.ToSingle(ObjectData[3]);
                         EndDistance = Convert.ToSingle(ObjectData[4]);
-                        Vector3 col = new Vector3(
+                       FogColor = new Vector3(
                             Convert.ToSingle(ObjectData[5]),
                             Convert.ToSingle(ObjectData[6]),
                             Convert.ToSingle(ObjectData[7])
@@ -606,6 +614,18 @@ namespace _3DRadSpace
                     }
                     if (textPrint.ShowDialog() == DialogResult.OK) edit = true;
                 }
+                if (objdata[0] == "Fog")
+                {
+                    Fog fog = new Fog();
+                    fog.textBox1.Text = objdata[1];
+                    fog.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    fog.textBox2.Text = objdata[3];
+                    fog.textBox3.Text = objdata[4];
+                    fog.textBox4.Text = objdata[5];
+                    fog.textBox5.Text = objdata[6];
+                    fog.textBox6.Text = objdata[7];
+                    if (fog.ShowDialog() == DialogResult.OK) edit = true;
+                }
                 if(edit)
                 {
                     ObjectsData[id] = LastObj;
@@ -628,6 +648,7 @@ namespace _3DRadSpace
         void NewProjectEvent(object sender,EventArgs e)
         {
             IsProjectSaved = false;
+            ProjectPath = "";
             ResetObjects();
         }
         void OpenProjectEvent(object sender,EventArgs e)
@@ -681,6 +702,7 @@ namespace _3DRadSpace
             {
                 File.WriteAllLines(saveFile.FileName, ObjectsData);
                 IsProjectSaved = true;
+                ProjectPath = saveFile.FileName;
             }
         }
         void CompileProject(object sender,EventArgs e)
@@ -777,7 +799,9 @@ namespace _3DRadSpace
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string[] file = File.ReadAllLines(files[0]);
             string[] pathdata = files[0].Split('.');
-            if(pathdata[pathdata.Length -1] != "3drsp")
+
+            string ext = pathdata[pathdata.Length-1]; 
+            if (ext != "3drsp" && ext != "txt")
             {
                 MessageBox.Show("Invaild file dropped!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -789,7 +813,7 @@ namespace _3DRadSpace
                 else break;
             }
             IsProjectSaved = true;
-            ProjectPath = files[0] ;
+            ProjectPath = files[0];
             ObjectsBoxItems();
         }
         void DragEnter(object sender,DragEventArgs e)

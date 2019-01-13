@@ -48,6 +48,7 @@ namespace _3DRadSpace
                                 game.ObjectsData[i] = file[i];
                             }
                         }
+                        game.ProjectPath = args[0];
                     }
                 }
                 catch { }

@@ -55,7 +55,7 @@ namespace _3DRadSpacePlayer
                                     obj.Split(' ')[1],
                                     Convert.ToBoolean(obj.Split(' ')[2]),
                                     pos,
-                                    Vector3.Transform(pos, Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[6])),MathHelper.ToRadians( Convert.ToSingle(obj.Split(' ')[7])), MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[8])))),
+                                    Vector3.Zero, //Vector3.Transform(pos, Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[7])),MathHelper.ToRadians( Convert.ToSingle(obj.Split(' ')[6])), MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[8])))),
                                     MathHelper.ToRadians(Convert.ToSingle(obj.Split(' ')[9])),
                                     Convert.ToSingle(obj.Split(' ')[11])
                                 );
@@ -103,6 +103,16 @@ namespace _3DRadSpacePlayer
                             Objects[i] = new TextPrint(obj.Split(' ')[1], Convert.ToBoolean(obj.Split(' ')[2]), Content, loc, text, clr);
                             break;
                         }
+                    case "Fog":
+                        {
+                            Vector3 clr = new Vector3(Convert.ToInt32(obj.Split(' ')[3]),
+                              Convert.ToInt32(obj.Split(' ')[4])
+                                 , Convert.ToInt32(obj.Split(' ')[5])
+                             );
+                            Objects[i] = new Fog(obj.Split(' ')[1], Convert.ToBoolean(obj.Split(' ')[2])
+                                , clr, Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]));
+                            break;
+                        }
                     default: break;
                 }
                 AllObjectsInitialize();
@@ -132,6 +142,10 @@ namespace _3DRadSpacePlayer
                     effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
+                    effect.FogEnabled = FogEnabled;
+                    effect.FogColor = FogColor;
+                    effect.FogStart = StartDistance;
+                    effect.FogEnd = EndDistance;
                 }
                 mesh.Draw();
             }
@@ -176,7 +190,18 @@ namespace _3DRadSpacePlayer
                 {
                     mesh.Initialize(Content);
                 }
+                if(Objects[i] is Fog fog)
+                {
+                    FogColor = fog.Pos;
+                    FogEnabled = fog.IsActive;
+                    StartDistance = fog.Start;
+                    EndDistance = fog.End;
+                }
             }
         }
+        Vector3 FogColor = new Vector3(255, 255, 255);
+        bool FogEnabled = false;
+        float StartDistance = 250;
+        float EndDistance = 250;
     }
 }

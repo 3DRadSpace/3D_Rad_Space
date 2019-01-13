@@ -130,7 +130,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public void Disable() => IsActive = false;
         /// <summary>
-        /// Enables the object, allowing it to update it's properties whem Update() or Draw() is called.
+        /// Enables the object, allowing it to update it's properties when Update() or Draw() is called.
         /// </summary>
         public void Enable() => IsActive = true;
         /// <summary>
@@ -380,7 +380,7 @@ namespace _3DRadSpaceDll
             IsActive = isactive;
             resource = res;
             Pos = location;
-            Rotation = Quaternion.CreateFromYawPitchRoll(rotation.X, rotation.Y, rotation.Z);
+            Rotation = Quaternion.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z);
         }
         /// <summary>
         /// Loads a 3d Model so drawing the model can be done.
@@ -405,11 +405,13 @@ namespace _3DRadSpaceDll
         public void Draw( Matrix view, Matrix projection)
         {
             Matrix world = Matrix.CreateTranslation(Pos);
+            Matrix rotation = Matrix.CreateFromQuaternion(Rotation);
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = world;
+                    effect.World = rotation * world;
+                    
                     effect.View = view;
                     effect.Projection = projection;
                     effect.TextureEnabled = true;
@@ -440,6 +442,37 @@ namespace _3DRadSpaceDll
             Color = colour;
         }
     }
+    /// <summary>
+    /// Fog object.
+    /// </summary>
+    public class Fog : GameObject
+    {
+        /// <summary>
+        /// Start Fog Distance.
+        /// </summary>
+        public float Start;
+        /// <summary>
+        /// End Fog Distance.
+        /// </summary>
+        public float End;
+        /// <summary>
+        /// Fog object Constructor.
+        /// </summary>
+        /// <param name="objn">Object Name.</param>
+        /// <param name="active">Is active</param>
+        /// <param name="color">Colour as Vector3. X = Red, Y = Green, Z = Blue</param>
+        /// <param name="start">Start distance</param>
+        /// <param name="end">End distance</param>
+        public Fog(string objn, bool active, Vector3 color, float start = 250,float end = 500)
+            {
+            name = objn;
+            IsActive = active;
+            Pos = color;
+            Start = start;
+            End = end;
+            }
+    }
+
     
 }
 

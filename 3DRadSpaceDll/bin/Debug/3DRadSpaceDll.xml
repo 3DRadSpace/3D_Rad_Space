@@ -89,7 +89,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.GameObject.Enable">
             <summary>
-            Enables the object, allowing it to update it's properties whem Update() or Draw() is called.
+            Enables the object, allowing it to update it's properties when Update() or Draw() is called.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.GameObject.Vector3ToVector2(Microsoft.Xna.Framework.Vector3)">
@@ -326,6 +326,31 @@
             <param name="objn">Object Name</param>
             <param name="isactive">Is the colour displayed?</param>
             <param name="colour">The color that will be used.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Fog">
+            <summary>
+            Fog object.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Fog.Start">
+            <summary>
+            Start Fog Distance.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Fog.End">
+            <summary>
+            End Fog Distance.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Fog.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            Fog object Constructor.
+            </summary>
+            <param name="objn">Object Name.</param>
+            <param name="active">Is active</param>
+            <param name="color">Colour as Vector3. X = Red, Y = Green, Z = Blue</param>
+            <param name="start">Start distance</param>
+            <param name="end">End distance</param>
         </member>
         <member name="T:_3DRadSpaceDll.VisualScript">
             <summary>
