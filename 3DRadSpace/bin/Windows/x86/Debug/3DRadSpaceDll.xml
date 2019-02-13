@@ -24,6 +24,13 @@
             Maximum variables in the project.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll._3DRadSpaceGame.Vector3ToVector2(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Converts a Vector3 to a Vector2.
+            </summary>
+            <param name="vec">Vector3 to be converted.</param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.ScriptInterpeter">
             <summary>
             3DRadSpace Script Interpeter class
@@ -91,13 +98,6 @@
             <summary>
             Enables the object, allowing it to update it's properties when Update() or Draw() is called.
             </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Vector3ToVector2(Microsoft.Xna.Framework.Vector3)">
-            <summary>
-            Converts a Vector3 to a Vector2.
-            </summary>
-            <param name="vec">Vector3 to be converted.</param>
-            <returns></returns>
         </member>
         <member name="T:_3DRadSpaceDll.Camera">
             <summary>

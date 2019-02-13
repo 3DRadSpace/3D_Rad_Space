@@ -9,8 +9,8 @@ namespace _3DRadSpacePlayer
 {
     public class Game1 : Game
     {
-        static Vector3 CamPos = new Vector3(0, 0, 0);
-        Matrix view = Matrix.CreateLookAt(CamPos,CamPos + new Vector3(0,0,1),Vector3.UnitY);
+        static Vector3 CamPos = new Vector3(0, 4, 4);
+        Matrix view = Matrix.CreateLookAt(CamPos,Vector3.Zero,Vector3.UnitY);
         Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -76,9 +76,11 @@ namespace _3DRadSpacePlayer
                             Vector3 pos = new Vector3(Convert.ToSingle(obj.Split(' ')[3]), Convert.ToSingle(obj.Split(' ')[4]), Convert.ToSingle(obj.Split(' ')[5]));
                             Vector3 rot = new Vector3(Convert.ToSingle(obj.Split(' ')[6]), Convert.ToSingle(obj.Split(' ')[7]), Convert.ToSingle(obj.Split(' ')[8]));
                             string res = "";
-                            for(int j =10; j < obj.Split(' ').Length ;j++)
+                            int length = obj.Split(' ').Length;
+                            for(int j =10; j < length ;j++)
                             {
                                 res += obj.Split(' ')[j];
+                                if (j != length - 1) res += " ";
                             }
                             Objects[i] = new SkinMesh(obj.Split(' ')[1],
                                 Convert.ToBoolean(obj.Split(' ')[2]),
@@ -115,6 +117,7 @@ namespace _3DRadSpacePlayer
                         }
                     default: break;
                 }
+                //Objects[50] = new SkinMesh("TEST_OBJ",true,"Axis",Vector3.Zero,Vector3.Zero);
                 AllObjectsInitialize();
             }
         }
@@ -131,9 +134,13 @@ namespace _3DRadSpacePlayer
         protected override void Draw(GameTime gameTime)
         {
             AllObjectsDraw();
+            spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+            spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
+            spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             base.Draw(gameTime);
         }
-        void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
+        
+        public void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -146,10 +153,12 @@ namespace _3DRadSpacePlayer
                     effect.FogColor = FogColor;
                     effect.FogStart = StartDistance;
                     effect.FogEnd = EndDistance;
+                    effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
             }
         }
+        
         void AllObjectsUpdate()
         {
             for(int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS;i++)
@@ -170,6 +179,10 @@ namespace _3DRadSpacePlayer
                 {
                     if (skyc.IsActive) clr = skyc.Color;
                 }
+            }
+            GraphicsDevice.Clear(clr);
+            for (int i = 0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
+            {
                 if (Objects[i] is SkinMesh mesh)
                 {
                     mesh.Draw(view, projection);
@@ -179,7 +192,6 @@ namespace _3DRadSpacePlayer
                     text.Draw(spriteBatch);
                 }
             }
-            GraphicsDevice.Clear(clr);
             spriteBatch.End();
         }
         void AllObjectsInitialize()

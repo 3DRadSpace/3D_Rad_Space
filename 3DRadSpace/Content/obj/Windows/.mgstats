@@ -1,0 +1,6 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/Axis.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/Axis.xnb","ModelProcessor","ModelContent",14633,4164,0.0929007
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/Button.bmp","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/Button.xnb","TextureProcessor","Texture2DContent",5174,16469,0.6059985
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/Camera.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/Camera.xnb","ModelProcessor","ModelContent",23919,7328,0.501091
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/Font.spritefont","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/Font.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21521,0.5460003
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/objimg.bmp","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/Content/bin/Windows/objimg.xnb","TextureProcessor","Texture2DContent",1254,1685,0.0290028

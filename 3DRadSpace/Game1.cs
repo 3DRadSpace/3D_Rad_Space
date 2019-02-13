@@ -262,7 +262,7 @@ namespace _3DRadSpace
             {
                 if (IsProjectSaved == false)
                 {
-                    DialogResult warn1 = MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                    DialogResult warn1 = System.Windows.Forms.MessageBox.Show("Project is not saved. Save the project?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                     if (warn1 == DialogResult.Yes)
                     {
                         SaveProject(null, null);
@@ -395,7 +395,7 @@ namespace _3DRadSpace
                 string[] LastVersion = Update.Split(' ');
                 if (LastVersion[0] != "1" || LastVersion[1] != "0" || LastVersion[2] != "0")
                 {
-                    DialogResult UpdateQ = MessageBox.Show("A update is avalable for 3DRadSpace. Version" + LastVersion[0] + " " + LastVersion[1] + " " + LastVersion[2] + " \r\n Do you want to download it?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    DialogResult UpdateQ = System.Windows.Forms.MessageBox.Show("A update is avalable for 3DRadSpace. Version" + LastVersion[0] + " " + LastVersion[1] + " " + LastVersion[2] + " \r\n Do you want to download it?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (UpdateQ == DialogResult.Yes)
                     {
                         vchecker.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE", @"3DRadSpace_Installer.exe");
@@ -406,12 +406,12 @@ namespace _3DRadSpace
                     }
                     else
                     {
-                        MessageBox.Show("You can update 3DRadSpace from the official website", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        System.Windows.Forms.MessageBox.Show("You can update 3DRadSpace from the official website", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No new updates", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    System.Windows.Forms.MessageBox.Show("No new updates", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -495,6 +495,38 @@ namespace _3DRadSpace
                             Convert.ToSingle(ObjectData[7])
                             );
                         break;
+                    }
+                    try
+                    {
+                        if (ObjectData[i] == "Skinmesh")
+                        {
+                            if (GameObjects[i] == null)
+                            {
+                                string res = "";
+                                for (int j = 10; j < ObjectData.Length; j++)
+                                {
+                                    res += ObjectData[j];
+                                    if (j != ObjectData.Length - 1) res += " ";
+                                }
+                                try
+                                {
+                                    GameObjects[i] = Content.Load<Model>(res);
+                                }
+                                catch
+                                {
+                                    GameObjects[i] = Content.Load<Model>("Error");
+                                    System.Windows.Forms.MessageBox.Show("Model [" + res + "] wasn't found in the Content folder. Make sure the model is in .xnb format", "Model Loading error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            else DrawModel(GameObjects[i], Matrix.CreateTranslation(Convert.ToSingle(ObjectData[3]),
+                                Convert.ToSingle(ObjectData[4]),
+                                Convert.ToSingle(ObjectData[5])), view, projection);
+                            break;
+                        }
+                    }
+                    catch(IndexOutOfRangeException)
+                    {
+                        System.Windows.Forms.MessageBox.Show("i:"+i+" ", "IndexOutOfRangeException");
                     }
                 }
             }
@@ -803,7 +835,7 @@ namespace _3DRadSpace
             string ext = pathdata[pathdata.Length-1]; 
             if (ext != "3drsp" && ext != "txt")
             {
-                MessageBox.Show("Invaild file dropped!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Invaild file dropped!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             ResetObjects();

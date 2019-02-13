@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/DefaultFont.spritefont</SourceFile>
+  <SourceTime>2019-01-24T18:06:31.5202435+02:00</SourceTime>
+  <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/bin/Windows/Content/DefaultFont.xnb</DestFile>
+  <DestTime>2019-01-25T14:24:10.8088868+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2018-12-08T18:35:54+02:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

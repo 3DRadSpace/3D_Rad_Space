@@ -26,6 +26,12 @@ namespace _3DRadSpaceDll
         /// Maximum variables in the project.
         /// </summary>
         public const int MAX_VARIABLES = 200;
+        /// <summary>
+        /// Converts a Vector3 to a Vector2.
+        /// </summary>
+        /// <param name="vec">Vector3 to be converted.</param>
+        /// <returns></returns>
+        public static Vector2 Vector3ToVector2(Vector3 vec) => new Vector2(vec.X, vec.Y);
     }
     /// <summary>
     /// 3DRadSpace Script Interpeter class
@@ -133,12 +139,7 @@ namespace _3DRadSpaceDll
         /// Enables the object, allowing it to update it's properties when Update() or Draw() is called.
         /// </summary>
         public void Enable() => IsActive = true;
-        /// <summary>
-        /// Converts a Vector3 to a Vector2.
-        /// </summary>
-        /// <param name="vec">Vector3 to be converted.</param>
-        /// <returns></returns>
-        public static Vector2 Vector3ToVector2(Vector3 vec) => new Vector2(vec.X, vec.Y);
+
     }
     /// <summary>
     /// 3DRadSpace Camera object class.
@@ -327,7 +328,7 @@ namespace _3DRadSpaceDll
         /// <param name="spriteBatch">spritebatch.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font,Text, new Vector2(0,0),new Color(0,0,0));
+            spriteBatch.DrawString(font,Text, new Vector2(Pos.X,Pos.Y),new Color(0,0,0));
         }
     }
 
@@ -402,7 +403,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         /// <param name="view">View Matrix</param>
         /// <param name="projection">Projection Matrix</param>
-        public void Draw( Matrix view, Matrix projection)
+        public void Draw(Matrix view,Matrix projection)
         {
             Matrix world = Matrix.CreateTranslation(Pos);
             Matrix rotation = Matrix.CreateFromQuaternion(Rotation);
@@ -410,8 +411,8 @@ namespace _3DRadSpaceDll
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = rotation * world;
-                    
+                    effect.World = world;
+                   // effect.EnableDefaultLighting();
                     effect.View = view;
                     effect.Projection = projection;
                     effect.TextureEnabled = true;
@@ -464,15 +465,13 @@ namespace _3DRadSpaceDll
         /// <param name="start">Start distance</param>
         /// <param name="end">End distance</param>
         public Fog(string objn, bool active, Vector3 color, float start = 250,float end = 500)
-            {
+        {
             name = objn;
             IsActive = active;
             Pos = color;
             Start = start;
             End = end;
-            }
+        }
     }
-
-    
 }
 
