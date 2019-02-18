@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Threading;
+#pragma warning disable IDE0044
 
 namespace _3DRadSpace
 {
@@ -35,8 +36,15 @@ namespace _3DRadSpace
         int selectedobj = -1;
         ListBox ObjectsBox = new ListBox();
         MenuStrip ToolsStrip = new MenuStrip();
-        
-       public string ProjectPath = "";
+        Vector3 cameraDirection = new Vector3(1, 0, 0);
+        Vector3 cameraUp;
+
+        float speed = 0.5F;
+
+        MouseState prevMouseState;
+
+
+        public string ProjectPath = "";
 
         public static string LastObj = "";
 
@@ -73,6 +81,7 @@ namespace _3DRadSpace
         }
         protected override void Initialize()
         {
+            prevMouseState = Mouse.GetState();
             UpdateV(false);
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
@@ -247,6 +256,13 @@ namespace _3DRadSpace
             helpToolStripMenuItem});
             gameform.Controls.Add(ToolsStrip);
 
+
+            cameraDirection = LookAt - CameraPos;
+
+            cameraDirection.Normalize();
+
+            cameraUp = Vector3.Up;
+
             base.Initialize();
         }
 
@@ -300,10 +316,11 @@ namespace _3DRadSpace
                 new Vector2(150, 25), new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight)
                 ))
             {
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)) CameraPos.X += 1;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down)) CameraPos.X -= 1;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) CameraPos.Z -= 1;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) CameraPos.Z += 1;
+
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) CameraPos.X += 1; // CameraPos += cameraDirection * speed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) CameraPos.X -= 1; //   CameraPos -= cameraDirection * speed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) CameraPos.Z-= 1; //  CameraPos += Vector3.Cross(cameraUp, cameraDirection) * speed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) CameraPos.Z += 1; //  CameraPos -= Vector3.Cross(cameraUp, cameraDirection) * speed;
                 if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E)) CameraPos.Y += 1;
                 if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q)) CameraPos.Y -= 1;
                 
@@ -332,9 +349,14 @@ namespace _3DRadSpace
                         EditObject(selectedobj);
                     }
                 }
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
+                 //   Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+                    //cameraDirection.X = (float) ((Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) - (Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z ));
+                   // cameraDirection.Z = (float) ((Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) + (Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z));
+                   // IsMouseVisible = false;
                 }
+                else IsMouseVisible = true;
             }
             if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
             {
@@ -361,7 +383,7 @@ namespace _3DRadSpace
             GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
             spriteBatch.Begin();
-            view = Matrix.CreateLookAt(CameraPos, LookAt, Vector3.UnitY);
+            view = Matrix.CreateLookAt(CameraPos, CameraPos + cameraDirection, Vector3.UnitY);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] != null)
@@ -496,39 +518,37 @@ namespace _3DRadSpace
                             );
                         break;
                     }
-                    try
-                    {
-                        if (ObjectData[i] == "Skinmesh")
+                        if (ObjectData[0] == "Skinmesh")
                         {
-                            if (GameObjects[i] == null)
+                        if (GameObjects[i] == null)
+                        {
+                            string res = "";
+                            for (int j = 10; j < ObjectData.Length; j++)
                             {
-                                string res = "";
-                                for (int j = 10; j < ObjectData.Length; j++)
-                                {
-                                    res += ObjectData[j];
-                                    if (j != ObjectData.Length - 1) res += " ";
-                                }
-                                try
-                                {
-                                    GameObjects[i] = Content.Load<Model>(res);
-                                }
-                                catch
-                                {
-                                    GameObjects[i] = Content.Load<Model>("Error");
-                                    System.Windows.Forms.MessageBox.Show("Model [" + res + "] wasn't found in the Content folder. Make sure the model is in .xnb format", "Model Loading error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
+                                res += ObjectData[j];
+                                if (j != ObjectData.Length - 1) res += " ";
                             }
-                            else DrawModel(GameObjects[i], Matrix.CreateTranslation(Convert.ToSingle(ObjectData[3]),
-                                Convert.ToSingle(ObjectData[4]),
-                                Convert.ToSingle(ObjectData[5])), view, projection);
-                            break;
+                            try
+                            {
+                                GameObjects[i] = Content.Load<Model>(res);
+                            }
+                            catch
+                            {
+                                GameObjects[i] = Content.Load<Model>("Error");
+                                System.Windows.Forms.MessageBox.Show("Model [" + res + "] wasn't found in the Content folder. Make sure the model is in .xnb format", "Model Loading error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        else
+                        {
+                            DrawModel(GameObjects[i],Matrix.CreateFromYawPitchRoll(Convert.ToSingle(ObjectData[7]),
+                                Convert.ToSingle(ObjectData[7]),Convert.ToSingle(ObjectData[8])) 
+                                * Matrix.CreateTranslation(Convert.ToSingle(ObjectData[3]),
+                                  Convert.ToSingle(ObjectData[4]),
+                                  Convert.ToSingle(ObjectData[5])), view, projection);
+                        }
+                        break;
                         }
                     }
-                    catch(IndexOutOfRangeException)
-                    {
-                        System.Windows.Forms.MessageBox.Show("i:"+i+" ", "IndexOutOfRangeException");
-                    }
-                }
             }
         }
         /// <summary>

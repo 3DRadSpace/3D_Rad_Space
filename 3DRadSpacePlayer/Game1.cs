@@ -117,7 +117,6 @@ namespace _3DRadSpacePlayer
                         }
                     default: break;
                 }
-                //Objects[50] = new SkinMesh("TEST_OBJ",true,"Axis",Vector3.Zero,Vector3.Zero);
                 AllObjectsInitialize();
             }
         }

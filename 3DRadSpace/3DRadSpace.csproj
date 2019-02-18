@@ -104,6 +104,7 @@
       <DependentUpon>Fog.cs</DependentUpon>
     </Compile>
     <Compile Include="Game1.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ObjectsList.cs">
       <SubType>Form</SubType>
     </Compile>

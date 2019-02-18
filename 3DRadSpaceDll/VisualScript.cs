@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable IDE0044
+#pragma warning disable IDE1006
 namespace _3DRadSpaceDll
 {
     /// <summary>
@@ -36,7 +38,16 @@ namespace _3DRadSpaceDll
         /// </summary>
         public void Debug()
         {
-
+            for(int i=0; i < data.Length; i++)
+            {
+                string[] line = data.ToString().Split(' ');
+                VisualScriptOpcode opcode = (VisualScriptOpcode)Convert.ToInt32(line[0]);
+                if (requredparams(opcode) == line.Length - 1)
+                {
+                    continue;
+                }
+                else throw new InvalidNumberOfParams("OPCODE:" + opcode + " params:" + (line.Length - 1) + " expected params:" + requredparams(opcode)); 
+            }
         }
         /// <summary>
         /// Executes a script.
@@ -85,11 +96,11 @@ namespace _3DRadSpaceDll
         /// </summary>
         OBJReload = 6,
         /// <summary>
-        /// Saves a variable into the variables array. int handle, object value
+        /// Saves a variable into the variables array. int handle,string name, object value
         /// </summary>
         var = 7, 
         /// <summary>
-        /// Increases the variable by the specified number. Parameters : variable, value , int global
+        /// Increases the variable by the specified number. Parameters : variable, value 
         /// </summary>
         varoperatorplus = 8,
         /// <summary>
@@ -128,7 +139,8 @@ namespace _3DRadSpaceDll
         /// Stops running the script.
         /// </summary>
         ScriptStop = 17,
-    }
+        
+    };
     enum VisualScriptType
     {
         Int = 0,
@@ -164,6 +176,36 @@ namespace _3DRadSpaceDll
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected InvalidOpcodeException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Serializable]
+    public class InvalidNumberOfParams : Exception
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public InvalidNumberOfParams() { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        public InvalidNumberOfParams(string message) : base(message) { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
+        public InvalidNumberOfParams(string message, Exception inner) : base(message, inner) { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        protected InvalidNumberOfParams(
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }

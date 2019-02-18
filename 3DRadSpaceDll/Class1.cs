@@ -411,7 +411,7 @@ namespace _3DRadSpaceDll
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = world;
+                    effect.World = rotation * world;
                    // effect.EnableDefaultLighting();
                     effect.View = view;
                     effect.Projection = projection;
