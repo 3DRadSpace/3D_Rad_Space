@@ -36,10 +36,10 @@ namespace _3DRadSpace
         int selectedobj = -1;
         ListBox ObjectsBox = new ListBox();
         MenuStrip ToolsStrip = new MenuStrip();
-        Vector3 cameraDirection = new Vector3(1, 0, 0);
+        Vector3 cameraDirection = new Vector3(-0.5f, 0, -0.5f);
         Vector3 cameraUp;
 
-        float speed = 0.5F;
+       // float speed = 0.5F;
 
         MouseState prevMouseState;
 
@@ -351,12 +351,13 @@ namespace _3DRadSpace
                 }
                 if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                 //   Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+              //  Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
                     //cameraDirection.X = (float) ((Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) - (Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z ));
                    // cameraDirection.Z = (float) ((Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) + (Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z));
-                   // IsMouseVisible = false;
+                   //IsMouseVisible = false;
+                  // CameraRotationXY(mouse.X - graphics.PreferredBackBufferWidth);
                 }
-                else IsMouseVisible = true;
+               // else IsMouseVisible = true;
             }
             if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
             {
@@ -378,6 +379,34 @@ namespace _3DRadSpace
             }
             base.Update(gameTime);
         }
+        void CameraRotationXY(float input)
+        {
+           // cameraDirection.X = (float)(Math.Cos(input) * cameraDirection.X - Math.Sin(input) * cameraDirection.Y);
+           // cameraDirection.Y = (float)(Math.Sin(input) * cameraDirection.X + Math.Cos(input) * cameraDirection.Y);
+            /*
+            if (input < 0) input =  (input* -1 ) % 400;
+            if(input > 0 && input < 100)
+            {
+                cameraDirection.X += input / 1000;
+            }
+            else if(input > 100 && input < 200)
+            {
+                cameraDirection.Z += input / 1000;
+            }
+            else if(input > 200 && input < 300)
+            {
+                cameraDirection.X -= input / 1000;
+            }
+            else if(input > 300 && input < 400)
+            {
+                cameraDirection.Z -= input / 1000;
+            }
+            else if(input > 400)
+            {
+               CameraRotationXY(-400 + input);
+            }
+            */
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(skycolor);
@@ -389,10 +418,12 @@ namespace _3DRadSpace
                 if (ObjectsData[i] != null)
                     CreateObject(ObjectsData[i].Split(' '));
             }
+            spriteBatch.DrawString(Font, "Cam_Dir: (" + cameraDirection.X + "," + cameraDirection.Y + "," + cameraDirection.Z + ")", new Vector2(200, graphics.PreferredBackBufferHeight - 20), Color.Black); ;
             spriteBatch.End();
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            spriteBatch.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             base.Draw(gameTime);
         }
         /// <summary>

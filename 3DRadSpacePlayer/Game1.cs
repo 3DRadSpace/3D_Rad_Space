@@ -136,6 +136,7 @@ namespace _3DRadSpacePlayer
             spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            spriteBatch.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             base.Draw(gameTime);
         }
         
