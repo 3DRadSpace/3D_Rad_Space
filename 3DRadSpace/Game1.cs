@@ -259,7 +259,7 @@ namespace _3DRadSpace
 
             cameraDirection = LookAt - CameraPos;
 
-            cameraDirection.Normalize();
+            //cameraDirection.Normalize();
 
             cameraUp = Vector3.Up;
 
@@ -351,13 +351,16 @@ namespace _3DRadSpace
                 }
                 if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-              //  Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
-                    //cameraDirection.X = (float) ((Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) - (Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z ));
-                   // cameraDirection.Z = (float) ((Math.Sin(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.X) + (Math.Cos(mouse.X - graphics.PreferredBackBufferWidth) * cameraDirection.Z));
-                   //IsMouseVisible = false;
-                  // CameraRotationXY(mouse.X - graphics.PreferredBackBufferWidth);
+                    //set the mouse to the center
+                    Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+                    //Get the distance from the center of the game-screen
+                    Vector2 Offset = new Vector2((graphics.PreferredBackBufferWidth / 2 - mouse.X), graphics.PreferredBackBufferHeight / 2 - mouse.Y);
+                    //File.AppendAllText("MouseDebug.log", Offset.X + " " + Offset.Y + " \n");
+
+                    //???
+                    cameraDirection.X = (float)Math.Sin(Offset.X/100);
+                    cameraDirection.Z = (float)Math.Cos(Offset.Y/100);
                 }
-               // else IsMouseVisible = true;
             }
             if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
             {
@@ -378,34 +381,6 @@ namespace _3DRadSpace
                 }
             }
             base.Update(gameTime);
-        }
-        void CameraRotationXY(float input)
-        {
-           // cameraDirection.X = (float)(Math.Cos(input) * cameraDirection.X - Math.Sin(input) * cameraDirection.Y);
-           // cameraDirection.Y = (float)(Math.Sin(input) * cameraDirection.X + Math.Cos(input) * cameraDirection.Y);
-            /*
-            if (input < 0) input =  (input* -1 ) % 400;
-            if(input > 0 && input < 100)
-            {
-                cameraDirection.X += input / 1000;
-            }
-            else if(input > 100 && input < 200)
-            {
-                cameraDirection.Z += input / 1000;
-            }
-            else if(input > 200 && input < 300)
-            {
-                cameraDirection.X -= input / 1000;
-            }
-            else if(input > 300 && input < 400)
-            {
-                cameraDirection.Z -= input / 1000;
-            }
-            else if(input > 400)
-            {
-               CameraRotationXY(-400 + input);
-            }
-            */
         }
         protected override void Draw(GameTime gameTime)
         {
