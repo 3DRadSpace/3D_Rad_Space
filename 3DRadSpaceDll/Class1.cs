@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
@@ -471,6 +472,62 @@ namespace _3DRadSpaceDll
             Pos = color;
             Start = start;
             End = end;
+        }
+    }
+    /// <summary>
+    /// First Person Camera
+    /// </summary>
+    public class FirstPersonCamera : GameObject
+    {
+        /// <summary>
+        /// Camera look at point.
+        /// </summary>
+        public Vector3 look_at = new Vector3(0, 0, 0);
+        /// <summary>
+        /// Camera field of view.
+        /// </summary>
+        public float FOV = MathHelper.ToRadians(45);
+        /// <summary>
+        /// Maximum render distance.
+        /// </summary>
+        public float MaxViewDistance = 500f;
+        /// <summary>
+        /// First Person Camera constructor.
+        /// </summary>
+        /// <param name="objn">Object name</param>
+        /// <param name="isactive">Is this object active?</param>
+        /// <param name="pos">Camera position</param>
+        /// <param name="FieldOfView">Field of view in radians</param>
+        /// <param name="MaxRenderDistance">Maximum draw distance.</param>
+        public FirstPersonCamera(string objn, bool isactive, Vector3 pos, float FieldOfView = 45f * 3.1415926f / 180f, float MaxRenderDistance = 500f)
+        {
+            name = objn;
+            IsActive = isactive;
+            Pos = pos;
+            FOV = FieldOfView;
+            MaxViewDistance = MaxRenderDistance;
+        }
+        /// <summary>
+        /// Camera update logic.
+        /// </summary>
+        /// <param name="view">View matrix.</param>
+        /// <param name="projection">Projection matrix pointer.</param>
+        public void Draw(ref Matrix view, ref Matrix projection)
+        {
+            if (IsActive == true)
+            {
+                projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
+                view = Matrix.CreateLookAt(Pos, look_at, Vector3.Up);
+            }
+        }
+        /// <summary>
+        /// Camera rotation logic.
+        /// </summary>
+        /// <param name="screen_coords">Screen coordinates as a Vector2</param>
+        public void Update(Vector2 screen_coords)
+        {
+            Mouse.SetPosition((int)screen_coords.X / 2, (int)screen_coords.Y / 2);
+
         }
     }
 }

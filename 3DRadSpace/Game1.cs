@@ -6,8 +6,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
+
 #pragma warning disable IDE0044
 
 namespace _3DRadSpace
@@ -36,12 +37,13 @@ namespace _3DRadSpace
         int selectedobj = -1;
         ListBox ObjectsBox = new ListBox();
         MenuStrip ToolsStrip = new MenuStrip();
+        Vector3 TotalCameraDir = new Vector3(0, 0, 0);
         Vector3 cameraDirection = new Vector3(-0.5f, 0, -0.5f);
         Vector3 cameraUp;
+        float CameraZoom = 1f;
+        float Movspeed = 0.5f;
 
-       // float speed = 0.5F;
-
-        MouseState prevMouseState;
+         MouseState prevMouseState;
 
 
         public string ProjectPath = "";
@@ -259,7 +261,7 @@ namespace _3DRadSpace
 
             cameraDirection = LookAt - CameraPos;
 
-            //cameraDirection.Normalize();
+            cameraDirection.Normalize();
 
             cameraUp = Vector3.Up;
 
@@ -317,10 +319,10 @@ namespace _3DRadSpace
                 ))
             {
 
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) CameraPos.X += 1; // CameraPos += cameraDirection * speed;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) CameraPos.X -= 1; //   CameraPos -= cameraDirection * speed;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) CameraPos.Z-= 1; //  CameraPos += Vector3.Cross(cameraUp, cameraDirection) * speed;
-                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) CameraPos.Z += 1; //  CameraPos -= Vector3.Cross(cameraUp, cameraDirection) * speed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) CameraPos += cameraDirection * Movspeed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) CameraPos -= cameraDirection * Movspeed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) CameraPos += Vector3.Cross(cameraUp, cameraDirection) * Movspeed;
+                if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) CameraPos -= Vector3.Cross(cameraUp, cameraDirection) * Movspeed;
                 if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E)) CameraPos.Y += 1;
                 if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q)) CameraPos.Y -= 1;
                 
@@ -357,9 +359,14 @@ namespace _3DRadSpace
                     Vector2 Offset = new Vector2((graphics.PreferredBackBufferWidth / 2 - mouse.X), graphics.PreferredBackBufferHeight / 2 - mouse.Y);
                     //File.AppendAllText("MouseDebug.log", Offset.X + " " + Offset.Y + " \n");
 
-                    //???
-                    cameraDirection.X = (float)Math.Sin(Offset.X/100);
-                    cameraDirection.Z = (float)Math.Cos(Offset.Y/100);
+                    //it kinda works please don't kill me :c
+                    //NOTE: Works fine when you hold.
+
+                    TotalCameraDir.X += Offset.Y / 100; 
+                    TotalCameraDir.Z += Offset.X / 100;
+
+                    cameraDirection.X = (float)Math.Cos(TotalCameraDir.X) * CameraZoom;
+                    cameraDirection.Z = (float)Math.Sin(TotalCameraDir.X) * CameraZoom;
                 }
             }
             if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
@@ -387,7 +394,7 @@ namespace _3DRadSpace
             GraphicsDevice.Clear(skycolor);
             DrawModel(Axis, world,view, projection);
             spriteBatch.Begin();
-            view = Matrix.CreateLookAt(CameraPos, CameraPos + cameraDirection, Vector3.UnitY);
+            view = Matrix.CreateLookAt(CameraPos + cameraDirection,CameraPos , Vector3.UnitY);
             for(int i=0; i < _3DRadSpaceGame.MAX_OBJECTS; i++)
             {
                 if (ObjectsData[i] != null)
@@ -400,6 +407,10 @@ namespace _3DRadSpace
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             spriteBatch.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             base.Draw(gameTime);
+        }
+        Vector2 ShitFunctionThatCalculatesTheGoddamnCameraRotation(Vector2 a)
+        {
+            return a;     
         }
         /// <summary>
         /// Finds a update for 3DRadSpace

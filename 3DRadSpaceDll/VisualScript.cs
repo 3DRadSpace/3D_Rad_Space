@@ -20,7 +20,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Variables in the project.
         /// </summary>
-        public static object[] variables = new object[_3DRadSpaceGame.MAX_VARIABLES];
+        public static List<object> variables = new List<object>();
         /// <summary>
         /// Global variables. Can be used in the entire game.
         /// </summary>
@@ -148,6 +148,7 @@ namespace _3DRadSpaceDll
         String = 2,
         ArrayPointer = 3,
         Object = 4,
+        Bool = 5,
     }
     /// <summary>
     /// Thrown when the parser finds an invalid opcode.
