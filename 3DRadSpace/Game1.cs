@@ -55,6 +55,7 @@ namespace _3DRadSpace
             ToolStripMenuItem openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem saveProjectAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem PlayProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem compileProjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ToolStripMenuItem editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,6 +111,7 @@ namespace _3DRadSpace
             openProjectToolStripMenuItem,
             saveProjectToolStripMenuItem,
             saveProjectAsToolStripMenuItem,
+            PlayProjectToolStripMenuItem,
             compileProjectsToolStripMenuItem,
             exitToolStripMenuItem});
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -143,6 +145,13 @@ namespace _3DRadSpace
             saveProjectAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             saveProjectAsToolStripMenuItem.Text = "Save Project As";
             saveProjectAsToolStripMenuItem.Click += new EventHandler(SaveProjectAs);
+            // 
+            // saveProjectAsToolStripMenuItem
+            // 
+            PlayProjectToolStripMenuItem.Name = "PlayProjectToolStripMenuItem";
+            PlayProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            PlayProjectToolStripMenuItem.Text = "Play Project";
+            PlayProjectToolStripMenuItem.Click += new EventHandler(PlayProject);
             // 
             // compileProjectsToolStripMenuItem
             // 
@@ -360,10 +369,10 @@ namespace _3DRadSpace
                     //File.AppendAllText("MouseDebug.log", Offset.X + " " + Offset.Y + " \n");
 
                     //it kinda works please don't kill me :c
-                    //NOTE: Works fine when you hold.
+                    //NOTE: Works fine when you hold. (NO IT DOESNT)
 
-                    TotalCameraDir.X += Offset.Y / 100; 
-                    TotalCameraDir.Z += Offset.X / 100;
+                    TotalCameraDir.X += Offset.Y / 200; 
+                    TotalCameraDir.Z += Offset.X / 200;
 
                     cameraDirection.X = (float)Math.Cos(TotalCameraDir.X) * CameraZoom;
                     cameraDirection.Z = (float)Math.Sin(TotalCameraDir.X) * CameraZoom;
@@ -773,6 +782,13 @@ namespace _3DRadSpace
                 IsProjectSaved = true;
                 ProjectPath = saveFile.FileName;
             }
+        }
+        void PlayProject(object sender,EventArgs e)
+        {
+            SaveProject(null, null);
+            PlayTestingLauncher.ProjectPath = this.ProjectPath;
+            PlayTestingLauncher playTesting = new PlayTestingLauncher();
+            playTesting.ShowDialog();
         }
         void CompileProject(object sender,EventArgs e)
         {

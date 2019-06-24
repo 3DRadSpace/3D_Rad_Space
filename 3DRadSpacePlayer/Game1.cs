@@ -133,7 +133,7 @@ namespace _3DRadSpacePlayer
         protected override void Draw(GameTime gameTime)
         {
             AllObjectsDraw();
-            spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+            spriteBatch.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             spriteBatch.GraphicsDevice.BlendState = BlendState.Opaque;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             spriteBatch.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;

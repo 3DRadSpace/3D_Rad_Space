@@ -352,6 +352,49 @@
             <param name="start">Start distance</param>
             <param name="end">End distance</param>
         </member>
+        <member name="T:_3DRadSpaceDll.FirstPersonCamera">
+            <summary>
+            First Person Camera
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FirstPersonCamera.look_at">
+            <summary>
+            Camera look at point.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FirstPersonCamera.FOV">
+            <summary>
+            Camera field of view.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FirstPersonCamera.MaxViewDistance">
+            <summary>
+            Maximum render distance.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.FirstPersonCamera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            First Person Camera constructor.
+            </summary>
+            <param name="objn">Object name</param>
+            <param name="isactive">Is this object active?</param>
+            <param name="pos">Camera position</param>
+            <param name="FieldOfView">Field of view in radians</param>
+            <param name="MaxRenderDistance">Maximum draw distance.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.FirstPersonCamera.Draw(Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
+            <summary>
+            Camera update logic.
+            </summary>
+            <param name="view">View matrix.</param>
+            <param name="projection">Projection matrix pointer.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.FirstPersonCamera.Update(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Camera rotation logic.
+            </summary>
+            <param name="screen_coords">Screen coordinates as a Vector2</param>
+        </member>
         <member name="T:_3DRadSpaceDll.VisualScript">
             <summary>
             Visual script compiler, debugger and functions.
