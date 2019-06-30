@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace _3DRadSpaceDll
@@ -47,10 +46,11 @@ namespace _3DRadSpaceDll
         /// Checks if a script has a error in it's code.
         /// </summary>
         /// <param name="script">The script file.</param>
-        public static int Debug(string script)
+        /// <param name="editor">Checks the envoirement</param>
+        public static int Debug(string script,bool editor)
         {
-            int i = 0;
             File.Delete(@"compile_errors.txt");
+            int i = -1;
             CodeDomProvider codeDomProvider = CodeDomProvider.CreateProvider("CSharp");
             CompilerParameters parameters = new CompilerParameters();
             if (codeDomProvider.Supports(GeneratorSupport.EntryPointMethod)) parameters.MainClass = "Script";
@@ -61,28 +61,30 @@ namespace _3DRadSpaceDll
             parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("System.Console.dll");
             parameters.ReferencedAssemblies.Add("mscorlib.dll");
-            parameters.ReferencedAssemblies.Add("netstandard.dll");
+           // parameters.ReferencedAssemblies.Add("netstandard.dll");
             CompilerResults results = codeDomProvider.CompileAssemblyFromFile(parameters, script);
             CompilerErrorCollection errors = results.Errors;
             for (int j = 0; j < errors.Count; j++)
             {
-                File.AppendAllText(@"compile_errors.txt", errors[i].ErrorText + " Line:" + errors[i].Line + " Is warning:" + errors[i].IsWarning+" \r\n");
+                File.AppendAllText(@"compile_errors.txt", errors[j].ErrorText + " Line:" + errors[j].Line + " Is warning:" + errors[j].IsWarning+" \r\n");
             }
             if (errors.HasErrors == false)
             {
                 Assembly compiledcode = results.CompiledAssembly;
-                for (i=0; i < _3DRadSpaceGame.MAX_SCRIPTS; i++)
+                if (!editor)
                 {
-                    if (scripts[i] == null)
+                    for (i = 0; i < _3DRadSpaceGame.MAX_SCRIPTS; i++)
                     {
-                        scripts[i] = compiledcode;
-                        break;
+                        if (scripts[i] == null)
+                        {
+                            scripts[i] = compiledcode;
+                            break;
+                        }
                     }
                 }
             }
             else
             {
-                Process.Start(@"compile_errors.txt");
                 throw new ScriptError(File.ReadAllText(@"compile_errors.txt"));
             }
             return i;
@@ -91,10 +93,30 @@ namespace _3DRadSpaceDll
         /// Starts running a script.
         /// </summary>
         /// <param name="ScriptID">Script's unique unsigned number identifier.</param>
-        public static void Run(int ScriptID)
+        public static void Run_Start(int ScriptID)
         {
             Type type = scripts[ScriptID].GetType("Script");
-            MethodInfo Main = type.GetMethod("Main");
+            MethodInfo Main = type.GetMethod("Start");
+            Main.Invoke(null, null);
+        }
+        /// <summary>
+        /// Runs every frame.
+        /// </summary>
+        /// <param name="ScriptID">Script identifier.</param>
+        public static void Run_Update(int ScriptID)
+        {
+            Type type = scripts[ScriptID].GetType("Script");
+            MethodInfo Main = type.GetMethod("Start");
+            Main.Invoke(null, null);
+        }
+        /// <summary>
+        /// Runs when script stops.
+        /// </summary>
+        /// <param name="ScriptID">Script identifier.</param>
+        public static void Run_End(int ScriptID)
+        {
+            Type type = scripts[ScriptID].GetType("Script");
+            MethodInfo Main = type.GetMethod("Start");
             Main.Invoke(null, null);
         }
     }
@@ -135,13 +157,18 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Disables the object instance from updating.
         /// </summary>
-        public void Disable() => IsActive = false;
+        public virtual void Disable() => IsActive = false;
         /// <summary>
         /// Enables the object, allowing it to update it's properties when Update() or Draw() is called.
         /// </summary>
-        public void Enable() => IsActive = true;
-
+        public virtual void Enable() => IsActive = true;
     }
+    /// <summary>
+    /// Click event.
+    /// </summary>
+    /// <param name="sender">Sender object.</param>
+    /// <param name="mouse">Mouse coordinates and stuff</param>
+    public delegate void ClickEvent(object sender, MouseState mouse);
     /// <summary>
     /// 3DRadSpace Camera object class.
     /// </summary>
@@ -204,7 +231,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Loaded script file.
         /// </summary>
-        int ScriptID = Int32.MaxValue;
+        int ScriptID = int.MaxValue;
         /// <summary>
         /// Loads and tests a script for errors then runs it.
         /// </summary>
@@ -213,14 +240,30 @@ namespace _3DRadSpaceDll
         /// <param name="file">Script file to be loaded.</param>
         public Script(string objn, bool isactive, string file)
         {
-            ScriptInterpeter.Debug(file);
+            ScriptID = ScriptInterpeter.Debug(file,false);
         }
         /// <summary>
         /// Updates the script.
         /// </summary>
         public void Update()
         {
-            ScriptInterpeter.Run(ScriptID);
+            if(IsActive) ScriptInterpeter.Run_Update(ScriptID);
+        }
+        /// <summary>
+        /// Script Enabling update.
+        /// </summary>
+        public override void Enable()
+        {
+            ScriptInterpeter.Run_Start(ScriptID);
+            base.Enable();
+        }
+        /// <summary>
+        /// Script stop logic.
+        /// </summary>
+        public override void Disable()
+        {
+            ScriptInterpeter.Run_End(ScriptID);
+            base.Disable();
         }
     }
     /// <summary>
@@ -249,7 +292,7 @@ namespace _3DRadSpaceDll
         /// <param name="manager">Content manager</param>
         /// <param name="pos">Sprite's location. Z can have any value.</param>
         /// <param name="scale">Sprite's location</param>
-        public Sprite(string objn, bool isactive, string asset,ContentManager manager,Vector3 pos, Vector2 scale)
+        public Sprite(string objn, bool isactive, string asset, ContentManager manager, Vector3 pos, Vector2 scale)
         {
             name = objn;
             IsActive = isactive;
@@ -265,9 +308,28 @@ namespace _3DRadSpaceDll
         {
             if (IsActive == true)
             {
-                batch.Draw(sprite, new Rectangle((int)Pos.X, (int)Pos.Y, (int)Scale.X, (int)Scale.Y),new Color(255, 255, 255));
+                batch.Draw(sprite, new Rectangle((int)Pos.X, (int)Pos.Y, (int)Scale.X, (int)Scale.Y), new Color(255, 255, 255));
             }
         }
+        /// <summary>
+        /// Update logic. Provides events callbacks for the scripting engine.
+        /// </summary>
+        /// <param name="mouse">Mouse input.</param>
+        public void Update(MouseState mouse)
+        {
+            if (mouse.LeftButton == ButtonState.Pressed && mouse.X >= Pos.X && mouse.X <= Pos.X + Scale.X && mouse.Y >= Pos.Y && mouse.Y <= Pos.Y + Scale.Y)
+            {
+                ClickEvent handler = onClick;
+                if (handler != null)
+                {
+                    onClick(this, mouse);
+                }
+            }
+        }
+        /// <summary>
+        /// Event is raised when the Sprite object is clicked.
+        /// </summary>
+        public event ClickEvent onClick;
     }
     /// <summary>
     /// TextPrint class. 
@@ -329,7 +391,7 @@ namespace _3DRadSpaceDll
         /// <param name="spriteBatch">spritebatch.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font,Text, new Vector2(Pos.X,Pos.Y),new Color(0,0,0));
+            if(IsActive)   spriteBatch.DrawString(font,Text, new Vector2(Pos.X,Pos.Y),new Color(0,0,0));
         }
     }
 
@@ -406,6 +468,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Projection Matrix</param>
         public void Draw(Matrix view,Matrix projection)
         {
+            if (!IsActive) return;
             Matrix world = Matrix.CreateTranslation(Pos);
             Matrix rotation = Matrix.CreateFromQuaternion(Rotation);
             foreach (ModelMesh mesh in model.Meshes)
@@ -526,8 +589,8 @@ namespace _3DRadSpaceDll
         /// <param name="screen_coords">Screen coordinates as a Vector2</param>
         public void Update(Vector2 screen_coords)
         {
+            if (!IsActive) return;
             Mouse.SetPosition((int)screen_coords.X / 2, (int)screen_coords.Y / 2);
-
         }
     }
 }

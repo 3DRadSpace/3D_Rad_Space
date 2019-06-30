@@ -30,10 +30,10 @@ namespace _3DRadSpace
                     if (args[0].Split('.')[1].ToLower() == "3drss")
                     {
                         Script script = new Script();
-                        script.richTextBox1.Text = "";
+                        script.scintilla1.Text = "";
                         for (int i = 0; i < file.Length; i++)
                         {
-                            script.richTextBox1.Text += file[i] + "\r\n";
+                            script.scintilla1.Text += file[i] + "\r\n";
                             script.LoadedScript = args[0];
                         }
                         script.ShowDialog();

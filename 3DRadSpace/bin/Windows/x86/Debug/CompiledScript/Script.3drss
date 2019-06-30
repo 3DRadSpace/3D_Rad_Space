@@ -1,7 +1,17 @@
+using System;
+
 class Script
 {
-public void Main()
-{
-   int a = 3;
-}
+    //Called once when the script starts.
+    public static void Start()
+    {
+    }
+    //Called every frame when the script executes.
+    public static void Update()
+    {
+    }
+    ///Called when script execution ends.
+    public static void End()
+    {
+    }
 }

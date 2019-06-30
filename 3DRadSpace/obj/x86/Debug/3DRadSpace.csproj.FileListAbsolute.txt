@@ -206,3 +206,5 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debu
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\3DRadSpace.csproj.CopyComplete
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\obj\x86\Debug\_3DRadSpace.PlayTestingLauncher.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\ScintillaNET.dll
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\bin\Windows\x86\Debug\ScintillaNET.xml

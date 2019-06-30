@@ -9,205 +9,126 @@ using System.Threading.Tasks;
 namespace _3DRadSpaceDll
 {
     /// <summary>
-    /// Visual script compiler, debugger and functions.
+    /// 3DRadSpace 'Visual Script' scripting engine.
     /// </summary>
-    public class VisualScript
+    namespace VisualScript
     {
         /// <summary>
-        /// The script data.
+        /// List of opcode commands that can be used by 3D Rad Space 'Visual Script'
         /// </summary>
-        public object[] data;
-        /// <summary>
-        /// Variables in the project.
-        /// </summary>
-        public static List<object> variables = new List<object>();
-        /// <summary>
-        /// Global variables. Can be used in the entire game.
-        /// </summary>
-        public static object[] GLOBALVARIABLES = new object[_3DRadSpaceGame.MAX_VARIABLES];
-        /// <summary>
-        /// Script constructor
-        /// </summary>
-        /// <param name="script">File string array returned by File.ReadAllLines()</param>
-        public VisualScript(string[] script)
+        public enum Opcode
         {
-            data = script;
+            /// <summary>
+            /// No operation.
+            /// </summary>
+            NOP = 0,
+            /// <summary>
+            /// Executes onScriptStop() and stops execution.
+            /// </summary>
+            ScriptStop,
+            /// <summary>
+            /// Defines a variable with a value.
+            /// </summary>
+            Def_Var,
+            /// <summary>
+            /// Removes a variable.
+            /// </summary>
+            Undef_Var,
+            /// <summary>
+            /// Sets a value to a variable.
+            /// </summary>
+            Set_Var,
+            /// <summary>
+            /// Uses an variable operator.
+            /// </summary>
+            Operator_Var,
+            /// <summary>
+            /// Defines an array, needs size and 
+            /// </summary>
+            Def_Array,
+            /// <summary>
+            /// Gets an array element.
+            /// </summary>
+            Acess_Array,
+            /// <summary>
+            /// Sets an array element.
+            /// </summary>
+            Set_Array,
+            /// <summary>
+            /// Removes an array from the memory and frees memory.
+            /// </summary>
+            Undef_Array,
+            
+
         }
-        /// <summary>
-        /// Checks a script for errors.
-        /// </summary>
-        public void Debug()
+        public class Command
         {
-            for(int i=0; i < data.Length; i++)
+            public Opcode Opcode { get; private set; }
+            public object[] Arguments { get; private set; }
+            public Command()
             {
-                string[] line = data.ToString().Split(' ');
-                VisualScriptOpcode opcode = (VisualScriptOpcode)Convert.ToInt32(line[0]);
-                if (requredparams(opcode) == line.Length - 1)
-                {
-                    continue;
-                }
-                else throw new InvalidNumberOfParams("OPCODE:" + opcode + " params:" + (line.Length - 1) + " expected params:" + requredparams(opcode)); 
+
             }
         }
         /// <summary>
-        /// Executes a script.
+        /// Thrown when the parser finds an invalid opcode.
         /// </summary>
-        public void Run()
+        [Serializable]
+        public class InvalidOpcodeException : Exception
         {
+            /// <summary>
+            /// 
+            /// </summary>
+            public InvalidOpcodeException() { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="message"></param>
+            public InvalidOpcodeException(string message) : base(message) { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="message"></param>
+            /// <param name="inner"></param>
+            public InvalidOpcodeException(string message, Exception inner) : base(message, inner) { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="info"></param>
+            /// <param name="context"></param>
+            protected InvalidOpcodeException(
+              System.Runtime.Serialization.SerializationInfo info,
+              System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
-        int requredparams(VisualScriptOpcode a)
+        /// <summary>
+        /// 
+        /// </summary>
+        [Serializable]
+        public class InvalidNumberOfParams : Exception
         {
-            if (a == VisualScriptOpcode.NOP) return 0;
-            if (a > VisualScriptOpcode.NOP && a < VisualScriptOpcode.var) return 1;
-            else return -1;
+            /// <summary>
+            /// 
+            /// </summary>
+            public InvalidNumberOfParams() { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="message"></param>
+            public InvalidNumberOfParams(string message) : base(message) { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="message"></param>
+            /// <param name="inner"></param>
+            public InvalidNumberOfParams(string message, Exception inner) : base(message, inner) { }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="info"></param>
+            /// <param name="context"></param>
+            protected InvalidNumberOfParams(
+              System.Runtime.Serialization.SerializationInfo info,
+              System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
-    }
-    /// <summary>
-    /// Contains the function numeric IDs.
-    /// </summary>
-    public enum VisualScriptOpcode
-    {
-        /// <summary>
-        /// Does nothing. No parameters
-        /// </summary>
-        NOP = 0,
-        /// <summary>
-        /// Starts an object. Parameters: object handle as int
-        /// </summary>
-        OBJStart = 1,
-        /// <summary>
-        /// Stops an object. Parameters: object handle as int
-        /// </summary>
-        OBJStop = 2,
-        /// <summary>
-        /// Shows an object. Parameters: object handle as int
-        /// </summary>
-        OBJShow = 3,
-        /// <summary>
-        /// Hides an object. Parameters: object handle as int
-        /// </summary>
-        OBJHide = 4,
-        /// <summary>
-        /// Removes an object from the array that contains the objects. Parameters: object handle as int
-        /// </summary>
-        OBJDestroy =5,
-        /// <summary>
-        /// Reloads the resource of the object. Parameters: string resource, int obj handle
-        /// </summary>
-        OBJReload = 6,
-        /// <summary>
-        /// Saves a variable into the variables array. int handle,string name, object value
-        /// </summary>
-        var = 7, 
-        /// <summary>
-        /// Increases the variable by the specified number. Parameters : variable, value 
-        /// </summary>
-        varoperatorplus = 8,
-        /// <summary>
-        /// Decreases the variable by the specified number. Parameters : variable, value
-        /// </summary>
-        varoperatorminus = 9,
-        /// <summary>
-        /// Multiplies the variable by the specified number. Parameters : variable, value
-        /// </summary>
-        varoperatormultiply = 10,
-        /// <summary>
-        /// Divides the variable by the specified number. Parameters : variable, value
-        /// </summary>
-        varoperatordivide = 11,
-        /// <summary>
-        /// Gets the modulo of the 2 specified numbers. Parameters : variable, value
-        /// </summary>
-        varoperatormodulo = 12,
-       /// <summary>
-       /// Removes an variable from the array. Parameters: variable handle
-       /// </summary>
-        vardelete = 13,
-        /// <summary>
-        /// Moves an object to an location. Parameters: object handle, float x, float y,float z, int incr
-        /// </summary>
-        OBJMoveTo = 14,
-        /// <summary>
-        /// Rotates the object using euler angles. Parameters: object handle, float x, float y, float z, int incr
-        /// </summary>
-        OBJRotate = 15,
-        /// <summary>
-        /// Sets an property specific to the object. Parameters: object handle, int property, object value
-        /// </summary>
-        OBJPropertySet = 16,
-        /// <summary>
-        /// Stops running the script.
-        /// </summary>
-        ScriptStop = 17,
-        
-    };
-    enum VisualScriptType
-    {
-        Int = 0,
-        Float = 1,
-        String = 2,
-        ArrayPointer = 3,
-        Object = 4,
-        Bool = 5,
-    }
-    /// <summary>
-    /// Thrown when the parser finds an invalid opcode.
-    /// </summary>
-    [Serializable]
-    public class InvalidOpcodeException : Exception
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public InvalidOpcodeException() { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        public InvalidOpcodeException(string message) : base(message) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
-        public InvalidOpcodeException(string message, Exception inner) : base(message, inner) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected InvalidOpcodeException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    [Serializable]
-    public class InvalidNumberOfParams : Exception
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public InvalidNumberOfParams() { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        public InvalidNumberOfParams(string message) : base(message) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
-        public InvalidNumberOfParams(string message, Exception inner) : base(message, inner) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected InvalidNumberOfParams(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

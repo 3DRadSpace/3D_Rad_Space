@@ -293,13 +293,22 @@ namespace _3DRadSpace
                     if (warn1 == DialogResult.Yes)
                     {
                         SaveProject(null, null);
+                        DestroyNotifyIcon();
+                        return;
                     }
                     else if (warn1 == DialogResult.Cancel)
                     {
                         e.Cancel = true;
                     }
                 }
+                DestroyNotifyIcon();
             }
+        }
+        void DestroyNotifyIcon()
+        {
+            notifyIcon.Visible = false;
+            notifyIcon.Dispose();
+            notifyIcon = null;
         }
         private void NotifyIcon_BalloonTipClicked(object sender, System.EventArgs e)
         {
@@ -369,7 +378,7 @@ namespace _3DRadSpace
                     //File.AppendAllText("MouseDebug.log", Offset.X + " " + Offset.Y + " \n");
 
                     //it kinda works please don't kill me :c
-                    //NOTE: Works fine when you hold. (NO IT DOESNT)
+                    //NOTE: Works fine when you hold. 
 
                     TotalCameraDir.X += Offset.Y / 200; 
                     TotalCameraDir.Z += Offset.X / 200;
@@ -703,6 +712,14 @@ namespace _3DRadSpace
                     fog.textBox5.Text = objdata[6];
                     fog.textBox6.Text = objdata[7];
                     if (fog.ShowDialog() == DialogResult.OK) edit = true;
+                }
+                if(objdata[0] == "Script")
+                {
+                    Script script = new Script(); //That's the script window, not the script object
+                    script.textBox1.Text = objdata[1]; 
+                    script.checkBox1.Checked = Convert.ToBoolean(objdata[2]);
+                    string l = "";
+
                 }
                 if(edit)
                 {
