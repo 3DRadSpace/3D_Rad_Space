@@ -1,4 +1,0 @@
-Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/DefaultFont.spritefont","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/bin/Windows/Content/DefaultFont.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21521,0.5482156
-"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/Error.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/bin/Windows/Content/Error.xnb","ModelProcessor","ModelContent",6154,1376,0.558787
-"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/missingResourceErrorTexture.png","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpacePlayer/Content/bin/Windows/Content/missingResourceErrorTexture_0.xnb","TextureProcessor","Texture2DContent",2919,53369,0.0627892
