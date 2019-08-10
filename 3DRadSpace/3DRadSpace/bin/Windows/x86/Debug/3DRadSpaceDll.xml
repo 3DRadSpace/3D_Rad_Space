@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>3DRadSpaceDll</name>
+    </assembly>
+    <members>
+        <member name="T:_3DRadSpaceDll.Game">
+            <summary>
+            Contains methods and fields for managing game objects.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Game.GameObjects">
+            <summary>
+            Contains the objects. 
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.onDraw">
+            <summary>
+            Called when drawing the object
+            </summary>
+            <param name="drawn">The drawn object. Conversion will be needed.</param>
+            <param name="spriteBatch">SpriteBatch used for drawing 2D objects</param>
+            <param name="view">View Matrix used for 3D model drawing</param>
+            <param name="projection">Projection Matrix used for 3D model drawing</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.onUpdate">
+            <summary>
+            Called when updating.
+            </summary>
+            <param name="updated">The updated object</param>
+            <param name="mouse">Mouse inputs</param>
+            <param name="keyboard">Keyboard inputs</param>
+            <param name="time">Game time input</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.onObjectCreate">
+            <summary>
+            Called when a object is being created in the constructor function.
+            </summary>
+            <param name="obj">The created object</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.onObjectDestroy">
+            <summary>
+            Called when a object is being removed.
+            </summary>
+            <param name="obj">The removed object</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.GameObject">
+            <summary>
+            Base class for all 3DRadSpace objects.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Name">
+            <summary>
+            Object Name
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Enabled">
+            <summary>
+            Checks if object is enabled.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Hidden">
+            <summary>
+            Checks if object is being drawn.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Position">
+            <summary>
+            Object position
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Rotation">
+            <summary>
+            Rotation in a Euler angles system.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.GameObject.RotationQuaternion">
+            <summary>
+            Rotation in a Quaterion system.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Resource">
+            <summary>
+            Resource file
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Enable">
+            <summary>
+            Enables object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Disable">
+            <summary>
+            Disables object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Toggle">
+            <summary>
+            Switches object on/off state.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Show">
+            <summary>
+            Shows the object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Hide">
+            <summary>
+            Hides the object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Draw">
+            <summary>
+            Object Drawing code
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw">
+            <summary>
+            Object draw code for the 3DRadSpace editor
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Update">
+            <summary>
+            Object update logic
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnDraw">
+            <summary>
+            Called when object is being drawn on frame.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnUpdate">
+            <summary>
+            Called when object is being updated on the update logic loop.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnInitialization">
+            <summary>
+            Called when object is being created.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnRemoval">
+            <summary>
+            Called when object is being deleted.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Finalize">
+            <summary>
+            Object destructor.
+            </summary>
+        </member>
+    </members>
+</doc>
