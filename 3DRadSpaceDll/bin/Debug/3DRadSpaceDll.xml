@@ -41,11 +41,12 @@
             Compiled scripts.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.ScriptInterpeter.Debug(System.String)">
+        <member name="M:_3DRadSpaceDll.ScriptInterpeter.Debug(System.String,System.Boolean)">
             <summary>
             Checks if a script has a error in it's code.
             </summary>
             <param name="script">The script file.</param>
+            <param name="editor">Checks the envoirement</param>
         </member>
         <member name="M:_3DRadSpaceDll.ScriptInterpeter.Run_Start(System.Int32)">
             <summary>
