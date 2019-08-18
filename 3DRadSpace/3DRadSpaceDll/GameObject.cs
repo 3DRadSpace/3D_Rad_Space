@@ -36,11 +36,25 @@ namespace _3DRadSpaceDll
     /// <param name="obj">The removed object</param>
     public delegate void onObjectDestroy(object obj);
     /// <summary>
+    /// Called when a object resource is being loaded.
+    /// </summary>
+    /// <param name="obj">Object</param>
+    public delegate void onObjectLoad(object obj);
+    /// <summary>
+    /// Called when a object is being unloaded.
+    /// </summary>
+    /// <param name="obj">Object to be unloaded</param>
+    public delegate void onObjectUnload(object obj);
+    
+    /// <summary>
     /// Base class for all 3DRadSpace objects.
     /// </summary>
     public class GameObject
     {
-        GameObject()
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public GameObject()
         {
             OnInitialization(this);
         }
@@ -95,25 +109,39 @@ namespace _3DRadSpaceDll
         /// Hides the object.
         /// </summary>
         public void Hide() { Hidden = true; }
+        /// <summary>
+        /// Loads the resource(s).
+        /// </summary>
+        public virtual void Load()
+        {
+            OnObjectLoad(this);
+        }
+        /// <summary>
+        /// Unloads the resource.
+        /// </summary>
+        public virtual void Free()
+        {
+
+        }
 
         /// <summary>
         /// Object Drawing code
         /// </summary>
-        public void Draw()
+        public virtual void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            OnDraw(this, null, null, null);
+            OnDraw(this, spriteBatch, view, projection);
         }
         /// <summary>
         /// Object draw code for the 3DRadSpace editor
         /// </summary>
-        public virtual void EditorDraw()
+        public virtual void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
 
         }
         /// <summary>
         /// Object update logic
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
             OnUpdate(this, null, null, null);
         }
@@ -133,6 +161,15 @@ namespace _3DRadSpaceDll
         /// Called when object is being deleted.
         /// </summary>
         public event onObjectDestroy OnRemoval;
+        /// <summary>
+        /// Called when a object resource is being loaded.
+        /// </summary>
+        public event onObjectLoad OnObjectLoad;
+        /// <summary>
+        /// Called when a object resource is being freed from the RAM memory.
+        /// </summary>
+        public event onObjectUnload OnObjectUnload;
+
         /// <summary>
         /// Object destructor.
         /// </summary>

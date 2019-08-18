@@ -13,6 +13,7 @@ namespace _3DRadSpace
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Form GameWindow;
+        Camera Editor_View;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -29,6 +30,7 @@ namespace _3DRadSpace
         protected override void LoadContent()
         {
              spriteBatch = new SpriteBatch(GraphicsDevice);
+             
         }
 
         protected override void UnloadContent()
