@@ -22,7 +22,14 @@ namespace _3DRadSpaceDll
         /// <param name="farplane">Maximum draw distance</param>
         public Camera(string name,bool Enabled,Vector3 Pos,Vector3 Target,Vector3 UpDir,float FOV,float nearplane,float farplane)
         {
-
+            Name = name;
+            this.Enabled = Enabled;
+            Position = Pos;
+            CameraTarget = Target;
+            CameraRotation = UpDir;
+            this.FOV = FOV;
+            MinDrawDist = nearplane;
+            MaxDrawDist = farplane;
         }
         /// <summary>
         /// Camera constructor for the editor.
@@ -39,7 +46,8 @@ namespace _3DRadSpaceDll
             Position = Pos;
             CameraTarget = Target;
             this.FOV = FOV;
-            
+            MaxDrawDist = farplane;
+            MinDrawDist = nearplane;
         }
         /// <summary>
         /// Expected to be loaded by the game editor.
@@ -72,7 +80,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Camera Rotation. (0,1,0) Is the default.
         /// </summary>
-        public Vector3 CameraRotation;
+        public Vector3 CameraRotation = new Vector3(0,1,0);
 
         /// <summary>
         /// Fielf of view (Measured in radians).
@@ -102,6 +110,11 @@ namespace _3DRadSpaceDll
         }
 
         /// <summary>
+        /// Near plane distance
+        /// </summary>
+        public float MinDrawDist;
+
+        /// <summary>
         /// Maximum drawing distance.
         /// </summary>
         public float MaxDrawDist;
@@ -116,7 +129,7 @@ namespace _3DRadSpaceDll
         {
             if (!Enabled) return;
             View = Matrix.CreateLookAt(Position, CameraTarget, CameraRotation);
-            Projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,0.1f,MaxDrawDist);
+            Projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,MinDrawDist,MaxDrawDist);
             base.Draw(null, View, Projection); //Calls base class to get the event called too.
         }
     }

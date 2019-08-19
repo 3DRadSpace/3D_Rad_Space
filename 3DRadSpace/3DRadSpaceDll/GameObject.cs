@@ -121,7 +121,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public virtual void Free()
         {
-
+            OnObjectUnload(this);
         }
 
         /// <summary>

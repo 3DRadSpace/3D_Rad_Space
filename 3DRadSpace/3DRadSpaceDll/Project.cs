@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DRadSpaceDll
 {
@@ -12,32 +14,80 @@ namespace _3DRadSpaceDll
     /// </summary>
     public class Project
     {
+       // static string _magic = "3DRSP";
         /// <summary>
         /// Project name
         /// </summary>
         public string Name;
-        /// <summary>
-        /// If the editor allows the project to be edited.
-        /// </summary>
-        public bool Writable;
+
         /// <summary>
         /// Opens a project
         /// </summary>
-        /// <param name="filename">File name</param>
-        public void Open(string filename)
+        /// <param name="filename">File to open</param>
+        /// <returns>Returns the objects.</returns>
+        public static List<object> Open(string filename)
         {
-            byte[] FileBuffer = File.ReadAllBytes(filename);
-            if(CheckFormat(FileBuffer) == false) throw new FormatException("The opened file is not a 3DRadSpace project.");
-            
-        }
-        bool CheckFormat(byte[] input)
-        {
-            string magic = "3DRSP";
-            for(int i =0; i < magic.Length;i++)
+            List<object> result = new List<object>();
+            string[] Data = File.ReadAllLines(filename); //Read the file
+            for (int i =0; i < Data.Length;i++) //Loop each line
             {
-                if (input[i] != (byte)magic[i]) return false;
+                //Split the current line
+                string[] Obj = Data[i].Split(' ');
+                object a; //Object to be added.
+                switch(Obj[0]) //Identify the current object.
+                {
+                    case "camera":
+                        {
+                            a = new Camera(Obj[1], Convert.ToBoolean(Obj[2]), new Vector3(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])),
+                                new Vector3(Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
+                                new Vector3(Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
+                                Convert.ToSingle(Obj[12]), Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]));
+                            
+                            break;
+                        }
+                    default:
+                        {
+                            throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
+                        }
+                }
+                result.Add(a);
             }
-            return true;
+            return result;
+        }
+        /// <summary>
+        /// Saves a 3DRSP project
+        /// </summary>
+        /// <param name="filename">File path</param>
+        public static void Save(string filename)
+        {
+            string[] ToBeSaved = new string[Game.GameObjects.Count];
+            for(int i =0; i < Game.GameObjects.Count;i++)
+            {
+                if(Game.GameObjects[i] is Camera c)
+                {
+                    ToBeSaved[i] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
+                        " " + c.CameraRotation + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist;
+                }
+            }
+            File.WriteAllLines(filename, ToBeSaved);
+        }
+        /// <summary>
+        /// Converts a vector to a string in the format needed for 3DRSP projects
+        /// </summary>
+        /// <param name="pos">3D Vector to be converted</param>
+        /// <returns>The needed string</returns>
+        public static string Vector2String(Vector3 pos)
+        {
+            return pos.X + " " + pos.Y + " " + pos.Z;
+        }
+        /// <summary>
+        /// Converts a vector to a string in the format needed for 3DRSP projects
+        /// </summary>
+        /// <param name="pos">2D Vector to be converted</param>
+        /// <returns>The needed string</returns>
+        public static string Vector2String(Vector2 pos)
+        {
+            return pos.X + " " + pos.Y;
         }
     }
 }

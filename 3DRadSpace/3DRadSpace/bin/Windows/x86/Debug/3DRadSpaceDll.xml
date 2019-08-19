@@ -4,6 +4,105 @@
         <name>3DRadSpaceDll</name>
     </assembly>
     <members>
+        <member name="T:_3DRadSpaceDll.Camera">
+            <summary>
+            Camera class.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
+            <summary>
+            Camera object constructor.
+            </summary>
+            <param name="name">Objet name.</param>
+            <param name="Enabled">If camera is enabled.</param>
+            <param name="Pos">Position</param>
+            <param name="Target">Camera look at.</param>
+            <param name="UpDir">Camera up direction.</param>
+            <param name="FOV">Field of view in radians</param>
+            <param name="nearplane">Minumum draw distance</param>
+            <param name="farplane">Maximum draw distance</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
+            <summary>
+            Camera constructor for the editor.
+            </summary>
+            <param name="name"></param>
+            <param name="Pos"></param>
+            <param name="Target"></param>
+            <param name="FOV"></param>
+            <param name="nearplane"></param>
+            <param name="farplane"></param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.model">
+            <summary>
+            Expected to be loaded by the game editor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Drawing code for the editor.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.View">
+            <summary>
+            Camera view matrix
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.Projection">
+            <summary>
+            Camera projection matrix.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.CameraTarget">
+            <summary>
+            Look at point.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.CameraRotation">
+            <summary>
+            Camera Rotation. (0,1,0) Is the default.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.FOV">
+            <summary>
+            Fielf of view (Measured in radians).
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.ScreenSize">
+            <summary>
+            Screen size. Used to calculate aspect ratio.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.SetFOVDegrees(System.Single)">
+            <summary>
+            Sets the FOV with a degree value
+            </summary>
+            <param name="deg">Degrees</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.GetFOVDegrees">
+            <summary>
+            Converts FOV to degrees.
+            </summary>
+            <returns>Degrees</returns>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.MinDrawDist">
+            <summary>
+            Near plane distance
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.MaxDrawDist">
+            <summary>
+            Maximum drawing distance.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Camera drawing for game code.
+            </summary>
+            <param name="spriteBatch">Not used.</param>
+            <param name="view">Uses it's own view;</param>
+            <param name="projection"></param>
+        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -13,6 +112,15 @@
             <summary>
             Contains the objects. 
             </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Draws a 3D Model.
+            </summary>
+            <param name="model">3D Model</param>
+            <param name="world">Scale*Rotaion*Position Matrix</param>
+            <param name="view">View matrix</param>
+            <param name="projection">Projection Matrix</param>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
@@ -44,9 +152,26 @@
             </summary>
             <param name="obj">The removed object</param>
         </member>
+        <member name="T:_3DRadSpaceDll.onObjectLoad">
+            <summary>
+            Called when a object resource is being loaded.
+            </summary>
+            <param name="obj">Object</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.onObjectUnload">
+            <summary>
+            Called when a object is being unloaded.
+            </summary>
+            <param name="obj">Object to be unloaded</param>
+        </member>
         <member name="T:_3DRadSpaceDll.GameObject">
             <summary>
             Base class for all 3DRadSpace objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.#ctor">
+            <summary>
+            Default constructor.
             </summary>
         </member>
         <member name="F:_3DRadSpaceDll.GameObject.Name">
@@ -109,12 +234,22 @@
             Hides the object.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Draw">
+        <member name="M:_3DRadSpaceDll.GameObject.Load">
+            <summary>
+            Loads the resource(s).
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Free">
+            <summary>
+            Unloads the resource.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Object Drawing code
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw">
+        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Object draw code for the 3DRadSpace editor
             </summary>
@@ -144,10 +279,57 @@
             Called when object is being deleted.
             </summary>
         </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnObjectLoad">
+            <summary>
+            Called when a object resource is being loaded.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.GameObject.OnObjectUnload">
+            <summary>
+            Called when a object resource is being freed from the RAM memory.
+            </summary>
+        </member>
         <member name="M:_3DRadSpaceDll.GameObject.Finalize">
             <summary>
             Object destructor.
             </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.Project">
+            <summary>
+            Project class for reading and saving projects.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Project.Name">
+            <summary>
+            Project name
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Open(System.String)">
+            <summary>
+            Opens a project
+            </summary>
+            <param name="filename">File to open</param>
+            <returns>Returns the objects.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Save(System.String)">
+            <summary>
+            Saves a 3DRSP project
+            </summary>
+            <param name="filename">File path</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Vector2String(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Converts a vector to a string in the format needed for 3DRSP projects
+            </summary>
+            <param name="pos">3D Vector to be converted</param>
+            <returns>The needed string</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Vector2String(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Converts a vector to a string in the format needed for 3DRSP projects
+            </summary>
+            <param name="pos">2D Vector to be converted</param>
+            <returns>The needed string</returns>
         </member>
     </members>
 </doc>

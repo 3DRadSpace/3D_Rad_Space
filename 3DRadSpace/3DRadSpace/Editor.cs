@@ -8,17 +8,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpace
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public partial class Editor : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Form GameWindow;
         Camera Editor_View;
-        public Game1()
+        DiscordRichPresence discordRichPresence;
+        public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             GameWindow = (Form)Control.FromHandle(Window.Handle);
+            InitializeComponent();
+            this.toolStripStatusLabel1.Text = "Status: Ready";
+            this.GameWindow_SizeChanged(GameWindow, null);
+            discordRichPresence = new DiscordRichPresence();
         }
         protected override void Initialize()
         {

@@ -11,8 +11,10 @@ namespace _3DRadSpace
         [STAThread]
         static void Main(string[] Arguments) //Command line arguments
         {
-            EditorUI uI = new EditorUI();
-            uI.ShowDialog();
+            using (var Editor = new Editor())
+            {
+                Editor.Run();
+            }
         }
     }
 #endif
