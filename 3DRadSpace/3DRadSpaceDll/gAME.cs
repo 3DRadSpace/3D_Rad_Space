@@ -38,5 +38,15 @@ namespace _3DRadSpaceDll
                 mesh.Draw();
             }
         }
+        /// <summary>
+        /// Finds an objects after it's id.
+        /// </summary>
+        /// <param name="i">Numeric indentifier.</param>
+        /// <returns>Returns the found object.</returns>
+        public static object FindObject(int i)
+        {
+            return GameObjects[i];
+        }
+
     }
 }

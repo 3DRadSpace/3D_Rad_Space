@@ -11,7 +11,8 @@ namespace _3DRadSpace
         public DiscordRichPresence()
         {
             presence = new RichPresence();
-            presence.State = "Editing project: 'New project'";
+            presence.State = "Editing project";
+            presence.Details = "New project";
             Assets assets = new Assets();
             assets.LargeImageKey = "mainicon";
             presence.Assets = assets;

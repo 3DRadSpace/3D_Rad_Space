@@ -1,5 +1,8 @@
 ﻿namespace _3DRadSpace
 {
+    /// <summary>
+    /// This file is still being keept, just in case the editor UI changes.
+    /// </summary>
     partial class EditorUI
     {
         /// <summary>

@@ -57,6 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DiscordRichPresence.cs" />
+    <Compile Include="EditorEvents.cs" />
     <Compile Include="EditorGraphicalInterface.cs" />
     <Compile Include="EditorUI.cs">
       <SubType>Form</SubType>

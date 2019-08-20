@@ -12,14 +12,8 @@ namespace _3DRadSpaceDll
     /// <summary>
     /// Project class for reading and saving projects.
     /// </summary>
-    public class Project
+    public static class Project
     {
-       // static string _magic = "3DRSP";
-        /// <summary>
-        /// Project name
-        /// </summary>
-        public string Name;
-
         /// <summary>
         /// Opens a project
         /// </summary>

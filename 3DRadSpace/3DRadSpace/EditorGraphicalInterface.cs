@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DRadSpace
 {
+    /// <summary>
+    /// Developer note: Copied from the EditorUI.cs, only events were added manually.
+    /// </summary>
     partial class Editor : Microsoft.Xna.Framework.Game
     {
         private System.ComponentModel.IContainer components = null;
@@ -106,42 +109,49 @@ namespace _3DRadSpace
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.newToolStripMenuItem.Text = "&New Project (Ctrl+N)";
+            newToolStripMenuItem.Click += newProject;
             // 
             // openCtrlOToolStripMenuItem
             // 
             this.openCtrlOToolStripMenuItem.Name = "openCtrlOToolStripMenuItem";
             this.openCtrlOToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.openCtrlOToolStripMenuItem.Text = "&Open Project (Ctrl+O)";
+            openCtrlOToolStripMenuItem.Click += openProject;
             // 
             // saveCtrlSToolStripMenuItem
             // 
             this.saveCtrlSToolStripMenuItem.Name = "saveCtrlSToolStripMenuItem";
             this.saveCtrlSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.saveCtrlSToolStripMenuItem.Text = "&Save Project (Ctrl+S)";
+            saveCtrlSToolStripMenuItem.Click += saveProject;
             // 
             // saveProjectAsCtrlShitSToolStripMenuItem
             // 
             this.saveProjectAsCtrlShitSToolStripMenuItem.Name = "saveProjectAsCtrlShitSToolStripMenuItem";
             this.saveProjectAsCtrlShitSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.saveProjectAsCtrlShitSToolStripMenuItem.Text = "Save Project As (Ctrl+Shit+S)";
+            saveProjectAsCtrlShitSToolStripMenuItem.Click += saveProjectAs;
             // 
             // playProjectCtrlPToolStripMenuItem
             // 
             this.playProjectCtrlPToolStripMenuItem.Name = "playProjectCtrlPToolStripMenuItem";
             this.playProjectCtrlPToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.playProjectCtrlPToolStripMenuItem.Text = "&Play Project (Ctrl+P)";
+            playProjectCtrlPToolStripMenuItem.Click += playProject;
             // 
             // compileProjectToolStripMenuItem
             // 
             this.compileProjectToolStripMenuItem.Name = "compileProjectToolStripMenuItem";
             this.compileProjectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.compileProjectToolStripMenuItem.Text = "Compile Project";
+            compileProjectToolStripMenuItem.Click += compileProject;
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitEditor;
             // 
             // objectToolStripMenuItem
             // 
@@ -158,18 +168,21 @@ namespace _3DRadSpace
             this.addAObjectCtrlAToolStripMenuItem.Name = "addAObjectCtrlAToolStripMenuItem";
             this.addAObjectCtrlAToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addAObjectCtrlAToolStripMenuItem.Text = "&Add a Object (Ctrl+A)";
+            addAObjectCtrlAToolStripMenuItem.Click += addObject;
             // 
             // addAAddonToolStripMenuItem
             // 
             this.addAAddonToolStripMenuItem.Name = "addAAddonToolStripMenuItem";
             this.addAAddonToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addAAddonToolStripMenuItem.Text = "Add a Addon";
+            addAAddonToolStripMenuItem.Click += addAddon;
             // 
             // installResourcesToolStripMenuItem
             // 
             this.installResourcesToolStripMenuItem.Name = "installResourcesToolStripMenuItem";
             this.installResourcesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.installResourcesToolStripMenuItem.Text = "Install resources";
+            installResourcesToolStripMenuItem.Click += installResources;
             // 
             // optionsToolStripMenuItem
             // 
@@ -185,12 +198,14 @@ namespace _3DRadSpace
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
+            checkForUpdatesToolStripMenuItem.Click += checkforUpdatesEvent;
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsOpen;
             // 
             // helpToolStripMenuItem
             // 
@@ -209,30 +224,35 @@ namespace _3DRadSpace
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += aboutBoxOpen;
             // 
             // documentationToolStripMenuItem
             // 
             this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
             this.documentationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentationToolStripMenuItem.Text = "Documentation";
+            documentationToolStripMenuItem.Click += openDocumentation;
             // 
             // officialWebsiteToolStripMenuItem
             // 
             this.officialWebsiteToolStripMenuItem.Name = "officialWebsiteToolStripMenuItem";
             this.officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.officialWebsiteToolStripMenuItem.Text = "Official Website";
+            officialWebsiteToolStripMenuItem.Click += officialWebsite;
             // 
             // forumToolStripMenuItem
             // 
             this.forumToolStripMenuItem.Name = "forumToolStripMenuItem";
             this.forumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.forumToolStripMenuItem.Text = "Forum";
+            forumToolStripMenuItem.Click += openForum;
             // 
             // reportABugToolStripMenuItem
             // 
             this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
             this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportABugToolStripMenuItem.Text = "Report a bug";
+            reportABugToolStripMenuItem.Click += reportBug;
             // 
             // contextMenuStrip1
             // 
@@ -271,12 +291,14 @@ namespace _3DRadSpace
             this.editObjectToolStripMenuItem.Name = "editObjectToolStripMenuItem";
             this.editObjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.editObjectToolStripMenuItem.Text = "Edit Object";
+            editObjectToolStripMenuItem.Click += M_EditObject;
             // 
             // deleteObjectToolStripMenuItem
             // 
             this.deleteObjectToolStripMenuItem.Name = "deleteObjectToolStripMenuItem";
             this.deleteObjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.deleteObjectToolStripMenuItem.Text = "&Delete Object";
+            deleteObjectToolStripMenuItem.Click += M_DeleteObject;
             // 
             // EditorUI
             //               
