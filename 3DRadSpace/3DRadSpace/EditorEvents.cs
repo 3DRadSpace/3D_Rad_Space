@@ -17,17 +17,28 @@ namespace _3DRadSpace
             OpenFileDialog openFile = new OpenFileDialog()
             {
                 Title = "Open a 3DRadSpace project",
-                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)"
+                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
+                Multiselect = false
             };
             DialogResult b = openFile.ShowDialog();
             if(b == DialogResult.OK)
             {
-
+                _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
+                UpdateObjects();
             }
         }
         void saveProject(object a,EventArgs e)
         {
-
+            SaveFileDialog saveFile = new SaveFileDialog()
+            {
+                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
+                Title = "Save a 3DRadSpace project",
+                OverwritePrompt = true,
+            };
+            if(saveFile.ShowDialog() == DialogResult.OK)
+            {
+                Project.Save(saveFile.FileName);
+            }
         }
         void saveProjectAs(object a,EventArgs e)
         {
@@ -92,6 +103,15 @@ namespace _3DRadSpace
         void M_DeleteObject(object obj,EventArgs e)
         {
 
+        }
+        void UpdateObjects()
+        {
+            listBox1.Items.Clear();
+            for(int  i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            {
+                GameObject obj = (GameObject)_3DRadSpaceDll.Game.GameObjects[i];
+                listBox1.Items.Add(obj.Name);
+            }
         }
     }
 }

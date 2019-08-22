@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Axis.xnb","ModelProcessor","ModelContent",14633,4164,3.010078
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Camera.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Camera.xnb","ModelProcessor","ModelContent",23919,7328,0.0630041
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Font.spritefont","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Font.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21521,1.151889

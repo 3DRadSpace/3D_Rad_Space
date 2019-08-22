@@ -56,21 +56,11 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Drawing code for the editor.
         /// </summary>
-        public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        public void EditorDraw(SpriteBatch spriteBatch,Matrix view,Matrix projection)
         {
-            if (view == null) throw new ArgumentNullException("view", "Matrix view was null, drawing cannot be done.");
-            if (projection == null) throw new ArgumentNullException("projection", "Projection Matrix is null, cannot draw the model.");
             Game.DrawModel(model, Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-                Matrix.CreateTranslation(Position), (Matrix)view, (Matrix)projection);
+            Matrix.CreateTranslation(Position), (Matrix)view, (Matrix)projection);
         }
-        /// <summary>
-        /// Camera view matrix
-        /// </summary>
-        public Matrix View;
-        /// <summary>
-        /// Camera projection matrix.
-        /// </summary>
-        public Matrix Projection;
 
         /// <summary>
         /// Look at point.
@@ -125,12 +115,17 @@ namespace _3DRadSpaceDll
         /// <param name="spriteBatch">Not used.</param>
         /// <param name="view">Uses it's own view;</param>
         /// <param name="projection"></param>
-        public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        public void Draw(SpriteBatch spriteBatch,out Matrix view,out Matrix projection)
         {
-            if (!Enabled) return;
-            View = Matrix.CreateLookAt(Position, CameraTarget, CameraRotation);
-            Projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,MinDrawDist,MaxDrawDist);
-            base.Draw(null, View, Projection); //Calls base class to get the event called too.
+            if (!Enabled)
+            {
+                view = Matrix.Identity;
+                projection = Matrix.Identity;
+                return;
+            }
+            view = Matrix.CreateLookAt(Position, CameraTarget, CameraRotation);
+            projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,MinDrawDist,MaxDrawDist);
+            base.Draw(null,view,projection); //Calls base class to get the event called too.
         }
     }
 }

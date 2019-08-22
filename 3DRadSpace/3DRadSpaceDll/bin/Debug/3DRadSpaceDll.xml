@@ -38,19 +38,9 @@
             Expected to be loaded by the game editor.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+        <member name="M:_3DRadSpaceDll.Camera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
             <summary>
             Drawing code for the editor.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.Camera.View">
-            <summary>
-            Camera view matrix
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.Camera.Projection">
-            <summary>
-            Camera projection matrix.
             </summary>
         </member>
         <member name="F:_3DRadSpaceDll.Camera.CameraTarget">
@@ -95,7 +85,7 @@
             Maximum drawing distance.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+        <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
             <summary>
             Camera drawing for game code.
             </summary>
@@ -121,6 +111,13 @@
             <param name="world">Scale*Rotaion*Position Matrix</param>
             <param name="view">View matrix</param>
             <param name="projection">Projection Matrix</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Game.FindObject(System.Int32)">
+            <summary>
+            Finds an objects after it's id.
+            </summary>
+            <param name="i">Numeric indentifier.</param>
+            <returns>Returns the found object.</returns>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
@@ -249,7 +246,7 @@
             Object Drawing code
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix}@,System.Nullable{Microsoft.Xna.Framework.Matrix}@)">
             <summary>
             Object draw code for the 3DRadSpace editor
             </summary>
@@ -297,11 +294,6 @@
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.Project.Name">
-            <summary>
-            Project name
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Project.Open(System.String)">

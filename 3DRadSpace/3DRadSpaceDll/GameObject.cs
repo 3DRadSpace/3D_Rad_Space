@@ -56,7 +56,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public GameObject()
         {
-            OnInitialization(this);
+            OnInitialization?.Invoke(this);
         }
         /// <summary>
         /// Object Name
@@ -114,14 +114,14 @@ namespace _3DRadSpaceDll
         /// </summary>
         public virtual void Load()
         {
-            OnObjectLoad(this);
+            OnObjectLoad?.Invoke(this);
         }
         /// <summary>
         /// Unloads the resource.
         /// </summary>
         public virtual void Free()
         {
-            OnObjectUnload(this);
+            OnObjectUnload?.Invoke(this);
         }
 
         /// <summary>
@@ -129,21 +129,22 @@ namespace _3DRadSpaceDll
         /// </summary>
         public virtual void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            OnDraw(this, spriteBatch, view, projection);
+            OnDraw?.Invoke(this, spriteBatch, view, projection);
         }
         /// <summary>
         /// Object draw code for the 3DRadSpace editor
         /// </summary>
-        public virtual void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        public virtual void EditorDraw(SpriteBatch spriteBatch,out Matrix? view,out Matrix? projection)
         {
-
+            view = null;
+            projection = null;
         }
         /// <summary>
         /// Object update logic
         /// </summary>
         public virtual void Update()
         {
-            OnUpdate(this, null, null, null);
+            OnUpdate?.Invoke(this, null, null, null);
         }
         /// <summary>
         /// Called when object is being drawn on frame.
@@ -175,7 +176,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         ~GameObject()
         {
-            OnRemoval(this);
+            OnRemoval?.Invoke(this);
         }
     }
 }
