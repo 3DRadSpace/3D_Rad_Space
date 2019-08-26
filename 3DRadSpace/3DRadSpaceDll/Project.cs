@@ -84,4 +84,22 @@ namespace _3DRadSpaceDll
             return pos.X + " " + pos.Y;
         }
     }
+    /// <summary>
+    /// Project types for the editor.
+    /// </summary>
+    public enum ProjectType
+    {
+        /// <summary>
+        /// Strictly 2D.
+        /// </summary>
+        TwoDimensional = 0,
+        /// <summary>
+        /// 3D
+        /// </summary>
+        ThreeDimensional = 1,
+        /// <summary>
+        /// Code only
+        /// </summary>
+        ScriptOnly = 2
+    }
 }

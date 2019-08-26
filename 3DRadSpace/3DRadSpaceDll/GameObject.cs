@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace _3DRadSpaceDll
 {
@@ -112,14 +113,14 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Loads the resource(s).
         /// </summary>
-        public virtual void Load()
+        public virtual void Load(ContentManager content)
         {
             OnObjectLoad?.Invoke(this);
         }
         /// <summary>
         /// Unloads the resource.
         /// </summary>
-        public virtual void Free()
+        public virtual void Free(ContentManager content)
         {
             OnObjectUnload?.Invoke(this);
         }
@@ -142,9 +143,9 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Object update logic
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(MouseState mouse,KeyboardState keyboard,GameTime time)
         {
-            OnUpdate?.Invoke(this, null, null, null);
+            OnUpdate?.Invoke(this, mouse, keyboard, time);
         }
         /// <summary>
         /// Called when object is being drawn on frame.

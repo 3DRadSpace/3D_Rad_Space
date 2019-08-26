@@ -93,6 +93,39 @@
             <param name="view">Uses it's own view;</param>
             <param name="projection"></param>
         </member>
+        <member name="T:_3DRadSpaceDll.Camera2D">
+            <summary>
+            Camera class for 2D projects. Used to draw 2D scenes.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Camera2D constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Is the camera drawing the scene?</param>
+            <param name="Pos">Position</param>
+            <param name="Size">Size</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.Add(System.Object)">
+            <summary>
+            Adds an object to be drawn by the camera.
+            </summary>
+            <param name="obj">Object to be added.</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera2D.DrawingBounds">
+            <summary>
+            Camera drawing bounds.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the entire scene.
+            </summary>
+            <param name="spriteBatch">Game's sprite batch.</param>
+            <param name="view">Not used, use the null value.</param>
+            <param name="projection">Not used, use the null value.</param>
+        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -231,12 +264,12 @@
             Hides the object.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Load">
+        <member name="M:_3DRadSpaceDll.GameObject.Load(Microsoft.Xna.Framework.Content.ContentManager)">
             <summary>
             Loads the resource(s).
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Free">
+        <member name="M:_3DRadSpaceDll.GameObject.Free(Microsoft.Xna.Framework.Content.ContentManager)">
             <summary>
             Unloads the resource.
             </summary>
@@ -251,7 +284,7 @@
             Object draw code for the 3DRadSpace editor
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Update">
+        <member name="M:_3DRadSpaceDll.GameObject.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
             Object update logic
             </summary>
@@ -322,6 +355,183 @@
             </summary>
             <param name="pos">2D Vector to be converted</param>
             <returns>The needed string</returns>
+        </member>
+        <member name="T:_3DRadSpaceDll.ProjectType">
+            <summary>
+            Project types for the editor.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ProjectType.TwoDimensional">
+            <summary>
+            Strictly 2D.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ProjectType.ThreeDimensional">
+            <summary>
+            3D
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ProjectType.ScriptOnly">
+            <summary>
+            Code only
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.Script">
+            <summary>
+            C# Script class.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Script.CompilationStatus">
+            <summary>
+            Checks if compilation succeded.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Script.CompilationTime">
+            <summary>
+            Time for compilation.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Script.Path">
+            <summary>
+            Path to source code to be compiled and run.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Script.ClassName">
+            <summary>
+            Script entry class.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.#ctor(System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            Script constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Checks if scripts will be run</param>
+            <param name="scriptpath">Path to the file that will be compiled.</param>
+            <param name="ClassN">Class name.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Compile(System.Boolean)">
+            <summary>
+            Compiles code in order to make it usable.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Initiailze the object by compiling the linked source.
+            </summary>
+            <param name="content">Content manager. Not used.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Start">
+            <summary>
+            Executes [ClassName].Start(), where ClassName is the compiled source.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Run(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Executes [ClassName].Run(), where ClassName is the compiled source.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.End">
+            <summary>
+            Executes [ClassName].End(), where ClassName is the compiled source.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Runs the script code.
+            </summary>
+            <param name="mouse">Not really used.</param>
+            <param name="keyboard">Not really used.</param>
+            <param name="time">Not really used.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.onClick">
+            <summary>
+            Event is invoked when the object is being clicked.
+            </summary>
+            <param name="sender">The clicked object</param>
+            <param name="mouse">Mouse information.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Sprite">
+            <summary>
+            2D Screen images class.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Is3D">
+            <summary>
+            Checks if this object is being used by a Camera2D.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Sprite.Texture">
+            <summary>
+            Texture used to draw the sprite.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Size">
+            <summary>
+            Size of the sprite.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Rotation">
+            <summary>
+            Rotation of the sprite in radians.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Position">
+            <summary>
+            Position of the sprite
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.SpriteSheetSection">
+            <summary>
+            Section of a sprite sheet. If not used, set this to null;
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Mask">
+            <summary>
+            Color mask.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Center">
+            <summary>
+            Center of rotation.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Effects">
+            <summary>
+            Effects applied to the sprite.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Sprite.Layer">
+            <summary>
+            Layer depth of the sprite.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads the texture.
+            </summary>
+            <param name="content">Content manager.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the sprite.
+            </summary>
+            <param name="spriteBatch">spriteBatch used for drawing.</param>
+            <param name="view">Use a null value.</param>
+            <param name="projection">Use a null value.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Updates the sprite (if it is clicked)
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
+        </member>
+        <member name="E:_3DRadSpaceDll.Sprite.OnClick">
+            <summary>
+            Event called if the sprite is clicked
+            </summary>
         </member>
     </members>
 </doc>

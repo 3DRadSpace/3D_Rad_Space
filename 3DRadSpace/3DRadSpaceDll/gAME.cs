@@ -12,7 +12,7 @@ namespace _3DRadSpaceDll
     /// Contains methods and fields for managing game objects.
     /// </summary>
     public static class Game
-    { 
+    {
         /// <summary>
         /// Contains the objects. 
         /// </summary>

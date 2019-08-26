@@ -15,9 +15,23 @@ namespace _3DRadSpaceDll
     {
         List<object> _scene;
         /// <summary>
+        /// Camera2D constructor.
+        /// </summary>
+        /// <param name="name">Object name</param>
+        /// <param name="enabled">Is the camera drawing the scene?</param>
+        /// <param name="Pos">Position</param>
+        /// <param name="Size">Size</param>
+        public Camera2D(string name, bool enabled, Vector2 Pos, Vector2 Size)
+        {
+            Name = name;
+            Enabled = enabled;
+            DrawingBounds = new Rectangle((int)Pos.X,(int) Pos.Y,(int) Size.X,(int) Size.Y);
+            _scene = new List<object>();
+        }
+        /// <summary>
         /// Adds an object to be drawn by the camera.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">Object to be added.</param>
         public void Add(object obj)
         {
             if (obj is Sprite sp) sp.Is3D = false;
@@ -42,7 +56,11 @@ namespace _3DRadSpaceDll
                     if (_scene[i] == null) continue;
                     if(_scene[i] is Sprite sp)
                     {
-                        
+                        if(DrawingBounds.X >= sp.Position.X && DrawingBounds.X+DrawingBounds.Width >= sp.Position.X+sp.Size.X &&
+                        DrawingBounds.Y >= sp.Position.Y && DrawingBounds.Y + DrawingBounds.Height >= sp.Position.Y+sp.Size.Y)
+                        {
+                            spriteBatch.Draw(sp.Texture, new Rectangle((int)sp.Position.X, (int)sp.Position.Y, (int)(sp.Position.X + sp.Size.X), (int)(sp.Position.Y + sp.Size.Y)), sp.SpriteSheetSection, sp.Mask, sp.Rotation, sp.Center, sp.Effects, sp.Layer); ;
+                        }
                     }
                     
                 }
