@@ -51,6 +51,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public bool Compile(bool ShowErrors)
         {
+            File.Delete(@"ScriptCompilationErrors.log");
             //Create a benchmark, to report how much time did the compilation require.
             Stopwatch benchmark = Stopwatch.StartNew();
             //Firstly, check for invalid inputs.
@@ -79,7 +80,7 @@ namespace _3DRadSpaceDll
             {
                 foreach (CompilerError error in results.Errors)
                 {
-                    File.AppendAllText(@"ScriptCompilationErrors.log", error.ErrorNumber + ".)"+_errorType(error.IsWarning)+":" + error.ErrorText + " at line " + error.Line + " column " + error.Column + " ");
+                    File.AppendAllText(@"ScriptCompilationErrors.log", error.ErrorNumber + ".)"+_errorType(error.IsWarning)+":" + error.ErrorText + " at line " + error.Line + " column " + error.Column + " \r\n");
                 }
                 if(ShowErrors)Process.Start(@"ScriptCompilationErrors.log");
                 //Stop the benchmark and report.

@@ -43,7 +43,7 @@ namespace _3DRadSpace
         }
 
         public string FilePath = null;
-        public string Result = null;
+        public object Result = null;
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -141,14 +141,37 @@ namespace _3DRadSpace
 
         private void button6_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
             Result = null;
             Close();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Result = "Script " + textBox1.Text + " " + checkBox1.Checked + " " + FilePath;
+            if(FilePath == null)
+            {
+                SaveFileDialog saveFile = new SaveFileDialog()
+                {
+                    Filter = "C# Script (*.cs) | *.cs",
+                    Title = "Save a script"
+                };
+                //Let's force the poor user to save his script :D
+                while(saveFile.ShowDialog() != DialogResult.OK) { }
+                FilePath = saveFile.FileName;
+            }
+            DialogResult = DialogResult.OK;
+            Result = new Script(textBox1.Text, checkBox1.Enabled, FilePath, textBox2.Text);
             Close();
+        }
+
+        private void ScriptW_Load(object sender, EventArgs e)
+        {
+            scintilla1_TextChanged(sender, e);
+        }
+
+        private void ScriptW_SizeChanged(object sender, EventArgs e)
+        {
+            scintilla1.ClientSize = new Size(ClientSize.Width - 175 - 12, ClientSize.Height - 24);
         }
     }
 }

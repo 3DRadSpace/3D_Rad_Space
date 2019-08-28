@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("3DRadSpace")]
 [assembly: AssemblyProduct("3DRadSpace")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyDescription("3DRadSpace is a free easy to use game engine")]
+[assembly: AssemblyCompany("3dradspace.000webhost.com")]
+[assembly: AssemblyCopyright("Copyright © 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

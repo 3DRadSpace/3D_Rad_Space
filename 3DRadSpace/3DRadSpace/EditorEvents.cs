@@ -1,5 +1,6 @@
 ﻿using _3DRadSpaceDll;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Net;
@@ -11,19 +12,21 @@ namespace _3DRadSpace
 {
     partial class Editor : Microsoft.Xna.Framework.Game
     {
+        bool ProjectSaved = true;
         void newProject(object a,EventArgs e)
         {
             NewProjectWindow projectWindow = new NewProjectWindow();
             projectWindow.ShowDialog();
             Program.ProjectTypeScript = true;
             ApplyProjectType();
+            ProjectSaved = true;
         }
         void openProject(object a,EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog()
             {
                 Title = "Open a 3DRadSpace project",
-                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
                 Multiselect = false
             };
             DialogResult b = openFile.ShowDialog();
@@ -31,31 +34,20 @@ namespace _3DRadSpace
             {
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
                 UpdateObjects();
+                ProjectSaved = true;
             }
         }
         void saveProject(object a,EventArgs e)
         {
             if (OpenedFile != null) Project.Save(OpenedFile);
-            else
-            {
-                SaveFileDialog saveFile = new SaveFileDialog()
-                {
-                    Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
-                    Title = "Save a 3DRadSpace project",
-                    OverwritePrompt = true,
-                };
-                if (saveFile.ShowDialog() == DialogResult.OK)
-                {
-                    Project.Save(saveFile.FileName);
-                    OpenedFile = saveFile.FileName;
-                }
-            }
+            else saveProjectAs(a, e);
+            ProjectSaved = true;
         }
         void saveProjectAs(object a,EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog()
             {
-                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
                 Title = "Save a 3DRadSpace project",
                 OverwritePrompt = true,
             };
@@ -63,6 +55,7 @@ namespace _3DRadSpace
             {
                 Project.Save(saveFile.FileName);
                 OpenedFile = saveFile.FileName;
+                ProjectSaved = true;
             }
         }
         void playProject(object a,EventArgs e)
@@ -83,6 +76,11 @@ namespace _3DRadSpace
         {
             AddObject add = new AddObject();
             add.ShowDialog();
+            if (add.Result != null)
+            {
+                _3DRadSpaceDll.Game.GameObjects.Add(add.Result);
+                ProjectSaved = false;
+            }
             UpdateObjects();
         }
         void addAddon(object a,EventArgs e)
@@ -90,14 +88,16 @@ namespace _3DRadSpace
             OpenFileDialog openFile = new OpenFileDialog()
             {
                 Title = "Add a 3DRadSpace project as a addon",
-                Filter = "3DRadSpace Project (*.3drsp) | (.*3drsp)",
+                Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
                 Multiselect = false
             };
             DialogResult b = openFile.ShowDialog();
             if (b == DialogResult.OK)
             {
-                _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
+                List<object> c = Project.Open(openFile.FileName);
+                _3DRadSpaceDll.Game.GameObjects.AddRange(c);
                 UpdateObjects();
+                ProjectSaved = false;
             }
         }
         void installResources(object a,EventArgs e)
@@ -106,7 +106,7 @@ namespace _3DRadSpace
         void checkforUpdatesEvent(object s,EventArgs a)
         {
             WebClient client = new WebClient();
-            client.DownloadFile("", @"version.temp");
+            client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM", @"version.temp");
             string v = File.ReadAllText(@"version.temp");
             string[] version = v.Split('.');
             bool NewVersionAvalable = false;
@@ -124,7 +124,7 @@ namespace _3DRadSpace
                 DialogResult dialog = MessageBox.Show("New update found! Do you want it installed?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.Yes)
                 {
-                    client.DownloadFile("setup", @"Setup.exe");
+                    client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE", @"Setup.exe");
                     saveProject(null, null);
                     Process.Start(@"Setup.exe");
                     Exit();
@@ -133,6 +133,7 @@ namespace _3DRadSpace
             else
             {
                 MessageBox.Show("No new update found!", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                toolStripStatusLabel1.Text = "Status: Ready";
             }
         }
         void aboutBoxOpen(object a, EventArgs e)
@@ -164,12 +165,21 @@ namespace _3DRadSpace
         }
         void M_EditObject(object a,EventArgs e)
         {
-            
+            object b = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex];
+            if(b is Script s)
+            {
+                ScriptW scriptW = new ScriptW();
+
+            }
         }
         void M_DeleteObject(object obj,EventArgs e)
         {
             _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = null;
-            //TODO :move the next elements...
+            for(int i = listBox1.SelectedIndex;i < _3DRadSpaceDll.Game.GameObjects.Count -1;i++)
+            {
+                _3DRadSpaceDll.Game.GameObjects[i] = _3DRadSpaceDll.Game.GameObjects[i+1];
+            }
+            _3DRadSpaceDll.Game.GameObjects[_3DRadSpaceDll.Game.GameObjects.Count-1] = null;
             UpdateObjects();
         }
         void UpdateObjects()
@@ -178,7 +188,29 @@ namespace _3DRadSpace
             for(int  i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
             {
                 GameObject obj = (GameObject)_3DRadSpaceDll.Game.GameObjects[i];
-                listBox1.Items.Add(obj.Name);
+                if(obj) listBox1.Items.Add(obj.Name);
+            }
+        }
+        void listBox1_MouseDown(object sender,MouseEventArgs mouse)
+        {
+            if(mouse.Button == MouseButtons.Right && listBox1.SelectedIndex != -1)
+            {
+                contextMenuStrip1.Show(GameWindow.Location.X+listBox1.Location.X, Cursor.Position.Y);
+            }
+        }
+        void Editor_Exiting(object sender, FormClosingEventArgs e)
+        {
+            if(Settings[1] == true && ProjectSaved == false)
+            {
+               DialogResult result = MessageBox.Show("Your project is not saved. Unsaved changes can be lost.", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if(result == DialogResult.Yes)
+                {
+                    saveProject(sender, null);
+                }
+                else if(result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }

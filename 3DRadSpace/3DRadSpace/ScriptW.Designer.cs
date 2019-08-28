@@ -201,8 +201,11 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(816, 489);
             this.Name = "ScriptW";
             this.Text = "Script Object v1.0.0";
+            this.Load += new System.EventHandler(this.ScriptW_Load);
+            this.SizeChanged += new System.EventHandler(this.ScriptW_SizeChanged);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -215,8 +218,6 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
@@ -226,6 +227,8 @@
         private System.Windows.Forms.Button button6;
         private ScintillaNET.Scintilla scintilla1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.CheckBox checkBox1;
+        public System.Windows.Forms.TextBox textBox2;
     }
 }

@@ -36,7 +36,16 @@ namespace _3DRadSpaceDll
                                 new Vector3(Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
                                 new Vector3(Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
                                 Convert.ToSingle(Obj[12]), Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]));
-                            
+                            break;
+                        }
+                    case "script":
+                        {
+                            string path = "";
+                            for(int j =4;j < Obj.Length;j++)
+                            {
+                                path += Obj[i];
+                            }
+                            a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
                             break;
                         }
                     default:
@@ -61,6 +70,10 @@ namespace _3DRadSpaceDll
                 {
                     ToBeSaved[i] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
                         " " + c.CameraRotation + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist;
+                }
+                if(Game.GameObjects[i] is Script s)
+                {
+                    ToBeSaved[i] = "script " + s.Name + " " + s.Enabled + " " + s.ClassName + " " + s.Path;
                 }
             }
             File.WriteAllLines(filename, ToBeSaved);

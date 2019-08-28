@@ -1,6 +1,7 @@
 ﻿using _3DRadSpaceDll;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +21,7 @@ namespace _3DRadSpace
         Matrix View, Projection;
         public static ProjectType TypeOfProject = ProjectType.ThreeDimensional;
         public string OpenedFile = null;
+        bool[] Settings = Settings_Load();
         public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,12 +32,17 @@ namespace _3DRadSpace
             GameWindow_SizeChanged(GameWindow, null);
             discordRichPresence = new DiscordRichPresence();
             Editor_View = new Camera(null,true, new Vector3(5, 10, 5), new Vector3(0,0,0),Vector3.Up, MathHelper.ToRadians(75), 0.01f, 500f);
+            _3DRadSpaceDll.Game.GameObjects = new List<object>();
         }
         protected override void Initialize()
         {
             Window.AllowUserResizing = true;
             Window.Title = "3DRadSpace - Editor v0.0.1";
             IsMouseVisible = true;
+            if(Settings[0])
+            {
+                checkforUpdatesEvent(null, null);
+            }
             base.Initialize();
         }
         protected override void LoadContent()
@@ -68,6 +75,14 @@ namespace _3DRadSpace
             {
                 Exit();
             }
+        }
+        private static bool[] Settings_Load()
+        {
+            string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
+            if (!File.Exists(appd + "\\Config.cgf")) return new[] { true, true, true };
+            string[] split = File.ReadAllText(appd + "\\Config.cgf").Split(' ');
+            bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
+            return result;
         }
     }
 }

@@ -63,6 +63,16 @@ namespace _3DRadSpace.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Img1 {
+            get {
+                object obj = ResourceManager.GetObject("Img1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NewProject_2DArt {
             get {
                 object obj = ResourceManager.GetObject("NewProject_2DArt", resourceCulture);
@@ -86,6 +96,176 @@ namespace _3DRadSpace.Properties {
         internal static System.Drawing.Bitmap NewProject_Script {
             get {
                 object obj = ResourceManager.GetObject("NewProject_Script", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Camera {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_EOK {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_EOK", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_EOL {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_EOL", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_ExitFade {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_ExitFade", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Force {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Force", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_GameSettings {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_GameSettings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_GForce {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_GForce", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_NetworkChat {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_NetworkChat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Rigidbody {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Rigidbody", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Script {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Script", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Skinmesh {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Skinmesh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_SkyBox {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_SkyBox", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_SkyColor {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_SkyColor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Sound {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Sound", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Sprite {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Sprite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_TextPrint {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_TextPrint", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Timer {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Timer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

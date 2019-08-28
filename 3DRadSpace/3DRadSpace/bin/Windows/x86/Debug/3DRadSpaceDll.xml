@@ -324,6 +324,12 @@
             Object destructor.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.GameObject.op_Implicit(_3DRadSpaceDll.GameObject)~System.Boolean">
+            <summary>
+            Checks if the object exists. Same as GameObject != null.
+            </summary>
+            <param name="o">GameObject to check.</param>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.

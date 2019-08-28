@@ -21,4 +21,5 @@ class Script
     {
 
     }
+    public float PI = 3.141592f;
 }

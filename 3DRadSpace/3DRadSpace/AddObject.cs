@@ -16,5 +16,23 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
+        public object Result;
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if (Editor.TypeOfProject == _3DRadSpaceDll.ProjectType.ThreeDimensional)
+            {
+                MessageBox.Show("This object can only be used with 3D projects...", "2DCamera v1.0.0", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void pictureBox10_Click(object sender, EventArgs e)
+        {
+            ScriptW script = new ScriptW();
+            if(script.ShowDialog() == DialogResult.OK)
+            {
+                Result = script.Result;
+            }
+            Close();
+        }
     }
 }

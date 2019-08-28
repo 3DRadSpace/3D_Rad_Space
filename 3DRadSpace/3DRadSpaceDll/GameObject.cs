@@ -179,5 +179,14 @@ namespace _3DRadSpaceDll
         {
             OnRemoval?.Invoke(this);
         }
+        /// <summary>
+        /// Checks if the object exists. Same as GameObject != null.
+        /// </summary>
+        /// <param name="o">GameObject to check.</param>
+        public static implicit operator bool(GameObject o)
+        {
+            if (o != null) return true;
+            else return false;
+        }
     }
 }

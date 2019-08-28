@@ -269,6 +269,7 @@ namespace _3DRadSpace
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(150, 511);
             this.listBox1.TabIndex = 2;
+            listBox1.MouseDown += listBox1_MouseDown;
             // 
             // statusStrip1
             // 
@@ -314,6 +315,7 @@ namespace _3DRadSpace
             GameWindow.Controls.Add(menuStrip1);
             GameWindow.Controls.Add(listBox1);
             GameWindow.Controls.Add(statusStrip1);
+            GameWindow.FormClosing += Editor_Exiting;
 
         }
 

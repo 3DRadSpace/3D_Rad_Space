@@ -118,13 +118,67 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="OBJ_EOK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_EOK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Skinmesh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Skinmesh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_SkyBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_SkyBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_SkyColor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_SkyColor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="NewProject_2DArt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewProject_2DArt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Rigidbody" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Rigidbody.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Timer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Timer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NewProject_3DArt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewProject_3DArt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="OBJ_ExitFade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_ExitFade.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="NewProject_Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewProject_Script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_TextPrint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_TextPrint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_GameSettings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_GameSettings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Sound.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Sprite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_EOL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_EOL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Force" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Force.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_GForce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_GForce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_Camera" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_Camera.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OBJ_NetworkChat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OBJ_NetworkChat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Img1.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

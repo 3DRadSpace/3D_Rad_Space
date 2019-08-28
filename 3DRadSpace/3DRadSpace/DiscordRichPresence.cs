@@ -18,6 +18,7 @@ namespace _3DRadSpace
             presence.Assets = assets;
             time = new Timestamps(DateTime.UtcNow);
             client = new DiscordRpcClient("612682115208708098");
+            presence.Timestamps = time;
             client.SetPresence(presence);
             client.OnClose += Client_OnClose;
             client.Initialize();
@@ -33,7 +34,9 @@ namespace _3DRadSpace
         {
             presence.State = state;
             presence.Details = detail;
-            time = new Timestamps(DateTime.Now);
+            time = new Timestamps(DateTime.UtcNow);
+            presence.Timestamps = time;
+            client.SetPresence(presence);
         }
     }
 }
