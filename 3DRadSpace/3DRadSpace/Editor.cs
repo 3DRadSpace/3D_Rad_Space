@@ -17,11 +17,10 @@ namespace _3DRadSpace
         Form GameWindow;
         Camera Editor_View;
         Model Axis;
-        DiscordRichPresence discordRichPresence;
+        public static DiscordRichPresence discordRichPresence;
         Matrix View, Projection;
-        public static ProjectType TypeOfProject = ProjectType.ThreeDimensional;
         public string OpenedFile = null;
-        bool[] Settings = Settings_Load();
+        public static bool[] Settings;
         public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -33,6 +32,7 @@ namespace _3DRadSpace
             discordRichPresence = new DiscordRichPresence();
             Editor_View = new Camera(null,true, new Vector3(5, 10, 5), new Vector3(0,0,0),Vector3.Up, MathHelper.ToRadians(75), 0.01f, 500f);
             _3DRadSpaceDll.Game.GameObjects = new List<object>();
+            Settings = Settings_Load();
         }
         protected override void Initialize()
         {
@@ -42,6 +42,10 @@ namespace _3DRadSpace
             if(Settings[0])
             {
                 checkforUpdatesEvent(null, null);
+            }
+            if(OpenedFile != null)
+            {
+                Project.Save(OpenedFile);
             }
             base.Initialize();
         }
@@ -60,6 +64,34 @@ namespace _3DRadSpace
 
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyboard = Keyboard.GetState();
+            if(Form.ActiveForm == GameWindow)
+            {
+                if (GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.N))
+                {
+                    newProject(null, null);
+                }
+                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.O))
+                {
+                    openProject(null, null);
+                }
+                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.S))
+                {
+                    saveProject(null, null);
+                }
+                if(GetAltKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
+                {
+                    saveProjectAs(null, null);
+                }
+                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.P))
+                {
+                    playProject(null, null);
+                }
+                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.A))
+                {
+                    addObject(null, null);
+                }
+            }
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
@@ -71,18 +103,36 @@ namespace _3DRadSpace
         }
         public void ApplyProjectType()
         {
-            if(TypeOfProject == ProjectType.ScriptOnly)
+            if(Project.type == ProjectType.ScriptOnly)
             {
+                Program.ProjectTypeScript = true;
                 Exit();
             }
         }
-        private static bool[] Settings_Load()
+        private bool[] Settings_Load()
         {
             string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
-            if (!File.Exists(appd + "\\Config.cgf")) return new[] { true, true, true };
-            string[] split = File.ReadAllText(appd + "\\Config.cgf").Split(' ');
+            if (!File.Exists(appd + "\\Config.cfg")) return new[] { true, true, true };
+            string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
             bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
             return result;
+        }
+        bool GetKeyShortcut(KeyboardState keyboard,Microsoft.Xna.Framework.Input.Keys key)
+        {
+            if(keyboard.IsKeyDown(key) && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)))
+            {
+                return true;
+            }
+            return false;
+        }
+        bool GetAltKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
+        {
+            if (keyboard.IsKeyDown(key) && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl))
+            &&    (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt)))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

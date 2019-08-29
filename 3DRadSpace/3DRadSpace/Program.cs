@@ -15,6 +15,7 @@ namespace _3DRadSpace
         [STAThread]
         static void Main(string[] Arguments) //Command line arguments
         {
+            Environment.CurrentDirectory = Application.StartupPath;
             Application.EnableVisualStyles();
             using (var Editor = new Editor())
             {
@@ -22,11 +23,11 @@ namespace _3DRadSpace
                 if (Arguments.Length > 0)
                 {
                     string extention = Arguments[0].Split('.')[1];
-                    if (extention == ".3drsp")
+                    if (extention == "3drsp")
                     {
                         Editor.OpenedFile = Arguments[0];
                     }
-                    else if(extention == ".cs")
+                    else if(extention == "cs")
                     {
                         ProjectTypeScript = true;
                         EditorOpen = false;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace _3DRadSpace_Player
 {
@@ -11,11 +12,15 @@ namespace _3DRadSpace_Player
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        string[] Settings;
 
         public Game1()
         {
+            try { Settings = File.ReadAllLines(@"GameConfig.cfg"); }
+            catch (FileNotFoundException) { }
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            Window.Title = Settings[0];
+            Content.RootDirectory = Settings[1];
         }
 
         /// <summary>

@@ -37,7 +37,7 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCtrlOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCtrlSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveProjectAsCtrlShitSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProjectAsCtrlshiftSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playProjectCtrlPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compileProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +84,7 @@
             this.newToolStripMenuItem,
             this.openCtrlOToolStripMenuItem,
             this.saveCtrlSToolStripMenuItem,
-            this.saveProjectAsCtrlShitSToolStripMenuItem,
+            this.saveProjectAsCtrlshiftSToolStripMenuItem,
             this.playProjectCtrlPToolStripMenuItem,
             this.compileProjectToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -112,11 +112,11 @@
             this.saveCtrlSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.saveCtrlSToolStripMenuItem.Text = "&Save Project (Ctrl+S)";
             // 
-            // saveProjectAsCtrlShitSToolStripMenuItem
+            // saveProjectAsCtrlshiftSToolStripMenuItem
             // 
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Name = "saveProjectAsCtrlShitSToolStripMenuItem";
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Text = "Save Project As (Ctrl+Shit+S)";
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Name = "saveProjectAsCtrlshiftSToolStripMenuItem";
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Text = "Save Project As (Ctrl+shift+S)";
             // 
             // playProjectCtrlPToolStripMenuItem
             // 
@@ -300,7 +300,7 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openCtrlOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveCtrlSToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveProjectAsCtrlShitSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProjectAsCtrlshiftSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playProjectCtrlPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compileProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;

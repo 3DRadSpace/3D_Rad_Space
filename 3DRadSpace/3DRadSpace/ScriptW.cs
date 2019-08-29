@@ -114,7 +114,7 @@ namespace _3DRadSpace
             }
             if(script.CompilationStatus)
             {
-                MessageBox.Show("Compilation time: " + script.CompilationTime.Milliseconds + " ms", "Compilation succeded!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Compilation time: " + script.CompilationTime.TotalMilliseconds + " ms", "Compilation succeded!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

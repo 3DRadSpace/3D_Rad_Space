@@ -3,7 +3,7 @@ using DiscordRPC;
 
 namespace _3DRadSpace
 {
-    class DiscordRichPresence
+    public class DiscordRichPresence
     {
         RichPresence presence;
         DiscordRpcClient client;

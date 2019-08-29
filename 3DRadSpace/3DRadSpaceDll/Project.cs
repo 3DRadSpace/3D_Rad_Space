@@ -15,6 +15,10 @@ namespace _3DRadSpaceDll
     public static class Project
     {
         /// <summary>
+        /// Type of the project to open.
+        /// </summary>
+        public static ProjectType type;
+        /// <summary>
         /// Opens a project
         /// </summary>
         /// <param name="filename">File to open</param>
@@ -23,7 +27,8 @@ namespace _3DRadSpaceDll
         {
             List<object> result = new List<object>();
             string[] Data = File.ReadAllLines(filename); //Read the file
-            for (int i =0; i < Data.Length;i++) //Loop each line
+            type = (ProjectType)Convert.ToInt32(Data[0]);
+            for (int i =1; i < Data.Length;i++) //Loop each line
             {
                 //Split the current line
                 string[] Obj = Data[i].Split(' ');
@@ -64,7 +69,8 @@ namespace _3DRadSpaceDll
         public static void Save(string filename)
         {
             string[] ToBeSaved = new string[Game.GameObjects.Count];
-            for(int i =0; i < Game.GameObjects.Count;i++)
+            ToBeSaved[0] = type.ToString();
+            for(int i =1; i < Game.GameObjects.Count;i++)
             {
                 if(Game.GameObjects[i] is Camera c)
                 {

@@ -15,11 +15,13 @@ namespace _3DRadSpace
         bool ProjectSaved = true;
         void newProject(object a,EventArgs e)
         {
+            saveProject(null, null);
+            _3DRadSpaceDll.Game.GameObjects.Clear();
             NewProjectWindow projectWindow = new NewProjectWindow();
             projectWindow.ShowDialog();
-            Program.ProjectTypeScript = true;
             ApplyProjectType();
             ProjectSaved = true;
+            discordRichPresence.SetPresence("Editing project", "New Project");
         }
         void openProject(object a,EventArgs e)
         {
@@ -35,6 +37,7 @@ namespace _3DRadSpace
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
                 UpdateObjects();
                 ProjectSaved = true;
+                discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
             }
         }
         void saveProject(object a,EventArgs e)
@@ -55,6 +58,7 @@ namespace _3DRadSpace
             {
                 Project.Save(saveFile.FileName);
                 OpenedFile = saveFile.FileName;
+                discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
                 ProjectSaved = true;
             }
         }
@@ -108,7 +112,7 @@ namespace _3DRadSpace
             WebClient client = new WebClient();
             client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM", @"version.temp");
             string v = File.ReadAllText(@"version.temp");
-            string[] version = v.Split('.');
+            string[] version = v.Split(' ');
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
@@ -125,10 +129,12 @@ namespace _3DRadSpace
                 if (dialog == DialogResult.Yes)
                 {
                     client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE", @"Setup.exe");
+                    toolStripStatusLabel1.Text = "Status: Installing new update...";
                     saveProject(null, null);
                     Process.Start(@"Setup.exe");
                     Exit();
                 }
+                else toolStripStatusLabel1.Text = "Status: Ready";
             }
             else
             {

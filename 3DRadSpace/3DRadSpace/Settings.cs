@@ -24,7 +24,7 @@ namespace _3DRadSpace
             {
                 Directory.CreateDirectory(appd);
             }
-            File.WriteAllText(appd + "\\Config.cgf", checkBox1.Checked + " " + checkBox2.Checked + " " + checkBox3.Checked);
+            File.WriteAllText(appd + "\\Config.cfg", checkBox1.Checked + " " + checkBox2.Checked + " " + checkBox3.Checked);
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -32,8 +32,8 @@ namespace _3DRadSpace
         private void Settings_Load(object sender, EventArgs e)
         {
             string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
-            if (!File.Exists(appd + "\\Config.cgf")) return;
-            string[] split = File.ReadAllText(appd + "\\Config.cgf").Split(' ');
+            if (!File.Exists(appd + "\\Config.cfg")) return;
+            string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
             checkBox1.Checked = Convert.ToBoolean(split[0]);
             checkBox2.Checked = Convert.ToBoolean(split[1]);
             checkBox3.Checked = Convert.ToBoolean(split[2]);

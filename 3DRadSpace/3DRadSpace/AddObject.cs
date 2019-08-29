@@ -19,7 +19,7 @@ namespace _3DRadSpace
         public object Result;
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            if (Editor.TypeOfProject == _3DRadSpaceDll.ProjectType.ThreeDimensional)
+            if (_3DRadSpaceDll.Project.type == _3DRadSpaceDll.ProjectType.ThreeDimensional)
             {
                 MessageBox.Show("This object can only be used with 3D projects...", "2DCamera v1.0.0", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

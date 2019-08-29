@@ -335,6 +335,11 @@
             Project class for reading and saving projects.
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.Project.type">
+            <summary>
+            Type of the project to open.
+            </summary>
+        </member>
         <member name="M:_3DRadSpaceDll.Project.Open(System.String)">
             <summary>
             Opens a project

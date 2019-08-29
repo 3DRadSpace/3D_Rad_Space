@@ -17,7 +17,7 @@ namespace _3DRadSpace
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openCtrlOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveCtrlSToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveProjectAsCtrlShitSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProjectAsCtrlshiftSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playProjectCtrlPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compileProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -49,7 +49,7 @@ namespace _3DRadSpace
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCtrlOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCtrlSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveProjectAsCtrlShitSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProjectAsCtrlshiftSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playProjectCtrlPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compileProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,7 +96,7 @@ namespace _3DRadSpace
             this.newToolStripMenuItem,
             this.openCtrlOToolStripMenuItem,
             this.saveCtrlSToolStripMenuItem,
-            this.saveProjectAsCtrlShitSToolStripMenuItem,
+            this.saveProjectAsCtrlshiftSToolStripMenuItem,
             this.playProjectCtrlPToolStripMenuItem,
             this.compileProjectToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -125,12 +125,12 @@ namespace _3DRadSpace
             this.saveCtrlSToolStripMenuItem.Text = "&Save Project (Ctrl+S)";
             saveCtrlSToolStripMenuItem.Click += saveProject;
             // 
-            // saveProjectAsCtrlShitSToolStripMenuItem
+            // saveProjectAsCtrlshiftSToolStripMenuItem
             // 
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Name = "saveProjectAsCtrlShitSToolStripMenuItem";
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.saveProjectAsCtrlShitSToolStripMenuItem.Text = "Save Project As (Ctrl+Shit+S)";
-            saveProjectAsCtrlShitSToolStripMenuItem.Click += saveProjectAs;
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Name = "saveProjectAsCtrlshiftSToolStripMenuItem";
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.saveProjectAsCtrlshiftSToolStripMenuItem.Text = "Save Project As (Ctrl+Alt+S)";
+            saveProjectAsCtrlshiftSToolStripMenuItem.Click += saveProjectAs;
             // 
             // playProjectCtrlPToolStripMenuItem
             // 
@@ -150,7 +150,7 @@ namespace _3DRadSpace
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Text = "Exit (Alt+F4)";
             exitToolStripMenuItem.Click += exitEditor;
             // 
             // objectToolStripMenuItem

@@ -13,19 +13,19 @@ namespace _3DRadSpace
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Editor.TypeOfProject = ProjectType.ThreeDimensional;
+            Project.type = ProjectType.ThreeDimensional;
             Close();
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            Editor.TypeOfProject = ProjectType.TwoDimensional;
+            Project.type = ProjectType.TwoDimensional;
             Close();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            Editor.TypeOfProject = ProjectType.ScriptOnly;
+            Project.type = ProjectType.ScriptOnly;
             Close();
         }
     }
