@@ -31,11 +31,11 @@ namespace _3DRadSpace
             ///Step 2: validate input
             if (folderBrowser.ShowDialog() == DialogResult.OK)
             {
-                progressBar1.Value += 20;
+                label3.Text = "Status: Validating input...";
+                progressBar1.Value += 12;
                 timer = Stopwatch.StartNew();
                 Path = folderBrowser.SelectedPath;
                 string Error = null;
-                label3.Text = "Status: Validating input...";
                 if (string.IsNullOrEmpty(textBox1.Text)) Error += "You didn't specify a name for the project. \r\n";
                 if (string.IsNullOrEmpty(textBox2.Text)) Error += "You didn't specify the content directory. \r\n";
                 if (!File.Exists(IconPath)) Error += "Icon file doesn't exist. \r\n";
@@ -51,7 +51,7 @@ namespace _3DRadSpace
                     label3.Text = "Status: Ready...";
                     return;
                 }
-                progressBar1.Value += 20;
+                progressBar1.Value += 12;
             }
             else
             {
@@ -59,10 +59,15 @@ namespace _3DRadSpace
                 return;
             }
             ///Step 3: Create necesarry folders...
-            Directory.CreateDirectory(Path + "//Content//");
+            label3.Text = "Status: Creating folders...";
+            Directory.CreateDirectory(Path + "//Projects//");
+            Directory.CreateDirectory(Path + "//" + textBox2.Text);
+            Directory.CreateDirectory(Path + "//Scripts");
+            progressBar1.Value += 12;
             ///Step 4: Copy DLLs & Executables
             try
             {
+                label3.Text = "Status: Copying assemblies...";
                 File.Copy(@"3DRadSpace_Player.exe", Path + "//" + textBox1.Text + ".exe");
                 File.Copy(IconPath, Path + "//Icon.ico");
                 File.Copy(@"3DRadSpaceDll.dll", Path + "//3DRadSpaceDll.dll");
@@ -74,7 +79,7 @@ namespace _3DRadSpace
                 File.Copy(@"SharpDX.MediaFoundation.dll", Path + "//SharpDX.MediaFoundation.dll");
                 File.Copy(@"SharpDX.XAudio2.dll", Path + "//SharpDX.XAudio2.dll");
                 File.Copy(@"SharpDX.XInput.dll", Path + "//SharpDX.XInput.dll");
-                progressBar1.Value += 20;
+                progressBar1.Value += 12;
             }
             catch (FileNotFoundException ex)
             {
@@ -86,12 +91,12 @@ namespace _3DRadSpace
             ///Step 5: Copy Content.
             try
             {
-                Directory.CreateDirectory(Path + "//" + textBox2.Text);
+                label3.Text = "Status: Copying content (models,images,etc) ...";
                 string[] Content = Directory.GetFiles(@"Content");
                 for (int i = 0; i < Content.Length; i++)
                 {
                     File.Copy(Content[i], Path + "//" + textBox2.Text + "//" + System.IO.Path.GetFileName(Content[i]));
-                    progressBar1.Value += 20/ Content.Length;
+                    progressBar1.Value += 12 / Content.Length;
                 }
             }
             catch (FileNotFoundException ex)
@@ -101,15 +106,26 @@ namespace _3DRadSpace
                 label3.Text = "Status: Ready...";
             }
             ///Step 6: Create config file
+            label3.Text = "Status: Creating project configuration...";
             File.WriteAllLines(Path+"//GameConfig.cfg",new []{ textBox1.Text,textBox2.Text,MainProject});
+            progressBar1.Value += 12;
             ///Step 7: Copy Projects.
-            Directory.CreateDirectory(Path + "//Projects//");
+            label3.Text = "Status: Copying projects...";
             for(int i =0; i < listBox1.Items.Count; i++)
             {
                 File.Copy(listBox1.Items[i].ToString(), Path + "//Projects//" + System.IO.Path.GetFileName(listBox1.Items[i].ToString()));
-                progressBar1.Value += 20 / listBox1.Items.Count;
+                progressBar1.Value += 12 / listBox1.Items.Count;
             }
-            //Step 8: Finish
+            //Step 8: Copy scripts
+            label3.Text = "Status: Copying scripts...";
+            string[] scripts = Directory.GetFiles(@"Scripts");
+            for(int i =0; i < scripts.Length; i++)
+            {
+                File.Copy(scripts[i], Path + "//Scripts//" + System.IO.Path.GetFileName(scripts[i]));
+                progressBar1.Value += 12 / scripts.Length;
+            }
+            //Step 9: Finish
+            label3.Text = "Status: Finished!";
             progressBar1.Value = 100;
             timer.Stop();
             DialogResult f = MessageBox.Show("Compilation finished! Time:"+ timer.Elapsed.Seconds + "s "+timer.Elapsed.Milliseconds+"ms \r\n Do you want to open the compiled game's folder?", "Compilation success!", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk);

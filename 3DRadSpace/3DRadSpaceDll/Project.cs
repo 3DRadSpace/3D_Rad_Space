@@ -68,18 +68,19 @@ namespace _3DRadSpaceDll
         /// <param name="filename">File path</param>
         public static void Save(string filename)
         {
-            string[] ToBeSaved = new string[Game.GameObjects.Count];
+            string[] ToBeSaved = new string[Game.GameObjects.Count+1];
             ToBeSaved[0] = type.ToString();
-            for(int i =1; i < Game.GameObjects.Count;i++)
+            for(int i =0; i < Game.GameObjects.Count;i++)
             {
+                int j = i + 1;
                 if(Game.GameObjects[i] is Camera c)
                 {
-                    ToBeSaved[i] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
+                    ToBeSaved[j] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
                         " " + c.CameraRotation + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist;
                 }
                 if(Game.GameObjects[i] is Script s)
                 {
-                    ToBeSaved[i] = "script " + s.Name + " " + s.Enabled + " " + s.ClassName + " " + s.Path;
+                    ToBeSaved[j] = "script " + s.Name + " " + s.Enabled + " " + s.ClassName + " " + s.Path;
                 }
             }
             File.WriteAllLines(filename, ToBeSaved);

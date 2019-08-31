@@ -49,15 +49,17 @@ namespace _3DRadSpace
         {
             OpenFileDialog openFile = new OpenFileDialog()
             {
-                Filter = "C# Script (*.cs) | *.cs",
+                Filter = "C# Script (*.cs)|*.cs",
                 Title = "Open a script",
                 Multiselect = false,
+                InitialDirectory = Path.GetFullPath(@"Scripts//")
             };
             DialogResult r = openFile.ShowDialog();
             if(r == DialogResult.OK)
             {
                 scintilla1.Text = File.ReadAllText(openFile.FileName);
-                FilePath = openFile.FileName;
+                FilePath = @"Scripts//" + Path.GetFileName(openFile.FileName);
+                if(openFile.FileName != Path.GetFullPath(FilePath)) File.Copy(openFile.FileName, FilePath, true);
             }
             
         }
@@ -99,8 +101,8 @@ namespace _3DRadSpace
         {
             if (FilePath == null)
             {
-                File.WriteAllText(@"Temp.cs", scintilla1.Text);
-                FilePath = @"Temp.cs";
+                File.WriteAllText(@"Scripts//Temp.cs", scintilla1.Text);
+                FilePath = @"Scripts//Temp.cs";
             }
             Script script = new Script(null, true, FilePath, textBox2.Text);
             try
@@ -122,14 +124,15 @@ namespace _3DRadSpace
         {
             SaveFileDialog saveFile = new SaveFileDialog()
             {
-                Filter = "C# Script (*.cs) | *.cs",
-                Title = "Save a script"
+                Filter = "C# Script (*.cs)|*.cs",
+                Title = "Save a script",
+                InitialDirectory = Path.GetFullPath(@"Scripts//")
             };
             DialogResult r = saveFile.ShowDialog();
             if(r == DialogResult.OK)
             {
-                File.WriteAllText(saveFile.FileName, scintilla1.Text);
-                FilePath = saveFile.FileName;
+                FilePath = @"Scripts//" + Path.GetFileName(saveFile.FileName);
+                File.WriteAllText(FilePath, scintilla1.Text);
             }
         }
 
@@ -152,12 +155,14 @@ namespace _3DRadSpace
             {
                 SaveFileDialog saveFile = new SaveFileDialog()
                 {
-                    Filter = "C# Script (*.cs) | *.cs",
-                    Title = "Save a script"
+                    Filter = "C# Script (*.cs)|*.cs",
+                    Title = "Save a script",
+                    InitialDirectory = Path.GetFullPath(@"Scripts//")
                 };
                 //Let's force the poor user to save his script :D
                 while(saveFile.ShowDialog() != DialogResult.OK) { }
-                FilePath = saveFile.FileName;
+                FilePath = @"Scripts//"+Path.GetFileName(saveFile.FileName);
+                File.WriteAllText(FilePath, scintilla1.Text);
             }
             DialogResult = DialogResult.OK;
             Result = new Script(textBox1.Text, checkBox1.Enabled, FilePath, textBox2.Text);

@@ -68,6 +68,12 @@
     <Compile Include="AddObject.Designer.cs">
       <DependentUpon>AddObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraW.Designer.cs">
+      <DependentUpon>CameraW.cs</DependentUpon>
+    </Compile>
     <Compile Include="Compiler_SelectMainProject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddObject.resx">
       <DependentUpon>AddObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraW.resx">
+      <DependentUpon>CameraW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Compiler_SelectMainProject.resx">
       <DependentUpon>Compiler_SelectMainProject.cs</DependentUpon>

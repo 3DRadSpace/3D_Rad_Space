@@ -99,6 +99,14 @@ namespace _3DRadSpace
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Editor_View.Draw(null,out View, out Projection);
             _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 1, 0), View, Projection);
+            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            {
+                object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
+                if(gameObject is Camera c)
+                {
+                    c.EditorDraw(null,View, Projection);
+                }
+            }
             base.Draw(gameTime);
         }
         public void ApplyProjectType()
