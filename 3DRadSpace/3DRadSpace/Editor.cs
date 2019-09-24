@@ -65,8 +65,10 @@ namespace _3DRadSpace
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboard = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
             if(Form.ActiveForm == GameWindow)
             {
+                //keyboard shortcuts
                 if (GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.N))
                 {
                     newProject(null, null);
@@ -90,6 +92,20 @@ namespace _3DRadSpace
                 if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.A))
                 {
                     addObject(null, null);
+                }
+                if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                {
+                    if(mouse.X >= Window.ClientBounds.X && mouse.X <= Window.ClientBounds.X + Window.ClientBounds.Width &&
+                       mouse.Y >= Window.ClientBounds.Y && mouse.Y <= Window.ClientBounds.Y + Window.ClientBounds.Height)
+                    {
+                        Mouse.SetPosition(Window.ClientBounds.X + Window.ClientBounds.Width / 2, Window.ClientBounds.Y + Window.ClientBounds.Height / 2);
+                        //IsMouseVisible = false;
+
+                    }
+                }
+                else
+                {
+                    IsMouseVisible = true;
                 }
             }
             base.Update(gameTime);
