@@ -47,3 +47,7 @@ Temporary Items
 .apdisk
 3DRadSpace/bin/Windows/x86/Debug.zip
 *.rar
+
+#Models and resources
+*.xnb
+*.x
