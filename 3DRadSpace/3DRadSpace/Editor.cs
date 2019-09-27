@@ -1,12 +1,11 @@
 ﻿using _3DRadSpaceDll;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
 
 namespace _3DRadSpace
 {
@@ -21,6 +20,10 @@ namespace _3DRadSpace
         Matrix View, Projection;
         public string OpenedFile = null;
         public static bool[] Settings;
+
+        Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
+
+
         public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +33,7 @@ namespace _3DRadSpace
             toolStripStatusLabel1.Text = "Status: Ready";
             GameWindow_SizeChanged(GameWindow, null);
             discordRichPresence = new DiscordRichPresence();
-            Editor_View = new Camera(null,true, new Vector3(5, 10, 5), new Vector3(0,0,0),Vector3.Up, MathHelper.ToRadians(75), 0.01f, 500f);
+            Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, MathHelper.ToRadians(75), 0.01f, 500f);
             _3DRadSpaceDll.Game.GameObjects = new List<object>();
             Settings = Settings_Load();
         }
@@ -39,14 +42,16 @@ namespace _3DRadSpace
             Window.AllowUserResizing = true;
             Window.Title = "3DRadSpace - Editor v0.0.1";
             IsMouseVisible = true;
-            if(Settings[0])
+            if (Settings[0])
             {
                 checkforUpdatesEvent(null, null);
             }
-            if(OpenedFile != null)
+            if (OpenedFile != null)
             {
                 Project.Save(OpenedFile);
+
             }
+            Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
             base.Initialize();
         }
         protected override void LoadContent()
@@ -59,48 +64,49 @@ namespace _3DRadSpace
 
         protected override void UnloadContent()
         {
-            
+
         }
 
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
-            if(Form.ActiveForm == GameWindow)
+            if (Form.ActiveForm == GameWindow)
             {
                 //keyboard shortcuts
-                if (GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.N))
+                if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.N))
                 {
                     newProject(null, null);
                 }
-                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.O))
+                if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.O))
                 {
                     openProject(null, null);
                 }
-                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.S))
+                if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
                 {
                     saveProject(null, null);
                 }
-                if(GetAltKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
+                if (GetAltKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
                 {
                     saveProjectAs(null, null);
                 }
-                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.P))
+                if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.P))
                 {
                     playProject(null, null);
                 }
-                if(GetKeyShortcut(keyboard,Microsoft.Xna.Framework.Input.Keys.A))
+                if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A))
                 {
                     addObject(null, null);
                 }
-                if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    if(mouse.X >= Window.ClientBounds.X && mouse.X <= Window.ClientBounds.X + Window.ClientBounds.Width &&
-                       mouse.Y >= Window.ClientBounds.Y && mouse.Y <= Window.ClientBounds.Y + Window.ClientBounds.Height)
+                    if (mouse.X >= 150 && mouse.X <= graphics.PreferredBackBufferWidth &&
+                       mouse.Y >= 25 && mouse.Y <= graphics.PreferredBackBufferHeight - 25)
                     {
-                        Mouse.SetPosition(Window.ClientBounds.X + Window.ClientBounds.Width / 2, Window.ClientBounds.Y + Window.ClientBounds.Height / 2);
-                        //IsMouseVisible = false;
-
+                        Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+                        IsMouseVisible = false;
+                        CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * -0.001f, (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * 0.001f);
+                        Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
                     }
                 }
                 else
@@ -113,21 +119,21 @@ namespace _3DRadSpace
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            Editor_View.Draw(null,out View, out Projection);
+            Editor_View.Draw(null, out View, out Projection);
             _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 1, 0), View, Projection);
-            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
-                if(gameObject is Camera c)
+                if (gameObject is Camera c)
                 {
-                    c.EditorDraw(null,View, Projection);
+                    c.EditorDraw(null, View, Projection);
                 }
             }
             base.Draw(gameTime);
         }
         public void ApplyProjectType()
         {
-            if(Project.type == ProjectType.ScriptOnly)
+            if (Project.type == ProjectType.ScriptOnly)
             {
                 Program.ProjectTypeScript = true;
                 Exit();
@@ -141,9 +147,9 @@ namespace _3DRadSpace
             bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
             return result;
         }
-        bool GetKeyShortcut(KeyboardState keyboard,Microsoft.Xna.Framework.Input.Keys key)
+        bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
         {
-            if(keyboard.IsKeyDown(key) && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)))
+            if (keyboard.IsKeyDown(key) && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)))
             {
                 return true;
             }
@@ -152,7 +158,7 @@ namespace _3DRadSpace
         bool GetAltKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
         {
             if (keyboard.IsKeyDown(key) && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl))
-            &&    (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt)))
+            && (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt)))
             {
                 return true;
             }
