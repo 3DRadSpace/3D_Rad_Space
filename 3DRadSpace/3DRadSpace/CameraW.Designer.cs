@@ -194,7 +194,7 @@
             this.groupBox3.Size = new System.Drawing.Size(390, 54);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Rotation";
+            this.groupBox3.Text = "View Rotation ( CameraLookAt)";
             // 
             // textBox5
             // 
@@ -282,17 +282,19 @@
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(244, 70);
+            this.textBox12.Location = new System.Drawing.Point(290, 73);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(100, 20);
             this.textBox12.TabIndex = 3;
+            this.textBox12.Text = "500";
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(244, 48);
+            this.textBox11.Location = new System.Drawing.Point(290, 48);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(100, 20);
             this.textBox11.TabIndex = 2;
+            this.textBox11.Text = "0.1";
             // 
             // label8
             // 
@@ -323,7 +325,7 @@
             this.groupBox5.Size = new System.Drawing.Size(390, 54);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "View Rotation";
+            this.groupBox5.Text = "View Rotation (CameraUp)";
             // 
             // textBox8
             // 
@@ -348,7 +350,7 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(100, 20);
             this.textBox9.TabIndex = 3;
-            this.textBox9.Text = "0";
+            this.textBox9.Text = "1";
             // 
             // label10
             // 

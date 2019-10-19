@@ -219,12 +219,13 @@ namespace _3DRadSpace
                 }
             }
         }
-        public static string ValidateNumericInput(string input)
+        public static string ValidateTextInput(string input)
         {
             string r = null;
             for(int i =0; i < input.Length;i++)
             {
                 if (input[i] != ' ') r += input[i];
+                else r += '_';
             }
             return r;
         }

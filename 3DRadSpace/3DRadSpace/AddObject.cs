@@ -34,5 +34,15 @@ namespace _3DRadSpace
             }
             Close();
         }
+
+        private void PictureBox15_Click(object sender, EventArgs e)
+        {
+            CameraW camera = new CameraW();
+            if(camera.ShowDialog() == DialogResult.OK)
+            {
+                Result = camera.Result;
+            }
+            Close();
+        }
     }
 }

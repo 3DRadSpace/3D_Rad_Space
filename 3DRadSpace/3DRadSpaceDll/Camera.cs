@@ -15,17 +15,42 @@ namespace _3DRadSpaceDll
         /// <param name="name">Objet name.</param>
         /// <param name="Enabled">If camera is enabled.</param>
         /// <param name="Pos">Position</param>
-        /// <param name="Target">Camera look at.</param>
+        /// <param name="Rot">Camera rotation.Also used to calculate the target.</param>
+        /// <param name="Targ">Camera Target (Propably not used anymore? )</param>
         /// <param name="UpDir">Camera up direction.</param>
         /// <param name="FOV">Field of view in radians</param>
         /// <param name="nearplane">Minumum draw distance</param>
         /// <param name="farplane">Maximum draw distance</param>
-        public Camera(string name,bool Enabled,Vector3 Pos,Vector3 Target,Vector3 UpDir,float FOV,float nearplane,float farplane)
+        public Camera(string name, bool Enabled, Vector3 Pos, Vector3 Rot,Vector3 Targ, Vector3 UpDir, float FOV, float nearplane, float farplane)
         {
             Name = name;
             this.Enabled = Enabled;
             Position = Pos;
-            CameraTarget = Target;
+            Rotation = Rot;
+            CameraTarget = Targ;
+            CameraRotation = UpDir;
+            this.FOV = FOV;
+            MinDrawDist = nearplane;
+            MaxDrawDist = farplane;
+        }
+        /// <summary>
+        /// Camera object constructor.
+        /// </summary>
+        /// <param name="name">Objet name.</param>
+        /// <param name="Enabled">If camera is enabled.</param>
+        /// <param name="Pos">Position</param>
+        /// <param name="Rot">Camera rotation.Also used to calculate the target.</param>
+        /// <param name="UpDir">Camera up direction.</param>
+        /// <param name="FOV">Field of view in radians</param>
+        /// <param name="nearplane">Minumum draw distance</param>
+        /// <param name="farplane">Maximum draw distance</param>
+        public Camera(string name,bool Enabled,Vector3 Pos,Vector3 Rot,Vector3 UpDir,float FOV,float nearplane,float farplane)
+        {
+            Name = name;
+            this.Enabled = Enabled;
+            Position = Pos;
+            Rotation = Rot;
+            CameraTarget = Pos+Vector3.Transform(Vector3.UnitZ+Vector3.UnitY,Matrix.CreateFromYawPitchRoll(Rot.Y,Rot.X,Rot.Y));
             CameraRotation = UpDir;
             this.FOV = FOV;
             MinDrawDist = nearplane;
@@ -59,7 +84,7 @@ namespace _3DRadSpaceDll
         public void EditorDraw(SpriteBatch spriteBatch,Matrix view,Matrix projection)
         {
             Game.DrawModel(model, Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-            Matrix.CreateTranslation(Position), (Matrix)view, (Matrix)projection);
+            Matrix.CreateTranslation(Position), view, projection);
         }
 
         /// <summary>

@@ -16,7 +16,6 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\De
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct2D1.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.XAudio2.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csprojAssemblyReference.cache
-C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CoreCompileInputs.cache
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CopyComplete
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.dll
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.pdb

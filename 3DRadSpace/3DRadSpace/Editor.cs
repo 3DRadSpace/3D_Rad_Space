@@ -22,7 +22,7 @@ namespace _3DRadSpace
         public static bool[] Settings;
 
         Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
-
+        float CameraSpeed = 0.1f;
 
         public Editor()
         {
@@ -98,6 +98,12 @@ namespace _3DRadSpace
                 {
                     addObject(null, null);
                 }
+
+                if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position +=  Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
+                if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
+                if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) Editor_View.Position += Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
+                if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) Editor_View.Position -= Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
+
                 if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
                     if (mouse.X >= 150 && mouse.X <= graphics.PreferredBackBufferWidth &&
@@ -106,13 +112,13 @@ namespace _3DRadSpace
                         Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
                         IsMouseVisible = false;
                         CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * -0.001f, (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * 0.001f);
-                        Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
                     }
                 }
                 else
                 {
                     IsMouseVisible = true;
                 }
+                Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
             }
             base.Update(gameTime);
         }
@@ -120,7 +126,7 @@ namespace _3DRadSpace
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Editor_View.Draw(null, out View, out Projection);
-            _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 1, 0), View, Projection);
+            _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 0, 0), View, Projection);
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 object gameObject = _3DRadSpaceDll.Game.GameObjects[i];

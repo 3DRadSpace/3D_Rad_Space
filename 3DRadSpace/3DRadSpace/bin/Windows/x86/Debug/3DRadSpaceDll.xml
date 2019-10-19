@@ -9,6 +9,20 @@
             Camera class.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
+            <summary>
+            Camera object constructor.
+            </summary>
+            <param name="name">Objet name.</param>
+            <param name="Enabled">If camera is enabled.</param>
+            <param name="Pos">Position</param>
+            <param name="Rot">Camera rotation.Also used to calculate the target.</param>
+            <param name="Targ">Camera Target (Propably not used anymore? )</param>
+            <param name="UpDir">Camera up direction.</param>
+            <param name="FOV">Field of view in radians</param>
+            <param name="nearplane">Minumum draw distance</param>
+            <param name="farplane">Maximum draw distance</param>
+        </member>
         <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
             <summary>
             Camera object constructor.
@@ -16,7 +30,7 @@
             <param name="name">Objet name.</param>
             <param name="Enabled">If camera is enabled.</param>
             <param name="Pos">Position</param>
-            <param name="Target">Camera look at.</param>
+            <param name="Rot">Camera rotation.Also used to calculate the target.</param>
             <param name="UpDir">Camera up direction.</param>
             <param name="FOV">Field of view in radians</param>
             <param name="nearplane">Minumum draw distance</param>
