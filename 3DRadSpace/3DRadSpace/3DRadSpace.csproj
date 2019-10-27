@@ -29,6 +29,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -90,6 +92,7 @@
       <DependentUpon>EditorUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NewProjectWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +117,12 @@
     </Compile>
     <Compile Include="ScriptW.Designer.cs">
       <DependentUpon>ScriptW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectObjectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectObjectDialog.Designer.cs">
+      <DependentUpon>SelectObjectDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
@@ -213,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptW.resx">
       <DependentUpon>ScriptW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectObjectDialog.resx">
+      <DependentUpon>SelectObjectDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

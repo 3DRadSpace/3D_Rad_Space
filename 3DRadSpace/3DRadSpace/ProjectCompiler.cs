@@ -49,6 +49,7 @@ namespace _3DRadSpace
                     label3.Text = "Status: Errors during compilation...";
                     MessageBox.Show(Error, "Compilation Erorrs", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     label3.Text = "Status: Ready...";
+                    folderBrowser.Dispose();
                     return;
                 }
                 progressBar1.Value += 12;
@@ -56,6 +57,7 @@ namespace _3DRadSpace
             else
             {
                 label3.Text = "Status: Ready...";
+                folderBrowser.Dispose();
                 return;
             }
             ///Step 3: Create necesarry folders...
@@ -86,6 +88,7 @@ namespace _3DRadSpace
                 label3.Text = "Status: Errors during compilation...";
                 MessageBox.Show("The following file is missing: " + ex.FileName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 label3.Text = "Status: Ready...";
+                folderBrowser.Dispose();
                 return;
             }
             ///Step 5: Copy Content.
@@ -133,6 +136,8 @@ namespace _3DRadSpace
             {
                 Process.Start(Path);
             }
+            folderBrowser.Dispose();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -148,6 +153,7 @@ namespace _3DRadSpace
             {
                 listBox1.Items.Add(openFile.FileName);
             }
+            openFile.Dispose();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -172,6 +178,7 @@ namespace _3DRadSpace
                 pictureBox1.ImageLocation = openIcon.FileName;
                 IconPath = openIcon.FileName;
             }
+            openIcon.Dispose();
         }
 
         private void ProjectCompiler_Load(object sender, EventArgs e)
@@ -191,6 +198,7 @@ namespace _3DRadSpace
                 {
                     MainProject = mainProject.Result;
                 }
+                mainProject.Dispose();
             }
         }
     }

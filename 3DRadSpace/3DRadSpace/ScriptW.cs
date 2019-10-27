@@ -42,8 +42,8 @@ namespace _3DRadSpace
             scintilla1.SetKeywords(1, "bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void");
         }
 
-        public string FilePath = null;
-        public object Result = null;
+        public string FilePath { get; set; }
+        public object Result { get; set; }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -61,7 +61,7 @@ namespace _3DRadSpace
                 FilePath = @"Scripts//" + Path.GetFileName(openFile.FileName);
                 if(openFile.FileName != Path.GetFullPath(FilePath)) File.Copy(openFile.FileName, FilePath, true);
             }
-            
+            openFile.Dispose();
         }
         /*
          * Taken from https://github.com/jacobslusser/scintilla11NET/wiki/Displaying-Line-Numbers

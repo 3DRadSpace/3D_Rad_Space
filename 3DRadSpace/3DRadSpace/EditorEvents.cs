@@ -22,6 +22,7 @@ namespace _3DRadSpace
             ApplyProjectType();
             ProjectSaved = true;
             discordRichPresence.SetPresence("Editing project", "New Project");
+            projectWindow.Dispose();
         }
         void openProject(object a,EventArgs e)
         {
@@ -39,6 +40,7 @@ namespace _3DRadSpace
                 ProjectSaved = true;
                 discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
             }
+            openFile.Dispose();
         }
         void saveProject(object a,EventArgs e)
         {
@@ -61,6 +63,7 @@ namespace _3DRadSpace
                 discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
                 ProjectSaved = true;
             }
+            saveFile.Dispose();
         }
         void playProject(object a,EventArgs e)
         {
@@ -75,6 +78,7 @@ namespace _3DRadSpace
         {
             ProjectCompiler compiler = new ProjectCompiler();
             compiler.ShowDialog();
+            compiler.Dispose();
         }
         void addObject(object a,EventArgs e)
         {
@@ -86,6 +90,7 @@ namespace _3DRadSpace
                 ProjectSaved = false;
             }
             UpdateObjects();
+            add.Dispose();
         }
         void addAddon(object a,EventArgs e)
         {
@@ -103,6 +108,7 @@ namespace _3DRadSpace
                 UpdateObjects();
                 ProjectSaved = false;
             }
+            openFile.Dispose();
         }
         void installResources(object a,EventArgs e)
         {
@@ -141,16 +147,19 @@ namespace _3DRadSpace
                 MessageBox.Show("No new update found!", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 toolStripStatusLabel1.Text = "Status: Ready";
             }
+            client.Dispose();
         }
         void aboutBoxOpen(object a, EventArgs e)
         {
             AboutBox aboutBox = new AboutBox();
             aboutBox.ShowDialog();
+            aboutBox.Dispose();
         }
         void settingsOpen(object a, EventArgs e)
         {
             Settings settings = new Settings();
             settings.ShowDialog();
+            settings.Dispose();
         }
         void openDocumentation(object a,EventArgs b)
         {
@@ -175,7 +184,16 @@ namespace _3DRadSpace
             if(b is Script s)
             {
                 ScriptW scriptW = new ScriptW();
-
+                scriptW.ShowDialog();
+                if (scriptW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = scriptW.Result;
+                scriptW.Dispose();
+            }
+            if(b is Camera c)
+            {
+                CameraW cameraW = new CameraW();
+                cameraW.ShowDialog();
+                if (cameraW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = cameraW.Result;
+                cameraW.Dispose();
             }
         }
         void M_DeleteObject(object obj,EventArgs e)
@@ -221,6 +239,7 @@ namespace _3DRadSpace
         }
         public static string ValidateTextInput(string input)
         {
+            if (input == null) return "";
             string r = null;
             for(int i =0; i < input.Length;i++)
             {

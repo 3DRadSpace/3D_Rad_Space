@@ -11,6 +11,25 @@ using Microsoft.Xna.Framework.Content;
 namespace _3DRadSpaceDll
 {
     /// <summary>
+    /// Defines an relation with between 2 objects.
+    /// </summary>
+    public struct ObjectBehiavour
+    {
+        object Object;
+        int ID;
+        /// <summary>
+        /// Constructs an ObjectBehiavour struct.
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <param name="id">Relation ID(identifier)</param>
+        public ObjectBehiavour(object obj,int id)
+        {
+            Object = obj;
+            ID = id;
+        }
+    }
+
+    /// <summary>
     /// Called when drawing the object
     /// </summary>
     /// <param name="drawn">The drawn object. Conversion will be needed.</param>
@@ -79,6 +98,12 @@ namespace _3DRadSpaceDll
         /// Rotation in a Euler angles system.
         /// </summary>
         public Vector3 Rotation;
+
+        /// <summary>
+        /// Relation with other objects
+        /// </summary>
+        public ObjectBehiavour[] Behiavours;
+
         /// <summary>
         /// Rotation in a Quaterion system.
         /// </summary>
@@ -187,6 +212,14 @@ namespace _3DRadSpaceDll
         {
             if (o != null) return true;
             else return false;
+        }
+        /// <summary>
+        /// Returns the object's name
+        /// </summary>
+        /// <returns>the object's name</returns>
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

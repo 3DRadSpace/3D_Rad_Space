@@ -166,6 +166,18 @@
             <param name="i">Numeric indentifier.</param>
             <returns>Returns the found object.</returns>
         </member>
+        <member name="T:_3DRadSpaceDll.ObjectBehiavour">
+            <summary>
+            Defines an relation with between 2 objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Object,System.Int32)">
+            <summary>
+            Constructs an ObjectBehiavour struct.
+            </summary>
+            <param name="obj">Object</param>
+            <param name="id">Relation ID(identifier)</param>
+        </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
             Called when drawing the object
@@ -241,6 +253,11 @@
         <member name="F:_3DRadSpaceDll.GameObject.Rotation">
             <summary>
             Rotation in a Euler angles system.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.Behiavours">
+            <summary>
+            Relation with other objects
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.RotationQuaternion">
@@ -343,6 +360,12 @@
             Checks if the object exists. Same as GameObject != null.
             </summary>
             <param name="o">GameObject to check.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.ToString">
+            <summary>
+            Returns the object's name
+            </summary>
+            <returns>the object's name</returns>
         </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>

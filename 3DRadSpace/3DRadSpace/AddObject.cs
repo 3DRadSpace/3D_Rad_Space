@@ -21,7 +21,7 @@ namespace _3DRadSpace
         {
             if (_3DRadSpaceDll.Project.type == _3DRadSpaceDll.ProjectType.ThreeDimensional)
             {
-                MessageBox.Show("This object can only be used with 3D projects...", "2DCamera v1.0.0", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("This object can only be used with 2D projects...", "2DCamera v1.0.0", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -32,6 +32,7 @@ namespace _3DRadSpace
             {
                 Result = script.Result;
             }
+            script.Dispose();
             Close();
         }
 
@@ -42,6 +43,7 @@ namespace _3DRadSpace
             {
                 Result = camera.Result;
             }
+            camera.Dispose();
             Close();
         }
     }

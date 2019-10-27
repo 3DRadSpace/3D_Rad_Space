@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -16,10 +17,10 @@ namespace _3DRadSpace
         Form GameWindow;
         Camera Editor_View;
         Model Axis;
-        public static DiscordRichPresence discordRichPresence;
+        static DiscordRichPresence discordRichPresence;
         Matrix View, Projection;
         public string OpenedFile = null;
-        public static bool[] Settings;
+        static bool[] Settings;
 
         Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
         float CameraSpeed = 0.1f;
@@ -147,10 +148,11 @@ namespace _3DRadSpace
         }
         private bool[] Settings_Load()
         {
+            IFormatProvider a = CultureInfo.CurrentCulture;
             string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
             if (!File.Exists(appd + "\\Config.cfg")) return new[] { true, true, true };
             string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
-            bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
+            bool[] result = { Convert.ToBoolean(split[0],a), Convert.ToBoolean(split[1],a), Convert.ToBoolean(split[2],a) };
             return result;
         }
         bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
