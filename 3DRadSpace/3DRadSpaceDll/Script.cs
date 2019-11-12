@@ -86,6 +86,7 @@ namespace _3DRadSpaceDll
                 //Stop the benchmark and report.
                 benchmark.Stop();
                 CompilationTime = benchmark.Elapsed;
+                Compiler.Dispose();
                 return false;
             }
             else
@@ -96,6 +97,7 @@ namespace _3DRadSpaceDll
                 benchmark.Stop();
                 CompilationStatus = true;
                 CompilationTime = benchmark.Elapsed;
+                Compiler.Dispose();
                 return true;
             }
         }

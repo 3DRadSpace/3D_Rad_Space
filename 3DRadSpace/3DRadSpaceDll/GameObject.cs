@@ -11,25 +11,6 @@ using Microsoft.Xna.Framework.Content;
 namespace _3DRadSpaceDll
 {
     /// <summary>
-    /// Defines an relation with between 2 objects.
-    /// </summary>
-    public struct ObjectBehiavour
-    {
-        object Object;
-        int ID;
-        /// <summary>
-        /// Constructs an ObjectBehiavour struct.
-        /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="id">Relation ID(identifier)</param>
-        public ObjectBehiavour(object obj,int id)
-        {
-            Object = obj;
-            ID = id;
-        }
-    }
-
-    /// <summary>
     /// Called when drawing the object
     /// </summary>
     /// <param name="drawn">The drawn object. Conversion will be needed.</param>
@@ -102,7 +83,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Relation with other objects
         /// </summary>
-        public ObjectBehiavour[] Behiavours;
+        public List<ObjectBehiavour> Behiavours;
 
         /// <summary>
         /// Rotation in a Quaterion system.

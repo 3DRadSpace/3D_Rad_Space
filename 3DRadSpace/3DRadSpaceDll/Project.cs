@@ -37,10 +37,20 @@ namespace _3DRadSpaceDll
                 {
                     case "camera":
                         {
-                            a = new Camera(Obj[1], Convert.ToBoolean(Obj[2]), new Vector3(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])),
+                            Camera c = new Camera(Obj[1], Convert.ToBoolean(Obj[2]), new Vector3(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])),
                                 new Vector3(Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
                                 new Vector3(Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
                                 Convert.ToSingle(Obj[12]), Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]));
+                            int capacity = Convert.ToInt32(Obj[15]);
+                            if (capacity > 0)
+                            {
+                                c.Behiavours = new List<ObjectBehiavour>(capacity);
+                            }
+                            for(int j =0; j < capacity; j++)
+                            {
+                                c.Behiavours.Add(new ObjectBehiavour(Convert.ToInt32(Obj[15 + i]),Convert.ToInt32(Obj[16+i]) ));
+                            }
+                            a = c;
                             break;
                         }
                     case "script":
@@ -69,14 +79,22 @@ namespace _3DRadSpaceDll
         public static void Save(string filename)
         {
             string[] ToBeSaved = new string[Game.GameObjects.Count+1];
-            ToBeSaved[0] = type.ToString();
+            ToBeSaved[0] = ((int)type).ToString();
             for(int i =0; i < Game.GameObjects.Count;i++)
             {
                 int j = i + 1;
                 if(Game.GameObjects[i] is Camera c)
                 {
                     ToBeSaved[j] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
-                        " " + c.CameraRotation + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist;
+                        " " + Vector2String(c.CameraRotation) + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist + " ";
+                    if (c.Behiavours != null)
+                    {
+                        ToBeSaved[j] += c.Behiavours.Count;
+                        for (int k = 0; k < c.Behiavours.Count; k++)
+                        {
+                            ToBeSaved[j] += c.Behiavours[k].ObjectID + " " + c.Behiavours[k].BehiavourID+ " ";
+                        }
+                    }
                 }
                 if(Game.GameObjects[i] is Script s)
                 {

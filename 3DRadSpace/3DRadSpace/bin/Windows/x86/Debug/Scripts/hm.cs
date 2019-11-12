@@ -11,11 +11,11 @@ class Script
 {
     public void Start()
     {
-//test comment
+
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {
-//test comment
+
     }
     public void End()
     {

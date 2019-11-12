@@ -49,8 +49,7 @@ namespace _3DRadSpace
             }
             if (OpenedFile != null)
             {
-                Project.Save(OpenedFile);
-
+                Project.Open(OpenedFile);
             }
             Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
             base.Initialize();

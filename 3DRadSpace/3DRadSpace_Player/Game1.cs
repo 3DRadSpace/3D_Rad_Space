@@ -34,6 +34,7 @@ namespace _3DRadSpace_Player
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
         }
 
         /// <summary>

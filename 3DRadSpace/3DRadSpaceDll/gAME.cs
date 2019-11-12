@@ -45,6 +45,8 @@ namespace _3DRadSpaceDll
         /// <returns>Returns the found object.</returns>
         public static object FindObject(int i)
         {
+            if (i < 0) return null;
+            if (i > GameObjects.Count) return null;
             return GameObjects[i];
         }
 

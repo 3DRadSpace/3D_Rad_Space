@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using _3DRadSpaceDll;
 using System.Windows.Forms;
 
 namespace _3DRadSpace
@@ -14,20 +8,21 @@ namespace _3DRadSpace
     {
         public SelectObjectDialog()
         {
+            Result = -1;
             InitializeComponent();
         }
         public int Result;
         private void SelectObjectDialog_Load(object sender, EventArgs e)
         {
-            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            for(int i =0; i < Game.GameObjects.Count;i++)
             {
-                listBox1.Items.Add(_3DRadSpaceDll.Game.GameObjects[i]);
+                if(Game.GameObjects[i] != null )listBox1.Items.Add(Game.GameObjects[i]);
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex >0)
+            if(listBox1.SelectedIndex >= 0)
             {
                 Result = listBox1.SelectedIndex;
                 Close();
@@ -38,11 +33,6 @@ namespace _3DRadSpace
         {
             Result = -1;
             Close();
-        }
-
-        private void SelectObjectDialog_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Result = -1;
         }
     }
 }

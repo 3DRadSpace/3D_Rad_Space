@@ -76,7 +76,6 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Select a object";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectObjectDialog_FormClosing);
             this.Load += new System.EventHandler(this.SelectObjectDialog_Load);
             this.ResumeLayout(false);
 

@@ -47,6 +47,11 @@
             <param name="nearplane"></param>
             <param name="farplane"></param>
         </member>
+        <member name="M:_3DRadSpaceDll.Camera.#ctor">
+            <summary>
+            Empty constructor.
+            </summary>
+        </member>
         <member name="F:_3DRadSpaceDll.Camera.model">
             <summary>
             Expected to be loaded by the game editor.
@@ -165,18 +170,6 @@
             </summary>
             <param name="i">Numeric indentifier.</param>
             <returns>Returns the found object.</returns>
-        </member>
-        <member name="T:_3DRadSpaceDll.ObjectBehiavour">
-            <summary>
-            Defines an relation with between 2 objects.
-            </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Object,System.Int32)">
-            <summary>
-            Constructs an ObjectBehiavour struct.
-            </summary>
-            <param name="obj">Object</param>
-            <param name="id">Relation ID(identifier)</param>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
@@ -366,6 +359,34 @@
             Returns the object's name
             </summary>
             <returns>the object's name</returns>
+        </member>
+        <member name="T:_3DRadSpaceDll.ObjectBehiavour">
+            <summary>
+            Specifies object relationships with other ones.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.ObjectBehiavour.ObjectID">
+            <summary>
+            Object Identifier for the 'child' object
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.ObjectBehiavour.BehiavourID">
+            <summary>
+            Behiavour identifier. 0 is always default.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="ID">Object identifier</param>
+            <param name="beh"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Int32)">
+            <summary>
+            Constructor with minimal arguments.
+            </summary>
+            <param name="ID">'Child' object identifier.</param>
         </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>

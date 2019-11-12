@@ -134,6 +134,7 @@ namespace _3DRadSpace
                 FilePath = @"Scripts//" + Path.GetFileName(saveFile.FileName);
                 File.WriteAllText(FilePath, scintilla1.Text);
             }
+            saveFile.Dispose();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -163,6 +164,7 @@ namespace _3DRadSpace
                 while(saveFile.ShowDialog() != DialogResult.OK) { }
                 FilePath = @"Scripts//"+Path.GetFileName(saveFile.FileName);
                 File.WriteAllText(FilePath, scintilla1.Text);
+                saveFile.Dispose();
             }
             DialogResult = DialogResult.OK;
             Result = new Script(textBox1.Text, checkBox1.Enabled, FilePath, textBox2.Text);

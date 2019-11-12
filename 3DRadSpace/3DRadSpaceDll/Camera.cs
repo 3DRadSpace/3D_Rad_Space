@@ -75,6 +75,22 @@ namespace _3DRadSpaceDll
             MinDrawDist = nearplane;
         }
         /// <summary>
+        /// Empty constructor.
+        /// </summary>
+        public Camera()
+        {
+            Name = null;
+            Enabled = false;
+            Position = Vector3.Zero;
+            Rotation = Vector3.Zero;
+            CameraTarget = Vector3.Forward;
+            CameraRotation = Vector3.Up;
+            FOV = MathHelper.ToRadians(45);
+            MinDrawDist = 0.01f;
+            MaxDrawDist = 500f;
+        }
+
+        /// <summary>
         /// Expected to be loaded by the game editor.
         /// </summary>
         public static Model model;
