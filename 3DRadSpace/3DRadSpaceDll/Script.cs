@@ -124,21 +124,21 @@ namespace _3DRadSpaceDll
             base.Load(content);
         }
         /// <summary>
-        /// Executes [ClassName].Start(), where ClassName is the compiled source.
+        /// Executes [ClassName].Start(), where ClassName is part of the the compiled code.
         /// </summary>
         public void Start()
         {
             _start.Invoke(null, null);
         }
         /// <summary>
-        /// Executes [ClassName].Run(), where ClassName is the compiled source.
+        /// Executes [ClassName].Run(), where ClassName is part of the compiled source code.
         /// </summary>
         public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
             _run.Invoke(null, new object[] { mouse, keyboard, time });
         }
         /// <summary>
-        /// Executes [ClassName].End(), where ClassName is the compiled source.
+        /// Executes [ClassName].End(), where ClassName is part of the compiled source.
         /// </summary>
         public void End()
         {
@@ -147,9 +147,9 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Runs the script code.
         /// </summary>
-        /// <param name="mouse">Not really used.</param>
-        /// <param name="keyboard">Not really used.</param>
-        /// <param name="time">Not really used.</param>
+        /// <param name="mouse">Used by the user if the case.</param>
+        /// <param name="keyboard">Used by the user if the case.</param>
+        /// <param name="time">Used by the user if the case.</param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
             Run(mouse,keyboard,time);

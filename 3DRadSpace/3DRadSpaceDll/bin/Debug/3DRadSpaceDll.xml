@@ -57,7 +57,13 @@
             Expected to be loaded by the game editor.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+        <member name="M:_3DRadSpaceDll.Camera.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads the object. In this cases, initializes the DeltaPos used when the camera is 'chasing' an object.
+            </summary>
+            <param name="content"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Drawing code for the editor.
             </summary>
@@ -104,12 +110,20 @@
             Maximum drawing distance.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.Camera.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Updates the Camera object. In this case, the Camera object is affected by it's 'relationships'.
+            </summary>
+            <param name="mouse">Not used</param>
+            <param name="keyboard">Not used</param>
+            <param name="time">Not used</param>
+        </member>
         <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
             <summary>
-            Camera drawing for game code.
+            Camera drawing for game code. This method doesn't override the GameObject's Draw function. :thinking:
             </summary>
             <param name="spriteBatch">Not used.</param>
-            <param name="view">Uses it's own view;</param>
+            <param name="view">Uses it's own view</param>
             <param name="projection"></param>
         </member>
         <member name="T:_3DRadSpaceDll.Camera2D">
@@ -303,7 +317,7 @@
             Object Drawing code
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix}@,System.Nullable{Microsoft.Xna.Framework.Matrix}@)">
+        <member name="M:_3DRadSpaceDll.GameObject.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Object draw code for the 3DRadSpace editor
             </summary>
@@ -492,26 +506,59 @@
         </member>
         <member name="M:_3DRadSpaceDll.Script.Start">
             <summary>
-            Executes [ClassName].Start(), where ClassName is the compiled source.
+            Executes [ClassName].Start(), where ClassName is part of the the compiled code.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Script.Run(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
-            Executes [ClassName].Run(), where ClassName is the compiled source.
+            Executes [ClassName].Run(), where ClassName is part of the compiled source code.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Script.End">
             <summary>
-            Executes [ClassName].End(), where ClassName is the compiled source.
+            Executes [ClassName].End(), where ClassName is part of the compiled source.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Script.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
             Runs the script code.
             </summary>
-            <param name="mouse">Not really used.</param>
-            <param name="keyboard">Not really used.</param>
-            <param name="time">Not really used.</param>
+            <param name="mouse">Used by the user if the case.</param>
+            <param name="keyboard">Used by the user if the case.</param>
+            <param name="time">Used by the user if the case.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.SkyColor">
+            <summary>
+            Colors the screen when screen cleaning is used. 
+            <para>Notice the missing Update(), Draw(), EditorDraw() and Load() functions. They aren't used because only the colour is needed.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.SkyColor.Color">
+            <summary>
+            The colour itself.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkyColor.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Color)">
+            <summary>
+            SkyColor object constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="active">Is the object active?</param>
+            <param name="c">Color used for the screen.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkyColor.#ctor(System.String,System.Boolean)">
+            <summary>
+            Generates an empty SkyColor object.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="active">Is Object active</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SkyColor.GetColor">
+            <summary>
+            Gets the color.
+            <para>Returns null if the object is inactive, otherwise returns this.Color .</para>
+            </summary>
+            <returns>Returns null if the object is inactive, otherwise returns this.Color .</returns>
         </member>
         <member name="T:_3DRadSpaceDll.onClick">
             <summary>

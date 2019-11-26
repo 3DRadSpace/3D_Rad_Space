@@ -24,7 +24,7 @@ namespace _3DRadSpace
 
         Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
         float CameraSpeed = 0.1f;
-
+        Color ClearColor = Color.Black;
         public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,7 +34,7 @@ namespace _3DRadSpace
             toolStripStatusLabel1.Text = "Status: Ready";
             GameWindow_SizeChanged(GameWindow, null);
             discordRichPresence = new DiscordRichPresence();
-            Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, MathHelper.ToRadians(75), 0.01f, 500f);
+            Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, 75, 0.01f, 500f);
             _3DRadSpaceDll.Game.GameObjects = new List<object>();
             Settings = Settings_Load();
         }
@@ -118,22 +118,20 @@ namespace _3DRadSpace
                 {
                     IsMouseVisible = true;
                 }
-                Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
-            }
+             }
+            Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(ClearColor);
             Editor_View.Draw(null, out View, out Projection);
             _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 0, 0), View, Projection);
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
-                if (gameObject is Camera c)
-                {
-                    c.EditorDraw(null, View, Projection);
-                }
+                if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
+                if (gameObject is SkyColor s) ClearColor = s.Color;
             }
             base.Draw(gameTime);
         }

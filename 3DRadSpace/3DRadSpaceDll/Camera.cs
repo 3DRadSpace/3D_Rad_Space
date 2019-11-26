@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpaceDll
 {
@@ -29,7 +31,7 @@ namespace _3DRadSpaceDll
             Rotation = Rot;
             CameraTarget = Targ;
             CameraRotation = UpDir;
-            this.FOV = FOV;
+            this.FOV = MathHelper.ToRadians(FOV);
             MinDrawDist = nearplane;
             MaxDrawDist = farplane;
         }
@@ -52,7 +54,7 @@ namespace _3DRadSpaceDll
             Rotation = Rot;
             CameraTarget = Pos+Vector3.Transform(Vector3.UnitZ+Vector3.UnitY,Matrix.CreateFromYawPitchRoll(Rot.Y,Rot.X,Rot.Y));
             CameraRotation = UpDir;
-            this.FOV = FOV;
+            this.FOV = MathHelper.ToRadians(FOV);
             MinDrawDist = nearplane;
             MaxDrawDist = farplane;
         }
@@ -70,7 +72,7 @@ namespace _3DRadSpaceDll
             Name = name;
             Position = Pos;
             CameraTarget = Target;
-            this.FOV = FOV;
+            this.FOV = MathHelper.ToRadians(FOV);
             MaxDrawDist = farplane;
             MinDrawDist = nearplane;
         }
@@ -94,13 +96,32 @@ namespace _3DRadSpaceDll
         /// Expected to be loaded by the game editor.
         /// </summary>
         public static Model model;
+        Vector3 DeltaPos;
+
+        /// <summary>
+        /// Loads the object. In this cases, initializes the DeltaPos used when the camera is 'chasing' an object.
+        /// </summary>
+        /// <param name="content"></param>
+        public override void Load(ContentManager content)
+        {
+            for (int i = 0; i < Behiavours.Count; i++)
+            {
+                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
+                int b = Behiavours[i].BehiavourID;
+                if (b == 1)
+                {
+                    DeltaPos = obj.Position - Position;
+                }
+            }
+            base.Load(content);
+        }
         /// <summary>
         /// Drawing code for the editor.
         /// </summary>
-        public void EditorDraw(SpriteBatch spriteBatch,Matrix view,Matrix projection)
+        public override void EditorDraw(SpriteBatch spriteBatch,Matrix? view,Matrix? projection)
         {
             Game.DrawModel(model, Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-            Matrix.CreateTranslation(Position), view, projection);
+            Matrix.CreateTranslation(Position), (Matrix)view, (Matrix)projection);
         }
 
         /// <summary>
@@ -151,10 +172,35 @@ namespace _3DRadSpaceDll
         public float MaxDrawDist;
 
         /// <summary>
-        /// Camera drawing for game code.
+        /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationships'.
+        /// </summary>
+        /// <param name="mouse">Not used</param>
+        /// <param name="keyboard">Not used</param>
+        /// <param name="time">Not used</param>
+        public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
+        {
+            for (int i = 0; i < Behiavours.Count; i++)
+            {
+                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
+                int b = Behiavours[i].BehiavourID;
+                if (b == 2)
+                {
+                    CameraTarget = obj.Position;
+                }
+                if (b == 1)
+                {
+                    Position = obj.Position + DeltaPos;
+                    CameraTarget = obj.Position;
+                }
+            }
+            base.Update(mouse, keyboard, time);
+        }
+
+        /// <summary>
+        /// Camera drawing for game code. This method doesn't override the GameObject's Draw function. :thinking:
         /// </summary>
         /// <param name="spriteBatch">Not used.</param>
-        /// <param name="view">Uses it's own view;</param>
+        /// <param name="view">Uses it's own view</param>
         /// <param name="projection"></param>
         public void Draw(SpriteBatch spriteBatch,out Matrix view,out Matrix projection)
         {

@@ -21,6 +21,7 @@ namespace _3DRadSpace
             projectWindow.ShowDialog();
             ApplyProjectType();
             ProjectSaved = true;
+            UpdateObjects();
             discordRichPresence.SetPresence("Editing project", "New Project");
             projectWindow.Dispose();
         }
@@ -181,29 +182,36 @@ namespace _3DRadSpace
         void M_EditObject(object a,EventArgs e)
         {
             object b = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex];
-            if(b is Script s)
+            if(b is Script)
             {
-                ScriptW scriptW = new ScriptW();
+                ScriptW scriptW = new ScriptW((Script)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
                 scriptW.ShowDialog();
                 if (scriptW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = scriptW.Result;
                 scriptW.Dispose();
             }
-            if(b is Camera c)
+            if (b is Camera)
             {
-                CameraW cameraW = new CameraW();
+                CameraW cameraW = new CameraW((Camera)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
                 cameraW.ShowDialog();
                 if (cameraW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = cameraW.Result;
                 cameraW.Dispose();
             }
+            if(b is SkyColor)
+            {
+                SkyColorW colorW = new SkyColorW((SkyColor)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
+                colorW.ShowDialog();
+                if (colorW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = colorW.Result;
+                colorW.Dispose();
+            }
+            UpdateObjects();
         }
         void M_DeleteObject(object obj,EventArgs e)
         {
-            _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = null;
-            for(int i = listBox1.SelectedIndex;i < _3DRadSpaceDll.Game.GameObjects.Count -1;i++)
+            if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] is SkyColor s)
             {
-                _3DRadSpaceDll.Game.GameObjects[i] = _3DRadSpaceDll.Game.GameObjects[i+1];
+                ClearColor = Color.Black;
             }
-            _3DRadSpaceDll.Game.GameObjects[_3DRadSpaceDll.Game.GameObjects.Count-1] = null;
+            _3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedIndex);
             UpdateObjects();
         }
         void UpdateObjects()
@@ -237,11 +245,21 @@ namespace _3DRadSpace
                 }
             }
         }
-        public static string ValidateTextInput(string input)
+        public static string ValidateNumberTextInput(string input)
         {
-            if (input == null) return "";
+            if (input == null) return "_";
             string r = null;
             for(int i =0; i < input.Length;i++)
+            {
+                if (input[i] >= '0' && input[i] <= '9') r += input[i];
+            }
+            return r;
+        }
+        public static string ValidateTextInput(string input)
+        {
+            if (input == null) return "_object_";
+            string r = null;
+            for (int i = 0; i < input.Length; i++)
             {
                 if (input[i] != ' ') r += input[i];
                 else r += '_';

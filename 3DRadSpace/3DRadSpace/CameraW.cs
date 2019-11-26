@@ -11,8 +11,29 @@ namespace _3DRadSpace
     {
         public CameraW()
         {
+            Result = null;
             Behiavour = new List<ObjectBehiavour>();
             InitializeComponent();
+        }
+        public CameraW(Camera c)
+        {
+            InitializeComponent();
+            textBox1.Text = c.Name;
+            checkBox1.Checked = c.Enabled;
+            textBox2.Text = c.Position.X.ToString();
+            textBox3.Text = c.Position.Y.ToString();
+            textBox4.Text = c.Position.Z.ToString();
+            textBox7.Text = c.Rotation.X.ToString();
+            textBox6.Text = c.Rotation.Y.ToString();
+            textBox5.Text = c.Rotation.Z.ToString();
+            textBox10.Text = c.CameraRotation.X.ToString();
+            textBox9.Text = c.CameraRotation.Y.ToString();
+            textBox8.Text = c.CameraRotation.Z.ToString();
+            numericUpDown1.Value = (decimal)c.GetFOVDegrees();
+            textBox11.Text = c.MinDrawDist.ToString();
+            textBox12.Text = c.MaxDrawDist.ToString();
+            Behiavour = c.Behiavours;
+            UpdateList();
         }
         public object Result;
         public List<ObjectBehiavour> Behiavour;
@@ -34,10 +55,10 @@ namespace _3DRadSpace
         private void button5_Click(object sender, EventArgs e)
         {
             IFormatProvider a = CultureInfo.CurrentCulture;
-            Result = new Camera(textBox1.Text, checkBox1.Checked, new Vector3(Convert.ToSingle(textBox2.Text, a), Convert.ToSingle(textBox3.Text, a), Convert.ToSingle(textBox4.Text, a)),
-                new Vector3(Convert.ToSingle(textBox6.Text, a), Convert.ToSingle(textBox7.Text, a), Convert.ToSingle(textBox5.Text, a))
-                , new Vector3(Convert.ToSingle(textBox10.Text, a), Convert.ToSingle(textBox9.Text, a), Convert.ToSingle(textBox8.Text, a)),
-                Convert.ToSingle(numericUpDown1.Value), Convert.ToSingle(textBox11.Text, a), Convert.ToSingle(textBox12.Text, a))
+            Result = new Camera(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), a)),
+                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), a))
+                , new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text), a)),
+                Convert.ToSingle(numericUpDown1.Value), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), a))
             {
                 Behiavours = Behiavour
             };
@@ -61,7 +82,7 @@ namespace _3DRadSpace
         {
             switch(id)
             {
-                case 1:  return "Chase";
+                case 1: return "Chase";
                 case 2: return "Look-At";
                 default: return "Ignore";
             }

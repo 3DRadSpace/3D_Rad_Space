@@ -141,7 +141,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Object draw code for the 3DRadSpace editor
         /// </summary>
-        public virtual void EditorDraw(SpriteBatch spriteBatch,out Matrix? view,out Matrix? projection)
+        public virtual void EditorDraw(SpriteBatch spriteBatch,Matrix? view,Matrix? projection)
         {
             view = null;
             projection = null;

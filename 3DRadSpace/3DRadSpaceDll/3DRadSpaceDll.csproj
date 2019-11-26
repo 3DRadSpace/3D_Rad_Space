@@ -52,6 +52,7 @@
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
+    <Compile Include="SkyColor.cs" />
     <Compile Include="Sprite.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

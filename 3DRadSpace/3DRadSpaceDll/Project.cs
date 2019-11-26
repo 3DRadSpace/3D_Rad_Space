@@ -45,11 +45,12 @@ namespace _3DRadSpaceDll
                             if (capacity > 0)
                             {
                                 c.Behiavours = new List<ObjectBehiavour>(capacity);
+                                for (int j = 0; j < capacity; j++)
+                                {
+                                    c.Behiavours.Add(new ObjectBehiavour(Convert.ToInt32(Obj[16 + j]), Convert.ToInt32(Obj[17 + (j*2)])));
+                                }
                             }
-                            for(int j =0; j < capacity; j++)
-                            {
-                                c.Behiavours.Add(new ObjectBehiavour(Convert.ToInt32(Obj[15 + i]),Convert.ToInt32(Obj[16+i]) ));
-                            }
+                            else c.Behiavours = null;
                             a = c;
                             break;
                         }
@@ -61,6 +62,15 @@ namespace _3DRadSpaceDll
                                 path += Obj[i];
                             }
                             a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
+                            break;
+                        }
+                    case "skycolor":
+                        {
+                            a = new SkyColor(Obj[1], Convert.ToBoolean(Obj[2]), new Color(
+                                Convert.ToByte(Obj[3]),
+                                Convert.ToByte(Obj[4]),
+                                Convert.ToByte(Obj[5])
+                                ));
                             break;
                         }
                     default:
@@ -85,20 +95,25 @@ namespace _3DRadSpaceDll
                 int j = i + 1;
                 if(Game.GameObjects[i] is Camera c)
                 {
-                    ToBeSaved[j] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.CameraTarget) +
+                    ToBeSaved[j] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.Rotation) +
                         " " + Vector2String(c.CameraRotation) + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist + " ";
                     if (c.Behiavours != null)
                     {
-                        ToBeSaved[j] += c.Behiavours.Count;
+                        ToBeSaved[j] += c.Behiavours.Count + " ";
                         for (int k = 0; k < c.Behiavours.Count; k++)
                         {
-                            ToBeSaved[j] += c.Behiavours[k].ObjectID + " " + c.Behiavours[k].BehiavourID+ " ";
+                            ToBeSaved[j] += c.Behiavours[k].ObjectID + " " + c.Behiavours[k].BehiavourID + " ";
                         }
                     }
+                    else ToBeSaved[j] += '0';
                 }
                 if(Game.GameObjects[i] is Script s)
                 {
                     ToBeSaved[j] = "script " + s.Name + " " + s.Enabled + " " + s.ClassName + " " + s.Path;
+                }
+                if(Game.GameObjects[i] is SkyColor sky)
+                {
+                    ToBeSaved[j] += "skycolor " + sky.Name + " " + sky.Enabled + " " + sky.Color.R + " " + sky.Color.G + " " + sky.Color.B;
                 }
             }
             File.WriteAllLines(filename, ToBeSaved);

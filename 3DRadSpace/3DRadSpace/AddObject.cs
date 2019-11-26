@@ -46,5 +46,16 @@ namespace _3DRadSpace
             camera.Dispose();
             Close();
         }
+
+        private void pictureBox17_Click(object sender, EventArgs e)
+        {
+            SkyColorW skyColor = new SkyColorW();
+            if(skyColor.ShowDialog() == DialogResult.OK)
+            {
+                Result = skyColor.Result;
+            }
+            skyColor.Dispose();
+            Close();
+        }
     }
 }

@@ -2,82 +2,74 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpace_Player
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
-    public class Game1 : Game
+    public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string[] Settings;
-
+        Color ClearColor = Color.Black;
+        Matrix view, projection;
         public Game1()
         {
             try { Settings = File.ReadAllLines(@"GameConfig.cfg"); }
             catch (FileNotFoundException) { }
-            graphics = new GraphicsDeviceManager(this);
-            Window.Title = Settings[0];
-            Content.RootDirectory = Settings[1];
+            finally
+            {
+                graphics = new GraphicsDeviceManager(this);
+                Window.Title = Settings[0];
+                Content.RootDirectory = Settings[1];
+            }
+            try
+            {
+                _3DRadSpaceDll.Game.GameObjects = Project.Open(Settings[2]);
+            }
+            catch(FileNotFoundException)
+            {
+            }
         }
-
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
-
         }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
+            }
         }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.End();
+            }
         }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        { 
+        {
+            MouseState mouse = Mouse.GetState();
+            KeyboardState keyboard = Keyboard.GetState();
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script s) s.Update(mouse, keyboard, gameTime);
+            }
             base.Update(gameTime);
         }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            GraphicsDevice.Clear(ClearColor);
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)  c.Draw(null, view, projection);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is SkyColor s) ClearColor = s.Color;
+            }
             base.Draw(gameTime);
         }
     }

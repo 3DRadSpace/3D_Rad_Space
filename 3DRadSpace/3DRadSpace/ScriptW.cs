@@ -42,6 +42,43 @@ namespace _3DRadSpace
             scintilla1.SetKeywords(1, "bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void");
         }
 
+        public ScriptW(Script s)
+        {
+            InitializeComponent();
+            /*
+             * Taken again from GitHub... 
+             */
+            scintilla1.StyleResetDefault();
+            scintilla1.Styles[Style.Default].Font = "Consolas";
+            scintilla1.Styles[Style.Default].Size = 10;
+            scintilla1.StyleClearAll();
+
+            // Configure the CPP (C#) lexer styles
+            scintilla1.Styles[Style.Cpp.Default].ForeColor = Color.Silver;
+            scintilla1.Styles[Style.Cpp.Comment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla1.Styles[Style.Cpp.CommentLine].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla1.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.FromArgb(128, 128, 128); // Gray
+            scintilla1.Styles[Style.Cpp.Number].ForeColor = Color.Olive;
+            scintilla1.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+            scintilla1.Styles[Style.Cpp.Word2].ForeColor = Color.Blue;
+            scintilla1.Styles[Style.Cpp.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla1.Styles[Style.Cpp.Character].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla1.Styles[Style.Cpp.Verbatim].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla1.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+            scintilla1.Styles[Style.Cpp.Operator].ForeColor = Color.Purple;
+            scintilla1.Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
+            scintilla1.Lexer = Lexer.Cpp;
+
+            // Set the keywords
+            scintilla1.SetKeywords(0, "abstract as base break case catch checked continue default delegate do else event explicit extern false finally fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof unchecked unsafe using virtual while");
+            scintilla1.SetKeywords(1, "bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void");
+            textBox1.Text = s.Name;
+            textBox2.Text = s.ClassName;
+            checkBox1.Checked = s.Enabled;
+            FilePath = s.Path;
+            scintilla1.Text = File.ReadAllText(FilePath);
+        }
+
         public string FilePath { get; set; }
         public object Result { get; set; }
 
@@ -167,7 +204,7 @@ namespace _3DRadSpace
                 saveFile.Dispose();
             }
             DialogResult = DialogResult.OK;
-            Result = new Script(textBox1.Text, checkBox1.Enabled, FilePath, textBox2.Text);
+            Result = new Script(Editor.ValidateTextInput(textBox1.Text), checkBox1.Enabled, FilePath, Editor.ValidateTextInput(textBox2.Text));
             Close();
         }
 
