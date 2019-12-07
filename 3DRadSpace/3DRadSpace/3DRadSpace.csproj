@@ -92,6 +92,12 @@
       <DependentUpon>EditorUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor.cs" />
+    <Compile Include="FogW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FogW.Designer.cs">
+      <DependentUpon>FogW.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NewProjectWindow.cs">
       <SubType>Form</SubType>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorUI.resx">
       <DependentUpon>EditorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FogW.resx">
+      <DependentUpon>FogW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewProjectWindow.resx">
       <DependentUpon>NewProjectWindow.cs</DependentUpon>

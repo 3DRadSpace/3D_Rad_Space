@@ -67,8 +67,9 @@ namespace _3DRadSpace_Player
             GraphicsDevice.Clear(ClearColor);
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)  c.Draw(null, view, projection);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Draw(null,out view,out projection);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is SkyColor s) ClearColor = s.Color;
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh skinmesh) skinmesh.Draw(null, view, projection);
             }
             base.Draw(gameTime);
         }

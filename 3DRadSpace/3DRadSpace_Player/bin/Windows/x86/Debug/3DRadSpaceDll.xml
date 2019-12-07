@@ -159,47 +159,6 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
-        <member name="T:_3DRadSpaceDll.Fog">
-            <summary>
-            <para>Fog class. Allows Fog effects on Skinmeshes.</para>
-            <para>Notice the missing Draw,EditorDraw and Update functions. The fields and properties are only used.</para>
-            </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.Fog.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
-            <summary>
-            Fog class constructor.
-            </summary>
-            <param name="name">Object name</param>
-            <param name="enabled">Is the fog effect allowed?</param>
-            <param name="color"></param>
-            <param name="start"></param>
-            <param name="end"></param>
-        </member>
-        <member name="P:_3DRadSpaceDll.Fog.FogColor">
-            <summary>
-            Fog Color.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Fog.FogEnabled">
-            <summary>
-            Property from IEffectFog. this.Enabled has always the same value.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Fog.FogEnd">
-            <summary>
-            Fog end distance.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Fog.FogStart">
-            <summary>
-            Fog start distance.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Fog.Enabled">
-            <summary>
-            Override of the GameObject.Enable to allow the usage of FogEnabled.
-            </summary>
-        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -210,7 +169,7 @@
             Contains the objects. 
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
             <summary>
             Draws a 3D Model.
             </summary>
@@ -218,10 +177,6 @@
             <param name="world">Scale*Rotaion*Position Matrix</param>
             <param name="view">View matrix</param>
             <param name="projection">Projection Matrix</param>
-            <param name="FogEnabled">Allows Fog effects on the model</param>
-            <param name="FogColor">Fog colour if allowed</param>
-            <param name="FogStart">Fog Start Distance</param>
-            <param name="FogEnd">Fog End Distance</param>
         </member>
         <member name="M:_3DRadSpaceDll.Game.FindObject(System.Int32)">
             <summary>

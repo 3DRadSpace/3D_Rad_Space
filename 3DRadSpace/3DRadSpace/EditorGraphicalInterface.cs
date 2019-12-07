@@ -316,7 +316,9 @@ namespace _3DRadSpace
             GameWindow.Controls.Add(listBox1);
             GameWindow.Controls.Add(statusStrip1);
             GameWindow.FormClosing += Editor_Exiting;
-
+            GameWindow.AllowDrop = true;
+            GameWindow.DragDrop += GameWindow_DragDrop;
+            GameWindow.DragEnter += GameWindow_DragEnter;
         }
 
         private void GameWindow_SizeChanged(object sender, EventArgs e)

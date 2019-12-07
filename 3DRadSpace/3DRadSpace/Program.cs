@@ -23,10 +23,7 @@ namespace _3DRadSpace
                 if (Arguments.Length > 0)
                 {
                     string extention = Arguments[0].Split('.')[1];
-                    if (extention == "3drsp")
-                    {
-                        Editor.OpenedFile = Arguments[0];
-                    }
+                    if (extention == "3drsp") Editor.OpenedFile = Arguments[0];
                     else if(extention == "cs")
                     {
                         ProjectTypeScript = true;
@@ -37,7 +34,7 @@ namespace _3DRadSpace
             }
             if(ProjectTypeScript)
             {
-                ScriptW script = new ScriptW();
+                ScriptW script = new ScriptW(new Script("Opened_File",true,Arguments[0],"Script"));
                 script.ShowDialog();
             }
         }

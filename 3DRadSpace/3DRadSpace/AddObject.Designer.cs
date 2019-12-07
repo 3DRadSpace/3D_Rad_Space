@@ -79,9 +79,9 @@
             this.pictureBox15 = new System.Windows.Forms.PictureBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.label25 = new System.Windows.Forms.Label();
-            this.pictureBox25 = new System.Windows.Forms.PictureBox();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.pictureBox25 = new System.Windows.Forms.PictureBox();
             this.pictureBox23 = new System.Windows.Forms.PictureBox();
             this.pictureBox22 = new System.Windows.Forms.PictureBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
@@ -576,6 +576,7 @@
             this.pictureBox19.Size = new System.Drawing.Size(101, 75);
             this.pictureBox19.TabIndex = 8;
             this.pictureBox19.TabStop = false;
+            this.pictureBox19.Click += new System.EventHandler(this.pictureBox19_Click);
             // 
             // pictureBox18
             // 
@@ -622,9 +623,9 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.label25);
-            this.tabPage6.Controls.Add(this.pictureBox25);
             this.tabPage6.Controls.Add(this.label23);
             this.tabPage6.Controls.Add(this.label22);
+            this.tabPage6.Controls.Add(this.pictureBox25);
             this.tabPage6.Controls.Add(this.pictureBox23);
             this.tabPage6.Controls.Add(this.pictureBox22);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
@@ -643,16 +644,6 @@
             this.label25.TabIndex = 5;
             this.label25.Text = "NetChat";
             // 
-            // pictureBox25
-            // 
-            this.pictureBox25.Image = global::_3DRadSpace.Properties.Resources.OBJ_NetworkChat;
-            this.pictureBox25.Location = new System.Drawing.Point(217, 3);
-            this.pictureBox25.Name = "pictureBox25";
-            this.pictureBox25.Size = new System.Drawing.Size(101, 75);
-            this.pictureBox25.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox25.TabIndex = 4;
-            this.pictureBox25.TabStop = false;
-            // 
             // label23
             // 
             this.label23.AutoSize = true;
@@ -670,6 +661,16 @@
             this.label22.Size = new System.Drawing.Size(55, 13);
             this.label22.TabIndex = 1;
             this.label22.Text = "NetServer";
+            // 
+            // pictureBox25
+            // 
+            this.pictureBox25.Image = global::_3DRadSpace.Properties.Resources.OBJ_NetworkChat;
+            this.pictureBox25.Location = new System.Drawing.Point(217, 3);
+            this.pictureBox25.Name = "pictureBox25";
+            this.pictureBox25.Size = new System.Drawing.Size(101, 75);
+            this.pictureBox25.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox25.TabIndex = 4;
+            this.pictureBox25.TabStop = false;
             // 
             // pictureBox23
             // 
@@ -732,6 +733,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(677, 358);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddObject";
             this.Text = "3DRadSpace -Add a object-";

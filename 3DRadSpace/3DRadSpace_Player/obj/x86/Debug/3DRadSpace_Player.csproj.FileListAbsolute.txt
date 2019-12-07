@@ -17,7 +17,9 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bi
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\obj\x86\Debug\3DRadSpace_Player.csprojAssemblyReference.cache
-C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\obj\x86\Debug\3DRadSpace_Player.csproj.CoreCompileInputs.cache
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\obj\x86\Debug\3DRadSpace_Player.csproj.CopyComplete
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\obj\x86\Debug\3DRadSpace_Player.exe
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\obj\x86\Debug\3DRadSpace_Player.pdb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bin\Windows\x86\Debug\3DRadSpaceDll.dll
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bin\Windows\x86\Debug\3DRadSpaceDll.pdb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_Player\bin\Windows\x86\Debug\3DRadSpaceDll.xml

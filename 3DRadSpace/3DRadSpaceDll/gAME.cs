@@ -24,7 +24,11 @@ namespace _3DRadSpaceDll
         /// <param name="world">Scale*Rotaion*Position Matrix</param>
         /// <param name="view">View matrix</param>
         /// <param name="projection">Projection Matrix</param>
-        public static void DrawModel(Model model,Matrix world,Matrix view,Matrix projection)
+        /// <param name="FogEnabled">Allows Fog effects on the model</param>
+        /// <param name="FogColor">Fog colour if allowed</param>
+        /// <param name="FogStart">Fog Start Distance</param>
+        /// <param name="FogEnd">Fog End Distance</param>
+        public static void DrawModel(Model model,Matrix world,Matrix view,Matrix projection,bool FogEnabled = false,Vector3 FogColor = default,float FogStart=0,float FogEnd=0)
         {
             foreach(ModelMesh mesh in model.Meshes)
             {
@@ -33,6 +37,11 @@ namespace _3DRadSpaceDll
                     effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
+                    effect.FogEnabled = FogEnabled;
+                    effect.FogColor = FogColor;
+                    effect.FogStart = FogStart;
+                    effect.FogEnd = FogEnd;
+                    effect.TextureEnabled = true;
                     effect.EnableDefaultLighting();
                 }
                 mesh.Draw();

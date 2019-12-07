@@ -159,6 +159,47 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.Fog">
+            <summary>
+            <para>Fog class. Allows Fog effects on Skinmeshes.</para>
+            <para>Notice the missing Draw,EditorDraw and Update functions. The fields and properties are only used.</para>
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Fog.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
+            <summary>
+            Fog class constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Is the fog effect allowed?</param>
+            <param name="color"></param>
+            <param name="start"></param>
+            <param name="end"></param>
+        </member>
+        <member name="P:_3DRadSpaceDll.Fog.FogColor">
+            <summary>
+            Fog Color.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Fog.FogEnabled">
+            <summary>
+            Property from IEffectFog. this.Enabled has always the same value.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Fog.FogEnd">
+            <summary>
+            Fog end distance.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Fog.FogStart">
+            <summary>
+            Fog start distance.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Fog.Enabled">
+            <summary>
+            Override of the GameObject.Enable to allow the usage of FogEnabled.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -169,7 +210,7 @@
             Contains the objects. 
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
             <summary>
             Draws a 3D Model.
             </summary>
@@ -177,6 +218,10 @@
             <param name="world">Scale*Rotaion*Position Matrix</param>
             <param name="view">View matrix</param>
             <param name="projection">Projection Matrix</param>
+            <param name="FogEnabled">Allows Fog effects on the model</param>
+            <param name="FogColor">Fog colour if allowed</param>
+            <param name="FogStart">Fog Start Distance</param>
+            <param name="FogEnd">Fog End Distance</param>
         </member>
         <member name="M:_3DRadSpaceDll.Game.FindObject(System.Int32)">
             <summary>
@@ -526,6 +571,75 @@
             <param name="mouse">Used by the user if the case.</param>
             <param name="keyboard">Used by the user if the case.</param>
             <param name="time">Used by the user if the case.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Skinmesh">
+            <summary>
+            Class for drawing 3D object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skinmesh.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Boolean)">
+            <summary>
+            Skinmesh constructor.
+            </summary>
+            <param name="name">Object's name.</param>
+            <param name="active">Checks if the skinmesh will get drawn.</param>
+            <param name="resource">Resource name, from the 'root'/Content/ without the xnb extension.</param>
+            <param name="position">Object position</param>
+            <param name="rotation">Object rotation in Euler Angles measured in radians.</param>
+            <param name="scale">Object scale. (1,1,1) is default.</param>
+            <param name="fog_affected">Allows or not fogs.</param>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.Model">
+            <summary>
+            The Model itself.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogColor">
+            <summary>
+            Fog effect color. From IEffectFog.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogEnabled">
+            <summary>
+            Checks if the Skinmesh allows fogs.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogEnd">
+            <summary>
+            Fog end distance.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogStart">
+            <summary>
+            Fog start distance.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.Scale">
+            <summary>
+            Model scale. Default is (1,1,1).
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skinmesh.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads the model. Uses Monogame's content pipeline.
+            </summary>
+            <param name="content">ContentManager from the game instance.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skinmesh.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the mesh.
+            </summary>
+            <param name="spriteBatch">Not used.</param>
+            <param name="view">Necessary for model drawing.</param>
+            <param name="projection">Necessary for model drawing.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skinmesh.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the mesh in the editor. The only difference from Draw() is the missing condition.
+            </summary>
+            <param name="spriteBatch">Not used.</param>
+            <param name="view">View Matrix.</param>
+            <param name="projection">Projection Matrix</param>
         </member>
         <member name="T:_3DRadSpaceDll.SkyColor">
             <summary>

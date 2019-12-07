@@ -429,7 +429,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(173, 460);
+            this.button6.Location = new System.Drawing.Point(246, 459);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 14;
@@ -453,6 +453,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CameraW";
             this.Text = "Camera Object v1.0";

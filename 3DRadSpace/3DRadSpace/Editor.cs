@@ -24,7 +24,15 @@ namespace _3DRadSpace
 
         Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
         float CameraSpeed = 0.1f;
+
+        //SkyColor specific
         Color ClearColor = Color.Black;
+
+        //Fog specifig
+        Vector3 FogColor;
+        float FogStart, FogEnd;
+        bool FogEnabled = false;
+
         public Editor()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -49,7 +57,8 @@ namespace _3DRadSpace
             }
             if (OpenedFile != null)
             {
-                Project.Open(OpenedFile);
+                _3DRadSpaceDll.Game.GameObjects = Project.Open(OpenedFile);
+                UpdateObjects();
             }
             Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
             base.Initialize();
@@ -126,12 +135,23 @@ namespace _3DRadSpace
         {
             GraphicsDevice.Clear(ClearColor);
             Editor_View.Draw(null, out View, out Projection);
-            _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 0, 0), View, Projection);
+            _3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 0, 0), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
                 if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
                 if (gameObject is SkyColor s) ClearColor = s.Color;
+                if(gameObject is Fog f)
+                {
+                    FogEnabled = f.Enabled;
+                    FogColor = f.FogColor;
+                    FogStart = f.FogStart;
+                    FogEnd = f.FogEnd;
+                }
+                if(gameObject is Skinmesh sk)
+                {
+                    sk.EditorDraw(null, View, Projection);
+                }
             }
             base.Draw(gameTime);
         }

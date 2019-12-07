@@ -57,5 +57,16 @@ namespace _3DRadSpace
             skyColor.Dispose();
             Close();
         }
+
+        private void pictureBox19_Click(object sender, EventArgs e)
+        {
+            FogW fog = new FogW();
+            if(fog.ShowDialog() == DialogResult.OK)
+            {
+                Result = fog.Result;
+            }
+            fog.Dispose();
+            Close();
+        }
     }
 }

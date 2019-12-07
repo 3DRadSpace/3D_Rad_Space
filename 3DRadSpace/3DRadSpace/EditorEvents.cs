@@ -214,6 +214,21 @@ namespace _3DRadSpace
             _3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedIndex);
             UpdateObjects();
         }
+        void GameWindow_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+        void GameWindow_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            for(int i =0; i < files.Length;i++)
+            {
+                string[] ext = files[i].Split('.');
+               if(ext[ext.Length- 1] == "3drsp") _3DRadSpaceDll.Game.GameObjects.AddRange(Project.Open(files[i]));
+            }
+            ProjectSaved = false;
+            UpdateObjects();
+        }
         void UpdateObjects()
         {
             listBox1.Items.Clear();
