@@ -12,9 +12,14 @@ namespace _3DRadSpace_Player
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] Args)
         {
-            using (var Game = new Game1())
+            string debugp = null;
+            if (Args.Length > 0)
+            {
+                debugp = Args[0];
+            }
+            using (var Game = new Game1(debugp))
             {
                 Game.Run();
             }

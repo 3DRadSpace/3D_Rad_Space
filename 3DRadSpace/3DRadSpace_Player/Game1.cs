@@ -6,30 +6,45 @@ using _3DRadSpaceDll;
 
 namespace _3DRadSpace_Player
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Microsoft.Xna.Framework.Game,IEffectFog
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string[] Settings;
         Color ClearColor = Color.Black;
         Matrix view, projection;
-        public Game1()
+
+        public Vector3 FogColor { get; set; }
+        public bool FogEnabled { get; set; }
+        public float FogEnd { get; set; }
+        public float FogStart { get; set; }
+
+        public Game1(string DebugProject)
         {
-            try { Settings = File.ReadAllLines(@"GameConfig.cfg"); }
-            catch (FileNotFoundException) { }
-            finally
+            if (DebugProject != null)
             {
-                graphics = new GraphicsDeviceManager(this);
-                Window.Title = Settings[0];
-                Content.RootDirectory = Settings[1];
+                Window.Title = "Debugging - " + DebugProject;
+                Content.RootDirectory = "Content";
+                _3DRadSpaceDll.Game.GameObjects = Project.Open(DebugProject);
             }
-            try
+            else
             {
-                _3DRadSpaceDll.Game.GameObjects = Project.Open(Settings[2]);
+                try { Settings = File.ReadAllLines(@"GameConfig.cfg"); }
+                catch (FileNotFoundException) { }
+                finally
+                {
+                    Window.Title = Settings[0];
+                    Content.RootDirectory = Settings[1];
+                }
+                try
+                {
+                    _3DRadSpaceDll.Game.GameObjects = Project.Open(Settings[2]);
+                }
+                catch (FileNotFoundException)
+                {
+                }
             }
-            catch(FileNotFoundException)
-            {
-            }
+            graphics = new GraphicsDeviceManager(this);
         }
         protected override void Initialize()
         {
@@ -69,7 +84,24 @@ namespace _3DRadSpace_Player
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Draw(null,out view,out projection);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is SkyColor s) ClearColor = s.Color;
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh skinmesh) skinmesh.Draw(null, view, projection);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Draw(spriteBatch, view, projection);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Fog f)
+                {
+                    FogEnabled = f.Enabled;
+                    FogColor = f.FogColor;
+                    FogStart = f.FogStart;
+                    FogEnd = f.FogEnd;
+                }
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh skinmesh)
+                {
+                    if(skinmesh.FogEnabled)
+                    {
+                        skinmesh.FogColor = FogColor;
+                        skinmesh.FogStart = FogStart;
+                        skinmesh.FogEnd = FogEnd;
+                    }
+                    skinmesh.Draw(null, view, projection);
+                }
             }
             base.Draw(gameTime);
         }

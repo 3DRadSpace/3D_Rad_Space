@@ -6,6 +6,7 @@ using System.CodeDom.Compiler;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DRadSpaceDll
 {
@@ -15,7 +16,8 @@ namespace _3DRadSpaceDll
     public class Script : GameObject
     {
         private Assembly _assembly;
-        private MethodInfo _start, _run, _end;
+        private MethodInfo _start, _run, _end,_draw;
+        private object _script_object;
         /// <summary>
         /// Checks if compilation succeded.
         /// </summary>
@@ -74,7 +76,7 @@ namespace _3DRadSpaceDll
             //Start compiling the code...
             CodeDomProvider Compiler = CodeDomProvider.CreateProvider("CSharp");
             
-            CompilerResults results = Compiler.CompileAssemblyFromFile(parameters, Path);
+            CompilerResults results = Compiler.CompileAssemblyFromFile(parameters,System.IO.Path.GetFullPath(Path)); //Not using GetFullPath creates problems... Are you fcking kidding me?
             //If there are errors...
             if (results.Errors.Count > 0)
             {
@@ -101,7 +103,7 @@ namespace _3DRadSpaceDll
                 return true;
             }
         }
-        string _errorType(bool IsWarning)
+        private string _errorType(bool IsWarning)
         {
             if (IsWarning == true) return "Warning";
             else return "Error";
@@ -116,8 +118,10 @@ namespace _3DRadSpaceDll
             if (CompilationStatus == true)
             {
                 Type s = _assembly.GetType(ClassName);
+                _script_object = _assembly.CreateInstance(ClassName); //Create script instance.
                 _start = s.GetMethod("Start");
                 _run = s.GetMethod("Run");
+                _draw = s.GetMethod("Draw");
                 _end = s.GetMethod("End");
                 Start();
             }
@@ -128,21 +132,21 @@ namespace _3DRadSpaceDll
         /// </summary>
         public void Start()
         {
-            _start.Invoke(null, null);
+            _start.Invoke(_script_object, null);
         }
         /// <summary>
         /// Executes [ClassName].Run(), where ClassName is part of the compiled source code.
         /// </summary>
         public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
-            _run.Invoke(null, new object[] { mouse, keyboard, time });
+            _run.Invoke(_script_object, new object[] { mouse, keyboard, time });
         }
         /// <summary>
         /// Executes [ClassName].End(), where ClassName is part of the compiled source.
         /// </summary>
         public void End()
         {
-            _end.Invoke(null, null);
+            _end.Invoke(_script_object, null);
         }
         /// <summary>
         /// Runs the script code.
@@ -154,6 +158,17 @@ namespace _3DRadSpaceDll
         {
             Run(mouse,keyboard,time);
             base.Update(mouse, keyboard, time);
+        }
+        /// <summary>
+        /// Runs the script code dedicated to drawing.
+        /// </summary>
+        /// <param name="spriteBatch">Used by the user if the case.</param>
+        /// <param name="view">User by the user if the case again.</param>
+        /// <param name="projection">User by the user, if the case...</param>
+        public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        {
+            _draw.Invoke(_script_object, new object[] { spriteBatch, view, projection });
+            base.Draw(spriteBatch, view, projection);
         }
     }
 }

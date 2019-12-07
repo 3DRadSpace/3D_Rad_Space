@@ -137,6 +137,10 @@ class Script
     {
 
     }
+    public void Draw(SpriteBatch batch,Matrix? view, Matrix? projection)
+    {
+    
+    }
     public void End()
     {
 

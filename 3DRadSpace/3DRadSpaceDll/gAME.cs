@@ -41,8 +41,6 @@ namespace _3DRadSpaceDll
                     effect.FogColor = FogColor;
                     effect.FogStart = FogStart;
                     effect.FogEnd = FogEnd;
-                    effect.TextureEnabled = true;
-                    effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
             }
@@ -58,6 +56,16 @@ namespace _3DRadSpaceDll
             if (i > GameObjects.Count) return null;
             return GameObjects[i];
         }
-
+        /// <summary>
+        /// Sets an object in the list.
+        /// </summary>
+        /// <param name="i">Object unique numeric IDentifier / array index</param>
+        /// <param name="obj">Value</param>
+        public static void SetObject(int i,object obj)
+        {
+            if (i < 0) return;
+            if (i > GameObjects.Count) return;
+            GameObjects[i] = obj;
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace _3DRadSpaceDll
                             string path = "";
                             for(int j =4;j < Obj.Length;j++)
                             {
-                                path += Obj[i];
+                                path += Obj[j]+" ";
                             }
                             a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
                             break;
@@ -73,6 +73,16 @@ namespace _3DRadSpaceDll
                                 ));
                             break;
                         }
+                    case "fog":
+                        {
+                            a = new Fog(Obj[0], Convert.ToBoolean(Obj[2]), new Color(
+                                Convert.ToByte(Obj[3]),
+                                Convert.ToByte(Obj[4]),
+                                Convert.ToByte(Obj[5])
+                                ),
+                                Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]));
+                            break;
+                         }
                     default:
                         {
                             throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -114,6 +124,10 @@ namespace _3DRadSpaceDll
                 if(Game.GameObjects[i] is SkyColor sky)
                 {
                     ToBeSaved[j] += "skycolor " + sky.Name + " " + sky.Enabled + " " + sky.Color.R + " " + sky.Color.G + " " + sky.Color.B;
+                }
+                if(Game.GameObjects[i] is Fog fog)
+                {
+                    ToBeSaved[j] += "fog " + fog.Name + " " + fog.Enabled + " " + fog.FogColor.X + " " + fog.FogColor.Y + " " + fog.FogColor.Z + " " + fog.FogStart + " " + fog.FogEnd;
                 }
             }
             File.WriteAllLines(filename, ToBeSaved);

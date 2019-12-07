@@ -182,7 +182,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogEnabled">
             <summary>
-            Property from IEffectFog. this.Enabled has always the same value.
+            Actually sets this.Enabled.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogEnd">
@@ -229,6 +229,13 @@
             </summary>
             <param name="i">Numeric indentifier.</param>
             <returns>Returns the found object.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Game.SetObject(System.Int32,System.Object)">
+            <summary>
+            Sets an object in the list.
+            </summary>
+            <param name="i">Object unique numeric IDentifier / array index</param>
+            <param name="obj">Value</param>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
@@ -571,6 +578,14 @@
             <param name="mouse">Used by the user if the case.</param>
             <param name="keyboard">Used by the user if the case.</param>
             <param name="time">Used by the user if the case.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Script.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Runs the script code dedicated to drawing.
+            </summary>
+            <param name="spriteBatch">Used by the user if the case.</param>
+            <param name="view">User by the user if the case again.</param>
+            <param name="projection">User by the user, if the case...</param>
         </member>
         <member name="T:_3DRadSpaceDll.Skinmesh">
             <summary>

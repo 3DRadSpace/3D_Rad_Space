@@ -27,7 +27,6 @@ namespace _3DRadSpaceDll
             Name = name;
             Enabled = enabled;
             FogColor = new Vector3(color.R,color.G,color.B);
-            FogEnabled = enabled;
             FogStart = start;
             FogEnd = end;
         }
@@ -36,18 +35,11 @@ namespace _3DRadSpaceDll
         /// </summary>
         public Vector3 FogColor { get; set; }
         /// <summary>
-        /// Property from IEffectFog. this.Enabled has always the same value.
+        /// Actually sets this.Enabled.
         /// </summary>
-        public bool FogEnabled
-        {
-            get
-            {
-                return FogEnabled;
-            }
-            set
-            {
-                Enabled = value;
-            }
+        public bool FogEnabled {
+            get { return Enabled; }
+            set { Enabled = value; }
         }
         /// <summary>
         /// Fog end distance.
@@ -63,14 +55,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public new bool Enabled
         {
-            get
-            {
-                return FogEnabled;
-            }
-            set
-            {
-                FogEnabled = value;
-            }
+            get; set;
         }
     }
 }

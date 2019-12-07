@@ -69,7 +69,8 @@ namespace _3DRadSpace
         void playProject(object a,EventArgs e)
         {
             saveProject(null, null);
-            ProcessStartInfo process = new ProcessStartInfo(@"3DRadSpacePlayer.exe", OpenedFile);
+            ProcessStartInfo process = new ProcessStartInfo(@"3DRadSpace_Player.exe", "\""+OpenedFile+"\"");
+            Process.Start(process);
         }
         void exitEditor(object a,EventArgs e)
         {
@@ -202,6 +203,13 @@ namespace _3DRadSpace
                 colorW.ShowDialog();
                 if (colorW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = colorW.Result;
                 colorW.Dispose();
+            }
+            if(b is Fog)
+            {
+                FogW fogW = new FogW((Fog)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
+                fogW.ShowDialog();
+                if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = fogW.Result;
+                fogW.Dispose();
             }
             UpdateObjects();
         }
