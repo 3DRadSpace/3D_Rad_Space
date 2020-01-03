@@ -95,7 +95,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Expected to be loaded by the game editor.
         /// </summary>
-        public static Model model;
+        public static Model model { get; set; }
         Vector3 DeltaPos;
 
         /// <summary>
@@ -127,22 +127,22 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Look at point.
         /// </summary>
-        public Vector3 CameraTarget;
+        public Vector3 CameraTarget { get; set; }
 
         /// <summary>
-        /// Camera Rotation. (0,1,0) Is the default.
+        /// Camera Rotation. (0,1,0) should be used as the default.
         /// </summary>
-        public Vector3 CameraRotation = new Vector3(0,1,0);
+        public Vector3 CameraRotation { get; set; }
 
         /// <summary>
         /// Fielf of view (Measured in radians).
         /// </summary>
-        public float FOV;
+        public float FOV { get; set; }
 
         /// <summary>
         /// Screen size. Used to calculate aspect ratio.
         /// </summary>
-        public static Vector2 ScreenSize;
+        public static Vector2 ScreenSize { get; set; }
 
         /// <summary>
         /// Sets the FOV with a degree value
@@ -164,12 +164,12 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Near plane distance
         /// </summary>
-        public float MinDrawDist;
+        public float MinDrawDist { get; set; }
 
         /// <summary>
         /// Maximum drawing distance.
         /// </summary>
-        public float MaxDrawDist;
+        public float MaxDrawDist { get; set; }
 
         /// <summary>
         /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationships'.

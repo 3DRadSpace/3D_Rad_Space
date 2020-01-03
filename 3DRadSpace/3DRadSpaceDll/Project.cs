@@ -17,7 +17,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Type of the project to open.
         /// </summary>
-        public static ProjectType type;
+        public static ProjectType type { get; set; }
         /// <summary>
         /// Opens a project
         /// </summary>

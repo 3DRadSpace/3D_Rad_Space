@@ -19,7 +19,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Checks if this object is being used by a Camera2D.
         /// </summary>
-        public bool Is3D;
+        public bool IsUsedByCam2D { get; set; }
         /// <summary>
         /// Texture used to draw the sprite.
         /// </summary>
@@ -27,35 +27,46 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Size of the sprite.
         /// </summary>
-        public Vector2 Size;
+        public Vector2 Size
+        {
+            get
+            {
+                return Size;
+            }
+            set
+            {
+                if (Size.X <= 0 || Size.Y <= 0) throw new System.ArgumentException("Size MUST be greater than 0.");
+                else Size = value;
+            }
+        }
         /// <summary>
         /// Rotation of the sprite in radians.
         /// </summary>
-        public new float Rotation;
+        public new float Rotation { get; set; }
         /// <summary>
         /// Position of the sprite
         /// </summary>
-        public new Vector2 Position;
+        public new Vector2 Position { get; set; }
         /// <summary>
         /// Section of a sprite sheet. If not used, set this to null;
         /// </summary>
-        public Rectangle? SpriteSheetSection;
+        public Rectangle? SpriteSheetSection { get; set; }
         /// <summary>
         /// Color mask.
         /// </summary>
-        public Color Mask;
+        public Color Mask { get; set; }
         /// <summary>
         /// Center of rotation.
         /// </summary>
-        public Vector2 Center;
+        public Vector2 Center { get; set; }
         /// <summary>
         /// Effects applied to the sprite.
         /// </summary>
-        public SpriteEffects Effects;
+        public SpriteEffects Effects { get; set; }
         /// <summary>
         /// Layer depth of the sprite.
         /// </summary>
-        public float Layer;
+        public float Layer { get; set; }
         /// <summary>
         /// Loads the texture.
         /// </summary>

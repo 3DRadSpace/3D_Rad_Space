@@ -52,7 +52,7 @@
             Empty constructor.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.model">
+        <member name="P:_3DRadSpaceDll.Camera.model">
             <summary>
             Expected to be loaded by the game editor.
             </summary>
@@ -68,22 +68,22 @@
             Drawing code for the editor.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.CameraTarget">
+        <member name="P:_3DRadSpaceDll.Camera.CameraTarget">
             <summary>
             Look at point.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.CameraRotation">
+        <member name="P:_3DRadSpaceDll.Camera.CameraRotation">
             <summary>
-            Camera Rotation. (0,1,0) Is the default.
+            Camera Rotation. (0,1,0) should be used as the default.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.FOV">
+        <member name="P:_3DRadSpaceDll.Camera.FOV">
             <summary>
             Fielf of view (Measured in radians).
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.ScreenSize">
+        <member name="P:_3DRadSpaceDll.Camera.ScreenSize">
             <summary>
             Screen size. Used to calculate aspect ratio.
             </summary>
@@ -100,12 +100,12 @@
             </summary>
             <returns>Degrees</returns>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.MinDrawDist">
+        <member name="P:_3DRadSpaceDll.Camera.MinDrawDist">
             <summary>
             Near plane distance
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.MaxDrawDist">
+        <member name="P:_3DRadSpaceDll.Camera.MaxDrawDist">
             <summary>
             Maximum drawing distance.
             </summary>
@@ -146,7 +146,7 @@
             </summary>
             <param name="obj">Object to be added.</param>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera2D.DrawingBounds">
+        <member name="P:_3DRadSpaceDll.Camera2D.DrawingBounds">
             <summary>
             Camera drawing bounds.
             </summary>
@@ -205,7 +205,7 @@
             Contains methods and fields for managing game objects.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Game.GameObjects">
+        <member name="P:_3DRadSpaceDll.Game.GameObjects">
             <summary>
             Contains the objects. 
             </summary>
@@ -289,32 +289,32 @@
             Default constructor.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Name">
+        <member name="P:_3DRadSpaceDll.GameObject.Name">
             <summary>
             Object Name
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Enabled">
+        <member name="P:_3DRadSpaceDll.GameObject.Enabled">
             <summary>
             Checks if object is enabled.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Hidden">
+        <member name="P:_3DRadSpaceDll.GameObject.Hidden">
             <summary>
             Checks if object is being drawn.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Position">
+        <member name="P:_3DRadSpaceDll.GameObject.Position">
             <summary>
             Object position
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Rotation">
+        <member name="P:_3DRadSpaceDll.GameObject.Rotation">
             <summary>
             Rotation in a Euler angles system.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Behiavours">
+        <member name="P:_3DRadSpaceDll.GameObject.Behiavours">
             <summary>
             Relation with other objects
             </summary>
@@ -324,7 +324,7 @@
             Rotation in a Quaterion system.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.GameObject.Resource">
+        <member name="P:_3DRadSpaceDll.GameObject.Resource">
             <summary>
             Resource file
             </summary>
@@ -459,7 +459,7 @@
             Project class for reading and saving projects.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Project.type">
+        <member name="P:_3DRadSpaceDll.Project.type">
             <summary>
             Type of the project to open.
             </summary>
@@ -526,12 +526,12 @@
             Time for compilation.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Script.Path">
+        <member name="P:_3DRadSpaceDll.Script.Path">
             <summary>
             Path to source code to be compiled and run.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Script.ClassName">
+        <member name="P:_3DRadSpaceDll.Script.ClassName">
             <summary>
             Script entry class.
             </summary>
@@ -662,7 +662,7 @@
             <para>Notice the missing Update(), Draw(), EditorDraw() and Load() functions. They aren't used because only the colour is needed.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.SkyColor.Color">
+        <member name="P:_3DRadSpaceDll.SkyColor.Color">
             <summary>
             The colour itself.
             </summary>
@@ -701,7 +701,7 @@
             2D Screen images class.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Is3D">
+        <member name="P:_3DRadSpaceDll.Sprite.IsUsedByCam2D">
             <summary>
             Checks if this object is being used by a Camera2D.
             </summary>
@@ -711,42 +711,42 @@
             Texture used to draw the sprite.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Size">
+        <member name="P:_3DRadSpaceDll.Sprite.Size">
             <summary>
             Size of the sprite.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Rotation">
+        <member name="P:_3DRadSpaceDll.Sprite.Rotation">
             <summary>
             Rotation of the sprite in radians.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Position">
+        <member name="P:_3DRadSpaceDll.Sprite.Position">
             <summary>
             Position of the sprite
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.SpriteSheetSection">
+        <member name="P:_3DRadSpaceDll.Sprite.SpriteSheetSection">
             <summary>
             Section of a sprite sheet. If not used, set this to null;
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Mask">
+        <member name="P:_3DRadSpaceDll.Sprite.Mask">
             <summary>
             Color mask.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Center">
+        <member name="P:_3DRadSpaceDll.Sprite.Center">
             <summary>
             Center of rotation.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Effects">
+        <member name="P:_3DRadSpaceDll.Sprite.Effects">
             <summary>
             Effects applied to the sprite.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Sprite.Layer">
+        <member name="P:_3DRadSpaceDll.Sprite.Layer">
             <summary>
             Layer depth of the sprite.
             </summary>

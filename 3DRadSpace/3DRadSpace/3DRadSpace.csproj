@@ -136,6 +136,12 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkinmeshW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinmeshW.Designer.cs">
+      <DependentUpon>SkinmeshW.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkyColorW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinmeshW.resx">
+      <DependentUpon>SkinmeshW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkyColorW.resx">
       <DependentUpon>SkyColorW.cs</DependentUpon>

@@ -29,11 +29,11 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Path to source code to be compiled and run.
         /// </summary>
-        public string Path;
+        public string Path { get; set; }
         /// <summary>
         /// Script entry class.
         /// </summary>
-        public string ClassName;
+        public string ClassName { get; set; }
         /// <summary>
         /// Script constructor.
         /// </summary>

@@ -16,7 +16,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Contains the objects. 
         /// </summary>
-        public static List<object> GameObjects;
+        public static List<object> GameObjects { get; set; }
         /// <summary>
         /// Draws a 3D Model.
         /// </summary>

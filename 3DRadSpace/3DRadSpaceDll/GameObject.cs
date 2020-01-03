@@ -62,28 +62,28 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Object Name
         /// </summary>
-        public string Name;
+        public string Name { get; set; }
         /// <summary>
         /// Checks if object is enabled.
         /// </summary>
-        public bool Enabled;
+        public bool Enabled { get; set; }
         /// <summary>
         /// Checks if object is being drawn.
         /// </summary>
-        public bool Hidden;
+        public bool Hidden { get; set; }
         /// <summary>
         /// Object position
         /// </summary>
-        public Vector3 Position;
+        public Vector3 Position { get; set; }
         /// <summary>
         /// Rotation in a Euler angles system.
         /// </summary>
-        public Vector3 Rotation;
+        public Vector3 Rotation { get; set; }
 
         /// <summary>
         /// Relation with other objects
         /// </summary>
-        public List<ObjectBehiavour> Behiavours;
+        public List<ObjectBehiavour> Behiavours { get; set; }
 
         /// <summary>
         /// Rotation in a Quaterion system.
@@ -95,7 +95,18 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Resource file
         /// </summary>
-        public string Resource;
+        public string Resource
+        {
+            get
+            {
+                return Resource;
+            }
+            set
+            {
+                if (!System.IO.File.Exists(value)) throw new System.IO.FileNotFoundException("Resource " + value + " is missing");
+                else Resource = value;
+            }
+        }
         /// <summary>
         /// Enables object.
         /// </summary>

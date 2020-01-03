@@ -16,12 +16,10 @@ class Script
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {
-		_3DRadSpaceDll.Game.GameObjects[0] = ourSky;
+        
     }
     public void Draw(SpriteBatch batch,Matrix? view, Matrix? projection)
     {
-		ourSky.Color.R += 1;
-		/*
         if(ourSky.Color.R < 255)
         {
             ourSky.Color.R += 1;
@@ -42,8 +40,8 @@ class Script
             return;
         }
         else ourSky.Color.B =0;
-		*/
-		System.Windows.Forms.MessageBox.Show("nigga","what");
+
+        _3DRadSpaceDll.Game.GameObjects[0] = ourSky;
     }
     public void End()
     {

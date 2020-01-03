@@ -34,13 +34,13 @@ namespace _3DRadSpaceDll
         /// <param name="obj">Object to be added.</param>
         public void Add(object obj)
         {
-            if (obj is Sprite sp) sp.Is3D = false;
+            if (obj is Sprite sp) sp.IsUsedByCam2D = true;
             _scene.Add(obj);
         }
         /// <summary>
         /// Camera drawing bounds.
         /// </summary>
-        public Rectangle DrawingBounds;
+        public Rectangle DrawingBounds { get; set; }
         /// <summary>
         /// Draws the entire scene.
         /// </summary>
@@ -56,10 +56,13 @@ namespace _3DRadSpaceDll
                     if (_scene[i] == null) continue;
                     if(_scene[i] is Sprite sp)
                     {
-                        if(DrawingBounds.X >= sp.Position.X && DrawingBounds.X+DrawingBounds.Width >= sp.Position.X+sp.Size.X &&
-                        DrawingBounds.Y >= sp.Position.Y && DrawingBounds.Y + DrawingBounds.Height >= sp.Position.Y+sp.Size.Y)
+                        if (sp.IsUsedByCam2D)
                         {
-                            spriteBatch.Draw(sp.Texture, new Rectangle((int)sp.Position.X, (int)sp.Position.Y, (int)(sp.Position.X + sp.Size.X), (int)(sp.Position.Y + sp.Size.Y)), sp.SpriteSheetSection, sp.Mask, sp.Rotation, sp.Center, sp.Effects, sp.Layer); ;
+                            if (DrawingBounds.X >= sp.Position.X && DrawingBounds.X + DrawingBounds.Width >= sp.Position.X + sp.Size.X &&
+                            DrawingBounds.Y >= sp.Position.Y && DrawingBounds.Y + DrawingBounds.Height >= sp.Position.Y + sp.Size.Y)
+                            {
+                                spriteBatch.Draw(sp.Texture, new Rectangle((int)sp.Position.X, (int)sp.Position.Y, (int)(sp.Position.X + sp.Size.X), (int)(sp.Position.Y + sp.Size.Y)), sp.SpriteSheetSection, sp.Mask, sp.Rotation, sp.Center, sp.Effects, sp.Layer); ;
+                            }
                         }
                     }
                     

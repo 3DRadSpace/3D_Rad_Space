@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DRadSpaceDll
 {
@@ -12,7 +11,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// The colour itself.
         /// </summary>
-        public Color Color;
+        public Color Color { get; set; }
         
         /// <summary>
         /// SkyColor object constructor.

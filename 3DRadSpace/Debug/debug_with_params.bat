@@ -1,0 +1,2 @@
+3DRadSpace_ProjectFileCompiler /?
+pause
