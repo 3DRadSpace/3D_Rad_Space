@@ -89,6 +89,8 @@ namespace _3DRadSpace
             if (add.Result != null)
             {
                 _3DRadSpaceDll.Game.GameObjects.Add(add.Result);
+                if(add.Result is Skinmesh s) s.Load(Content); //Prevent crashes by loading the model.
+                if (add.Result is Sprite sp) sp.Load(Content);
                 ProjectSaved = false;
             }
             UpdateObjects();
@@ -210,6 +212,13 @@ namespace _3DRadSpace
                 fogW.ShowDialog();
                 if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = fogW.Result;
                 fogW.Dispose();
+            }
+            if(b is Skinmesh)
+            {
+                SkinmeshW skinmeshW = new SkinmeshW((Skinmesh)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
+                skinmeshW.ShowDialog();
+                if (skinmeshW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = skinmeshW.Result;
+                skinmeshW.Dispose();
             }
             UpdateObjects();
         }

@@ -68,5 +68,16 @@ namespace _3DRadSpace
             fog.Dispose();
             Close();
         }
+
+        private void pictureBox16_Click(object sender, EventArgs e)
+        {
+            SkinmeshW skinmesh = new SkinmeshW();
+            if(skinmesh.ShowDialog() == DialogResult.OK)
+            {
+                Result = skinmesh.Result;
+            }
+            skinmesh.Dispose();
+            Close();
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using Microsoft.Xna.Framework;
 
 namespace _3DRadSpace
 {
@@ -10,7 +11,18 @@ namespace _3DRadSpace
         public object Result;
         public SkinmeshW(Skinmesh sk)
         {
-
+            textBox1.Text = sk.Name;
+            checkBox1.Checked = sk.Enabled;
+            textBox2.Text = sk.Resource;
+            textBox3.Text = ""+sk.Position.X;
+            textBox4.Text = ""+sk.Position.Y;
+            textBox5.Text = ""+sk.Position.Z;
+            textBox8.Text = ""+sk.Rotation.X;
+            textBox7.Text = ""+sk.Rotation.Y;
+            textBox6.Text = ""+sk.Rotation.Z;
+            textBox11.Text = "" + sk.Scale.X;
+            textBox10.Text = "" + sk.Scale.Y;
+            textBox9.Text = "" + sk.Scale.Z;
         }
         public SkinmeshW()
         {
@@ -20,7 +32,14 @@ namespace _3DRadSpace
         private void button7_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Skinmesh r = new Skinmesh("", false, "");
+            Skinmesh r = new Skinmesh(Editor.ValidateTextInput(textBox1.Text) , checkBox1.Checked, textBox2.Text,
+                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)))
+               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)))
+               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)))
+                ,checkBox2.Checked,new BoundingBox(
+                    new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text)))
+                    ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox18.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox17.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox16.Text))))
+                ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text))));
             Result = r;
             Close();
         }

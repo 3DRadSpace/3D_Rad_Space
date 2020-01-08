@@ -17,6 +17,32 @@ namespace _3DRadSpaceDll
     public class Sprite : GameObject
     {
         /// <summary>
+        /// Sprite object constructor.
+        /// </summary>
+        /// <param name="name">Object Name</param>
+        /// <param name="active">Is this object active?</param>
+        /// <param name="resource">Resource image.</param>
+        /// <param name="pos">2D Position.</param>
+        /// <param name="scale">Size of the sprite.</param>
+        /// <param name="center_rot">Center of rotation.</param>
+        /// <param name="rotation">Rotation in radians(?)</param>
+        /// <param name="section">Sprite sheet section.</param>
+        /// <param name="mask">Mask Color.</param>
+        /// <param name="effects">Flipping effects.</param>
+        public Sprite(string name,bool active,string resource,Vector2 pos,Vector2 scale,Vector2 center_rot=default,float rotation=0,Rectangle section=default,Color mask =default,SpriteEffects effects=default)
+        {
+            Name = name;
+            Enabled = active;
+            Resource = resource;
+            Position = pos;
+            Size = scale;
+            Center = center_rot;
+            Rotation = rotation;
+            SpriteSheetSection = section;
+            Mask = mask;
+            Effects = effects;
+        }
+        /// <summary>
         /// Checks if this object is being used by a Camera2D.
         /// </summary>
         public bool IsUsedByCam2D { get; set; }

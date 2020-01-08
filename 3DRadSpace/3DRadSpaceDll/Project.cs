@@ -59,7 +59,7 @@ namespace _3DRadSpaceDll
                             string path = "";
                             for(int j =4;j < Obj.Length;j++)
                             {
-                                path += Obj[j]+" ";
+                                path += Obj[j]+' ';
                             }
                             a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
                             break;
@@ -83,6 +83,23 @@ namespace _3DRadSpaceDll
                                 Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]));
                             break;
                          }
+                    case "skinmesh":
+                        {
+                            string path = "";
+                            for(int j = 20;j < Obj.Length;j++)
+                            {
+                                path += Obj[j] + ' ';
+                            }
+                            a = new Skinmesh(Obj[0], Convert.ToBoolean(Obj[2]), path,
+                                new Vector3(Convert.ToSingle(Obj[3]),Convert.ToSingle(Obj[4]),Convert.ToSingle(Obj[5]))
+                                , new Vector3(Convert.ToSingle(Obj[6]),Convert.ToSingle(Obj[7]),Convert.ToSingle(Obj[8]))
+                                , new Vector3(Convert.ToSingle(Obj[9]),Convert.ToSingle(Obj[10]),Convert.ToSingle(Obj[11])),
+                                Convert.ToBoolean(Obj[12]),new BoundingBox(
+                                    new Vector3(Convert.ToSingle(Obj[13]),Convert.ToSingle(Obj[14]),Convert.ToSingle(Obj[15]))
+                                    ,new Vector3(Convert.ToSingle(Obj[16]),Convert.ToSingle(Obj[17]),Convert.ToSingle(Obj[18])))
+                                    ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Obj[19])));
+                            break;
+                        }
                     default:
                         {
                             throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -105,29 +122,35 @@ namespace _3DRadSpaceDll
                 int j = i + 1;
                 if(Game.GameObjects[i] is Camera c)
                 {
-                    ToBeSaved[j] = "camera " + c.Name + " " + c.Enabled + " " + Vector2String(c.Position) + " " + Vector2String(c.Rotation) +
-                        " " + Vector2String(c.CameraRotation) + " " + c.FOV + " " + c.MinDrawDist + " " + c.MaxDrawDist + " ";
+                    ToBeSaved[j] = "camera " + c.Name + ' ' + c.Enabled + ' ' + Vector2String(c.Position) + ' ' + Vector2String(c.Rotation) +
+                        ' ' + Vector2String(c.CameraRotation) + ' ' + c.FOV + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
                     if (c.Behiavours != null)
                     {
-                        ToBeSaved[j] += c.Behiavours.Count + " ";
+                        ToBeSaved[j] += c.Behiavours.Count + ' ';
                         for (int k = 0; k < c.Behiavours.Count; k++)
                         {
-                            ToBeSaved[j] += c.Behiavours[k].ObjectID + " " + c.Behiavours[k].BehiavourID + " ";
+                            ToBeSaved[j] += c.Behiavours[k].ObjectID + ' ' + c.Behiavours[k].BehiavourID + ' ';
                         }
                     }
                     else ToBeSaved[j] += '0';
                 }
                 if(Game.GameObjects[i] is Script s)
                 {
-                    ToBeSaved[j] = "script " + s.Name + " " + s.Enabled + " " + s.ClassName + " " + s.Path;
+                    ToBeSaved[j] = "script " + s.Name + ' ' + s.Enabled + ' ' + s.ClassName + ' ' + s.Path;
                 }
                 if(Game.GameObjects[i] is SkyColor sky)
                 {
-                    ToBeSaved[j] += "skycolor " + sky.Name + " " + sky.Enabled + " " + sky.Color.R + " " + sky.Color.G + " " + sky.Color.B;
+                    ToBeSaved[j] += "skycolor " + sky.Name + ' ' + sky.Enabled + ' ' + sky.Color.R + ' ' + sky.Color.G + ' ' + sky.Color.B;
                 }
                 if(Game.GameObjects[i] is Fog fog)
                 {
-                    ToBeSaved[j] += "fog " + fog.Name + " " + fog.Enabled + " " + fog.FogColor.X + " " + fog.FogColor.Y + " " + fog.FogColor.Z + " " + fog.FogStart + " " + fog.FogEnd;
+                    ToBeSaved[j] += "fog " + fog.Name + ' ' + fog.Enabled + ' ' + fog.FogColor.X + ' ' + fog.FogColor.Y + ' ' + fog.FogColor.Z + ' ' + fog.FogStart + ' ' + fog.FogEnd;
+                }
+                if(Game.GameObjects[i] is Skinmesh skinmesh)
+                {
+                    ToBeSaved[j] += "skinmesh " + skinmesh.Name + ' ' + skinmesh.Enabled + ' ' +Vector2String(skinmesh.Position) + ' '+
+                        Vector2String(skinmesh.Rotation)+' '+Vector2String(skinmesh.Scale) + ' '+ skinmesh.FogEnabled + ' ' +
+                        Vector2String(skinmesh.BoundingBox.Min)+ ' '+Vector2String(skinmesh.BoundingBox.Max) + skinmesh.BoundingSphere.Radius + ' ' + skinmesh.Resource;
                 }
             }
             File.WriteAllLines(filename, ToBeSaved);

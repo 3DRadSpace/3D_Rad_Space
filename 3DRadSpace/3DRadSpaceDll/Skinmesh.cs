@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace _3DRadSpaceDll
 {
     /// <summary>
-    /// Class for drawing 3D object.
+    /// Class for drawing a 3D mesh.
     /// </summary>
     public class Skinmesh : GameObject, IEffectFog
     {
@@ -20,7 +20,9 @@ namespace _3DRadSpaceDll
         /// <param name="rotation">Object rotation in Euler Angles measured in radians.</param>
         /// <param name="scale">Object scale. (1,1,1) is default.</param>
         /// <param name="fog_affected">Allows or not fogs.</param>
-        public Skinmesh(string name, bool active, string resource, Vector3 position = default,Vector3 rotation = default,Vector3 scale = default,bool fog_affected= true)
+        /// <param name="box">Bounding box for intersections and collisions.</param>
+        /// <param name="sphere">User-defined bounding sphere for intersections and collisions.</param>
+        public Skinmesh(string name, bool active, string resource, Vector3 position = default,Vector3 rotation = default,Vector3 scale = default,bool fog_affected= true,BoundingBox box = default,BoundingSphere sphere = default)
         {
             Name = name;
             Enabled = active;
@@ -36,6 +38,9 @@ namespace _3DRadSpaceDll
                 FogEnd = int.MaxValue;
                 FogStart = int.MaxValue;
             }
+            BoundingBox = box;
+            BoundingSphere = sphere;
+
         }
 
         /// <summary>
@@ -72,6 +77,16 @@ namespace _3DRadSpaceDll
             }
         }
         Vector3 _scale;
+        /// <summary>
+        /// <para>Bounding Box allowing basic hitbox/collision detection.</para>
+        /// <para>Note: Please note that this object doesn't use physics</para>
+        /// </summary>
+        public BoundingBox BoundingBox { get; set; }
+
+        /// <summary>
+        /// Custom user defined Bounding Sphere.
+        /// </summary>
+        public BoundingSphere BoundingSphere { get; set; }
 
         /// <summary>
         /// Loads the model. Uses Monogame's content pipeline.
@@ -80,6 +95,10 @@ namespace _3DRadSpaceDll
         public override void Load(ContentManager content)
         {
             Model = content.Load<Model>(Resource);
+            if(BoundingSphere == default)
+            {
+                BoundingSphere = Model.Meshes[0].BoundingSphere;
+            }
             base.Load(content);
         }
         /// <summary>

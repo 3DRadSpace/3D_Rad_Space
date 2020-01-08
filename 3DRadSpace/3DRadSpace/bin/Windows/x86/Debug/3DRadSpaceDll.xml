@@ -589,10 +589,10 @@
         </member>
         <member name="T:_3DRadSpaceDll.Skinmesh">
             <summary>
-            Class for drawing 3D object.
+            Class for drawing a 3D mesh.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Skinmesh.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Boolean)">
+        <member name="M:_3DRadSpaceDll.Skinmesh.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Boolean,Microsoft.Xna.Framework.BoundingBox,Microsoft.Xna.Framework.BoundingSphere)">
             <summary>
             Skinmesh constructor.
             </summary>
@@ -603,6 +603,8 @@
             <param name="rotation">Object rotation in Euler Angles measured in radians.</param>
             <param name="scale">Object scale. (1,1,1) is default.</param>
             <param name="fog_affected">Allows or not fogs.</param>
+            <param name="box">Bounding box for intersections and collisions.</param>
+            <param name="sphere">User-defined bounding sphere for intersections and collisions.</param>
         </member>
         <member name="P:_3DRadSpaceDll.Skinmesh.Model">
             <summary>
@@ -632,6 +634,17 @@
         <member name="P:_3DRadSpaceDll.Skinmesh.Scale">
             <summary>
             Model scale. Default is (1,1,1).
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.BoundingBox">
+            <summary>
+            <para>Bounding Box allowing basic hitbox/collision detection.</para>
+            <para>Note: Please note that this object doesn't use physics</para>
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.BoundingSphere">
+            <summary>
+            Custom user defined Bounding Sphere.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Skinmesh.Load(Microsoft.Xna.Framework.Content.ContentManager)">

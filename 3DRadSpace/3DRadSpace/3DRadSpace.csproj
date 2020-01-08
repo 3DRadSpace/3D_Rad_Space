@@ -148,6 +148,12 @@
     <Compile Include="SkyColorW.Designer.cs">
       <DependentUpon>SkyColorW.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpriteW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpriteW.Designer.cs">
+      <DependentUpon>SpriteW.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DiscordRPC, Version=1.0.121.0, Culture=neutral, processorArchitecture=MSIL">
@@ -255,6 +261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SkyColorW.resx">
       <DependentUpon>SkyColorW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpriteW.resx">
+      <DependentUpon>SpriteW.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
