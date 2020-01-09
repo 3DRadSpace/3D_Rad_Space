@@ -507,7 +507,7 @@
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(34, 13);
             this.label15.TabIndex = 4;
-            this.label15.Text = "Min Y";
+            this.label15.Text = "Min Z";
             // 
             // textBox14
             // 

@@ -100,6 +100,22 @@ namespace _3DRadSpaceDll
                                     ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Obj[19])));
                             break;
                         }
+                    case "sprite":
+                        {
+                            string path = "";
+                            for (int j = 18; j < Obj.Length; j++)
+                            {
+                                path += Obj[j] + " ";
+                            }
+                            Sprite s = new Sprite(Obj[0], Convert.ToBoolean(Obj[2]), path,
+                                new Vector2(Convert.ToInt32(Obj[3]), Convert.ToInt32(Obj[4])), new Vector2(Convert.ToInt32(Obj[5]), Convert.ToInt32(Obj[6])),
+                                new Vector2(Convert.ToInt32(Obj[7]), Convert.ToInt32(Obj[8])), Convert.ToSingle(Obj[9]),
+                                new Rectangle(Convert.ToInt32(Obj[10]),Convert.ToInt32(Obj[11]),Convert.ToInt32(Obj[12]),Convert.ToInt32(Obj[13]))
+                                , new Color(Convert.ToByte(Obj[14]), Convert.ToByte(Obj[15]), Convert.ToByte(Obj[16])), (SpriteEffects)Convert.ToInt32(Obj[17]));
+                            if (s.SpriteSheetSection.Value.Width + s.SpriteSheetSection.Value.Height == 0) s.SpriteSheetSection = null;
+                            a = s;
+                            break;
+                        }
                     default:
                         {
                             throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);

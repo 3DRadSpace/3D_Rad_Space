@@ -79,5 +79,16 @@ namespace _3DRadSpace
             skinmesh.Dispose();
             Close();
         }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            SpriteW sprite = new SpriteW();
+            if(sprite.ShowDialog() == DialogResult.OK)
+            {
+                Result = sprite.Result;
+            }
+            sprite.Dispose();
+            Close();
+        }
     }
 }

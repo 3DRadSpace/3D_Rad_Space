@@ -714,6 +714,21 @@
             2D Screen images class.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.Sprite.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Nullable{Microsoft.Xna.Framework.Rectangle},Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Graphics.SpriteEffects)">
+            <summary>
+            Sprite object constructor.
+            </summary>
+            <param name="name">Object Name</param>
+            <param name="active">Is this object active?</param>
+            <param name="resource">Resource image.</param>
+            <param name="pos">2D Position.</param>
+            <param name="scale">Size of the sprite.</param>
+            <param name="center_rot">Center of rotation.</param>
+            <param name="rotation">Rotation in radians(?)</param>
+            <param name="section">Sprite sheet section.</param>
+            <param name="mask">Mask Color.</param>
+            <param name="effects">Flipping effects.</param>
+        </member>
         <member name="P:_3DRadSpaceDll.Sprite.IsUsedByCam2D">
             <summary>
             Checks if this object is being used by a Camera2D.
@@ -764,11 +779,12 @@
             Layer depth of the sprite.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Sprite.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+        <member name="M:_3DRadSpaceDll.Sprite.Load(Microsoft.Xna.Framework.Content.ContentManager,Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
             <summary>
-            Loads the texture.
+            Loads the texture. Notice this is not overloading the function from the GameObject class.
             </summary>
             <param name="content">Content manager.</param>
+            <param name="gd">Graphics device. Expected to be given by the editor.</param>
         </member>
         <member name="M:_3DRadSpaceDll.Sprite.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
@@ -777,6 +793,14 @@
             <param name="spriteBatch">spriteBatch used for drawing.</param>
             <param name="view">Use a null value.</param>
             <param name="projection">Use a null value.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Drawing the sprite but for the editor.
+            </summary>
+            <param name="spriteBatch"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
         </member>
         <member name="M:_3DRadSpaceDll.Sprite.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>

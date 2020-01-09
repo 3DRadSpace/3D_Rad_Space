@@ -23,6 +23,14 @@ namespace _3DRadSpace
             textBox11.Text = "" + sk.Scale.X;
             textBox10.Text = "" + sk.Scale.Y;
             textBox9.Text = "" + sk.Scale.Z;
+            textBox12.Text = sk.BoundingSphere.Radius+"";
+            textBox13.Text = sk.BoundingBox.Min.X+"";
+            textBox14.Text = sk.BoundingBox.Min.Y+"";
+            textBox15.Text = sk.BoundingBox.Min.Z+"";
+            textBox18.Text = sk.BoundingBox.Max.X + "";
+            textBox17.Text = sk.BoundingBox.Max.Y + "";
+            textBox16.Text = sk.BoundingBox.Max.Z + "";
+            InitializeComponent();
         }
         public SkinmeshW()
         {

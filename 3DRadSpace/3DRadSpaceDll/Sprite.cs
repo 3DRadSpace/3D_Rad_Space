@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using System.IO;
 
 namespace _3DRadSpaceDll
 {
@@ -29,7 +30,7 @@ namespace _3DRadSpaceDll
         /// <param name="section">Sprite sheet section.</param>
         /// <param name="mask">Mask Color.</param>
         /// <param name="effects">Flipping effects.</param>
-        public Sprite(string name,bool active,string resource,Vector2 pos,Vector2 scale,Vector2 center_rot=default,float rotation=0,Rectangle section=default,Color mask =default,SpriteEffects effects=default)
+        public Sprite(string name,bool active,string resource,Vector2 pos,Vector2 scale,Vector2 center_rot=default,float rotation=0,Rectangle? section=default,Color mask =default,SpriteEffects effects=default)
         {
             Name = name;
             Enabled = active;
@@ -57,14 +58,15 @@ namespace _3DRadSpaceDll
         {
             get
             {
-                return Size;
+                return size;
             }
             set
             {
-                if (Size.X <= 0 || Size.Y <= 0) throw new System.ArgumentException("Size MUST be greater than 0.");
-                else Size = value;
+                if (value.X <= 0 || value.Y <= 0) throw new System.ArgumentException("Size MUST be greater than 0.");
+                else size = value;
             }
         }
+        Vector2 size;
         /// <summary>
         /// Rotation of the sprite in radians.
         /// </summary>
@@ -94,12 +96,16 @@ namespace _3DRadSpaceDll
         /// </summary>
         public float Layer { get; set; }
         /// <summary>
-        /// Loads the texture.
+        /// Loads the texture. Notice this is not overloading the function from the GameObject class.
         /// </summary>
         /// <param name="content">Content manager.</param>
-        public override void Load(ContentManager content)
+        /// <param name="gd">Graphics device. Expected to be given by the editor.</param>
+        public void Load(ContentManager content,GraphicsDevice gd)
         {
-            Texture = content.Load<Texture2D>(Resource);
+            FileStream str = new FileStream(Resource, FileMode.Open);
+            Texture = Texture2D.FromStream(gd, str);
+            str.Close();
+            str.Dispose();
             base.Load(content);
         }
         /// <summary>
@@ -112,6 +118,17 @@ namespace _3DRadSpaceDll
         {
             spriteBatch.Draw(Texture, Position, SpriteSheetSection, Mask, Rotation, Center, Size, Effects, Layer);
             base.Draw(spriteBatch, view, projection);
+        }
+        /// <summary>
+        /// Drawing the sprite but for the editor.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        {
+            spriteBatch.Draw(Texture, Position+new Vector2(150,25), null, Mask, Rotation, Center, Size, Effects, Layer); // <- fuck ya
+            base.EditorDraw(spriteBatch, view, projection);
         }
         /// <summary>
         /// Updates the sprite (if it is clicked)

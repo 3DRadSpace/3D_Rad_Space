@@ -96,20 +96,20 @@ namespace _3DRadSpaceDll
         /// Resource file
         /// </summary>
         public string Resource { get; set; }
-            /*
+        /*
         {
             get
             {
-                return Resource;
+                return res;
             }
             set
             {
-                if (!System.IO.File.Exists(value)) throw new System.IO.FileNotFoundException("Resource " + value + " is missing");
-                else Resource = value;
-                Resource = value;
+                if (System.IO.File.Exists(@""+value) == false) throw new System.IO.FileNotFoundException("Resource " + value + " is missing");
+                else res = value;
             }
         }
         */
+        //string res;
         /// <summary>
         /// Enables object.
         /// </summary>
