@@ -714,7 +714,7 @@
             2D Screen images class.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Sprite.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Nullable{Microsoft.Xna.Framework.Rectangle},Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Graphics.SpriteEffects)">
+        <member name="M:_3DRadSpaceDll.Sprite.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Nullable{Microsoft.Xna.Framework.Rectangle},Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Int32)">
             <summary>
             Sprite object constructor.
             </summary>
@@ -728,6 +728,7 @@
             <param name="section">Sprite sheet section.</param>
             <param name="mask">Mask Color.</param>
             <param name="effects">Flipping effects.</param>
+            <param name="layer">Drawing layer</param>
         </member>
         <member name="P:_3DRadSpaceDll.Sprite.IsUsedByCam2D">
             <summary>

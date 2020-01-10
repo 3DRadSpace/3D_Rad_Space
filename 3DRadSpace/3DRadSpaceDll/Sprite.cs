@@ -30,7 +30,8 @@ namespace _3DRadSpaceDll
         /// <param name="section">Sprite sheet section.</param>
         /// <param name="mask">Mask Color.</param>
         /// <param name="effects">Flipping effects.</param>
-        public Sprite(string name,bool active,string resource,Vector2 pos,Vector2 scale,Vector2 center_rot=default,float rotation=0,Rectangle? section=default,Color mask =default,SpriteEffects effects=default)
+        /// <param name="layer">Drawing layer</param>
+        public Sprite(string name,bool active,string resource,Vector2 pos,Vector2 scale,Vector2 center_rot=default,float rotation=0,Rectangle? section=default,Color mask =default,SpriteEffects effects=default,int layer=1)
         {
             Name = name;
             Enabled = active;
@@ -42,6 +43,7 @@ namespace _3DRadSpaceDll
             SpriteSheetSection = section;
             Mask = mask;
             Effects = effects;
+            Layer = layer;
         }
         /// <summary>
         /// Checks if this object is being used by a Camera2D.
@@ -127,8 +129,8 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            spriteBatch.Draw(Texture, Position+new Vector2(150,25), null, Mask, Rotation, Center, Size, Effects, Layer); // <- fuck ya
-            base.EditorDraw(spriteBatch, view, projection);
+            spriteBatch.Draw(Texture, Position + new Vector2(150, 25), SpriteSheetSection, Mask, Rotation, Center, Size, Effects, Layer);
+            throw new System.Exception();
         }
         /// <summary>
         /// Updates the sprite (if it is clicked)

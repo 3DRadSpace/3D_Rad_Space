@@ -51,16 +51,16 @@ namespace _3DRadSpace
 		private void button3_Click(object sender, EventArgs e)
 		{
 			Rectangle? r = new Rectangle(
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox10.Text)),
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox11.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox12.Text)));
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text)),
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox11.Text)));
 			if (r.Value.Height + r.Value.Width == 0) r = null;
 			Result = new Sprite(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, textBox2.Text,
 				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox4.Text))),
 				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox6.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox7.Text))),
-				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text))),
+				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox13.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox14.Text))),
 				Convert.ToSingle(textBox5.Text),r,
 				new Color(Convert.ToByte(Editor.ValidateNumberTextInput(textBox15.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox16.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox17.Text))),
-				(SpriteEffects)(Convert.ToInt32(checkBox2.Checked) + Convert.ToInt32(checkBox3.Checked)));
+				(SpriteEffects)(Convert.ToInt32(checkBox2.Checked) + 2*Convert.ToInt32(checkBox3.Checked)),Convert.ToInt32(Editor.ValidateNumberTextInput(textBox12.Text)));
 			DialogResult = DialogResult.OK;
 			Close();
 		}
