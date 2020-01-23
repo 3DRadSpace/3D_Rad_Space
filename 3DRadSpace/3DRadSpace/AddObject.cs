@@ -16,7 +16,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        public object Result;
+        public object Result { get; set; }
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (_3DRadSpaceDll.Project.type == _3DRadSpaceDll.ProjectType.ThreeDimensional)
@@ -88,6 +88,14 @@ namespace _3DRadSpace
                 Result = sprite.Result;
             }
             sprite.Dispose();
+            Close();
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            TextPrintW textPrint = new TextPrintW();
+            if (textPrint.ShowDialog() == DialogResult.OK) Result = textPrint.Result;
+            textPrint.Dispose();
             Close();
         }
     }

@@ -11,6 +11,7 @@ namespace _3DRadSpace
         public object Result;
         public SkinmeshW(Skinmesh sk)
         {
+            InitializeComponent();
             textBox1.Text = sk.Name;
             checkBox1.Checked = sk.Enabled;
             textBox2.Text = sk.Resource;
@@ -30,7 +31,6 @@ namespace _3DRadSpace
             textBox18.Text = sk.BoundingBox.Max.X + "";
             textBox17.Text = sk.BoundingBox.Max.Y + "";
             textBox16.Text = sk.BoundingBox.Max.Z + "";
-            InitializeComponent();
         }
         public SkinmeshW()
         {

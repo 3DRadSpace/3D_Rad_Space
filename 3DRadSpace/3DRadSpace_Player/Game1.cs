@@ -57,6 +57,9 @@ namespace _3DRadSpace_Player
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content,GraphicsDevice);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
             }
         }
         protected override void UnloadContent()
@@ -64,6 +67,8 @@ namespace _3DRadSpace_Player
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.End();
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Dispose();
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Dispose();
             }
         }
         protected override void Update(GameTime gameTime)
@@ -102,6 +107,8 @@ namespace _3DRadSpace_Player
                     }
                     skinmesh.Draw(null, view, projection);
                 }
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Draw(spriteBatch, null, null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Draw(spriteBatch, null, null);
             }
             base.Draw(gameTime);
         }

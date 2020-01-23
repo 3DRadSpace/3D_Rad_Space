@@ -134,13 +134,6 @@ namespace _3DRadSpace
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(ClearColor);
-            spriteBatch.Begin();
-            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
-            {
-                object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
-                if (gameObject is Sprite sp) sp.EditorDraw(spriteBatch, null, null);
-            }
-            spriteBatch.End();
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
@@ -163,6 +156,14 @@ namespace _3DRadSpace
                     sk.EditorDraw(null, View, Projection);
                 }
             }
+            spriteBatch.Begin();
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
+                if (gameObject is Sprite sp) sp.EditorDraw(spriteBatch, null, null);
+                if (gameObject is TextPrint tp) tp.EditorDraw(spriteBatch, null, null);
+            }
+            spriteBatch.End();
             base.Draw(gameTime);
         }
         public void ApplyProjectType()

@@ -85,12 +85,6 @@
     <Compile Include="DiscordRichPresence.cs" />
     <Compile Include="EditorEvents.cs" />
     <Compile Include="EditorGraphicalInterface.cs" />
-    <Compile Include="EditorUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorUI.Designer.cs">
-      <DependentUpon>EditorUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Editor.cs" />
     <Compile Include="FogW.cs">
       <SubType>Form</SubType>
@@ -154,6 +148,12 @@
     <Compile Include="SpriteW.Designer.cs">
       <DependentUpon>SpriteW.cs</DependentUpon>
     </Compile>
+    <Compile Include="TextPrintW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextPrintW.Designer.cs">
+      <DependentUpon>TextPrintW.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DiscordRPC, Version=1.0.121.0, Culture=neutral, processorArchitecture=MSIL">
@@ -163,7 +163,7 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -231,9 +231,6 @@
     <EmbeddedResource Include="Compiler_SelectMainProject.resx">
       <DependentUpon>Compiler_SelectMainProject.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditorUI.resx">
-      <DependentUpon>EditorUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FogW.resx">
       <DependentUpon>FogW.cs</DependentUpon>
     </EmbeddedResource>
@@ -264,6 +261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SpriteW.resx">
       <DependentUpon>SpriteW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextPrintW.resx">
+      <DependentUpon>TextPrintW.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

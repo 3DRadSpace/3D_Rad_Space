@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using System;
 
 namespace _3DRadSpaceDll
 {
@@ -15,7 +16,7 @@ namespace _3DRadSpaceDll
     /// <summary>
     /// 2D Screen images class.
     /// </summary>
-    public class Sprite : GameObject
+    public class Sprite : GameObject,IDisposable
     {
         /// <summary>
         /// Sprite object constructor.
@@ -129,8 +130,8 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            spriteBatch.Draw(Texture, Position + new Vector2(150, 25), SpriteSheetSection, Mask, Rotation, Center, Size, Effects, Layer);
-            throw new System.Exception();
+            spriteBatch.Draw(Texture, new Rectangle((int)Position.X+150, (int)Position.Y+25, (int)Size.X, (int)Size.Y), SpriteSheetSection, Mask, Rotation, Center, Effects, Layer);
+            base.EditorDraw(spriteBatch, view, projection);
         }
         /// <summary>
         /// Updates the sprite (if it is clicked)
@@ -151,5 +152,27 @@ namespace _3DRadSpaceDll
         /// Event called if the sprite is clicked
         /// </summary>
         public event onClick OnClick;
+        /// <summary>
+        /// Frees the loaded texture.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        bool _disposed = false;
+        /// <summary>
+        /// Protected Dispose().
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if(disposing)
+            {
+                Texture.Dispose();
+            }
+            _disposed = true;
+        }
     }
 }

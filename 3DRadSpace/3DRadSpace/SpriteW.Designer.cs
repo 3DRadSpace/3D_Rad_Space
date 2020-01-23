@@ -508,6 +508,7 @@
             // textBox17
             // 
             this.textBox17.Location = new System.Drawing.Point(27, 70);
+            this.textBox17.MaxLength = 3;
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(100, 20);
             this.textBox17.TabIndex = 3;
@@ -516,14 +517,16 @@
             // textBox16
             // 
             this.textBox16.Location = new System.Drawing.Point(27, 44);
+            this.textBox16.MaxLength = 3;
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(100, 20);
             this.textBox16.TabIndex = 2;
-            this.textBox16.Text = "0";
+            this.textBox16.Text = "255";
             // 
             // textBox15
             // 
             this.textBox15.Location = new System.Drawing.Point(27, 18);
+            this.textBox15.MaxLength = 3;
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(100, 20);
             this.textBox15.TabIndex = 1;
@@ -544,6 +547,7 @@
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(100, 20);
             this.textBox12.TabIndex = 1;
+            this.textBox12.Text = "1";
             // 
             // label12
             // 
@@ -610,7 +614,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpriteW";
-            this.Text = "Sprite Onject v1.0.0";
+            this.Text = "Sprite Object v1.0.0";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

@@ -157,8 +157,6 @@ namespace _3DRadSpaceDll
         /// </summary>
         public virtual void EditorDraw(SpriteBatch spriteBatch,Matrix? view,Matrix? projection)
         {
-            view = null;
-            projection = null;
         }
         /// <summary>
         /// Object update logic

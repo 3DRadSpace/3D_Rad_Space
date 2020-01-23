@@ -38,5 +38,9 @@ namespace _3DRadSpace
             presence.Timestamps = time;
             client.SetPresence(presence);
         }
+        public void Dispose()
+        {
+            client.Dispose();
+        }
     }
 }

@@ -16,14 +16,9 @@ namespace _3DRadSpace
         void newProject(object a,EventArgs e)
         {
             saveProject(null, null);
-            _3DRadSpaceDll.Game.GameObjects.Clear();
-            NewProjectWindow projectWindow = new NewProjectWindow();
-            projectWindow.ShowDialog();
-            ApplyProjectType();
+            ClearObjects();
             ProjectSaved = true;
-            UpdateObjects();
             discordRichPresence.SetPresence("Editing project", "New Project");
-            projectWindow.Dispose();
         }
         void openProject(object a,EventArgs e)
         {
@@ -36,6 +31,7 @@ namespace _3DRadSpace
             DialogResult b = openFile.ShowDialog();
             if(b == DialogResult.OK)
             {
+                ClearObjects();
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
                 UpdateObjects();
                 ProjectSaved = true;
@@ -91,6 +87,7 @@ namespace _3DRadSpace
                 _3DRadSpaceDll.Game.GameObjects.Add(add.Result);
                 if(add.Result is Skinmesh s) s.Load(Content); //Prevent crashes by loading the model.
                 if (add.Result is Sprite sp) sp.Load(Content,GraphicsDevice);
+                if (add.Result is TextPrint tp) tp.Load(Content);
                 ProjectSaved = false;
             }
             UpdateObjects();
@@ -227,15 +224,27 @@ namespace _3DRadSpace
             }
             if( b is Sprite)
             {
-                SpriteW spriteW = new SpriteW((Sprite)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex]);
+                SpriteW spriteW = new SpriteW((Sprite)b);
                 spriteW.ShowDialog();
                 if (spriteW.Result != null)
                 {
-                    _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = spriteW.Result;
-                    Sprite spr = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] as Sprite;
-                    spr.Load(Content,GraphicsDevice);
+                    _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = (Sprite)spriteW.Result;
+                    Sprite s = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] as Sprite;
+                    s.Load(Content,GraphicsDevice);
                 }
                 spriteW.Dispose();
+            }
+            if( b is TextPrint p)
+            {
+                TextPrintW textPrintW = new TextPrintW((TextPrint)b);
+                textPrintW.ShowDialog();
+                if(textPrintW.Result != null)
+                {
+                    p = (TextPrint)textPrintW.Result;
+                    p.Load(Content);
+                    _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = p;
+                }
+                textPrintW.Dispose();
             }
             UpdateObjects();
         }
@@ -245,6 +254,11 @@ namespace _3DRadSpace
             {
                 ClearColor = Color.Black;
             }
+            if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] is Sprite sp)
+            {
+                sp.Dispose();
+            }
+            if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] is TextPrint tp) tp.Dispose();
             _3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedIndex);
             UpdateObjects();
         }
@@ -296,11 +310,13 @@ namespace _3DRadSpace
         }
         public static string ValidateNumberTextInput(string input)
         {
-            if (input == null) return "_";
+            if (input == null) return "0";
             string r = null;
             for(int i =0; i < input.Length;i++)
             {
                 if (input[i] >= '0' && input[i] <= '9') r += input[i];
+                if (input[i] == '.') r += input[i];
+                if (input[i] == '-') r += input[i];
             }
             return r;
         }
@@ -314,6 +330,22 @@ namespace _3DRadSpace
                 else r += '_';
             }
             return r;
+        }
+        void ClearObjects()
+        {
+            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            {
+                if(_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
+                {
+                  //  sp.Dispose();
+                }
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
+                {
+                  //  tp.Dispose();
+                }
+            }
+            _3DRadSpaceDll.Game.GameObjects.Clear();
+            UpdateObjects();
         }
     }
 }
