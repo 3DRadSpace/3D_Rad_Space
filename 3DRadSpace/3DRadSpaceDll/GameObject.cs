@@ -60,7 +60,7 @@ namespace _3DRadSpaceDll
             OnInitialization?.Invoke(this);
         }
         /// <summary>
-        /// Object Name
+        /// Object Name. Used in 
         /// </summary>
         public string Name { get; set; }
         /// <summary>

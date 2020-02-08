@@ -31,11 +31,11 @@ namespace _3DRadSpaceDll
             FogEnd = end;
         }
         /// <summary>
-        /// Fog Color.
+        /// Fog Color. Implemented from IEffectFog.
         /// </summary>
         public Vector3 FogColor { get; set; }
         /// <summary>
-        /// Actually sets this.Enabled.
+        /// Actually sets this.Enabled. Implemented from IEffectFog.
         /// </summary>
         public bool FogEnabled {
             get { return Enabled; }

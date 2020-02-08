@@ -98,5 +98,15 @@ namespace _3DRadSpace
             textPrint.Dispose();
             Close();
         }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox21_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

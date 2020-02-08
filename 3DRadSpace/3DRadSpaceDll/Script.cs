@@ -15,8 +15,14 @@ namespace _3DRadSpaceDll
     /// </summary>
     public class Script : GameObject
     {
+        /// <summary>
+        /// Compiled CLR assembly
+        /// </summary>
         private Assembly _assembly;
         private MethodInfo _start, _run, _end,_draw;
+        /// <summary>
+        /// Instance of the user-scripted class.
+        /// </summary>
         private object _script_object;
         /// <summary>
         /// Checks if compilation succeded.
@@ -35,7 +41,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public string ClassName { get; set; }
         /// <summary>
-        /// Script constructor.
+        /// Script object main constructor.
         /// </summary>
         /// <param name="name">Object name</param>
         /// <param name="enabled">Checks if scripts will be run</param>

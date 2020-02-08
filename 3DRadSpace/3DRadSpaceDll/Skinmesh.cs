@@ -11,7 +11,7 @@ namespace _3DRadSpaceDll
     public class Skinmesh : GameObject, IEffectFog
     {
         /// <summary>
-        /// Skinmesh constructor.
+        /// Creates a new Skinmesh object
         /// </summary>
         /// <param name="name">Object's name.</param>
         /// <param name="active">Checks if the skinmesh will get drawn.</param>

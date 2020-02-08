@@ -14,7 +14,7 @@ namespace _3DRadSpaceDll
     public static class Game
     {
         /// <summary>
-        /// Contains the objects. 
+        /// Contains the objects. Note this is a System.Collections.Generic.List (a linked list)
         /// </summary>
         public static List<object> GameObjects { get; set; }
         /// <summary>
@@ -47,6 +47,7 @@ namespace _3DRadSpaceDll
         }
         /// <summary>
         /// Finds an objects after it's id.
+        /// <para>Time complexity is O(n) since GameObjects is a linked list.</para>
         /// </summary>
         /// <param name="i">Numeric indentifier.</param>
         /// <returns>Returns the found object.</returns>
@@ -57,9 +58,31 @@ namespace _3DRadSpaceDll
             return GameObjects[i];
         }
         /// <summary>
+        /// Finds an objects after it's name. If objects have the same name, the object with the lowest numerical ID will be returned.
+        /// <para>Time complexity in the worst case is about O(n^2)</para>
+        /// </summary>
+        /// <param name="Name">Object's name</param>
+        /// <returns>Returns the object, else null.</returns>
+        public static object FindObject(string Name)
+        {
+            object ret = null;
+            for(int i =0; i < GameObjects.Count;i++)
+            {
+                if (GameObjects[i] != null)
+                {
+                    GameObject obj = GameObjects[i] as GameObject;
+                    if (obj.Name == Name) return GameObjects[i];
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Sets an object in the list.
         /// </summary>
-        /// <param name="i">Object unique numeric IDentifier / array index</param>
+        /// <param name="i">Object unique numeric (ID)entifier / array index
+        /// <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
+        /// </param>
         /// <param name="obj">Value</param>
         public static void SetObject(int i,object obj)
         {

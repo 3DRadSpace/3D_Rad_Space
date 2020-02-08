@@ -337,11 +337,11 @@ namespace _3DRadSpace
             {
                 if(_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
                 {
-                  //  sp.Dispose();
+                    sp.Dispose();
                 }
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
                 {
-                  //  tp.Dispose();
+                    tp.Dispose();
                 }
             }
             _3DRadSpaceDll.Game.GameObjects.Clear();

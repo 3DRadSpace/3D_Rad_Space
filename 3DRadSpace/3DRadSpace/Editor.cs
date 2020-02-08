@@ -121,6 +121,7 @@ namespace _3DRadSpace
                         Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
                         IsMouseVisible = false;
                         CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * -0.001f, (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * 0.001f);
+                        if (CameraRotationCoords.Y > (MathHelper.TwoPi-0.1f)) CameraRotationCoords.Y = (MathHelper.TwoPi - 0.1f);
                     }
                 }
                 else

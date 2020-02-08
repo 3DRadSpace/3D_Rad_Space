@@ -51,12 +51,14 @@
     <Compile Include="Fog.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="MainPage_doxygen.cs" />
     <Compile Include="ObjectBehiavour.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Skinmesh.cs" />
     <Compile Include="SkyColor.cs" />
+    <Compile Include="SoundEffect.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="TextPrint.cs" />
   </ItemGroup>

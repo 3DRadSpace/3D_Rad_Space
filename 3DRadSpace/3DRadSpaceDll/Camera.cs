@@ -7,22 +7,22 @@ using Microsoft.Xna.Framework.Input;
 namespace _3DRadSpaceDll
 {
     /// <summary>
-    /// Camera class.
+    /// 3D Camera class. Allows drawing three dimensinal scenes.
     /// </summary>
     public class Camera : GameObject
     {
         /// <summary>
         /// Camera object constructor.
         /// </summary>
-        /// <param name="name">Objet name.</param>
+        /// <param name="name">Object name.</param>
         /// <param name="Enabled">If camera is enabled.</param>
-        /// <param name="Pos">Position</param>
-        /// <param name="Rot">Camera rotation.Also used to calculate the target.</param>
-        /// <param name="Targ">Camera Target (Propably not used anymore? )</param>
+        /// <param name="Pos">Camera position.</param>
+        /// <param name="Rot">Camera rotation. Also used to calculate the target.</param>
+        /// <param name="Targ">Camera Target. The point the camera is looking at.</param>
         /// <param name="UpDir">Camera up direction.</param>
-        /// <param name="FOV">Field of view in radians</param>
-        /// <param name="nearplane">Minumum draw distance</param>
-        /// <param name="farplane">Maximum draw distance</param>
+        /// <param name="FOV">Field of view in radians.</param>
+        /// <param name="nearplane">Minumum draw distance.</param>
+        /// <param name="farplane">Maximum draw distance.</param>
         public Camera(string name, bool Enabled, Vector3 Pos, Vector3 Rot,Vector3 Targ, Vector3 UpDir, float FOV, float nearplane, float farplane)
         {
             Name = name;
@@ -36,7 +36,7 @@ namespace _3DRadSpaceDll
             MaxDrawDist = farplane;
         }
         /// <summary>
-        /// Camera object constructor.
+        /// Creates a Camera object with the specified arguments.
         /// </summary>
         /// <param name="name">Objet name.</param>
         /// <param name="Enabled">If camera is enabled.</param>
@@ -59,7 +59,7 @@ namespace _3DRadSpaceDll
             MaxDrawDist = farplane;
         }
         /// <summary>
-        /// Camera constructor for the editor.
+        /// Camera constructor used in the editor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="Pos"></param>
@@ -77,7 +77,7 @@ namespace _3DRadSpaceDll
             MinDrawDist = nearplane;
         }
         /// <summary>
-        /// Empty constructor.
+        /// Empty constructor. Values are mostly default.
         /// </summary>
         public Camera()
         {
@@ -93,9 +93,12 @@ namespace _3DRadSpaceDll
         }
 
         /// <summary>
-        /// Expected to be loaded by the game editor.
+        /// Expected to be loaded by the game editor. Not used in 3DRadSpacePlayer.
         /// </summary>
         public static Model model { get; set; }
+        /// <summary>
+        /// Difference between 'chased object' and Camera position.
+        /// </summary>
         Vector3 DeltaPos;
 
         /// <summary>
@@ -130,7 +133,7 @@ namespace _3DRadSpaceDll
         public Vector3 CameraTarget { get; set; }
 
         /// <summary>
-        /// Camera Rotation. (0,1,0) should be used as the default.
+        /// Camera Rotation. This is a normalized 3D Vector (with the lenght equal or lower(?) to 1)
         /// </summary>
         public Vector3 CameraRotation { get; set; }
 
@@ -140,7 +143,7 @@ namespace _3DRadSpaceDll
         public float FOV { get; set; }
 
         /// <summary>
-        /// Screen size. Used to calculate aspect ratio.
+        /// Screen size. Used to calculate the projection's aspect ratio.
         /// </summary>
         public static Vector2 ScreenSize { get; set; }
 
@@ -162,7 +165,7 @@ namespace _3DRadSpaceDll
         }
 
         /// <summary>
-        /// Near plane distance
+        /// Minimum drawing distance. A recommended value is 0.1f.
         /// </summary>
         public float MinDrawDist { get; set; }
 
@@ -172,7 +175,7 @@ namespace _3DRadSpaceDll
         public float MaxDrawDist { get; set; }
 
         /// <summary>
-        /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationships'.
+        /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationship(s)'.
         /// </summary>
         /// <param name="mouse">Not used</param>
         /// <param name="keyboard">Not used</param>

@@ -702,6 +702,84 @@
             </summary>
             <returns>Returns null if the object is inactive, otherwise returns this.Color .</returns>
         </member>
+        <member name="T:_3DRadSpaceDll.SoundEffect">
+            <summary>
+            SoundEffect class. Allows loading and playing sound effects.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.Sound">
+            <summary>
+            ???
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.SoundInstance">
+            <summary>
+            ???
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.Volume">
+            <summary>
+            Sound volume. Ranges from 0.0f to 1.0f.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.Picth">
+            <summary>
+            Sound pitch
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.Pan">
+            <summary>
+            Pan / speaker balance.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.#ctor(System.String,System.Boolean,System.String,System.Single)">
+            <summary>
+            Main constructor.
+            </summary>
+            <param name="name"></param>
+            <param name="active"></param>
+            <param name="resource"></param>
+            <param name="volume"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads the sound
+            </summary>
+            <param name="content"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Play">
+            <summary>
+            Plays the sound.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Pause">
+            <summary>
+            Pauses the sound.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Stop">
+            <summary>
+            Stops the sound
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.IsPlaying">
+            <summary>
+            Checks if the sound is playing.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.IsPaused">
+            <summary>
+            Checks if the sound is paused.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.IsStopped">
+            <summary>
+            Checks if the sound is stopped.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.onClick">
             <summary>
             Event is invoked when the object is being clicked.

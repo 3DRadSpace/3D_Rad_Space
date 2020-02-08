@@ -150,7 +150,7 @@ namespace _3DRadSpaceDll
         }
         bool disposed;
         /// <summary>
-        /// ???
+        /// Not really needed, MG's pipeline takes care of the SpriteFont instance.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -158,7 +158,7 @@ namespace _3DRadSpaceDll
             if (disposed) return;
             if(disposing)
             {
-                Font.Texture.Dispose();
+                //Font.Texture.Dispose(); <-- temporarly disabled since it's possible that the Content is manaing the SpriteFont instance itself.
             }
             disposed = true;
         }
