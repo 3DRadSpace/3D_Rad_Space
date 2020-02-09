@@ -142,6 +142,12 @@
     <Compile Include="SkyColorW.Designer.cs">
       <DependentUpon>SkyColorW.cs</DependentUpon>
     </Compile>
+    <Compile Include="SoundEffectW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SoundEffectW.Designer.cs">
+      <DependentUpon>SoundEffectW.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpriteW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SkyColorW.resx">
       <DependentUpon>SkyColorW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoundEffectW.resx">
+      <DependentUpon>SoundEffectW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpriteW.resx">
       <DependentUpon>SpriteW.cs</DependentUpon>

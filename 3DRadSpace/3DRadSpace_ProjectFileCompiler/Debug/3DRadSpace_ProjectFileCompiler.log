@@ -1,3 +1,0 @@
-﻿  3DRadSpace_ProjectFileCompiler.cpp
-C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace_ProjectFileCompiler\3DRadSpace_ProjectFileCompiler.cpp(57,1): error C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(440): message : see declaration of 'strtok'
