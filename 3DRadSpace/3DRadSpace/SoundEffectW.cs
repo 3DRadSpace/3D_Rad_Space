@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpace
 {
@@ -17,7 +18,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        public SoundEffectW(_3DRadSpaceDll.SoundEffect sound)
+        public SoundEffectW(SoundEffect sound)
         {
             InitializeComponent();
             textBox1.Text = sound.Name;
@@ -37,12 +38,57 @@ namespace _3DRadSpace
         private void button2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Result = new _3DRadSpaceDll.SoundEffect(textBox1.Text, checkBox1.Checked, textBox2.Text, trackBar1.Value)
+            Result = new SoundEffect(textBox1.Text, checkBox1.Checked, textBox2.Text, trackBar1.Value)
             {
-                Picth = trackBar2.Value,
-                Pan = trackBar3.Value,
+                Picth = trackBar2.Value / 100,
+                Pan = trackBar3.Value / 100,
             };
             Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //open docs
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            //radioButton2.Checked = false;
+            //radioButton3.Checked = false;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            //radioButton1.Checked = false;
+            //radioButton3.Checked = false;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+           //radioButton1.Checked = false;
+           //radioButton2.Checked = false;
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label4.Text = trackBar1.Value + "";
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            label5.Text = trackBar2.Value / 100f + "";
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            label7.Text = trackBar3.Value / 100f + "";
+        }
+
+        private void SoundEffectW_Load(object sender, EventArgs e)
+        {
+            trackBar1_Scroll(null,null);
+            trackBar2_Scroll(null,null);
+            trackBar3_Scroll(null,null);
         }
     }
 }

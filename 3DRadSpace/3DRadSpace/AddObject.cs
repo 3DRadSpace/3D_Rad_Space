@@ -106,7 +106,10 @@ namespace _3DRadSpace
 
         private void pictureBox21_Click(object sender, EventArgs e)
         {
-
+            SoundEffectW soundEffectW = new SoundEffectW();
+            if (soundEffectW.ShowDialog() == DialogResult.OK) Result = soundEffectW.Result;
+            soundEffectW.Dispose();
+            Close();
         }
     }
 }

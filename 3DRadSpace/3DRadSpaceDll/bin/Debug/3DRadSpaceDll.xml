@@ -6,26 +6,26 @@
     <members>
         <member name="T:_3DRadSpaceDll.Camera">
             <summary>
-            Camera class.
+            3D Camera class. Allows drawing three dimensinal scenes.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
             <summary>
             Camera object constructor.
             </summary>
-            <param name="name">Objet name.</param>
+            <param name="name">Object name.</param>
             <param name="Enabled">If camera is enabled.</param>
-            <param name="Pos">Position</param>
-            <param name="Rot">Camera rotation.Also used to calculate the target.</param>
-            <param name="Targ">Camera Target (Propably not used anymore? )</param>
+            <param name="Pos">Camera position.</param>
+            <param name="Rot">Camera rotation. Also used to calculate the target.</param>
+            <param name="Targ">Camera Target. The point the camera is looking at.</param>
             <param name="UpDir">Camera up direction.</param>
-            <param name="FOV">Field of view in radians</param>
-            <param name="nearplane">Minumum draw distance</param>
-            <param name="farplane">Maximum draw distance</param>
+            <param name="FOV">Field of view in radians.</param>
+            <param name="nearplane">Minumum draw distance.</param>
+            <param name="farplane">Maximum draw distance.</param>
         </member>
         <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
             <summary>
-            Camera object constructor.
+            Creates a Camera object with the specified arguments.
             </summary>
             <param name="name">Objet name.</param>
             <param name="Enabled">If camera is enabled.</param>
@@ -38,7 +38,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.Camera.#ctor(System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single)">
             <summary>
-            Camera constructor for the editor.
+            Camera constructor used in the editor.
             </summary>
             <param name="name"></param>
             <param name="Pos"></param>
@@ -49,12 +49,17 @@
         </member>
         <member name="M:_3DRadSpaceDll.Camera.#ctor">
             <summary>
-            Empty constructor.
+            Empty constructor. Values are mostly default.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Camera.model">
             <summary>
-            Expected to be loaded by the game editor.
+            Expected to be loaded by the game editor. Not used in 3DRadSpacePlayer.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Camera.DeltaPos">
+            <summary>
+            Difference between 'chased object' and Camera position.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Camera.Load(Microsoft.Xna.Framework.Content.ContentManager)">
@@ -75,7 +80,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Camera.CameraRotation">
             <summary>
-            Camera Rotation. (0,1,0) should be used as the default.
+            Camera Rotation. This is a normalized 3D Vector (with the lenght equal or lower(?) to 1)
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Camera.FOV">
@@ -85,7 +90,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Camera.ScreenSize">
             <summary>
-            Screen size. Used to calculate aspect ratio.
+            Screen size. Used to calculate the projection's aspect ratio.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Camera.SetFOVDegrees(System.Single)">
@@ -102,7 +107,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Camera.MinDrawDist">
             <summary>
-            Near plane distance
+            Minimum drawing distance. A recommended value is 0.1f.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Camera.MaxDrawDist">
@@ -112,7 +117,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.Camera.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
-            Updates the Camera object. In this case, the Camera object is affected by it's 'relationships'.
+            Updates the Camera object. In this case, the Camera object is affected by it's 'relationship(s)'.
             </summary>
             <param name="mouse">Not used</param>
             <param name="keyboard">Not used</param>
@@ -177,12 +182,12 @@
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogColor">
             <summary>
-            Fog Color.
+            Fog Color. Implemented from IEffectFog.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogEnabled">
             <summary>
-            Actually sets this.Enabled.
+            Actually sets this.Enabled. Implemented from IEffectFog.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogEnd">
@@ -207,7 +212,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Game.GameObjects">
             <summary>
-            Contains the objects. 
+            Contains the objects. Note this is a System.Collections.Generic.List (a linked list)
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
@@ -226,15 +231,26 @@
         <member name="M:_3DRadSpaceDll.Game.FindObject(System.Int32)">
             <summary>
             Finds an objects after it's id.
+            <para>Time complexity is O(n) since GameObjects is a linked list.</para>
             </summary>
             <param name="i">Numeric indentifier.</param>
             <returns>Returns the found object.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Game.FindObject(System.String)">
+            <summary>
+            Finds an objects after it's name. If objects have the same name, the object with the lowest numerical ID will be returned.
+            <para>Time complexity in the worst case is about O(n^2)</para>
+            </summary>
+            <param name="Name">Object's name</param>
+            <returns>Returns the object, else null.</returns>
         </member>
         <member name="M:_3DRadSpaceDll.Game.SetObject(System.Int32,System.Object)">
             <summary>
             Sets an object in the list.
             </summary>
-            <param name="i">Object unique numeric IDentifier / array index</param>
+            <param name="i">Object unique numeric (ID)entifier / array index
+            <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
+            </param>
             <param name="obj">Value</param>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
@@ -291,7 +307,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Name">
             <summary>
-            Object Name
+            Object Name. Used in 
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Enabled">
@@ -443,16 +459,10 @@
         </member>
         <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Int32,System.Int32)">
             <summary>
-            Constructor.
+            Default constructor.
             </summary>
             <param name="ID">Object identifier</param>
-            <param name="beh"></param>
-        </member>
-        <member name="M:_3DRadSpaceDll.ObjectBehiavour.#ctor(System.Int32)">
-            <summary>
-            Constructor with minimal arguments.
-            </summary>
-            <param name="ID">'Child' object identifier.</param>
+            <param name="beh">Behiavour ID.</param>
         </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
@@ -516,6 +526,16 @@
             C# Script class.
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.Script._assembly">
+            <summary>
+            Compiled CLR assembly
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Script._script_object">
+            <summary>
+            Instance of the user-scripted class.
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.Script.CompilationStatus">
             <summary>
             Checks if compilation succeded.
@@ -538,7 +558,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.Script.#ctor(System.String,System.Boolean,System.String,System.String)">
             <summary>
-            Script constructor.
+            Script object main constructor.
             </summary>
             <param name="name">Object name</param>
             <param name="enabled">Checks if scripts will be run</param>
@@ -594,7 +614,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.Skinmesh.#ctor(System.String,System.Boolean,System.String,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,System.Boolean,Microsoft.Xna.Framework.BoundingBox,Microsoft.Xna.Framework.BoundingSphere)">
             <summary>
-            Skinmesh constructor.
+            Creates a new Skinmesh object
             </summary>
             <param name="name">Object's name.</param>
             <param name="active">Checks if the skinmesh will get drawn.</param>
@@ -709,12 +729,12 @@
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Sound">
             <summary>
-            ???
+            Sound file.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.SoundInstance">
             <summary>
-            ???
+            SoundInstance object. Allows playing the sound.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Volume">
@@ -1000,7 +1020,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.TextPrint.Dispose(System.Boolean)">
             <summary>
-            ???
+            Not really needed, MG's pipeline takes care of the SpriteFont instance.
             </summary>
             <param name="disposing"></param>
         </member>

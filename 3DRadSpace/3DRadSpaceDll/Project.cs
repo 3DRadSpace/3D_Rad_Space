@@ -116,6 +116,39 @@ namespace _3DRadSpaceDll
                             a = s;
                             break;
                         }
+                    case "textprint":
+                        {
+                            string text = "";
+                            // 0xFE is used as a constant to divide different texts, like the /0 in C char buffers (strings)
+                            int j = 14;
+                            for ( ; Obj[j] != "" + (char)0xfe; j++)
+                            {
+                                text += Obj[j] + ' ';
+                            }
+                            string font = "";
+                            for (; j < Obj.Length;j++)
+                            {
+                                font += ' ';
+                            }
+                            TextPrint p = new TextPrint(Obj[0], Convert.ToBoolean(Obj[2]), font, text,
+                                new Vector2(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4])),
+                                new Vector2(Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])), Convert.ToSingle(Obj[6]),
+                                new Vector2(Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
+                                new Color(Convert.ToByte(Obj[9]), Convert.ToByte(Obj[10]), Convert.ToByte(Obj[11])),
+                                (SpriteEffects)(Convert.ToInt32(Obj[12])),Convert.ToInt32(Obj[13]));
+                            a = p;
+                            break;
+                        }
+                    case "soundeffect":
+                        {
+                            string path = "";
+                            for(int j =0; j < Obj.Length;j++)
+                            {
+
+                            }
+                            a = null;
+                            break;
+                        }
                     default:
                         {
                             throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
