@@ -729,7 +729,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Sound">
             <summary>
-            Sound file.
+            Sound file. Use <seealso cref="P:_3DRadSpaceDll.SoundEffect.SoundInstance"/> to directly access the <seealso cref="T:Microsoft.Xna.Framework.Audio.SoundEffect"/>.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.SoundInstance">
@@ -744,13 +744,20 @@
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Picth">
             <summary>
-            Sound pitch
+            Sound pitch. Ranges from -1.0f to 1.0f.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Pan">
             <summary>
             Pan / speaker balance.
             </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundEffect.SoundState">
+             <summary>
+             Gets or sets the current state of the sound.
+            <para>Unlike SoundInstance.State, this property can be also set.</para>
+            <para>Setting this property to any value will call the <seealso cref="M:_3DRadSpaceDll.SoundEffect.Play"/>, <seealso cref="M:_3DRadSpaceDll.SoundEffect.Stop"/> and <seealso cref="M:_3DRadSpaceDll.SoundEffect.Pause"/> depinding on the value.</para>
+             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.SoundEffect.#ctor(System.String,System.Boolean,System.String,System.Single)">
             <summary>

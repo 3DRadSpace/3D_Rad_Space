@@ -19,3 +19,24 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\De
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CopyComplete
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.dll
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.pdb
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.pdb
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\MonoGame.Framework.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.DXGI.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct3D11.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.MediaFoundation.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct2D1.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.XAudio2.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\MonoGame.Framework.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.DXGI.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct3D11.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.MediaFoundation.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct2D1.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.XAudio2.xml
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csprojAssemblyReference.cache
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CopyComplete
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.dll
+E:\Tugui Nicolae\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.pdb

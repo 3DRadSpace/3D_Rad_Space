@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x</SourceFile>
-  <SourceTime>2019-01-24T18:06:27.2962078+02:00</SourceTime>
-  <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Axis.xnb</DestFile>
-  <DestTime>2019-08-21T20:28:53.4443971+03:00</DestTime>
+  <SourceFile>E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x</SourceFile>
+  <SourceTime>2020-02-13T08:27:06.4653833+02:00</SourceTime>
+  <DestFile>E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Axis.xnb</DestFile>
+  <DestTime>2020-02-13T10:45:13.9459566+02:00</DestTime>
   <Importer>XImporter</Importer>
   <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
