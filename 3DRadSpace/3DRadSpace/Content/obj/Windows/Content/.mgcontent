@@ -4,10 +4,14 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x</File>
-    <File>E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Camera.x</File>
+    <File>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Arial_12px.spritefont</File>
+    <File>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x</File>
+    <File>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Camera.x</File>
+    <File>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Font.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>

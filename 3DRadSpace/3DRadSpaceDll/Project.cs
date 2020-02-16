@@ -145,13 +145,14 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + ' ';
 							}
-							a = new SoundEffect(Obj[1], Convert.ToBoolean(Obj[2]), path, Convert.ToInt32(Obj[3]))
+							a = new SoundEffect(Obj[1], Convert.ToBoolean(Obj[2]), path, Convert.ToSingle(Obj[3]))
 							{
-								Picth = Convert.ToInt32(Obj[4]),
-								Pan = Convert.ToInt32(Obj[5])
+								Pitch = Convert.ToSingle(Obj[4]),
+								Pan = Convert.ToSingle(Obj[5])
 							};
 							break;
 						}
+					
 					default:
 						{
 							throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -216,12 +217,12 @@ namespace _3DRadSpaceDll
 				}
 				if (Game.GameObjects[i] is TextPrint textPrint)
 				{
-					ToBeSaved[j] = "textprint " + textPrint.Text + ' ' + textPrint.Enabled + ' ' + Vector2String(textPrint.Position) + ' ' + Vector2String(textPrint.Size) + ' ' + textPrint.Rotation +
-						' ' + textPrint.Center + ' ' + textPrint.Color.R + ' ' + textPrint.Color.G + ' ' + textPrint.Color.B + ' ' + (int)(textPrint.Effects) + ' ' + textPrint.Layer + ' ' + textPrint.Text + ' ' + (char)0xfe + ' ' + textPrint.Resource;
+					ToBeSaved[j] = "textprint " + textPrint.Name + ' ' + textPrint.Enabled + ' ' + Vector2String(textPrint.Position) + ' ' + Vector2String(textPrint.Size) + ' ' + textPrint.Rotation +
+						' ' + Vector2String(textPrint.Center) + ' ' + textPrint.Color.R + ' ' + textPrint.Color.G + ' ' + textPrint.Color.B + ' ' + (int)(textPrint.Effects) + ' ' + textPrint.Layer + ' ' + textPrint.Text + ' ' + (char)0xfe + ' ' + textPrint.Resource;
 				}
 				if(Game.GameObjects[i] is SoundEffect sound)
 				{
-					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Picth + ' ' + sound.Pan + ' ' + sound.Resource;
+					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' ' + sound.Resource;
 				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);

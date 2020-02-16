@@ -742,7 +742,7 @@
             Sound volume. Ranges from 0.0f to 1.0f.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.SoundEffect.Picth">
+        <member name="P:_3DRadSpaceDll.SoundEffect.Pitch">
             <summary>
             Sound pitch. Ranges from -1.0f to 1.0f.
             </summary>

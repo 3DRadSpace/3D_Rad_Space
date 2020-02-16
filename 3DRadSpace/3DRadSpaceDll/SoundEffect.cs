@@ -21,30 +21,54 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public float Volume
 		{
-			get { return SoundInstance.Volume; }
+			get 
+			{
+				if (SoundInstance != null) return SoundInstance.Volume;
+				else return _volume;
+			}
 			set
 			{
 				if (value > 1.0f) value = 1.0f;
 				if (value < 0.0f) value = 0.0f;
-				SoundInstance.Volume = value;
+				if (SoundInstance != null) SoundInstance.Volume = value;
+				else _volume = value;
 			}
 		}
+		float _volume;
 		/// <summary>
 		/// Sound pitch. Ranges from -1.0f to 1.0f.
 		/// </summary>
-		public float Picth
+		public float Pitch
 		{
-			get { return SoundInstance.Pitch; }
-			set { SoundInstance.Pitch = value; }
+			get 
+			{
+				if (SoundInstance != null) return SoundInstance.Pitch;
+				else return _pitch;
+			}
+			set 
+			{
+				if(SoundInstance != null)SoundInstance.Pitch = value;
+				_pitch = value;
+			}
 		}
+		float _pitch;
 		/// <summary>
 		/// Pan / speaker balance.
 		/// </summary>
 		public float Pan
 		{
-			get { return SoundInstance.Pan; }
-			set { SoundInstance.Pan = value; }
+			get 
+			{
+				if (SoundInstance != null) return SoundInstance.Pan;
+				else return _pan;
+			}
+			set 
+			{
+				if (SoundInstance != null) SoundInstance.Pan = value;
+				else _pan = value;
+			}
 		}
+		float _pan;
 		/// <summary>
 		/// Gets or sets the current state of the sound.
 		///<para>Unlike SoundInstance.State, this property can be also set.</para>
@@ -52,30 +76,39 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public SoundState SoundState
 		{
-			get { return SoundInstance.State;  }
+			get 
+			{
+				if (SoundInstance != null) return SoundInstance.State;
+				else return _soundstate;
+			}
 			set
 			{
-				switch(value)
+				if (SoundInstance != null)
 				{
-					case SoundState.Paused:
+					switch (value)
 					{
-						Pause();
-						break;
+						case SoundState.Paused:
+							{
+								Pause();
+								break;
+							}
+						case SoundState.Playing:
+							{
+								Play();
+								break;
+							}
+						case SoundState.Stopped:
+							{
+								Stop();
+								break;
+							}
+						default: break;
 					}
-					case SoundState.Playing:
-					{
-						Play();
-						break;
-					}
-					case SoundState.Stopped:
-					{
-						Stop();
-						break;
-					}
-					default: break;
 				}
+				else _soundstate = value;
 			}
 		}
+		SoundState _soundstate;
 
 		/// <summary>
 		/// Main constructor.
@@ -106,21 +139,21 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public void Play()
 		{
-			SoundInstance.Play();
+			if(SoundInstance != null) SoundInstance.Play();
 		}
 		/// <summary>
 		/// Pauses the sound.
 		/// </summary>
 		public void Pause()
 		{
-			SoundInstance.Pause();
+			if (SoundInstance != null) SoundInstance.Pause();
 		}
 		/// <summary>
 		/// Stops the sound
 		/// </summary>
 		public void Stop()
 		{
-			SoundInstance.Stop();
+			if (SoundInstance != null) SoundInstance.Stop();
 		}
 		/// <summary>
 		/// Checks if the sound is playing.
@@ -128,7 +161,8 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public bool IsPlaying()
 		{
-			return SoundInstance.State == SoundState.Playing;
+			if (SoundInstance != null) return SoundInstance.State == SoundState.Playing;
+			else return false;
 		}
 		/// <summary>
 		/// Checks if the sound is paused.
@@ -136,7 +170,8 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public bool IsPaused()
 		{
-			return SoundInstance.State == SoundState.Paused;
+			if (SoundInstance != null) return SoundInstance.State == SoundState.Paused;
+			else return false;
 		}
 		/// <summary>
 		/// Checks if the sound is stopped.
@@ -144,7 +179,8 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public bool IsStopped()
 		{
-			return SoundInstance.State == SoundState.Stopped;
+			if (SoundInstance != null) return SoundInstance.State == SoundState.Stopped;
+			else return true;
 		}
 	}
 }

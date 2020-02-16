@@ -25,7 +25,30 @@ namespace _3DRadSpace
             textBox2.Text = sound.Resource;
             checkBox1.Checked = sound.Enabled;
             trackBar1.Value = (int)sound.Volume*100;
-            trackBar2.Value = (int)sound.Picth*100;
+            trackBar2.Value = (int)(sound.Pitch * 100);
+            trackBar3.Value = (int)(sound.Pan * 100);
+            trackBar1_Scroll(null, null);
+            trackBar2_Scroll(null, null);
+            trackBar3_Scroll(null, null);
+            switch(sound.SoundState)
+            {
+                case Microsoft.Xna.Framework.Audio.SoundState.Playing:
+                    {
+                        radioButton1.Checked = true;
+                        break;
+                    }
+                case Microsoft.Xna.Framework.Audio.SoundState.Paused:
+                    {
+                        radioButton2.Checked = true;
+                        break;
+                    }
+                case Microsoft.Xna.Framework.Audio.SoundState.Stopped:
+                    {
+                        radioButton3.Checked = true;
+                        break;
+                    }
+                default: break;
+            }
         }
 
 
@@ -37,11 +60,16 @@ namespace _3DRadSpace
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Microsoft.Xna.Framework.Audio.SoundState sw = Microsoft.Xna.Framework.Audio.SoundState.Stopped;
+            if (radioButton1.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Playing;
+            if (radioButton2.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Paused;
+            if (radioButton3.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Stopped;
             DialogResult = DialogResult.OK;
             Result = new SoundEffect(textBox1.Text, checkBox1.Checked, textBox2.Text, trackBar1.Value)
             {
-                Picth = trackBar2.Value / 100,
-                Pan = trackBar3.Value / 100,
+                Pitch = trackBar2.Value / 100f,
+                Pan = trackBar3.Value / 100f,
+                SoundState = sw
             };
             Close();
         }
