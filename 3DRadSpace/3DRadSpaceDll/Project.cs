@@ -141,14 +141,15 @@ namespace _3DRadSpaceDll
 					case "soundeffect":
 						{
 							string path = "";
-							for(int j =6; j < Obj.Length;j++)
+							for(int j =7; j < Obj.Length;j++)
 							{
 								path += Obj[j] + ' ';
 							}
 							a = new SoundEffect(Obj[1], Convert.ToBoolean(Obj[2]), path, Convert.ToSingle(Obj[3]))
 							{
 								Pitch = Convert.ToSingle(Obj[4]),
-								Pan = Convert.ToSingle(Obj[5])
+								Pan = Convert.ToSingle(Obj[5]),
+								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)Convert.ToInt32(Obj[6])
 							};
 							break;
 						}
@@ -222,7 +223,7 @@ namespace _3DRadSpaceDll
 				}
 				if(Game.GameObjects[i] is SoundEffect sound)
 				{
-					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' ' + sound.Resource;
+					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+sound.SoundState+' ' + sound.Resource;
 				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);
