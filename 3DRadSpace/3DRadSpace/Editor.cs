@@ -58,6 +58,7 @@ namespace _3DRadSpace
             if (OpenedFile != null)
             {
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(OpenedFile);
+                LoadAllObjects();
                 UpdateObjects();
             }
             Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));

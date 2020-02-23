@@ -33,14 +33,7 @@ namespace _3DRadSpace
             {
                 ClearObjects();
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
-                for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
-                {
-                    if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
-                    if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
-                    if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
-                    if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
-                    if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
-                }
+                LoadAllObjects();
                 UpdateObjects();
                 ProjectSaved = true;
                 discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
@@ -361,6 +354,17 @@ namespace _3DRadSpace
             }
             _3DRadSpaceDll.Game.GameObjects.Clear();
             UpdateObjects();
+        }
+        void LoadAllObjects()
+        {
+            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
+            }
         }
     }
 }

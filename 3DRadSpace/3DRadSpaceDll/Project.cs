@@ -103,15 +103,15 @@ namespace _3DRadSpaceDll
 					case "sprite":
 						{
 							string path = "";
-							for (int j = 18; j < Obj.Length; j++)
+							for (int j = 19; j < Obj.Length; j++)
 							{
 								path += Obj[j] + " ";
 							}
-							Sprite s = new Sprite(Obj[0], Convert.ToBoolean(Obj[2]), path,
+							Sprite s = new Sprite(Obj[1], Convert.ToBoolean(Obj[2]), path,
 								new Vector2(Convert.ToInt32(Obj[3]), Convert.ToInt32(Obj[4])), new Vector2(Convert.ToInt32(Obj[5]), Convert.ToInt32(Obj[6])),
 								new Vector2(Convert.ToInt32(Obj[7]), Convert.ToInt32(Obj[8])), Convert.ToSingle(Obj[9]),
 								new Rectangle(Convert.ToInt32(Obj[10]),Convert.ToInt32(Obj[11]),Convert.ToInt32(Obj[12]),Convert.ToInt32(Obj[13]))
-								, new Color(Convert.ToByte(Obj[14]), Convert.ToByte(Obj[15]), Convert.ToByte(Obj[16])), (SpriteEffects)Convert.ToInt32(Obj[17]));
+								, new Color(Convert.ToByte(Obj[14]), Convert.ToByte(Obj[15]), Convert.ToByte(Obj[16])), (SpriteEffects)Convert.ToInt32(Obj[17]),Convert.ToInt32(Obj[18]));
 							if (s.SpriteSheetSection.Value.Width + s.SpriteSheetSection.Value.Height == 0) s.SpriteSheetSection = null;
 							a = s;
 							break;
@@ -126,10 +126,11 @@ namespace _3DRadSpaceDll
 								text += Obj[j] + ' ';
 							}
 							string font = "";
-							for (; j < Obj.Length;j++)
+							for (j += 1; j < Obj.Length;j++)
 							{
-								font += ' ';
+								font += Obj[j]+' ';
 							}
+							font = font.Remove(font.Length - 1);
 							a = new TextPrint(Obj[1], Convert.ToBoolean(Obj[2]), font, text,
 								new Vector2(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4])),
 								new Vector2(Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])), Convert.ToSingle(Obj[6]),
@@ -214,7 +215,7 @@ namespace _3DRadSpaceDll
 						rectangle_string = sprite.SpriteSheetSection.Value.X + " " + sprite.SpriteSheetSection.Value.Y + ' ' + sprite.SpriteSheetSection.Value.Width + ' ' + sprite.SpriteSheetSection.Value.Height;
 					}
 					ToBeSaved[j] = "sprite " + sprite.Name + ' ' + sprite.Enabled + ' ' + Vector2String(sprite.Position) + ' ' + Vector2String(sprite.Size) + ' ' + Vector2String(sprite.Center) +
-						' ' + rectangle_string + ' ' + sprite.Mask.R + ' ' + sprite.Mask.G + ' ' + sprite.Mask.B + ' ' + (int)(sprite.Effects) + ' ' + sprite.Layer + ' ' + sprite.Resource;
+						' '+sprite.Rotation+ ' '  + rectangle_string + ' ' + sprite.Mask.R + ' ' + sprite.Mask.G + ' ' + sprite.Mask.B + ' ' + (int)(sprite.Effects) + ' ' + sprite.Layer + ' ' + sprite.Resource;
 				}
 				if (Game.GameObjects[i] is TextPrint textPrint)
 				{
