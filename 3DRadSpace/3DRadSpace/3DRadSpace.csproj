@@ -86,6 +86,12 @@
     <Compile Include="EditorEvents.cs" />
     <Compile Include="EditorGraphicalInterface.cs" />
     <Compile Include="Editor.cs" />
+    <Compile Include="ExitFadeW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExitFadeW.Designer.cs">
+      <DependentUpon>ExitFadeW.cs</DependentUpon>
+    </Compile>
     <Compile Include="FogW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compiler_SelectMainProject.resx">
       <DependentUpon>Compiler_SelectMainProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExitFadeW.resx">
+      <DependentUpon>ExitFadeW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FogW.resx">
       <DependentUpon>FogW.cs</DependentUpon>

@@ -120,7 +120,7 @@ namespace _3DRadSpaceDll
 						{
 							string text = "";
 							// 0xFE is used as a constant to divide different texts, like the /0 in C char buffers (strings)
-							int j = 14;
+							int j = 15;
 							for ( ; Obj[j] != "" + (char)0xfe; j++)
 							{
 								text += Obj[j] + ' ';
@@ -133,10 +133,10 @@ namespace _3DRadSpaceDll
 							font = font.Remove(font.Length - 1);
 							a = new TextPrint(Obj[1], Convert.ToBoolean(Obj[2]), font, text,
 								new Vector2(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4])),
-								new Vector2(Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])), Convert.ToSingle(Obj[6]),
-								new Vector2(Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
-								new Color(Convert.ToByte(Obj[9]), Convert.ToByte(Obj[10]), Convert.ToByte(Obj[11])),
-								(SpriteEffects)(Convert.ToInt32(Obj[12])),Convert.ToInt32(Obj[13]));
+								new Vector2(Convert.ToSingle(Obj[5]), Convert.ToSingle(Obj[6])), Convert.ToSingle(Obj[7]),
+								new Vector2(Convert.ToSingle(Obj[8]), Convert.ToSingle(Obj[9])),
+								new Color(Convert.ToByte(Obj[10]), Convert.ToByte(Obj[11]), Convert.ToByte(Obj[12])),
+								(SpriteEffects)(Convert.ToInt32(Obj[13])),Convert.ToInt32(Obj[14]));
 							break;
 						}
 					case "soundeffect":
@@ -246,6 +246,25 @@ namespace _3DRadSpaceDll
 		public static string Vector2String(Vector2 pos)
 		{
 			return pos.X + " " + pos.Y;
+		}
+		/// <summary>
+		/// Clears native memory used by the game.
+		/// <para>This will put pressure to the C#'s garbage collection system.</para>
+		/// </summary>
+		public static void UnloadObjects()
+		{
+			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			{
+				if (Game.GameObjects[i] is Sprite sp)
+				{
+					sp.Dispose();
+				}
+				if (Game.GameObjects[i] is TextPrint tp)
+				{
+					tp.Dispose();
+				}
+			}
+			Game.GameObjects.Clear();
 		}
 	}
 	/// <summary>
