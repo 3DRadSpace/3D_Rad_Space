@@ -164,6 +164,67 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.ExitFade">
+            <summary>
+            Allows loading other projects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.#ctor(System.String,System.String,Microsoft.Xna.Framework.Color,System.Int32,System.Boolean)">
+            <summary>
+            Main constructor of ExitFade class.
+            </summary>
+            <param name="name">Name of the object.</param>
+            <param name="Path">Project to load.</param>
+            <param name="fadecolor">Fade Color.</param>
+            <param name="fadetime">Fade Time, measured in miliseconds.
+            <para>Defaults to 0.</para></param>
+            <param name="fade_type">Fades in or our.
+            <para>true = fade in</para>
+            <para>false = fade out</para></param>
+        </member>
+        <member name="P:_3DRadSpaceDll.ExitFade.ProjectToLoad">
+            <summary>
+            Project path.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.ExitFade.Fade">
+            <summary>
+            Fade color.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.ExitFade.Time">
+            <summary>
+            Time for the fade in milliseconds (ms)
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.ExitFade.FadeType">
+            <summary>
+            Toggles fade type. In or out.
+            <para>true = fade in</para>
+            <para>false = fade out</para>
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.Trigger">
+            <summary>
+            When starting the object in the editor events, or scripts, this will get called.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the fading.
+            </summary>
+            <param name="spriteBatch">Needed for drawing the fading.</param>
+            <param name="view">Not needed.</param>
+            <param name="projection">Not needed.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Updated the fade alpha timer.
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
+        </member>
         <member name="T:_3DRadSpaceDll.Fog">
             <summary>
             <para>Fog class. Allows Fog effects on Skinmeshes.</para>
@@ -395,6 +456,11 @@
             Object update logic
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Trigger">
+            <summary>
+            This is specific to objects like ExitFade, NetServer,etc
+            </summary>
+        </member>
         <member name="E:_3DRadSpaceDll.GameObject.OnDraw">
             <summary>
             Called when object is being drawn on frame.
@@ -500,6 +566,12 @@
             </summary>
             <param name="pos">2D Vector to be converted</param>
             <returns>The needed string</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.UnloadObjects">
+            <summary>
+            Clears native memory used by the game.
+            <para>This will put pressure to the C#'s garbage collection system.</para>
+            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.ProjectType">
             <summary>

@@ -33,6 +33,8 @@ namespace _3DRadSpace
 		float FogStart, FogEnd;
 		bool FogEnabled = false;
 
+		SpriteFont D_Font;
+
 		public Editor()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -70,6 +72,7 @@ namespace _3DRadSpace
 			Camera.model = Content.Load<Model>("Camera");
 			Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 			Axis = Content.Load<Model>("Axis");
+			D_Font = Content.Load<SpriteFont>("Font");
 		}
 
 		protected override void UnloadContent()
@@ -122,7 +125,8 @@ namespace _3DRadSpace
 						Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
 						IsMouseVisible = false;
 						CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * -0.001f, (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * 0.001f);
-						if (CameraRotationCoords.Y > (MathHelper.TwoPi-0.1f)) CameraRotationCoords.Y = (MathHelper.TwoPi - 0.1f);
+						if (CameraRotationCoords.Y > (MathHelper.Pi - 0.1f)) CameraRotationCoords.Y = (MathHelper.Pi - 0.1f);
+						if (CameraRotationCoords.Y < 0) CameraRotationCoords.Y = 0.1f;
 					}
 				}
 				else
@@ -159,6 +163,7 @@ namespace _3DRadSpace
 				}
 			}
 			spriteBatch.Begin();
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];

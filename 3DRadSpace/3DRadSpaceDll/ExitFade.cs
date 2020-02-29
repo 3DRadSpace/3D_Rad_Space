@@ -77,7 +77,6 @@ namespace _3DRadSpaceDll
 			Enabled = true;
 			base.Trigger();
 		}
-		bool _enabled;
 		/// <summary>
 		/// Draws the fading.
 		/// </summary>

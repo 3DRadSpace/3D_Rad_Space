@@ -7,16 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpace
 {
     public partial class ExitFadeW : Form
     {
+        public object Result;
         public ExitFadeW()
         {
             InitializeComponent();
         }
-        public ExitFadeW(_3DRadSpaceDll.ExitFade fade)
+        public ExitFadeW(ExitFade fade)
         {
             InitializeComponent();
             textBox1.Text = fade.Name;
@@ -46,7 +48,11 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            Result = new ExitFade(textBox1.Text, textBox6.Text, new Microsoft.Xna.Framework.Color(
+                Convert.ToByte(textBox2.Text), Convert.ToByte(textBox3.Text), Convert.ToByte(textBox4.Text))
+                ,Convert.ToInt32(textBox5.Text),checkBox2.Checked);
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
