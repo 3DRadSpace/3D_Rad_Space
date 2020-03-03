@@ -106,9 +106,10 @@ namespace _3DRadSpaceDll
 		{
 			if (Enabled)
 			{
-				_time_remaining -= time.ElapsedGameTime.TotalSeconds;
-				double alpha = Fade.A;
-				Fade = new Color(Fade, (short)alpha);
+				_time_remaining -= time.ElapsedGameTime.TotalSeconds; //aka delta time
+				//Some stupid ass formula I'm not sure it works.
+				double alpha = 255 * (_time_remaining / Time); 
+				Fade = new Color(Fade, (int)alpha); //recreate the color.
 				if (_time_remaining <= 0) LoadProject();
 				base.Update(mouse, keyboard, time);
 			}

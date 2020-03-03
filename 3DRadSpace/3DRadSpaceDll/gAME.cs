@@ -90,5 +90,10 @@ namespace _3DRadSpaceDll
             if (i > GameObjects.Count) return;
             GameObjects[i] = obj;
         }
+
+        /// <summary>
+        /// Gets or sets the screen-size used for the objects like Camera2D, ExitFade...
+        /// </summary>
+        public static Vector2 ScreenSize;
     }
 }
