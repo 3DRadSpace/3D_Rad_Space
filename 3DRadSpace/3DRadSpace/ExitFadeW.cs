@@ -70,5 +70,10 @@ namespace _3DRadSpace
             }
             color.Dispose();
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //open docs
+        }
     }
 }

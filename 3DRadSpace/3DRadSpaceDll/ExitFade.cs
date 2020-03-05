@@ -21,16 +21,28 @@ namespace _3DRadSpaceDll
 		/// <param name="fade_type">Fades in or our.
 		/// <para>true = fade in</para>
 		/// <para>false = fade out</para></param>
-		public ExitFade(string name, string Path, Color fadecolor,int fadetime=0,bool fade_type=true)
+		public ExitFade(string name, string Path, Color fadecolor= default,int fadetime=0,bool fade_type=true)
 		{
 			Name = name;
 			Resource = Path;
 			Fade = fadecolor;
-			Time = (double)fadetime / 1000;
+			Time = fadetime;
 			initial_time = Time;
 			FadeType = fade_type;
 			if (FadeType) Fade = new Color(Fade,255);
 			else Fade = new Color(Fade,0);
+		}
+		/// <summary>
+		/// Empty ExitFade Constructor.
+		/// </summary>
+		public ExitFade()
+		{
+			Name = "ExitFade";
+			Resource = null;
+			Fade = Color.Black;
+			Time = 1000;
+			initial_time = Time;
+			FadeType = false;
 		}
 
 		static Texture2D _blank_1x1= null;
@@ -109,15 +121,29 @@ namespace _3DRadSpaceDll
 				_time_remaining -= time.ElapsedGameTime.TotalSeconds; //aka delta time
 				//Some stupid ass formula I'm not sure it works.
 				double alpha = 255 * (_time_remaining / Time); 
-				Fade = new Color(Fade, (int)alpha); //recreate the color.
+				//Recreate the color
+				if(FadeType) Fade = new Color(Fade, 255 - (int)alpha); 
+				else Fade = new Color(Fade, (int)alpha); 
+				
+				//If Time remaining is 0, load the project.
 				if (_time_remaining <= 0) LoadProject();
 				base.Update(mouse, keyboard, time);
 			}
 		}
-		void LoadProject()
+		/// <summary>
+		/// Allows loading other projects.
+		/// </summary>
+		public void LoadProject()
 		{
 			Project.UnloadObjects();
+
+			//If project to load is nulll, exit.
+			if(string.IsNullOrEmpty(ProjectToLoad)) Game.RequestExit = true;
+
+			//If the project file doesn't exist, exit the project
+			if (!System.IO.File.Exists(ProjectToLoad)) Game.RequestExit = true;
 			Game.GameObjects = Project.Open(ProjectToLoad);
 		}
+
 	}
 }

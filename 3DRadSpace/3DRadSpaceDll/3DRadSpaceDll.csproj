@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="EventOnLocation.cs" />
     <Compile Include="ExitFade.cs" />
     <Compile Include="Fog.cs" />
     <Compile Include="Game.cs" />

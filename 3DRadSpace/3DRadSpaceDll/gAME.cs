@@ -95,5 +95,10 @@ namespace _3DRadSpaceDll
         /// Gets or sets the screen-size used for the objects like Camera2D, ExitFade...
         /// </summary>
         public static Vector2 ScreenSize;
+
+        /// <summary>
+        /// If true, the game will close next frame.
+        /// </summary>
+        public static bool RequestExit;
     }
 }

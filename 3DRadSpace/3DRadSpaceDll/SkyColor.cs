@@ -37,6 +37,15 @@ namespace _3DRadSpaceDll
             Color = Color.Black;
         }
         /// <summary>
+        /// Empty SkyColor constructor.
+        /// </summary>
+        public SkyColor()
+        {
+            Name = "SkyColor";
+            Enabled = false;
+            Color = Color.Black;
+        }
+        /// <summary>
         /// Gets the color.
         /// <para>Returns null if the object is inactive, otherwise returns this.Color .</para>
         /// </summary>

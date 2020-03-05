@@ -29,6 +29,16 @@ namespace _3DRadSpaceDll
             _scene = new List<object>();
         }
         /// <summary>
+        /// Empty Camera2D Constructor.
+        /// </summary>
+        public Camera2D()
+        {
+            Name = "Camera2D";
+            Enabled = false;
+            DrawingBounds = new Rectangle(0, 0, 100, 100);
+            _scene = new List<object>();
+        }
+        /// <summary>
         /// Adds an object to be drawn by the camera.
         /// </summary>
         /// <param name="obj">Object to be added.</param>

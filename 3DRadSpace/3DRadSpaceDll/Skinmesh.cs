@@ -40,7 +40,23 @@ namespace _3DRadSpaceDll
             }
             BoundingBox = box;
             BoundingSphere = sphere;
-
+        }
+        /// <summary>
+        /// Empty Skinmesh constructor;
+        /// </summary>
+        public Skinmesh()
+        {
+            Name = "Skinmesh";
+            Enabled = false;
+            Position = Vector3.Zero;
+            Rotation = Vector3.Zero;
+            Scale = Vector3.One;
+            FogEnabled = false;
+            FogColor = new Vector3(255, 255, 255);
+            FogEnd = int.MaxValue;
+            FogStart = int.MaxValue;
+            BoundingBox = new BoundingBox();
+            BoundingSphere = new BoundingSphere();
         }
 
         /// <summary>

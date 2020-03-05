@@ -39,6 +39,23 @@ namespace _3DRadSpaceDll
             Layer = layer;
         }
         /// <summary>
+        /// Empty TextPrint constructor.
+        /// </summary>
+        public TextPrint()
+        {
+            Name = "TextPrint";
+            Enabled = false;
+            Resource = null;
+            Text = Name;
+            Position = Vector2.Zero;
+            Size = Vector2.One;
+            Rotation = 0f;
+            Center = Vector2.Zero;
+            Color = Color.White;
+            Effects = SpriteEffects.None;
+            Layer = 0;
+        }
+        /// <summary>
         /// Text to be drawn
         /// </summary>
         public string Text
@@ -158,7 +175,7 @@ namespace _3DRadSpaceDll
             if (disposed) return;
             if(disposing)
             {
-                //Font.Texture.Dispose(); <-- temporarly disabled since it's possible that the Content is manaing the SpriteFont instance itself.
+                //Font.Texture.Dispose(); <-- temporarly disabled since ContentManager is manaing the SpriteFont instance itself.
             }
             disposed = true;
         }

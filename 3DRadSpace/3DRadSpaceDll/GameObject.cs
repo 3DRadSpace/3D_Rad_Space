@@ -90,7 +90,10 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public Quaternion RotationQuaternion
 		{
-			get =>  Quaternion.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z);
+			get
+			{
+				return Quaternion.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z);
+			}
 		}
 		/// <summary>
 		/// Resource file
@@ -104,7 +107,7 @@ namespace _3DRadSpaceDll
 			}
 			set
 			{
-				if (System.IO.File.Exists(@""+value) == false) throw new System.IO.FileNotFoundException("Resource " + value + " is missing");
+				if (System.IO.File.Exists(@"/Content/"+value) == false) throw new System.IO.FileNotFoundException("Resource " + value + " is missing");
 				else res = value;
 			}
 		}

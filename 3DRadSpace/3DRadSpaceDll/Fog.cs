@@ -31,6 +31,17 @@ namespace _3DRadSpaceDll
             FogEnd = end;
         }
         /// <summary>
+        /// Empty Fog object constructor.
+        /// </summary>
+        public Fog()
+        {
+            Name = "Fog";
+            Enabled = false;
+            FogColor = new Vector3(255,255,255);
+            FogStart = int.MaxValue;
+            FogEnd = int.MaxValue;
+        }
+        /// <summary>
         /// Fog Color. Implemented from IEffectFog.
         /// </summary>
         public Vector3 FogColor { get; set; }

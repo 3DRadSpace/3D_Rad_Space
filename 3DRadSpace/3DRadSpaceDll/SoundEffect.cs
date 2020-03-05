@@ -125,6 +125,16 @@ namespace _3DRadSpaceDll
 			Volume = volume;
 		}
 		/// <summary>
+		/// Empty SoundEffect constructor.
+		/// </summary>
+		public SoundEffect()
+		{
+			Name = "SoundEffect";
+			Enabled = false;
+			Resource = null;
+			Volume = 0f;
+		}
+		/// <summary>
 		/// Loads the sound
 		/// </summary>
 		/// <param name="content"></param>

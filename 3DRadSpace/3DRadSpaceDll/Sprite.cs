@@ -47,6 +47,24 @@ namespace _3DRadSpaceDll
             Layer = layer;
         }
         /// <summary>
+        /// Empty Sprite constructor.
+        /// </summary>
+        public Sprite()
+        {
+            Name = "Sprite";
+            Enabled = false;
+            Resource = null;
+            Position = Vector2.Zero;
+            Rotation = 0f;
+            Size = Vector2.One;
+            Center = Vector2.Zero;
+            SpriteSheetSection = null;
+            Mask = Color.White;
+            Effects = SpriteEffects.None;
+            Layer = 0;
+        }
+
+        /// <summary>
         /// Checks if this object is being used by a Camera2D.
         /// </summary>
         public bool IsUsedByCam2D { get; set; }

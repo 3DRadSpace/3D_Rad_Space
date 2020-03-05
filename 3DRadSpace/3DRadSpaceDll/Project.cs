@@ -154,6 +154,26 @@ namespace _3DRadSpaceDll
 							};
 							break;
 						}
+					case "exitfade":
+						{
+							string path = "";
+							for (int j = 8; j < Obj.Length; j++)
+							{
+								path += Obj[j] + ' ';
+							}
+							a = new ExitFade()
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2]),
+								Fade = new Color(
+									Convert.ToByte(Obj[3]), Convert.ToByte(Obj[4]), Convert.ToByte(Obj[5])
+								),
+								Time = Convert.ToInt32(Obj[6]),
+								FadeType = Convert.ToBoolean(Obj[7]),
+								ProjectToLoad = path
+							};
+							break;
+						}
 					
 					default:
 						{
@@ -226,6 +246,10 @@ namespace _3DRadSpaceDll
 				{
 					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+sound.SoundState+' ' + sound.Resource;
 				}
+				if(Game.GameObjects[i] is ExitFade fade)
+				{
+					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Fade.R + ' ' + fade.Fade.G + ' ' + fade.Fade.B + ' ' + fade.Time + ' ' + fade.FadeType;
+				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);
 		}
@@ -253,7 +277,7 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public static void UnloadObjects()
 		{
-			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			for (int i = 0; i < Game.GameObjects.Count; i++)
 			{
 				if (Game.GameObjects[i] is Sprite sp)
 				{

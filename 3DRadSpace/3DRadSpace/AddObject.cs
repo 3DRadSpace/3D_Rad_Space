@@ -111,5 +111,13 @@ namespace _3DRadSpace
             soundEffectW.Dispose();
             Close();
         }
+
+        private void pictureBox9_Click(object sender, EventArgs e)
+        {
+            ExitFadeW exitFade = new ExitFadeW();
+            if (exitFade.ShowDialog() == DialogResult.OK) Result = exitFade.Result;
+            exitFade.Dispose();
+            Close();
+        }
     }
 }

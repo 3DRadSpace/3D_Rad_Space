@@ -9,22 +9,22 @@ namespace _3DRadSpaceDll
     /// <summary>
     /// Specifies object relationships with other ones.
     /// </summary>
-    public class ObjectBehiavour
+    public struct ObjectBehiavour
     {
         /// <summary>
         /// Object Identifier for the 'child' object
         /// </summary>
-        public int ObjectID { get; private set; }
+        public int ObjectID;
         /// <summary>
         /// Behiavour identifier. 0 is always default.
         /// </summary>
-        public int BehiavourID { get; set; }
+        public int BehiavourID;
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="ID">Object identifier</param>
         /// <param name="beh">Behiavour ID.</param>
-        public ObjectBehiavour(int ID, int beh=0)
+        public ObjectBehiavour(int ID=-1, int beh = 0)
         {
             ObjectID = ID;
             BehiavourID = beh;

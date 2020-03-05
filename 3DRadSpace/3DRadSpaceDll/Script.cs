@@ -55,6 +55,16 @@ namespace _3DRadSpaceDll
             ClassName = ClassN;
         }
         /// <summary>
+        /// Empty Script object constructor.
+        /// </summary>
+        public Script()
+        {
+            Name = "Script";
+            Enabled = false;
+            Path = null;
+            ClassName = "Script";
+        }
+        /// <summary>
         /// Compiles code in order to make it usable.
         /// </summary>
         public bool Compile(bool ShowErrors)
