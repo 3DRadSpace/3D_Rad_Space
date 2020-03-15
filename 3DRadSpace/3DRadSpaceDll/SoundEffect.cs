@@ -47,8 +47,10 @@ namespace _3DRadSpaceDll
 			}
 			set 
 			{
-				if(SoundInstance != null)SoundInstance.Pitch = value;
-				_pitch = value;
+				if (value < -1.0f) value = -1.0f;
+				else if (value > 1.0f) value = 1.0f;
+				if (SoundInstance != null)SoundInstance.Pitch = value;
+				else _pitch = value;
 			}
 		}
 		float _pitch;
@@ -64,6 +66,8 @@ namespace _3DRadSpaceDll
 			}
 			set 
 			{
+				if (value < -1.0f) value = -1.0f;
+				else if (value > 1.0f) value = 1.0f;
 				if (SoundInstance != null) SoundInstance.Pan = value;
 				else _pan = value;
 			}
@@ -149,7 +153,7 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public void Play()
 		{
-			if(SoundInstance != null) SoundInstance.Play();
+			if(SoundInstance != null && Enabled) SoundInstance.Play();
 		}
 		/// <summary>
 		/// Pauses the sound.

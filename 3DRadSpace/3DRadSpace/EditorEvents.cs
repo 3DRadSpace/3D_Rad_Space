@@ -12,6 +12,8 @@ namespace _3DRadSpace
 {
     partial class Editor : Microsoft.Xna.Framework.Game
     {
+        GameSettings GraphcalSettings;
+
         bool ProjectSaved = true;
         void newProject(object a,EventArgs e)
         {
@@ -105,7 +107,7 @@ namespace _3DRadSpace
             DialogResult b = openFile.ShowDialog();
             if (b == DialogResult.OK)
             {
-                List<object> c = Project.Open(openFile.FileName);
+                List<GameObject> c = Project.Open(openFile.FileName);
                 _3DRadSpaceDll.Game.GameObjects.AddRange(c);
                 UpdateObjects();
                 ProjectSaved = false;
@@ -253,6 +255,10 @@ namespace _3DRadSpace
                 soundEffectW.ShowDialog();
                 if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedIndex] = soundEffectW.Result;
                 soundEffectW.Dispose();
+            }
+            if(b is GameSettings settings)
+            {
+                GraphcalSettings = settings;
             }
             UpdateObjects();
         }

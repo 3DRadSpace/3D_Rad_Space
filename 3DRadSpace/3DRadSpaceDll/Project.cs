@@ -23,16 +23,16 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		/// <param name="filename">File to open</param>
 		/// <returns>Returns the objects.</returns>
-		public static List<object> Open(string filename)
+		public static List<GameObject> Open(string filename)
 		{
-			List<object> result = new List<object>();
+			List<GameObject> result = new List<GameObject>();
 			string[] Data = File.ReadAllLines(filename); //Read the file
 			type = (ProjectType)Convert.ToInt32(Data[0]);
 			for (int i =1; i < Data.Length;i++) //Loop each line
 			{
 				//Split the current line
 				string[] Obj = Data[i].Split(' ');
-				object a; //Object to be added.
+				GameObject a; //Object to be added.
 				switch(Obj[0]) //Identify the current object.
 				{
 					case "camera":

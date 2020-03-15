@@ -26,7 +26,7 @@ namespace _3DRadSpace
             textBox3.Text = s.Color.G+"";
             textBox4.Text = s.Color.B+"";
         }
-        public object Result;
+        public GameObject Result;
         private void button1_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog()

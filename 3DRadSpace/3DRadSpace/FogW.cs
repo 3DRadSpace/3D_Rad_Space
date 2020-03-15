@@ -28,7 +28,7 @@ namespace _3DRadSpace
             textBox5.Text = fog.FogStart + "";
             textBox6.Text = fog.FogEnd + "";
         }
-        public object Result;
+        public GameObject Result;
         private void button1_Click(object sender, EventArgs e)
         {
             ColorDialog colorD = new ColorDialog()

@@ -16,7 +16,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        public object Result { get; set; }
+        public _3DRadSpaceDll.GameObject Result { get; set; }
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (_3DRadSpaceDll.Project.type == _3DRadSpaceDll.ProjectType.ThreeDimensional)

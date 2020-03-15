@@ -16,7 +16,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Contains the objects. Note this is a System.Collections.Generic.List (a linked list)
         /// </summary>
-        public static List<object> GameObjects { get; set; }
+        public static List<GameObject> GameObjects { get; set; }
         /// <summary>
         /// Draws a 3D Model.
         /// </summary>
@@ -84,7 +84,7 @@ namespace _3DRadSpaceDll
         /// <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
         /// </param>
         /// <param name="obj">Value</param>
-        public static void SetObject(int i,object obj)
+        public static void SetObject(int i,GameObject obj)
         {
             if (i < 0) return;
             if (i > GameObjects.Count) return;

@@ -86,6 +86,12 @@
     <Compile Include="EditorEvents.cs" />
     <Compile Include="EditorGraphicalInterface.cs" />
     <Compile Include="Editor.cs" />
+    <Compile Include="EventOnKeyW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventOnKeyW.Designer.cs">
+      <DependentUpon>EventOnKeyW.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventOnLocationW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,12 @@
     </Compile>
     <Compile Include="FogW.Designer.cs">
       <DependentUpon>FogW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameSettingsW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameSettingsW.Designer.cs">
+      <DependentUpon>GameSettingsW.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NewProjectWindow.cs">
@@ -171,6 +183,12 @@
     </Compile>
     <Compile Include="TextPrintW.Designer.cs">
       <DependentUpon>TextPrintW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimerW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimerW.Designer.cs">
+      <DependentUpon>TimerW.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +267,9 @@
     <EmbeddedResource Include="Compiler_SelectMainProject.resx">
       <DependentUpon>Compiler_SelectMainProject.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EventOnKeyW.resx">
+      <DependentUpon>EventOnKeyW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventOnLocationW.resx">
       <DependentUpon>EventOnLocationW.cs</DependentUpon>
     </EmbeddedResource>
@@ -257,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FogW.resx">
       <DependentUpon>FogW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameSettingsW.resx">
+      <DependentUpon>GameSettingsW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewProjectWindow.resx">
       <DependentUpon>NewProjectWindow.cs</DependentUpon>
@@ -291,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TextPrintW.resx">
       <DependentUpon>TextPrintW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimerW.resx">
+      <DependentUpon>TimerW.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

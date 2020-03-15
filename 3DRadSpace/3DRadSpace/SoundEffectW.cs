@@ -13,7 +13,7 @@ namespace _3DRadSpace
 {
     public partial class SoundEffectW : Form
     {
-        public object Result;
+        public GameObject Result;
         public SoundEffectW()
         {
             InitializeComponent();

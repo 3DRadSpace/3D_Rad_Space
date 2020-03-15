@@ -8,7 +8,7 @@ namespace _3DRadSpace
 {
     public partial class SkinmeshW : Form
     {
-        public object Result;
+        public GameObject Result;
         public SkinmeshW(Skinmesh sk)
         {
             InitializeComponent();

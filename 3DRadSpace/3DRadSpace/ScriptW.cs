@@ -80,7 +80,7 @@ namespace _3DRadSpace
         }
 
         public string FilePath { get; set; }
-        public object Result { get; set; }
+        public GameObject Result { get; set; }
 
         private void button2_Click(object sender, EventArgs e)
         {

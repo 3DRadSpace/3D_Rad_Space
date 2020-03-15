@@ -13,7 +13,7 @@ namespace _3DRadSpace_Player
         string[] Settings;
         Color ClearColor = Color.Black;
         Matrix view, projection;
-
+        GameSettings GraphicSettings;
         public Vector3 FogColor { get; set; }
         public bool FogEnabled { get; set; }
         public float FogEnd { get; set; }

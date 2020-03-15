@@ -13,7 +13,7 @@ namespace _3DRadSpace
 {
     public partial class ExitFadeW : Form
     {
-        public object Result;
+        public GameObject Result;
         public ExitFadeW()
         {
             InitializeComponent();

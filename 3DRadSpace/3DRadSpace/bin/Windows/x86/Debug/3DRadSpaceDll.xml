@@ -145,6 +145,11 @@
             <param name="Pos">Position</param>
             <param name="Size">Size</param>
         </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.#ctor">
+            <summary>
+            Empty Camera2D Constructor.
+            </summary>
+        </member>
         <member name="M:_3DRadSpaceDll.Camera2D.Add(System.Object)">
             <summary>
             Adds an object to be drawn by the camera.
@@ -164,6 +169,257 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.KeyInputType">
+            <summary>
+            Defines the input states.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.KeyInputType.Released">
+            <summary>
+            The key is up.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.KeyInputType.Pressed">
+            <summary>
+            The key is being pressed.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.KeyInputType.Holding">
+            <summary>
+            The key is being pressed for one than one frame.
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.KeyInput">
+            <summary>
+            Input key used for the EventOnKey and related objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.KeyInput.#ctor(Microsoft.Xna.Framework.Input.Keys,_3DRadSpaceDll.KeyInputType)">
+            <summary>
+            Main constructor of KeyInput
+            </summary>
+            <param name="key">Specified keyboard button.</param>
+            <param name="state">Specified state.</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.KeyInput.Key">
+            <summary>
+            The key
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.KeyInput.State">
+            <summary>
+            The key state.
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.KeyEvent">
+            <summary>
+            Triggers when the key is up/down/ hold for enough time.
+            </summary>
+            <param name="sender">EOK sender.</param>
+            <param name="delta">DeltaTime.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.OnKeyHold">
+            <summary>
+            Triggers when the key is being pressed and when the <seealso cref="F:_3DRadSpaceDll.EventOnKey.Key"/>.State is equal to <seealso cref="F:_3DRadSpaceDll.KeyInputType.Holding"/>
+            </summary>
+            <param name="sender"></param>
+            <param name="Time"></param>
+            <param name="deltaTime"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.EventOnKey">
+            <summary>
+            Allows raising events whenever a key is being pressed.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnKey.#ctor">
+            <summary>
+            Empty EOK constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnKey.#ctor(System.String,System.Boolean,_3DRadSpaceDll.KeyInput,System.UInt32)">
+            <summary>
+            Main EOK constructor.
+            </summary>
+            <param name="name">Object Name.</param>
+            <param name="enabled">Will the event get raised?</param>
+            <param name="input">Defines the key and input type.</param>
+            <param name="time_necesarry">Time necessary for holding down the button in order to trigger the button.</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnKey.Key">
+            <summary>
+            Defines the key and the expected key state.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.EventOnKey.HoldingTime">
+            <summary>
+            Defined the time in milliseconds how much time is needed to hold down the given key to trigger the event.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.EventOnKey.TotalHoldTime">
+            <summary>
+            Defnes how much time the button is being hold.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.EventOnKey.OnKeyTrigger">
+            <summary>
+            Triggers when the inputs are equal to the given conditions.
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.EventOnKey.OnKeyHolding">
+            <summary>
+            Triggers when the key is being hold.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnKey.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.BoundingObject">
+            <summary>
+            Bounding objects types.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.BoundingObject.None">
+            <summary>
+            Not defined.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.BoundingObject.Box">
+            <summary>
+            AABB collision-type box
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.BoundingObject.Sphere">
+            <summary>
+            A 3D Sphere
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.BoundingObject.Plane">
+            <summary>
+            A 3D Plane
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.OnBoundingObjectEnter">
+            <summary>
+            Event raised when a `collision` is happening.
+            </summary>
+            <param name="sender">Always a EOL (EventOnLocation) </param>
+            <param name="boundingObject">Type of the bounding object</param>
+            <param name="Object_Inside">Object inside.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.EventOnLocation">
+            <summary>
+            Allows raising events when a object is within the specified bounding object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor">
+            <summary>
+            Empty EventOnLocation constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.BoundingBox)">
+            <summary>
+            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.BoundingBox"/>
+            </summary>
+            <param name="name">Name of the object</param>
+            <param name="enabled">Checks if the collisoin events will be raised.</param>
+            <param name="visible_editor">Checks if the object is visible in the editor</param>
+            <param name="box">Bounding box.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.BoundingSphere)">
+            <summary>
+            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.BoundingSphere"/>
+            </summary>
+            <param name="name">Name of the object</param>
+            <param name="enabled">Checks if the collisoin events will be raised.</param>
+            <param name="visible_editor">Checks if the object is visible in the editor</param>
+            <param name="sphere">Bounding sphere.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.Plane)">
+            <summary>
+            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.Plane"/>
+            </summary>
+            <param name="name">Name of the object</param>
+            <param name="enabled">Checks if the collisoin events will be raised.</param>
+            <param name="visible_editor">Checks if the object is visible in the editor</param>
+            <param name="plane">Bounding plane</param>
+        </member>
+        <member name="E:_3DRadSpaceDll.EventOnLocation.OnObjectInside">
+            <summary>
+            Raised when a object is inside the bounding object.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.BoundingType">
+            <summary>
+            Sets the bounding type for the detection.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.BoundingSphere">
+            <summary>
+            Bounding sphere.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.BoundingBox">
+            <summary>
+            Bounding box.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.BoundingPlane">
+            <summary>
+            Plane made up of
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.ColidingObjects">
+            <summary>
+            A list containing the objects that are being detected by the box.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.VisibleInEditor">
+            <summary>
+            If yes, shows a green box marking the bounding zone.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.Cube">
+            <summary>
+            A green transparent cube used to mark the bounding cube in the editor.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.Sphere">
+            <summary>
+            A green trransparent sphere used to mark the bounding sphere in the editor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Marks the bounding area in the editor.
+            </summary>
+            <param name="spriteBatch">Not used.</param>
+            <param name="view">View Matrix.</param>
+            <param name="projection">Projection Matrix.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Loads the sphere and box markings.
+            </summary>
+            <param name="content"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.EventOnValue">
+            <summary>
+            You better use a Script object with a if statement.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.ExitFade">
             <summary>
             Allows loading other projects.
@@ -181,6 +437,11 @@
             <param name="fade_type">Fades in or our.
             <para>true = fade in</para>
             <para>false = fade out</para></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.#ctor">
+            <summary>
+            Empty ExitFade Constructor.
+            </summary>
         </member>
         <member name="P:_3DRadSpaceDll.ExitFade.ProjectToLoad">
             <summary>
@@ -225,6 +486,11 @@
             <param name="keyboard"></param>
             <param name="time"></param>
         </member>
+        <member name="M:_3DRadSpaceDll.ExitFade.LoadProject">
+            <summary>
+            Allows loading other projects.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.Fog">
             <summary>
             <para>Fog class. Allows Fog effects on Skinmeshes.</para>
@@ -240,6 +506,11 @@
             <param name="color"></param>
             <param name="start"></param>
             <param name="end"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Fog.#ctor">
+            <summary>
+            Empty Fog object constructor.
+            </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Fog.FogColor">
             <summary>
@@ -305,7 +576,7 @@
             <param name="Name">Object's name</param>
             <returns>Returns the object, else null.</returns>
         </member>
-        <member name="M:_3DRadSpaceDll.Game.SetObject(System.Int32,System.Object)">
+        <member name="M:_3DRadSpaceDll.Game.SetObject(System.Int32,_3DRadSpaceDll.GameObject)">
             <summary>
             Sets an object in the list.
             </summary>
@@ -313,6 +584,16 @@
             <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
             </param>
             <param name="obj">Value</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Game.ScreenSize">
+            <summary>
+            Gets or sets the screen-size used for the objects like Camera2D, ExitFade...
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Game.RequestExit">
+            <summary>
+            If true, the game will close next frame.
+            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
@@ -381,12 +662,12 @@
             Checks if object is being drawn.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Position">
+        <member name="F:_3DRadSpaceDll.GameObject.Position">
             <summary>
             Object position
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Rotation">
+        <member name="F:_3DRadSpaceDll.GameObject.Rotation">
             <summary>
             Rotation in a Euler angles system.
             </summary>
@@ -436,12 +717,10 @@
             Loads the resource(s).
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Free(Microsoft.Xna.Framework.Content.ContentManager)">
+        <member name="M:_3DRadSpaceDll.GameObject.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Unloads the resource.
             </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.GameObject.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Object Drawing code
             </summary>
@@ -486,11 +765,6 @@
             Called when a object resource is being loaded.
             </summary>
         </member>
-        <member name="E:_3DRadSpaceDll.GameObject.OnObjectUnload">
-            <summary>
-            Called when a object resource is being freed from the RAM memory.
-            </summary>
-        </member>
         <member name="M:_3DRadSpaceDll.GameObject.Finalize">
             <summary>
             Object destructor.
@@ -502,23 +776,91 @@
             </summary>
             <param name="o">GameObject to check.</param>
         </member>
+        <member name="M:_3DRadSpaceDll.GameObject.op_Equality(_3DRadSpaceDll.GameObject,_3DRadSpaceDll.GameObject)">
+            <summary>
+            Checks if two GameObjects are equal.
+            </summary>
+            <param name="a">Left instance.</param>
+            <param name="b">Right instance.</param>
+            <returns>A boolean value representing the equality value.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.op_Inequality(_3DRadSpaceDll.GameObject,_3DRadSpaceDll.GameObject)">
+            <summary>
+            The opposite of the equality operator.
+            </summary>
+            <param name="a">Left instance.</param>
+            <param name="b">Right instance.</param>
+            <returns>A boolean value representine the inequality of the two given instances.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object.
+            </summary>
+            <param name="obj">The object to compare with the current object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.GetHashCode">
+            <summary>
+            Returns the hash code calculated from a string representing the data inside the object.
+            </summary>
+            <returns>Some hash code</returns>
+        </member>
         <member name="M:_3DRadSpaceDll.GameObject.ToString">
             <summary>
             Returns the object's name
             </summary>
             <returns>the object's name</returns>
         </member>
+        <member name="T:_3DRadSpaceDll.GameSettings">
+            <summary>
+            Represents game's settings like fullscreen, framerate, resolution.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameSettings.GameScreen">
+            <summary>
+            Represents the resolution.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameSettings.MaximumFramerate">
+            <summary>
+            Represents the maximum frames per second values.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameSettings.Fullscreen">
+            <summary>
+            Toggles fullscreen mode.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameSettings.#ctor">
+            <summary>
+            Empty GameSettings constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameSettings.#ctor(Microsoft.Xna.Framework.Point,System.Int32,System.Boolean)">
+            <summary>
+            Main GameSettings constructor.
+            </summary>
+            <param name="resolution"></param>
+            <param name="fps"></param>
+            <param name="full"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameSettings.ToString">
+            <summary>
+            Returns a string representing the settings.
+            </summary>
+            <returns>A string containing the values.</returns>
+        </member>
         <member name="T:_3DRadSpaceDll.ObjectBehiavour">
             <summary>
             Specifies object relationships with other ones.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.ObjectBehiavour.ObjectID">
+        <member name="F:_3DRadSpaceDll.ObjectBehiavour.ObjectID">
             <summary>
             Object Identifier for the 'child' object
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.ObjectBehiavour.BehiavourID">
+        <member name="F:_3DRadSpaceDll.ObjectBehiavour.BehiavourID">
             <summary>
             Behiavour identifier. 0 is always default.
             </summary>
@@ -637,6 +979,11 @@
             <param name="scriptpath">Path to the file that will be compiled.</param>
             <param name="ClassN">Class name.</param>
         </member>
+        <member name="M:_3DRadSpaceDll.Script.#ctor">
+            <summary>
+            Empty Script object constructor.
+            </summary>
+        </member>
         <member name="M:_3DRadSpaceDll.Script.Compile(System.Boolean)">
             <summary>
             Compiles code in order to make it usable.
@@ -697,6 +1044,11 @@
             <param name="fog_affected">Allows or not fogs.</param>
             <param name="box">Bounding box for intersections and collisions.</param>
             <param name="sphere">User-defined bounding sphere for intersections and collisions.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skinmesh.#ctor">
+            <summary>
+            Empty Skinmesh constructor;
+            </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Skinmesh.Model">
             <summary>
@@ -787,6 +1139,11 @@
             <param name="name">Object name</param>
             <param name="active">Is Object active</param>
         </member>
+        <member name="M:_3DRadSpaceDll.SkyColor.#ctor">
+            <summary>
+            Empty SkyColor constructor.
+            </summary>
+        </member>
         <member name="M:_3DRadSpaceDll.SkyColor.GetColor">
             <summary>
             Gets the color.
@@ -839,6 +1196,11 @@
             <param name="active"></param>
             <param name="resource"></param>
             <param name="volume"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.#ctor">
+            <summary>
+            Empty SoundEffect constructor.
+            </summary>
         </member>
         <member name="M:_3DRadSpaceDll.SoundEffect.Load(Microsoft.Xna.Framework.Content.ContentManager)">
             <summary>
@@ -906,6 +1268,11 @@
             <param name="mask">Mask Color.</param>
             <param name="effects">Flipping effects.</param>
             <param name="layer">Drawing layer</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Sprite.#ctor">
+            <summary>
+            Empty Sprite constructor.
+            </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Sprite.IsUsedByCam2D">
             <summary>
@@ -1025,6 +1392,11 @@
             <param name="effects">Flipping options.</param>
             <param name="layer">Depth layer.</param>
         </member>
+        <member name="M:_3DRadSpaceDll.TextPrint.#ctor">
+            <summary>
+            Empty TextPrint constructor.
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.TextPrint.Text">
             <summary>
             Text to be drawn
@@ -1102,6 +1474,68 @@
             Not really needed, MG's pipeline takes care of the SpriteFont instance.
             </summary>
             <param name="disposing"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.TimerEvent">
+            <summary>
+            Raised everytime the timer exceeds the period.
+            </summary>
+            <param name="sender">Timer object.</param>
+            <param name="total_time">Total time passed since the creation of the timer object.</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Timer">
+            <summary>
+            Executes an event everytime a 'period' passes for a number of times.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Timer.#ctor">
+            <summary>
+            Empty Timer constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Timer.#ctor(System.String,System.Boolean,System.UInt32,System.UInt32)">
+            <summary>
+            Main Timer constructor.
+            </summary>
+            <param name="name">Name of the object.</param>
+            <param name="enabled">If the timer will execute.</param>
+            <param name="period">Timer period.</param>
+            <param name="repetitions">How much time the event will execute. Use <seealso cref="F:System.UInt32.MaxValue"/> to represent ∞ . </param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Timer.Period">
+            <summary>
+            Defined the time in milliseconds between the timer event executions.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Timer.Repetitions">
+            <summary>
+            Defines how many times the event will get called.
+            <para> Use <seealso cref="F:System.UInt32.MaxValue"/> or <seealso cref="F:_3DRadSpaceDll.Timer.Infinity"/> to represent ∞ (infinity) </para>
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Timer.TotalTime">
+            <summary>
+            Counts the time passed.
+            <para>Maximum value is <seealso cref="F:_3DRadSpaceDll.Timer.Period"/> * <seealso cref="F:_3DRadSpaceDll.Timer.Repetitions"/></para>
+            <para>NOTE: Unsigned integer overflows will occur if the Period is a value representing ∞ (<seealso cref="F:System.UInt32.MaxValue"/>)</para>
+            </summary>
+        </member>
+        <member name="E:_3DRadSpaceDll.Timer.OnTimerRepetition">
+            <summary>
+            Raised everytime a repetition is complete.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Timer.Infinity">
+            <summary>
+            Represents ∞
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Timer.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
         </member>
     </members>
 </doc>

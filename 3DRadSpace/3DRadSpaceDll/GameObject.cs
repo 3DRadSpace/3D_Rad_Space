@@ -46,7 +46,7 @@ namespace _3DRadSpaceDll
 	/// </summary>
 	/// <param name="obj">Object to be unloaded</param>
 	public delegate void onObjectUnload(object obj);
-	
+
 	/// <summary>
 	/// Base class for all 3DRadSpace objects.
 	/// </summary>
@@ -74,11 +74,11 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Object position
 		/// </summary>
-		public Vector3 Position { get; set; }
+		public Vector3 Position;
 		/// <summary>
 		/// Rotation in a Euler angles system.
 		/// </summary>
-		public Vector3 Rotation { get; set; }
+		public Vector3 Rotation;
 
 		/// <summary>
 		/// Relation with other objects
@@ -143,10 +143,6 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Unloads the resource.
 		/// </summary>
-		public virtual void Free(ContentManager content)
-		{
-			OnObjectUnload?.Invoke(this);
-		}
 
 		/// <summary>
 		/// Object Drawing code
@@ -158,13 +154,13 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Object draw code for the 3DRadSpace editor
 		/// </summary>
-		public virtual void EditorDraw(SpriteBatch spriteBatch,Matrix? view,Matrix? projection)
+		public virtual void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
 		{
 		}
 		/// <summary>
 		/// Object update logic
 		/// </summary>
-		public virtual void Update(MouseState mouse,KeyboardState keyboard,GameTime time)
+		public virtual void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
 		{
 			OnUpdate?.Invoke(this, mouse, keyboard, time);
 		}
@@ -197,10 +193,6 @@ namespace _3DRadSpaceDll
 		/// Called when a object resource is being loaded.
 		/// </summary>
 		public event onObjectLoad OnObjectLoad;
-		/// <summary>
-		/// Called when a object resource is being freed from the RAM memory.
-		/// </summary>
-		public event onObjectUnload OnObjectUnload;
 
 		/// <summary>
 		/// Object destructor.
@@ -218,6 +210,47 @@ namespace _3DRadSpaceDll
 			if (o != null) return true;
 			else return false;
 		}
+		/// <summary>
+		/// Checks if two GameObjects are equal.
+		/// </summary>
+		/// <param name="a">Left instance.</param>
+		/// <param name="b">Right instance.</param>
+		/// <returns>A boolean value representing the equality value.</returns>
+		public static bool operator == (GameObject a,GameObject b)
+		{
+			return (a.Name == b.Name && a.Position == b.Position && a.Rotation == b.Rotation && a.Resource == b.Resource
+			&& a.Hidden == b.Hidden && a.Enabled == b.Enabled && a.Behiavours == b.Behiavours);
+		}
+		/// <summary>
+		/// The opposite of the equality operator.
+		/// </summary>
+		/// <param name="a">Left instance.</param>
+		/// <param name="b">Right instance.</param>
+		/// <returns>A boolean value representine the inequality of the two given instances.</returns>
+		public static bool operator != (GameObject a,GameObject b)
+		{
+			return !(a == b);
+		}
+
+		/// <summary>
+		/// Determines whether the specified object is equal to the current object.
+		/// </summary>
+		/// <param name="obj">The object to compare with the current object.</param>
+		/// <returns></returns>
+		public override bool Equals(object obj)
+		{
+			if (obj is GameObject a) return (a == this);
+			else return base.Equals(obj);
+		}
+		/// <summary>
+		/// Returns the hash code calculated from a string representing the data inside the object.
+		/// </summary>
+		/// <returns>Some hash code</returns>
+		public override int GetHashCode()
+		{
+			return (Name + " " + Position + " " + Rotation + " " + Resource + " " + Enabled + " " + Hidden).GetHashCode();
+		}
+
 		/// <summary>
 		/// Returns the object's name
 		/// </summary>

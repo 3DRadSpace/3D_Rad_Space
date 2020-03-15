@@ -12,7 +12,7 @@ namespace _3DRadSpace
 {
 	public partial class TextPrintW : Form
 	{
-		public object Result;
+		public GameObject Result;
 		public TextPrintW()
 		{
 			InitializeComponent();

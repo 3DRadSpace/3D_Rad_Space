@@ -9,7 +9,7 @@ namespace _3DRadSpace
 	public partial class SpriteW : Form
 	{
 
-		public object Result;
+		public GameObject Result;
 
 		public SpriteW(Sprite sp)
 		{

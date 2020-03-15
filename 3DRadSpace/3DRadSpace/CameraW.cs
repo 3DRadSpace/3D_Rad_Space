@@ -35,7 +35,7 @@ namespace _3DRadSpace
             Behiavour = c.Behiavours;
             UpdateList();
         }
-        public object Result;
+        public GameObject Result;
         public List<ObjectBehiavour> Behiavour;
         private void button1_Click(object sender, EventArgs e)
         {
@@ -90,13 +90,14 @@ namespace _3DRadSpace
 
         private void listBox1_Click(object sender, EventArgs e)
         {
+            int obj = Behiavour[listBox1.SelectedIndex].ObjectID;
             int id = Behiavour[listBox1.SelectedIndex].BehiavourID;
             id++;
             if (id > 3) id = 0;
             // 0 - default
             // 1 - chase
             // 2 - look-at
-            Behiavour[listBox1.SelectedIndex].BehiavourID = id;
+            Behiavour[listBox1.SelectedIndex] = new ObjectBehiavour(obj, id);
             UpdateList();
         }
     }
