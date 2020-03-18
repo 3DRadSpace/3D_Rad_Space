@@ -296,7 +296,7 @@ namespace _3DRadSpace
             listBox1.Items.Clear();
             for(int  i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
             {
-                GameObject obj = (GameObject)_3DRadSpaceDll.Game.GameObjects[i];
+                GameObject obj = _3DRadSpaceDll.Game.GameObjects[i];
                 if(obj) listBox1.Items.Add(obj.Name);
             }
         }

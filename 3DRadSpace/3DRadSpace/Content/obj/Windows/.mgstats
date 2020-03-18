@@ -1,3 +1,5 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x","E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Axis.xnb","ModelProcessor","ModelContent",14633,4164,0.3237771
-"E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Camera.x","E:/Tugui Nicolae/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Camera.xnb","ModelProcessor","ModelContent",23919,7328,0.0436051
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Axis.xnb","ModelProcessor","ModelContent",14633,4164,2.966021
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Camera.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Camera.xnb","ModelProcessor","ModelContent",23919,7328,0.1189953
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/EOL_Cube.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/EOL_Cube.xnb","ModelProcessor","ModelContent",6363,1583,0.062467
+"C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/EOL_Sphere.x","C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/EOL_Sphere.xnb","ModelProcessor","ModelContent",95457,25211,0.1273512

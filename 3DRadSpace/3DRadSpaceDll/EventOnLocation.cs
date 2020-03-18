@@ -72,7 +72,7 @@ namespace _3DRadSpaceDll
             VisibleInEditor = visible_editor;
             BoundingBox = box;
             BoundingType = BoundingObject.Box;
-            BoundingSphere = new BoundingSphere(Vector3.Zero, 0);
+            BoundingSphere = BoundingSphere.CreateFromBoundingBox(box);
             BoundingPlane = new Plane(Vector4.Zero);
         }
         /// <summary>
@@ -87,12 +87,12 @@ namespace _3DRadSpaceDll
             Name = name;
             Enabled = enabled;
             VisibleInEditor = visible_editor;
-            BoundingBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
+            BoundingBox = BoundingBox.CreateFromSphere(sphere);
             BoundingType = BoundingObject.Sphere;
             BoundingSphere = sphere;
             BoundingPlane = new Plane(Vector4.Zero);
         }
-        /// <summary>
+        /// <summary> 
         /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.Plane"/>
         /// </summary>
         /// <param name="name">Name of the object</param>
@@ -141,7 +141,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// If yes, shows a green box marking the bounding zone.
         /// </summary>
-        bool VisibleInEditor;
+        public bool VisibleInEditor;
 
         /// <summary>
         /// A green transparent cube used to mark the bounding cube in the editor.

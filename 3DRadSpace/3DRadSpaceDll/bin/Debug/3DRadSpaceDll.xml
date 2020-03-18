@@ -340,7 +340,7 @@
             <param name="sphere">Bounding sphere.</param>
         </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.Plane)">
-            <summary>
+            <summary> 
             Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.Plane"/>
             </summary>
             <param name="name">Name of the object</param>
@@ -872,6 +872,102 @@
             <param name="ID">Object identifier</param>
             <param name="beh">Behiavour ID.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.ActionScript.Opcode">
+            <summary>
+            The commands that the script can execute.
+            <para>Name: OPeration CODE</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.NOP">
+            <summary>
+            No operation. Does nothing.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Start">
+            <summary>
+            Starts an object. 
+            <para>Argument: int -object identifier.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Stop">
+            <summary>
+            Stops an object.
+            <para>Argument: int -object identifier.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Toggle">
+            <summary>
+            Toggles the start/stop state of an object.
+            <para>Argument: int -object identifier.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Show">
+            <summary>
+            Shows an object.
+            <para>Arguments: int -object identifier.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Hide">
+            <summary>
+            Hides an object.
+            <para>Arguments: int -object identifier.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.SetPos">
+            <summary>
+            Sets an object's position. 
+            <para>Arguments: int - object identifier</para>
+            <para>Vector3 - position.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.AddPos">
+            <summary>
+            Adds a vector to the object's position.
+            <para>Arguments:</para>
+            <para>int - Object identifier.</para>
+            <para>Vector3 - position</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.SetRot">
+            <summary>
+            Sets the object rotation.
+            <para>Arguments:</para>
+            <para>int - Object identifier.</para>
+            <para>Vector3 - Rotation in Euler angles.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.AddRot">
+            <summary>
+            Adds a vector to the object's rotation.
+            <para>Arguments:</para>
+            <para>int - Object identifier.</para>
+            <para>Vector3 - Rotation in Euler Angles.</para>
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.ExecuteScript">
+            <summary>
+            Executes a piece of code.
+            <para>Arguments</para>
+            <para>string[] - The piece of code to be compiled and then executed.</para>
+            </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.ActionScript.OpCodeCall">
+            <summary>
+            Calls an opcode;
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.#ctor(_3DRadSpaceDll.ActionScript.Opcode,System.Object[])">
+            <summary>
+            Main opcode constructor.
+            </summary>
+            <param name="op">Code.</param>
+            <param name="args">Function call arguments</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Call">
+            <summary>
+            Calls the opcode.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
@@ -1240,6 +1336,51 @@
             Checks if the sound is stopped.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:_3DRadSpaceDll.SoundSource">
+            <summary>
+            Allows playing sounds located in a 3D envoirement. 
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundSource.#ctor">
+            <summary>
+            Empty SoundSource constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundSource.#ctor(System.String,System.Boolean,System.String,System.Single,Microsoft.Xna.Framework.Vector3,_3DRadSpaceDll.Camera,System.Single,System.Single)">
+            <summary>
+            Main SoundSource constructor.
+            </summary>
+            <param name="name">Object Name.</param>
+            <param name="enabled">Is playing sounds allowed?</param>
+            <param name="resource">Resource file</param>
+            <param name="volume">Volume ranging from 0.0 to 1.0</param>
+            <param name="position">Sound source position.</param>
+            <param name="listener">Camera used as a listener.</param>
+            <param name="pitch">Sound pitch ranging from -1.0f to 1.0f</param>
+            <param name="pan">Headphones balance, ranging from -1.0f to 1.0f</param>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundSource.Position">
+            <summary>
+            Defines the Sound's location.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundSource.DopplerScale">
+            <summary>
+            Gets or set a scale applied to the doppler effect between the listener(<seealso cref="P:_3DRadSpaceDll.SoundSource.LinkedCam"/>LinkedCam) and the sound source (<seealso cref="P:_3DRadSpaceDll.SoundSource.Position"/>)
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.SoundSource.LinkedCam">
+            <summary>
+            Camera object used as listener.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundSource.SetListenerPosition(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Sets the listener's position.
+            </summary>
+            <param name="pos">Position.</param>
+            <param name="up">Up normalized vector.</param>
         </member>
         <member name="T:_3DRadSpaceDll.onClick">
             <summary>

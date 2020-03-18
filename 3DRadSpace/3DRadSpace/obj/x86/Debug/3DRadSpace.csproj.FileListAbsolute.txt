@@ -54,3 +54,9 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\D
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.ExitFadeW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.EventOnLocationW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\EOL_Cube.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\EOL_Sphere.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.EventOnKeyW.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.EventOpcodeEditor.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.GameSettingsW.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.SoundSourceW.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.TimerW.resources

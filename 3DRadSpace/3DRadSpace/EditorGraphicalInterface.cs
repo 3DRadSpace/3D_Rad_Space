@@ -35,7 +35,7 @@ namespace _3DRadSpace
         private System.Windows.Forms.ToolStripMenuItem forumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.CheckedListBox listBox1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem editObjectToolStripMenuItem;
@@ -67,7 +67,7 @@ namespace _3DRadSpace
             this.forumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBox1 = new System.Windows.Forms.CheckedListBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.editObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -270,6 +270,7 @@ namespace _3DRadSpace
             this.listBox1.Size = new System.Drawing.Size(150, 511);
             this.listBox1.TabIndex = 2;
             listBox1.MouseDown += listBox1_MouseDown;
+            listBox1.KeyDown += ListBox1_KeyDown;
             // 
             // statusStrip1
             // 
@@ -319,6 +320,11 @@ namespace _3DRadSpace
             GameWindow.AllowDrop = true;
             GameWindow.DragDrop += GameWindow_DragDrop;
             GameWindow.DragEnter += GameWindow_DragEnter;
+        }
+
+        private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            e.Handled = true;
         }
 
         private void GameWindow_SizeChanged(object sender, EventArgs e)

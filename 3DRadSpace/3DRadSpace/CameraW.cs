@@ -100,5 +100,10 @@ namespace _3DRadSpace
             Behiavour[listBox1.SelectedIndex] = new ObjectBehiavour(obj, id);
             UpdateList();
         }
+
+        private void CameraW_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

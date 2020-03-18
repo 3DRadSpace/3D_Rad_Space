@@ -218,8 +218,12 @@ namespace _3DRadSpaceDll
 		/// <returns>A boolean value representing the equality value.</returns>
 		public static bool operator == (GameObject a,GameObject b)
 		{
-			return (a.Name == b.Name && a.Position == b.Position && a.Rotation == b.Rotation && a.Resource == b.Resource
-			&& a.Hidden == b.Hidden && a.Enabled == b.Enabled && a.Behiavours == b.Behiavours);
+			if (ReferenceEquals(a, null))
+			{
+				if (ReferenceEquals(b, null)) return true;
+				else return false;
+			}
+			return a.Equals(b);
 		}
 		/// <summary>
 		/// The opposite of the equality operator.
@@ -239,7 +243,9 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public override bool Equals(object obj)
 		{
-			if (obj is GameObject a) return (a == this);
+			if (obj is GameObject a)
+				return (a.Name == Name && a.Position == Position && a.Rotation == Rotation && a.Resource == Resource
+				&& a.Hidden == Hidden && a.Enabled == Enabled && a.Behiavours == Behiavours);
 			else return base.Equals(obj);
 		}
 		/// <summary>

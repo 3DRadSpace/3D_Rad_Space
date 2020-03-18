@@ -62,8 +62,6 @@
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -384,28 +382,9 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(10, 359);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(274, 95);
+            this.listBox1.Size = new System.Drawing.Size(390, 95);
             this.listBox1.TabIndex = 8;
             this.listBox1.Click += new System.EventHandler(this.listBox1_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(290, 359);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(110, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Link an object";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(290, 388);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(110, 23);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Remove object";
-            this.button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
@@ -445,8 +424,6 @@
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -457,6 +434,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CameraW";
             this.Text = "Camera Object v1.0";
+            this.Load += new System.EventHandler(this.CameraW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -507,8 +485,6 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;

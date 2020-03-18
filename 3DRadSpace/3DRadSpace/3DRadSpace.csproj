@@ -98,6 +98,12 @@
     <Compile Include="EventOnLocationW.Designer.cs">
       <DependentUpon>EventOnLocationW.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventOpcodeEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventOpcodeEditor.Designer.cs">
+      <DependentUpon>EventOpcodeEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExitFadeW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +171,12 @@
     </Compile>
     <Compile Include="SkyColorW.Designer.cs">
       <DependentUpon>SkyColorW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SoundSourceW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SoundSourceW.Designer.cs">
+      <DependentUpon>SoundSourceW.cs</DependentUpon>
     </Compile>
     <Compile Include="SoundEffectW.cs">
       <SubType>Form</SubType>
@@ -273,6 +285,9 @@
     <EmbeddedResource Include="EventOnLocationW.resx">
       <DependentUpon>EventOnLocationW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EventOpcodeEditor.resx">
+      <DependentUpon>EventOpcodeEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExitFadeW.resx">
       <DependentUpon>ExitFadeW.cs</DependentUpon>
     </EmbeddedResource>
@@ -306,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SkyColorW.resx">
       <DependentUpon>SkyColorW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoundSourceW.resx">
+      <DependentUpon>SoundSourceW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SoundEffectW.resx">
       <DependentUpon>SoundEffectW.cs</DependentUpon>
