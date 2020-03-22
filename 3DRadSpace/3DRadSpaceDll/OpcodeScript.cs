@@ -18,7 +18,7 @@ namespace _3DRadSpaceDll
 			/// <summary>
 			/// No operation. Does nothing.
 			/// </summary>
-			NOP =0,
+			NOP = 0,
 			/// <summary>
 			/// Starts an object. 
 			/// <para>Argument: int -object identifier.</para>
@@ -90,7 +90,7 @@ namespace _3DRadSpaceDll
 			/// </summary>
 			/// <param name="op">Code.</param>
 			/// <param name="args">Function call arguments</param>
-			public OpCodeCall(Opcode op,object[] args)
+			public OpCodeCall(Opcode op, object[] args)
 			{
 				Opcode = op;
 				Arguments = args;
@@ -100,39 +100,39 @@ namespace _3DRadSpaceDll
 			/// </summary>
 			public void Call()
 			{
-				switch(Opcode)
+				switch (Opcode)
 				{
 					case Opcode.NOP: break;
 					case Opcode.Start:
-					{
-						int id = Convert.ToInt32(Arguments[0]);
-						Game.GameObjects[id].Enable();
-						break;
-					}
+						{
+							int id = Convert.ToInt32(Arguments[0]);
+							Game.GameObjects[id].Enable();
+							break;
+						}
 					case Opcode.Stop:
-					{
-						int id = Convert.ToInt32(Arguments[0]);
-						Game.GameObjects[id].Disable();
-						break;
-					}
+						{
+							int id = Convert.ToInt32(Arguments[0]);
+							Game.GameObjects[id].Disable();
+							break;
+						}
 					case Opcode.Toggle:
-					{
-						int id = Convert.ToInt32(Arguments[0]);
-						Game.GameObjects[id].Toggle();
-						break;
-					}
+						{
+							int id = Convert.ToInt32(Arguments[0]);
+							Game.GameObjects[id].Toggle();
+							break;
+						}
 					case Opcode.Show:
-					{
-						int id = Convert.ToInt32(Arguments[0]);
-						Game.GameObjects[id].Show();
-						break;
-					}
+						{
+							int id = Convert.ToInt32(Arguments[0]);
+							Game.GameObjects[id].Show();
+							break;
+						}
 					case Opcode.Hide:
-					{
-						int id = Convert.ToInt32(Arguments[0]);
-						Game.GameObjects[id].Hide();
-						break;
-					}
+						{
+							int id = Convert.ToInt32(Arguments[0]);
+							Game.GameObjects[id].Hide();
+							break;
+						}
 					case Opcode.SetPos:
 						{
 							int id = Convert.ToInt32(Arguments[0]);
@@ -171,6 +171,35 @@ namespace _3DRadSpaceDll
 							break;
 						}
 					default: break;
+				}
+			}
+			/// <summary>
+			/// Returns a string representing the data inside the struct.
+			/// </summary>
+			/// <returns></returns>
+			public override string ToString()
+			{
+				return (int)Opcode + " " + Arguments;
+			}
+			/// <summary>
+			/// Returns a visible string to be used in UIs.
+			/// </summary>
+			/// <returns></returns>
+			public string VisibleString()
+			{
+				switch (Opcode)
+				{
+					case Opcode.Start: return "Start ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.Stop: return "Stop ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.Toggle: return "Toggle ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.Show: return "Show ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.Hide: return "Hide ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.SetPos: return "Set Position " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.AddPos: return "Add Position " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.SetRot: return "Set Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.AddRot: return "Add Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
+					case Opcode.ExecuteScript: return "Execute Script";
+					default: return "NOP";
 				}
 			}
 		}

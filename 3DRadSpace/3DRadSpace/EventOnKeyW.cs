@@ -17,7 +17,23 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        GameObject Result;
+        public EventOnKeyW(EventOnKey eok)
+        {
+            InitializeComponent();
+            textBox1.Text = eok.Name;
+            checkBox1.Checked = eok.Enabled;
+            for(int i =0; i < listBox1.Items.Count;i++)
+            {
+                if (GetKeyFromListBox_rev(eok.Key.Key) == (string)listBox1.Items[i])
+                {
+                    listBox1.SelectedIndex = i;
+                    break;
+                }
+            }
+            comboBox1.Text = GetInputStateFromComboBox_Rev(eok.Key.State);
+            textBox2.Text = "" + eok.HoldingTime;
+        }
+        public GameObject Result;
         private void EventOnKeyW_Load(object sender, EventArgs e)
         {
             comboBox1.SelectedIndex = 0;
@@ -29,6 +45,11 @@ namespace _3DRadSpace
             Result = new EventOnKey(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new KeyInput(GetKeyFromListBox(), GetInputStateFromComboBox()), Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)));
             Close();
         }
+
+        /// <summary>
+        /// This is one of the most cancerous pieces of code that exist in 3DRadSpace.
+        /// </summary>
+        /// <returns></returns>
         Microsoft.Xna.Framework.Input.Keys GetKeyFromListBox()
         {
             switch(listBox1.SelectedItem)
@@ -92,6 +113,69 @@ namespace _3DRadSpace
             }
         }
 
+        string GetKeyFromListBox_rev(Microsoft.Xna.Framework.Input.Keys arg)
+        {
+            switch (arg)
+            {
+                case Microsoft.Xna.Framework.Input.Keys.Q: return "Q";
+                case Microsoft.Xna.Framework.Input.Keys.W: return "W";
+                case  Microsoft.Xna.Framework.Input.Keys.E: return "E";
+                case  Microsoft.Xna.Framework.Input.Keys.R: return "R";
+                case  Microsoft.Xna.Framework.Input.Keys.T: return "T";
+                case  Microsoft.Xna.Framework.Input.Keys.Y: return "Y";
+                case  Microsoft.Xna.Framework.Input.Keys.U: return "U";
+                case  Microsoft.Xna.Framework.Input.Keys.I: return "I";
+                case  Microsoft.Xna.Framework.Input.Keys.O: return "O";
+                case  Microsoft.Xna.Framework.Input.Keys.P: return "P";
+                case  Microsoft.Xna.Framework.Input.Keys.A: return "A";
+                case  Microsoft.Xna.Framework.Input.Keys.S: return "S";
+                case  Microsoft.Xna.Framework.Input.Keys.D: return "D";
+                case  Microsoft.Xna.Framework.Input.Keys.F: return "F";
+                case Microsoft.Xna.Framework.Input.Keys.G: return "G";
+                case Microsoft.Xna.Framework.Input.Keys.H: return "H";
+                case Microsoft.Xna.Framework.Input.Keys.J: return "J";
+                case Microsoft.Xna.Framework.Input.Keys.K: return "K";
+                case Microsoft.Xna.Framework.Input.Keys.L: return "L";
+                case Microsoft.Xna.Framework.Input.Keys.Z: return "Z";
+                case Microsoft.Xna.Framework.Input.Keys.X: return "X";
+                case Microsoft.Xna.Framework.Input.Keys.C: return "C";
+                case Microsoft.Xna.Framework.Input.Keys.V: return "V";
+                case Microsoft.Xna.Framework.Input.Keys.B: return "B";
+                case Microsoft.Xna.Framework.Input.Keys.N: return "N";
+                case Microsoft.Xna.Framework.Input.Keys.M: return "M";
+                case Microsoft.Xna.Framework.Input.Keys.D1: return "1";
+                case Microsoft.Xna.Framework.Input.Keys.D2: return "2";
+                case Microsoft.Xna.Framework.Input.Keys.D3: return "3";
+                case Microsoft.Xna.Framework.Input.Keys.D4: return "4";
+                case Microsoft.Xna.Framework.Input.Keys.D5: return "5";
+                case Microsoft.Xna.Framework.Input.Keys.D6: return "6";
+                case Microsoft.Xna.Framework.Input.Keys.D7: return "7";
+                case Microsoft.Xna.Framework.Input.Keys.D8: return "8";
+                case Microsoft.Xna.Framework.Input.Keys.D9: return "9";
+                case Microsoft.Xna.Framework.Input.Keys.D0: return "0";
+                case Microsoft.Xna.Framework.Input.Keys.LeftShift: return "Left Shift";
+                case Microsoft.Xna.Framework.Input.Keys.RightShift: return "Right Shift";
+                case Microsoft.Xna.Framework.Input.Keys.LeftControl: return "Left Ctrl";
+                case Microsoft.Xna.Framework.Input.Keys.RightControl: return "Roght Ctrl";
+                case Microsoft.Xna.Framework.Input.Keys.Tab: return "Tab";
+                case Microsoft.Xna.Framework.Input.Keys.Up: return "Up Arrow";
+                case Microsoft.Xna.Framework.Input.Keys.Down: return "Down Arrow";
+                case Microsoft.Xna.Framework.Input.Keys.Left: return "Left Arrow";
+                case Microsoft.Xna.Framework.Input.Keys.Right: return "Right Arrow";
+                default: return null;
+            }
+        }
+        string GetInputStateFromComboBox_Rev(KeyInputType arg)
+        {
+            switch (arg)
+            {
+                case KeyInputType.Released: return "Released";
+                case KeyInputType.Pressed: return "Pressed";
+                case KeyInputType.Holding: return "Holding";
+                default: return "Released";
+            }
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -101,6 +185,11 @@ namespace _3DRadSpace
         private void button3_Click(object sender, EventArgs e)
         {
             //open docs...
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -86,6 +86,12 @@
     <Compile Include="EditorEvents.cs" />
     <Compile Include="EditorGraphicalInterface.cs" />
     <Compile Include="Editor.cs" />
+    <Compile Include="EventEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventEditor.Designer.cs">
+      <DependentUpon>EventEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventOnKeyW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compiler_SelectMainProject.resx">
       <DependentUpon>Compiler_SelectMainProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventEditor.resx">
+      <DependentUpon>EventEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EventOnKeyW.resx">
       <DependentUpon>EventOnKeyW.cs</DependentUpon>
