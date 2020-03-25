@@ -148,21 +148,21 @@ namespace _3DRadSpaceDll
         /// </summary>
         public void Start()
         {
-            _start.Invoke(_script_object, null);
+            if(_start != null) _start.Invoke(_script_object, null);
         }
         /// <summary>
         /// Executes [ClassName].Run(), where ClassName is part of the compiled source code.
         /// </summary>
         public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
-            _run.Invoke(_script_object, new object[] { mouse, keyboard, time });
+            if(_run != null) _run.Invoke(_script_object, new object[] { mouse, keyboard, time });
         }
         /// <summary>
         /// Executes [ClassName].End(), where ClassName is part of the compiled source.
         /// </summary>
         public void End()
         {
-            _end.Invoke(_script_object, null);
+            if(_end != null)_end.Invoke(_script_object, null);
         }
         /// <summary>
         /// Runs the script code.
@@ -183,7 +183,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">User by the user, if the case...</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            _draw.Invoke(_script_object, new object[] { spriteBatch, view, projection });
+            if(_draw != null) _draw.Invoke(_script_object, new object[] { spriteBatch, view, projection });
             base.Draw(spriteBatch, view, projection);
         }
     }

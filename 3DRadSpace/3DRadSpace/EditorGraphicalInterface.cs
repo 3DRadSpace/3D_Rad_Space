@@ -321,15 +321,5 @@ namespace _3DRadSpace
             GameWindow.DragDrop += GameWindow_DragDrop;
             GameWindow.DragEnter += GameWindow_DragEnter;
         }
-
-        private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void GameWindow_SizeChanged(object sender, EventArgs e)
-        {
-            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - 44);
-        }
     }
 }

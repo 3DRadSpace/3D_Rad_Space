@@ -119,5 +119,13 @@ namespace _3DRadSpace
             exitFade.Dispose();
             Close();
         }
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            EventOnKeyW EOK = new EventOnKeyW();
+            if (EOK.ShowDialog() == DialogResult.OK) Result = EOK.Result;
+            EOK.Dispose();
+            Close();
+        }
     }
 }

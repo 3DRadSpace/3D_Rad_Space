@@ -968,6 +968,25 @@
             Calls the opcode.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.ToString">
+            <summary>
+            Returns a string representing the data inside the struct.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.VisibleString">
+            <summary>
+            Returns a visible string to be used in UIs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.GetOpcodeText(_3DRadSpaceDll.ActionScript.Opcode)">
+            <summary>
+            Returns a string that represents the opcode without argument.
+            </summary>
+            <param name="Arg">Argument Opcode</param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
@@ -1215,7 +1234,7 @@
             <para>Notice the missing Update(), Draw(), EditorDraw() and Load() functions. They aren't used because only the colour is needed.</para>
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.SkyColor.Color">
+        <member name="F:_3DRadSpaceDll.SkyColor.Color">
             <summary>
             The colour itself.
             </summary>

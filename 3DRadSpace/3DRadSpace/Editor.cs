@@ -144,7 +144,10 @@ namespace _3DRadSpace
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 			Editor_View.Draw(null, out View, out Projection);
-			_3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateTranslation(0, 0, 0), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
+
+			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
+			_3DRadSpaceDll.Game.DrawModel(Axis,Matrix.CreateRotationY(MathHelper.Pi*1.5f)* Matrix.CreateTranslation(0, 0, 0), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
+			
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];

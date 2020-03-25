@@ -202,6 +202,28 @@ namespace _3DRadSpaceDll
 					default: return "NOP";
 				}
 			}
+			/// <summary>
+			/// Returns a string that represents the opcode without argument.
+			/// </summary>
+			/// <param name="Arg">Argument Opcode</param>
+			/// <returns></returns>
+			public static string GetOpcodeText(Opcode Arg)
+			{
+				switch (Arg)
+				{
+					case Opcode.Start: return "Start object";
+					case Opcode.Stop: return "Stop object";
+					case Opcode.Toggle: return "Toggle object";
+					case Opcode.Show: return "Show Object";
+					case Opcode.Hide: return "Hide Object";
+					case Opcode.SetPos: return "Set Object Position ";
+					case Opcode.AddPos: return "Add Object Position ";
+					case Opcode.SetRot: return "Set Object Rotation ";
+					case Opcode.AddRot: return "Add Object Rotation ";
+					case Opcode.ExecuteScript: return "Execute Script";
+					default: return "NOP";
+				}
+			}
 		}
 	}
 }

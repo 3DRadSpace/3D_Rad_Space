@@ -38,6 +38,7 @@ namespace _3DRadSpace
                 LoadAllObjects();
                 UpdateObjects();
                 ProjectSaved = true;
+                OpenedFile = openFile.FileName;
                 discordRichPresence.SetPresence("Editing project", Path.GetFileName(OpenedFile));
             }
             openFile.Dispose();
@@ -371,6 +372,15 @@ namespace _3DRadSpace
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
             }
+        }
+        private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void GameWindow_SizeChanged(object sender, EventArgs e)
+        {
+            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - 44);
         }
     }
 }

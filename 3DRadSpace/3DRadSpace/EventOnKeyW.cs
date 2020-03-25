@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using _3DRadSpaceDll.ActionScript;
 
 namespace _3DRadSpace
 {
@@ -34,6 +35,7 @@ namespace _3DRadSpace
             textBox2.Text = "" + eok.HoldingTime;
         }
         public GameObject Result;
+        public OpCodeCall[] opcodes;
         private void EventOnKeyW_Load(object sender, EventArgs e)
         {
             comboBox1.SelectedIndex = 0;
@@ -189,7 +191,12 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            EventEditor editor = new EventEditor();
+            if(editor.ShowDialog() == DialogResult.OK)
+            {
+                opcodes = editor.Result.ToArray();
+            }
+            editor.Dispose();
         }
     }
 }

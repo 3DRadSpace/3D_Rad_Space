@@ -11,7 +11,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// The colour itself.
         /// </summary>
-        public Color Color { get; set; }
+        public Color Color;
         
         /// <summary>
         /// SkyColor object constructor.
