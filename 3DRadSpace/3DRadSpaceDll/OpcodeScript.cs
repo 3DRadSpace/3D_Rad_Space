@@ -72,11 +72,11 @@ namespace _3DRadSpaceDll
 			/// </summary>
 			AddRot,
 			/// <summary>
-			/// Executes a piece of code.
+			/// Starts an object, update it, then stop it.
 			/// <para>Arguments</para>
-			/// <para>string[] - The piece of code to be compiled and then executed.</para>
+			/// <para>int - Object ID</para>
 			/// </summary>
-			ExecuteScript
+			RunOneFrame
 		}
 		/// <summary>
 		/// Calls an opcode;
@@ -157,19 +157,6 @@ namespace _3DRadSpaceDll
 							Game.GameObjects[id].Rotation += (Vector3)Arguments[1];
 							break;
 						}
-					case Opcode.ExecuteScript:
-						{
-							/*
-							string[] script = (string[])Arguments[0];
-							Script s = new Script()
-							{
-								ClassName = (string)Arguments[1],
-								Enabled = true,
-							};
-							s.Start();
-							*/
-							break;
-						}
 					default: break;
 				}
 			}
@@ -198,7 +185,7 @@ namespace _3DRadSpaceDll
 					case Opcode.AddPos: return "Add Position " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
 					case Opcode.SetRot: return "Set Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
 					case Opcode.AddRot: return "Add Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.ExecuteScript: return "Execute Script";
+					case Opcode.RunOneFrame: return "Run once ID: " + Convert.ToInt32(Arguments[0]); ;
 					default: return "NOP";
 				}
 			}
@@ -220,9 +207,17 @@ namespace _3DRadSpaceDll
 					case Opcode.AddPos: return "Add Object Position ";
 					case Opcode.SetRot: return "Set Object Rotation ";
 					case Opcode.AddRot: return "Add Object Rotation ";
-					case Opcode.ExecuteScript: return "Execute Script";
+					case Opcode.RunOneFrame: return "Run once";
 					default: return "NOP";
 				}
+			}
+			/// <summary>
+			/// Runs a array
+			/// </summary>
+			/// <param name="e"></param>
+			public static void Run(OpCodeCall[] e)
+			{
+				for(int i =0; i < e.Length;i++) e[i].Call();
 			}
 		}
 	}

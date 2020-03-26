@@ -613,12 +613,6 @@
             <param name="keyboard">Keyboard inputs</param>
             <param name="time">Game time input</param>
         </member>
-        <member name="T:_3DRadSpaceDll.onObjectCreate">
-            <summary>
-            Called when a object is being created in the constructor function.
-            </summary>
-            <param name="obj">The created object</param>
-        </member>
         <member name="T:_3DRadSpaceDll.onObjectDestroy">
             <summary>
             Called when a object is being removed.
@@ -649,7 +643,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Name">
             <summary>
-            Object Name. Used in 
+            Object Name. Used as a tag.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Enabled">
@@ -750,11 +744,6 @@
             Called when object is being updated on the update logic loop.
             </summary>
         </member>
-        <member name="E:_3DRadSpaceDll.GameObject.OnInitialization">
-            <summary>
-            Called when object is being created.
-            </summary>
-        </member>
         <member name="E:_3DRadSpaceDll.GameObject.OnRemoval">
             <summary>
             Called when object is being deleted.
@@ -810,6 +799,11 @@
             Returns the object's name
             </summary>
             <returns>the object's name</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.RunOnce">
+            <summary>
+            Runs the object one Update loop. If used on a active object it will be stopped.
+            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.GameSettings">
             <summary>
@@ -944,11 +938,11 @@
             <para>Vector3 - Rotation in Euler Angles.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.ExecuteScript">
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.RunOneFrame">
             <summary>
-            Executes a piece of code.
+            Starts an object, update it, then stop it.
             <para>Arguments</para>
-            <para>string[] - The piece of code to be compiled and then executed.</para>
+            <para>int - Object ID</para>
             </summary>
         </member>
         <member name="T:_3DRadSpaceDll.ActionScript.OpCodeCall">
@@ -986,6 +980,12 @@
             </summary>
             <param name="Arg">Argument Opcode</param>
             <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Run(_3DRadSpaceDll.ActionScript.OpCodeCall[])">
+            <summary>
+            Runs a array
+            </summary>
+            <param name="e"></param>
         </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>

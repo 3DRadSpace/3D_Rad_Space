@@ -191,7 +191,7 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-            EventEditor editor = new EventEditor();
+            EventEditor editor = new EventEditor(null);
             if(editor.ShowDialog() == DialogResult.OK)
             {
                 opcodes = editor.Result.ToArray();

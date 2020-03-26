@@ -11,7 +11,7 @@ class Script
 {
     public void Start()
     {
-        System.Windows.Forms.MessageBox.Show("nigga","delta");
+
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {
@@ -19,7 +19,7 @@ class Script
     }
     public void Draw(SpriteBatch batch,Matrix? view, Matrix? projection)
     {
-
+    
     }
     public void End()
     {

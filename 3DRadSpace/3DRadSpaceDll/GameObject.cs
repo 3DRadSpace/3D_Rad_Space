@@ -27,11 +27,6 @@ namespace _3DRadSpaceDll
 	/// <param name="time">Game time input</param>
 	public delegate void onUpdate(object updated, MouseState? mouse, KeyboardState? keyboard, GameTime time);
 	/// <summary>
-	/// Called when a object is being created in the constructor function.
-	/// </summary>
-	/// <param name="obj">The created object</param>
-	public delegate void onObjectCreate(object obj);
-	/// <summary>
 	/// Called when a object is being removed.
 	/// </summary>
 	/// <param name="obj">The removed object</param>
@@ -57,10 +52,10 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public GameObject()
 		{
-			OnInitialization?.Invoke(this);
+			Behiavours = new List<ObjectBehiavour>();
 		}
 		/// <summary>
-		/// Object Name. Used in 
+		/// Object Name. Used as a tag.
 		/// </summary>
 		public string Name { get; set; }
 		/// <summary>
@@ -163,6 +158,11 @@ namespace _3DRadSpaceDll
 		public virtual void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
 		{
 			OnUpdate?.Invoke(this, mouse, keyboard, time);
+			if(_runningonce)
+			{
+				Enabled = false;
+				_runningonce = false;
+			}
 		}
 
 		/// <summary>
@@ -181,10 +181,6 @@ namespace _3DRadSpaceDll
 		/// Called when object is being updated on the update logic loop.
 		/// </summary>
 		public event onUpdate OnUpdate;
-		/// <summary>
-		/// Called when object is being created.
-		/// </summary>
-		public event onObjectCreate OnInitialization;
 		/// <summary>
 		/// Called when object is being deleted.
 		/// </summary>
@@ -264,6 +260,15 @@ namespace _3DRadSpaceDll
 		public override string ToString()
 		{
 			return Name;
+		}
+
+		bool _runningonce = false;
+		/// <summary>
+		/// Runs the object one Update loop. If used on a active object it will be stopped.
+		/// </summary>
+		public void RunOnce()
+		{
+			_runningonce = true;
 		}
 	}
 }

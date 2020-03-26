@@ -35,7 +35,7 @@ namespace _3DRadSpace
         private System.Windows.Forms.ToolStripMenuItem forumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.CheckedListBox listBox1;
+        private System.Windows.Forms.ListView listBox1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem editObjectToolStripMenuItem;
@@ -67,7 +67,7 @@ namespace _3DRadSpace
             this.forumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.listBox1 = new System.Windows.Forms.CheckedListBox();
+            this.listBox1 = new System.Windows.Forms.ListView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.editObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -264,13 +264,17 @@ namespace _3DRadSpace
             // 
             // listBox1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 27);
+            this.listBox1.Location = new System.Drawing.Point(0, 25);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(150, 511);
+            this.listBox1.Size = new System.Drawing.Size(140, 511);
             this.listBox1.TabIndex = 2;
             listBox1.MouseDown += listBox1_MouseDown;
             listBox1.KeyDown += ListBox1_KeyDown;
+            listBox1.ItemCheck += ListBox1_ItemCheck;
+            listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
+            listBox1.MultiSelect = false;
+            listBox1.CheckBoxes = true;
+            listBox1.View = System.Windows.Forms.View.List;
             // 
             // statusStrip1
             // 

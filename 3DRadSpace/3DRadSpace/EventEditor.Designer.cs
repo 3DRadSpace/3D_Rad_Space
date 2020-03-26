@@ -32,7 +32,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button6 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -87,7 +86,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.label5);
@@ -102,16 +100,6 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Arguments";
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(9, 19);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(122, 23);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Open script editor";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
             // 
             // label6
             // 
@@ -254,7 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(559, 318);
+            this.ClientSize = new System.Drawing.Size(559, 303);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -295,6 +283,5 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
     }
 }
