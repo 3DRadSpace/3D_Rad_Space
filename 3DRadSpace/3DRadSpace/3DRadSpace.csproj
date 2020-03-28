@@ -104,12 +104,6 @@
     <Compile Include="EventOnLocationW.Designer.cs">
       <DependentUpon>EventOnLocationW.cs</DependentUpon>
     </Compile>
-    <Compile Include="EventOpcodeEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EventOpcodeEditor.Designer.cs">
-      <DependentUpon>EventOpcodeEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="ExitFadeW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,9 +287,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EventOnLocationW.resx">
       <DependentUpon>EventOnLocationW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EventOpcodeEditor.resx">
-      <DependentUpon>EventOpcodeEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ExitFadeW.resx">
       <DependentUpon>ExitFadeW.cs</DependentUpon>

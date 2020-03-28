@@ -57,6 +57,7 @@ namespace _3DRadSpaceDll
             BoundingBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
             BoundingPlane = new Plane(Vector4.Zero);
             BoundingType = BoundingObject.None;
+            Behiavours = new ActionScript.OpCodeCall[0];
         }
         /// <summary>
         /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingBox"/>
@@ -74,6 +75,7 @@ namespace _3DRadSpaceDll
             BoundingType = BoundingObject.Box;
             BoundingSphere = BoundingSphere.CreateFromBoundingBox(box);
             BoundingPlane = new Plane(Vector4.Zero);
+            Behiavours = new ActionScript.OpCodeCall[0];
         }
         /// <summary>
         /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingSphere"/>
@@ -153,6 +155,11 @@ namespace _3DRadSpaceDll
         public static Model Sphere;
 
         /// <summary>
+        /// The event defined in the editor.
+        /// </summary>
+        public new ActionScript.OpCodeCall[] Behiavours;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="mouse"></param>
@@ -174,6 +181,7 @@ namespace _3DRadSpaceDll
                                     if (skinmesh.Model.Meshes[j].BoundingSphere.Intersects(BoundingBox))
                                     {
                                         OnObjectInside?.Invoke(this, BoundingObject.Box, skinmesh);
+                                        ActionScript.OpCodeCall.Run(Behiavours);
                                     }
                                 }
                             }
@@ -182,6 +190,7 @@ namespace _3DRadSpaceDll
                                 if (BoundingBox.Contains(obj.Position) == ContainmentType.Contains)
                                 {
                                     OnObjectInside?.Invoke(this, BoundingType, obj);
+                                    ActionScript.OpCodeCall.Run(Behiavours);
                                 }
                             }
                         }
@@ -199,6 +208,7 @@ namespace _3DRadSpaceDll
                                     if (skinmesh.Model.Meshes[j].BoundingSphere.Intersects(BoundingSphere))
                                     {
                                         OnObjectInside?.Invoke(this, BoundingObject.Box, skinmesh);
+                                        ActionScript.OpCodeCall.Run(Behiavours);
                                     }
                                 }
                             }
@@ -207,6 +217,7 @@ namespace _3DRadSpaceDll
                                 if (BoundingSphere.Contains(obj.Position) == ContainmentType.Contains)
                                 {
                                     OnObjectInside?.Invoke(this, BoundingType, obj);
+                                    ActionScript.OpCodeCall.Run(Behiavours);
                                 }
                             }
                         }
@@ -224,6 +235,7 @@ namespace _3DRadSpaceDll
                                     if (skinmesh.Model.Meshes[j].BoundingSphere.Intersects(BoundingPlane) == PlaneIntersectionType.Intersecting)
                                     {
                                         OnObjectInside?.Invoke(this, BoundingObject.Box, skinmesh);
+                                        ActionScript.OpCodeCall.Run(Behiavours);
                                     }
                                 }
                             }
@@ -232,6 +244,7 @@ namespace _3DRadSpaceDll
                                 if (BoundingPlane.Intersects(new BoundingSphere(obj.Position, 1)) == PlaneIntersectionType.Intersecting)
                                 {
                                     OnObjectInside?.Invoke(this, BoundingType, obj);
+                                    ActionScript.OpCodeCall.Run(Behiavours);
                                 }
                             }
                         }

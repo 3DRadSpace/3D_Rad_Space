@@ -79,6 +79,12 @@ namespace _3DRadSpace_Player
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Update(mouse, keyboard, gameTime);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Script s) s.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is EventOnLocation eol) eol.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is EventOnKey eok) eok.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Timer t) t.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is ExitFade ef) ef.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundSource sounds) sounds.Update(mouse, keyboard, gameTime);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundEffect sef) sef.Update(mouse, keyboard, gameTime);
             }
             base.Update(gameTime);
         }

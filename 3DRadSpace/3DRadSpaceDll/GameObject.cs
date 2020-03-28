@@ -55,9 +55,15 @@ namespace _3DRadSpaceDll
 			Behiavours = new List<ObjectBehiavour>();
 		}
 		/// <summary>
-		/// Object Name. Used as a tag.
+		/// Object Name. Used as a string identifier.
 		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Tag object.
+		/// </summary>
+		public object Tag { get; set; }
+		
 		/// <summary>
 		/// Checks if object is enabled.
 		/// </summary>
@@ -151,6 +157,7 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public virtual void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
 		{
+
 		}
 		/// <summary>
 		/// Object update logic

@@ -18,6 +18,12 @@ namespace _3DRadSpaceDll
 		/// Type of the project to open.
 		/// </summary>
 		public static ProjectType type { get; set; }
+
+		/// <summary>
+		/// Used in editor
+		/// </summary>
+		public static GameSettings GSettings { get; private set; }
+
 		/// <summary>
 		/// Opens a project
 		/// </summary>
@@ -174,13 +180,91 @@ namespace _3DRadSpaceDll
 							};
 							break;
 						}
-					
+					case "soundsource":
+						{
+							string path = "";
+							for (int j = 11; j < Obj.Length; j++)
+							{
+								path += Obj[j] + ' ';
+							}
+							a = new SoundSource()
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2]),
+								Volume = Convert.ToSingle(Obj[3]),
+								Pitch = Convert.ToSingle(Obj[4]),
+								Pan = Convert.ToSingle(Obj[5]),
+								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)Convert.ToInt32(Obj[6]),
+								Position = new Vector3(
+									Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8]), Convert.ToSingle(Obj[9])
+									),
+								DopplerScale = Convert.ToSingle(Obj[10]),
+								Resource = path,
+							};
+							break;
+						}
+					case "eol":
+						{
+							a = new EventOnLocation()
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2]),
+								BoundingBox = new BoundingBox(new Vector3(
+									Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5]))
+								, new Vector3(
+									Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8]))),
+								BoundingSphere = new BoundingSphere(new Vector3(
+									Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
+									Convert.ToSingle(Obj[12])),
+								BoundingPlane = new Plane(new Vector4(
+									Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]), Convert.ToSingle(Obj[15]), Convert.ToSingle(Obj[16]))),
+								VisibleInEditor = Convert.ToBoolean(Obj[17]),
+								Behiavours = ActionScript.OpCodeCall.CreateFromString(18, Obj, Obj.Length)
+							};
+							break;
+						}
+					case "eok":
+						{
+							a = new EventOnKey()
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2]),
+								Key = new KeyInput((Microsoft.Xna.Framework.Input.Keys)Convert.ToInt32(Obj[3]),
+								(KeyInputType)Convert.ToInt32(Obj[4])),
+								HoldingTime = Convert.ToUInt32(Obj[5]),
+								Behiavours = ActionScript.OpCodeCall.CreateFromString(6, Obj, Obj.Length)
+							};
+							break;
+						}
+					case "gamesettings":
+						{
+							a = null;
+							GSettings = new GameSettings()
+							{
+								Fullscreen = Convert.ToBoolean(Obj[1]),
+								MaximumFramerate = Convert.ToInt32(Obj[2]),
+								GameScreen = new Point(Convert.ToInt32(Obj[3]),Convert.ToInt32(Obj[4]))
+							};
+							break;
+						}
+					case "timer":
+						{
+							a = new Timer()
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2]),
+								Period = Convert.ToUInt32(Obj[3]),
+								Repetitions = Convert.ToUInt32(Obj[4]),
+								Behiavours = ActionScript.OpCodeCall.CreateFromString(5, Obj, Obj.Length)
+							};
+							break;
+						}
 					default:
 						{
 							throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
 						}
 				}
-				result.Add(a);
+				if(a != null) result.Add(a);
 			}
 			return result;
 		}
@@ -219,7 +303,7 @@ namespace _3DRadSpaceDll
 				}
 				if (Game.GameObjects[i] is Fog fog)
 				{
-					ToBeSaved[j] = "fog " + fog.Name + ' ' + fog.Enabled + ' ' + fog.FogColor.X + ' ' + fog.FogColor.Y + ' ' + fog.FogColor.Z + ' ' + fog.FogStart + ' ' + fog.FogEnd;
+					ToBeSaved[j] = "fog " + fog.Name + ' ' + fog.Enabled + ' ' + Vector2String(fog.FogColor) + ' ' + fog.FogStart + ' ' + fog.FogEnd;
 				}
 				if (Game.GameObjects[i] is Skinmesh skinmesh)
 				{
@@ -244,11 +328,43 @@ namespace _3DRadSpaceDll
 				}
 				if(Game.GameObjects[i] is SoundEffect sound)
 				{
-					ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+sound.SoundState+' ' + sound.Resource;
+					if(!(Game.GameObjects[i] is SoundSource ))
+						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+sound.SoundState+' ' + sound.Resource;
 				}
 				if(Game.GameObjects[i] is ExitFade fade)
 				{
 					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Fade.R + ' ' + fade.Fade.G + ' ' + fade.Fade.B + ' ' + fade.Time + ' ' + fade.FadeType;
+				}
+				if(Game.GameObjects[i] is EventOnLocation eol)
+				{
+					string beh = null;
+					for(int k =0; k < eol.Behiavours.Length;k++)
+					{
+						beh += eol.Behiavours[i].ToString();
+					}
+					ToBeSaved[j] = "eol " + eol.Name + ' ' + eol.Enabled + ' ' + Box2str(eol.BoundingBox) + ' ' + Sph2str(eol.BoundingSphere) + ' ' + Plane2str(eol.BoundingPlane) + ' ' + eol.VisibleInEditor + ' ' + beh;
+				}
+				if (Game.GameObjects[i] is EventOnKey eok)
+				{
+					string beh = null;
+					for (int k = 0; k < eok.Behiavours.Length; k++)
+					{
+						beh += eok.Behiavours[i].ToString();
+					}
+					ToBeSaved[j] = "eok " + eok.Name + ' ' + eok.Enabled + ' ' + (int)eok.Key.Key + ' ' + (int)eok.Key.State + ' ' + eok.HoldingTime + ' ' + beh;
+				}
+				if (Game.GameObjects[i] is SoundSource sounds)
+				{
+					ToBeSaved[j] = "soundsource " + sounds.Name + ' ' + sounds.Enabled + ' ' + sounds.Volume + ' ' + sounds.Pitch + ' ' + sounds.Pan + ' ' + sounds.SoundState + ' '+Vector2String(sounds.Position)+' '+sounds.DopplerScale+' ' + sounds.Resource;
+				}
+				if(Game.GameObjects[i] is Timer timer)
+				{
+					string beh = null;
+					for (int k = 0; k < timer.Behiavours.Length; k++)
+					{
+						beh += timer.Behiavours[i].ToString();
+					}
+					ToBeSaved[j] = "timer " + timer.Name + ' ' + timer.Enabled + ' ' + timer.Period + ' ' + timer.Repetitions + ' ' + beh;
 				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);
@@ -270,6 +386,33 @@ namespace _3DRadSpaceDll
 		public static string Vector2String(Vector2 pos)
 		{
 			return pos.X + " " + pos.Y;
+		}
+		/// <summary>
+		/// Used in I/O
+		/// </summary>
+		/// <param name="box">Bounding sphere</param>
+		/// <returns></returns>
+		public static string Box2str(BoundingBox box)
+		{
+			return box.Min.X + " " + box.Min.Y + ' ' + box.Min.Z + ' ' + box.Max.X + ' ' + box.Max.Y + ' ' + box.Max.Z; 
+		}
+		/// <summary>
+		/// Used in I/O
+		/// </summary>
+		/// <param name="sph">Bounding sphere</param>
+		/// <returns></returns>
+		public static string Sph2str(BoundingSphere sph)
+		{
+			return sph.Center.X + " " + sph.Center.Y + ' ' + sph.Center.Z + ' ' + sph.Radius;
+		}
+		/// <summary>
+		/// Used in I/O
+		/// </summary>
+		/// <param name="p">Bounding plane</param>
+		/// <returns></returns>
+		public static string Plane2str(Plane p)
+		{
+			return p.Normal.X + " " + p.Normal.Y + ' ' + p.Normal.Z + ' ' + p.D;
 		}
 		/// <summary>
 		/// Clears native memory used by the game.

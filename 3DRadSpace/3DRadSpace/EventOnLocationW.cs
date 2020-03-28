@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using _3DRadSpaceDll;
+using _3DRadSpaceDll.ActionScript;
 
 namespace _3DRadSpace
 {
@@ -18,8 +19,33 @@ namespace _3DRadSpace
 		{
 			InitializeComponent();
 		}
+		public EventOnLocationW(EventOnLocation eol)
+		{
+			InitializeComponent();
+			textBox1.Text = eol.Name;
+			checkBox1.Checked = eol.Enabled;
+			checkBox2.Checked = eol.VisibleInEditor;
+			textBox2.Text = eol.BoundingBox.Min.X + "";
+			textBox3.Text = eol.BoundingBox.Min.Y + "";
+			textBox4.Text = eol.BoundingBox.Min.Z + "";
+			textBox5.Text = eol.BoundingBox.Max.X + "";
+			textBox6.Text = eol.BoundingBox.Max.Y + "";
+			textBox7.Text = eol.BoundingBox.Max.Z + "";
+			textBox8.Text = eol.BoundingSphere.Center.X + "";
+			textBox9.Text = eol.BoundingSphere.Center.Y + "";
+			textBox10.Text = eol.BoundingSphere.Center.Z + "";
+			textBox11.Text = eol.BoundingSphere.Radius + "";
+			textBox12.Text = eol.BoundingPlane.Normal.X + "";
+			textBox13.Text = eol.BoundingPlane.Normal.Y + "";
+			textBox14.Text = eol.BoundingPlane.Normal.Z + "";
+			textBox15.Text = eol.BoundingPlane.D + "";
+			_eol = eol;
+			opcodes = eol.Behiavours;
+		}
 
-		GameObject Result;
+		public GameObject Result;
+		OpCodeCall[] opcodes;
+		EventOnLocation _eol;
 
 		private void label8_Click(object sender, EventArgs e)
 		{
@@ -91,6 +117,7 @@ namespace _3DRadSpace
 					break;
 				default: break;
 			}
+			r.Behiavours = opcodes;
 			Result = r;
 			DialogResult = DialogResult.OK;
 			Close();
@@ -108,14 +135,17 @@ namespace _3DRadSpace
 			//open docs
 		}
 
-		private void button4_Click(object sender, EventArgs e)
-		{
-			//open some list thing
-		}
-
 		private void button5_Click(object sender, EventArgs e)
 		{
-			//open event editor.
+			EventEditor eventEditor;
+			if (_eol != null) eventEditor = new EventEditor(OpCodeCall.GetUsedObjects(_eol.Behiavours));
+			else eventEditor = new EventEditor(null);
+
+			if(eventEditor.ShowDialog() == DialogResult.OK)
+			{
+				opcodes = eventEditor.Result.ToArray();
+			}
+			eventEditor.Dispose();
 		}
 	}
 }

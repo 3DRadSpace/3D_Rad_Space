@@ -90,6 +90,7 @@ namespace _3DRadSpace
 
         private void listBox1_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedIndex == -1) return;
             int obj = Behiavour[listBox1.SelectedIndex].ObjectID;
             int id = Behiavour[listBox1.SelectedIndex].BehiavourID;
             id++;

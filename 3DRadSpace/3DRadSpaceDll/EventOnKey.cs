@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using _3DRadSpaceDll.ActionScript;
 
 namespace _3DRadSpaceDll
 {
@@ -77,6 +78,7 @@ namespace _3DRadSpaceDll
 			Enabled = false;
 			Key = new KeyInput(Keys.None, KeyInputType.Holding);
 			HoldingTime = uint.MaxValue;
+			Behiavours = new OpCodeCall[0];
 		}
 		/// <summary>
 		/// Main EOK constructor.
@@ -91,6 +93,7 @@ namespace _3DRadSpaceDll
 			Enabled = enabled;
 			Key = input;
 			HoldingTime = time_necesarry;
+			Behiavours = new OpCodeCall[0];
 		}
 		/// <summary>
 		/// Defines the key and the expected key state.
@@ -121,6 +124,11 @@ namespace _3DRadSpaceDll
 		public uint TotalHoldTime { get; private set; }
 
 		/// <summary>
+		/// The event defined in the editor.
+		/// </summary>
+		public new OpCodeCall[] Behiavours;
+
+		/// <summary>
 		/// Triggers when the inputs are equal to the given conditions.
 		/// </summary>
 		event KeyEvent OnKeyTrigger;
@@ -139,7 +147,7 @@ namespace _3DRadSpaceDll
 		{
 			if (Key.State == KeyInputType.Released && keyboard.IsKeyUp(Key.Key)) OnKeyTrigger?.Invoke(this, time);
 			if (Key.State == KeyInputType.Holding && keyboard.IsKeyDown(Key.Key)) OnKeyTrigger?.Invoke(this, time);
-			if(Key.State == KeyInputType.Holding)
+			if (Key.State == KeyInputType.Holding)
 			{
 				if (keyboard.IsKeyDown(Key.Key))
 				{
@@ -149,6 +157,7 @@ namespace _3DRadSpaceDll
 					{
 						TotalHoldTime = 0;
 						OnKeyTrigger?.Invoke(this, time);
+						OpCodeCall.Run(Behiavours);
 					}
 				}
 				else TotalHoldTime = 0;

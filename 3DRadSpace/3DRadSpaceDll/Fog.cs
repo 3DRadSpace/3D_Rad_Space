@@ -44,7 +44,26 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Fog Color. Implemented from IEffectFog.
         /// </summary>
-        public Vector3 FogColor { get; set; }
+        public Vector3 FogColor
+        {
+            get
+            {
+                return _fogcolor;
+            }
+            set
+            {
+                if (value.X < 0) value.X = 0;
+                if (value.X > 255) value.X = 255;
+
+                if (value.Y < 0) value.Y = 0;
+                if (value.Y > 255) value.Y = 255;
+
+                if (value.Z < 0) value.Z = 0;
+                if (value.Z > 255) value.Z = 255;
+                _fogcolor = value;
+            }
+        }
+        Vector3 _fogcolor;
         /// <summary>
         /// Actually sets this.Enabled. Implemented from IEffectFog.
         /// </summary>
@@ -55,18 +74,31 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Fog end distance.
         /// </summary>
-        public float FogEnd { get; set; }
+        public float FogEnd
+        {
+            get
+            {
+                return _fogend;
+            }
+            set
+            {
+                if (_fogend < 0) _fogend = 0;
+                _fogend = value;
+            }
+        }
+        float _fogend;
         /// <summary>
         /// Fog start distance.
         /// </summary>
-        public float FogStart { get; set; }
-
-        /// <summary>
-        /// Override of the GameObject.Enable to allow the usage of FogEnabled.
-        /// </summary>
-        public new bool Enabled
+        public float FogStart
         {
-            get; set;
+            get { return _fogstart; }
+            set
+            {
+                if (value < 0) value = 0;
+                _fogstart = value;
+            }
         }
+        float _fogstart;
     }
 }

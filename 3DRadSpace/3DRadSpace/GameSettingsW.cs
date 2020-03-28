@@ -17,7 +17,7 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
-        GameSettings Result;
+        public GameSettings Result;
         private void button1_Click(object sender, EventArgs e)
         {
             Result = new GameSettings()

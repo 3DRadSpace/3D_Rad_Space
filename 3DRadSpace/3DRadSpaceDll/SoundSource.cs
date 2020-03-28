@@ -36,16 +36,25 @@ namespace _3DRadSpaceDll
         /// <param name="listener">Camera used as a listener.</param>
         /// <param name="pitch">Sound pitch ranging from -1.0f to 1.0f</param>
         /// <param name="pan">Headphones balance, ranging from -1.0f to 1.0f</param>
-        public SoundSource(string name, bool enabled, string resource, float volume, Vector3 position, Camera listener, float pitch = 0f,float pan = 0f)
+        /// <param name="doppler">Doppler effect scale.</param>
+        public SoundSource(string name, bool enabled, string resource, float volume, Vector3 position, Camera listener, float pitch = 0f,float pan = 0f,float doppler = 1f)
         {
             Name = name;
             Enabled = enabled;
             Resource = resource;
             Volume = volume;
-            Position = position;
-            _cam = listener;
             Pitch = pitch;
             Pan = pan;
+            if (listener == null)
+            {
+                SetListenerPosition(Vector3.Zero, Vector3.Up);
+            }
+            else
+            {
+                Position = position;
+                _cam = listener;
+            }
+            DopplerScale = doppler;
         }
         /// <summary>
         /// Defines the Sound's location.
@@ -59,15 +68,27 @@ namespace _3DRadSpaceDll
             set
             {
                 _pos = value;
-                AudioListener listener = new AudioListener();
-                listener.Forward = Vector3.Forward;
-                listener.Up = LinkedCam.CameraRotation;
-                listener.Position = LinkedCam.Position;
-                AudioEmitter emitter = new AudioEmitter();
-                emitter.Up = Vector3.Up;
-                emitter.Forward = Vector3.Forward;
-                emitter.DopplerScale = DopplerScale;
-                SoundInstance.Apply3D(listener,emitter);
+                if (SoundInstance != null)
+                {
+                    AudioListener listener = new AudioListener();
+                    listener.Forward = Vector3.Forward;
+                    if (LinkedCam != null)
+                    {
+                        listener.Up = LinkedCam.CameraRotation;
+                        listener.Position = LinkedCam.Position;
+                    }
+                    //We assume the listener's position is Vector3.Zero
+                    else
+                    {
+                        listener.Up = Vector3.Up;
+                        listener.Position = Vector3.Zero;
+                    }
+                    AudioEmitter emitter = new AudioEmitter();
+                    emitter.Up = Vector3.Up;
+                    emitter.Forward = Vector3.Forward;
+                    emitter.DopplerScale = DopplerScale;
+                    SoundInstance.Apply3D(listener, emitter);
+                }
             }
         }
         Vector3 _pos;

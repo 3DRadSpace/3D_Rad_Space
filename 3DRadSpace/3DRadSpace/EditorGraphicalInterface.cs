@@ -264,9 +264,9 @@ namespace _3DRadSpace
             // 
             // listBox1
             // 
-            this.listBox1.Location = new System.Drawing.Point(0, 25);
+            this.listBox1.Location = new System.Drawing.Point(0, 24);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(140, 511);
+            this.listBox1.Size = new System.Drawing.Size(140, 519);
             this.listBox1.TabIndex = 2;
             listBox1.MouseDown += listBox1_MouseDown;
             listBox1.KeyDown += ListBox1_KeyDown;

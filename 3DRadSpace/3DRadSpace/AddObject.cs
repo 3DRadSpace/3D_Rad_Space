@@ -127,5 +127,37 @@ namespace _3DRadSpace
             EOK.Dispose();
             Close();
         }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            EventOnLocationW EOL = new EventOnLocationW();
+            if (EOL.ShowDialog() == DialogResult.OK) Result = EOL.Result;
+            EOL.Dispose();
+            Close();
+        }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
+        {
+            TimerW timer = new TimerW();
+            if (timer.ShowDialog() == DialogResult.OK) Result = timer.Result;
+            timer.Dispose();
+            Close();
+        }
+
+        private void pictureBox24_Click(object sender, EventArgs e)
+        {
+            GameSettingsW gameSettings = new GameSettingsW();
+            if(gameSettings.ShowDialog() == DialogResult.OK) Editor.GraphcalSettings = gameSettings.Result;
+            gameSettings.Dispose();
+            Close();
+        }
+
+        private void pictureBox20_Click(object sender, EventArgs e)
+        {
+            SoundSourceW soundSourceW = new SoundSourceW();
+            if (soundSourceW.ShowDialog() == DialogResult.OK) Result = soundSourceW.Result;
+            soundSourceW.Dispose();
+            Close();
+        }
     }
 }

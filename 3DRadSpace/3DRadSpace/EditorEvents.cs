@@ -12,7 +12,7 @@ namespace _3DRadSpace
 {
     partial class Editor : Microsoft.Xna.Framework.Game
     {
-        GameSettings GraphcalSettings;
+        public static GameSettings GraphcalSettings= new GameSettings();
 
         bool ProjectSaved = true;
         void newProject(object a,EventArgs e)
@@ -123,11 +123,10 @@ namespace _3DRadSpace
             WebClient client = new WebClient();
             client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM", @"version.temp");
             string v = File.ReadAllText(@"version.temp");
-            string[] version = v.Split(' ');
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if(version[i] != Program.Version[i])
+                if (Convert.ToInt32(v) != Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";
@@ -183,10 +182,10 @@ namespace _3DRadSpace
             ///ah fck i realised I have to update the website aaaaaaaaaaaaa
             Process.Start("http://3dradspace.000webhost.com");
         }
-        void M_EditObject(object a,EventArgs e)
+        void M_EditObject(object a, EventArgs e)
         {
             object b = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
-            if(b is Script)
+            if (b is Script)
             {
                 ScriptW scriptW = new ScriptW((Script)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index]);
                 scriptW.ShowDialog();
@@ -200,21 +199,21 @@ namespace _3DRadSpace
                 if (cameraW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = cameraW.Result;
                 cameraW.Dispose();
             }
-            if(b is SkyColor)
+            if (b is SkyColor)
             {
                 SkyColorW colorW = new SkyColorW((SkyColor)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index]);
                 colorW.ShowDialog();
                 if (colorW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = colorW.Result;
                 colorW.Dispose();
             }
-            if(b is Fog)
+            if (b is Fog)
             {
                 FogW fogW = new FogW((Fog)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index]);
                 fogW.ShowDialog();
                 if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = fogW.Result;
                 fogW.Dispose();
             }
-            if(b is Skinmesh)
+            if (b is Skinmesh)
             {
                 SkinmeshW skinmeshW = new SkinmeshW((Skinmesh)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index]);
                 skinmeshW.ShowDialog();
@@ -226,7 +225,7 @@ namespace _3DRadSpace
                 }
                 skinmeshW.Dispose();
             }
-            if( b is Sprite)
+            if (b is Sprite)
             {
                 SpriteW spriteW = new SpriteW((Sprite)b);
                 spriteW.ShowDialog();
@@ -234,15 +233,15 @@ namespace _3DRadSpace
                 {
                     _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = (Sprite)spriteW.Result;
                     Sprite s = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] as Sprite;
-                    s.Load(Content,GraphicsDevice);
+                    s.Load(Content, GraphicsDevice);
                 }
                 spriteW.Dispose();
             }
-            if( b is TextPrint p)
+            if (b is TextPrint p)
             {
-                TextPrintW textPrintW = new TextPrintW((TextPrint)b);
+                TextPrintW textPrintW = new TextPrintW(p);
                 textPrintW.ShowDialog();
-                if(textPrintW.Result != null)
+                if (textPrintW.Result != null)
                 {
                     p = (TextPrint)textPrintW.Result;
                     p.Load(Content);
@@ -250,22 +249,49 @@ namespace _3DRadSpace
                 }
                 textPrintW.Dispose();
             }
-            if(b is SoundEffect)
+            if (b is SoundEffect)
             {
-                SoundEffectW soundEffectW = new SoundEffectW((SoundEffect)b);
-                soundEffectW.ShowDialog();
-                if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundEffectW.Result;
-                soundEffectW.Dispose();
+                if (!(b is SoundSource))
+                {
+                    SoundEffectW soundEffectW = new SoundEffectW((SoundEffect)b);
+                    soundEffectW.ShowDialog();
+                    if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundEffectW.Result;
+                    soundEffectW.Dispose();
+                }
             }
-            if(b is GameSettings settings)
+            if (b is SoundSource soundSource)
             {
-                GraphcalSettings = settings;
+                SoundSourceW soundSourceW = new SoundSourceW(soundSource);
+                soundSourceW.ShowDialog();
+                if (soundSourceW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundSourceW.Result;
+                soundSourceW.Dispose();
+            }
+            if (b is EventOnLocation eol)
+            {
+                EventOnLocationW eolw = new EventOnLocationW(eol);
+                eolw.ShowDialog();
+                if (eolw.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = eolw.Result;
+                eolw.Dispose();
+            }
+            if(b is EventOnKey eok)
+            {
+                EventOnKeyW eokw = new EventOnKeyW(eok);
+                eokw.ShowDialog();
+                if (eokw.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = eokw.Result;
+                eokw.Dispose();
+            }
+            if(b is _3DRadSpaceDll.Timer t)
+            {
+                TimerW w = new TimerW(t);
+                w.ShowDialog();
+                if (w.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = w.Result;
+                w.Dispose();
             }
             UpdateObjects();
         }
         void M_DeleteObject(object obj,EventArgs e)
         {
-            if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is SkyColor s)
+            if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is SkyColor)
             {
                 ClearColor = Color.Black;
             }
@@ -303,7 +329,7 @@ namespace _3DRadSpace
         }
         void listBox1_MouseDown(object sender,MouseEventArgs mouse)
         {
-            if(mouse.Button == MouseButtons.Right && listBox1.SelectedItems[0].Index != -1)
+            if(mouse.Button == MouseButtons.Right && listBox1.SelectedItems.Count > 0)
             {
                 contextMenuStrip1.Show(GameWindow.Location.X+listBox1.Location.X, Cursor.Position.Y);
             }
@@ -380,14 +406,14 @@ namespace _3DRadSpace
 
         private void GameWindow_SizeChanged(object sender, EventArgs e)
         {
-            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - 44);
+            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - 50);
         }
         //int _oldindex = 0;
         private void ListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if(listBox1.SelectedItems == null)
+            if(listBox1.SelectedItems.Count == 0)
             {
-                listBox1.Items[e.Index].Checked = false;
+                if (listBox1.Items[e.Index].Checked != false) e.NewValue = CheckState.Unchecked;
                 return;
             }
             int i = 0;
@@ -403,7 +429,7 @@ namespace _3DRadSpace
                     }
                 }
             }
-            else o.Behiavours.Add(new ObjectBehiavour(e.Index));
+            else if(e.NewValue == CheckState.Checked) o.Behiavours.Add(new ObjectBehiavour(e.Index));
         }
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {

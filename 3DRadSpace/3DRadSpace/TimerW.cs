@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using _3DRadSpaceDll.ActionScript;
 
 namespace _3DRadSpace
 {
@@ -17,17 +18,19 @@ namespace _3DRadSpace
         {
             InitializeComponent();
         }
+        public TimerW(_3DRadSpaceDll.Timer t)
+        {
+            InitializeComponent();
+            textBox1.Text = t.Name;
+            checkBox1.Checked = t.Enabled;
+            textBox2.Text = t.Period+"";
+            textBox3.Text = t.Repetitions+"";
+            opcodes = t.Behiavours;
+            _timer = t;
+        }
         public GameObject Result;
-        public _3DRadSpaceDll.ActionScript.OpCodeCall[] Event;
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
+        OpCodeCall[] opcodes;
+        _3DRadSpaceDll.Timer _timer;
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -37,6 +40,7 @@ namespace _3DRadSpace
                 Enabled = checkBox1.Checked,
                 Period = Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)),
                 Repetitions = Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox3.Text)),
+                Behiavours = opcodes
             };
             DialogResult = DialogResult.OK;
             Close();
@@ -52,6 +56,19 @@ namespace _3DRadSpace
         private void button5_Click(object sender, EventArgs e)
         {
             //open docs...
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            EventEditor eventEditor;
+            if(_timer != null) eventEditor = new EventEditor(OpCodeCall.GetUsedObjects(_timer.Behiavours));
+            else eventEditor = new EventEditor(null);
+
+            if(eventEditor.ShowDialog() == DialogResult.OK)
+            {
+                opcodes = eventEditor.Result.ToArray();
+            }
+            eventEditor.Dispose();
         }
     }
 }

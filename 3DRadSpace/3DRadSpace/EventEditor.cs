@@ -40,7 +40,8 @@ namespace _3DRadSpace
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -104,35 +105,47 @@ namespace _3DRadSpace
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			OpCodeCall c;
 			switch (comboBox1.SelectedIndex)
 			{
-				case (int)Opcode.NOP:
-					listBox2.Items.Add(new OpCodeCall(Opcode.NOP, null));
-					break;
 				case (int)Opcode.Start:
 				case (int)Opcode.Stop:
 				case (int)Opcode.Toggle:
 				case (int)Opcode.Show:
 				case (int)Opcode.Hide:
 				case (int)Opcode.RunOneFrame:
-					listBox2.Items.Add(new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
+					c = new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
 					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text))
-					}));
+					});
 					break;
 				case (int)Opcode.SetPos:
 				case (int)Opcode.AddPos:
 				case (int)Opcode.SetRot:
 				case (int)Opcode.AddRot:
-					listBox2.Items.Add(new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
+					c = new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
 					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text)),
 					new Vector3( 
 						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox1.Text)),
 						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text)),
 						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)))
-					}));
+					});
 					break;
-				default: break;
+				default: c = new OpCodeCall(Opcode.NOP, null); break;
 			}
+			listBox2.Items.Add(c);
+			Result.Add(c);
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			listBox2.Items.RemoveAt(listBox2.SelectedIndex);
+			Result.RemoveAt(listBox2.SelectedIndex);
+		}
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.Cancel;
+			Close();
 		}
 	}
 }

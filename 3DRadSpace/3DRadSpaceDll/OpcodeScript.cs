@@ -17,6 +17,7 @@ namespace _3DRadSpaceDll
 		{
 			/// <summary>
 			/// No operation. Does nothing.
+			/// <para>Can be used to store object IDs or other data.</para>
 			/// </summary>
 			NOP = 0,
 			/// <summary>
@@ -83,8 +84,14 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public struct OpCodeCall
 		{
-			Opcode Opcode;
-			object[] Arguments;
+			/// <summary>
+			/// 
+			/// </summary>
+			public Opcode Opcode;
+			/// <summary>
+			/// 
+			/// </summary>
+			public object[] Arguments;
 			/// <summary>
 			/// Main opcode constructor.
 			/// </summary>
@@ -166,7 +173,27 @@ namespace _3DRadSpaceDll
 			/// <returns></returns>
 			public override string ToString()
 			{
-				return (int)Opcode + " " + Arguments;
+				string args = "";
+				switch(Opcode)
+				{
+					case Opcode.Start:
+					case Opcode.Stop:
+					case Opcode.Toggle:
+					case Opcode.Show: 
+					case Opcode.Hide:
+					case Opcode.RunOneFrame:
+						args = Arguments[0] + "";
+						break;
+					case Opcode.SetPos:
+					case Opcode.AddPos:
+					case Opcode.SetRot: 
+					case Opcode.AddRot:
+						Vector3 v = (Vector3)Arguments[1];
+						args = Arguments[0] + " " + v.X + ' ' + v.Y + ' ' + v.Z;
+						break;
+					default: break ;
+				}
+				return (int)Opcode + " "+args ;
 			}
 			/// <summary>
 			/// Returns a visible string to be used in UIs.
@@ -218,6 +245,64 @@ namespace _3DRadSpaceDll
 			public static void Run(OpCodeCall[] e)
 			{
 				for(int i =0; i < e.Length;i++) e[i].Call();
+			}
+			/// <summary>
+			/// Used in I/O operations.
+			/// </summary>
+			/// <param name="offset">Integer offset</param>
+			/// <param name="str">Parsed string array</param>
+			/// <param name="stop"></param>
+			/// <returns></returns>
+			public static OpCodeCall[] CreateFromString(int offset,string[] str,int stop)
+			{
+				List<OpCodeCall> c = new List<OpCodeCall>();
+				for(int i =offset; i < stop;i++)
+				{
+					Opcode op = (Opcode)Convert.ToInt32(str[i]);
+					switch (op)
+					{
+						case Opcode.Start:
+						case Opcode.Stop:
+						case Opcode.Toggle:
+						case Opcode.Show: 
+						case Opcode.Hide:
+						case Opcode.RunOneFrame:
+							c.Add(new OpCodeCall(op, new object[] { Convert.ToInt32(str[i + 1]) }));
+							i += 1;
+							break;
+						case Opcode.SetPos:
+						case Opcode.AddPos:
+						case Opcode.SetRot:
+						case Opcode.AddRot:
+							c.Add(new OpCodeCall(op, new object[] { Convert.ToInt32(str[i + 1]),
+							new Vector3( Convert.ToSingle(str[i+2]),Convert.ToSingle(str[i+3]),Convert.ToSingle(str[i+4]))
+							}));
+							i += 4;
+							break;
+						default: break;
+					}
+				}
+				return c.ToArray();
+			}
+			/// <summary>
+			/// Used in UIs
+			/// </summary>
+			/// <param name="e"></param>
+			/// <returns></returns>
+			public static int[] GetUsedObjects(OpCodeCall[] e)
+			{
+				int[] l1 = new int[e.Length];
+				for(int i =0; i < e.Length;i++)
+				{
+					if(e[i].Arguments != null)
+					{
+						if(e[i].Arguments.Length >0)
+						{
+
+						}
+					}
+				}
+				return l1;
 			}
 		}
 	}

@@ -29,6 +29,7 @@ namespace _3DRadSpaceDll
             Period = 0;
             Repetitions = 0;
             TotalTime = 0;
+            Behiavours = new ActionScript.OpCodeCall[0];
         }
         /// <summary>
         /// Main Timer constructor.
@@ -43,6 +44,7 @@ namespace _3DRadSpaceDll
             Enabled = enabled;
             Period = period;
             Repetitions = repetitions;
+            Behiavours = new ActionScript.OpCodeCall[0];
         }
         uint _time;
         /// <summary>
@@ -68,6 +70,12 @@ namespace _3DRadSpaceDll
         /// Represents ∞
         /// </summary>
         public const uint Infinity = uint.MaxValue;
+
+        /// <summary>
+        /// The event defined in the editor.
+        /// </summary>
+        public new ActionScript.OpCodeCall[] Behiavours;
+
         /// <summary>
         /// 
         /// </summary>
@@ -83,6 +91,7 @@ namespace _3DRadSpaceDll
                 if(_time >= Period)
                 {
                     OnTimerRepetition?.Invoke(this, TotalTime);
+                    ActionScript.OpCodeCall.Run(Behiavours);
                     _time = 0;
                 }
                 base.Update(mouse, keyboard, time);

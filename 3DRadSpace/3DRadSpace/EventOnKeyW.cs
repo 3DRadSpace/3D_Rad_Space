@@ -33,9 +33,11 @@ namespace _3DRadSpace
             }
             comboBox1.Text = GetInputStateFromComboBox_Rev(eok.Key.State);
             textBox2.Text = "" + eok.HoldingTime;
+            _eok = eok;
         }
         public GameObject Result;
         public OpCodeCall[] opcodes;
+        EventOnKey _eok;
         private void EventOnKeyW_Load(object sender, EventArgs e)
         {
             comboBox1.SelectedIndex = 0;
@@ -44,7 +46,9 @@ namespace _3DRadSpace
         private void button1_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Result = new EventOnKey(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new KeyInput(GetKeyFromListBox(), GetInputStateFromComboBox()), Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)));
+            EventOnKey k = new EventOnKey(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new KeyInput(GetKeyFromListBox(), GetInputStateFromComboBox()), Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)));
+            k.Behiavours = opcodes;
+            Result = k;
             Close();
         }
 
@@ -191,7 +195,9 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-            EventEditor editor = new EventEditor(null);
+            EventEditor editor;
+            if(_eok != null) editor = new EventEditor(OpCodeCall.GetUsedObjects(_eok.Behiavours));
+            else editor = new EventEditor(null);
             if(editor.ShowDialog() == DialogResult.OK)
             {
                 opcodes = editor.Result.ToArray();

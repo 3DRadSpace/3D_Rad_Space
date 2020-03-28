@@ -5,7 +5,7 @@
  * 3DRadSpace is made with hope that it will provide ease of use, and more stability and features than the older engine that is heavily inspired by.
  *
  *  \section m_doc About this documentation
- *  This documentation is only about the scripting engine and the 3DRadSpaceDll (_3DRadSpaceDll). The Editor documentation is written in Rich Text Format (.rtf).
+ *  This documentation is only about the scripting engine and the 3DRadSpaceDll (_3DRadSpaceDll).
  * 
  *  Last updated: 09/02/2020.
  * 
