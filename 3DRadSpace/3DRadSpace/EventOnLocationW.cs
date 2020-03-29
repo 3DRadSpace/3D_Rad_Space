@@ -44,7 +44,7 @@ namespace _3DRadSpace
 		}
 
 		public GameObject Result;
-		OpCodeCall[] opcodes;
+		List<OpCodeCall> opcodes = new List<OpCodeCall>();
 		EventOnLocation _eol;
 
 		private void label8_Click(object sender, EventArgs e)
@@ -138,12 +138,12 @@ namespace _3DRadSpace
 		private void button5_Click(object sender, EventArgs e)
 		{
 			EventEditor eventEditor;
-			if (_eol != null) eventEditor = new EventEditor(OpCodeCall.GetUsedObjects(_eol.Behiavours));
-			else eventEditor = new EventEditor(null);
+			if (_eol != null) eventEditor = new EventEditor(_eol.Behiavours,_eol.SelectedObjects);
+			else eventEditor = new EventEditor(null,null);
 
 			if(eventEditor.ShowDialog() == DialogResult.OK)
 			{
-				opcodes = eventEditor.Result.ToArray();
+				opcodes = eventEditor.Result;
 			}
 			eventEditor.Dispose();
 		}

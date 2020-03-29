@@ -338,18 +338,18 @@ namespace _3DRadSpaceDll
 				if(Game.GameObjects[i] is EventOnLocation eol)
 				{
 					string beh = null;
-					for(int k =0; k < eol.Behiavours.Length;k++)
+					for(int k =0; k < eol.Behiavours.Count;k++)
 					{
-						beh += eol.Behiavours[i].ToString();
+						beh += eol.Behiavours[k].ToString();
 					}
 					ToBeSaved[j] = "eol " + eol.Name + ' ' + eol.Enabled + ' ' + Box2str(eol.BoundingBox) + ' ' + Sph2str(eol.BoundingSphere) + ' ' + Plane2str(eol.BoundingPlane) + ' ' + eol.VisibleInEditor + ' ' + beh;
 				}
 				if (Game.GameObjects[i] is EventOnKey eok)
 				{
 					string beh = null;
-					for (int k = 0; k < eok.Behiavours.Length; k++)
+					for (int k = 0; k < eok.Behiavours.Count; k++)
 					{
-						beh += eok.Behiavours[i].ToString();
+						beh += eok.Behiavours[k].ToString();
 					}
 					ToBeSaved[j] = "eok " + eok.Name + ' ' + eok.Enabled + ' ' + (int)eok.Key.Key + ' ' + (int)eok.Key.State + ' ' + eok.HoldingTime + ' ' + beh;
 				}
@@ -360,9 +360,9 @@ namespace _3DRadSpaceDll
 				if(Game.GameObjects[i] is Timer timer)
 				{
 					string beh = null;
-					for (int k = 0; k < timer.Behiavours.Length; k++)
+					for (int k = 0; k < timer.Behiavours.Count; k++)
 					{
-						beh += timer.Behiavours[i].ToString();
+						beh += timer.Behiavours[k].ToString();
 					}
 					ToBeSaved[j] = "timer " + timer.Name + ' ' + timer.Enabled + ' ' + timer.Period + ' ' + timer.Repetitions + ' ' + beh;
 				}

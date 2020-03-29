@@ -57,7 +57,7 @@ namespace _3DRadSpaceDll
             BoundingBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
             BoundingPlane = new Plane(Vector4.Zero);
             BoundingType = BoundingObject.None;
-            Behiavours = new ActionScript.OpCodeCall[0];
+            Behiavours = new List<ActionScript.OpCodeCall>();
         }
         /// <summary>
         /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingBox"/>
@@ -75,7 +75,7 @@ namespace _3DRadSpaceDll
             BoundingType = BoundingObject.Box;
             BoundingSphere = BoundingSphere.CreateFromBoundingBox(box);
             BoundingPlane = new Plane(Vector4.Zero);
-            Behiavours = new ActionScript.OpCodeCall[0];
+            Behiavours = new List<ActionScript.OpCodeCall>();
         }
         /// <summary>
         /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingSphere"/>
@@ -157,7 +157,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// The event defined in the editor.
         /// </summary>
-        public new ActionScript.OpCodeCall[] Behiavours;
+        public new List<ActionScript.OpCodeCall> Behiavours;
 
         /// <summary>
         /// 

@@ -14,20 +14,30 @@ namespace _3DRadSpace
 {
 	public partial class EventEditor : Form
 	{
-		public EventEditor(int[] ids)
+		public EventEditor(List<OpCodeCall> events,List<int> ids)
 		{
-			Result = new List<OpCodeCall>();
 			InitializeComponent();
-			if (ids != null)
+			if(events != null)
 			{
-				for (int i = 0; i < ids.Length; i++)
+				Result = events;
+				_old = events;
+				for (int i = 0; i < events.Count; i++)
 				{
-					listBox1.Items.Add(_3DRadSpaceDll.Game.GameObjects[ids[i]]);
+					listBox2.Items.Add(events[i].VisibleString());
 				}
 			}
+			if (ids != null)
+			{
+				for (int i = 0; i < ids.Count; i++)
+				{
+					listBox1.Items.Add(_3DRadSpaceDll.Game.GameObjects[ids[i]]+" ("+i+')');
+				}
+			}
+			else Result = new List<OpCodeCall>();
 		}
 
 		public List<OpCodeCall> Result;
+		public List<OpCodeCall> _old;
 
 		private void EventEditor_Load(object sender, EventArgs e)
 		{
@@ -132,19 +142,23 @@ namespace _3DRadSpace
 					break;
 				default: c = new OpCodeCall(Opcode.NOP, null); break;
 			}
-			listBox2.Items.Add(c);
+			listBox2.Items.Add(c.VisibleString());
 			Result.Add(c);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			listBox2.Items.RemoveAt(listBox2.SelectedIndex);
-			Result.RemoveAt(listBox2.SelectedIndex);
+			if (listBox2.SelectedIndex != -1)
+			{
+				listBox2.Items.RemoveAt(listBox2.SelectedIndex);
+				Result.RemoveAt(listBox2.SelectedIndex);
+			}
 		}
 
 		private void button4_Click(object sender, EventArgs e)
 		{
 			DialogResult = DialogResult.Cancel;
+			Result = _old;
 			Close();
 		}
 	}

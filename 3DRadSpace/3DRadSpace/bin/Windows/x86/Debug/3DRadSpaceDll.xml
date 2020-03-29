@@ -681,6 +681,11 @@
             Relation with other objects
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.GameObject.SelectedObjects">
+            <summary>
+            Used for editor.
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.GameObject.RotationQuaternion">
             <summary>
             Rotation in a Quaterion system.
@@ -1002,7 +1007,7 @@
             <param name="Arg">Argument Opcode</param>
             <returns></returns>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Run(_3DRadSpaceDll.ActionScript.OpCodeCall[])">
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Run(System.Collections.Generic.List{_3DRadSpaceDll.ActionScript.OpCodeCall})">
             <summary>
             Runs a array
             </summary>
@@ -1015,13 +1020,6 @@
             <param name="offset">Integer offset</param>
             <param name="str">Parsed string array</param>
             <param name="stop"></param>
-            <returns></returns>
-        </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.GetUsedObjects(_3DRadSpaceDll.ActionScript.OpCodeCall[])">
-            <summary>
-            Used in UIs
-            </summary>
-            <param name="e"></param>
             <returns></returns>
         </member>
         <member name="T:_3DRadSpaceDll.Project">

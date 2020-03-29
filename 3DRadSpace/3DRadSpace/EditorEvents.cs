@@ -411,7 +411,9 @@ namespace _3DRadSpace
         //int _oldindex = 0;
         private void ListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if(listBox1.SelectedItems.Count == 0)
+            if (_deselect) return;
+
+            if (listBox1.SelectedItems.Count == 0)
             {
                 if (listBox1.Items[e.Index].Checked != false) e.NewValue = CheckState.Unchecked;
                 return;
@@ -420,20 +422,75 @@ namespace _3DRadSpace
             GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
             if (e.NewValue == CheckState.Unchecked)
             {
-                for (; i < o.Behiavours.Count; i++)
+                if (o is EventOnLocation eol)
                 {
-                    if (o.Behiavours[i].ObjectID == listBox1.SelectedItems[0].Index)
+                    for (int j = 0; j < eol.Behiavours.Count; j++)
                     {
-                        o.Behiavours.RemoveAt(i);
-                        break;
+                        if (eol.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+                        {
+                            eol.Behiavours.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                if (o is EventOnKey eok)
+                {
+                    for (int j = 0; j < eok.Behiavours.Count; j++)
+                    {
+                        if (eok.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+                        {
+                            eok.Behiavours.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                if (o is _3DRadSpaceDll.Timer t)
+                {
+                    for (int j = 0; j < t.Behiavours.Count; j++)
+                    {
+                        if (t.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+                        {
+                            t.Behiavours.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (; i < o.Behiavours.Count; i++)
+                    {
+                        if (o.Behiavours[i].ObjectID == listBox1.SelectedItems[0].Index)
+                        {
+                            o.Behiavours.RemoveAt(i);
+                            break;
+                        }
                     }
                 }
             }
-            else if(e.NewValue == CheckState.Checked) o.Behiavours.Add(new ObjectBehiavour(e.Index));
+            else if (e.NewValue == CheckState.Checked)
+            {
+                if (o is EventOnLocation eol) eol.SelectedObjects.Add(e.Index );
+                if (o is EventOnKey eok) eok.SelectedObjects.Add(e.Index);
+                if (o is _3DRadSpaceDll.Timer t) t.SelectedObjects.Add(e.Index);
+                else o.Behiavours.Add(new ObjectBehiavour(e.Index));
+            }
         }
+        bool _deselect;
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //_oldindex = listBox1.TabIndex;
+            _deselect = true;
+            for(int i =0; i < listBox1.Items.Count; i++)
+            {
+                listBox1.Items[i].Checked = false;
+            }
+            if (listBox1.SelectedItems.Count > 0 )
+            {
+                for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects.Count; i++)
+                {
+                    listBox1.Items[_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects[i]].Checked = true;
+                }
+            }
+            _deselect = false;
         }
     }
 }

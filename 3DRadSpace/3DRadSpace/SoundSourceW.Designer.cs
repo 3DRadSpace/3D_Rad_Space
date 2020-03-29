@@ -54,16 +54,16 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -341,6 +341,25 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Position and Listener";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(5, 107);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(133, 23);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Select listener object";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 84);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(14, 13);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Z";
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -383,24 +402,6 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "X";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 84);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(14, 13);
-            this.label11.TabIndex = 5;
-            this.label11.Text = "Z";
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(5, 107);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(133, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Select listener object";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.textBox6);
@@ -412,6 +413,14 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Others";
             // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(87, 22);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(100, 20);
+            this.textBox6.TabIndex = 1;
+            this.textBox6.Text = "1.0";
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -420,14 +429,6 @@
             this.label12.Size = new System.Drawing.Size(74, 13);
             this.label12.TabIndex = 0;
             this.label12.Text = "Doppler Scale";
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(87, 22);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 1;
-            this.textBox6.Text = "1.0";
             // 
             // SoundSourceW
             // 

@@ -78,7 +78,7 @@ namespace _3DRadSpaceDll
 			Enabled = false;
 			Key = new KeyInput(Keys.None, KeyInputType.Holding);
 			HoldingTime = uint.MaxValue;
-			Behiavours = new OpCodeCall[0];
+			Behiavours = new List<OpCodeCall>();
 		}
 		/// <summary>
 		/// Main EOK constructor.
@@ -93,7 +93,7 @@ namespace _3DRadSpaceDll
 			Enabled = enabled;
 			Key = input;
 			HoldingTime = time_necesarry;
-			Behiavours = new OpCodeCall[0];
+			Behiavours = new List<OpCodeCall>();
 		}
 		/// <summary>
 		/// Defines the key and the expected key state.
@@ -126,7 +126,7 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// The event defined in the editor.
 		/// </summary>
-		public new OpCodeCall[] Behiavours;
+		public new List<OpCodeCall> Behiavours;
 
 		/// <summary>
 		/// Triggers when the inputs are equal to the given conditions.

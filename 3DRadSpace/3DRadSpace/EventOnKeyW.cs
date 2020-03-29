@@ -36,7 +36,7 @@ namespace _3DRadSpace
             _eok = eok;
         }
         public GameObject Result;
-        public OpCodeCall[] opcodes;
+        List<OpCodeCall> opcodes = new List<OpCodeCall>();
         EventOnKey _eok;
         private void EventOnKeyW_Load(object sender, EventArgs e)
         {
@@ -196,11 +196,11 @@ namespace _3DRadSpace
         private void button4_Click(object sender, EventArgs e)
         {
             EventEditor editor;
-            if(_eok != null) editor = new EventEditor(OpCodeCall.GetUsedObjects(_eok.Behiavours));
-            else editor = new EventEditor(null);
+            if(_eok != null) editor = new EventEditor(_eok.Behiavours,_eok.SelectedObjects);
+            else editor = new EventEditor(null,null);
             if(editor.ShowDialog() == DialogResult.OK)
             {
-                opcodes = editor.Result.ToArray();
+                opcodes = editor.Result;
             }
             editor.Dispose();
         }

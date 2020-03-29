@@ -14,11 +14,12 @@ namespace _3DRadSpace
     public partial class SoundSourceW : Form
     {
         public GameObject Result;
+        public Camera _linkedcam;
         public SoundSourceW()
         {
             InitializeComponent();
         }
-        public SoundSourceW(SoundEffect sound)
+        public SoundSourceW(SoundSource sound)
         {
             InitializeComponent();
             textBox1.Text = sound.Name;
@@ -49,6 +50,10 @@ namespace _3DRadSpace
                     }
                 default: break;
             }
+            textBox3.Text = sound.Position.X+"";
+            textBox4.Text = sound.Position.Y+"";
+            textBox5.Text = sound.Position.Z+"";
+            textBox6.Text = sound.DopplerScale + "";
         }
 
 
@@ -70,6 +75,7 @@ namespace _3DRadSpace
                 Name = Editor.ValidateTextInput(textBox1.Text),
                 Enabled = checkBox1.Checked,
                 Resource = textBox2.Text,
+                LinkedCam = _linkedcam,
                 Position = new Microsoft.Xna.Framework.Vector3(
                     Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
                     Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)),
@@ -125,6 +131,18 @@ namespace _3DRadSpace
             trackBar1_Scroll(null,null);
             trackBar2_Scroll(null,null);
             trackBar3_Scroll(null,null);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            for(int i=0; i < Game.GameObjects.Count;i++)
+            {
+                if(Game.GameObjects[i] is Camera c)
+                {
+                    _linkedcam = c;
+                    break;
+                }
+            }
         }
     }
 }

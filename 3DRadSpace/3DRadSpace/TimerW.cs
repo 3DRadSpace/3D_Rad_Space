@@ -29,7 +29,7 @@ namespace _3DRadSpace
             _timer = t;
         }
         public GameObject Result;
-        OpCodeCall[] opcodes;
+        List<OpCodeCall> opcodes = new List<OpCodeCall>();
         _3DRadSpaceDll.Timer _timer;
 
         private void button3_Click(object sender, EventArgs e)
@@ -61,12 +61,12 @@ namespace _3DRadSpace
         private void button1_Click_1(object sender, EventArgs e)
         {
             EventEditor eventEditor;
-            if(_timer != null) eventEditor = new EventEditor(OpCodeCall.GetUsedObjects(_timer.Behiavours));
-            else eventEditor = new EventEditor(null);
+            if(_timer != null) eventEditor = new EventEditor(_timer.Behiavours,_timer.SelectedObjects);
+            else eventEditor = new EventEditor(null,null);
 
             if(eventEditor.ShowDialog() == DialogResult.OK)
             {
-                opcodes = eventEditor.Result.ToArray();
+                opcodes = eventEditor.Result;
             }
             eventEditor.Dispose();
         }

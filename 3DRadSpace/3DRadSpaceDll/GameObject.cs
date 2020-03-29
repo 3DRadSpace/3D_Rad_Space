@@ -53,6 +53,7 @@ namespace _3DRadSpaceDll
 		public GameObject()
 		{
 			Behiavours = new List<ObjectBehiavour>();
+			SelectedObjects = new List<int>();
 		}
 		/// <summary>
 		/// Object Name. Used as a string identifier.
@@ -85,6 +86,11 @@ namespace _3DRadSpaceDll
 		/// Relation with other objects
 		/// </summary>
 		public List<ObjectBehiavour> Behiavours { get; set; }
+
+		/// <summary>
+		/// Used for editor.
+		/// </summary>
+		public List<int> SelectedObjects;
 
 		/// <summary>
 		/// Rotation in a Quaterion system.

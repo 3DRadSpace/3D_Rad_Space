@@ -242,9 +242,9 @@ namespace _3DRadSpaceDll
 			/// Runs a array
 			/// </summary>
 			/// <param name="e"></param>
-			public static void Run(OpCodeCall[] e)
+			public static void Run(List<OpCodeCall> e)
 			{
-				for(int i =0; i < e.Length;i++) e[i].Call();
+				for(int i =0; i < e.Count;i++) e[i].Call();
 			}
 			/// <summary>
 			/// Used in I/O operations.
@@ -253,7 +253,7 @@ namespace _3DRadSpaceDll
 			/// <param name="str">Parsed string array</param>
 			/// <param name="stop"></param>
 			/// <returns></returns>
-			public static OpCodeCall[] CreateFromString(int offset,string[] str,int stop)
+			public static List<OpCodeCall> CreateFromString(int offset,string[] str,int stop)
 			{
 				List<OpCodeCall> c = new List<OpCodeCall>();
 				for(int i =offset; i < stop;i++)
@@ -282,27 +282,7 @@ namespace _3DRadSpaceDll
 						default: break;
 					}
 				}
-				return c.ToArray();
-			}
-			/// <summary>
-			/// Used in UIs
-			/// </summary>
-			/// <param name="e"></param>
-			/// <returns></returns>
-			public static int[] GetUsedObjects(OpCodeCall[] e)
-			{
-				int[] l1 = new int[e.Length];
-				for(int i =0; i < e.Length;i++)
-				{
-					if(e[i].Arguments != null)
-					{
-						if(e[i].Arguments.Length >0)
-						{
-
-						}
-					}
-				}
-				return l1;
+				return c;
 			}
 		}
 	}

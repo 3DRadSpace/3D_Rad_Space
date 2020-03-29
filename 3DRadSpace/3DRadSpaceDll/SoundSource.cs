@@ -119,8 +119,12 @@ namespace _3DRadSpaceDll
             }
             set
             {
-                Position = Position;
-                _cam = value;
+                if (value != null)
+                {
+                    Position = Position;
+                    _cam = value;
+                }
+                else SetListenerPosition(Vector3.Zero, Vector3.Up);
             }
         }
         Camera _cam;
