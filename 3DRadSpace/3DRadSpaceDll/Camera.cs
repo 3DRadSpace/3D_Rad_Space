@@ -34,6 +34,7 @@ namespace _3DRadSpaceDll
             this.FOV = MathHelper.ToRadians(FOV);
             MinDrawDist = nearplane;
             MaxDrawDist = farplane;
+            Behiavours = new System.Collections.Generic.List<ObjectBehiavour>();
         }
         /// <summary>
         /// Creates a Camera object with the specified arguments.
@@ -57,6 +58,7 @@ namespace _3DRadSpaceDll
             this.FOV = MathHelper.ToRadians(FOV);
             MinDrawDist = nearplane;
             MaxDrawDist = farplane;
+            Behiavours = new System.Collections.Generic.List<ObjectBehiavour>();
         }
         /// <summary>
         /// Camera constructor used in the editor.
@@ -75,6 +77,7 @@ namespace _3DRadSpaceDll
             this.FOV = MathHelper.ToRadians(FOV);
             MaxDrawDist = farplane;
             MinDrawDist = nearplane;
+            Behiavours = new System.Collections.Generic.List<ObjectBehiavour>();
         }
         /// <summary>
         /// Empty constructor. Values are mostly default.
@@ -90,6 +93,7 @@ namespace _3DRadSpaceDll
             FOV = MathHelper.ToRadians(45);
             MinDrawDist = 0.01f;
             MaxDrawDist = 500f;
+            Behiavours = new System.Collections.Generic.List<ObjectBehiavour>();
         }
 
         /// <summary>
@@ -107,13 +111,16 @@ namespace _3DRadSpaceDll
         /// <param name="content"></param>
         public override void Load(ContentManager content)
         {
-            for (int i = 0; i < Behiavours.Count; i++)
+            if (Behiavours != null)
             {
-                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
-                int b = Behiavours[i].BehiavourID;
-                if (b == 1)
+                for (int i = 0; i < Behiavours.Count; i++)
                 {
-                    DeltaPos = obj.Position - Position;
+                    GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
+                    int b = Behiavours[i].BehiavourID;
+                    if (b == 1)
+                    {
+                        DeltaPos = obj.Position - Position;
+                    }
                 }
             }
             base.Load(content);

@@ -31,7 +31,7 @@ namespace _3DRadSpace
                     break;
                 }
             }
-            comboBox1.Text = GetInputStateFromComboBox_Rev(eok.Key.State);
+            comboBox1.SelectedIndex = (int)eok.Key.State;
             textBox2.Text = "" + eok.HoldingTime;
             _eok = eok;
         }
@@ -105,6 +105,8 @@ namespace _3DRadSpace
                 case "Down Arrow": return Microsoft.Xna.Framework.Input.Keys.Down;
                 case "Left Arrow": return Microsoft.Xna.Framework.Input.Keys.Left;
                 case "Right Arrow": return Microsoft.Xna.Framework.Input.Keys.Right;
+                case "Enter": return Microsoft.Xna.Framework.Input.Keys.Enter;
+                case "Space": return Microsoft.Xna.Framework.Input.Keys.Space;
                 default: return Microsoft.Xna.Framework.Input.Keys.None;
             }
         }
@@ -168,6 +170,8 @@ namespace _3DRadSpace
                 case Microsoft.Xna.Framework.Input.Keys.Down: return "Down Arrow";
                 case Microsoft.Xna.Framework.Input.Keys.Left: return "Left Arrow";
                 case Microsoft.Xna.Framework.Input.Keys.Right: return "Right Arrow";
+                case Microsoft.Xna.Framework.Input.Keys.Enter: return "Enter";
+                case Microsoft.Xna.Framework.Input.Keys.Space: return "Space";
                 default: return null;
             }
         }
@@ -203,6 +207,11 @@ namespace _3DRadSpace
                 opcodes = editor.Result;
             }
             editor.Dispose();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex != (int)KeyInputType.Holding) textBox2.Text = "0";
         }
     }
 }

@@ -196,5 +196,13 @@ namespace _3DRadSpaceDll
 			if (SoundInstance != null) return SoundInstance.State == SoundState.Stopped;
 			else return true;
 		}
+		/// <summary>
+		/// Plays the sound.
+		/// </summary>
+		public override void Trigger()
+		{
+			base.Trigger();
+			Play();
+		}
 	}
 }

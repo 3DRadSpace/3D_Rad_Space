@@ -52,7 +52,6 @@ namespace _3DRadSpace_Player
         }
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
@@ -60,6 +59,8 @@ namespace _3DRadSpace_Player
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content,GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundSource sounds) sounds.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundEffect sound) sound.Load(Content);
             }
         }
         protected override void UnloadContent()
@@ -91,6 +92,11 @@ namespace _3DRadSpace_Player
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(ClearColor);
+            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Draw(null,out view,out projection);
@@ -113,9 +119,14 @@ namespace _3DRadSpace_Player
                     }
                     skinmesh.Draw(null, view, projection);
                 }
+            }
+            spriteBatch.Begin();
+            for(int i=0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Draw(spriteBatch, null, null);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Draw(spriteBatch, null, null);
             }
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

@@ -56,7 +56,6 @@ namespace _3DRadSpaceDll
 									c.Behiavours.Add(new ObjectBehiavour(Convert.ToInt32(Obj[16 + j]), Convert.ToInt32(Obj[17 + (j*2)])));
 								}
 							}
-							else c.Behiavours = null;
 							a = c;
 							break;
 						}
@@ -67,6 +66,7 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j]+' ';
 							}
+							path = path.Remove(path.Length - 1);
 							a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
 							break;
 						}
@@ -96,7 +96,8 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + ' ';
 							}
-							a = new Skinmesh(Obj[0], Convert.ToBoolean(Obj[2]), path,
+							path = path.Remove(path.Length - 1);
+							a = new Skinmesh(Obj[1], Convert.ToBoolean(Obj[2]), path,
 								new Vector3(Convert.ToSingle(Obj[3]),Convert.ToSingle(Obj[4]),Convert.ToSingle(Obj[5]))
 								, new Vector3(Convert.ToSingle(Obj[6]),Convert.ToSingle(Obj[7]),Convert.ToSingle(Obj[8]))
 								, new Vector3(Convert.ToSingle(Obj[9]),Convert.ToSingle(Obj[10]),Convert.ToSingle(Obj[11])),
@@ -113,6 +114,7 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + " ";
 							}
+							path = path.Remove(path.Length - 1);
 							Sprite s = new Sprite(Obj[1], Convert.ToBoolean(Obj[2]), path,
 								new Vector2(Convert.ToInt32(Obj[3]), Convert.ToInt32(Obj[4])), new Vector2(Convert.ToInt32(Obj[5]), Convert.ToInt32(Obj[6])),
 								new Vector2(Convert.ToInt32(Obj[7]), Convert.ToInt32(Obj[8])), Convert.ToSingle(Obj[9]),
@@ -152,6 +154,7 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + ' ';
 							}
+							path = path.Remove(path.Length - 1);
 							a = new SoundEffect(Obj[1], Convert.ToBoolean(Obj[2]), path, Convert.ToSingle(Obj[3]))
 							{
 								Pitch = Convert.ToSingle(Obj[4]),
@@ -167,6 +170,7 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + ' ';
 							}
+							path = path.Remove(path.Length - 1);
 							a = new ExitFade()
 							{
 								Name = Obj[1],
@@ -187,6 +191,7 @@ namespace _3DRadSpaceDll
 							{
 								path += Obj[j] + ' ';
 							}
+							path = path.Remove(path.Length - 1);
 							a = new SoundSource()
 							{
 								Name = Obj[1],
@@ -309,7 +314,7 @@ namespace _3DRadSpaceDll
 				{
 					ToBeSaved[j] = "skinmesh " + skinmesh.Name + ' ' + skinmesh.Enabled + ' ' + Vector2String(skinmesh.Position) + ' ' +
 						Vector2String(skinmesh.Rotation) + ' ' + Vector2String(skinmesh.Scale) + ' ' + skinmesh.FogEnabled + ' ' +
-						Vector2String(skinmesh.BoundingBox.Min) + ' ' + Vector2String(skinmesh.BoundingBox.Max) + skinmesh.BoundingSphere.Radius + ' ' + skinmesh.Resource;
+						Vector2String(skinmesh.BoundingBox.Min) + ' ' + Vector2String(skinmesh.BoundingBox.Max) +' ' + skinmesh.BoundingSphere.Radius + ' ' + skinmesh.Resource;
 				}
 				if (Game.GameObjects[i] is Sprite sprite)
 				{
@@ -329,7 +334,7 @@ namespace _3DRadSpaceDll
 				if(Game.GameObjects[i] is SoundEffect sound)
 				{
 					if(!(Game.GameObjects[i] is SoundSource ))
-						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+sound.SoundState+' ' + sound.Resource;
+						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+(int)sound.SoundState+' ' + sound.Resource;
 				}
 				if(Game.GameObjects[i] is ExitFade fade)
 				{
@@ -355,7 +360,7 @@ namespace _3DRadSpaceDll
 				}
 				if (Game.GameObjects[i] is SoundSource sounds)
 				{
-					ToBeSaved[j] = "soundsource " + sounds.Name + ' ' + sounds.Enabled + ' ' + sounds.Volume + ' ' + sounds.Pitch + ' ' + sounds.Pan + ' ' + sounds.SoundState + ' '+Vector2String(sounds.Position)+' '+sounds.DopplerScale+' ' + sounds.Resource;
+					ToBeSaved[j] = "soundsource " + sounds.Name + ' ' + sounds.Enabled + ' ' + sounds.Volume + ' ' + sounds.Pitch + ' ' + sounds.Pan + ' ' + (int)sounds.SoundState + ' '+Vector2String(sounds.Position)+' '+sounds.DopplerScale+' ' + sounds.Resource;
 				}
 				if(Game.GameObjects[i] is Timer timer)
 				{

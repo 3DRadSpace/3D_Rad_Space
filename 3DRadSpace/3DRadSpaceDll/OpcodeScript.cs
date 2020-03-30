@@ -114,6 +114,7 @@ namespace _3DRadSpaceDll
 						{
 							int id = Convert.ToInt32(Arguments[0]);
 							Game.GameObjects[id].Enable();
+							if (Game.GameObjects[id] is SoundEffect ef) ef.Trigger();
 							break;
 						}
 					case Opcode.Stop:

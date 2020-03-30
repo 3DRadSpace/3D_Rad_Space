@@ -60,3 +60,7 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\D
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.SoundSourceW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.TimerW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.EventEditor.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Sounds\sound.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Sounds\sound.wma
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Skinmeshes\terrain0100.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Skinmeshes\terrain0100_0.xnb

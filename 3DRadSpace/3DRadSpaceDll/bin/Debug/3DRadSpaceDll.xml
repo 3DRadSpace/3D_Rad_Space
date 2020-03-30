@@ -1417,6 +1417,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Trigger">
+            <summary>
+            Plays the sound.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.SoundSource">
             <summary>
             Allows playing sounds located in a 3D envoirement. 

@@ -145,8 +145,16 @@ namespace _3DRadSpaceDll
 		/// <param name="time"></param>
 		public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
 		{
-			if (Key.State == KeyInputType.Released && keyboard.IsKeyUp(Key.Key)) OnKeyTrigger?.Invoke(this, time);
-			if (Key.State == KeyInputType.Holding && keyboard.IsKeyDown(Key.Key)) OnKeyTrigger?.Invoke(this, time);
+			if (Key.State == KeyInputType.Released && keyboard.IsKeyUp(Key.Key))
+			{
+				OpCodeCall.Run(Behiavours);
+				OnKeyTrigger?.Invoke(this, time);
+			}
+			if (Key.State == KeyInputType.Pressed && keyboard.IsKeyDown(Key.Key))
+			{
+				OpCodeCall.Run(Behiavours);
+				OnKeyTrigger?.Invoke(this, time);
+			}
 			if (Key.State == KeyInputType.Holding)
 			{
 				if (keyboard.IsKeyDown(Key.Key))

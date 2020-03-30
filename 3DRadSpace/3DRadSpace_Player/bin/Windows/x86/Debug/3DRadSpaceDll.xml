@@ -260,6 +260,11 @@
             Defnes how much time the button is being hold.
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.EventOnKey.Behiavours">
+            <summary>
+            The event defined in the editor.
+            </summary>
+        </member>
         <member name="E:_3DRadSpaceDll.EventOnKey.OnKeyTrigger">
             <summary>
             Triggers when the inputs are equal to the given conditions.
@@ -391,6 +396,11 @@
         <member name="F:_3DRadSpaceDll.EventOnLocation.Sphere">
             <summary>
             A green trransparent sphere used to mark the bounding sphere in the editor.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.EventOnLocation.Behiavours">
+            <summary>
+            The event defined in the editor.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
@@ -532,11 +542,6 @@
             Fog start distance.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Fog.Enabled">
-            <summary>
-            Override of the GameObject.Enable to allow the usage of FogEnabled.
-            </summary>
-        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -613,12 +618,6 @@
             <param name="keyboard">Keyboard inputs</param>
             <param name="time">Game time input</param>
         </member>
-        <member name="T:_3DRadSpaceDll.onObjectCreate">
-            <summary>
-            Called when a object is being created in the constructor function.
-            </summary>
-            <param name="obj">The created object</param>
-        </member>
         <member name="T:_3DRadSpaceDll.onObjectDestroy">
             <summary>
             Called when a object is being removed.
@@ -649,7 +648,12 @@
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Name">
             <summary>
-            Object Name. Used in 
+            Object Name. Used as a string identifier.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.GameObject.Tag">
+            <summary>
+            Tag object.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.Enabled">
@@ -675,6 +679,11 @@
         <member name="P:_3DRadSpaceDll.GameObject.Behiavours">
             <summary>
             Relation with other objects
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.GameObject.SelectedObjects">
+            <summary>
+            Used for editor.
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.GameObject.RotationQuaternion">
@@ -750,11 +759,6 @@
             Called when object is being updated on the update logic loop.
             </summary>
         </member>
-        <member name="E:_3DRadSpaceDll.GameObject.OnInitialization">
-            <summary>
-            Called when object is being created.
-            </summary>
-        </member>
         <member name="E:_3DRadSpaceDll.GameObject.OnRemoval">
             <summary>
             Called when object is being deleted.
@@ -810,6 +814,11 @@
             Returns the object's name
             </summary>
             <returns>the object's name</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.GameObject.RunOnce">
+            <summary>
+            Runs the object one Update loop. If used on a active object it will be stopped.
+            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.GameSettings">
             <summary>
@@ -881,6 +890,7 @@
         <member name="F:_3DRadSpaceDll.ActionScript.Opcode.NOP">
             <summary>
             No operation. Does nothing.
+            <para>Can be used to store object IDs or other data.</para>
             </summary>
         </member>
         <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Start">
@@ -944,16 +954,26 @@
             <para>Vector3 - Rotation in Euler Angles.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.ExecuteScript">
+        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.RunOneFrame">
             <summary>
-            Executes a piece of code.
+            Starts an object, update it, then stop it.
             <para>Arguments</para>
-            <para>string[] - The piece of code to be compiled and then executed.</para>
+            <para>int - Object ID</para>
             </summary>
         </member>
         <member name="T:_3DRadSpaceDll.ActionScript.OpCodeCall">
             <summary>
             Calls an opcode;
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.OpCodeCall.Opcode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.ActionScript.OpCodeCall.Arguments">
+            <summary>
+            
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.#ctor(_3DRadSpaceDll.ActionScript.Opcode,System.Object[])">
@@ -987,6 +1007,21 @@
             <param name="Arg">Argument Opcode</param>
             <returns></returns>
         </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Run(System.Collections.Generic.List{_3DRadSpaceDll.ActionScript.OpCodeCall})">
+            <summary>
+            Runs a array
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.CreateFromString(System.Int32,System.String[],System.Int32)">
+            <summary>
+            Used in I/O operations.
+            </summary>
+            <param name="offset">Integer offset</param>
+            <param name="str">Parsed string array</param>
+            <param name="stop"></param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
@@ -995,6 +1030,11 @@
         <member name="P:_3DRadSpaceDll.Project.type">
             <summary>
             Type of the project to open.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Project.GSettings">
+            <summary>
+            Used in editor
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Project.Open(System.String)">
@@ -1023,6 +1063,27 @@
             </summary>
             <param name="pos">2D Vector to be converted</param>
             <returns>The needed string</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Box2str(Microsoft.Xna.Framework.BoundingBox)">
+            <summary>
+            Used in I/O
+            </summary>
+            <param name="box">Bounding sphere</param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Sph2str(Microsoft.Xna.Framework.BoundingSphere)">
+            <summary>
+            Used in I/O
+            </summary>
+            <param name="sph">Bounding sphere</param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Project.Plane2str(Microsoft.Xna.Framework.Plane)">
+            <summary>
+            Used in I/O
+            </summary>
+            <param name="p">Bounding plane</param>
+            <returns></returns>
         </member>
         <member name="M:_3DRadSpaceDll.Project.UnloadObjects">
             <summary>
@@ -1356,6 +1417,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:_3DRadSpaceDll.SoundEffect.Trigger">
+            <summary>
+            Plays the sound.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.SoundSource">
             <summary>
             Allows playing sounds located in a 3D envoirement. 
@@ -1366,7 +1432,7 @@
             Empty SoundSource constructor.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.SoundSource.#ctor(System.String,System.Boolean,System.String,System.Single,Microsoft.Xna.Framework.Vector3,_3DRadSpaceDll.Camera,System.Single,System.Single)">
+        <member name="M:_3DRadSpaceDll.SoundSource.#ctor(System.String,System.Boolean,System.String,System.Single,Microsoft.Xna.Framework.Vector3,_3DRadSpaceDll.Camera,System.Single,System.Single,System.Single)">
             <summary>
             Main SoundSource constructor.
             </summary>
@@ -1378,6 +1444,7 @@
             <param name="listener">Camera used as a listener.</param>
             <param name="pitch">Sound pitch ranging from -1.0f to 1.0f</param>
             <param name="pan">Headphones balance, ranging from -1.0f to 1.0f</param>
+            <param name="doppler">Doppler effect scale.</param>
         </member>
         <member name="P:_3DRadSpaceDll.SoundSource.Position">
             <summary>
@@ -1687,6 +1754,11 @@
         <member name="F:_3DRadSpaceDll.Timer.Infinity">
             <summary>
             Represents ∞
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Timer.Behiavours">
+            <summary>
+            The event defined in the editor.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Timer.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">

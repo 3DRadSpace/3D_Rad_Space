@@ -309,6 +309,7 @@ namespace _3DRadSpace
         }
         void GameWindow_DragDrop(object sender, DragEventArgs e)
         {
+            int l = _3DRadSpaceDll.Game.GameObjects.Count;
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             for(int i =0; i < files.Length;i++)
             {
@@ -316,6 +317,7 @@ namespace _3DRadSpace
                if(ext[ext.Length- 1] == "3drsp") _3DRadSpaceDll.Game.GameObjects.AddRange(Project.Open(files[i]));
             }
             ProjectSaved = false;
+            LoadAllObjects(l);
             UpdateObjects();
         }
         void UpdateObjects()
@@ -399,6 +401,17 @@ namespace _3DRadSpace
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
             }
         }
+        void LoadAllObjects(int offset)
+        {
+            for (int i = offset; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            {
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
+            }
+        }
         private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             e.Handled = true;
@@ -457,11 +470,11 @@ namespace _3DRadSpace
                 }
                 else
                 {
-                    for (; i < o.Behiavours.Count; i++)
+                    for (int k=0; k < o.Behiavours.Count; k++)
                     {
-                        if (o.Behiavours[i].ObjectID == listBox1.SelectedItems[0].Index)
+                        if (o.Behiavours[k].ObjectID == listBox1.SelectedItems[0].Index)
                         {
-                            o.Behiavours.RemoveAt(i);
+                            o.Behiavours.RemoveAt(k);
                             break;
                         }
                     }
