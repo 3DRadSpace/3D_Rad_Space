@@ -431,17 +431,16 @@ namespace _3DRadSpace
                 if (listBox1.Items[e.Index].Checked != false) e.NewValue = CheckState.Unchecked;
                 return;
             }
-            int i = 0;
             GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
             if (e.NewValue == CheckState.Unchecked)
             {
                 if (o is EventOnLocation eol)
                 {
-                    for (int j = 0; j < eol.Behiavours.Count; j++)
+                    for (int i = 0; i < eol.Behiavours.Count; i++)
                     {
-                        if (eol.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+                        if (eol.SelectedObjects[i] == listBox1.SelectedItems[0].Index)
                         {
-                            eol.Behiavours.RemoveAt(j);
+                            eol.Behiavours.RemoveAt(i);
                             break;
                         }
                     }
@@ -459,22 +458,22 @@ namespace _3DRadSpace
                 }
                 if (o is _3DRadSpaceDll.Timer t)
                 {
-                    for (int j = 0; j < t.Behiavours.Count; j++)
+                    for (int i = 0; i < t.Behiavours.Count; i++)
                     {
-                        if (t.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+                        if (t.SelectedObjects[i] == listBox1.SelectedItems[0].Index)
                         {
-                            t.Behiavours.RemoveAt(j);
+                            t.Behiavours.RemoveAt(i);
                             break;
                         }
                     }
                 }
                 else
                 {
-                    for (int k=0; k < o.Behiavours.Count; k++)
+                    for (int i=0; i < o.Behiavours.Count; i++)
                     {
-                        if (o.Behiavours[k].ObjectID == listBox1.SelectedItems[0].Index)
+                        if (o.Behiavours[i].ObjectID == listBox1.SelectedItems[0].Index)
                         {
-                            o.Behiavours.RemoveAt(k);
+                            o.Behiavours.RemoveAt(i);
                             break;
                         }
                     }
