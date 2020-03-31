@@ -1769,5 +1769,17 @@
             <param name="keyboard"></param>
             <param name="time"></param>
         </member>
+        <member name="T:_3DRadSpaceDll.XNBConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.XNBConverter.ConvertModel(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="path"></param>
+            <param name="outputpath"></param>
+        </member>
     </members>
 </doc>

@@ -512,6 +512,11 @@
             A InvalidConfigurationException is thrown when trying to perform a action that conflicts with the current configuration.
             </summary>
         </member>
+        <member name="T:DiscordRPC.Exceptions.InvalidPipeException">
+            <summary>
+            The exception that is thrown when a error occurs while communicating with a pipe or when a connection attempt fails.
+            </summary>
+        </member>
         <member name="T:DiscordRPC.Exceptions.StringOutOfRangeException">
             <summary>
             A StringOutOfRangeException is thrown when the length of a string exceeds the allowed limit.
@@ -562,11 +567,6 @@
         <member name="M:DiscordRPC.Exceptions.UninitializedException.#ctor">
             <summary>
             Creates a new uninitialized exception with default message.
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Exceptions.InvalidPipeException">
-            <summary>
-            The exception that is thrown when a error occurs while communicating with a pipe or when a connection attempt fails.
             </summary>
         </member>
         <member name="P:DiscordRPC.Helper.BackoffDelay.Maximum">
@@ -933,62 +933,6 @@
             </summary>
             <param name="stream"></param>
         </member>
-        <member name="T:DiscordRPC.Logging.FileLogger">
-            <summary>
-            Logs the outputs to a file
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Logging.FileLogger.Level">
-            <summary>
-            The level of logging to apply to this logger.
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Logging.FileLogger.File">
-            <summary>
-            Should the output be coloured?
-            </summary>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.#ctor(System.String)">
-            <summary>
-            Creates a new instance of the file logger
-            </summary>
-            <param name="path">The path of the log file.</param>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.#ctor(System.String,DiscordRPC.Logging.LogLevel)">
-            <summary>
-            Creates a new instance of the file logger
-            </summary>
-            <param name="path">The path of the log file.</param>
-            <param name="level">The level to assign to the logger.</param>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.Trace(System.String,System.Object[])">
-            <summary>
-            Informative log messages
-            </summary>
-            <param name="message"></param>
-            <param name="args"></param>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.Info(System.String,System.Object[])">
-            <summary>
-            Informative log messages
-            </summary>
-            <param name="message"></param>
-            <param name="args"></param>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.Warning(System.String,System.Object[])">
-            <summary>
-            Warning log messages
-            </summary>
-            <param name="message"></param>
-            <param name="args"></param>
-        </member>
-        <member name="M:DiscordRPC.Logging.FileLogger.Error(System.String,System.Object[])">
-            <summary>
-            Error log messsages
-            </summary>
-            <param name="message"></param>
-            <param name="args"></param>
-        </member>
         <member name="T:DiscordRPC.Logging.ConsoleLogger">
             <summary>
             Logs the outputs to the console using <see cref="M:System.Console.WriteLine"/>
@@ -1043,6 +987,62 @@
             <param name="args"></param>
         </member>
         <member name="M:DiscordRPC.Logging.ConsoleLogger.Error(System.String,System.Object[])">
+            <summary>
+            Error log messsages
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="T:DiscordRPC.Logging.FileLogger">
+            <summary>
+            Logs the outputs to a file
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Logging.FileLogger.Level">
+            <summary>
+            The level of logging to apply to this logger.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Logging.FileLogger.File">
+            <summary>
+            Should the output be coloured?
+            </summary>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the file logger
+            </summary>
+            <param name="path">The path of the log file.</param>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.#ctor(System.String,DiscordRPC.Logging.LogLevel)">
+            <summary>
+            Creates a new instance of the file logger
+            </summary>
+            <param name="path">The path of the log file.</param>
+            <param name="level">The level to assign to the logger.</param>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.Trace(System.String,System.Object[])">
+            <summary>
+            Informative log messages
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.Info(System.String,System.Object[])">
+            <summary>
+            Informative log messages
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.Warning(System.String,System.Object[])">
+            <summary>
+            Warning log messages
+            </summary>
+            <param name="message"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:DiscordRPC.Logging.FileLogger.Error(System.String,System.Object[])">
             <summary>
             Error log messsages
             </summary>
@@ -1155,61 +1155,6 @@
             <param name="message"></param>
             <param name="args"></param>
         </member>
-        <member name="T:DiscordRPC.Message.ConnectionFailedMessage">
-            <summary>
-            Failed to establish any connection with discord. Discord is potentially not running?
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ConnectionFailedMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ConnectionFailedMessage.FailedPipe">
-            <summary>
-            The pipe we failed to connect too.
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.ConnectionEstablishedMessage">
-            <summary>
-            The connection to the discord client was succesfull. This is called before <see cref="F:DiscordRPC.Message.MessageType.Ready"/>.
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ConnectionEstablishedMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ConnectionEstablishedMessage.ConnectedPipe">
-            <summary>
-            The pipe we ended up connecting too
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.PresenceMessage">
-            <summary>
-            Representation of the message received by discord when the presence has been updated.
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.PresenceMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.PresenceMessage.Presence">
-            <summary>
-            The rich presence Discord has set
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.PresenceMessage.Name">
-            <summary>
-            The name of the application Discord has set it for
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.PresenceMessage.ApplicationID">
-            <summary>
-            The ID of the application discord has set it for
-            </summary>
-        </member>
         <member name="T:DiscordRPC.Message.CloseMessage">
             <summary>
             Called when the IPC has closed.
@@ -1228,6 +1173,105 @@
         <member name="P:DiscordRPC.Message.CloseMessage.Code">
             <summary>
             The closure code
+            </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.ConnectionEstablishedMessage">
+            <summary>
+            The connection to the discord client was succesfull. This is called before <see cref="F:DiscordRPC.Message.MessageType.Ready"/>.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ConnectionEstablishedMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ConnectionEstablishedMessage.ConnectedPipe">
+            <summary>
+            The pipe we ended up connecting too
+            </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.ConnectionFailedMessage">
+            <summary>
+            Failed to establish any connection with discord. Discord is potentially not running?
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ConnectionFailedMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ConnectionFailedMessage.FailedPipe">
+            <summary>
+            The pipe we failed to connect too.
+            </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.ErrorMessage">
+            <summary>
+            Created when a error occurs within the ipc and it is sent to the client.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ErrorMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ErrorMessage.Code">
+            <summary>
+            The Discord error code.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.ErrorMessage.Message">
+            <summary>
+            The message associated with the error code.
+            </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.ErrorCode">
+            <summary>
+            The error message received by discord. See https://discordapp.com/developers/docs/topics/rpc#rpc-server-payloads-rpc-errors for documentation
+            </summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.Success">
+            <summary> Pipe was Successful </summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.PipeException">
+            <summary>The pipe had an exception</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.ReadCorrupt">
+            <summary>The pipe received corrupted data</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.NotImplemented">
+            <summary>The functionality was not yet implemented</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.UnkownError">
+            <summary>Unkown Discord error</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.InvalidPayload">
+            <summary>Invalid Payload received</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.InvalidCommand">
+            <summary>Invalid command was sent</summary>
+        </member>
+        <member name="F:DiscordRPC.Message.ErrorCode.InvalidEvent">
+            <summary>Invalid event was sent </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.IMessage">
+            <summary>
+            Messages received from discord.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.IMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.IMessage.TimeCreated">
+            <summary>
+            The time the message was created
+            </summary>
+        </member>
+        <member name="M:DiscordRPC.Message.IMessage.#ctor">
+            <summary>
+            Creates a new instance of the message
             </summary>
         </member>
         <member name="T:DiscordRPC.Message.JoinMessage">
@@ -1258,91 +1302,6 @@
         <member name="P:DiscordRPC.Message.JoinRequestMessage.User">
             <summary>
             The discord user that is requesting access.
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.SpectateMessage">
-            <summary>
-            Called when the Discord Client wishes for this process to spectate a game. D -> C. 
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.SpectateMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.UnsubscribeMessage">
-            <summary>
-            Called as validation of a subscribe
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.UnsubscribeMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.UnsubscribeMessage.Event">
-            <summary>
-            The event that was subscribed too.
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.SubscribeMessage">
-            <summary>
-            Called as validation of a subscribe
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.SubscribeMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.SubscribeMessage.Event">
-            <summary>
-            The event that was subscribed too.
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.ReadyMessage">
-            <summary>
-            Called when the ipc is ready to send arguments.
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ReadyMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ReadyMessage.Configuration">
-            <summary>
-            The configuration of the connection
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ReadyMessage.User">
-            <summary>
-            User the connection belongs too
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.ReadyMessage.Version">
-            <summary>
-            The version of the RPC
-            </summary>
-        </member>
-        <member name="T:DiscordRPC.Message.IMessage">
-            <summary>
-            Messages received from discord.
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.IMessage.Type">
-            <summary>
-            The type of message received from discord
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.Message.IMessage.TimeCreated">
-            <summary>
-            The time the message was created
-            </summary>
-        </member>
-        <member name="M:DiscordRPC.Message.IMessage.#ctor">
-            <summary>
-            Creates a new instance of the message
             </summary>
         </member>
         <member name="T:DiscordRPC.Message.MessageType">
@@ -1405,54 +1364,95 @@
             Failed to establish any connection with discord. Discord is potentially not running?
             </summary>
         </member>
-        <member name="T:DiscordRPC.Message.ErrorMessage">
+        <member name="T:DiscordRPC.Message.PresenceMessage">
             <summary>
-            Created when a error occurs within the ipc and it is sent to the client.
+            Representation of the message received by discord when the presence has been updated.
             </summary>
         </member>
-        <member name="P:DiscordRPC.Message.ErrorMessage.Type">
+        <member name="P:DiscordRPC.Message.PresenceMessage.Type">
             <summary>
             The type of message received from discord
             </summary>
         </member>
-        <member name="P:DiscordRPC.Message.ErrorMessage.Code">
+        <member name="P:DiscordRPC.Message.PresenceMessage.Presence">
             <summary>
-            The Discord error code.
+            The rich presence Discord has set
             </summary>
         </member>
-        <member name="P:DiscordRPC.Message.ErrorMessage.Message">
+        <member name="P:DiscordRPC.Message.PresenceMessage.Name">
             <summary>
-            The message associated with the error code.
+            The name of the application Discord has set it for
             </summary>
         </member>
-        <member name="T:DiscordRPC.Message.ErrorCode">
+        <member name="P:DiscordRPC.Message.PresenceMessage.ApplicationID">
             <summary>
-            The error message received by discord. See https://discordapp.com/developers/docs/topics/rpc#rpc-server-payloads-rpc-errors for documentation
+            The ID of the application discord has set it for
             </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.Success">
-            <summary> Pipe was Successful </summary>
+        <member name="T:DiscordRPC.Message.ReadyMessage">
+            <summary>
+            Called when the ipc is ready to send arguments.
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.PipeException">
-            <summary>The pipe had an exception</summary>
+        <member name="P:DiscordRPC.Message.ReadyMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.ReadCorrupt">
-            <summary>The pipe received corrupted data</summary>
+        <member name="P:DiscordRPC.Message.ReadyMessage.Configuration">
+            <summary>
+            The configuration of the connection
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.NotImplemented">
-            <summary>The functionality was not yet implemented</summary>
+        <member name="P:DiscordRPC.Message.ReadyMessage.User">
+            <summary>
+            User the connection belongs too
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.UnkownError">
-            <summary>Unkown Discord error</summary>
+        <member name="P:DiscordRPC.Message.ReadyMessage.Version">
+            <summary>
+            The version of the RPC
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.InvalidPayload">
-            <summary>Invalid Payload received</summary>
+        <member name="T:DiscordRPC.Message.SpectateMessage">
+            <summary>
+            Called when the Discord Client wishes for this process to spectate a game. D -> C. 
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.InvalidCommand">
-            <summary>Invalid command was sent</summary>
+        <member name="P:DiscordRPC.Message.SpectateMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
         </member>
-        <member name="F:DiscordRPC.Message.ErrorCode.InvalidEvent">
-            <summary>Invalid event was sent </summary>
+        <member name="T:DiscordRPC.Message.SubscribeMessage">
+            <summary>
+            Called as validation of a subscribe
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.SubscribeMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.SubscribeMessage.Event">
+            <summary>
+            The event that was subscribed too.
+            </summary>
+        </member>
+        <member name="T:DiscordRPC.Message.UnsubscribeMessage">
+            <summary>
+            Called as validation of a subscribe
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.UnsubscribeMessage.Type">
+            <summary>
+            The type of message received from discord
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.Message.UnsubscribeMessage.Event">
+            <summary>
+            The event that was subscribed too.
+            </summary>
         </member>
         <member name="M:DiscordRPC.Registry.IUriSchemeCreator.RegisterUriScheme(DiscordRPC.Registry.UriSchemeRegister)">
             <summary>
@@ -1654,7 +1654,7 @@
             </summary>
             <param name="presesnce"></param>
         </member>
-        <member name="M:DiscordRPC.RichPresence.HasDifference(DiscordRPC.RichPresence)">
+        <member name="M:DiscordRPC.RichPresence.Matches(DiscordRPC.RichPresence)">
             <summary>
             Checks if the other rich presence differs from the current one
             </summary>
@@ -1878,16 +1878,6 @@
             The rich presence to be set. Can be null.
             </summary>
         </member>
-        <member name="P:DiscordRPC.RPC.Commands.RespondCommand.UserID">
-            <summary>
-            The user ID that we are accepting / rejecting
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.RPC.Commands.RespondCommand.Accept">
-            <summary>
-            If true, the user will be allowed to connect.
-            </summary>
-        </member>
         <member name="P:DiscordRPC.RPC.Commands.PresenceCommand.PID">
             <summary>
             The process ID
@@ -1896,6 +1886,16 @@
         <member name="P:DiscordRPC.RPC.Commands.PresenceCommand.Presence">
             <summary>
             The rich presence to be set. Can be null.
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.RPC.Commands.RespondCommand.UserID">
+            <summary>
+            The user ID that we are accepting / rejecting
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.RPC.Commands.RespondCommand.Accept">
+            <summary>
+            If true, the user will be allowed to connect.
             </summary>
         </member>
         <member name="P:DiscordRPC.RPC.Payload.ClosePayload.Code">
@@ -2008,6 +2008,21 @@
             used to capture a keyboard shortcut entered by the user RPC Events
             </summary>
         </member>
+        <member name="T:DiscordRPC.RPC.Payload.IPayload">
+            <summary>
+            Base Payload that is received by both client and server
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.RPC.Payload.IPayload.Command">
+            <summary>
+            The type of payload
+            </summary>
+        </member>
+        <member name="P:DiscordRPC.RPC.Payload.IPayload.Nonce">
+            <summary>
+            A incremental value to help identify payloads
+            </summary>
+        </member>
         <member name="T:DiscordRPC.RPC.Payload.ArgumentPayload">
             <summary>
             The payload that is sent by the client to discord for events such as setting the rich presence.
@@ -2033,21 +2048,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
-        </member>
-        <member name="T:DiscordRPC.RPC.Payload.IPayload">
-            <summary>
-            Base Payload that is received by both client and server
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.RPC.Payload.IPayload.Command">
-            <summary>
-            The type of payload
-            </summary>
-        </member>
-        <member name="P:DiscordRPC.RPC.Payload.IPayload.Nonce">
-            <summary>
-            A incremental value to help identify payloads
-            </summary>
         </member>
         <member name="T:DiscordRPC.RPC.Payload.EventPayload">
             <summary>

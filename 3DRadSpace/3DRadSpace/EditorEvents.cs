@@ -117,12 +117,18 @@ namespace _3DRadSpace
         }
         void installResources(object a,EventArgs e)
         {
+            OpenFileDialog openFile = new OpenFileDialog();
+            if(openFile.ShowDialog() == DialogResult.OK)
+            {
+                string filename = Path.GetFileName(openFile.FileName);
+                //XNBConverter.ConvertModel(openFile.FileName, @"Content/Skinmeshes/"+filename);
+            }
+            openFile.Dispose();
         }
         void checkforUpdatesEvent(object s,EventArgs a)
         {
             WebClient client = new WebClient();
-            client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM", @"version.temp");
-            string v = File.ReadAllText(@"version.temp");
+            string v = client.DownloadString("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM");
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
