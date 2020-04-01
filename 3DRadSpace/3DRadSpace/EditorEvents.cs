@@ -117,13 +117,9 @@ namespace _3DRadSpace
         }
         void installResources(object a,EventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            if(openFile.ShowDialog() == DialogResult.OK)
-            {
-                string filename = Path.GetFileName(openFile.FileName);
-                //XNBConverter.ConvertModel(openFile.FileName, @"Content/Skinmeshes/"+filename);
-            }
-            openFile.Dispose();
+            ResourceWizard wizard = new ResourceWizard();
+            wizard.ShowDialog();
+            wizard.Dispose();
         }
         void checkforUpdatesEvent(object s,EventArgs a)
         {

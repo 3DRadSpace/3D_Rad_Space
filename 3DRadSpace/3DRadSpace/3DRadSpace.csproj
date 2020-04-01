@@ -142,6 +142,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ResourceWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResourceWizard.Designer.cs">
+      <DependentUpon>ResourceWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScriptW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +312,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResourceWizard.resx">
+      <DependentUpon>ResourceWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptW.resx">
       <DependentUpon>ScriptW.cs</DependentUpon>
