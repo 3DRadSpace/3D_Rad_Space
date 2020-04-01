@@ -72,7 +72,6 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="TextPrint.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="XNBConverter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
