@@ -11,7 +11,7 @@ namespace _3DRadSpace
     public static class Program
     {
         public static bool ProjectTypeScript = false;
-        public static readonly int Version = 100;
+        public static readonly int Version = 1;
         [STAThread]
         static void Main(string[] Arguments) //Command line arguments
         {

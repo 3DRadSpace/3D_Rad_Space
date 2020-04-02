@@ -64,7 +64,8 @@ namespace _3DRadSpace
             string[] a = Directory.EnumerateFiles(Environment.CurrentDirectory + "\\XNBConverter\\Final").ToArray();
             for (int i = 0; i < a.Length; i++)
             {
-                File.Copy(a[i],Environment.CurrentDirectory+"\\Content\\"+textBox1.Text+"\\");
+                string[] extention = a[i].Split('.');
+                if(extention[extention.Length-1] != "mgcontent") File.Copy(a[i],Environment.CurrentDirectory+"\\Content\\"+textBox1.Text+"\\"+Path.GetFileName(a[i]));
             }
             Directory.Delete(Environment.CurrentDirectory + "\\ResourceTemp\\",true);
         }
