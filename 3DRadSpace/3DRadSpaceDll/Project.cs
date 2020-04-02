@@ -290,13 +290,13 @@ namespace _3DRadSpaceDll
 						' ' + Vector2String(c.CameraRotation) + ' ' + c.FOV + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
 					if (c.Behiavours != null)
 					{
-						ToBeSaved[j] += c.Behiavours.Count + ' ';
+						ToBeSaved[j] += c.Behiavours.Count + " ";
 						for (int k = 0; k < c.Behiavours.Count; k++)
 						{
-							ToBeSaved[j] += c.Behiavours[k].ObjectID + ' ' + c.Behiavours[k].BehiavourID + ' ';
+							ToBeSaved[j] += c.Behiavours[k].ObjectID + " " + c.Behiavours[k].BehiavourID + ' ';
 						}
 					}
-					else ToBeSaved[j] += '0';
+					else ToBeSaved[j] += "0";
 				}
 				if (Game.GameObjects[i] is Script s)
 				{

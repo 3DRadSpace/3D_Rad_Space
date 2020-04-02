@@ -117,7 +117,8 @@ namespace _3DRadSpaceDll
             }
             base.Load(content);
         }
-        /// <summary>
+        /// <summary>FileNotFoundException: Content\Skinmeshes/terrain0100.xnb
+
         /// Draws the mesh.
         /// </summary>
         /// <param name="spriteBatch">Not used.</param>
@@ -125,7 +126,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Necessary for model drawing.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            if (!Enabled) return;
+           // if (!Enabled) return;
             foreach(ModelMesh mesh in Model.Meshes)
             {
                 foreach(BasicEffect effect in mesh.Effects)
