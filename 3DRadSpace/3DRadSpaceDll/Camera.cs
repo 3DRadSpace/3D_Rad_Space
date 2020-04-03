@@ -53,7 +53,7 @@ namespace _3DRadSpaceDll
             this.Enabled = Enabled;
             Position = Pos;
             Rotation = Rot;
-            CameraTarget = Pos+Vector3.Transform(Vector3.UnitZ+Vector3.UnitY,Matrix.CreateFromYawPitchRoll(Rot.Y,Rot.X,Rot.Y));
+            CameraTarget = Pos+Vector3.Transform(Vector3.UnitZ,Matrix.CreateFromYawPitchRoll(Rot.Y,Rot.X,Rot.Y));
             CameraRotation = UpDir;
             this.FOV = MathHelper.ToRadians(FOV);
             MinDrawDist = nearplane;
@@ -223,6 +223,7 @@ namespace _3DRadSpaceDll
             view = Matrix.CreateLookAt(Position, CameraTarget, CameraRotation);
             projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,MinDrawDist,MaxDrawDist);
             base.Draw(null,view,projection); //Calls base class to get the event called too.
+
         }
     }
 }

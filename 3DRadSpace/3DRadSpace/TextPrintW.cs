@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
@@ -39,6 +39,11 @@ namespace _3DRadSpace
 
 		private void button2_Click(object sender, EventArgs e)
 		{
+			if (!File.Exists("Content\\" + textBox2.Text + ".xnb"))
+			{
+				MessageBox.Show("The file: \n" + textBox2.Text + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			Result = new TextPrint(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked,Editor.ValidateTextInput(textBox2.Text),textBox8.Text, new Vector2(
 				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
 				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text))),

@@ -117,8 +117,7 @@ namespace _3DRadSpaceDll
             }
             base.Load(content);
         }
-        /// <summary>FileNotFoundException: Content\Skinmeshes/terrain0100.xnb
-
+        /// <summary>
         /// Draws the mesh.
         /// </summary>
         /// <param name="spriteBatch">Not used.</param>
@@ -134,10 +133,10 @@ namespace _3DRadSpaceDll
                     effect.View = (Matrix)view;
                     effect.Projection = (Matrix)projection;
                     effect.World = Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
-                    effect.FogEnabled = FogEnabled;
-                    effect.FogColor = FogColor;
-                    effect.FogStart = FogStart;
-                    effect.FogEnd = FogEnd;
+                    //effect.FogEnabled = FogEnabled;
+                    //effect.FogColor = FogColor;
+                    //effect.FogStart = FogStart;
+                    //effect.FogEnd = FogEnd;
                 }
                 mesh.Draw();
             }

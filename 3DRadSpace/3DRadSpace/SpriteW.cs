@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using System.IO;
 
 namespace _3DRadSpace
 {
@@ -17,6 +18,7 @@ namespace _3DRadSpace
 			textBox1.Text = sp.Name;
 			checkBox1.Checked = sp.Enabled;
 			textBox2.Text = sp.Resource;
+			pictureBox1.ImageLocation = sp.Resource;
 			textBox3.Text = sp.Position.X+"";
 			textBox4.Text = sp.Position.Y+"";
 			textBox5.Text = sp.Rotation + "";
@@ -50,6 +52,11 @@ namespace _3DRadSpace
 
 		private void button3_Click(object sender, EventArgs e)
 		{
+			if(!File.Exists(textBox2.Text))
+			{
+				MessageBox.Show("The file: \n" + textBox2.Text + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			Rectangle? r = new Rectangle(
 					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text)),
 					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox11.Text)));
@@ -74,8 +81,10 @@ namespace _3DRadSpace
 			};
 			if (openFile.ShowDialog() == DialogResult.OK)
 			{
-				textBox2.Text = openFile.FileName;
-				pictureBox1.ImageLocation = openFile.FileName;
+				string f = "//Conent//" + Path.GetFileName(openFile.FileName);
+				File.Copy(openFile.FileName, f);
+				textBox2.Text = f;
+				pictureBox1.ImageLocation = f;
 			}
 			openFile.Dispose();
 		}

@@ -154,12 +154,6 @@
     <Compile Include="ScriptW.Designer.cs">
       <DependentUpon>ScriptW.cs</DependentUpon>
     </Compile>
-    <Compile Include="SelectObjectDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SelectObjectDialog.Designer.cs">
-      <DependentUpon>SelectObjectDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,9 +312,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptW.resx">
       <DependentUpon>ScriptW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SelectObjectDialog.resx">
-      <DependentUpon>SelectObjectDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

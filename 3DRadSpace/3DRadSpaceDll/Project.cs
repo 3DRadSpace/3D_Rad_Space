@@ -287,7 +287,7 @@ namespace _3DRadSpaceDll
 				if (Game.GameObjects[i] is Camera c)
 				{
 					ToBeSaved[j] = "camera " + c.Name + ' ' + c.Enabled + ' ' + Vector2String(c.Position) + ' ' + Vector2String(c.Rotation) +
-						' ' + Vector2String(c.CameraRotation) + ' ' + c.FOV + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
+						' ' + Vector2String(c.CameraRotation) + ' ' + MathHelper.ToDegrees(c.FOV) + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
 					if (c.Behiavours != null)
 					{
 						ToBeSaved[j] += c.Behiavours.Count + " ";

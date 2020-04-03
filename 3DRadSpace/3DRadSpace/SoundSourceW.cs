@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
 
@@ -65,6 +65,11 @@ namespace _3DRadSpace
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (!File.Exists("Content\\" + textBox2.Text + ".xnb"))
+            {
+                MessageBox.Show("The file: \n" + textBox2.Text + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             Microsoft.Xna.Framework.Audio.SoundState sw = Microsoft.Xna.Framework.Audio.SoundState.Stopped;
             if (radioButton1.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Playing;
             if (radioButton2.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Paused;

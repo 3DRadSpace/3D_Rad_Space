@@ -166,6 +166,7 @@ namespace _3DRadSpace
             Settings settings = new Settings();
             settings.ShowDialog();
             settings.Dispose();
+            Settings = Settings_Load();
         }
         void openDocumentation(object a,EventArgs b)
         {

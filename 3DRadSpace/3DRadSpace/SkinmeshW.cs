@@ -39,6 +39,11 @@ namespace _3DRadSpace
 
         private void button7_Click(object sender, EventArgs e)
         {
+            if(!File.Exists("Content\\"+textBox2.Text+".xnb"))
+            {
+                MessageBox.Show("The file: \n" + textBox2.Text + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             DialogResult = DialogResult.OK;
             Skinmesh r = new Skinmesh(Editor.ValidateTextInput(textBox1.Text) , checkBox1.Checked, textBox2.Text,
                 new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)))
@@ -95,20 +100,6 @@ namespace _3DRadSpace
             openf.Dispose();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openmesh = new OpenFileDialog()
-            {
-                Title = "Find a 3D Model for the Skinmesh object",
-                Filter = "Compiled XNB mesh resource(*.xnb)|*.xnb"
-            };
-            if (openmesh.ShowDialog() == DialogResult.OK)
-            {
-                
-            }
-            openmesh.Dispose();
-        }
-
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if(radioButton1.Checked == true)
@@ -132,6 +123,11 @@ namespace _3DRadSpace
                 radioButton1.Checked = false;
                 radioButton2.Checked = false;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //TODO: Add model viewer
         }
     }
 }

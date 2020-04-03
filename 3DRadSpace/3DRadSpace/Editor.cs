@@ -21,6 +21,7 @@ namespace _3DRadSpace
 		Matrix View, Projection;
 		public string OpenedFile = null;
 		static bool[] Settings;
+		float CameraRotationSpeed = 0.001f;
 
 		Vector2 CameraRotationCoords = new Vector2(-2.105f, 2.946f);
 		float CameraSpeed = 0.1f;
@@ -46,12 +47,19 @@ namespace _3DRadSpace
 			discordRichPresence = new DiscordRichPresence();
 			Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, 75, 0.01f, 500f);
 			_3DRadSpaceDll.Game.GameObjects = new List<GameObject>();
-			Settings = Settings_Load();
+			try
+			{
+				Settings = Settings_Load();
+			}
+			catch
+			{
+
+			}
 		}
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
-			Window.Title = "3DRadSpace - Editor v0.0.1 alpha";
+			Window.Title = "3DRadSpace - Editor v0.0.2 alpha";
 			IsMouseVisible = true;
 			if (Settings[0])
 			{
@@ -87,30 +95,12 @@ namespace _3DRadSpace
 			if (Form.ActiveForm == GameWindow)
 			{
 				//keyboard shortcuts
-				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.N))
-				{
-					newProject(null, null);
-				}
-				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.O))
-				{
-					openProject(null, null);
-				}
-				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
-				{
-					saveProject(null, null);
-				}
-				if (GetAltKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S))
-				{
-					saveProjectAs(null, null);
-				}
-				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.P))
-				{
-					playProject(null, null);
-				}
-				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A))
-				{
-					addObject(null, null);
-				}
+				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.N)) newProject(null, null);
+				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.O)) openProject(null, null);
+				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S)) saveProject(null, null);
+				if (GetAltKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.S)) saveProjectAs(null, null);
+				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.P)) playProject(null, null);
+				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A)) addObject(null, null);
 
 				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position +=  Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
 				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
@@ -124,7 +114,7 @@ namespace _3DRadSpace
 					{
 						Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
 						IsMouseVisible = false;
-						CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * -0.001f, (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * 0.001f);
+						CameraRotationCoords += new Vector2((mouse.X - (graphics.PreferredBackBufferWidth / 2)) * (-CameraRotationSpeed), (mouse.Y - (graphics.PreferredBackBufferHeight / 2)) * CameraRotationSpeed);
 						if (CameraRotationCoords.Y > (MathHelper.Pi - 0.1f)) CameraRotationCoords.Y = (MathHelper.Pi - 0.1f);
 						if (CameraRotationCoords.Y < 0) CameraRotationCoords.Y = 0.1f;
 					}
@@ -188,9 +178,20 @@ namespace _3DRadSpace
 		{
 			IFormatProvider a = CultureInfo.CurrentCulture;
 			string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
-			if (!File.Exists(appd + "\\Config.cfg")) return new[] { true, true, true };
+			if (!File.Exists(appd + "\\Config.cfg"))
+			{
+				File.WriteAllText(appd + "\\Config.cfg","True True True 1");
+				return new[] { true, true, true };
+			}
 			string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
+			if(split.Length != 5)
+			{
+				File.WriteAllText(appd + "\\Config.cfg", "True True True 1 1");
+				return new[] { true, true, true };
+			}
 			bool[] result = { Convert.ToBoolean(split[0],a), Convert.ToBoolean(split[1],a), Convert.ToBoolean(split[2],a) };
+			CameraRotationSpeed = 0.001f * Convert.ToInt32(split[3]);
+			CameraSpeed = 0.1f * Convert.ToInt32(split[4]);
 			return result;
 		}
 		bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)

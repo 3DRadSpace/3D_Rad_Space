@@ -1,4 +1,4 @@
 0
 skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 True -1 -1 -1 1 1 1 2 Skinmeshes/terrain0100
-camera Camera True 0 10 0 0 0 0 0 1 0 0.0003987433 0.1 500 0 
+camera Camera True 0 7 0 0 0 0 0 1 0 1.308997 0.1 500 0 
 skinmesh Skinmesh True 0 10 5 0 0 0 1 1 1 True -1 -1 -1 1 1 1 2 EOL_Cube

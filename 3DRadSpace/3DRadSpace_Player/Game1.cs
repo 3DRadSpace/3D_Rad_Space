@@ -21,6 +21,8 @@ namespace _3DRadSpace_Player
 
         public Game1(string DebugProject)
         {
+            graphics = new GraphicsDeviceManager(this);
+            Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             if (DebugProject != null)
             {
                 Window.Title = "Debugging - " + DebugProject;
@@ -44,7 +46,6 @@ namespace _3DRadSpace_Player
                 {
                 }
             }
-            graphics = new GraphicsDeviceManager(this);
         }
         protected override void Initialize()
         {

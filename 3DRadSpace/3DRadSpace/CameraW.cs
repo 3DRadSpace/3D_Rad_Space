@@ -37,14 +37,6 @@ namespace _3DRadSpace
         }
         public GameObject Result;
         public List<ObjectBehiavour> Behiavour;
-        private void button1_Click(object sender, EventArgs e)
-        {
-            SelectObjectDialog selectObject = new SelectObjectDialog();
-            selectObject.ShowDialog();
-            Behiavour.Add(new ObjectBehiavour(selectObject.Result));
-            UpdateList();
-            selectObject.Dispose();
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {
