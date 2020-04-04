@@ -204,15 +204,15 @@ namespace _3DRadSpace
             Directory.CreateDirectory(target);
             string[] d = Directory.GetDirectories(source);
             string[] f = Directory.GetFiles(source);
-            for(int i =0; i < f.Length;i++)
+            for (int i =0; i < f.Length;i++)
             {
                 File.Copy(f[i], target + "\\" + System.IO.Path.GetFileName(f[i]), overwrite);
             }
-            for(int i =0; i < d.Length;i++)
+            for (int i = 0; i < d.Length; i++)
             {
                 string[] a = d[i].Split('\\');
                 string b = a[a.Length - 1];
-                CopyDirectory(d[i], target+'\\'+b);
+                CopyDirectory(d[i], target + '\\' + b,overwrite);
             }
         }
     }

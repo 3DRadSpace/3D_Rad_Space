@@ -47,14 +47,7 @@ namespace _3DRadSpace
 			discordRichPresence = new DiscordRichPresence();
 			Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, 75, 0.01f, 500f);
 			_3DRadSpaceDll.Game.GameObjects = new List<GameObject>();
-			try
-			{
-				Settings = Settings_Load();
-			}
-			catch
-			{
-
-			}
+			Settings = Settings_Load();
 		}
 		protected override void Initialize()
 		{
