@@ -81,8 +81,8 @@ namespace _3DRadSpace
 			};
 			if (openFile.ShowDialog() == DialogResult.OK)
 			{
-				string f = "//Conent//" + Path.GetFileName(openFile.FileName);
-				File.Copy(openFile.FileName, f);
+				string f = "Content\\" + Path.GetFileName(openFile.FileName);
+				File.Copy(openFile.FileName, f,true);
 				textBox2.Text = f;
 				pictureBox1.ImageLocation = f;
 			}

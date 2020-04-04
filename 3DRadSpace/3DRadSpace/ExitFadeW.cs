@@ -51,7 +51,7 @@ namespace _3DRadSpace
 		{
 			if (!File.Exists("Content\\" + textBox6.Text + ".xnb"))
 			{
-				MessageBox.Show("The project: \n" + textBox6.Text + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("The project: \n" + Path.GetFullPath(textBox6.Text) + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			Result = new ExitFade(textBox1.Text, textBox6.Text, new Microsoft.Xna.Framework.Color(

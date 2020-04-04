@@ -62,25 +62,25 @@ namespace _3DRadSpace
             }
             ///Step 3: Create necesarry folders...
             label3.Text = "Status: Creating folders...";
-            Directory.CreateDirectory(Path + "//Projects//");
-            Directory.CreateDirectory(Path + "//" + textBox2.Text);
-            Directory.CreateDirectory(Path + "//Scripts");
+            Directory.CreateDirectory(Path + "\\Projects\\");
+            Directory.CreateDirectory(Path + "\\" + textBox2.Text);
+            Directory.CreateDirectory(Path + "\\Scripts");
             progressBar1.Value += 12;
             ///Step 4: Copy DLLs & Executables
             try
             {
                 label3.Text = "Status: Copying assemblies...";
-                File.Copy(@"3DRadSpace_Player.exe", Path + "//" + textBox1.Text + ".exe");
-                File.Copy(IconPath, Path + "//Icon.ico");
-                File.Copy(@"3DRadSpaceDll.dll", Path + "//3DRadSpaceDll.dll");
-                File.Copy(@"MonoGame.Framework.dll", Path + "//MonoGame.Framework.dll");
-                File.Copy(@"SharpDX.Direct2D1.dll", Path + "//SharpDX.Direct2D1.dll");
-                File.Copy(@"SharpDX.Direct3D11.dll", Path + "//SharpDX.Direct3D11.dll");
-                File.Copy(@"SharpDX.dll", Path + "//SharpDX.dll");
-                File.Copy(@"SharpDX.DXGI.dll", Path + "//SharpDX.DXGI.dll");
-                File.Copy(@"SharpDX.MediaFoundation.dll", Path + "//SharpDX.MediaFoundation.dll");
-                File.Copy(@"SharpDX.XAudio2.dll", Path + "//SharpDX.XAudio2.dll");
-                File.Copy(@"SharpDX.XInput.dll", Path + "//SharpDX.XInput.dll");
+                File.Copy(@"3DRadSpace_Player.exe", Path + "\\" + textBox1.Text + ".exe",true);
+                File.Copy(IconPath, Path + "\\Icon.ico",true);
+                File.Copy(@"3DRadSpaceDll.dll", Path + "\\3DRadSpaceDll.dll",true);
+                File.Copy(@"MonoGame.Framework.dll", Path + "\\MonoGame.Framework.dll",true);
+                File.Copy(@"SharpDX.Direct2D1.dll", Path + "\\SharpDX.Direct2D1.dll",true);
+                File.Copy(@"SharpDX.Direct3D11.dll", Path + "\\SharpDX.Direct3D11.dll",true);
+                File.Copy(@"SharpDX.dll", Path + "\\SharpDX.dll",true);
+                File.Copy(@"SharpDX.DXGI.dll", Path + "\\SharpDX.DXGI.dll",true);
+                File.Copy(@"SharpDX.MediaFoundation.dll", Path + "\\SharpDX.MediaFoundation.dll",true);
+                File.Copy(@"SharpDX.XAudio2.dll", Path + "\\SharpDX.XAudio2.dll",true);
+                File.Copy(@"SharpDX.XInput.dll", Path + "\\SharpDX.XInput.dll",true);
                 progressBar1.Value += 12;
             }
             catch (FileNotFoundException ex)
@@ -95,12 +95,9 @@ namespace _3DRadSpace
             try
             {
                 label3.Text = "Status: Copying content (models,images,etc) ...";
+                CopyDirectory(@"Content", Path + "\\" + textBox2.Text, true);
                 string[] Content = Directory.GetFiles(@"Content");
-                for (int i = 0; i < Content.Length; i++)
-                {
-                    File.Copy(Content[i], Path + "//" + textBox2.Text + "//" + System.IO.Path.GetFileName(Content[i]));
-                    progressBar1.Value += 12 / Content.Length;
-                }
+                progressBar1.Value += 12;
             }
             catch (FileNotFoundException ex)
             {
@@ -110,13 +107,13 @@ namespace _3DRadSpace
             }
             ///Step 6: Create config file
             label3.Text = "Status: Creating project configuration...";
-            File.WriteAllLines(Path+"//GameConfig.cfg",new []{ textBox1.Text,textBox2.Text,MainProject});
+            File.WriteAllLines(Path+"\\GameConfig.cfg",new []{ textBox1.Text,textBox2.Text,MainProject});
             progressBar1.Value += 12;
             ///Step 7: Copy Projects.
             label3.Text = "Status: Copying projects...";
             for(int i =0; i < listBox1.Items.Count; i++)
             {
-                File.Copy(listBox1.Items[i].ToString(), Path + "//Projects//" + System.IO.Path.GetFileName(listBox1.Items[i].ToString()));
+                File.Copy(listBox1.Items[i].ToString(), Path + "\\Projects\\" + System.IO.Path.GetFileName(listBox1.Items[i].ToString()));
                 progressBar1.Value += 12 / listBox1.Items.Count;
             }
             //Step 8: Copy scripts
@@ -124,7 +121,7 @@ namespace _3DRadSpace
             string[] scripts = Directory.GetFiles(@"Scripts");
             for(int i =0; i < scripts.Length; i++)
             {
-                File.Copy(scripts[i], Path + "//Scripts//" + System.IO.Path.GetFileName(scripts[i]));
+                File.Copy(scripts[i], Path + "\\Scripts\\" + System.IO.Path.GetFileName(scripts[i]));
                 progressBar1.Value += 12 / scripts.Length;
             }
             //Step 9: Finish
@@ -199,6 +196,23 @@ namespace _3DRadSpace
                     MainProject = mainProject.Result;
                 }
                 mainProject.Dispose();
+            }
+        }
+        void CopyDirectory(string source,string target,bool overwrite = false)
+        {
+            if (!Directory.Exists(source)) return;
+            Directory.CreateDirectory(target);
+            string[] d = Directory.GetDirectories(source);
+            string[] f = Directory.GetFiles(source);
+            for(int i =0; i < f.Length;i++)
+            {
+                File.Copy(f[i], target + "\\" + System.IO.Path.GetFileName(f[i]), overwrite);
+            }
+            for(int i =0; i < d.Length;i++)
+            {
+                string[] a = d[i].Split('\\');
+                string b = a[a.Length - 1];
+                CopyDirectory(d[i], target+'\\'+b);
             }
         }
     }
