@@ -79,6 +79,10 @@ namespace _3DRadSpaceDll
         /// Fog start distance.
         /// </summary>
         public float FogStart { get; set; }
+        /// <summary>
+        /// Determines if fog is defined
+        /// </summary>
+        public bool FogExists { get; set; } = false;
 
         /// <summary>
         /// Model scale. Default is (1,1,1).
@@ -125,18 +129,21 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Necessary for model drawing.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-           // if (!Enabled) return;
-            foreach(ModelMesh mesh in Model.Meshes)
+            // if (!Enabled) return;
+            foreach (ModelMesh mesh in Model.Meshes)
             {
-                foreach(BasicEffect effect in mesh.Effects)
+                foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.View = (Matrix)view;
                     effect.Projection = (Matrix)projection;
                     effect.World = Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
-                    //effect.FogEnabled = FogEnabled;
-                    //effect.FogColor = FogColor;
-                    //effect.FogStart = FogStart;
-                    //effect.FogEnd = FogEnd;
+                    if (FogExists)
+                    {
+                        effect.FogEnabled = FogEnabled;
+                        effect.FogColor = FogColor;
+                        effect.FogStart = FogStart;
+                        effect.FogEnd = FogEnd;
+                    }
                 }
                 mesh.Draw();
             }

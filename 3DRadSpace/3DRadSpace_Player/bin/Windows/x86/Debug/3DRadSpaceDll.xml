@@ -1251,6 +1251,11 @@
             Fog start distance.
             </summary>
         </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogExists">
+            <summary>
+            Determines if fog is defined
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.Skinmesh.Scale">
             <summary>
             Model scale. Default is (1,1,1).
@@ -1273,7 +1278,14 @@
             </summary>
             <param name="content">ContentManager from the game instance.</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:_3DRadSpaceDll.Skinmesh.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})" -->
+        <member name="M:_3DRadSpaceDll.Skinmesh.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the mesh.
+            </summary>
+            <param name="spriteBatch">Not used.</param>
+            <param name="view">Necessary for model drawing.</param>
+            <param name="projection">Necessary for model drawing.</param>
+        </member>
         <member name="M:_3DRadSpaceDll.Skinmesh.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Draws the mesh in the editor. The only difference from Draw() is the missing condition.

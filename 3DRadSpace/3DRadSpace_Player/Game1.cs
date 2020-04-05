@@ -15,7 +15,7 @@ namespace _3DRadSpace_Player
         Matrix view, projection;
         GameSettings GraphicSettings;
         public Vector3 FogColor { get; set; }
-        public bool FogEnabled { get; set; }
+        public bool FogEnabled { get; set; } = false;
         public float FogEnd { get; set; }
         public float FogStart { get; set; }
 
@@ -112,11 +112,15 @@ namespace _3DRadSpace_Player
                 }
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh skinmesh)
                 {
-                    if(skinmesh.FogEnabled)
+                    if (FogEnabled)
                     {
-                        skinmesh.FogColor = FogColor;
-                        skinmesh.FogStart = FogStart;
-                        skinmesh.FogEnd = FogEnd;
+                        if (skinmesh.FogEnabled)
+                        {
+                            skinmesh.FogExists = true;
+                            skinmesh.FogColor = FogColor;
+                            skinmesh.FogStart = FogStart;
+                            skinmesh.FogEnd = FogEnd;
+                        }
                     }
                     skinmesh.Draw(null, view, projection);
                 }

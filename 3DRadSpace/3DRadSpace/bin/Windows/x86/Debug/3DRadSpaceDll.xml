@@ -1251,6 +1251,11 @@
             Fog start distance.
             </summary>
         </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.FogExists">
+            <summary>
+            Determines if fog is defined
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.Skinmesh.Scale">
             <summary>
             Model scale. Default is (1,1,1).
