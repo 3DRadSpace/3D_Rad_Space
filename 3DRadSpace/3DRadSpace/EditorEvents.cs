@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using Microsoft.Xna.Framework;
 using System.Windows.Forms;
+using System.Threading;
 
 
 namespace _3DRadSpace
@@ -140,11 +141,13 @@ namespace _3DRadSpace
                 DialogResult dialog = MessageBox.Show("New update found! Do you want it installed?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.Yes)
                 {
-                    client.DownloadFile("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE", @"Setup.exe");
-                    toolStripStatusLabel1.Text = "Status: Installing new update...";
+                    _updating = true;
+                    toolStripStatusLabel1.Text = "Status: Downloading new update...";
+                    client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                    client.DownloadFileCompleted += Client_DownloadFileCompleted;
+                    client.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjSVhCZndjSGRUcVE"), @"Setup.exe");
                     saveProject(null, null);
-                    Process.Start(@"Setup.exe");
-                    Exit();
+                    client.Dispose();
                 }
                 else toolStripStatusLabel1.Text = "Status: Ready";
             }
@@ -155,6 +158,18 @@ namespace _3DRadSpace
             }
             client.Dispose();
         }
+
+        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            Process.Start(@"Setup.exe");
+            Exit();
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            toolStripStatusLabel1.Text = "Status: Downloading new update "+e.ProgressPercentage+" % ("+(e.BytesReceived / 1024)+" KB recieved / "+(e.TotalBytesToReceive/1024)+" KB total)";
+        }
+
         void aboutBoxOpen(object a, EventArgs e)
         {
             AboutBox aboutBox = new AboutBox();
@@ -339,9 +354,10 @@ namespace _3DRadSpace
                 contextMenuStrip1.Show(GameWindow.Location.X+listBox1.Location.X, Cursor.Position.Y);
             }
         }
+        bool _updating = false;
         void Editor_Exiting(object sender, FormClosingEventArgs e)
         {
-            if(Settings[1] == true && ProjectSaved == false)
+            if(Settings[1] == true && ProjectSaved == false && !_updating)
             {
                DialogResult result = MessageBox.Show("Your project is not saved. Unsaved changes can be lost.", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if(result == DialogResult.Yes)
