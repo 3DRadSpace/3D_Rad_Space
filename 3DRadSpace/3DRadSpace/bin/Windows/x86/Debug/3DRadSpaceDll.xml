@@ -1111,6 +1111,46 @@
             Code only
             </summary>
         </member>
+        <member name="T:_3DRadSpaceDll.SafeConverter">
+            <summary>
+            Class that allows safe conversions between numeric types and strings.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.SafeConverter.IntFromString(System.String)">
+            <summary>
+            Try parsing an integer from a string.
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SafeConverter.SingleNumberFromChar(System.Char)">
+            <summary>
+            
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SafeConverter.BoolFromString(System.String)">
+            <summary>
+            Converts a string to a bool
+            </summary>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SafeConverter.FloatFromString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.SafeConverter.BoolToString(System.Boolean)">
+            <summary>
+            Converts a bool to a string.
+            </summary>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.Script">
             <summary>
             C# Script class.

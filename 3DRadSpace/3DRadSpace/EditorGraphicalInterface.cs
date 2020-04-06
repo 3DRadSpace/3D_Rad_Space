@@ -262,9 +262,19 @@ namespace _3DRadSpace
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(146, 48);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(784, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // listBox1
             // 
-            this.listBox1.Location = new System.Drawing.Point(0, 24);
+            this.listBox1.Location = new System.Drawing.Point(0, menuStrip1.Size.Height);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(140, 519);
             this.listBox1.TabIndex = 2;
@@ -275,16 +285,6 @@ namespace _3DRadSpace
             listBox1.MultiSelect = false;
             listBox1.CheckBoxes = true;
             listBox1.View = System.Windows.Forms.View.List;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(784, 22);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 

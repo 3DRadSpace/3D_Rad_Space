@@ -133,10 +133,3 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:Skinmeshes/terrain0100.x
-
-#begin Sounds/sound.ogg
-/importer:OggImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/sound.ogg
-

@@ -438,7 +438,7 @@ namespace _3DRadSpace
 
         private void GameWindow_SizeChanged(object sender, EventArgs e)
         {
-            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - 50);
+            listBox1.ClientSize = new System.Drawing.Size(listBox1.ClientSize.Width, GameWindow.ClientSize.Height - (int)(2.3*statusStrip1.Size.Height));
         }
         //int _oldindex = 0;
         private void ListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
