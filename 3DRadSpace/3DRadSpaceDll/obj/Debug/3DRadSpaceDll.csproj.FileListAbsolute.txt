@@ -42,3 +42,4 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\De
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct3D11.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct2D1.xml
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.XInput.xml
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\Debug\3DRadSpaceDll.csproj.CoreCompileInputs.cache

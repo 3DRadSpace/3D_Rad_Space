@@ -15,22 +15,22 @@ namespace _3DRadSpace
             textBox1.Text = sk.Name;
             checkBox1.Checked = sk.Enabled;
             textBox2.Text = sk.Resource;
-            textBox3.Text = ""+sk.Position.X;
-            textBox4.Text = ""+sk.Position.Y;
-            textBox5.Text = ""+sk.Position.Z;
-            textBox8.Text = ""+sk.Rotation.X;
-            textBox7.Text = ""+sk.Rotation.Y;
-            textBox6.Text = ""+sk.Rotation.Z;
-            textBox11.Text = "" + sk.Scale.X;
-            textBox10.Text = "" + sk.Scale.Y;
-            textBox9.Text = "" + sk.Scale.Z;
-            textBox12.Text = sk.BoundingSphere.Radius+"";
-            textBox13.Text = sk.BoundingBox.Min.X+"";
-            textBox14.Text = sk.BoundingBox.Min.Y+"";
-            textBox15.Text = sk.BoundingBox.Min.Z+"";
-            textBox18.Text = sk.BoundingBox.Max.X + "";
-            textBox17.Text = sk.BoundingBox.Max.Y + "";
-            textBox16.Text = sk.BoundingBox.Max.Z + "";
+            textBox3.Text = SafeConverter.FloatToString(sk.Position.X);
+            textBox4.Text = SafeConverter.FloatToString(sk.Position.Y);
+            textBox5.Text = SafeConverter.FloatToString(sk.Position.Z);
+            textBox8.Text = SafeConverter.FloatToString(sk.Rotation.X);
+            textBox7.Text = SafeConverter.FloatToString(sk.Rotation.Y);
+            textBox6.Text = SafeConverter.FloatToString(sk.Rotation.Z);
+            textBox11.Text = SafeConverter.FloatToString(sk.Scale.X);
+            textBox10.Text = SafeConverter.FloatToString(sk.Scale.Y);
+            textBox9.Text = SafeConverter.FloatToString(sk.Scale.Z);
+            textBox12.Text = SafeConverter.FloatToString(sk.BoundingSphere.Radius);
+            textBox13.Text = SafeConverter.FloatToString(sk.BoundingBox.Min.X);
+            textBox14.Text = SafeConverter.FloatToString(sk.BoundingBox.Min.Y);
+            textBox15.Text = SafeConverter.FloatToString(sk.BoundingBox.Min.Z);
+            textBox18.Text = SafeConverter.FloatToString(sk.BoundingBox.Max.X);
+            textBox17.Text = SafeConverter.FloatToString(sk.BoundingBox.Max.Y);
+            textBox16.Text = SafeConverter.FloatToString(sk.BoundingBox.Max.Z);
         }
         public SkinmeshW()
         {
@@ -46,13 +46,13 @@ namespace _3DRadSpace
             }
             DialogResult = DialogResult.OK;
             Skinmesh r = new Skinmesh(Editor.ValidateTextInput(textBox1.Text) , checkBox1.Checked, textBox2.Text,
-                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)))
-               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)))
-               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)))
+                new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox3.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox4.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox5.Text)))
+               ,new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox8.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox7.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox6.Text)))
+               ,new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox11.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox10.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox9.Text)))
                 ,checkBox2.Checked,new BoundingBox(
-                    new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text)))
-                    ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox18.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox17.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox16.Text))))
-                ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text))));
+                    new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox13.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox14.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox15.Text)))
+                    ,new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox18.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox17.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox16.Text))))
+                ,new BoundingSphere(Vector3.Zero,SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox12.Text))));
             Result = r;
             Close();
         }

@@ -37,6 +37,15 @@ namespace _3DRadSpaceDll
             return r;
         }
         /// <summary>
+        /// Converts an object to a string.
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public static int IntFromString(object o)
+        {
+            return IntFromString(o + "");
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="c"></param>
@@ -53,8 +62,11 @@ namespace _3DRadSpaceDll
         /// <returns></returns>
         public static bool BoolFromString(string b)
         {
-            if (b.ToLower() == "true") return true;
-            if (b.ToLower() == "false") return false;
+            if (b.ToLower() == "1") return true;
+            if (b.ToLower() == "0") return false;
+            //Keep compatibilty with 0.0.2a and lower projects
+            if (b.ToLower() == "1") return true;
+            if (b.ToLower() == "0") return false;
             return false; //Default to false.
         }
         /// <summary>
@@ -67,7 +79,7 @@ namespace _3DRadSpaceDll
             int dotindex = -1;
             for (int i = 0; i < f.Length; i++)
             {
-                if (f[i] == '.')
+                if (f[i] == '.' || f[i] == ',')
                 {
                     dotindex = i;
                     break;
@@ -84,8 +96,8 @@ namespace _3DRadSpaceDll
         /// <returns></returns>
         public static string BoolToString(bool b)
         {
-            if (b) return "true";
-            else return "false";
+            if (b) return "1";
+            else return "0";
         }
         /// <summary>
         /// 
@@ -115,7 +127,7 @@ namespace _3DRadSpaceDll
             float a = f % 1;
             if (a < 0) a *= -1;
             a *= (int)Math.Pow(10, 7);
-            r += IntToString((int)a);
+            r += '.'+ IntToString((int)a);
             return r;
         }
     }

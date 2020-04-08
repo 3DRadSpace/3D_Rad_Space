@@ -129,7 +129,7 @@ namespace _3DRadSpace
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if (Convert.ToInt32(v) != Program.Version)
+                if (SafeConverter.IntFromString(v) != Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";

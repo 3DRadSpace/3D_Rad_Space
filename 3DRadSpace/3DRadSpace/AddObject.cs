@@ -10,154 +10,151 @@ using System.Windows.Forms;
 
 namespace _3DRadSpace
 {
-    public partial class AddObject : Form
-    {
-        public AddObject()
-        {
-            InitializeComponent();
-        }
-        public _3DRadSpaceDll.GameObject Result { get; set; }
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            if (_3DRadSpaceDll.Project.type == _3DRadSpaceDll.ProjectType.ThreeDimensional)
-            {
-                MessageBox.Show("This object can only be used with 2D projects...", "2DCamera v1.0.0", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+	public partial class AddObject : Form
+	{
+		public AddObject()
+		{
+			InitializeComponent();
+		}
+		public _3DRadSpaceDll.GameObject Result { get; set; }
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
 
-        private void pictureBox10_Click(object sender, EventArgs e)
-        {
-            ScriptW script = new ScriptW();
-            if(script.ShowDialog() == DialogResult.OK)
-            {
-                Result = script.Result;
-            }
-            script.Dispose();
-            Close();
-        }
+		}
 
-        private void PictureBox15_Click(object sender, EventArgs e)
-        {
-            CameraW camera = new CameraW();
-            if(camera.ShowDialog() == DialogResult.OK)
-            {
-                Result = camera.Result;
-            }
-            camera.Dispose();
-            Close();
-        }
+		private void pictureBox10_Click(object sender, EventArgs e)
+		{
+			ScriptW script = new ScriptW();
+			if(script.ShowDialog() == DialogResult.OK)
+			{
+				Result = script.Result;
+			}
+			script.Dispose();
+			Close();
+		}
 
-        private void pictureBox17_Click(object sender, EventArgs e)
-        {
-            SkyColorW skyColor = new SkyColorW();
-            if(skyColor.ShowDialog() == DialogResult.OK)
-            {
-                Result = skyColor.Result;
-            }
-            skyColor.Dispose();
-            Close();
-        }
+		private void PictureBox15_Click(object sender, EventArgs e)
+		{
+			CameraW camera = new CameraW();
+			if(camera.ShowDialog() == DialogResult.OK)
+			{
+				Result = camera.Result;
+			}
+			camera.Dispose();
+			Close();
+		}
 
-        private void pictureBox19_Click(object sender, EventArgs e)
-        {
-            FogW fog = new FogW();
-            if(fog.ShowDialog() == DialogResult.OK)
-            {
-                Result = fog.Result;
-            }
-            fog.Dispose();
-            Close();
-        }
+		private void pictureBox17_Click(object sender, EventArgs e)
+		{
+			SkyColorW skyColor = new SkyColorW();
+			if(skyColor.ShowDialog() == DialogResult.OK)
+			{
+				Result = skyColor.Result;
+			}
+			skyColor.Dispose();
+			Close();
+		}
 
-        private void pictureBox16_Click(object sender, EventArgs e)
-        {
-            SkinmeshW skinmesh = new SkinmeshW();
-            if(skinmesh.ShowDialog() == DialogResult.OK)
-            {
-                Result = skinmesh.Result;
-            }
-            skinmesh.Dispose();
-            Close();
-        }
+		private void pictureBox19_Click(object sender, EventArgs e)
+		{
+			FogW fog = new FogW();
+			if(fog.ShowDialog() == DialogResult.OK)
+			{
+				Result = fog.Result;
+			}
+			fog.Dispose();
+			Close();
+		}
 
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-            SpriteW sprite = new SpriteW();
-            if(sprite.ShowDialog() == DialogResult.OK)
-            {
-                Result = sprite.Result;
-            }
-            sprite.Dispose();
-            Close();
-        }
+		private void pictureBox16_Click(object sender, EventArgs e)
+		{
+			SkinmeshW skinmesh = new SkinmeshW();
+			if(skinmesh.ShowDialog() == DialogResult.OK)
+			{
+				Result = skinmesh.Result;
+			}
+			skinmesh.Dispose();
+			Close();
+		}
 
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-            TextPrintW textPrint = new TextPrintW();
-            if (textPrint.ShowDialog() == DialogResult.OK) Result = textPrint.Result;
-            textPrint.Dispose();
-            Close();
-        }
+		private void pictureBox2_Click(object sender, EventArgs e)
+		{
+			SpriteW sprite = new SpriteW();
+			if(sprite.ShowDialog() == DialogResult.OK)
+			{
+				Result = sprite.Result;
+			}
+			sprite.Dispose();
+			Close();
+		}
 
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
+		private void pictureBox3_Click(object sender, EventArgs e)
+		{
+			TextPrintW textPrint = new TextPrintW();
+			if (textPrint.ShowDialog() == DialogResult.OK) Result = textPrint.Result;
+			textPrint.Dispose();
+			Close();
+		}
 
-        }
+		private void pictureBox4_Click(object sender, EventArgs e)
+		{
 
-        private void pictureBox21_Click(object sender, EventArgs e)
-        {
-            SoundEffectW soundEffectW = new SoundEffectW();
-            if (soundEffectW.ShowDialog() == DialogResult.OK) Result = soundEffectW.Result;
-            soundEffectW.Dispose();
-            Close();
-        }
+		}
 
-        private void pictureBox9_Click(object sender, EventArgs e)
-        {
-            ExitFadeW exitFade = new ExitFadeW();
-            if (exitFade.ShowDialog() == DialogResult.OK) Result = exitFade.Result;
-            exitFade.Dispose();
-            Close();
-        }
+		private void pictureBox21_Click(object sender, EventArgs e)
+		{
+			SoundEffectW soundEffectW = new SoundEffectW();
+			if (soundEffectW.ShowDialog() == DialogResult.OK) Result = soundEffectW.Result;
+			soundEffectW.Dispose();
+			Close();
+		}
 
-        private void pictureBox6_Click(object sender, EventArgs e)
-        {
-            EventOnKeyW EOK = new EventOnKeyW();
-            if (EOK.ShowDialog() == DialogResult.OK) Result = EOK.Result;
-            EOK.Dispose();
-            Close();
-        }
+		private void pictureBox9_Click(object sender, EventArgs e)
+		{
+			ExitFadeW exitFade = new ExitFadeW();
+			if (exitFade.ShowDialog() == DialogResult.OK) Result = exitFade.Result;
+			exitFade.Dispose();
+			Close();
+		}
 
-        private void pictureBox5_Click(object sender, EventArgs e)
-        {
-            EventOnLocationW EOL = new EventOnLocationW();
-            if (EOL.ShowDialog() == DialogResult.OK) Result = EOL.Result;
-            EOL.Dispose();
-            Close();
-        }
+		private void pictureBox6_Click(object sender, EventArgs e)
+		{
+			EventOnKeyW EOK = new EventOnKeyW();
+			if (EOK.ShowDialog() == DialogResult.OK) Result = EOK.Result;
+			EOK.Dispose();
+			Close();
+		}
 
-        private void pictureBox8_Click(object sender, EventArgs e)
-        {
-            TimerW timer = new TimerW();
-            if (timer.ShowDialog() == DialogResult.OK) Result = timer.Result;
-            timer.Dispose();
-            Close();
-        }
+		private void pictureBox5_Click(object sender, EventArgs e)
+		{
+			EventOnLocationW EOL = new EventOnLocationW();
+			if (EOL.ShowDialog() == DialogResult.OK) Result = EOL.Result;
+			EOL.Dispose();
+			Close();
+		}
 
-        private void pictureBox24_Click(object sender, EventArgs e)
-        {
-            GameSettingsW gameSettings = new GameSettingsW();
-            if(gameSettings.ShowDialog() == DialogResult.OK) Editor.GraphcalSettings = gameSettings.Result;
-            gameSettings.Dispose();
-            Close();
-        }
+		private void pictureBox8_Click(object sender, EventArgs e)
+		{
+			TimerW timer = new TimerW();
+			if (timer.ShowDialog() == DialogResult.OK) Result = timer.Result;
+			timer.Dispose();
+			Close();
+		}
 
-        private void pictureBox20_Click(object sender, EventArgs e)
-        {
-            SoundSourceW soundSourceW = new SoundSourceW();
-            if (soundSourceW.ShowDialog() == DialogResult.OK) Result = soundSourceW.Result;
-            soundSourceW.Dispose();
-            Close();
-        }
-    }
+		private void pictureBox24_Click(object sender, EventArgs e)
+		{
+			GameSettingsW gameSettings = new GameSettingsW();
+			if(gameSettings.ShowDialog() == DialogResult.OK) Editor.GraphcalSettings = gameSettings.Result;
+			gameSettings.Dispose();
+			Close();
+		}
+
+		private void pictureBox20_Click(object sender, EventArgs e)
+		{
+			SoundSourceW soundSourceW = new SoundSourceW();
+			if (soundSourceW.ShowDialog() == DialogResult.OK) Result = soundSourceW.Result;
+			soundSourceW.Dispose();
+			Close();
+		}
+	}
 }

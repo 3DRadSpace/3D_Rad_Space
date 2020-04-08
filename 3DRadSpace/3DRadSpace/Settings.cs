@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using _3DRadSpaceDll;
 
 namespace _3DRadSpace
 {
@@ -34,11 +35,11 @@ namespace _3DRadSpace
             string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
             if (!File.Exists(appd + "\\Config.cfg")) return;
             string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
-            checkBox1.Checked = Convert.ToBoolean(split[0]);
-            checkBox2.Checked = Convert.ToBoolean(split[1]);
-            checkBox3.Checked = Convert.ToBoolean(split[2]);
-            trackBar1.Value = Convert.ToInt32(split[3]);
-            trackBar2.Value = Convert.ToInt32(split[4]);
+            checkBox1.Checked = SafeConverter.BoolFromString(split[0]);
+            checkBox2.Checked = SafeConverter.BoolFromString(split[1]);
+            checkBox3.Checked = SafeConverter.BoolFromString(split[2]);
+            trackBar1.Value = SafeConverter.IntFromString(split[3]);
+            trackBar2.Value = SafeConverter.IntFromString(split[4]);
             trackBar1_Scroll(null, null);
             trackBar2_Scroll(null, null);
         }

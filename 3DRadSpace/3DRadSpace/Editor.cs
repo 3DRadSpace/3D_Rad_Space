@@ -159,32 +159,24 @@ namespace _3DRadSpace
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}
-		public void ApplyProjectType()
-		{
-			if (Project.type == ProjectType.ScriptOnly)
-			{
-				Program.ProjectTypeScript = true;
-				Exit();
-			}
-		}
 		private bool[] Settings_Load()
 		{
 			IFormatProvider a = CultureInfo.CurrentCulture;
 			string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
 			if (!File.Exists(appd + "\\Config.cfg"))
 			{
-				File.WriteAllText(appd + "\\Config.cfg","True True True 1");
+				File.WriteAllText(appd + "\\Config.cfg","1 1 1 1");
 				return new[] { true, true, true };
 			}
 			string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
 			if(split.Length != 5)
 			{
-				File.WriteAllText(appd + "\\Config.cfg", "True True True 1 1");
+				File.WriteAllText(appd + "\\Config.cfg", "1 1 1 1 1");
 				return new[] { true, true, true };
 			}
-			bool[] result = { Convert.ToBoolean(split[0],a), Convert.ToBoolean(split[1],a), Convert.ToBoolean(split[2],a) };
-			CameraRotationSpeed = 0.001f * Convert.ToInt32(split[3]);
-			CameraSpeed = 0.1f * Convert.ToInt32(split[4]);
+			bool[] result = { SafeConverter.BoolFromString(split[0]), SafeConverter.BoolFromString(split[1]), SafeConverter.BoolFromString(split[2]) };
+			CameraRotationSpeed = 0.001f * SafeConverter.IntFromString(split[3]);
+			CameraSpeed = 0.1f * SafeConverter.IntFromString(split[4]);
 			return result;
 		}
 		bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)

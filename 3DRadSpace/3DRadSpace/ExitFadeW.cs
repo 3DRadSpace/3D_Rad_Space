@@ -25,8 +25,8 @@ namespace _3DRadSpace
 			textBox1.Text = fade.Name;
 			textBox2.Text = fade.Fade.R + "";
 			textBox3.Text = fade.Fade.G + "";
-			textBox4.Text = fade.Fade.B+ "";
-			textBox5.Text = fade.Time * 1000 + "";
+			textBox4.Text = fade.Fade.B + "";
+			textBox5.Text = SafeConverter.FloatToString((float)fade.Time * 1000f);
 			textBox6.Text = fade.ProjectToLoad;
 		}
 
@@ -56,7 +56,7 @@ namespace _3DRadSpace
 			}
 			Result = new ExitFade(textBox1.Text, textBox6.Text, new Microsoft.Xna.Framework.Color(
 				Convert.ToByte(textBox2.Text), Convert.ToByte(textBox3.Text), Convert.ToByte(textBox4.Text))
-				,Convert.ToInt32(textBox5.Text),checkBox2.Checked);
+				,SafeConverter.IntFromString(textBox5.Text),checkBox2.Checked);
 			DialogResult = DialogResult.OK;
 			Close();
 		}

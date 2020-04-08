@@ -17,7 +17,6 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Type of the project to open.
 		/// </summary>
-		public static ProjectType type { get; set; }
 
 		/// <summary>
 		/// Used in editor
@@ -33,7 +32,7 @@ namespace _3DRadSpaceDll
 		{
 			List<GameObject> result = new List<GameObject>();
 			string[] Data = File.ReadAllLines(filename); //Read the file
-			type = (ProjectType)Convert.ToInt32(Data[0]);
+			if (Data[0] != "3DRSP_text") return null;
 			for (int i =1; i < Data.Length;i++) //Loop each line
 			{
 				//Split the current line
@@ -43,17 +42,17 @@ namespace _3DRadSpaceDll
 				{
 					case "camera":
 						{
-							Camera c = new Camera(Obj[1], Convert.ToBoolean(Obj[2]), new Vector3(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5])),
-								new Vector3(Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8])),
-								new Vector3(Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
-								Convert.ToSingle(Obj[12]), Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]));
-							int capacity = Convert.ToInt32(Obj[15]);
+							Camera c = new Camera(Obj[1], SafeConverter.BoolFromString(Obj[2]), new Vector3(SafeConverter.FloatFromString(Obj[3]), SafeConverter.FloatFromString(Obj[4]), SafeConverter.FloatFromString(Obj[5])),
+								new Vector3(SafeConverter.FloatFromString(Obj[6]), SafeConverter.FloatFromString(Obj[7]), SafeConverter.FloatFromString(Obj[8])),
+								new Vector3(SafeConverter.FloatFromString(Obj[9]), SafeConverter.FloatFromString(Obj[10]), SafeConverter.FloatFromString(Obj[11])),
+								SafeConverter.FloatFromString(Obj[12]), SafeConverter.FloatFromString(Obj[13]), SafeConverter.FloatFromString(Obj[14]));
+							int capacity = SafeConverter.IntFromString(Obj[15]);
 							if (capacity > 0)
 							{
 								c.Behiavours = new List<ObjectBehiavour>(capacity);
 								for (int j = 0; j < capacity; j++)
 								{
-									c.Behiavours.Add(new ObjectBehiavour(Convert.ToInt32(Obj[16 + j]), Convert.ToInt32(Obj[17 + (j*2)])));
+									c.Behiavours.Add(new ObjectBehiavour(SafeConverter.IntFromString(Obj[16 + j]), SafeConverter.IntFromString(Obj[17 + (j*2)])));
 								}
 							}
 							a = c;
@@ -67,12 +66,12 @@ namespace _3DRadSpaceDll
 								path += Obj[j]+' ';
 							}
 							path = path.Remove(path.Length - 1);
-							a = new Script(Obj[1], Convert.ToBoolean(Obj[2]), path, Obj[3]);
+							a = new Script(Obj[1], SafeConverter.BoolFromString(Obj[2]), path, Obj[3]);
 							break;
 						}
 					case "skycolor":
 						{
-							a = new SkyColor(Obj[1], Convert.ToBoolean(Obj[2]), new Color(
+							a = new SkyColor(Obj[1], SafeConverter.BoolFromString(Obj[2]), new Color(
 								Convert.ToByte(Obj[3]),
 								Convert.ToByte(Obj[4]),
 								Convert.ToByte(Obj[5])
@@ -81,12 +80,12 @@ namespace _3DRadSpaceDll
 						}
 					case "fog":
 						{
-							a = new Fog(Obj[0], Convert.ToBoolean(Obj[2]), new Color(
+							a = new Fog(Obj[0], SafeConverter.BoolFromString(Obj[2]), new Color(
 								Convert.ToByte(Obj[3]),
 								Convert.ToByte(Obj[4]),
 								Convert.ToByte(Obj[5])
 								),
-								Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]));
+								SafeConverter.FloatFromString(Obj[6]), SafeConverter.FloatFromString(Obj[7]));
 							break;
 						 }
 					case "skinmesh":
@@ -97,14 +96,14 @@ namespace _3DRadSpaceDll
 								path += Obj[j] + ' ';
 							}
 							path = path.Remove(path.Length - 1);
-							a = new Skinmesh(Obj[1], Convert.ToBoolean(Obj[2]), path,
-								new Vector3(Convert.ToSingle(Obj[3]),Convert.ToSingle(Obj[4]),Convert.ToSingle(Obj[5]))
-								, new Vector3(Convert.ToSingle(Obj[6]),Convert.ToSingle(Obj[7]),Convert.ToSingle(Obj[8]))
-								, new Vector3(Convert.ToSingle(Obj[9]),Convert.ToSingle(Obj[10]),Convert.ToSingle(Obj[11])),
-								Convert.ToBoolean(Obj[12]),new BoundingBox(
-									new Vector3(Convert.ToSingle(Obj[13]),Convert.ToSingle(Obj[14]),Convert.ToSingle(Obj[15]))
-									,new Vector3(Convert.ToSingle(Obj[16]),Convert.ToSingle(Obj[17]),Convert.ToSingle(Obj[18])))
-									,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Obj[19])));
+							a = new Skinmesh(Obj[1], SafeConverter.BoolFromString(Obj[2]), path,
+								new Vector3(SafeConverter.FloatFromString(Obj[3]),SafeConverter.FloatFromString(Obj[4]),SafeConverter.FloatFromString(Obj[5]))
+								, new Vector3(SafeConverter.FloatFromString(Obj[6]),SafeConverter.FloatFromString(Obj[7]),SafeConverter.FloatFromString(Obj[8]))
+								, new Vector3(SafeConverter.FloatFromString(Obj[9]),SafeConverter.FloatFromString(Obj[10]),SafeConverter.FloatFromString(Obj[11])),
+								SafeConverter.BoolFromString(Obj[12]),new BoundingBox(
+									new Vector3(SafeConverter.FloatFromString(Obj[13]),SafeConverter.FloatFromString(Obj[14]),SafeConverter.FloatFromString(Obj[15]))
+									,new Vector3(SafeConverter.FloatFromString(Obj[16]),SafeConverter.FloatFromString(Obj[17]),SafeConverter.FloatFromString(Obj[18])))
+									,new BoundingSphere(Vector3.Zero,SafeConverter.FloatFromString(Obj[19])));
 							break;
 						}
 					case "sprite":
@@ -115,11 +114,11 @@ namespace _3DRadSpaceDll
 								path += Obj[j] + " ";
 							}
 							path = path.Remove(path.Length - 1);
-							Sprite s = new Sprite(Obj[1], Convert.ToBoolean(Obj[2]), path,
-								new Vector2(Convert.ToInt32(Obj[3]), Convert.ToInt32(Obj[4])), new Vector2(Convert.ToInt32(Obj[5]), Convert.ToInt32(Obj[6])),
-								new Vector2(Convert.ToInt32(Obj[7]), Convert.ToInt32(Obj[8])), Convert.ToSingle(Obj[9]),
-								new Rectangle(Convert.ToInt32(Obj[10]),Convert.ToInt32(Obj[11]),Convert.ToInt32(Obj[12]),Convert.ToInt32(Obj[13]))
-								, new Color(Convert.ToByte(Obj[14]), Convert.ToByte(Obj[15]), Convert.ToByte(Obj[16])), (SpriteEffects)Convert.ToInt32(Obj[17]),Convert.ToInt32(Obj[18]));
+							Sprite s = new Sprite(Obj[1], SafeConverter.BoolFromString(Obj[2]), path,
+								new Vector2(SafeConverter.IntFromString(Obj[3]), SafeConverter.IntFromString(Obj[4])), new Vector2(SafeConverter.IntFromString(Obj[5]), SafeConverter.IntFromString(Obj[6])),
+								new Vector2(SafeConverter.IntFromString(Obj[7]), SafeConverter.IntFromString(Obj[8])), SafeConverter.FloatFromString(Obj[9]),
+								new Rectangle(SafeConverter.IntFromString(Obj[10]),SafeConverter.IntFromString(Obj[11]),SafeConverter.IntFromString(Obj[12]),SafeConverter.IntFromString(Obj[13]))
+								, new Color(Convert.ToByte(Obj[14]), Convert.ToByte(Obj[15]), Convert.ToByte(Obj[16])), (SpriteEffects)SafeConverter.IntFromString(Obj[17]),SafeConverter.IntFromString(Obj[18]));
 							if (s.SpriteSheetSection.Value.Width + s.SpriteSheetSection.Value.Height == 0) s.SpriteSheetSection = null;
 							a = s;
 							break;
@@ -139,12 +138,12 @@ namespace _3DRadSpaceDll
 								font += Obj[j]+' ';
 							}
 							font = font.Remove(font.Length - 1);
-							a = new TextPrint(Obj[1], Convert.ToBoolean(Obj[2]), font, text,
-								new Vector2(Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4])),
-								new Vector2(Convert.ToSingle(Obj[5]), Convert.ToSingle(Obj[6])), Convert.ToSingle(Obj[7]),
-								new Vector2(Convert.ToSingle(Obj[8]), Convert.ToSingle(Obj[9])),
+							a = new TextPrint(Obj[1], SafeConverter.BoolFromString(Obj[2]), font, text,
+								new Vector2(SafeConverter.FloatFromString(Obj[3]), SafeConverter.FloatFromString(Obj[4])),
+								new Vector2(SafeConverter.FloatFromString(Obj[5]), SafeConverter.FloatFromString(Obj[6])), SafeConverter.FloatFromString(Obj[7]),
+								new Vector2(SafeConverter.FloatFromString(Obj[8]), SafeConverter.FloatFromString(Obj[9])),
 								new Color(Convert.ToByte(Obj[10]), Convert.ToByte(Obj[11]), Convert.ToByte(Obj[12])),
-								(SpriteEffects)(Convert.ToInt32(Obj[13])),Convert.ToInt32(Obj[14]));
+								(SpriteEffects)(SafeConverter.IntFromString(Obj[13])),SafeConverter.IntFromString(Obj[14]));
 							break;
 						}
 					case "soundeffect":
@@ -155,11 +154,11 @@ namespace _3DRadSpaceDll
 								path += Obj[j] + ' ';
 							}
 							path = path.Remove(path.Length - 1);
-							a = new SoundEffect(Obj[1], Convert.ToBoolean(Obj[2]), path, Convert.ToSingle(Obj[3]))
+							a = new SoundEffect(Obj[1], SafeConverter.BoolFromString(Obj[2]), path, SafeConverter.FloatFromString(Obj[3]))
 							{
-								Pitch = Convert.ToSingle(Obj[4]),
-								Pan = Convert.ToSingle(Obj[5]),
-								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)Convert.ToInt32(Obj[6])
+								Pitch = SafeConverter.FloatFromString(Obj[4]),
+								Pan = SafeConverter.FloatFromString(Obj[5]),
+								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)SafeConverter.IntFromString(Obj[6])
 							};
 							break;
 						}
@@ -174,12 +173,12 @@ namespace _3DRadSpaceDll
 							a = new ExitFade()
 							{
 								Name = Obj[1],
-								Enabled = Convert.ToBoolean(Obj[2]),
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
 								Fade = new Color(
 									Convert.ToByte(Obj[3]), Convert.ToByte(Obj[4]), Convert.ToByte(Obj[5])
 								),
-								Time = Convert.ToInt32(Obj[6]),
-								FadeType = Convert.ToBoolean(Obj[7]),
+								Time = SafeConverter.IntFromString(Obj[6]),
+								FadeType = SafeConverter.BoolFromString(Obj[7]),
 								ProjectToLoad = path
 							};
 							break;
@@ -195,15 +194,15 @@ namespace _3DRadSpaceDll
 							a = new SoundSource()
 							{
 								Name = Obj[1],
-								Enabled = Convert.ToBoolean(Obj[2]),
-								Volume = Convert.ToSingle(Obj[3]),
-								Pitch = Convert.ToSingle(Obj[4]),
-								Pan = Convert.ToSingle(Obj[5]),
-								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)Convert.ToInt32(Obj[6]),
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
+								Volume = SafeConverter.FloatFromString(Obj[3]),
+								Pitch = SafeConverter.FloatFromString(Obj[4]),
+								Pan = SafeConverter.FloatFromString(Obj[5]),
+								SoundState = (Microsoft.Xna.Framework.Audio.SoundState)SafeConverter.IntFromString(Obj[6]),
 								Position = new Vector3(
-									Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8]), Convert.ToSingle(Obj[9])
+									SafeConverter.FloatFromString(Obj[7]), SafeConverter.FloatFromString(Obj[8]), SafeConverter.FloatFromString(Obj[9])
 									),
-								DopplerScale = Convert.ToSingle(Obj[10]),
+								DopplerScale = SafeConverter.FloatFromString(Obj[10]),
 								Resource = path,
 							};
 							break;
@@ -213,17 +212,17 @@ namespace _3DRadSpaceDll
 							a = new EventOnLocation()
 							{
 								Name = Obj[1],
-								Enabled = Convert.ToBoolean(Obj[2]),
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
 								BoundingBox = new BoundingBox(new Vector3(
-									Convert.ToSingle(Obj[3]), Convert.ToSingle(Obj[4]), Convert.ToSingle(Obj[5]))
+									SafeConverter.FloatFromString(Obj[3]), SafeConverter.FloatFromString(Obj[4]), SafeConverter.FloatFromString(Obj[5]))
 								, new Vector3(
-									Convert.ToSingle(Obj[6]), Convert.ToSingle(Obj[7]), Convert.ToSingle(Obj[8]))),
+									SafeConverter.FloatFromString(Obj[6]), SafeConverter.FloatFromString(Obj[7]), SafeConverter.FloatFromString(Obj[8]))),
 								BoundingSphere = new BoundingSphere(new Vector3(
-									Convert.ToSingle(Obj[9]), Convert.ToSingle(Obj[10]), Convert.ToSingle(Obj[11])),
-									Convert.ToSingle(Obj[12])),
+									SafeConverter.FloatFromString(Obj[9]), SafeConverter.FloatFromString(Obj[10]), SafeConverter.FloatFromString(Obj[11])),
+									SafeConverter.FloatFromString(Obj[12])),
 								BoundingPlane = new Plane(new Vector4(
-									Convert.ToSingle(Obj[13]), Convert.ToSingle(Obj[14]), Convert.ToSingle(Obj[15]), Convert.ToSingle(Obj[16]))),
-								VisibleInEditor = Convert.ToBoolean(Obj[17]),
+									SafeConverter.FloatFromString(Obj[13]), SafeConverter.FloatFromString(Obj[14]), SafeConverter.FloatFromString(Obj[15]), SafeConverter.FloatFromString(Obj[16]))),
+								VisibleInEditor = SafeConverter.BoolFromString(Obj[17]),
 								Behiavours = ActionScript.OpCodeCall.CreateFromString(18, Obj, Obj.Length)
 							};
 							break;
@@ -233,9 +232,9 @@ namespace _3DRadSpaceDll
 							a = new EventOnKey()
 							{
 								Name = Obj[1],
-								Enabled = Convert.ToBoolean(Obj[2]),
-								Key = new KeyInput((Microsoft.Xna.Framework.Input.Keys)Convert.ToInt32(Obj[3]),
-								(KeyInputType)Convert.ToInt32(Obj[4])),
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
+								Key = new KeyInput((Microsoft.Xna.Framework.Input.Keys)SafeConverter.IntFromString(Obj[3]),
+								(KeyInputType)SafeConverter.IntFromString(Obj[4])),
 								HoldingTime = Convert.ToUInt32(Obj[5]),
 								Behiavours = ActionScript.OpCodeCall.CreateFromString(6, Obj, Obj.Length)
 							};
@@ -246,9 +245,9 @@ namespace _3DRadSpaceDll
 							a = null;
 							GSettings = new GameSettings()
 							{
-								Fullscreen = Convert.ToBoolean(Obj[1]),
-								MaximumFramerate = Convert.ToInt32(Obj[2]),
-								GameScreen = new Point(Convert.ToInt32(Obj[3]),Convert.ToInt32(Obj[4]))
+								Fullscreen = SafeConverter.BoolFromString(Obj[1]),
+								MaximumFramerate = SafeConverter.IntFromString(Obj[2]),
+								GameScreen = new Point(SafeConverter.IntFromString(Obj[3]),SafeConverter.IntFromString(Obj[4]))
 							};
 							break;
 						}
@@ -257,7 +256,7 @@ namespace _3DRadSpaceDll
 							a = new Timer()
 							{
 								Name = Obj[1],
-								Enabled = Convert.ToBoolean(Obj[2]),
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
 								Period = Convert.ToUInt32(Obj[3]),
 								Repetitions = Convert.ToUInt32(Obj[4]),
 								Behiavours = ActionScript.OpCodeCall.CreateFromString(5, Obj, Obj.Length)
@@ -280,14 +279,14 @@ namespace _3DRadSpaceDll
 		public static void Save(string filename)
 		{
 			string[] ToBeSaved = new string[Game.GameObjects.Count+1];
-			ToBeSaved[0] = ((int)type).ToString();
+			ToBeSaved[0] = "";
 			for (int i = 0; i < Game.GameObjects.Count; i++)
 			{
 				int j = i + 1;
 				if (Game.GameObjects[i] is Camera c)
 				{
 					ToBeSaved[j] = "camera " + c.Name + ' ' + c.Enabled + ' ' + Vector2String(c.Position) + ' ' + Vector2String(c.Rotation) +
-						' ' + Vector2String(c.CameraRotation) + ' ' + MathHelper.ToDegrees(c.FOV) + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
+						' ' + Vector2String(c.CameraRotation) + ' ' + SafeConverter.FloatToString(MathHelper.ToDegrees(c.FOV)) + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
 					if (c.Behiavours != null)
 					{
 						ToBeSaved[j] += c.Behiavours.Count + " ";
@@ -308,13 +307,13 @@ namespace _3DRadSpaceDll
 				}
 				if (Game.GameObjects[i] is Fog fog)
 				{
-					ToBeSaved[j] = "fog " + fog.Name + ' ' + fog.Enabled + ' ' + Vector2String(fog.FogColor) + ' ' + fog.FogStart + ' ' + fog.FogEnd;
+					ToBeSaved[j] = "fog " + fog.Name + ' ' + fog.Enabled + ' ' + Vector2String(fog.FogColor) + ' ' + SafeConverter.FloatToString(fog.FogStart) + ' ' + SafeConverter.FloatToString(fog.FogEnd);
 				}
 				if (Game.GameObjects[i] is Skinmesh skinmesh)
 				{
 					ToBeSaved[j] = "skinmesh " + skinmesh.Name + ' ' + skinmesh.Enabled + ' ' + Vector2String(skinmesh.Position) + ' ' +
 						Vector2String(skinmesh.Rotation) + ' ' + Vector2String(skinmesh.Scale) + ' ' + skinmesh.FogEnabled + ' ' +
-						Vector2String(skinmesh.BoundingBox.Min) + ' ' + Vector2String(skinmesh.BoundingBox.Max) +' ' + skinmesh.BoundingSphere.Radius + ' ' + skinmesh.Resource;
+						Vector2String(skinmesh.BoundingBox.Min) + ' ' + Vector2String(skinmesh.BoundingBox.Max) +' ' + SafeConverter.FloatToString(skinmesh.BoundingSphere.Radius) + ' ' + skinmesh.Resource;
 				}
 				if (Game.GameObjects[i] is Sprite sprite)
 				{
@@ -324,21 +323,21 @@ namespace _3DRadSpaceDll
 						rectangle_string = sprite.SpriteSheetSection.Value.X + " " + sprite.SpriteSheetSection.Value.Y + ' ' + sprite.SpriteSheetSection.Value.Width + ' ' + sprite.SpriteSheetSection.Value.Height;
 					}
 					ToBeSaved[j] = "sprite " + sprite.Name + ' ' + sprite.Enabled + ' ' + Vector2String(sprite.Position) + ' ' + Vector2String(sprite.Size) + ' ' + Vector2String(sprite.Center) +
-						' '+sprite.Rotation+ ' '  + rectangle_string + ' ' + sprite.Mask.R + ' ' + sprite.Mask.G + ' ' + sprite.Mask.B + ' ' + (int)(sprite.Effects) + ' ' + sprite.Layer + ' ' + sprite.Resource;
+						' '+ SafeConverter.FloatToString(sprite.Rotation)+ ' '  + rectangle_string + ' ' + sprite.Mask.R + ' ' + sprite.Mask.G + ' ' + sprite.Mask.B + ' ' + (int)(sprite.Effects) + ' ' + SafeConverter.FloatToString(sprite.Layer) + ' ' + sprite.Resource;
 				}
 				if (Game.GameObjects[i] is TextPrint textPrint)
 				{
 					ToBeSaved[j] = "textprint " + textPrint.Name + ' ' + textPrint.Enabled + ' ' + Vector2String(textPrint.Position) + ' ' + Vector2String(textPrint.Size) + ' ' + textPrint.Rotation +
-						' ' + Vector2String(textPrint.Center) + ' ' + textPrint.Color.R + ' ' + textPrint.Color.G + ' ' + textPrint.Color.B + ' ' + (int)(textPrint.Effects) + ' ' + textPrint.Layer + ' ' + textPrint.Text + ' ' + (char)0xfe + ' ' + textPrint.Resource;
+						' ' + Vector2String(textPrint.Center) + ' ' + textPrint.Color.R + ' ' + textPrint.Color.G + ' ' + textPrint.Color.B + ' ' + (int)(textPrint.Effects) + ' ' + SafeConverter.FloatToString(textPrint.Layer) + ' ' + textPrint.Text + ' ' + (char)0xfe + ' ' + textPrint.Resource;
 				}
 				if(Game.GameObjects[i] is SoundEffect sound)
 				{
 					if(!(Game.GameObjects[i] is SoundSource ))
-						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' + sound.Pan + ' '+(int)sound.SoundState+' ' + sound.Resource;
+						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + SafeConverter.FloatToString(sound.Volume) + ' ' + SafeConverter.FloatToString(sound.Pitch) + ' ' + SafeConverter.FloatToString(sound.Pan) + ' '+(int)sound.SoundState+' ' + sound.Resource;
 				}
 				if(Game.GameObjects[i] is ExitFade fade)
 				{
-					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Fade.R + ' ' + fade.Fade.G + ' ' + fade.Fade.B + ' ' + fade.Time + ' ' + fade.FadeType;
+					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Fade.R + ' ' + fade.Fade.G + ' ' + fade.Fade.B + ' ' + SafeConverter.FloatToString((float)fade.Time) + ' ' + fade.FadeType;
 				}
 				if(Game.GameObjects[i] is EventOnLocation eol)
 				{
@@ -381,7 +380,7 @@ namespace _3DRadSpaceDll
 		/// <returns>The needed string</returns>
 		public static string Vector2String(Vector3 pos)
 		{
-			return pos.X + " " + pos.Y + " " + pos.Z;
+			return SafeConverter.FloatToString(pos.X) + " " + SafeConverter.FloatToString(pos.Y) + " " + SafeConverter.FloatToString(pos.Z);
 		}
 		/// <summary>
 		/// Converts a vector to a string in the format needed for 3DRSP projects
@@ -390,7 +389,7 @@ namespace _3DRadSpaceDll
 		/// <returns>The needed string</returns>
 		public static string Vector2String(Vector2 pos)
 		{
-			return pos.X + " " + pos.Y;
+			return SafeConverter.FloatToString(pos.X) + " " + SafeConverter.FloatToString(pos.Y); ;
 		}
 		/// <summary>
 		/// Used in I/O
@@ -399,7 +398,7 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public static string Box2str(BoundingBox box)
 		{
-			return box.Min.X + " " + box.Min.Y + ' ' + box.Min.Z + ' ' + box.Max.X + ' ' + box.Max.Y + ' ' + box.Max.Z; 
+			return Vector2String(box.Min) + ' ' + Vector2String(box.Max);
 		}
 		/// <summary>
 		/// Used in I/O
@@ -417,7 +416,7 @@ namespace _3DRadSpaceDll
 		/// <returns></returns>
 		public static string Plane2str(Plane p)
 		{
-			return p.Normal.X + " " + p.Normal.Y + ' ' + p.Normal.Z + ' ' + p.D;
+			return Vector2String(p.Normal)+ ' ' + p.D;
 		}
 		/// <summary>
 		/// Clears native memory used by the game.

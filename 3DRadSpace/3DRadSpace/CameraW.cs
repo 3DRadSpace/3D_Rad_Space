@@ -20,18 +20,18 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = c.Name;
             checkBox1.Checked = c.Enabled;
-            textBox2.Text = c.Position.X.ToString();
-            textBox3.Text = c.Position.Y.ToString();
-            textBox4.Text = c.Position.Z.ToString();
-            textBox7.Text = c.Rotation.X.ToString();
-            textBox6.Text = c.Rotation.Y.ToString();
-            textBox5.Text = c.Rotation.Z.ToString();
-            textBox10.Text = c.CameraRotation.X.ToString();
-            textBox9.Text = c.CameraRotation.Y.ToString();
-            textBox8.Text = c.CameraRotation.Z.ToString();
+            textBox2.Text = SafeConverter.FloatToString(c.Position.X);
+            textBox3.Text = SafeConverter.FloatToString(c.Position.Y);
+            textBox4.Text = SafeConverter.FloatToString(c.Position.Z);
+            textBox7.Text = SafeConverter.FloatToString(c.Rotation.X);
+            textBox6.Text = SafeConverter.FloatToString(c.Rotation.Y);
+            textBox5.Text = SafeConverter.FloatToString(c.Rotation.Z);
+            textBox10.Text = SafeConverter.FloatToString(c.CameraRotation.X);
+            textBox9.Text = SafeConverter.FloatToString(c.CameraRotation.Y);
+            textBox8.Text = SafeConverter.FloatToString(c.CameraRotation.Z);
             numericUpDown1.Value = (decimal)c.GetFOVDegrees();
-            textBox11.Text = c.MinDrawDist.ToString();
-            textBox12.Text = c.MaxDrawDist.ToString();
+            textBox11.Text = SafeConverter.FloatToString(c.MinDrawDist);
+            textBox12.Text = SafeConverter.FloatToString(c.MaxDrawDist);
             Behiavour = c.Behiavours;
             UpdateList();
         }
@@ -46,11 +46,10 @@ namespace _3DRadSpace
 
         private void button5_Click(object sender, EventArgs e)
         {
-            IFormatProvider a = CultureInfo.CurrentCulture;
-            Result = new Camera(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), a)),
-                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), a))
-                , new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text), a)),
-                Convert.ToSingle(numericUpDown1.Value), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text), a), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), a))
+            Result = new Camera(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox2.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox3.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox4.Text))),
+                new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox7.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox6.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox5.Text)))
+                , new Vector3(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox10.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox9.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox8.Text))),
+                SafeConverter.FloatFromString(""+numericUpDown1.Value), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox11.Text)), SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox12.Text)))
             {
                 Behiavours = Behiavour
             };

@@ -112,56 +112,56 @@ namespace _3DRadSpaceDll
 					case Opcode.NOP: break;
 					case Opcode.Start:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Enable();
 							if (Game.GameObjects[id] is SoundEffect ef) ef.Trigger();
 							break;
 						}
 					case Opcode.Stop:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Disable();
 							break;
 						}
 					case Opcode.Toggle:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Toggle();
 							break;
 						}
 					case Opcode.Show:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Show();
 							break;
 						}
 					case Opcode.Hide:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Hide();
 							break;
 						}
 					case Opcode.SetPos:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Position = (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.AddPos:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Position += (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.SetRot:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Rotation = (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.AddRot:
 						{
-							int id = Convert.ToInt32(Arguments[0]);
+							int id = SafeConverter.IntFromString(Arguments[0]);
 							Game.GameObjects[id].Rotation += (Vector3)Arguments[1];
 							break;
 						}
@@ -204,16 +204,16 @@ namespace _3DRadSpaceDll
 			{
 				switch (Opcode)
 				{
-					case Opcode.Start: return "Start ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.Stop: return "Stop ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.Toggle: return "Toggle ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.Show: return "Show ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.Hide: return "Hide ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.SetPos: return "Set Position " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.AddPos: return "Add Position " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.SetRot: return "Set Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.AddRot: return "Add Rotation " + Arguments[1] + " to ID:" + Convert.ToInt32(Arguments[0]);
-					case Opcode.RunOneFrame: return "Run once ID: " + Convert.ToInt32(Arguments[0]); ;
+					case Opcode.Start: return "Start ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.Stop: return "Stop ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.Toggle: return "Toggle ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.Show: return "Show ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.Hide: return "Hide ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.SetPos: return "Set Position " + Arguments[1] + " to ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.AddPos: return "Add Position " + Arguments[1] + " to ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.SetRot: return "Set Rotation " + Arguments[1] + " to ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.AddRot: return "Add Rotation " + Arguments[1] + " to ID:" + SafeConverter.IntFromString(Arguments[0]);
+					case Opcode.RunOneFrame: return "Run once ID: " + SafeConverter.IntFromString(Arguments[0]); ;
 					default: return "NOP";
 				}
 			}
@@ -259,7 +259,7 @@ namespace _3DRadSpaceDll
 				List<OpCodeCall> c = new List<OpCodeCall>();
 				for(int i =offset; i < stop;i++)
 				{
-					Opcode op = (Opcode)Convert.ToInt32(str[i]);
+					Opcode op = (Opcode)SafeConverter.IntFromString(str[i]);
 					switch (op)
 					{
 						case Opcode.Start:
@@ -268,15 +268,15 @@ namespace _3DRadSpaceDll
 						case Opcode.Show: 
 						case Opcode.Hide:
 						case Opcode.RunOneFrame:
-							c.Add(new OpCodeCall(op, new object[] { Convert.ToInt32(str[i + 1]) }));
+							c.Add(new OpCodeCall(op, new object[] { SafeConverter.IntFromString(str[i + 1]) }));
 							i += 1;
 							break;
 						case Opcode.SetPos:
 						case Opcode.AddPos:
 						case Opcode.SetRot:
 						case Opcode.AddRot:
-							c.Add(new OpCodeCall(op, new object[] { Convert.ToInt32(str[i + 1]),
-							new Vector3( Convert.ToSingle(str[i+2]),Convert.ToSingle(str[i+3]),Convert.ToSingle(str[i+4]))
+							c.Add(new OpCodeCall(op, new object[] { SafeConverter.IntFromString(str[i + 1]),
+							new Vector3( SafeConverter.FloatFromString(str[i+2]),SafeConverter.FloatFromString(str[i+3]),SafeConverter.FloatFromString(str[i+4]))
 							}));
 							i += 4;
 							break;

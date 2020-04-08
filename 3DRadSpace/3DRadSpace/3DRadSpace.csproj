@@ -123,12 +123,6 @@
       <DependentUpon>GameSettingsW.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="NewProjectWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NewProjectWindow.Designer.cs">
-      <DependentUpon>NewProjectWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectCompiler.cs">
       <SubType>Form</SubType>
@@ -296,9 +290,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GameSettingsW.resx">
       <DependentUpon>GameSettingsW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NewProjectWindow.resx">
-      <DependentUpon>NewProjectWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectCompiler.resx">
       <DependentUpon>ProjectCompiler.cs</DependentUpon>
