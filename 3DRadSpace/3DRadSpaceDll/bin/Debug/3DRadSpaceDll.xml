@@ -881,56 +881,56 @@
             <param name="ID">Object identifier</param>
             <param name="beh">Behiavour ID.</param>
         </member>
-        <member name="T:_3DRadSpaceDll.ActionScript.Opcode">
+        <member name="T:_3DRadSpaceDll.OpcodeEvent.Opcode">
             <summary>
             The commands that the script can execute.
             <para>Name: OPeration CODE</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.NOP">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.NOP">
             <summary>
             No operation. Does nothing.
             <para>Can be used to store object IDs or other data.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Start">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.Start">
             <summary>
             Starts an object. 
             <para>Argument: int -object identifier.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Stop">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.Stop">
             <summary>
             Stops an object.
             <para>Argument: int -object identifier.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Toggle">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.Toggle">
             <summary>
             Toggles the start/stop state of an object.
             <para>Argument: int -object identifier.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Show">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.Show">
             <summary>
             Shows an object.
             <para>Arguments: int -object identifier.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.Hide">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.Hide">
             <summary>
             Hides an object.
             <para>Arguments: int -object identifier.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.SetPos">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.SetPos">
             <summary>
             Sets an object's position. 
             <para>Arguments: int - object identifier</para>
             <para>Vector3 - position.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.AddPos">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.AddPos">
             <summary>
             Adds a vector to the object's position.
             <para>Arguments:</para>
@@ -938,7 +938,7 @@
             <para>Vector3 - position</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.SetRot">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.SetRot">
             <summary>
             Sets the object rotation.
             <para>Arguments:</para>
@@ -946,7 +946,7 @@
             <para>Vector3 - Rotation in Euler angles.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.AddRot">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.AddRot">
             <summary>
             Adds a vector to the object's rotation.
             <para>Arguments:</para>
@@ -954,66 +954,66 @@
             <para>Vector3 - Rotation in Euler Angles.</para>
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.Opcode.RunOneFrame">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.Opcode.RunOneFrame">
             <summary>
             Starts an object, update it, then stop it.
             <para>Arguments</para>
             <para>int - Object ID</para>
             </summary>
         </member>
-        <member name="T:_3DRadSpaceDll.ActionScript.OpCodeCall">
+        <member name="T:_3DRadSpaceDll.OpcodeEvent.OpCodeCall">
             <summary>
             Calls an opcode;
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.OpCodeCall.Opcode">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.Opcode">
             <summary>
             
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.ActionScript.OpCodeCall.Arguments">
+        <member name="F:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.Arguments">
             <summary>
             
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.#ctor(_3DRadSpaceDll.ActionScript.Opcode,System.Object[])">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.#ctor(_3DRadSpaceDll.OpcodeEvent.Opcode,System.Object[])">
             <summary>
             Main opcode constructor.
             </summary>
             <param name="op">Code.</param>
             <param name="args">Function call arguments</param>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Call">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.Call">
             <summary>
             Calls the opcode.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.ToString">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.ToString">
             <summary>
             Returns a string representing the data inside the struct.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.VisibleString">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.VisibleString">
             <summary>
             Returns a visible string to be used in UIs.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.GetOpcodeText(_3DRadSpaceDll.ActionScript.Opcode)">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.GetOpcodeText(_3DRadSpaceDll.OpcodeEvent.Opcode)">
             <summary>
             Returns a string that represents the opcode without argument.
             </summary>
             <param name="Arg">Argument Opcode</param>
             <returns></returns>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.Run(System.Collections.Generic.List{_3DRadSpaceDll.ActionScript.OpCodeCall})">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.Run(System.Collections.Generic.List{_3DRadSpaceDll.OpcodeEvent.OpCodeCall})">
             <summary>
             Runs a array
             </summary>
             <param name="e"></param>
         </member>
-        <member name="M:_3DRadSpaceDll.ActionScript.OpCodeCall.CreateFromString(System.Int32,System.String[],System.Int32)">
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.CreateFromString(System.Int32,System.String[],System.Int32)">
             <summary>
             Used in I/O operations.
             </summary>
@@ -1022,17 +1022,24 @@
             <param name="stop"></param>
             <returns></returns>
         </member>
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.CreateFromBuffer(System.Byte[],System.Int32,System.Int32@)">
+            <summary>
+            Create from a null-terminated buffer.
+            </summary>
+            <param name="buf"></param>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Project.type">
+        <member name="P:_3DRadSpaceDll.Project.GSettings">
             <summary>
             Type of the project to open.
             </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Project.GSettings">
             <summary>
             Used in editor
             </summary>
@@ -1110,6 +1117,18 @@
             <summary>
             Code only
             </summary>
+        </member>
+        <member name="T:_3DRadSpaceDll.ProjectBinary">
+            <summary>
+            Loads and saved projects in binary format
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ProjectBinary.Load(System.String)">
+            <summary>
+            Loads a project.
+            </summary>
+            <param name="filename">Absolute path.</param>
+            <returns></returns>
         </member>
         <member name="T:_3DRadSpaceDll.SafeConverter">
             <summary>

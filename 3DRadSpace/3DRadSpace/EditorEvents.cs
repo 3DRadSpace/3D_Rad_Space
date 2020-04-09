@@ -36,6 +36,11 @@ namespace _3DRadSpace
             {
                 ClearObjects();
                 _3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
+                if(_3DRadSpaceDll.Game.GameObjects == null)
+                {
+                    MessageBox.Show("Opened file is not a valid 3DRadSpace project", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return;
+                }
                 LoadAllObjects();
                 UpdateObjects();
                 ProjectSaved = true;
@@ -129,7 +134,7 @@ namespace _3DRadSpace
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if (SafeConverter.IntFromString(v) != Program.Version)
+                if (SafeConverter.IntFromString(v) < Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";

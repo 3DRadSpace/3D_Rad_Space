@@ -122,7 +122,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Depth layer.
         /// </summary>
-        public int Layer { get; set; }
+        public float Layer { get; set; }
 
         /// <summary>
         /// Loads the font.

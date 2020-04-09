@@ -223,7 +223,7 @@ namespace _3DRadSpaceDll
 								BoundingPlane = new Plane(new Vector4(
 									SafeConverter.FloatFromString(Obj[13]), SafeConverter.FloatFromString(Obj[14]), SafeConverter.FloatFromString(Obj[15]), SafeConverter.FloatFromString(Obj[16]))),
 								VisibleInEditor = SafeConverter.BoolFromString(Obj[17]),
-								Behiavours = ActionScript.OpCodeCall.CreateFromString(18, Obj, Obj.Length)
+								Behiavours = OpcodeEvent.OpCodeCall.CreateFromString(18, Obj, Obj.Length)
 							};
 							break;
 						}
@@ -236,7 +236,7 @@ namespace _3DRadSpaceDll
 								Key = new KeyInput((Microsoft.Xna.Framework.Input.Keys)SafeConverter.IntFromString(Obj[3]),
 								(KeyInputType)SafeConverter.IntFromString(Obj[4])),
 								HoldingTime = Convert.ToUInt32(Obj[5]),
-								Behiavours = ActionScript.OpCodeCall.CreateFromString(6, Obj, Obj.Length)
+								Behiavours = OpcodeEvent.OpCodeCall.CreateFromString(6, Obj, Obj.Length)
 							};
 							break;
 						}
@@ -259,7 +259,7 @@ namespace _3DRadSpaceDll
 								Enabled = SafeConverter.BoolFromString(Obj[2]),
 								Period = Convert.ToUInt32(Obj[3]),
 								Repetitions = Convert.ToUInt32(Obj[4]),
-								Behiavours = ActionScript.OpCodeCall.CreateFromString(5, Obj, Obj.Length)
+								Behiavours = OpcodeEvent.OpCodeCall.CreateFromString(5, Obj, Obj.Length)
 							};
 							break;
 						}

@@ -43,6 +43,11 @@ namespace _3DRadSpaceDll
         /// <returns></returns>
         public static int IntFromString(object o)
         {
+            if (o is bool b)
+            {
+                if (b == true) return 1;
+                if (b == false) return 0;
+            }
             return IntFromString(o + "");
         }
         /// <summary>
@@ -65,8 +70,8 @@ namespace _3DRadSpaceDll
             if (b.ToLower() == "1") return true;
             if (b.ToLower() == "0") return false;
             //Keep compatibilty with 0.0.2a and lower projects
-            if (b.ToLower() == "1") return true;
-            if (b.ToLower() == "0") return false;
+            if (b.ToLower() == "true") return true;
+            if (b.ToLower() == "false") return false;
             return false; //Default to false.
         }
         /// <summary>
@@ -106,6 +111,7 @@ namespace _3DRadSpaceDll
         /// <returns></returns>
         public static string IntToString(int num)
         {
+            if (num == 0) return "0";
             string s = "";
             while(num > 0)
             {

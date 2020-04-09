@@ -52,7 +52,7 @@ namespace _3DRadSpace
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
-			Window.Title = "3DRadSpace - Editor v0.0.2 alpha";
+			Window.Title = "3DRadSpace - Editor v0.0.3 alpha";
 			IsMouseVisible = true;
 			if (Settings[0])
 			{

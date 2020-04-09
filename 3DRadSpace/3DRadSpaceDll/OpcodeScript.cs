@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace _3DRadSpaceDll
 {
-	namespace ActionScript
+	namespace OpcodeEvent
 	{
 		/// <summary>
 		/// The commands that the script can execute.
@@ -283,6 +283,47 @@ namespace _3DRadSpaceDll
 						default: break;
 					}
 				}
+				return c;
+			}
+			/// <summary>
+			/// Create from a null-terminated buffer.
+			/// </summary>
+			/// <param name="buf"></param>
+			/// <param name="offset"></param>
+			/// <param name="length"></param>
+			/// <returns></returns>
+			public static List<OpCodeCall> CreateFromBuffer(byte[] buf,int offset,out int length)
+			{
+				List<OpCodeCall> c = new List<OpCodeCall>();
+				int i = offset;
+				for (; buf[i] != 0 ; i++)
+				{
+					Opcode op = (Opcode)BitConverter.ToInt32(buf, offset);
+					i += sizeof(int);
+					switch (op)
+					{
+						case Opcode.Start:
+						case Opcode.Stop:
+						case Opcode.Toggle:
+						case Opcode.Show:
+						case Opcode.Hide:
+						case Opcode.RunOneFrame:
+							c.Add(new OpCodeCall(op, new object[] { BitConverter.ToInt32(buf,i) }));
+							i += sizeof(int);
+							break;
+						case Opcode.SetPos:
+						case Opcode.AddPos:
+						case Opcode.SetRot:
+						case Opcode.AddRot:
+							c.Add(new OpCodeCall(op, new object[] { BitConverter.ToInt32(buf,i),
+							new Vector3( BitConverter.ToSingle(buf,i+sizeof(float)),BitConverter.ToSingle(buf,i+(2*sizeof(float))),BitConverter.ToSingle(buf,i+(3*sizeof(float))))
+							}));
+							i += sizeof(float) * 3 + sizeof(int);
+							break;
+						default: break;
+					}
+				}
+				length = i - offset;
 				return c;
 			}
 		}

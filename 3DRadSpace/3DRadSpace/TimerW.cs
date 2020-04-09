@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
-using _3DRadSpaceDll.ActionScript;
+using _3DRadSpaceDll.OpcodeEvent;
 
 namespace _3DRadSpace
 {

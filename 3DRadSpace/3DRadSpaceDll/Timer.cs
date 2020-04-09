@@ -29,7 +29,7 @@ namespace _3DRadSpaceDll
             Period = 0;
             Repetitions = 0;
             TotalTime = 0;
-            Behiavours = new List<ActionScript.OpCodeCall>();
+            Behiavours = new List<OpcodeEvent.OpCodeCall>();
         }
         /// <summary>
         /// Main Timer constructor.
@@ -44,7 +44,7 @@ namespace _3DRadSpaceDll
             Enabled = enabled;
             Period = period;
             Repetitions = repetitions;
-            Behiavours = new List<ActionScript.OpCodeCall>();
+            Behiavours = new List<OpcodeEvent.OpCodeCall>();
         }
         uint _time;
         /// <summary>
@@ -74,7 +74,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// The event defined in the editor.
         /// </summary>
-        public new List<ActionScript.OpCodeCall> Behiavours;
+        public new List<OpcodeEvent.OpCodeCall> Behiavours;
 
         /// <summary>
         /// 
@@ -91,7 +91,7 @@ namespace _3DRadSpaceDll
                 if(_time >= Period)
                 {
                     OnTimerRepetition?.Invoke(this, TotalTime);
-                    ActionScript.OpCodeCall.Run(Behiavours);
+                    OpcodeEvent.OpCodeCall.Run(Behiavours);
                     _time = 0;
                 }
                 base.Update(mouse, keyboard, time);

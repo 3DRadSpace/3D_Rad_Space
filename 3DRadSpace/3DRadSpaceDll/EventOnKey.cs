@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using _3DRadSpaceDll.ActionScript;
+using _3DRadSpaceDll.OpcodeEvent;
 
 namespace _3DRadSpaceDll
 {
