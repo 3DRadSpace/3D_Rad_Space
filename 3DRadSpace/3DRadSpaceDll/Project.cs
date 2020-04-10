@@ -174,12 +174,12 @@ namespace _3DRadSpaceDll
 							{
 								Name = Obj[1],
 								Enabled = SafeConverter.BoolFromString(Obj[2]),
-								Fade = new Color(
+								Color = new Color(
 									Convert.ToByte(Obj[3]), Convert.ToByte(Obj[4]), Convert.ToByte(Obj[5])
 								),
 								Time = SafeConverter.IntFromString(Obj[6]),
 								FadeType = SafeConverter.BoolFromString(Obj[7]),
-								ProjectToLoad = path
+								Resource = path
 							};
 							break;
 						}
@@ -337,7 +337,7 @@ namespace _3DRadSpaceDll
 				}
 				if(Game.GameObjects[i] is ExitFade fade)
 				{
-					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Fade.R + ' ' + fade.Fade.G + ' ' + fade.Fade.B + ' ' + SafeConverter.FloatToString((float)fade.Time) + ' ' + fade.FadeType;
+					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Color.R + ' ' + fade.Color.G + ' ' + fade.Color.B + ' ' + SafeConverter.FloatToString((float)fade.Time) + ' ' + fade.FadeType;
 				}
 				if(Game.GameObjects[i] is EventOnLocation eol)
 				{

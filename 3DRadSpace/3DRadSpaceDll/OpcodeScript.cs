@@ -326,6 +326,42 @@ namespace _3DRadSpaceDll
 				length = i - offset;
 				return c;
 			}
+			/// <summary>
+			/// used for i/o operations.
+			/// </summary>
+			/// <param name="opcodes"></param>
+			/// <returns></returns>
+			public static List<byte> ToBytes(List<OpCodeCall> opcodes)
+			{
+				List<byte> c = new List<byte>();
+				for (int i = 0 ; i < opcodes.Count; i++)
+				{
+					Opcode op = opcodes[i].Opcode;
+					c.AddRange(BitConverter.GetBytes((int)op));
+					switch (op)
+					{
+						case Opcode.Start:
+						case Opcode.Stop:
+						case Opcode.Toggle:
+						case Opcode.Show:
+						case Opcode.Hide:
+						case Opcode.RunOneFrame:
+							c.AddRange(BitConverter.GetBytes((int)opcodes[i].Arguments[0]));
+							break;
+						case Opcode.SetPos:
+						case Opcode.AddPos:
+						case Opcode.SetRot:
+						case Opcode.AddRot:
+							c.AddRange(BitConverter.GetBytes((int)opcodes[i].Arguments[0]));
+							c.AddRange(BitConverter.GetBytes(((Vector3)opcodes[i].Arguments[1]).X));
+							c.AddRange(BitConverter.GetBytes(((Vector3)opcodes[i].Arguments[1]).Y));
+							c.AddRange(BitConverter.GetBytes(((Vector3)opcodes[i].Arguments[1]).Z));
+							break;
+						default: break;
+					}
+				}
+				return c;
+			}
 		}
 	}
 }

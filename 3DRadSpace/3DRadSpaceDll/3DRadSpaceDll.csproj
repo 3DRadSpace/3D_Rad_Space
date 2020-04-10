@@ -63,7 +63,8 @@
     <Compile Include="ObjectBehiavour.cs" />
     <Compile Include="OpcodeScript.cs" />
     <Compile Include="Project.cs" />
-    <Compile Include="ProjectBinaryIO.cs" />
+    <Compile Include="ProjectBinaryI.cs" />
+    <Compile Include="ProjectBinaryO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafeConverter.cs" />
     <Compile Include="Script.cs" />

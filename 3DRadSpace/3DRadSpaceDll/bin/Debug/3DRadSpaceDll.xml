@@ -453,12 +453,7 @@
             Empty ExitFade Constructor.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.ExitFade.ProjectToLoad">
-            <summary>
-            Project path.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.ExitFade.Fade">
+        <member name="F:_3DRadSpaceDll.ExitFade.Color">
             <summary>
             Fade color.
             </summary>
@@ -1031,6 +1026,13 @@
             <param name="length"></param>
             <returns></returns>
         </member>
+        <member name="M:_3DRadSpaceDll.OpcodeEvent.OpCodeCall.ToBytes(System.Collections.Generic.List{_3DRadSpaceDll.OpcodeEvent.OpCodeCall})">
+            <summary>
+            used for i/o operations.
+            </summary>
+            <param name="opcodes"></param>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.Project">
             <summary>
             Project class for reading and saving projects.
@@ -1129,6 +1131,12 @@
             </summary>
             <param name="filename">Absolute path.</param>
             <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ProjectBinary.Save(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="file"></param>
         </member>
         <member name="T:_3DRadSpaceDll.SafeConverter">
             <summary>

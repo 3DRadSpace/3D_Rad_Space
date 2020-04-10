@@ -25,12 +25,12 @@ namespace _3DRadSpaceDll
 		{
 			Name = name;
 			Resource = Path;
-			Fade = fadecolor;
+			Color = fadecolor;
 			Time = fadetime;
 			initial_time = Time;
 			FadeType = fade_type;
-			if (FadeType) Fade = new Color(Fade,255);
-			else Fade = new Color(Fade,0);
+			if (FadeType) Color.A = 255;
+			else Color.A = 0;
 		}
 		/// <summary>
 		/// Empty ExitFade Constructor.
@@ -39,7 +39,7 @@ namespace _3DRadSpaceDll
 		{
 			Name = "ExitFade";
 			Resource = null;
-			Fade = Color.Black;
+			Color = Color.Black;
 			Time = 1000;
 			initial_time = Time;
 			FadeType = false;
@@ -50,14 +50,9 @@ namespace _3DRadSpaceDll
 		double initial_time;
 
 		/// <summary>
-		/// Project path.
-		/// </summary>
-		public string ProjectToLoad { get; set; }
-
-		/// <summary>
 		/// Fade color.
 		/// </summary>
-		public Color Fade { get; set; }
+		public Color Color;
 
 		/// <summary>
 		/// Time for the fade in milliseconds (ms)
@@ -102,9 +97,9 @@ namespace _3DRadSpaceDll
 				if (_blank_1x1 == null)
 				{
 					_blank_1x1 = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-					_blank_1x1.SetData(new Color[] { Fade });
+					_blank_1x1.SetData(new Color[] { Color });
 				}
-				spriteBatch.Draw(_blank_1x1, new Rectangle(0, 0, 10000, 10000), Fade);
+				spriteBatch.Draw(_blank_1x1, new Rectangle(0, 0, 10000, 10000), Color);
 				base.Draw(spriteBatch, view, projection);
 			}
 		}
@@ -122,8 +117,8 @@ namespace _3DRadSpaceDll
 				//Some stupid ass formula I'm not sure it works.
 				double alpha = 255 * (_time_remaining / Time); 
 				//Recreate the color
-				if(FadeType) Fade = new Color(Fade, 255 - (int)alpha); 
-				else Fade = new Color(Fade, (int)alpha); 
+				if(FadeType) Color.A = (byte)(255 - alpha); 
+				else Color.A = (byte)alpha; 
 				
 				//If Time remaining is 0, load the project.
 				if (_time_remaining <= 0) LoadProject();
@@ -138,11 +133,11 @@ namespace _3DRadSpaceDll
 			Project.UnloadObjects();
 
 			//If project to load is nulll, exit.
-			if(string.IsNullOrEmpty(ProjectToLoad)) Game.RequestExit = true;
+			if(string.IsNullOrEmpty(Resource)) Game.RequestExit = true;
 
 			//If the project file doesn't exist, exit the project
-			if (!System.IO.File.Exists(ProjectToLoad)) Game.RequestExit = true;
-			Game.GameObjects = Project.Open(ProjectToLoad);
+			if (!System.IO.File.Exists(Resource)) Game.RequestExit = true;
+			Game.GameObjects = Project.Open(Resource);
 		}
 
 	}
