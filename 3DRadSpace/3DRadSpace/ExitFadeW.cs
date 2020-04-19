@@ -23,11 +23,11 @@ namespace _3DRadSpace
 		{
 			InitializeComponent();
 			textBox1.Text = fade.Name;
-			textBox2.Text = fade.Fade.R + "";
-			textBox3.Text = fade.Fade.G + "";
-			textBox4.Text = fade.Fade.B + "";
+			textBox2.Text = fade.Color.R + "";
+			textBox3.Text = fade.Color.G + "";
+			textBox4.Text = fade.Color.B + "";
 			textBox5.Text = SafeConverter.FloatToString((float)fade.Time * 1000f);
-			textBox6.Text = fade.ProjectToLoad;
+			textBox6.Text = fade.Resource;
 		}
 
 		private void checkBox2_CheckedChanged(object sender, EventArgs e)

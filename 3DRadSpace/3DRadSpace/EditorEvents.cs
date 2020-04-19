@@ -98,6 +98,7 @@ namespace _3DRadSpace
                 if(add.Result is Skinmesh s) s.Load(Content); //Prevent crashes by loading the model.
                 if (add.Result is Sprite sp) sp.Load(Content,GraphicsDevice);
                 if (add.Result is TextPrint tp) tp.Load(Content);
+                if (add.Result is Skybox sb) sb.Load(Content, GraphicsDevice);
                 ProjectSaved = false;
             }
             UpdateObjects();
@@ -236,9 +237,9 @@ namespace _3DRadSpace
                 if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = fogW.Result;
                 fogW.Dispose();
             }
-            if (b is Skinmesh)
+            if (b is Skinmesh skn)
             {
-                SkinmeshW skinmeshW = new SkinmeshW((Skinmesh)_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index]);
+                SkinmeshW skinmeshW = new SkinmeshW(skn);
                 skinmeshW.ShowDialog();
                 if (skinmeshW.Result != null)
                 {
@@ -248,9 +249,9 @@ namespace _3DRadSpace
                 }
                 skinmeshW.Dispose();
             }
-            if (b is Sprite)
+            if (b is Sprite sp)
             {
-                SpriteW spriteW = new SpriteW((Sprite)b);
+                SpriteW spriteW = new SpriteW(sp);
                 spriteW.ShowDialog();
                 if (spriteW.Result != null)
                 {
@@ -272,11 +273,11 @@ namespace _3DRadSpace
                 }
                 textPrintW.Dispose();
             }
-            if (b is SoundEffect)
+            if (b is SoundEffect se)
             {
                 if (!(b is SoundSource))
                 {
-                    SoundEffectW soundEffectW = new SoundEffectW((SoundEffect)b);
+                    SoundEffectW soundEffectW = new SoundEffectW(se);
                     soundEffectW.ShowDialog();
                     if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundEffectW.Result;
                     soundEffectW.Dispose();
@@ -310,6 +311,18 @@ namespace _3DRadSpace
                 if (w.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = w.Result;
                 w.Dispose();
             }
+            if(b is Skybox sb)
+            {
+                SkyBoxW skyboxW = new SkyBoxW(sb);
+                skyboxW.ShowDialog();
+                if (skyboxW.Result != null)
+                {
+                    _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = (Skybox)skyboxW.Result;
+                    Skybox s = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] as Skybox;
+                    s.Load(Content, GraphicsDevice);
+                }
+                skyboxW.Dispose();
+            }
             UpdateObjects();
         }
         void M_DeleteObject(object obj,EventArgs e)
@@ -321,6 +334,10 @@ namespace _3DRadSpace
             if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Sprite sp)
             {
                 sp.Dispose();
+            }
+            if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Skybox sb)
+            {
+                sb.Dispose();
             }
             if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
             _3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
@@ -423,6 +440,7 @@ namespace _3DRadSpace
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
             }
         }
         void LoadAllObjects(int offset)
@@ -434,6 +452,7 @@ namespace _3DRadSpace
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
             }
         }
         private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)

@@ -56,6 +56,7 @@
     <Compile Include="EventOnValue.cs" />
     <Compile Include="ExitFade.cs" />
     <Compile Include="Fog.cs" />
+    <Compile Include="FPVCamera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameSettings.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="SafeConverter.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Skinmesh.cs" />
+    <Compile Include="Skybox.cs" />
     <Compile Include="SkyColor.cs" />
     <Compile Include="SoundEffect.cs" />
     <Compile Include="SoundSource.cs" />

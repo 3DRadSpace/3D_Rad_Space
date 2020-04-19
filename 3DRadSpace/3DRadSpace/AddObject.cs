@@ -156,5 +156,13 @@ namespace _3DRadSpace
 			soundSourceW.Dispose();
 			Close();
 		}
+
+		private void pictureBox18_Click(object sender, EventArgs e)
+		{
+			SkyBoxW skyboxw = new SkyBoxW();
+			if (skyboxw.ShowDialog() == DialogResult.OK) Result = skyboxw.Result;
+			skyboxw.Dispose();
+			Close();
+		}
 	}
 }

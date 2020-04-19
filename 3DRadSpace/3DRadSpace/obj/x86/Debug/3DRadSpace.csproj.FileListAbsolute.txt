@@ -63,3 +63,4 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windo
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Skinmeshes\terrain0100_0.xnb
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.ResourceWizard.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\3DRadSpace.csproj.CoreCompileInputs.cache
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.SkyBoxW.resources

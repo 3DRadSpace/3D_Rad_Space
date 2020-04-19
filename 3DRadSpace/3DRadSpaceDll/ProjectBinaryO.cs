@@ -178,6 +178,13 @@ namespace _3DRadSpaceDll
 					result.AddRange(BitConverter.GetBytes(t.Repetitions));
 					result.AddRange(OpcodeEvent.OpCodeCall.ToBytes(t.Behiavours));
 				}
+				if(o is Skybox sb)
+				{
+					result.AddRange(BitConverter.GetBytes((int)ObjectIdentifier.Skybox));
+					result.AddRange(GetStringBytes(sb.Name));
+					result.AddRange(BitConverter.GetBytes(sb.Enabled));
+					result.AddRange(GetStringBytes(sb.Resource));
+				}
 			}
 		}
 		static byte[] GetStringBytes(string s)

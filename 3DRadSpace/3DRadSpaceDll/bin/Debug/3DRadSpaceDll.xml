@@ -537,6 +537,75 @@
             Fog start distance.
             </summary>
         </member>
+        <member name="T:_3DRadSpaceDll.FPVCamera">
+            <summary>
+            Represents a First person view camera.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.CamScreenCoords">
+            <summary>
+            Camera rotation coordinates related to screen.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Bound">
+            <summary>
+            Vertical rotaition bounds.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.MovementSpeed">
+            <summary>
+            Movement speed.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Sensibility">
+            <summary>
+            Mouse sensiblity.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Forward">
+            <summary>
+            Forward movment key.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Backward">
+            <summary>
+            Back movment key.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Left">
+            <summary>
+            Left movment key.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.FPVCamera.Right">
+            <summary>
+            Right movment key.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="enabled"></param>
+            <param name="pos"></param>
+            <param name="up"></param>
+            <param name="look_coords"></param>
+            <param name="fov"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            
+            </summary>
+            <param name="spriteBatch"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
+        </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>
             Contains methods and fields for managing game objects.
@@ -1132,11 +1201,12 @@
             <param name="filename">Absolute path.</param>
             <returns></returns>
         </member>
-        <member name="M:_3DRadSpaceDll.ProjectBinary.Save(System.String)">
+        <member name="M:_3DRadSpaceDll.ProjectBinary.Save(System.String,System.Collections.Generic.List{_3DRadSpaceDll.GameObject})">
             <summary>
             
             </summary>
             <param name="file"></param>
+            <param name="list"></param>
         </member>
         <member name="T:_3DRadSpaceDll.SafeConverter">
             <summary>
@@ -1381,6 +1451,73 @@
             <param name="spriteBatch">Not used.</param>
             <param name="view">View Matrix.</param>
             <param name="projection">Projection Matrix</param>
+        </member>
+        <member name="T:_3DRadSpaceDll.Skybox">
+            <summary>
+            Represents an Skybox object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.#ctor">
+            <summary>
+            Empty constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.#ctor(System.String,System.Boolean,System.String)">
+            <summary>
+            Main skybox constructor.
+            </summary>
+            <param name="name"></param>
+            <param name="enabled"></param>
+            <param name="path"></param>
+        </member>
+        <member name="P:_3DRadSpaceDll.Skybox.Size">
+            <summary>
+            Size of the cube itself.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.Load(Microsoft.Xna.Framework.Content.ContentManager,Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+            <summary>
+            Loads the skybox.
+            </summary>
+            <param name="content"></param>
+            <param name="gd">GraphicsDevice used to initialize the texture.</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.Texture">
+            <summary>
+            A antire image representing the skybox.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws the skybox.
+            </summary>
+            <param name="spriteBatch"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.EditorDraw(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Draws the skybox in the editor - an extra argument is needed.
+            </summary>
+            <param name="editor_cam_pos"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.LinkAvalableCamera">
+            <summary>
+            Finds a camera object to link the skybox to.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.Dispose">
+            <summary>
+            Frees the loaded texture.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.Dispose(System.Boolean)">
+            <summary>
+            Protected Dispose().
+            </summary>
+            <param name="disposing"></param>
         </member>
         <member name="T:_3DRadSpaceDll.SkyColor">
             <summary>

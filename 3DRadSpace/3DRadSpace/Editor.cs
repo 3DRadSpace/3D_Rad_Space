@@ -147,6 +147,7 @@ namespace _3DRadSpace
 				{
 					sk.EditorDraw(null, View, Projection);
 				}
+				if (gameObject is Skybox sb) sb.EditorDraw(Editor_View.Position,View,Projection);
 			}
 			spriteBatch.Begin();
 			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);

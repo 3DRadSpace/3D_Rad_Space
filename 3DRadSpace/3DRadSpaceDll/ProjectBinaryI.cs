@@ -29,7 +29,8 @@ namespace _3DRadSpaceDll
 			EOL,
 			EOK,
 			GameSettings,
-			Timer
+			Timer,
+			Skybox
 		}
 		/// <summary>
 		/// Loads a project.
@@ -440,6 +441,23 @@ namespace _3DRadSpaceDll
 							t.Behiavours = OpcodeEvent.OpCodeCall.CreateFromBuffer(buf, j, out a);
 							j += a;
 							obj = t;
+							break;
+						}
+					case (int)ObjectIdentifier.Skybox:
+						{
+							int a;
+							string name = FromNullTerminatedCharP(buf, j, out a);
+							j += a;
+							bool enabled = BitConverter.ToBoolean(buf, j);
+							j += 1;
+							string path = FromNullTerminatedCharP(buf, j, out a);
+							j += a;
+							obj = new Skybox()
+							{
+								Name = name,
+								Enabled = enabled,
+								Resource = path
+							};
 							break;
 						}
 					default:

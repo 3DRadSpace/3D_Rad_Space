@@ -263,6 +263,22 @@ namespace _3DRadSpaceDll
 							};
 							break;
 						}
+					case "skybox":
+						{
+							string path = "";
+							for(int k =3; k < Obj.Length;k++)
+							{
+								path += Obj[k] + ' ';
+							}
+							path = path.Remove(path.Length - 1);
+							a = new Skybox()
+							{
+								Name = Obj[1],
+								Enabled = SafeConverter.BoolFromString(Obj[2]),
+								Resource = path
+							};
+							break;
+						}
 					default:
 						{
 							throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -279,7 +295,7 @@ namespace _3DRadSpaceDll
 		public static void Save(string filename)
 		{
 			string[] ToBeSaved = new string[Game.GameObjects.Count+1];
-			ToBeSaved[0] = "";
+			ToBeSaved[0] = "3DRSP_text";
 			for (int i = 0; i < Game.GameObjects.Count; i++)
 			{
 				int j = i + 1;
@@ -369,6 +385,10 @@ namespace _3DRadSpaceDll
 						beh += timer.Behiavours[k].ToString();
 					}
 					ToBeSaved[j] = "timer " + timer.Name + ' ' + timer.Enabled + ' ' + timer.Period + ' ' + timer.Repetitions + ' ' + beh;
+				}
+				if(Game.GameObjects[i] is Skybox sb)
+				{
+					ToBeSaved[j] = "skybox " + sb.Name + ' ' + sb.Enabled + ' ' + sb.Resource;
 				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);
