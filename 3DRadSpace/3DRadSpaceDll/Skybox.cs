@@ -59,6 +59,7 @@ namespace _3DRadSpaceDll
         public void Load(ContentManager content, GraphicsDevice gd)
         {
             if (_skyBoxCube == null) _skyBoxCube = content.Load<Model>("Skybox\\skybox");
+            _shader = content.Load<Effect>("Shaders\\SH_Skybox");
 
             FileStream str = new FileStream(Resource, FileMode.Open);
             Texture = Texture2D.FromStream(gd, str);
@@ -76,6 +77,7 @@ namespace _3DRadSpaceDll
         /// A antire image representing the skybox.
         /// </summary>
         public Texture2D Texture;
+        Effect _shader;
         /// <summary>
         /// Draws the skybox.
         /// </summary>
@@ -86,14 +88,13 @@ namespace _3DRadSpaceDll
         {
             if (_linkedc == null) LinkAvalableCamera(); //We determine a avalable Camera object 
             //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
-            foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
+            foreach (ModelMeshPart part in _skyBoxCube.Meshes[0].MeshParts)
             {
-                _linkedc.Draw(null, out Matrix v, out Matrix p);
-                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(_linkedc.Position);
-                effect.View = v;
-                effect.Projection = p;
-                effect.TextureEnabled = true;
-                effect.Texture = Texture;
+                part.Effect = _shader;
+                _shader.Parameters["View"].SetValue(view.Value);
+                _shader.Parameters["Projection"].SetValue(projection.Value);
+                _shader.Parameters["World"].SetValue(Matrix.CreateScale(_size)*Matrix.CreateTranslation(_linkedc.Position));
+                _shader.Parameters["SkyBoxTexture"].SetValue(Texture);
             }
             _skyBoxCube.Meshes[0].Draw();
             base.Draw(spriteBatch, view, projection);
@@ -109,13 +110,13 @@ namespace _3DRadSpaceDll
             //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
             foreach (ModelMesh mesh in _skyBoxCube.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
-                    effect.View = view;
-                    effect.Projection = projection;
-                    effect.TextureEnabled = true;
-                    effect.Texture = Texture;
+                    part.Effect = _shader;
+                    _shader.Parameters["View"].SetValue(view);
+                    _shader.Parameters["Projection"].SetValue(projection);
+                    _shader.Parameters["World"].SetValue(Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos));
+                    _shader.Parameters["SkyboxTexture"].SetValue(Texture);
                 }
                 mesh.Draw();
             }

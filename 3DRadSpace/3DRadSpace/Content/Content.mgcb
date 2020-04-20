@@ -103,6 +103,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin Shaders/SH_Skybox.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/SH_Skybox.fx
+
 #begin Skinmeshes/terrain0100.dds
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -133,3 +139,4 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:Skinmeshes/terrain0100.x
+
