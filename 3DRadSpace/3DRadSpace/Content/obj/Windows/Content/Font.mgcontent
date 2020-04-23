@@ -3,11 +3,11 @@
   <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Font.spritefont</SourceFile>
   <SourceTime>2019-01-24T18:06:27.3512101+02:00</SourceTime>
   <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Font.xnb</DestFile>
-  <DestTime>2019-08-21T20:28:54.8989402+03:00</DestTime>
+  <DestTime>2020-04-23T18:38:15.5349918+03:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
+  <ImporterTime>2020-02-26T07:46:56+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2018-12-08T18:35:54+02:00</ProcessorTime>
+  <ProcessorTime>2020-02-26T07:46:56+02:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

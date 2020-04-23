@@ -3,11 +3,11 @@
   <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Axis.x</SourceFile>
   <SourceTime>2019-01-24T18:06:27.2962078+02:00</SourceTime>
   <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Axis.xnb</DestFile>
-  <DestTime>2020-02-15T16:15:22.8936849+02:00</DestTime>
+  <DestTime>2020-04-23T18:38:15.0041462+03:00</DestTime>
   <Importer>XImporter</Importer>
-  <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
+  <ImporterTime>2020-02-26T07:46:56+02:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
-  <ProcessorTime>2018-12-08T18:35:54+02:00</ProcessorTime>
+  <ProcessorTime>2020-02-26T07:46:56+02:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>0,0,0,0</Value>

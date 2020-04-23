@@ -1484,7 +1484,7 @@
         </member>
         <member name="F:_3DRadSpaceDll.Skybox.Texture">
             <summary>
-            A antire image representing the skybox.
+            A entire image representing the skybox.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Skybox.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">

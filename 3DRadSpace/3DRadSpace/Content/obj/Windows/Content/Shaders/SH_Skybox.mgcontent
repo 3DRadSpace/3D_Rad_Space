@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Shaders/SH_Skybox.fx</SourceFile>
-  <SourceTime>2020-04-20T15:19:36.6381337+03:00</SourceTime>
+  <SourceTime>2020-04-24T01:52:39.5252717+03:00</SourceTime>
   <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Shaders/SH_Skybox.xnb</DestFile>
-  <DestTime>2020-04-20T15:19:47.8268331+03:00</DestTime>
+  <DestTime>2020-04-24T02:03:12.5102981+03:00</DestTime>
   <Importer>EffectImporter</Importer>
-  <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
+  <ImporterTime>2020-02-26T07:46:56+02:00</ImporterTime>
   <Processor>EffectProcessor</Processor>
-  <ProcessorTime>2018-12-08T18:35:54+02:00</ProcessorTime>
+  <ProcessorTime>2020-02-26T07:46:56+02:00</ProcessorTime>
   <Parameters>
     <Key>DebugMode</Key>
     <Value>Auto</Value>

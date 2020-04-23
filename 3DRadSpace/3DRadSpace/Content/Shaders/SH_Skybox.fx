@@ -1,4 +1,15 @@
-﻿#if OPENGL
+﻿/*
+    A modified version of rbwhitaker's tutorial shaders.
+    This shader is orignially used for the skybox cube model. 
+    For some reason there are issues when drawing the model.
+
+    Is seems fine to me, and I'll try to explain every line.
+
+    For anyone that reads this, fixing the skybox shader would be a great contribution to this engine. - NicusorN5
+*/
+
+//Platform specific #defines. C++ circular depedency traumas there we go
+#if OPENGL
 #define SV_POSITION POSITION
 #define VS_SHADERMODEL vs_3_0
 #define PS_SHADERMODEL ps_3_0
@@ -7,65 +18,14 @@
 #define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-matrix World;
-matrix View;
-matrix Projection;
+float4x4 World; // world matrix.
+float4x4 View; // viwe patrix
+float4x4 Projection; //projection
 
-texture SkyboxTexture;
-sampler2D TextureSampler = sampler_state {
-	Texture = (SkyboxTexture);
-	MagFilter = Linear;
-	MinFilter = Linear;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
-struct VertexShaderInput
-{
-	float4 Position: SV_Position0;
-	float2 TexCoords :TEXCOORD0;
-};
-
-struct VertexShaderOutput
-{
-	float4 Position: POSITION0;
-	float2 TexCoords :TEXCOORD0;
-};
-
-VertexShaderOutput MainVS(in VertexShaderInput input)
-{
-	VertexShaderOutput output = (VertexShaderOutput)0;
-
-    float4 worldPosition = mul(input.Position, World);
-    float4 viewPosition = mul(worldPosition, View);
-    output.Position = mul(viewPosition, Projection);
-	output.TexCoords = input.TexCoords;
-	return output;
-}
-
-float4 MainPS(VertexShaderOutput input) : COLOR0
-{
-	float4 VertexTextureColor = tex2D(TextureSampler, input.TexCoords);
-	VertexTextureColor.a = 1;
-	return VertexTextureColor;
-}
-
-technique BasicColorDrawing
-{
-	pass P0
-	{
-		VertexShader = compile VS_SHADERMODEL MainVS();
-		PixelShader = compile PS_SHADERMODEL MainPS();
-	}
-};
-/*
-matrix World;
-matrix View;
-matrix Projection;
-
-texture SkyBoxTexture;
+texture ModelTexture; //texture parameter
+//I don't really know what's the think above supposed to do.
 sampler2D textureSampler = sampler_state {
-    Texture = (SkyBoxTexture);
+    Texture = (ModelTexture);
     MinFilter = Linear;
     MagFilter = Linear;
     AddressU = Clamp;
@@ -74,7 +34,7 @@ sampler2D textureSampler = sampler_state {
 
 struct VertexShaderInput
 {
-    float4 Position : SV_Position0;
+    float4 Position : POSITION0;
     float4 Normal : NORMAL0;
     float2 TextureCoordinate : TEXCOORD0;
 };
@@ -82,7 +42,7 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
     float4 Position : POSITION0;
-    float4 Normal : NORMAL0;
+    float3 Normal : NORMAL0;
     float2 TextureCoordinate : TEXCOORD0;
 };
 
@@ -95,7 +55,6 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     output.Position = mul(viewPosition, Projection);
     output.Normal = input.Normal;
     output.TextureCoordinate = input.TextureCoordinate;
-
     return output;
 }
 
@@ -103,15 +62,14 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
     textureColor.a = 1;
-
     return textureColor;
 }
 
-technique SkyboxShader
+technique Textured
 {
     pass Pass1
     {
         VertexShader = compile VS_SHADERMODEL VertexShaderFunction();
         PixelShader = compile PS_SHADERMODEL PixelShaderFunction();
     }
-}*/
+}

@@ -59,7 +59,7 @@ namespace _3DRadSpaceDll
         public void Load(ContentManager content, GraphicsDevice gd)
         {
             if (_skyBoxCube == null) _skyBoxCube = content.Load<Model>("Skybox\\skybox");
-            _shader = content.Load<Effect>("Shaders\\SH_Skybox");
+            if(_shader == null) _shader = content.Load<Effect>("Shaders\\SH_Skybox");
 
             FileStream str = new FileStream(Resource, FileMode.Open);
             Texture = Texture2D.FromStream(gd, str);
@@ -74,10 +74,10 @@ namespace _3DRadSpaceDll
         Camera _linkedc;
         static Model _skyBoxCube;
         /// <summary>
-        /// A antire image representing the skybox.
+        /// A entire image representing the skybox.
         /// </summary>
         public Texture2D Texture;
-        Effect _shader;
+        static Effect _shader; //right, who tf needs multiple skyboxes, lmfao
         /// <summary>
         /// Draws the skybox.
         /// </summary>
@@ -88,13 +88,14 @@ namespace _3DRadSpaceDll
         {
             if (_linkedc == null) LinkAvalableCamera(); //We determine a avalable Camera object 
             //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
-            foreach (ModelMeshPart part in _skyBoxCube.Meshes[0].MeshParts)
+            foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
             {
-                part.Effect = _shader;
-                _shader.Parameters["View"].SetValue(view.Value);
-                _shader.Parameters["Projection"].SetValue(projection.Value);
-                _shader.Parameters["World"].SetValue(Matrix.CreateScale(_size)*Matrix.CreateTranslation(_linkedc.Position));
-                _shader.Parameters["SkyBoxTexture"].SetValue(Texture);
+                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(Position);
+                effect.View = view.Value;
+                effect.Projection = projection.Value;
+                effect.TextureEnabled = true;
+                effect.Texture = Texture;
+                effect.DiffuseColor = new Vector3(1, 1, 1); // please make the skybox look more colorful, PLIZ - 1:53 AM update : thank you, you saved my sanity
             }
             _skyBoxCube.Meshes[0].Draw();
             base.Draw(spriteBatch, view, projection);
@@ -105,21 +106,36 @@ namespace _3DRadSpaceDll
         /// <param name="editor_cam_pos"></param>
         /// <param name="view"></param>
         /// <param name="projection"></param>
-        public void EditorDraw(Vector3 editor_cam_pos,Matrix view,Matrix projection)
+        public void EditorDraw(Vector3 editor_cam_pos, Matrix view, Matrix projection)
         {
             //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
+            foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
+            {
+                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
+                effect.View = view;
+                effect.Projection = projection;
+                effect.TextureEnabled = true;
+                effect.Texture = Texture;
+                effect.DiffuseColor = new Vector3(1, 1, 1); // please make the skybox look more colorful, PLIZ - 1:53 AM update : thank you, you saved my sanity
+            }
+            _skyBoxCube.Meshes[0].Draw();
+
+            //using the older shader
+            /*
             foreach (ModelMesh mesh in _skyBoxCube.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
+                    Matrix w = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
                     part.Effect = _shader;
                     _shader.Parameters["View"].SetValue(view);
                     _shader.Parameters["Projection"].SetValue(projection);
-                    _shader.Parameters["World"].SetValue(Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos));
-                    _shader.Parameters["SkyboxTexture"].SetValue(Texture);
+                    _shader.Parameters["World"].SetValue(w);
+                    _shader.Parameters["ModelTexture"].SetValue(Texture);
                 }
                 mesh.Draw();
             }
+            */
             base.EditorDraw(null, null, null);
         }
         /// <summary>
