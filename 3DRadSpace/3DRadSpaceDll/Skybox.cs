@@ -20,7 +20,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public Skybox()
         {
-            _size = 499f;
+            _size = 400f;
             Name = "Skybox";
             Enabled = false;
         }
@@ -59,7 +59,7 @@ namespace _3DRadSpaceDll
         public void Load(ContentManager content, GraphicsDevice gd)
         {
             if (_skyBoxCube == null) _skyBoxCube = content.Load<Model>("Skybox\\skybox");
-            if(_shader == null) _shader = content.Load<Effect>("Shaders\\SH_Skybox");
+            //if(_shader == null) _shader = content.Load<Effect>("Shaders\\SH_Skybox");
 
             FileStream str = new FileStream(Resource, FileMode.Open);
             Texture = Texture2D.FromStream(gd, str);
@@ -111,7 +111,7 @@ namespace _3DRadSpaceDll
             //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
             foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
             {
-                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
+                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos-new Vector3(0.5f,0.5f,0.5f));
                 effect.View = view;
                 effect.Projection = projection;
                 effect.TextureEnabled = true;

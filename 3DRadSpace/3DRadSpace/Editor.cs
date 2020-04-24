@@ -74,6 +74,7 @@ namespace _3DRadSpace
 			Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 			Axis = Content.Load<Model>("Axis");
 			D_Font = Content.Load<SpriteFont>("Font");
+			EventOnLocation.LoadModels(Content);
 		}
 
 		protected override void UnloadContent()
@@ -123,7 +124,7 @@ namespace _3DRadSpace
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(ClearColor);
-			GraphicsDevice.BlendState = BlendState.Opaque;
+			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 			Editor_View.Draw(null, out View, out Projection);
@@ -148,6 +149,7 @@ namespace _3DRadSpace
 					sk.EditorDraw(null, View, Projection);
 				}
 				if (gameObject is Skybox sb) sb.EditorDraw(Editor_View.Position,View,Projection);
+				if (gameObject is EventOnLocation eol) eol.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
 			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);

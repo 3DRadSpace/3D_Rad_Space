@@ -160,6 +160,16 @@ namespace _3DRadSpaceDll
         public new List<OpcodeEvent.OpCodeCall> Behiavours;
 
         /// <summary>
+        /// Editor only - Loads the models used to mark the bounding volume
+        /// </summary>
+        /// <param name="content"></param>
+        public static void LoadModels(ContentManager content)
+        {
+            Cube = content.Load<Model>("EOL_Cube");
+            Sphere = content.Load<Model>("EOL_Sphere");
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="mouse"></param>
@@ -268,19 +278,19 @@ namespace _3DRadSpaceDll
                 {
                     Vector3 Size = BoundingBox.Max - BoundingBox.Min;
                     Matrix translation = Matrix.CreateScale(Size) * Matrix.CreateTranslation(BoundingBox.Min);
-                    Game.DrawModel(Cube, translation, view.Value, projection.Value, false);
+                    Game.DrawModelAlpha(Cube, translation, view.Value, projection.Value,0.5f, false);
                 }
                 if (BoundingType == BoundingObject.Sphere)
                 {
                     Matrix translation = Matrix.CreateScale(BoundingSphere.Radius) * Matrix.CreateTranslation(BoundingSphere.Center);
-                    Game.DrawModel(Sphere, translation, view.Value, projection.Value, false);
+                    Game.DrawModelAlpha(Sphere, translation, view.Value, projection.Value, 0.5f, false);
                 }
                 if (BoundingType == BoundingObject.Plane)
                 {
                     Vector3 Size = new Vector3(1000, 0.1f, 1000);
                     Vector3 Rotation = new Vector3(BoundingPlane.Normal.X, BoundingPlane.Normal.Y, BoundingPlane.Normal.Z);
-                    Matrix translation = Matrix.CreateScale(Size) * Matrix.CreateTranslation(Rotation * Rotation);
-                    Game.DrawModel(Cube, translation, view.Value, projection.Value, false);
+                    Matrix translation = Matrix.CreateScale(Size) * Matrix.CreateTranslation(Rotation*BoundingPlane.D);
+                    Game.DrawModelAlpha(Cube, translation, view.Value, projection.Value, 0.5f, false);
                 }
                 base.EditorDraw(spriteBatch, view, projection);
             }

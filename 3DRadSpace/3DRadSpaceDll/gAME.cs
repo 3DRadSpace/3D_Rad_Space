@@ -46,6 +46,36 @@ namespace _3DRadSpaceDll
             }
         }
         /// <summary>
+        /// Draws a model with the specified transparency.
+        /// </summary>
+        /// <param name="model">3D Model</param>
+        /// <param name="world">Scale*Rotaion*Position Matrix</param>
+        /// <param name="view">View matrix</param>
+        /// <param name="alpha">Alpha value ranging from 0.0f to 1.0f</param>
+        /// <param name="projection">Projection Matrix</param>
+        /// <param name="FogEnabled">Allows Fog effects on the model</param>
+        /// <param name="FogColor">Fog colour if allowed</param>
+        /// <param name="FogStart">Fog Start Distance</param>
+        /// <param name="FogEnd">Fog End Distance</param>
+        public static void DrawModelAlpha(Model model,Matrix world,Matrix view,Matrix projection, float alpha, bool FogEnabled = false, Vector3 FogColor = default, float FogStart = 0, float FogEnd = 0)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = world;
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.Alpha = alpha;
+                    effect.FogEnabled = FogEnabled;
+                    effect.FogColor = FogColor;
+                    effect.FogStart = FogStart;
+                    effect.FogEnd = FogEnd;
+                }
+                mesh.Draw();
+            }
+        }
+        /// <summary>
         /// Finds an objects after it's id.
         /// <para>Time complexity is O(n) since GameObjects is a linked list.</para>
         /// </summary>

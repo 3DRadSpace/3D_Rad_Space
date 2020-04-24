@@ -403,6 +403,12 @@
             The event defined in the editor.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.EventOnLocation.LoadModels(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Editor only - Loads the models used to mark the bounding volume
+            </summary>
+            <param name="content"></param>
+        </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
             
@@ -623,6 +629,20 @@
             <param name="model">3D Model</param>
             <param name="world">Scale*Rotaion*Position Matrix</param>
             <param name="view">View matrix</param>
+            <param name="projection">Projection Matrix</param>
+            <param name="FogEnabled">Allows Fog effects on the model</param>
+            <param name="FogColor">Fog colour if allowed</param>
+            <param name="FogStart">Fog Start Distance</param>
+            <param name="FogEnd">Fog End Distance</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Game.DrawModelAlpha(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Single,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            Draws a model with the specified transparency.
+            </summary>
+            <param name="model">3D Model</param>
+            <param name="world">Scale*Rotaion*Position Matrix</param>
+            <param name="view">View matrix</param>
+            <param name="alpha">Alpha value ranging from 0.0f to 1.0f</param>
             <param name="projection">Projection Matrix</param>
             <param name="FogEnabled">Allows Fog effects on the model</param>
             <param name="FogColor">Fog colour if allowed</param>
