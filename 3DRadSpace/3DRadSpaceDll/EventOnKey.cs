@@ -58,7 +58,7 @@ namespace _3DRadSpaceDll
 	/// <param name="delta">DeltaTime.</param>
 	public delegate void KeyEvent(EventOnKey sender,GameTime delta);
 	/// <summary>
-	/// Triggers when the key is being pressed and when the <seealso cref="EventOnKey.Key"/>.State is equal to <seealso cref="KeyInputType.Holding"/>
+	/// Triggers when the key is being pressed and when the EventOnKey.Key.State is equal to KeyInputType.Holding
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="Time"></param>
@@ -138,11 +138,11 @@ namespace _3DRadSpaceDll
 		event OnKeyHold OnKeyHolding;
 
 		/// <summary>
-		/// 
+		/// Raises the defined event on the given conditions.
 		/// </summary>
-		/// <param name="mouse"></param>
-		/// <param name="keyboard"></param>
-		/// <param name="time"></param>
+		/// <param name="mouse">Mouse input</param>
+		/// <param name="keyboard">Keyboard input</param>
+		/// <param name="time">Game time used to get the dt value</param>
 		public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
 		{
 			if (Key.State == KeyInputType.Released && keyboard.IsKeyUp(Key.Key))

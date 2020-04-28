@@ -65,11 +65,13 @@ namespace _3DRadSpace
 
         private void button2_Click(object sender, EventArgs e)
         {
+            /*
             if (!File.Exists("Content\\" + textBox2.Text + ".xnb"))
             {
                 MessageBox.Show("The file: \n" + Path.GetFullPath("Content\\" + textBox2.Text + ".xnb") + " doesn't exist.", "Resource file not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            */
             Microsoft.Xna.Framework.Audio.SoundState sw = Microsoft.Xna.Framework.Audio.SoundState.Stopped;
             if (radioButton1.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Playing;
             if (radioButton2.Checked == true) sw = Microsoft.Xna.Framework.Audio.SoundState.Paused;

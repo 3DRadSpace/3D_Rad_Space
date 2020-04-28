@@ -62,6 +62,7 @@ namespace _3DRadSpace_Player
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is SoundSource sounds) sounds.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is SoundEffect sound) sound.Load(Content);
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
             }
         }
         protected override void UnloadContent()
@@ -71,6 +72,7 @@ namespace _3DRadSpace_Player
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.End();
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Dispose();
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Dispose();
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Dispose();
             }
         }
         protected override void Update(GameTime gameTime)
@@ -124,6 +126,7 @@ namespace _3DRadSpace_Player
                     }
                     skinmesh.Draw(null, view, projection);
                 }
+                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Draw(null, view, projection);
             }
             spriteBatch.Begin();
             for(int i=0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)

@@ -1,5 +1,5 @@
-0
-soundeffect SoundEffect True 1 0 0 0 Sounds/sound
-textprint TextPrint True 300 400 1 1 0 0 0 0 0 0 0 0 Press <Space> to play the sound  þ Arial_12px
-skycolor SkyColor True 255 255 255
-eok EventOnKey True 32 1 0 1 0
+3DRSP_text
+skycolor SkyColor True 0 128 255
+soundeffect SoundEffect True 1.0 0.0 0.0 0 Sounds/sound
+textprint TextPrint True 400.0 400.0 1.0 1.0 0 0.0 0.0 255 255 255 0 0.0 Press <Enter> to play the sound þ Arial_12px
+eok EventOnKey True 13 1 0 1 1

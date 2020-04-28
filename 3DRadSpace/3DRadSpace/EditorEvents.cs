@@ -29,6 +29,9 @@ namespace _3DRadSpace
             {
                 Title = "Open a 3DRadSpace project",
                 Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
+                InitialDirectory = @"Projects",
+                RestoreDirectory = true,
+                AutoUpgradeEnabled = false,
                 Multiselect = false
             };
             DialogResult b = openFile.ShowDialog();
@@ -61,6 +64,9 @@ namespace _3DRadSpace
             {
                 Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
                 Title = "Save a 3DRadSpace project",
+                InitialDirectory = @"Projects",
+                RestoreDirectory = true,
+                AutoUpgradeEnabled = false,
                 OverwritePrompt = true,
             };
             if (saveFile.ShowDialog() == DialogResult.OK)
@@ -109,6 +115,9 @@ namespace _3DRadSpace
             OpenFileDialog openFile = new OpenFileDialog()
             {
                 Title = "Add a 3DRadSpace project as a addon",
+                InitialDirectory = @"Projects",
+                RestoreDirectory = true,
+                AutoUpgradeEnabled = false,
                 Filter = "3DRadSpace Project (*.3drsp)|*.3drsp",
                 Multiselect = false
             };
@@ -191,20 +200,19 @@ namespace _3DRadSpace
         }
         void openDocumentation(object a,EventArgs b)
         {
-            //open documentation
+            Process.Start("https://3dradspace.tk/Documentation");
         }
         void officialWebsite(object a, EventArgs b)
         {
-            Process.Start("http://3dradspace.000webhost.com");
+            Process.Start("https://3dradspace.tk");
         }
         void openForum(object a, EventArgs b)
         {
-            Process.Start("http://classdev.net");
+            Process.Start("https://3dradspace.tk/Forum/index.php");
         }
         void reportBug(object a,EventArgs args)
         {
-            ///ah fck i realised I have to update the website aaaaaaaaaaaaa
-            Process.Start("http://3dradspace.000webhost.com");
+            Process.Start("https://3dradspace.tk/Forum/index.php?board=9.0");
         }
         void M_EditObject(object a, EventArgs e)
         {
@@ -417,7 +425,8 @@ namespace _3DRadSpace
         }
         void ClearObjects()
         {
-            for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            ClearColor = Color.Black;
+            for (int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
             {
                 if(_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
                 {
@@ -436,7 +445,6 @@ namespace _3DRadSpace
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
@@ -448,7 +456,6 @@ namespace _3DRadSpace
             for (int i = offset; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script) script.Load(null);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
                 if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);

@@ -60,7 +60,7 @@ namespace _3DRadSpaceDll
             Behiavours = new List<OpcodeEvent.OpCodeCall>();
         }
         /// <summary>
-        /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingBox"/>
+        /// Creates a EventOnLocation based on the given Microsoft.Xna.Framework.BoundingBox/
         /// </summary>
         /// <param name="name">Name of the object</param>
         /// <param name="enabled">Checks if the collisoin events will be raised.</param>
@@ -78,7 +78,7 @@ namespace _3DRadSpaceDll
             Behiavours = new List<OpcodeEvent.OpCodeCall>();
         }
         /// <summary>
-        /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.BoundingSphere"/>
+        /// Creates a EventOnLocation based on the given BoundingSphere
         /// </summary>
         /// <param name="name">Name of the object</param>
         /// <param name="enabled">Checks if the collisoin events will be raised.</param>
@@ -95,7 +95,7 @@ namespace _3DRadSpaceDll
             BoundingPlane = new Plane(Vector4.Zero);
         }
         /// <summary> 
-        /// Creates a EventOnLocation based on the given <seealso cref="Microsoft.Xna.Framework.Plane"/>
+        /// Creates a EventOnLocation based on the given Plane
         /// </summary>
         /// <param name="name">Name of the object</param>
         /// <param name="enabled">Checks if the collisoin events will be raised.</param>

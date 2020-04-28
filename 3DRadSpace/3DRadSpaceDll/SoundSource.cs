@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DRadSpaceDll
 {
@@ -93,7 +93,11 @@ namespace _3DRadSpaceDll
         }
         Vector3 _pos;
         /// <summary>
-        /// Gets or set a scale applied to the doppler effect between the listener(<seealso cref="LinkedCam"/>LinkedCam) and the sound source (<seealso cref="Position"/>)
+        /// Model used in editor.
+        /// </summary>
+        public static Model ModelMarker;
+        /// <summary>
+        /// Gets or set a scale applied to the doppler effect between the listener LinkedCam and the sound source ( Position )
         /// </summary>
         public float DopplerScale
         {
@@ -138,6 +142,17 @@ namespace _3DRadSpaceDll
             _cam = new Camera();
             _cam.Position = pos;
             _cam.CameraRotation = up;
+        }
+        /// <summary>
+        /// Draws a model marking the sound effect's location.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        {
+            Game.DrawModel(ModelMarker, Matrix.CreateTranslation(Position), view.Value, projection.Value);
+            base.EditorDraw(spriteBatch, view, projection);
         }
     }
 }

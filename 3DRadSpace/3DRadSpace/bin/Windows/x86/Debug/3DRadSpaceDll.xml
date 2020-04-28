@@ -52,7 +52,7 @@
             Empty constructor. Values are mostly default.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.model">
+        <member name="F:_3DRadSpaceDll.Camera.model">
             <summary>
             Expected to be loaded by the game editor. Not used in 3DRadSpacePlayer.
             </summary>
@@ -220,7 +220,7 @@
         </member>
         <member name="T:_3DRadSpaceDll.OnKeyHold">
             <summary>
-            Triggers when the key is being pressed and when the <seealso cref="F:_3DRadSpaceDll.EventOnKey.Key"/>.State is equal to <seealso cref="F:_3DRadSpaceDll.KeyInputType.Holding"/>
+            Triggers when the key is being pressed and when the EventOnKey.Key.State is equal to KeyInputType.Holding
             </summary>
             <param name="sender"></param>
             <param name="Time"></param>
@@ -277,11 +277,11 @@
         </member>
         <member name="M:_3DRadSpaceDll.EventOnKey.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
-            
+            Raises the defined event on the given conditions.
             </summary>
-            <param name="mouse"></param>
-            <param name="keyboard"></param>
-            <param name="time"></param>
+            <param name="mouse">Mouse input</param>
+            <param name="keyboard">Keyboard input</param>
+            <param name="time">Game time used to get the dt value</param>
         </member>
         <member name="T:_3DRadSpaceDll.BoundingObject">
             <summary>
@@ -328,7 +328,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.BoundingBox)">
             <summary>
-            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.BoundingBox"/>
+            Creates a EventOnLocation based on the given Microsoft.Xna.Framework.BoundingBox/
             </summary>
             <param name="name">Name of the object</param>
             <param name="enabled">Checks if the collisoin events will be raised.</param>
@@ -337,7 +337,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.BoundingSphere)">
             <summary>
-            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.BoundingSphere"/>
+            Creates a EventOnLocation based on the given BoundingSphere
             </summary>
             <param name="name">Name of the object</param>
             <param name="enabled">Checks if the collisoin events will be raised.</param>
@@ -346,7 +346,7 @@
         </member>
         <member name="M:_3DRadSpaceDll.EventOnLocation.#ctor(System.String,System.Boolean,System.Boolean,Microsoft.Xna.Framework.Plane)">
             <summary> 
-            Creates a EventOnLocation based on the given <seealso cref="T:Microsoft.Xna.Framework.Plane"/>
+            Creates a EventOnLocation based on the given Plane
             </summary>
             <param name="name">Name of the object</param>
             <param name="enabled">Checks if the collisoin events will be raised.</param>
@@ -1584,7 +1584,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.Sound">
             <summary>
-            Sound file. Use <seealso cref="P:_3DRadSpaceDll.SoundEffect.SoundInstance"/> to directly access the <seealso cref="T:Microsoft.Xna.Framework.Audio.SoundEffect"/>.
+            Sound file. Use SoundInstance to directly access the Microsoft.Xna.Framework.Audio.SoundEffect .
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundEffect.SoundInstance">
@@ -1611,7 +1611,7 @@
              <summary>
              Gets or sets the current state of the sound.
             <para>Unlike SoundInstance.State, this property can be also set.</para>
-            <para>Setting this property to any value will call the <seealso cref="M:_3DRadSpaceDll.SoundEffect.Play"/>, <seealso cref="M:_3DRadSpaceDll.SoundEffect.Stop"/> and <seealso cref="M:_3DRadSpaceDll.SoundEffect.Pause"/> depinding on the value.</para>
+            <para>Setting this property to any value will call the Play(), Stop() and Pause() depinding on the value.</para>
              </summary>
         </member>
         <member name="M:_3DRadSpaceDll.SoundEffect.#ctor(System.String,System.Boolean,System.String,System.Single)">
@@ -1701,9 +1701,14 @@
             Defines the Sound's location.
             </summary>
         </member>
+        <member name="F:_3DRadSpaceDll.SoundSource.ModelMarker">
+            <summary>
+            Model used in editor.
+            </summary>
+        </member>
         <member name="P:_3DRadSpaceDll.SoundSource.DopplerScale">
             <summary>
-            Gets or set a scale applied to the doppler effect between the listener(<seealso cref="P:_3DRadSpaceDll.SoundSource.LinkedCam"/>LinkedCam) and the sound source (<seealso cref="P:_3DRadSpaceDll.SoundSource.Position"/>)
+            Gets or set a scale applied to the doppler effect between the listener LinkedCam and the sound source ( Position )
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.SoundSource.LinkedCam">
@@ -1717,6 +1722,14 @@
             </summary>
             <param name="pos">Position.</param>
             <param name="up">Up normalized vector.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.SoundSource.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Draws a model marking the sound effect's location.
+            </summary>
+            <param name="spriteBatch"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
         </member>
         <member name="T:_3DRadSpaceDll.onClick">
             <summary>
@@ -1976,7 +1989,7 @@
             <param name="name">Name of the object.</param>
             <param name="enabled">If the timer will execute.</param>
             <param name="period">Timer period.</param>
-            <param name="repetitions">How much time the event will execute. Use <seealso cref="F:System.UInt32.MaxValue"/> to represent ∞ . </param>
+            <param name="repetitions">How much time the event will execute. Use uint.MaxValue to represent ∞ . </param>
         </member>
         <member name="F:_3DRadSpaceDll.Timer.Period">
             <summary>
@@ -1986,14 +1999,14 @@
         <member name="F:_3DRadSpaceDll.Timer.Repetitions">
             <summary>
             Defines how many times the event will get called.
-            <para> Use <seealso cref="F:System.UInt32.MaxValue"/> or <seealso cref="F:_3DRadSpaceDll.Timer.Infinity"/> to represent ∞ (infinity) </para>
+            <para> Use uint.MaxValue Infinity to represent ∞ (infinity) </para>
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Timer.TotalTime">
             <summary>
             Counts the time passed.
-            <para>Maximum value is <seealso cref="F:_3DRadSpaceDll.Timer.Period"/> * <seealso cref="F:_3DRadSpaceDll.Timer.Repetitions"/></para>
-            <para>NOTE: Unsigned integer overflows will occur if the Period is a value representing ∞ (<seealso cref="F:System.UInt32.MaxValue"/>)</para>
+            <para>Maximum value is Period * Repetitions</para>
+            <para>NOTE: Unsigned integer overflows will occur if the Period is a value representing ∞ ( uint.MaxValue )</para>
             </summary>
         </member>
         <member name="E:_3DRadSpaceDll.Timer.OnTimerRepetition">

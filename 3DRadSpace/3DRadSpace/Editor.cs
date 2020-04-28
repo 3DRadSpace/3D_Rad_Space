@@ -70,11 +70,12 @@ namespace _3DRadSpace
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-			Camera.model = Content.Load<Model>("Camera");
+			Camera.model = Content.Load<Model>("Camera/camera");
 			Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 			Axis = Content.Load<Model>("Axis");
 			D_Font = Content.Load<SpriteFont>("Font");
 			EventOnLocation.LoadModels(Content);
+			SoundSource.ModelMarker = Content.Load<Model>("SoundEffect_Model");
 		}
 
 		protected override void UnloadContent()
@@ -96,10 +97,10 @@ namespace _3DRadSpace
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.P)) playProject(null, null);
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A)) addObject(null, null);
 
-				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position +=  Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
-				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
-				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) Editor_View.Position += Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
-				if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) Editor_View.Position -= Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
+				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position +=  Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
+				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
+				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) Editor_View.Position += Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
+				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) Editor_View.Position -= Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
 
 				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
@@ -150,6 +151,7 @@ namespace _3DRadSpace
 				}
 				if (gameObject is Skybox sb) sb.EditorDraw(Editor_View.Position,View,Projection);
 				if (gameObject is EventOnLocation eol) eol.EditorDraw(spriteBatch, View, Projection);
+				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
 			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);

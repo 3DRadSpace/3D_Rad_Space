@@ -68,6 +68,8 @@ namespace _3DRadSpace
                 if(extention[extention.Length-1] != "mgcontent") File.Copy(a[i],Environment.CurrentDirectory+"\\Content\\"+textBox1.Text+"\\"+Path.GetFileName(a[i]));
             }
             Directory.Delete(Environment.CurrentDirectory + "\\ResourceTemp\\",true);
+            Directory.Delete(Environment.CurrentDirectory + "\\XNBConverter\\Source",true);
+            Directory.Delete(Environment.CurrentDirectory + "\\XNBConverter\\Final",true);
         }
     }
 }

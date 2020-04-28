@@ -9,7 +9,7 @@ namespace _3DRadSpaceDll
 	public class SoundEffect : GameObject 
 	{
 		/// <summary>
-		/// Sound file. Use <seealso cref="SoundInstance"/> to directly access the <seealso cref="Microsoft.Xna.Framework.Audio.SoundEffect"/>.
+		/// Sound file. Use SoundInstance to directly access the Microsoft.Xna.Framework.Audio.SoundEffect .
 		/// </summary>
 		public Microsoft.Xna.Framework.Audio.SoundEffect Sound { get; private set; }
 		/// <summary>
@@ -76,7 +76,7 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Gets or sets the current state of the sound.
 		///<para>Unlike SoundInstance.State, this property can be also set.</para>
-		///<para>Setting this property to any value will call the <seealso cref="Play"/>, <seealso cref="Stop"/> and <seealso cref="Pause"/> depinding on the value.</para>
+		///<para>Setting this property to any value will call the Play(), Stop() and Pause() depinding on the value.</para>
 		/// </summary>
 		public SoundState SoundState
 		{

@@ -32,7 +32,7 @@ namespace _3DRadSpaceDll
 		{
 			List<GameObject> result = new List<GameObject>();
 			string[] Data = File.ReadAllLines(filename); //Read the file
-			if (Data[0] != "3DRSP_text") return null;
+			if (Data[0] != "3DRSP_text") return result; //Check if project is valid.
 			for (int i =1; i < Data.Length;i++) //Loop each line
 			{
 				//Split the current line

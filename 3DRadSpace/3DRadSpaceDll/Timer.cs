@@ -37,7 +37,7 @@ namespace _3DRadSpaceDll
         /// <param name="name">Name of the object.</param>
         /// <param name="enabled">If the timer will execute.</param>
         /// <param name="period">Timer period.</param>
-        /// <param name="repetitions">How much time the event will execute. Use <seealso cref="uint.MaxValue"/> to represent ∞ . </param>
+        /// <param name="repetitions">How much time the event will execute. Use uint.MaxValue to represent ∞ . </param>
         public Timer(string name,bool enabled,uint period,uint repetitions)
         {
             Name = name;
@@ -53,13 +53,13 @@ namespace _3DRadSpaceDll
         public uint Period;
         /// <summary>
         /// Defines how many times the event will get called.
-        /// <para> Use <seealso cref="uint.MaxValue"/> or <seealso cref="Infinity"/> to represent ∞ (infinity) </para>
+        /// <para> Use uint.MaxValue Infinity to represent ∞ (infinity) </para>
         /// </summary>
         public uint Repetitions;
         /// <summary>
         /// Counts the time passed.
-        /// <para>Maximum value is <seealso cref="Period"/> * <seealso cref="Repetitions"/></para>
-        /// <para>NOTE: Unsigned integer overflows will occur if the Period is a value representing ∞ (<seealso cref="uint.MaxValue"/>)</para>
+        /// <para>Maximum value is Period * Repetitions</para>
+        /// <para>NOTE: Unsigned integer overflows will occur if the Period is a value representing ∞ ( uint.MaxValue )</para>
         /// </summary>
         public uint TotalTime { get; private set; }
         /// <summary>

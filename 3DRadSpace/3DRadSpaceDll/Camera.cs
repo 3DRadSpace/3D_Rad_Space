@@ -99,7 +99,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Expected to be loaded by the game editor. Not used in 3DRadSpacePlayer.
         /// </summary>
-        public static Model model { get; set; }
+        public static Model model;
         /// <summary>
         /// Difference between 'chased object' and Camera position.
         /// </summary>

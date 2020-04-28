@@ -1,0 +1,5 @@
+3DRSP_text
+skinmesh Skinmesh True 0.0 0.0 0.0 0.0 0.0 0.0 1.0 1.0 1.0 True 0.0 0.0 0.0 1.0 1.0 1.0 2.0 Skinmeshes/terrain0100
+camera Camera True 0.0 8.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 75.0 0.1 500 0 
+script Script True Script Scripts//Simple Movment Script.cs
+skybox Skybox True Content\Skybox\skybox-texture-mapping-cube-mapping-png-favpng-JLZ1k1UkLbsjBD6RK2RR4AJ6B.jpg
