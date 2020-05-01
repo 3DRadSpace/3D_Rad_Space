@@ -102,7 +102,7 @@ namespace _3DRadSpace
             if (add.Result != null)
             {
                 _3DRadSpaceDll.Game.GameObjects.Add(add.Result);
-                if(add.Result is Skinmesh s) s.Load(Content); //Prevent crashes by loading the model.
+                if(add.Result is Skinmesh s) s.Load(Content);
                 if (add.Result is Sprite sp) sp.Load(Content,GraphicsDevice);
                 if (add.Result is TextPrint tp) tp.Load(Content);
                 if (add.Result is Skybox sb) sb.Load(Content, GraphicsDevice);
@@ -145,7 +145,7 @@ namespace _3DRadSpace
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if (SafeConverter.IntFromString(v) > Program.Version)
+                if (SafeConverter.IntFromString(v) != Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";
