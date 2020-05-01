@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="CustomObjectInfo.cs" />
     <Compile Include="EventOnKey.cs" />
     <Compile Include="EventOnLocation.cs" />
     <Compile Include="EventOnValue.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="ICustomGameObject.cs" />
     <Compile Include="MainPage_doxygen.cs" />
     <Compile Include="ObjectBehiavour.cs" />
     <Compile Include="OpcodeScript.cs" />

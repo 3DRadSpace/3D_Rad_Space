@@ -49,6 +49,7 @@ namespace _3DRadSpace_Player
         }
         protected override void Initialize()
         {
+            Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             base.Initialize();
         }
         protected override void LoadContent()

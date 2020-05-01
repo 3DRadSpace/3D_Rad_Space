@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Sounds/sound.ogg</SourceFile>
+  <SourceTime>2011-09-09T11:04:28+03:00</SourceTime>
+  <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Sounds/sound.xnb</DestFile>
+  <DestTime>2020-05-01T13:48:01.2312456+03:00</DestTime>
+  <Importer>OggImporter</Importer>
+  <ImporterTime>2020-02-26T07:46:56+02:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2020-02-26T07:46:56+02:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

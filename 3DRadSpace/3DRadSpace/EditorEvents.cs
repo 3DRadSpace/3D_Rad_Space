@@ -82,7 +82,8 @@ namespace _3DRadSpace
         {
             saveProject(null, null);
             ProcessStartInfo process = new ProcessStartInfo(@"3DRadSpace_Player.exe", "\""+OpenedFile+"\"");
-            Process.Start(process);
+            Process p = Process.Start(process);
+            p.WaitForExit();
         }
         void exitEditor(object a,EventArgs e)
         {
@@ -144,7 +145,7 @@ namespace _3DRadSpace
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if (SafeConverter.IntFromString(v) < Program.Version)
+                if (SafeConverter.IntFromString(v) > Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";

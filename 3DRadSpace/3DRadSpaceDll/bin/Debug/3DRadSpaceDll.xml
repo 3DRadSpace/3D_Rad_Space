@@ -169,6 +169,34 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.CustomObjectInfo">
+            <summary>
+            Represents information and metadata about the custom object.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.CustomObjectInfo.#ctor(System.String,System.String,System.Single)">
+            <summary>
+            Constructor of the CustomObjectInfo class.
+            </summary>
+            <param name="name">editor name</param>
+            <param name="creator">author name</param>
+            <param name="v">version</param>
+        </member>
+        <member name="P:_3DRadSpaceDll.CustomObjectInfo.Author">
+            <summary>
+            Represents the author or the object.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.CustomObjectInfo.Version">
+            <summary>
+            Represents the version of the object assembly.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.CustomObjectInfo.EditorName">
+            <summary>
+            Represents the common name used in the editor.
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.KeyInputType">
             <summary>
             Defines the input states.
@@ -942,6 +970,69 @@
             Returns a string representing the settings.
             </summary>
             <returns>A string containing the values.</returns>
+        </member>
+        <member name="T:_3DRadSpaceDll.Group">
+            <summary>
+            Represents a group of objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.#ctor(System.String,System.Boolean,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Complete group object constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Checks if the object is enabled</param>
+            <param name="objs">List ob objects</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Group.ObjectsInList">
+            <summary>
+            Represents a list of the linked objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.ApplyTranslation(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Applies a translation to the objects.
+            </summary>
+            <param name="translation"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.ApplyRotation(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Applies a euler angle rotation to the group objects.
+            </summary>
+            <param name="euler"></param>
+        </member>
+        <member name="T:_3DRadSpaceDll.ICustomGameObject">
+            <summary>
+            A interface that should be used when creating custom object
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ICustomGameObject.SaveText">
+            <summary>
+            Returns a string representing the object's data that will be saved in a text-format project.
+            <para>The general format is:</para>
+            <para>string(OBJECT_TYPE_STRING_ID) string(NAME) bool(ENABLED) ...etc</para>
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.ICustomGameObject.LoadText(System.String[])">
+            <summary>
+            Returns the custom object from the specified argument.
+            </summary>
+            <param name="text">A tokenised string array containing the data as strings.</param>
+            <returns>The general format is:
+            <para>string(OBJECT_TYPE_STRING_ID) string(NAME) bool(ENABLED) ...etc</para></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ICustomGameObject.SaveBinary">
+            <summary>
+            Returns a byte array representing the object.
+            </summary>
+            <returns>Byte array representing the object</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.ICustomGameObject.LoadBinary(System.Byte[],System.String)">
+            <summary>
+            Created the object from the specified buffer.
+            </summary>
+            <param name="b">Buffer representing the entire project.</param>
+            <param name="offset">Buffer offset</param>
         </member>
         <member name="T:_3DRadSpaceDll.ObjectBehiavour">
             <summary>

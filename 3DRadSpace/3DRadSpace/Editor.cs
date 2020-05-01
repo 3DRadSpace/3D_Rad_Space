@@ -164,9 +164,15 @@ namespace _3DRadSpace
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}
+		// maybe will find use in the future.
+		//bool _first_use; <- currently disabled.
 		private bool[] Settings_Load()
 		{
-			IFormatProvider a = CultureInfo.CurrentCulture;
+			if(!Directory.Exists(Environment.ExpandEnvironmentVariables("%appdata%\\3DRadSpace")))
+			{
+				//_first_use = true;
+				Directory.CreateDirectory(Environment.ExpandEnvironmentVariables("%appdata%\\3DRadSpace"));
+			}
 			string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
 			if (!File.Exists(appd + "\\Config.cfg"))
 			{
