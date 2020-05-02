@@ -140,7 +140,7 @@ namespace _3DRadSpaceDll
         public Vector3 CameraTarget { get; set; }
 
         /// <summary>
-        /// Camera Rotation. This is a normalized 3D Vector (with the lenght equal or lower(?) to 1)
+        /// Camera Rotation. This is a normalized 3D Vector (with the lenght equal to 1)
         /// </summary>
         public Vector3 CameraRotation { get; set; }
 

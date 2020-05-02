@@ -46,7 +46,7 @@ namespace _3DRadSpace
         private void button1_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            EventOnKey k = new EventOnKey(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new KeyInput(GetKeyFromListBox(), GetInputStateFromComboBox()), Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)));
+            EventOnKey k = new EventOnKey(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new KeyInput(GetKeyFromListBox(listBox1.Items[listBox1.SelectedIndex]+""), GetInputStateFromComboBox()), Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text)));
             k.Behiavours = opcodes;
             Result = k;
             Close();
@@ -56,9 +56,9 @@ namespace _3DRadSpace
         /// This is one of the most cancerous pieces of code that exist in 3DRadSpace.
         /// </summary>
         /// <returns></returns>
-        Microsoft.Xna.Framework.Input.Keys GetKeyFromListBox()
+        public static Microsoft.Xna.Framework.Input.Keys GetKeyFromListBox(string item)
         {
-            switch(listBox1.SelectedItem)
+            switch(item)
             {
                 case "Q": return Microsoft.Xna.Framework.Input.Keys.Q;
                 case "W": return Microsoft.Xna.Framework.Input.Keys.W;
@@ -121,7 +121,7 @@ namespace _3DRadSpace
             }
         }
 
-        string GetKeyFromListBox_rev(Microsoft.Xna.Framework.Input.Keys arg)
+        public static string GetKeyFromListBox_rev(Microsoft.Xna.Framework.Input.Keys arg)
         {
             switch (arg)
             {

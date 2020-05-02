@@ -22,9 +22,9 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = fog.Name;
             checkBox1.Checked = fog.Enabled;
-            textBox2.Text = SafeConverter.FloatToString(fog.FogColor.X);
-            textBox3.Text = SafeConverter.FloatToString(fog.FogColor.Y);
-            textBox4.Text = SafeConverter.FloatToString(fog.FogColor.Z);
+            textBox2.Text = SafeConverter.IntToString((int)fog.FogColor.X);
+            textBox3.Text = SafeConverter.IntToString((int)fog.FogColor.Y);
+            textBox4.Text = SafeConverter.IntToString((int)fog.FogColor.Z);
             textBox5.Text = SafeConverter.FloatToString(fog.FogStart);
             textBox6.Text = SafeConverter.FloatToString(fog.FogEnd);
         }

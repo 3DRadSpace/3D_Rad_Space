@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _3DRadSpaceDll;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -162,6 +163,14 @@ namespace _3DRadSpace
 			SkyBoxW skyboxw = new SkyBoxW();
 			if (skyboxw.ShowDialog() == DialogResult.OK) Result = skyboxw.Result;
 			skyboxw.Dispose();
+			Close();
+		}
+
+		private void pictureBox26_Click(object sender, EventArgs e)
+		{
+			FPVCameraW cameraW = new FPVCameraW();
+			if (cameraW.ShowDialog() == DialogResult.OK) Result = cameraW.Result;
+			cameraW.Dispose();
 			Close();
 		}
 	}

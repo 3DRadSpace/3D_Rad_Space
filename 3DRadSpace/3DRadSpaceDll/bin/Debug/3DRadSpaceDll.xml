@@ -80,7 +80,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Camera.CameraRotation">
             <summary>
-            Camera Rotation. This is a normalized 3D Vector (with the lenght equal or lower(?) to 1)
+            Camera Rotation. This is a normalized 3D Vector (with the lenght equal to 1)
             </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Camera.FOV">
@@ -632,7 +632,15 @@
             <param name="look_coords"></param>
             <param name="fov"></param>
         </member>
-        <member name="M:_3DRadSpaceDll.FPVCamera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+        <member name="M:_3DRadSpaceDll.FPVCamera.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             
             </summary>

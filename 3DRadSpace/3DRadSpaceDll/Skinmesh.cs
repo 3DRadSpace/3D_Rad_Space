@@ -129,7 +129,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Necessary for model drawing.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            // if (!Enabled) return;
+            if (!Enabled) return;
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -164,6 +164,13 @@ namespace _3DRadSpaceDll
                     effect.View = (Matrix)view;
                     effect.Projection = (Matrix)projection;
                     effect.World = Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
+                    if (FogExists)
+                    {
+                        effect.FogEnabled = FogEnabled;
+                        effect.FogColor = FogColor;
+                        effect.FogStart = FogStart;
+                        effect.FogEnd = FogEnd;
+                    }
                 }
                 mesh.Draw();
             }

@@ -136,7 +136,8 @@ namespace _3DRadSpace
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
-				if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
+				if (gameObject is FPVCamera fc) fc.EditorDraw(null, View, Projection);
+				else if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
 				if (gameObject is SkyColor s) ClearColor = s.Color;
 				if(gameObject is Fog f)
 				{
@@ -147,6 +148,13 @@ namespace _3DRadSpace
 				}
 				if(gameObject is Skinmesh sk)
 				{
+					if (FogEnabled)
+					{
+						sk.FogExists = FogEnabled;
+						sk.FogColor = FogColor;
+						sk.FogEnd = FogEnd;
+						sk.FogStart = FogStart;
+					}
 					sk.EditorDraw(null, View, Projection);
 				}
 				if (gameObject is Skybox sb) sb.EditorDraw(Editor_View.Position,View,Projection);

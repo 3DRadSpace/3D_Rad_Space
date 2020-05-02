@@ -70,6 +70,12 @@
     <Compile Include="AddObject.Designer.cs">
       <DependentUpon>AddObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="FPVCameraW .cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FPVCameraW .Designer.cs">
+      <DependentUpon>FPVCameraW .cs</DependentUpon>
+    </Compile>
     <Compile Include="CameraW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +236,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="Resources\OBJ_Fog.png" />
+    <None Include="Resources\OBJ_SoundSource.png" />
+    <None Include="Resources\OBJ_FPVCamera.png" />
     <None Include="Resources\Icon.ico" />
     <None Include="Resources\Img1.bmp" />
     <None Include="Resources\OBJ_Timer.png" />
@@ -272,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddObject.resx">
       <DependentUpon>AddObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FPVCameraW .resx">
+      <DependentUpon>FPVCameraW .cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CameraW.resx">
       <DependentUpon>CameraW.cs</DependentUpon>
