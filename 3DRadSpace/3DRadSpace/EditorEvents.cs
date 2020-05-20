@@ -217,6 +217,11 @@ namespace _3DRadSpace
         }
         void M_EditObject(object a, EventArgs e)
         {
+            EditObj();
+            UpdateObjects();
+        }
+        void EditObj()
+        {
             object b = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
             if (b is Script)
             {
@@ -224,6 +229,15 @@ namespace _3DRadSpace
                 scriptW.ShowDialog();
                 if (scriptW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = scriptW.Result;
                 scriptW.Dispose();
+                return;
+            }
+            if (b is FPVCamera fpv)
+            {
+                FPVCameraW wnd = new FPVCameraW(fpv);
+                wnd.ShowDialog();
+                if (wnd.Result != null) b = wnd.Result;
+                wnd.Dispose();
+                return;
             }
             if (b is Camera)
             {
@@ -231,6 +245,7 @@ namespace _3DRadSpace
                 cameraW.ShowDialog();
                 if (cameraW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = cameraW.Result;
                 cameraW.Dispose();
+                return;
             }
             if (b is SkyColor)
             {
@@ -238,6 +253,7 @@ namespace _3DRadSpace
                 colorW.ShowDialog();
                 if (colorW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = colorW.Result;
                 colorW.Dispose();
+                return;
             }
             if (b is Fog)
             {
@@ -245,6 +261,7 @@ namespace _3DRadSpace
                 fogW.ShowDialog();
                 if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = fogW.Result;
                 fogW.Dispose();
+                return;
             }
             if (b is Skinmesh skn)
             {
@@ -257,6 +274,7 @@ namespace _3DRadSpace
                     sk.Load(Content);
                 }
                 skinmeshW.Dispose();
+                return;
             }
             if (b is Sprite sp)
             {
@@ -269,6 +287,7 @@ namespace _3DRadSpace
                     s.Load(Content, GraphicsDevice);
                 }
                 spriteW.Dispose();
+                return;
             }
             if (b is TextPrint p)
             {
@@ -281,16 +300,15 @@ namespace _3DRadSpace
                     _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = p;
                 }
                 textPrintW.Dispose();
+                return;
             }
             if (b is SoundEffect se)
             {
-                if (!(b is SoundSource))
-                {
-                    SoundEffectW soundEffectW = new SoundEffectW(se);
-                    soundEffectW.ShowDialog();
-                    if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundEffectW.Result;
-                    soundEffectW.Dispose();
-                }
+                SoundEffectW soundEffectW = new SoundEffectW(se);
+                soundEffectW.ShowDialog();
+                if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundEffectW.Result;
+                soundEffectW.Dispose();
+                return;
             }
             if (b is SoundSource soundSource)
             {
@@ -298,6 +316,7 @@ namespace _3DRadSpace
                 soundSourceW.ShowDialog();
                 if (soundSourceW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = soundSourceW.Result;
                 soundSourceW.Dispose();
+                return;
             }
             if (b is EventOnLocation eol)
             {
@@ -305,6 +324,7 @@ namespace _3DRadSpace
                 eolw.ShowDialog();
                 if (eolw.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = eolw.Result;
                 eolw.Dispose();
+                return;
             }
             if(b is EventOnKey eok)
             {
@@ -312,6 +332,7 @@ namespace _3DRadSpace
                 eokw.ShowDialog();
                 if (eokw.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = eokw.Result;
                 eokw.Dispose();
+                return;
             }
             if(b is _3DRadSpaceDll.Timer t)
             {
@@ -319,6 +340,7 @@ namespace _3DRadSpace
                 w.ShowDialog();
                 if (w.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = w.Result;
                 w.Dispose();
+                return;
             }
             if(b is Skybox sb)
             {
@@ -331,8 +353,8 @@ namespace _3DRadSpace
                     s.Load(Content, GraphicsDevice);
                 }
                 skyboxW.Dispose();
+                return;
             }
-            UpdateObjects();
         }
         void M_DeleteObject(object obj,EventArgs e)
         {

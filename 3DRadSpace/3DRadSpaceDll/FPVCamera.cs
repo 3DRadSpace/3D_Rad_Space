@@ -34,19 +34,19 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Forward movment key.
         /// </summary>
-        Keys Forward;
+        public Keys Forward;
         /// <summary>
         /// Back movment key.
         /// </summary>
-        Keys Backward;
+        public Keys Backward;
         /// <summary>
         /// Left movment key.
         /// </summary>
-        Keys Left;
+        public Keys Left;
         /// <summary>
         /// Right movment key.
         /// </summary>
-        Keys Right;
+        public Keys Right;
         
         /// <summary>
         /// Default constructor.
@@ -81,6 +81,47 @@ namespace _3DRadSpaceDll
             Left = Keys.A;
             CamScreenCoords = look_coords;
             FOV = fov;
+            Bound = MathHelper.Pi - 0.1f;
+        }
+        /// <summary>
+        /// Main camera constructor.
+        /// </summary>
+        /// <param name="name">Editor name.</param>
+        /// <param name="enabled">Enables drawing or not.</param>
+        /// <param name="pos">World position,</param>
+        /// <param name="look_coords">View coordinates</param>
+        /// <param name="up">Up vector</param>
+        /// <param name="fov">Field of view in radians.</param>
+        /// <param name="nearplane">Minimum draw distance.</param>
+        /// <param name="farplane">Maximum draw distance.</param>
+        /// <param name="w">Forward key</param>
+        /// <param name="a">Left key</param>
+        /// <param name="s">Backward key</param>
+        /// <param name="d">Right key</param>
+        /// <param name="mov_speed">Movement speed.</param>
+        /// <param name="rot_speed">Rotation speed</param>
+        public FPVCamera(string name, bool enabled, Vector3 pos, Vector2 look_coords, Vector3 up, float fov, float nearplane, float farplane, Keys w,Keys a,Keys s,Keys d,float mov_speed,float rot_speed)
+        {
+            Name = name;
+            Enabled = enabled;
+            Position = pos;
+            CameraRotation = up;
+            Bound = MathHelper.Pi - 0.1f;
+            Forward = Keys.W;
+            Backward = Keys.S;
+            Right = Keys.D;
+            Left = Keys.A;
+            CamScreenCoords = look_coords;
+            FOV = fov;
+            MinDrawDist = nearplane;
+            MaxDrawDist = farplane;
+            Forward = w;
+            Backward = s;
+            Right = d;
+            Left = a;
+            Bound = MathHelper.Pi - 0.1f;
+            MovementSpeed = mov_speed;
+            Sensibility = rot_speed;
         }
         /// <summary>
         /// 
@@ -95,17 +136,11 @@ namespace _3DRadSpaceDll
             if (keyboard.IsKeyDown(Right)) Position += Vector3.Cross(CameraTarget, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
             if (keyboard.IsKeyDown(Left)) Position -= Vector3.Cross(CameraTarget, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
 
-            if (mouse.RightButton == ButtonState.Pressed)
-            {
-                if (mouse.X >= 0 && mouse.X <= ScreenSize.X && mouse.Y >= 0 && mouse.Y <= ScreenSize.Y)
-                {
-                    Mouse.SetPosition((int)ScreenSize.X / 2,(int) ScreenSize.Y / 2);
-                    CamScreenCoords += new Vector2((mouse.X - (ScreenSize.X / 2)) * (-Sensibility), (mouse.Y - (ScreenSize.Y / 2)) * Sensibility);
-                    if (CamScreenCoords.Y > (MathHelper.Pi - 0.1f)) CamScreenCoords.Y = (MathHelper.Pi - 0.1f);
-                    if (CamScreenCoords.Y < 0) CamScreenCoords.Y = 0.1f;
-                }
-            }
-            base.Update(mouse, keyboard, time);
+            Mouse.SetPosition((int)ScreenSize.X / 2,(int) ScreenSize.Y / 2);
+            CamScreenCoords += new Vector2((mouse.X - (ScreenSize.X / 2)) * (-Sensibility), (mouse.Y - (ScreenSize.Y / 2)) * Sensibility);
+            if (CamScreenCoords.Y > (MathHelper.Pi - 0.01f)) CamScreenCoords.Y = (MathHelper.Pi - 0.01f);
+            if (CamScreenCoords.Y < 0) CamScreenCoords.Y = 0.01f;
+            CameraTarget = Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y));
         }
         /// <summary>
         /// 
@@ -117,6 +152,26 @@ namespace _3DRadSpaceDll
         {
             Game.DrawModel(EventOnLocation.Sphere, Matrix.CreateScale(2f) * Matrix.CreateTranslation(Position),view.Value,projection.Value);
             Game.DrawModel(model, Matrix.CreateTranslation(Position + new Vector3(1f, 1.8f, 0.5f)),view.Value,projection.Value);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetWASDConfig()
+        {
+            Forward = Keys.W;
+            Backward = Keys.S;
+            Right = Keys.D;
+            Left = Keys.A;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetArrowConfig()
+        {
+            Forward = Keys.Up;
+            Backward = Keys.Down;
+            Right = Keys.Right;
+            Left = Keys.Left;
         }
     }
 }

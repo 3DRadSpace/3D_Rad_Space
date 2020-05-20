@@ -15,7 +15,7 @@ namespace _3DRadSpace
             Behiavour = new List<ObjectBehiavour>();
             InitializeComponent();
         }
-        public FPVCameraW(Camera c)
+        public FPVCameraW(FPVCamera c)
         {
             InitializeComponent();
             textBox1.Text = c.Name;
@@ -31,6 +31,12 @@ namespace _3DRadSpace
             numericUpDown1.Value = (decimal)c.GetFOVDegrees();
             textBox11.Text = SafeConverter.FloatToString(c.MinDrawDist);
             textBox12.Text = SafeConverter.FloatToString(c.MaxDrawDist);
+            comboBox1.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Forward);
+            comboBox2.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Backward);
+            comboBox3.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Right);
+            comboBox4.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Left);
+            textBox5.Text = SafeConverter.FloatToString(c.Sensibility);
+            textBox13.Text = SafeConverter.FloatToString(c.MovementSpeed);
         }
         public GameObject Result;
         public List<ObjectBehiavour> Behiavour;
@@ -59,7 +65,11 @@ namespace _3DRadSpace
                 MinDrawDist = SafeConverter.FloatFromString(textBox11.Text),
                 MaxDrawDist = SafeConverter.FloatFromString(textBox12.Text),
                 Sensibility = SafeConverter.FloatFromString(textBox5.Text),
-                MovementSpeed = SafeConverter.FloatFromString(textBox13.Text)
+                MovementSpeed = SafeConverter.FloatFromString(textBox13.Text),
+                Forward = EventOnKeyW.GetKeyFromListBox((string)comboBox1.SelectedItem),
+                Backward = EventOnKeyW.GetKeyFromListBox((string)comboBox2.SelectedItem),
+                Right = EventOnKeyW.GetKeyFromListBox((string)comboBox3.SelectedItem),
+                Left = EventOnKeyW.GetKeyFromListBox((string)comboBox4.SelectedItem)
             };
             DialogResult = DialogResult.OK;
             Close();

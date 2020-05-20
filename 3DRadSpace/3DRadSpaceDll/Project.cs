@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpaceDll
 {
@@ -40,6 +41,17 @@ namespace _3DRadSpaceDll
 				GameObject a; //Object to be added.
 				switch(Obj[0]) //Identify the current object.
 				{
+					case "fpvcam":
+						{
+							FPVCamera c = new FPVCamera(Obj[1], SafeConverter.BoolFromString(Obj[2]), new Vector3(SafeConverter.FloatFromString(Obj[3]), SafeConverter.FloatFromString(Obj[4]), SafeConverter.FloatFromString(Obj[5])),
+								new Vector2(SafeConverter.FloatFromString(Obj[6]), SafeConverter.FloatFromString(Obj[7])),
+								new Vector3(SafeConverter.FloatFromString(Obj[9]), SafeConverter.FloatFromString(Obj[9]), SafeConverter.FloatFromString(Obj[10])),
+								SafeConverter.FloatFromString(Obj[11]), SafeConverter.FloatFromString(Obj[12]), SafeConverter.FloatFromString(Obj[13]),
+								(Keys)SafeConverter.IntFromString(Obj[14]),(Keys)SafeConverter.IntFromString(Obj[15]),(Keys)SafeConverter.IntFromString(Obj[16]),(Keys)SafeConverter.IntFromString(Obj[17]),
+								SafeConverter.FloatFromString(Obj[18]),SafeConverter.FloatFromString(Obj[19]));
+							a = c;
+							break;
+						}
 					case "camera":
 						{
 							Camera c = new Camera(Obj[1], SafeConverter.BoolFromString(Obj[2]), new Vector3(SafeConverter.FloatFromString(Obj[3]), SafeConverter.FloatFromString(Obj[4]), SafeConverter.FloatFromString(Obj[5])),
@@ -299,10 +311,17 @@ namespace _3DRadSpaceDll
 			for (int i = 0; i < Game.GameObjects.Count; i++)
 			{
 				int j = i + 1;
+				if (Game.GameObjects[i] is FPVCamera fpv)
+				{
+					ToBeSaved[j] = "fpvcam " + fpv.Name + ' ' + fpv.Enabled + ' ' + Vector2String(fpv.Position) + ' ' + Vector2String(fpv.CamScreenCoords) +
+						' ' + Vector2String(fpv.CameraRotation) + ' ' + SafeConverter.FloatToString(MathHelper.ToDegrees(fpv.FOV)) + ' ' + SafeConverter.FloatToString(fpv.MinDrawDist) + ' ' + SafeConverter.FloatToString(fpv.MaxDrawDist) +
+						' ' + SafeConverter.IntToString((int)fpv.Forward) + ' ' + SafeConverter.IntToString((int)fpv.Left) + ' ' + SafeConverter.IntToString((int)fpv.Backward) + ' ' + SafeConverter.IntToString((int)fpv.Right) +
+						' ' + SafeConverter.FloatToString(fpv.MovementSpeed) + ' ' + SafeConverter.FloatToString(fpv.Sensibility);
+				}
 				if (Game.GameObjects[i] is Camera c)
 				{
 					ToBeSaved[j] = "camera " + c.Name + ' ' + c.Enabled + ' ' + Vector2String(c.Position) + ' ' + Vector2String(c.Rotation) +
-						' ' + Vector2String(c.CameraRotation) + ' ' + SafeConverter.FloatToString(MathHelper.ToDegrees(c.FOV)) + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
+						' ' + Vector2String(c.CameraRotation) + ' ' + SafeConverter.FloatToString(MathHelper.ToDegrees(c.FOV)) + ' ' + SafeConverter.FloatToString(c.MinDrawDist) + ' ' + SafeConverter.FloatToString(c.MaxDrawDist) + ' ';
 					if (c.Behiavours != null)
 					{
 						ToBeSaved[j] += c.Behiavours.Count + " ";
