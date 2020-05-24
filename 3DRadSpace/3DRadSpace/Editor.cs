@@ -194,8 +194,8 @@ namespace _3DRadSpace
 				return new[] { true, true, true };
 			}
 			bool[] result = { SafeConverter.BoolFromString(split[0]), SafeConverter.BoolFromString(split[1]), SafeConverter.BoolFromString(split[2]) };
-			CameraRotationSpeed = 0.001f * SafeConverter.IntFromString(split[3]);
-			CameraSpeed = 0.1f * SafeConverter.IntFromString(split[4]);
+			CameraRotationSpeed = 0.001f * Convert.ToInt32((split[3]);
+			CameraSpeed = 0.1f * Convert.ToInt32((split[4]);
 			return result;
 		}
 		bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)

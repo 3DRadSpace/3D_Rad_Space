@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using System.Globalization;
 
 namespace _3DRadSpace
 {
@@ -23,18 +24,18 @@ namespace _3DRadSpace
 			textBox1.Text = textPrint.Name;
 			checkBox1.Checked = textPrint.Enabled;
 			textBox2.Text = textPrint.Resource;
-			textBox3.Text = SafeConverter.FloatToString(textPrint.Position.X);
-			textBox4.Text = SafeConverter.FloatToString(textPrint.Position.Y);
-			textBox5.Text = SafeConverter.FloatToString(textPrint.Rotation);
-			textBox6.Text = SafeConverter.FloatToString(textPrint.Center.X);
-			textBox7.Text = SafeConverter.FloatToString(textPrint.Center.Y);
+			textBox3.Text = textPrint.Position.X.ToString("0.0", CultureInfo.InvariantCulture);
+			textBox4.Text = textPrint.Position.Y.ToString("0.0", CultureInfo.InvariantCulture);
+			textBox5.Text = textPrint.Rotation.ToString("0.0", CultureInfo.InvariantCulture);
+			textBox6.Text = textPrint.Center.X.ToString("0.0", CultureInfo.InvariantCulture);
+			textBox7.Text = textPrint.Center.Y.ToString("0.0", CultureInfo.InvariantCulture);
 			textBox8.Text = textPrint.Text;
-			textBox9.Text = textPrint.Color.R + "";
-			textBox10.Text = textPrint.Color.G + "";
-			textBox11.Text = textPrint.Color.B + "";
-			textBox12.Text = SafeConverter.FloatToString(textPrint.Size.X);
-			textBox13.Text = SafeConverter.FloatToString(textPrint.Size.Y);
-			textBox14.Text = SafeConverter.FloatToString(textPrint.Layer);
+			textBox9.Text = textPrint.Color.R.ToString(CultureInfo.InvariantCulture);
+			textBox10.Text = textPrint.Color.G.ToString(CultureInfo.InvariantCulture);
+			textBox11.Text = textPrint.Color.B.ToString(CultureInfo.InvariantCulture);
+			textBox12.Text = ""+textPrint.Size.X.ToString(CultureInfo.InvariantCulture);
+			textBox13.Text = ""+textPrint.Size.Y.ToString(CultureInfo.InvariantCulture);
+			textBox14.Text = ""+textPrint.Layer.ToString(CultureInfo.InvariantCulture);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -45,19 +46,19 @@ namespace _3DRadSpace
 				return;
 			}
 			Result = new TextPrint(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked,Editor.ValidateTextInput(textBox2.Text),textBox8.Text, new Vector2(
-				SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox3.Text)),
-				SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox4.Text))),
-			new Vector2(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox12.Text)),
-				SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox13.Text))),
-				SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox5.Text)),
-			new Vector2(SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox6.Text)),
-				SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox7.Text))),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text))),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text))),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text))),
 			new Color(
 				Convert.ToByte(Editor.ValidateNumberTextInput(textBox9.Text)),
 				Convert.ToByte(Editor.ValidateNumberTextInput(textBox10.Text)),
 				Convert.ToByte(Editor.ValidateNumberTextInput(textBox11.Text))),
-			(SpriteEffects)(SafeConverter.IntFromString(checkBox2.Checked) + SafeConverter.IntFromString(checkBox3.Checked)),
-			SafeConverter.IntFromString(textBox14.Text));
+			(SpriteEffects)(Convert.ToInt32((checkBox2.Checked) + Convert.ToInt32((checkBox3.Checked)),
+			Convert.ToInt32((textBox14.Text));
 			DialogResult = DialogResult.OK;
 			Close();
 		}

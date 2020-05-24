@@ -38,8 +38,8 @@ namespace _3DRadSpace
             checkBox1.Checked = SafeConverter.BoolFromString(split[0]);
             checkBox2.Checked = SafeConverter.BoolFromString(split[1]);
             checkBox3.Checked = SafeConverter.BoolFromString(split[2]);
-            trackBar1.Value = SafeConverter.IntFromString(split[3]);
-            trackBar2.Value = SafeConverter.IntFromString(split[4]);
+            trackBar1.Value = Convert.ToInt32((split[3]);
+            trackBar2.Value = Convert.ToInt32((split[4]);
             trackBar1_Scroll(null, null);
             trackBar2_Scroll(null, null);
         }

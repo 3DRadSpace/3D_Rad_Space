@@ -25,10 +25,10 @@ namespace _3DRadSpace
                 Fullscreen = checkBox1.Checked,
                 GameScreen = new Microsoft.Xna.Framework.Point()
                 {
-                    X = SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox1.Text)),
-                    Y = SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox2.Text))
+                    X = Convert.ToInt32((Editor.ValidateNumberTextInput(textBox1.Text)),
+                    Y = Convert.ToInt32((Editor.ValidateNumberTextInput(textBox2.Text))
                 },
-                MaximumFramerate = SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox3.Text))
+                MaximumFramerate = Convert.ToInt32((Editor.ValidateNumberTextInput(textBox3.Text))
             };
             DialogResult = DialogResult.OK;
             Close();

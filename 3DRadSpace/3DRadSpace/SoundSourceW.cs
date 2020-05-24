@@ -50,10 +50,10 @@ namespace _3DRadSpace
                     }
                 default: break;
             }
-            textBox3.Text = SafeConverter.FloatToString(sound.Position.X);
-            textBox4.Text = SafeConverter.FloatToString(sound.Position.Y);
-            textBox5.Text = SafeConverter.FloatToString(sound.Position.Z);
-            textBox6.Text = SafeConverter.FloatToString(sound.DopplerScale);
+            textBox3.Text = ""+sound.Position.X);
+            textBox4.Text = ""+sound.Position.Y);
+            textBox5.Text = ""+sound.Position.Z);
+            textBox6.Text = ""+sound.DopplerScale);
         }
 
 
@@ -82,13 +82,13 @@ namespace _3DRadSpace
                 Resource = textBox2.Text,
                 LinkedCam = _linkedcam,
                 Position = new Microsoft.Xna.Framework.Vector3(
-                    SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox3.Text)),
-                    SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox4.Text)),
-                    SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox5.Text))),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text)),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text))),
                 Pitch = trackBar2.Value / 100f,
                 Pan = trackBar3.Value / 100f,
                 SoundState = sw,
-                DopplerScale = SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox6.Text))
+                DopplerScale = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text))
             };
             Close();
         }

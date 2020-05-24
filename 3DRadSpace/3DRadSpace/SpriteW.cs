@@ -19,17 +19,17 @@ namespace _3DRadSpace
 			checkBox1.Checked = sp.Enabled;
 			textBox2.Text = sp.Resource;
 			pictureBox1.ImageLocation = sp.Resource;
-			textBox3.Text = SafeConverter.FloatToString(sp.Position.X);
-			textBox4.Text = SafeConverter.FloatToString(sp.Position.Y);
-			textBox5.Text = SafeConverter.FloatToString(sp.Rotation);
-			textBox6.Text = SafeConverter.FloatToString(sp.Size.X);
-			textBox7.Text = SafeConverter.FloatToString(sp.Size.Y);
+			textBox3.Text = ""+sp.Position.X);
+			textBox4.Text = ""+sp.Position.Y);
+			textBox5.Text = ""+sp.Rotation);
+			textBox6.Text = ""+sp.Size.X);
+			textBox7.Text = ""+sp.Size.Y);
 			if (sp.SpriteSheetSection.HasValue)
 			{
-				textBox8.Text = SafeConverter.FloatToString(sp.SpriteSheetSection.Value.X);
-				textBox9.Text = SafeConverter.FloatToString(sp.SpriteSheetSection.Value.Y);
-				textBox10.Text = SafeConverter.FloatToString(sp.SpriteSheetSection.Value.Width);
-				textBox11.Text = SafeConverter.FloatToString(sp.SpriteSheetSection.Value.Height);
+				textBox8.Text = ""+sp.SpriteSheetSection.Value.X);
+				textBox9.Text = ""+sp.SpriteSheetSection.Value.Y);
+				textBox10.Text = ""+sp.SpriteSheetSection.Value.Width);
+				textBox11.Text = ""+sp.SpriteSheetSection.Value.Height);
 			}
 			else
 			{
@@ -38,9 +38,9 @@ namespace _3DRadSpace
 				textBox10.Text = "0";
 				textBox11.Text = "0";
 			}
-			textBox12.Text = SafeConverter.FloatToString(sp.Layer );
-			textBox13.Text = SafeConverter.FloatToString(sp.Center.X );
-			textBox14.Text = SafeConverter.FloatToString(sp.Center.Y );
+			textBox12.Text = ""+sp.Layer );
+			textBox13.Text = ""+sp.Center.X );
+			textBox14.Text = ""+sp.Center.Y );
 			textBox15.Text = sp.Mask.R + "";
 			textBox16.Text = sp.Mask.G + "";
 			textBox17.Text = sp.Mask.B + "";
@@ -58,16 +58,16 @@ namespace _3DRadSpace
 				return;
 			}
 			Rectangle? r = new Rectangle(
-					SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox8.Text)), SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox9.Text)),
-					SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox10.Text)), SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox11.Text)));
+					Convert.ToInt32((Editor.ValidateNumberTextInput(textBox8.Text)), Convert.ToInt32((Editor.ValidateNumberTextInput(textBox9.Text)),
+					Convert.ToInt32((Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToInt32((Editor.ValidateNumberTextInput(textBox11.Text)));
 			if (r.Value.Height + r.Value.Width == 0) r = null;
 			Result = new Sprite(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, textBox2.Text,
-				new Vector2(SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox3.Text)), SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox4.Text))),
-				new Vector2(SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox6.Text)), SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox7.Text))),
-				new Vector2(SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox13.Text)), SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox14.Text))),
-				SafeConverter.FloatFromString(textBox5.Text),r,
+				new Vector2(Convert.ToInt32((Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToInt32((Editor.ValidateNumberTextInput(textBox4.Text))),
+				new Vector2(Convert.ToInt32((Editor.ValidateNumberTextInput(textBox6.Text)), Convert.ToInt32((Editor.ValidateNumberTextInput(textBox7.Text))),
+				new Vector2(Convert.ToInt32((Editor.ValidateNumberTextInput(textBox13.Text)), Convert.ToInt32((Editor.ValidateNumberTextInput(textBox14.Text))),
+				Convert.ToSingle(textBox5.Text),r,
 				new Color(Convert.ToByte(Editor.ValidateNumberTextInput(textBox15.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox16.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox17.Text))),
-				(SpriteEffects)(SafeConverter.IntFromString(checkBox2.Checked) + 2*SafeConverter.IntFromString(checkBox3.Checked)),SafeConverter.IntFromString(Editor.ValidateNumberTextInput(textBox12.Text)));
+				(SpriteEffects)(Convert.ToInt32((checkBox2.Checked) + 2*Convert.ToInt32((checkBox3.Checked)),Convert.ToInt32((Editor.ValidateNumberTextInput(textBox12.Text)));
 			DialogResult = DialogResult.OK;
 			Close();
 		}

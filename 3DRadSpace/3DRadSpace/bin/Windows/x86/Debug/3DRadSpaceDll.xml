@@ -73,22 +73,22 @@
             Drawing code for the editor.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.CameraTarget">
+        <member name="F:_3DRadSpaceDll.Camera.CameraTarget">
             <summary>
             Look at point.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.CameraRotation">
+        <member name="F:_3DRadSpaceDll.Camera.CameraRotation">
             <summary>
             Camera Rotation. This is a normalized 3D Vector (with the lenght equal to 1)
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.FOV">
+        <member name="F:_3DRadSpaceDll.Camera.FOV">
             <summary>
             Fielf of view (Measured in radians).
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.ScreenSize">
+        <member name="F:_3DRadSpaceDll.Camera.ScreenSize">
             <summary>
             Screen size. Used to calculate the projection's aspect ratio.
             </summary>
@@ -105,12 +105,12 @@
             </summary>
             <returns>Degrees</returns>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.MinDrawDist">
+        <member name="F:_3DRadSpaceDll.Camera.MinDrawDist">
             <summary>
             Minimum drawing distance. A recommended value is 0.1f.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Camera.MaxDrawDist">
+        <member name="F:_3DRadSpaceDll.Camera.MaxDrawDist">
             <summary>
             Maximum drawing distance.
             </summary>
@@ -632,6 +632,25 @@
             <param name="look_coords"></param>
             <param name="fov"></param>
         </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.#ctor(System.String,System.Boolean,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector3,System.Single,System.Single,System.Single,Microsoft.Xna.Framework.Input.Keys,Microsoft.Xna.Framework.Input.Keys,Microsoft.Xna.Framework.Input.Keys,Microsoft.Xna.Framework.Input.Keys,System.Single,System.Single)">
+            <summary>
+            Main camera constructor.
+            </summary>
+            <param name="name">Editor name.</param>
+            <param name="enabled">Enables drawing or not.</param>
+            <param name="pos">World position,</param>
+            <param name="look_coords">View coordinates</param>
+            <param name="up">Up vector</param>
+            <param name="fov">Field of view in radians.</param>
+            <param name="nearplane">Minimum draw distance.</param>
+            <param name="farplane">Maximum draw distance.</param>
+            <param name="w">Forward key</param>
+            <param name="a">Left key</param>
+            <param name="s">Backward key</param>
+            <param name="d">Right key</param>
+            <param name="mov_speed">Movement speed.</param>
+            <param name="rot_speed">Rotation speed</param>
+        </member>
         <member name="M:_3DRadSpaceDll.FPVCamera.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
             <summary>
             
@@ -647,6 +666,16 @@
             <param name="spriteBatch"></param>
             <param name="view"></param>
             <param name="projection"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.SetWASDConfig">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.SetArrowConfig">
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.Game">
             <summary>

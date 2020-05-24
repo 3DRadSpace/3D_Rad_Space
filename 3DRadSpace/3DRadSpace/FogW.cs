@@ -25,8 +25,8 @@ namespace _3DRadSpace
             textBox2.Text = SafeConverter.IntToString((int)fog.FogColor.X);
             textBox3.Text = SafeConverter.IntToString((int)fog.FogColor.Y);
             textBox4.Text = SafeConverter.IntToString((int)fog.FogColor.Z);
-            textBox5.Text = SafeConverter.FloatToString(fog.FogStart);
-            textBox6.Text = SafeConverter.FloatToString(fog.FogEnd);
+            textBox5.Text = ""+fog.FogStart);
+            textBox6.Text = ""+fog.FogEnd);
         }
         public GameObject Result;
         private void button1_Click(object sender, EventArgs e)
@@ -53,8 +53,8 @@ namespace _3DRadSpace
                     Convert.ToByte(Editor.ValidateNumberTextInput(textBox2.Text)),
                     Convert.ToByte(Editor.ValidateNumberTextInput(textBox3.Text)),
                     Convert.ToByte(Editor.ValidateNumberTextInput(textBox4.Text))),
-                    SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox5.Text)),
-                    SafeConverter.FloatFromString(Editor.ValidateNumberTextInput(textBox6.Text))
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text))
                 );
         }
 

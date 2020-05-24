@@ -145,7 +145,7 @@ namespace _3DRadSpace
             bool NewVersionAvalable = false;
             for(int i =0; i < 3; i++)
             {
-                if (SafeConverter.IntFromString(v) != Program.Version)
+                if (Convert.ToInt32((v) != Program.Version)
                 {
                     NewVersionAvalable = true;
                     toolStripStatusLabel1.Text = "Status: Downloading new update...";
@@ -235,7 +235,7 @@ namespace _3DRadSpace
             {
                 FPVCameraW wnd = new FPVCameraW(fpv);
                 wnd.ShowDialog();
-                if (wnd.Result != null) b = wnd.Result;
+                if (wnd.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = wnd.Result;
                 wnd.Dispose();
                 return;
             }

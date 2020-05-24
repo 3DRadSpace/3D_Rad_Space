@@ -137,22 +137,22 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Look at point.
         /// </summary>
-        public Vector3 CameraTarget { get; set; }
+        public Vector3 CameraTarget;
 
         /// <summary>
         /// Camera Rotation. This is a normalized 3D Vector (with the lenght equal to 1)
         /// </summary>
-        public Vector3 CameraRotation { get; set; }
+        public Vector3 CameraRotation;
 
         /// <summary>
         /// Fielf of view (Measured in radians).
         /// </summary>
-        public float FOV { get; set; }
+        public float FOV;
 
         /// <summary>
         /// Screen size. Used to calculate the projection's aspect ratio.
         /// </summary>
-        public static Vector2 ScreenSize { get; set; }
+        public static Vector2 ScreenSize;
 
         /// <summary>
         /// Sets the FOV with a degree value
@@ -174,12 +174,12 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Minimum drawing distance. A recommended value is 0.1f.
         /// </summary>
-        public float MinDrawDist { get; set; }
+        public float MinDrawDist;
 
         /// <summary>
         /// Maximum drawing distance.
         /// </summary>
-        public float MaxDrawDist { get; set; }
+        public float MaxDrawDist;
 
         /// <summary>
         /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationship(s)'.
