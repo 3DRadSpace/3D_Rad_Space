@@ -55,9 +55,9 @@ namespace _3DRadSpace
         {
             DialogResult = DialogResult.OK;
             Result = new SkyColor(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new Microsoft.Xna.Framework.Color(
-                Convert.ToByte(Editor.ValidateNumberTextInput(textBox2.Text)),
-                Convert.ToByte(Editor.ValidateNumberTextInput(textBox3.Text)),
-                Convert.ToByte(Editor.ValidateNumberTextInput(textBox4.Text))));
+                Convert.ToByte(Editor.ValidateNumberTextInput(textBox2.Text), Program.CultureInfo),
+                Convert.ToByte(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
+                Convert.ToByte(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)));
             Close();
         }
     }

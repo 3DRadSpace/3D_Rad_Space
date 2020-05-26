@@ -22,11 +22,11 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = fog.Name;
             checkBox1.Checked = fog.Enabled;
-            textBox2.Text = SafeConverter.IntToString((int)fog.FogColor.X);
-            textBox3.Text = SafeConverter.IntToString((int)fog.FogColor.Y);
-            textBox4.Text = SafeConverter.IntToString((int)fog.FogColor.Z);
-            textBox5.Text = ""+fog.FogStart);
-            textBox6.Text = ""+fog.FogEnd);
+            textBox2.Text = fog.FogColor.X.ToString("0.0",Program.CultureInfo);
+            textBox3.Text = fog.FogColor.Y.ToString("0.0", Program.CultureInfo);
+            textBox4.Text = fog.FogColor.Z.ToString("0.0", Program.CultureInfo);
+            textBox5.Text = fog.FogStart.ToString("0.0", Program.CultureInfo);
+            textBox6.Text = fog.FogEnd.ToString("0.0", Program.CultureInfo);
         }
         public GameObject Result;
         private void button1_Click(object sender, EventArgs e)
@@ -50,11 +50,11 @@ namespace _3DRadSpace
             DialogResult = DialogResult.OK;
             Result = new Fog(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked,
                 new Microsoft.Xna.Framework.Color(
-                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox2.Text)),
-                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox3.Text)),
-                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox4.Text))),
-                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)),
-                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text))
+                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox2.Text), Program.CultureInfo),
+                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
+                    Convert.ToByte(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text),Program.CultureInfo),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text),Program.CultureInfo)
                 );
         }
 

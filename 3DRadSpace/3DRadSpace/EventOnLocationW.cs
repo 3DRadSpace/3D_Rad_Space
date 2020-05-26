@@ -25,20 +25,20 @@ namespace _3DRadSpace
 			textBox1.Text = eol.Name;
 			checkBox1.Checked = eol.Enabled;
 			checkBox2.Checked = eol.VisibleInEditor;
-			textBox2.Text = ""+eol.BoundingBox.Min.X);
-			textBox3.Text = ""+eol.BoundingBox.Min.Y);
-			textBox4.Text = ""+eol.BoundingBox.Min.Z);
-			textBox5.Text = ""+eol.BoundingBox.Max.X);
-			textBox6.Text = ""+eol.BoundingBox.Max.Y);
-			textBox7.Text = ""+eol.BoundingBox.Max.Z);
-			textBox8.Text = ""+eol.BoundingSphere.Center.X);
-			textBox9.Text = ""+eol.BoundingSphere.Center.Y);
-			textBox10.Text = ""+eol.BoundingSphere.Center.Z);
-			textBox11.Text = ""+eol.BoundingSphere.Radius);
-			textBox12.Text = ""+eol.BoundingPlane.Normal.X);
-			textBox13.Text = ""+eol.BoundingPlane.Normal.Y);
-			textBox14.Text = ""+eol.BoundingPlane.Normal.Z);
-			textBox15.Text = ""+eol.BoundingPlane.D);
+			textBox2.Text = eol.BoundingBox.Min.X.ToString("0.0",Program.CultureInfo);
+			textBox3.Text = ""+eol.BoundingBox.Min.Y.ToString("0.0", Program.CultureInfo);
+			textBox4.Text = ""+eol.BoundingBox.Min.Z.ToString("0.0", Program.CultureInfo);
+			textBox5.Text = ""+eol.BoundingBox.Max.X.ToString("0.0", Program.CultureInfo);
+			textBox6.Text = ""+eol.BoundingBox.Max.Y.ToString("0.0", Program.CultureInfo);
+			textBox7.Text = ""+eol.BoundingBox.Max.Z.ToString("0.0", Program.CultureInfo);
+			textBox8.Text = ""+eol.BoundingSphere.Center.X.ToString("0.0", Program.CultureInfo);
+			textBox9.Text = ""+eol.BoundingSphere.Center.Y.ToString("0.0", Program.CultureInfo);
+			textBox10.Text = ""+eol.BoundingSphere.Center.Z.ToString("0.0", Program.CultureInfo);
+			textBox11.Text = ""+eol.BoundingSphere.Radius.ToString("0.0", Program.CultureInfo);
+			textBox12.Text = ""+eol.BoundingPlane.Normal.X.ToString("0.0", Program.CultureInfo);
+			textBox13.Text = ""+eol.BoundingPlane.Normal.Y.ToString("0.0", Program.CultureInfo);
+			textBox14.Text = ""+eol.BoundingPlane.Normal.Z.ToString("0.0", Program.CultureInfo);
+			textBox15.Text = ""+eol.BoundingPlane.D.ToString("0.0", Program.CultureInfo);
 			_eol = eol;
 			opcodes = eol.Behiavours;
 		}
@@ -87,31 +87,31 @@ namespace _3DRadSpace
 				case BoundingObject.Box:
 					r.BoundingBox = new BoundingBox(
 						new Vector3(
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text)),
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text))),
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text),Program.CultureInfo),
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)),
 						new Vector3(
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)),
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)),
-							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text))));
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo),
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo),
+							Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo)));
 					r.BoundingSphere = BoundingSphere.CreateFromBoundingBox(r.BoundingBox);
 					r.BoundingPlane = new Plane(Vector4.Zero);
 					break;
 				case BoundingObject.Sphere:
 					r.BoundingSphere = new BoundingSphere(new Vector3(
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text)),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text))
-						),Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)));
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text), Program.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text), Program.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text), Program.CultureInfo)
+						),Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text), Program.CultureInfo));
 					r.BoundingBox = BoundingBox.CreateFromSphere(r.BoundingSphere);
 					r.BoundingPlane = new Plane(Vector4.Zero);
 					break;
 				case BoundingObject.Plane:
 					r.BoundingPlane = new Plane(new Vector3(
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text)),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text))),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text)));
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Program.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Program.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text), Program.CultureInfo)),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text), Program.CultureInfo));
 					r.BoundingBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
 					r.BoundingSphere = new BoundingSphere(Vector3.Zero, 0);
 					break;

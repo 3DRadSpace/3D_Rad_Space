@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using _3DRadSpaceDll;
+using System.Globalization;
 
 namespace _3DRadSpace
 {
@@ -17,6 +18,7 @@ namespace _3DRadSpace
         {
             Environment.CurrentDirectory = Application.StartupPath;
             Application.EnableVisualStyles();
+            Application.CurrentCulture = CultureInfo;
             using (var Editor = new Editor())
             {
                 bool EditorOpen = true;
@@ -38,6 +40,7 @@ namespace _3DRadSpace
                 script.ShowDialog();
             }
         }
+        public static CultureInfo CultureInfo { get; } = new CultureInfo("EN-en"); //An fix for the culture related issues
     }
 #endif
 }

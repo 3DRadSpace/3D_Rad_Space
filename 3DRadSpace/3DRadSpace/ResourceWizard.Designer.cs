@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -53,13 +53,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Files";
             // 
-            // listBox1
+            // button2
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 19);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(226, 290);
-            this.listBox1.TabIndex = 0;
+            this.button2.Location = new System.Drawing.Point(238, 48);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(117, 39);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Remove selected items";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -71,15 +73,13 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // listBox1
             // 
-            this.button2.Location = new System.Drawing.Point(238, 48);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(117, 39);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Remove selected items";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(6, 19);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(226, 290);
+            this.listBox1.TabIndex = 0;
             // 
             // button3
             // 
@@ -103,6 +103,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Output";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(9, 38);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.Text = "Model";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -112,14 +120,6 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Resulting folder name";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(9, 38);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "Model";
-            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(388, 303);
@@ -128,6 +128,7 @@
             this.button4.TabIndex = 5;
             this.button4.Text = "Help";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // ResourceWizard
             // 

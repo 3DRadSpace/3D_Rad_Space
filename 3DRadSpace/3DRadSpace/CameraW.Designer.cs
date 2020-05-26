@@ -193,7 +193,7 @@
             this.groupBox3.Size = new System.Drawing.Size(390, 54);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "View Rotation ( CameraLookAt)";
+            this.groupBox3.Text = "View Rotation ( (0,0,1) * Given angles)";
             // 
             // textBox5
             // 

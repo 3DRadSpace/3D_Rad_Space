@@ -20,18 +20,18 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = c.Name;
             checkBox1.Checked = c.Enabled;
-            textBox2.Text = "" + c.Position.X;
-            textBox3.Text = ""+c.Position.Y);
-            textBox4.Text = ""+c.Position.Z);
-            textBox7.Text = ""+c.Rotation.X);
-            textBox6.Text = ""+c.Rotation.Y);
-            textBox5.Text = ""+c.Rotation.Z);
-            textBox10.Text = ""+c.CameraRotation.X);
-            textBox9.Text = ""+c.CameraRotation.Y);
-            textBox8.Text = ""+c.CameraRotation.Z);
+            textBox2.Text = c.Position.X.ToString("0.0",Program.CultureInfo);
+            textBox3.Text = c.Position.Y.ToString("0.0", Program.CultureInfo);
+            textBox4.Text = c.Position.Z.ToString("0.0", Program.CultureInfo);
+            textBox7.Text = c.Rotation.X.ToString("0.0", Program.CultureInfo);
+            textBox6.Text = c.Rotation.Y.ToString("0.0", Program.CultureInfo);
+            textBox5.Text = c.Rotation.Z.ToString("0.0", Program.CultureInfo);
+            textBox10.Text = c.CameraRotation.X.ToString("0.0", Program.CultureInfo);
+            textBox9.Text = c.CameraRotation.Y.ToString("0.0", Program.CultureInfo);
+            textBox8.Text = c.CameraRotation.Z.ToString("0.0", Program.CultureInfo);
             numericUpDown1.Value = (decimal)c.GetFOVDegrees();
-            textBox11.Text = ""+c.MinDrawDist);
-            textBox12.Text = ""+c.MaxDrawDist);
+            textBox11.Text = c.MinDrawDist.ToString("0.0", Program.CultureInfo);
+            textBox12.Text = c.MaxDrawDist.ToString("0.0", Program.CultureInfo);
             Behiavour = c.Behiavours;
             UpdateList();
         }
@@ -46,12 +46,32 @@ namespace _3DRadSpace
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Result = new Camera(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text))),
-                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)))
-                , new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text))),
-                Convert.ToSingle(""+numericUpDown1.Value), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)))
+            Result = new Camera()
             {
-                Behiavours = Behiavour
+                Name = Editor.ValidateTextInput(textBox1.Text),
+                Enabled = checkBox1.Checked,
+                Position = new Vector3()
+                {
+                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text), Program.CultureInfo),
+                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
+                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)
+                },
+                Rotation = new Vector3()
+                {
+                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo),
+                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo),
+                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo)
+                },
+                CameraRotation = new Vector3()
+                {
+                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text)),
+                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)),
+                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text))
+                },
+                FOV = (float)numericUpDown1.Value,
+                MinDrawDist = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)),
+                MaxDrawDist = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)),
+                Behiavours = Behiavour,
             };
             DialogResult = DialogResult.OK;
             Close();

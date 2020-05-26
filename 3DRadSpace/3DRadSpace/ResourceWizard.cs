@@ -71,5 +71,10 @@ namespace _3DRadSpace
             Directory.Delete(Environment.CurrentDirectory + "\\XNBConverter\\Source",true);
             Directory.Delete(Environment.CurrentDirectory + "\\XNBConverter\\Final",true);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

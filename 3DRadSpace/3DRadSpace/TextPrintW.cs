@@ -33,9 +33,9 @@ namespace _3DRadSpace
 			textBox9.Text = textPrint.Color.R.ToString(CultureInfo.InvariantCulture);
 			textBox10.Text = textPrint.Color.G.ToString(CultureInfo.InvariantCulture);
 			textBox11.Text = textPrint.Color.B.ToString(CultureInfo.InvariantCulture);
-			textBox12.Text = ""+textPrint.Size.X.ToString(CultureInfo.InvariantCulture);
-			textBox13.Text = ""+textPrint.Size.Y.ToString(CultureInfo.InvariantCulture);
-			textBox14.Text = ""+textPrint.Layer.ToString(CultureInfo.InvariantCulture);
+			textBox12.Text = textPrint.Size.X.ToString(CultureInfo.InvariantCulture);
+			textBox13.Text = textPrint.Size.Y.ToString(CultureInfo.InvariantCulture);
+			textBox14.Text = textPrint.Layer.ToString(CultureInfo.InvariantCulture);
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -46,19 +46,19 @@ namespace _3DRadSpace
 				return;
 			}
 			Result = new TextPrint(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked,Editor.ValidateTextInput(textBox2.Text),textBox8.Text, new Vector2(
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text)),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text))),
-			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text))),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text)),
-			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text)),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text))),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Program.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Program.CultureInfo)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo)),
 			new Color(
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox9.Text)),
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox10.Text)),
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox11.Text))),
-			(SpriteEffects)(Convert.ToInt32((checkBox2.Checked) + Convert.ToInt32((checkBox3.Checked)),
-			Convert.ToInt32((textBox14.Text));
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox9.Text), Program.CultureInfo),
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox10.Text), Program.CultureInfo),
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox11.Text), Program.CultureInfo)),
+			(SpriteEffects)(Convert.ToInt32(checkBox2.Checked) + Convert.ToInt32(checkBox3.Checked)),
+			Convert.ToInt32(textBox14.Text, Program.CultureInfo));
 			DialogResult = DialogResult.OK;
 			Close();
 		}

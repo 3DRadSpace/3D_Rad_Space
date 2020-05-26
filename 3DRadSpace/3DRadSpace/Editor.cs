@@ -193,9 +193,9 @@ namespace _3DRadSpace
 				File.WriteAllText(appd + "\\Config.cfg", "1 1 1 1 1");
 				return new[] { true, true, true };
 			}
-			bool[] result = { SafeConverter.BoolFromString(split[0]), SafeConverter.BoolFromString(split[1]), SafeConverter.BoolFromString(split[2]) };
-			CameraRotationSpeed = 0.001f * Convert.ToInt32((split[3]);
-			CameraSpeed = 0.1f * Convert.ToInt32((split[4]);
+			bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
+			CameraRotationSpeed = 0.001f * Convert.ToInt32(split[3],Program.CultureInfo);
+			CameraSpeed = 0.1f * Convert.ToInt32(split[4],Program.CultureInfo);
 			return result;
 		}
 		bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
