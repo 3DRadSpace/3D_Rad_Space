@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
 
 namespace _3DRadSpaceDll
 {
@@ -122,7 +123,8 @@ namespace _3DRadSpaceDll
         {
             if (_linkedc == null) LinkAvalableCamera(); //We determine a avalable Camera object 
 
-            Matrix transformation = Matrix.CreateTranslation(_linkedc.Position);
+            Matrix t = Matrix.CreateScale(_size) *  Matrix.CreateTranslation(_linkedc.Position);
+            
 
             base.Draw(spriteBatch, view, projection);
         }
