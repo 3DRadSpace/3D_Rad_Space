@@ -58,12 +58,47 @@ namespace _3DRadSpaceDll
         /// <param name="gd">GraphicsDevice used to initialize the texture.</param>
         public void Load(ContentManager content, GraphicsDevice gd)
         {
-            if (_skyBoxCube == null) _skyBoxCube = content.Load<Model>("Skybox\\skybox");
+            _skyBoxCube = content.Load<Model>("Skybox\\Skybox");
 
-            FileStream str = new FileStream(Resource, FileMode.Open);
-            Texture = Texture2D.FromStream(gd, str);
-            str.Close();
-            str.Dispose();
+            string[] textures_list = File.ReadAllLines(Resource);
+            Texture.LoadFromGivenFiles(gd,textures_list);
+
+            epx = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.PX,
+            };
+            epy = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.PY,
+            };
+            epz = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.PZ,
+            };
+            enx = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.NX,
+            };
+            eny = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.NY,
+            };
+            enz = new BasicEffect(gd)
+            {
+                DiffuseColor = new Vector3(1, 1, 1),
+                TextureEnabled = true,
+                Texture = Texture.NZ,
+            };
 
             LinkAvalableCamera();
 
@@ -71,11 +106,12 @@ namespace _3DRadSpaceDll
         }
         float _size;
         Camera _linkedc;
-        static Model _skyBoxCube;
+        Model _skyBoxCube;
+        BasicEffect epx, epy, epz, enx, eny, enz;
         /// <summary>
         /// A entire image representing the skybox.
         /// </summary>
-        public Texture2D Texture;
+        public SkyboxTexture Texture;
         /// <summary>
         /// Draws the skybox.
         /// </summary>
@@ -85,19 +121,12 @@ namespace _3DRadSpaceDll
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
             if (_linkedc == null) LinkAvalableCamera(); //We determine a avalable Camera object 
-            //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
-            foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
-            {
-                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(_linkedc.Position);
-                effect.View = view.Value;
-                effect.Projection = projection.Value;
-                effect.TextureEnabled = true;
-                effect.Texture = Texture;
-                effect.DiffuseColor = new Vector3(1, 1, 1); // please make the skybox look more colorful, PLIZ - 1:53 AM update : thank you, you saved my sanity
-            }
-            _skyBoxCube.Meshes[0].Draw();
+
+            Matrix transformation = Matrix.CreateTranslation(_linkedc.Position);
+
             base.Draw(spriteBatch, view, projection);
         }
+
         /// <summary>
         /// Draws the skybox in the editor - an extra argument is needed.
         /// </summary>
@@ -106,34 +135,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public void EditorDraw(Vector3 editor_cam_pos, Matrix view, Matrix projection)
         {
-            //Guarantee that the cube is made from a single textured mesh. Unless some smartass comes to modify the default assets.
-            foreach (BasicEffect effect in _skyBoxCube.Meshes[0].Effects)
-            {
-                effect.World = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos-new Vector3(0.5f,0.5f,0.5f));
-                effect.View = view;
-                effect.Projection = projection;
-                effect.TextureEnabled = true;
-                effect.Texture = Texture;
-                effect.DiffuseColor = new Vector3(1, 1, 1); // please make the skybox look more colorful, PLIZ - 1:53 AM update : thank you, you saved my sanity
-            }
-            _skyBoxCube.Meshes[0].Draw();
-
-            //using the older shader
-            /*
-            foreach (ModelMesh mesh in _skyBoxCube.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    Matrix w = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
-                    part.Effect = _shader;
-                    _shader.Parameters["View"].SetValue(view);
-                    _shader.Parameters["Projection"].SetValue(projection);
-                    _shader.Parameters["World"].SetValue(w);
-                    _shader.Parameters["ModelTexture"].SetValue(Texture);
-                }
-                mesh.Draw();
-            }
-            */
+            //TODO: insert drawing code, oh God, this is going to be painfull
             base.EditorDraw(null, null, null);
         }
         /// <summary>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/bin/Windows/x86/Debug/XNBConverter/Source/PositiveY.png</SourceFile>
+  <SourceTime>2020-06-02T18:35:59.2603352+03:00</SourceTime>
+  <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/bin/Windows/x86/Debug/XNBConverter/Final/PositiveY.xnb</DestFile>
+  <DestTime>2020-06-02T18:44:39.0678682+03:00</DestTime>
+  <Importer>TextureImporter</Importer>
+  <ImporterTime>2018-12-08T18:35:54+02:00</ImporterTime>
+  <Processor>TextureProcessor</Processor>
+  <ProcessorTime>2018-12-08T18:35:54+02:00</ProcessorTime>
+  <Parameters>
+    <Key>ColorKeyColor</Key>
+    <Value>255,0,255,255</Value>
+  </Parameters>
+  <Parameters>
+    <Key>ColorKeyEnabled</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>GenerateMipmaps</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>ResizeToPowerOfTwo</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>MakeSquare</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Color</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
