@@ -31,12 +31,27 @@ namespace _3DRadSpace
             OpenFileDialog openImage = new OpenFileDialog()
             {
                 Multiselect = false,
+                Filter = "Skybox file (*.sky)|*.sky",
             };
             if(openImage.ShowDialog() == DialogResult.OK)
             {
-                string f = "Content\\Skybox\\" + Path.GetFileName(openImage.FileName);
-                File.Copy(openImage.FileName, f,true);
-                pictureBox1.ImageLocation = f;
+                string[] textures = File.ReadAllLines(openImage.FileName);
+                for(int i = 0; i < 6;i++)
+                {
+                    /*
+                     * SKYBOX FILE FORMAT:
+                     * EXTENTION: .sky
+                     * LINE 1: <string name>
+                     * LINE 2: <string path file PX> 
+                     * LINE 3: <string path file PY> 
+                     * LINE 4: <string path file PZ> 
+                     * LINE 5: <string path file NX> 
+                     * LINE 6: <string path file NY> 
+                     * LINE 7: <string path file NZ> 
+                     */
+
+                    File.Copy(textures[i + 1], "Content\\Skyboxes\\" + textures[0] + "\\" + Path.GetFileName(textures[i + 1]),true);
+                }
             }
             openImage.Dispose();
         }

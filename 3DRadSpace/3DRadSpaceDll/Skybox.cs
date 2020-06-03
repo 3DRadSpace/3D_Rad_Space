@@ -63,6 +63,8 @@ namespace _3DRadSpaceDll
 
             string[] textures_list = File.ReadAllLines(Resource);
             Texture.LoadFromGivenFiles(gd,textures_list);
+            
+            //Mark beginning of bad code
 
             epx = new BasicEffect(gd)
             {
@@ -101,6 +103,15 @@ namespace _3DRadSpaceDll
                 Texture = Texture.NZ,
             };
 
+            _skyBoxCube.Meshes[0].MeshParts[0].Effect = epy;
+            _skyBoxCube.Meshes[1].MeshParts[0].Effect = enz;
+            _skyBoxCube.Meshes[2].MeshParts[0].Effect = enx;
+            _skyBoxCube.Meshes[3].MeshParts[0].Effect = epz;
+            _skyBoxCube.Meshes[4].MeshParts[0].Effect = epx;
+            _skyBoxCube.Meshes[5].MeshParts[0].Effect = eny;
+
+            //marking end of horrible code
+
             LinkAvalableCamera();
 
             base.Load(content);
@@ -123,8 +134,16 @@ namespace _3DRadSpaceDll
         {
             if (_linkedc == null) LinkAvalableCamera(); //We determine a avalable Camera object 
 
-            Matrix t = Matrix.CreateScale(_size) *  Matrix.CreateTranslation(_linkedc.Position);
-            
+            Matrix t = Matrix.CreateScale(_size) * Matrix.CreateTranslation(_linkedc.Position);
+            foreach(ModelMesh mesh in _skyBoxCube.Meshes)
+            {
+                foreach(BasicEffect effect in mesh.Effects)
+                {
+                    effect.View = view.Value;
+                    effect.Projection = projection.Value;
+                    effect.World = t;
+                }
+            }
 
             base.Draw(spriteBatch, view, projection);
         }
