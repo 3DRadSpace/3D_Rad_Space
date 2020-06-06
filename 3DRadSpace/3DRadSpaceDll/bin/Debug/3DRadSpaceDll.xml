@@ -1575,11 +1575,48 @@
         <member name="M:_3DRadSpaceDll.Skybox.Load(Microsoft.Xna.Framework.Content.ContentManager,Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
             <summary>
             Loads the skybox.
+            
+            SKYBOX FILE FORMAT:
+            EXTENSION: .sky
+            
+            First line: Skybox name
+            Second line: PX image
+            Second line: PY image
+            Second line: PZ image
+            Second line: NX image
+            Second line: NY image
+            Second line: NZ image
+            
             </summary>
             <param name="content"></param>
             <param name="gd">GraphicsDevice used to initialize the texture.</param>
         </member>
-        <member name="F:_3DRadSpaceDll.Skybox.Texture">
+        <member name="F:_3DRadSpaceDll.Skybox.PX">
+            <summary>
+            A entire image representing the skybox.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.PY">
+            <summary>
+            A entire image representing the skybox.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.PZ">
+            <summary>
+            A entire image representing the skybox.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.NX">
+            <summary>
+            A entire image representing the skybox.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.NY">
+            <summary>
+            A entire image representing the skybox.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Skybox.NZ">
             <summary>
             A entire image representing the skybox.
             </summary>
@@ -1615,76 +1652,6 @@
             Protected Dispose().
             </summary>
             <param name="disposing"></param>
-        </member>
-        <member name="T:_3DRadSpaceDll.SkyboxTexture">
-            <summary>
-            A class that contains the textures needed for a skybox object
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.NX">
-            <summary>
-            Negative X axis texture.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.NY">
-            <summary>
-            Negative Y axis texture.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.NZ">
-            <summary>
-            Negative Z axis texture.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.PX">
-            <summary>
-            Positive X axis texture.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.PY">
-            <summary>
-            Positive Y axis texture.
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.SkyboxTexture.PZ">
-            <summary>
-            Positive Z axis texture.
-            </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D[])">
-            <summary>
-            Generates a SkyboxTexture from a array of textures.
-            </summary>
-            <param name="textures"></param>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.LoadFromGivenFiles(Microsoft.Xna.Framework.Graphics.GraphicsDevice,System.String[])">
-            <summary>
-            
-            </summary>
-            <param name="gd"></param>
-            <param name="files"></param>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.GenerateSkybox">
-            <summary>
-            Generates a skybox object using the default constructor.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.GenerateArray">
-            <summary>
-            Returns an array containing the textures.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyboxTexture.Dispose">
-            <summary>
-            Frees the textures from memory.
-            </summary>
         </member>
         <member name="T:_3DRadSpaceDll.SkyColor">
             <summary>

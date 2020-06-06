@@ -54,6 +54,18 @@ namespace _3DRadSpaceDll
         }
         /// <summary>
         /// Loads the skybox.
+        /// 
+        /// SKYBOX FILE FORMAT:
+        /// EXTENSION: .sky
+        /// 
+        /// First line: Skybox name
+        /// Second line: PX image
+        /// Second line: PY image
+        /// Second line: PZ image
+        /// Second line: NX image
+        /// Second line: NY image
+        /// Second line: NZ image
+        /// 
         /// </summary>
         /// <param name="content"></param>
         /// <param name="gd">GraphicsDevice used to initialize the texture.</param>
@@ -62,68 +74,49 @@ namespace _3DRadSpaceDll
             _skyBoxCube = content.Load<Model>("Skybox\\Skybox");
 
             string[] textures_list = File.ReadAllLines(Resource);
-            Texture.LoadFromGivenFiles(gd,textures_list);
-            
-            //Mark beginning of bad code
 
-            epx = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.PX,
-            };
-            epy = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.PY,
-            };
-            epz = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.PZ,
-            };
-            enx = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.NX,
-            };
-            eny = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.NY,
-            };
-            enz = new BasicEffect(gd)
-            {
-                DiffuseColor = new Vector3(1, 1, 1),
-                TextureEnabled = true,
-                Texture = Texture.NZ,
-            };
+            /*
+             * MARKING BEGINNING OF HORRIBLE CODE
+             */ 
 
-            _skyBoxCube.Meshes[0].MeshParts[0].Effect = epy;
-            _skyBoxCube.Meshes[1].MeshParts[0].Effect = enz;
-            _skyBoxCube.Meshes[2].MeshParts[0].Effect = enx;
-            _skyBoxCube.Meshes[3].MeshParts[0].Effect = epz;
-            _skyBoxCube.Meshes[4].MeshParts[0].Effect = epx;
-            _skyBoxCube.Meshes[5].MeshParts[0].Effect = eny;
+            //My motivation loss is really a bitch.
 
-            //marking end of horrible code
+            BasicEffect _px, _py, _pz, _nx, _ny, _nz;
+            _px = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[0].Effect);
+            _py = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[1].Effect);
+            _pz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[2].Effect);
+            _nx = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[3].Effect);
+            _ny = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[4].Effect);
+            _nz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[5].Effect);
+            //haha bad code, this is me, the next yandere dev
+            _setEffectTexture(gd,_px,"Content//"+ textures_list[0]+"//"+ textures_list[1]);
+            _setEffectTexture(gd,_py,"Content//"+ textures_list[0]+"//"+ textures_list[2]);
+            _setEffectTexture(gd,_pz,"Content//"+ textures_list[0]+"//"+ textures_list[3]);
+            _setEffectTexture(gd,_nz,"Content//"+ textures_list[0]+"//"+ textures_list[4]);
+            _setEffectTexture(gd,_ny,"Content//"+ textures_list[0]+"//"+ textures_list[5]);
+            _setEffectTexture(gd,_nz,"Content//"+ textures_list[0]+"//"+ textures_list[6]);
+            //where defok is the for() statement reeee
 
+            /*
+             * MARKING END OF HORRIBLE CODE
+             */
             LinkAvalableCamera();
-
             base.Load(content);
+        }
+        void _setEffectTexture(GraphicsDevice gd ,BasicEffect ef,string texture)
+        {
+            ef.TextureEnabled = true;
+            FileStream str = new FileStream(texture, FileMode.Open);
+            ef.Texture = Texture2D.FromStream(gd, str);
+            str.Dispose();
         }
         float _size;
         Camera _linkedc;
         Model _skyBoxCube;
-        BasicEffect epx, epy, epz, enx, eny, enz;
         /// <summary>
         /// A entire image representing the skybox.
         /// </summary>
-        public SkyboxTexture Texture;
+        public Texture2D PX,PY,PZ,NX,NY,NZ;
         /// <summary>
         /// Draws the skybox.
         /// </summary>
@@ -195,7 +188,12 @@ namespace _3DRadSpaceDll
             if (_disposed) return;
             if (disposing)
             {
-                Texture.Dispose();
+                NX.Dispose();
+                NY.Dispose();
+                NZ.Dispose();
+                PX.Dispose();
+                PY.Dispose();
+                PZ.Dispose();
             }
             _disposed = true;
         }

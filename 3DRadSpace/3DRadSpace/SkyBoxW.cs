@@ -51,11 +51,13 @@ namespace _3DRadSpace
                      */
 
                     File.Copy(textures[i + 1], "Content\\Skyboxes\\" + textures[0] + "\\" + Path.GetFileName(textures[i + 1]),true);
+
+                    _imageslist[i] = textures[i + 1];
                 }
             }
             openImage.Dispose();
         }
-
+        string[] _imageslist = new string[6];
         private void button2_Click(object sender, EventArgs e)
         {
             if (File.Exists(pictureBox1.ImageLocation))
@@ -76,6 +78,16 @@ namespace _3DRadSpace
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        int c = 0 ;
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if(Result != null)
+            {
+                if (c == 5) c = 0;
+                pictureBox1.ImageLocation = _imageslist[c];
+            }
         }
     }
 }

@@ -74,7 +74,6 @@
     <Compile Include="Script.cs" />
     <Compile Include="Skinmesh.cs" />
     <Compile Include="Skybox.cs" />
-    <Compile Include="SkyboxTexture.cs" />
     <Compile Include="SkyColor.cs" />
     <Compile Include="SoundEffect.cs" />
     <Compile Include="SoundSource.cs" />
