@@ -58,13 +58,12 @@ namespace _3DRadSpaceDll
         /// SKYBOX FILE FORMAT:
         /// EXTENSION: .sky
         /// 
-        /// First line: Skybox name
-        /// Second line: PX image
+        /// First line: PX image
         /// Second line: PY image
-        /// Second line: PZ image
-        /// Second line: NX image
-        /// Second line: NY image
-        /// Second line: NZ image
+        /// Third line: PZ image
+        /// Fourth line: NX image
+        /// Fifth line: NY image
+        /// Sixth line: NZ image
         /// 
         /// </summary>
         /// <param name="content"></param>
@@ -81,7 +80,7 @@ namespace _3DRadSpaceDll
 
             //My motivation loss is really a bitch.
 
-            BasicEffect _px, _py, _pz, _nx, _ny, _nz;
+            BasicEffect _px, _py, _pz, _nx, _ny, _nz; //NOTE: Names are misleding.
             _px = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[0].Effect);
             _py = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[1].Effect);
             _pz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[2].Effect);
@@ -89,12 +88,16 @@ namespace _3DRadSpaceDll
             _ny = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[4].Effect);
             _nz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[5].Effect);
             //haha bad code, this is me, the next yandere dev
-            _setEffectTexture(gd,_px,"Content//"+ textures_list[0]+"//"+ textures_list[1]);
-            _setEffectTexture(gd,_py,"Content//"+ textures_list[0]+"//"+ textures_list[2]);
-            _setEffectTexture(gd,_pz,"Content//"+ textures_list[0]+"//"+ textures_list[3]);
-            _setEffectTexture(gd,_nz,"Content//"+ textures_list[0]+"//"+ textures_list[4]);
-            _setEffectTexture(gd,_ny,"Content//"+ textures_list[0]+"//"+ textures_list[5]);
-            _setEffectTexture(gd,_nz,"Content//"+ textures_list[0]+"//"+ textures_list[6]);
+            
+            //Since the texture order is wrong, there is a total of 6! total combinations. *begins to smash keyboad*
+            //Also, count the fact that the textures images may need to be flipped. So that's a total of 4*(6!) total skybox textures combinations. Guess I'm f*'d.
+
+            _setEffectTexture(gd, _px, Path.GetDirectoryName(Resource) + "//" + textures_list[4]);
+            _setEffectTexture(gd, _py, Path.GetDirectoryName(Resource) + "//" + textures_list[0]);
+            _setEffectTexture(gd, _pz, Path.GetDirectoryName(Resource) + "//" + textures_list[3]);
+            _setEffectTexture(gd, _nx, Path.GetDirectoryName(Resource) + "//" + textures_list[2]);
+            _setEffectTexture(gd, _ny, Path.GetDirectoryName(Resource) + "//" + textures_list[5]);
+            _setEffectTexture(gd, _nz, Path.GetDirectoryName(Resource) + "//" + textures_list[1]);
             //where defok is the for() statement reeee
 
             /*
@@ -130,12 +133,14 @@ namespace _3DRadSpaceDll
             Matrix t = Matrix.CreateScale(_size) * Matrix.CreateTranslation(_linkedc.Position);
             foreach(ModelMesh mesh in _skyBoxCube.Meshes)
             {
-                foreach(BasicEffect effect in mesh.Effects)
+                foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.View = view.Value;
                     effect.Projection = projection.Value;
                     effect.World = t;
+
                 }
+                mesh.Draw();
             }
 
             base.Draw(spriteBatch, view, projection);
@@ -149,7 +154,17 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public void EditorDraw(Vector3 editor_cam_pos, Matrix view, Matrix projection)
         {
-            //TODO: insert drawing code, oh God, this is going to be painfull
+            Matrix t = Matrix.CreateScale(_size) * Matrix.CreateTranslation(editor_cam_pos);
+            foreach (ModelMesh mesh in _skyBoxCube.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.World = t;
+                }
+                mesh.Draw();
+            }
             base.EditorDraw(null, null, null);
         }
         /// <summary>

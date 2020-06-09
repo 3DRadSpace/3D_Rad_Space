@@ -1579,13 +1579,12 @@
             SKYBOX FILE FORMAT:
             EXTENSION: .sky
             
-            First line: Skybox name
-            Second line: PX image
+            First line: PX image
             Second line: PY image
-            Second line: PZ image
-            Second line: NX image
-            Second line: NY image
-            Second line: NZ image
+            Third line: PZ image
+            Fourth line: NX image
+            Fifth line: NY image
+            Sixth line: NZ image
             
             </summary>
             <param name="content"></param>

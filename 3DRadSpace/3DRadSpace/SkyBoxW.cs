@@ -33,31 +33,30 @@ namespace _3DRadSpace
                 Multiselect = false,
                 Filter = "Skybox file (*.sky)|*.sky",
             };
-            if(openImage.ShowDialog() == DialogResult.OK)
+            bool ok = true;
+            if (openImage.ShowDialog() == DialogResult.OK)
             {
                 string[] textures = File.ReadAllLines(openImage.FileName);
-                for(int i = 0; i < 6;i++)
+                for (int i = 0; i < 6; i++)
                 {
-                    /*
-                     * SKYBOX FILE FORMAT:
-                     * EXTENTION: .sky
-                     * LINE 1: <string name>
-                     * LINE 2: <string path file PX> 
-                     * LINE 3: <string path file PY> 
-                     * LINE 4: <string path file PZ> 
-                     * LINE 5: <string path file NX> 
-                     * LINE 6: <string path file NY> 
-                     * LINE 7: <string path file NZ> 
-                     */
-
-                    File.Copy(textures[i + 1], "Content\\Skyboxes\\" + textures[0] + "\\" + Path.GetFileName(textures[i + 1]),true);
-
-                    _imageslist[i] = textures[i + 1];
+                    _imageslist[i] = Path.GetDirectoryName(openImage.FileName) + "\\" + textures[i];
+                    if (!File.Exists(_imageslist[i]))
+                    {
+                        MessageBox.Show("Texture file " + _imageslist[i] + " doesn't exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ok = false;
+                        break;
+                    }
                 }
+            }
+            if (ok)
+            {
+                pictureBox1.ImageLocation = _imageslist[0];
+                _loaded_sky = openImage.FileName;
             }
             openImage.Dispose();
         }
         string[] _imageslist = new string[6];
+        string _loaded_sky = null;
         private void button2_Click(object sender, EventArgs e)
         {
             if (File.Exists(pictureBox1.ImageLocation))
@@ -67,7 +66,7 @@ namespace _3DRadSpace
                 {
                     Name = textBox1.Text,
                     Enabled = checkBox1.Checked,
-                    Resource = pictureBox1.ImageLocation
+                    Resource = _loaded_sky
                 };
                 Close();
             }
@@ -80,11 +79,12 @@ namespace _3DRadSpace
             Close();
         }
 
-        int c = 0 ;
+        int c = 0;
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            if(Result != null)
+            if (_loaded_sky != null)
             {
+                c++;
                 if (c == 5) c = 0;
                 pictureBox1.ImageLocation = _imageslist[c];
             }
