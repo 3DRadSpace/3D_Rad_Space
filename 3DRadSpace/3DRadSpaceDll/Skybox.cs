@@ -80,24 +80,24 @@ namespace _3DRadSpaceDll
 
             //My motivation loss is really a bitch.
 
-            BasicEffect _px, _py, _pz, _nx, _ny, _nz; //NOTE: Names are misleding.
-            _px = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[0].Effect);
-            _py = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[1].Effect);
-            _pz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[2].Effect);
-            _nx = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[3].Effect);
-            _ny = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[4].Effect);
-            _nz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[5].Effect);
+            BasicEffect _px, _py, _pz, _nx, _ny, _nz; //NOTE: Names are misleding, or not?
+            _px = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[2].Effect);
+            _py = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[0].Effect);
+            _pz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[3].Effect);
+            _nx = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[4].Effect);
+            _ny = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[5].Effect);
+            _nz = ((BasicEffect)_skyBoxCube.Meshes[0].MeshParts[1].Effect);
             //haha bad code, this is me, the next yandere dev
             
             //Since the texture order is wrong, there is a total of 6! total combinations. *begins to smash keyboad*
             //Also, count the fact that the textures images may need to be flipped. So that's a total of 4*(6!) total skybox textures combinations. Guess I'm f*'d.
 
-            _setEffectTexture(gd, _px, Path.GetDirectoryName(Resource) + "//" + textures_list[4]);
-            _setEffectTexture(gd, _py, Path.GetDirectoryName(Resource) + "//" + textures_list[0]);
-            _setEffectTexture(gd, _pz, Path.GetDirectoryName(Resource) + "//" + textures_list[3]);
-            _setEffectTexture(gd, _nx, Path.GetDirectoryName(Resource) + "//" + textures_list[2]);
-            _setEffectTexture(gd, _ny, Path.GetDirectoryName(Resource) + "//" + textures_list[5]);
-            _setEffectTexture(gd, _nz, Path.GetDirectoryName(Resource) + "//" + textures_list[1]);
+            _setEffectTexture(gd, _px, Path.GetDirectoryName(Resource) + "//" + textures_list[0]);
+            _setEffectTexture(gd, _py, Path.GetDirectoryName(Resource) + "//" + textures_list[1]);
+            _setEffectTexture(gd, _pz, Path.GetDirectoryName(Resource) + "//" + textures_list[2]);
+            _setEffectTexture(gd, _nx, Path.GetDirectoryName(Resource) + "//" + textures_list[3]);
+            _setEffectTexture(gd, _ny, Path.GetDirectoryName(Resource) + "//" + textures_list[4]);
+            _setEffectTexture(gd, _nz, Path.GetDirectoryName(Resource) + "//" + textures_list[5]);
             //where defok is the for() statement reeee
 
             /*
@@ -138,7 +138,7 @@ namespace _3DRadSpaceDll
                     effect.View = view.Value;
                     effect.Projection = projection.Value;
                     effect.World = t;
-
+                    effect.DiffuseColor = Vector3.One;
                 }
                 mesh.Draw();
             }
@@ -162,6 +162,7 @@ namespace _3DRadSpaceDll
                     effect.View = view;
                     effect.Projection = projection;
                     effect.World = t;
+                    effect.DiffuseColor = Vector3.One;
                 }
                 mesh.Draw();
             }
