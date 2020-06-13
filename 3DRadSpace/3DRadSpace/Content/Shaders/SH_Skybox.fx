@@ -7,7 +7,13 @@
 
     For anyone that reads this, fixing the skybox shader would be a great contribution to this engine. - NicusorN5
 */
+/*
+SamplerState ss = new SamplerState() { AddressU = TextureAddressMode.Border, AddressV = TextureAddressMode.Border };
+// plus any other states you want set  AddressW usually wont matter but you can also set that too.
 
+Then after spritebatch begins(...);
+GraphicsDevice.SamplerStates[index] = ss;
+*/
 //Platform specific #defines. C++ circular depedency traumas there we go
 #if OPENGL
 #define SV_POSITION POSITION

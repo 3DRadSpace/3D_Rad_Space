@@ -68,7 +68,7 @@ namespace _3DRadSpace
                     Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text)),
                     Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text))
                 },
-                FOV = (float)numericUpDown1.Value,
+                FOV = MathHelper.ToRadians((float)numericUpDown1.Value),
                 MinDrawDist = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text)),
                 MaxDrawDist = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text)),
                 Behiavours = Behiavour,

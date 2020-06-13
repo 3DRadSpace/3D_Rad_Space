@@ -1979,7 +1979,7 @@
             Class for drawing 2D Texts.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,System.String,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Int32)">
+        <member name="M:_3DRadSpaceDll.TextPrint.#ctor(System.String,System.Boolean,System.String,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Single)">
             <summary>
             TextPrint constructor.
             </summary>

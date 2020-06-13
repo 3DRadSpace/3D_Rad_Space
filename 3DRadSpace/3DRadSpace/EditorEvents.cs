@@ -461,6 +461,7 @@ namespace _3DRadSpace
                 }
             }
             _3DRadSpaceDll.Game.GameObjects.Clear();
+            FogEnabled = false;
             UpdateObjects();
         }
         void LoadAllObjects()

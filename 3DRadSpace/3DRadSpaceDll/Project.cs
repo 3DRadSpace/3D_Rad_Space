@@ -155,7 +155,7 @@ namespace _3DRadSpaceDll
 								new Vector2(Convert.ToSingle(Obj[5], Main.CultureInfo), Convert.ToSingle(Obj[6], Main.CultureInfo)), Convert.ToSingle(Obj[7], Main.CultureInfo),
 								new Vector2(Convert.ToSingle(Obj[8], Main.CultureInfo), Convert.ToSingle(Obj[9], Main.CultureInfo)),
 								new Color(Convert.ToByte(Obj[10], Main.CultureInfo), Convert.ToByte(Obj[11], Main.CultureInfo), Convert.ToByte(Obj[12], Main.CultureInfo)),
-								(SpriteEffects)(Convert.ToInt32(Obj[13], Main.CultureInfo)),Convert.ToInt32(Obj[14], Main.CultureInfo));
+								(SpriteEffects)(Convert.ToInt32(Obj[13], Main.CultureInfo)),Convert.ToSingle(Obj[14], Main.CultureInfo));
 							break;
 						}
 					case "soundeffect":

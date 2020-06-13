@@ -36,6 +36,8 @@ namespace _3DRadSpace
 
 		SpriteFont D_Font;
 
+		//Possible skybox fix
+		//SamplerState ss = new SamplerState() { AddressU = TextureAddressMode.Wrap, AddressV = TextureAddressMode.Wrap};
 		public Editor()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -127,7 +129,7 @@ namespace _3DRadSpace
 			GraphicsDevice.Clear(ClearColor);
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-			GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+			GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
 			Editor_View.Draw(null, out View, out Projection);
 
 			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
@@ -157,7 +159,12 @@ namespace _3DRadSpace
 					}
 					sk.EditorDraw(null, View, Projection);
 				}
-				if (gameObject is Skybox sb) sb.EditorDraw(Editor_View.Position,View,Projection);
+				if (gameObject is Skybox sb)
+				{
+					GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+					sb.EditorDraw(Editor_View.Position, View, Projection);
+					GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
+				}
 				if (gameObject is EventOnLocation eol) eol.EditorDraw(spriteBatch, View, Projection);
 				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}

@@ -24,7 +24,7 @@ namespace _3DRadSpaceDll
         /// <param name="col">Text color.</param>
         /// <param name="effects">Flipping options.</param>
         /// <param name="layer">Depth layer.</param>
-        public TextPrint(string name,bool active,string font,string text,Vector2 pos,Vector2 size,float rotation=0,Vector2 cof=default,Color col=default,SpriteEffects effects=SpriteEffects.None,int layer=0)
+        public TextPrint(string name,bool active,string font,string text,Vector2 pos,Vector2 size,float rotation=0,Vector2 cof=default,Color col=default,SpriteEffects effects=SpriteEffects.None,float layer=0f)
         {
             Name = name;
             Enabled = active;

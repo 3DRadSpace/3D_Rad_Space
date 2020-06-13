@@ -1,5 +1,6 @@
 3DRSP_text
-skybox Skybox True Content\Skybox\skybox-texture-mapping-cube-mapping-png-favpng-JLZ1k1UkLbsjBD6RK2RR4AJ6B.jpg
-camera Camera True 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 75.0 0.1 500 0 
+camera Camera True 0 8 0 0 0 0 0 1 0 75 0.1 500 0 
 script Script True Script Scripts//Scripted FPVCamera.cs
-textprint TextPrint True 400.0 400.0 1.0 1.0 0 0.0 0.0 255 255 255 0 0.0 Sample text þ Arial_12px
+textprint TextPrint True 400 400 1 1 0 0 0 255 255 255 0 0 Sample text  þ Arial_12px
+skybox Skybox True C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Skybox\TestSkybox\skybox.sky
+skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 True -1 -1 -1 1 1 1 2 Skinmeshes\Terrain0100
