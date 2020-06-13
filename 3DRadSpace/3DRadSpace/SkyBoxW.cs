@@ -61,12 +61,14 @@ namespace _3DRadSpace
         {
             if (File.Exists(pictureBox1.ImageLocation))
             {
+                string p = SubstractPath(Application.StartupPath + "\\Content\\", _loaded_sky);
+                if (p == null) MessageBox.Show("The skybox file should be inside Content folder. \n Loading aborted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DialogResult = DialogResult.OK;
                 Result = new Skybox()
                 {
                     Name = textBox1.Text,
                     Enabled = checkBox1.Checked,
-                    Resource = _loaded_sky
+                    Resource = "Content\\"+p
                 };
                 Close();
             }
@@ -88,6 +90,16 @@ namespace _3DRadSpace
                 if (c == 5) c = 0;
                 pictureBox1.ImageLocation = _imageslist[c];
             }
+        }
+        public static string SubstractPath(string startup_path,string target)
+        {
+            if (startup_path == null || target == null) return null;
+            int i = 0;
+            for(; i < startup_path.Length;i++)
+            {
+                if (startup_path[i] != target[i]) return null;
+            }
+            return target.Substring(i);
         }
     }
 }

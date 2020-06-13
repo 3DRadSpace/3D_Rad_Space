@@ -439,7 +439,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CameraW";
             this.Text = "Camera Object v1.0";
-            this.Load += new System.EventHandler(this.CameraW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

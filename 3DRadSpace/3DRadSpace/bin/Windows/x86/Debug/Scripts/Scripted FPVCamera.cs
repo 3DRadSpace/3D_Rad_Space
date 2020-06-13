@@ -10,13 +10,11 @@ using System;
 class Script
 {
     Camera _fpvcam;
-    TextPrint _textp;
     Vector2 CameraRotationCoords = new Vector2(0,0);
     float CameraRotationSpeed = 0.001f;
     public void Start()
     {
-        _fpvcam = (Camera)_3DRadSpaceDll.Game.GameObjects[1];
-        _textp = (TextPrint)_3DRadSpaceDll.Game.GameObjects[3];
+        _fpvcam = (Camera)_3DRadSpaceDll.Game.GameObjects[0];
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {
@@ -29,7 +27,7 @@ class Script
     }
     public void Draw(SpriteBatch batch,Matrix? view, Matrix? projection)
     {
-        _textp.Text = _fpvcam.CameraTarget+"";
+
     }
     public void End()
     {
