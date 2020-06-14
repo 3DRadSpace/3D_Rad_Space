@@ -144,6 +144,7 @@ namespace _3DRadSpaceDll
                         effect.FogStart = FogStart;
                         effect.FogEnd = FogEnd;
                     }
+                    else effect.FogEnabled = false;
                 }
                 mesh.Draw();
             }
@@ -171,6 +172,7 @@ namespace _3DRadSpaceDll
                         effect.FogStart = FogStart;
                         effect.FogEnd = FogEnd;
                     }
+                    else effect.FogEnabled = false;
                 }
                 mesh.Draw();
             }

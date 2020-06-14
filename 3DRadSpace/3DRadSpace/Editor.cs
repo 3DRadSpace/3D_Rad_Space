@@ -54,7 +54,7 @@ namespace _3DRadSpace
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
-			Window.Title = "3DRadSpace - Editor v0.0.4 alpha";
+			Window.Title = "3DRadSpace - Editor v0.0.5 alpha";
 			IsMouseVisible = true;
 			if (Settings[0])
 			{
@@ -156,6 +156,11 @@ namespace _3DRadSpace
 						sk.FogColor = FogColor;
 						sk.FogEnd = FogEnd;
 						sk.FogStart = FogStart;
+					}
+					else
+					{
+						sk.FogExists = false;
+						sk.FogEnabled = false;
 					}
 					sk.EditorDraw(null, View, Projection);
 				}

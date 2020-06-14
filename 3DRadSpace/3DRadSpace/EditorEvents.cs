@@ -366,6 +366,10 @@ namespace _3DRadSpace
 			{
 				sb.Dispose();
 			}
+			if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Fog f)
+			{
+				FogEnabled = false;
+			}
 			if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
 			_3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
 			UpdateObjects();
@@ -445,6 +449,7 @@ namespace _3DRadSpace
 		void ClearObjects()
 		{
 			ClearColor = Color.Black;
+			FogEnabled = false;
 			for (int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
 			{
 				if(_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
@@ -457,7 +462,6 @@ namespace _3DRadSpace
 				}
 			}
 			_3DRadSpaceDll.Game.GameObjects.Clear();
-			FogEnabled = false;
 			UpdateObjects();
 		}
 		void LoadAllObjects()
