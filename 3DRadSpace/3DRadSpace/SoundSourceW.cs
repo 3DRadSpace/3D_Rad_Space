@@ -50,10 +50,10 @@ namespace _3DRadSpace
                     }
                 default: break;
             }
-            textBox3.Text = ""+sound.Position.X.ToString("0.0", Program.CultureInfo);
-            textBox4.Text = ""+sound.Position.Y.ToString("0.0", Program.CultureInfo);
-            textBox5.Text = ""+sound.Position.Z.ToString("0.0", Program.CultureInfo);
-            textBox6.Text = ""+sound.DopplerScale.ToString("0.0", Program.CultureInfo);
+            textBox3.Text = ""+sound.Position.X.ToString( Program.CultureInfo);
+            textBox4.Text = ""+sound.Position.Y.ToString( Program.CultureInfo);
+            textBox5.Text = ""+sound.Position.Z.ToString( Program.CultureInfo);
+            textBox6.Text = ""+sound.DopplerScale.ToString( Program.CultureInfo);
         }
 
 

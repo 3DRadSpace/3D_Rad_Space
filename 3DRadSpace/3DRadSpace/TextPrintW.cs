@@ -24,11 +24,11 @@ namespace _3DRadSpace
 			textBox1.Text = textPrint.Name;
 			checkBox1.Checked = textPrint.Enabled;
 			textBox2.Text = textPrint.Resource;
-			textBox3.Text = textPrint.Position.X.ToString("0.0", CultureInfo.InvariantCulture);
-			textBox4.Text = textPrint.Position.Y.ToString("0.0", CultureInfo.InvariantCulture);
-			textBox5.Text = textPrint.Rotation.ToString("0.0", CultureInfo.InvariantCulture);
-			textBox6.Text = textPrint.Center.X.ToString("0.0", CultureInfo.InvariantCulture);
-			textBox7.Text = textPrint.Center.Y.ToString("0.0", CultureInfo.InvariantCulture);
+			textBox3.Text = textPrint.Position.X.ToString( CultureInfo.InvariantCulture);
+			textBox4.Text = textPrint.Position.Y.ToString( CultureInfo.InvariantCulture);
+			textBox5.Text = textPrint.Rotation.ToString( CultureInfo.InvariantCulture);
+			textBox6.Text = textPrint.Center.X.ToString( CultureInfo.InvariantCulture);
+			textBox7.Text = textPrint.Center.Y.ToString( CultureInfo.InvariantCulture);
 			textBox8.Text = textPrint.Text;
 			textBox9.Text = textPrint.Color.R.ToString(CultureInfo.InvariantCulture);
 			textBox10.Text = textPrint.Color.G.ToString(CultureInfo.InvariantCulture);

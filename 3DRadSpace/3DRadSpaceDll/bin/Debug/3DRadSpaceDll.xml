@@ -659,6 +659,13 @@
             <param name="keyboard"></param>
             <param name="time"></param>
         </member>
+        <member name="M:_3DRadSpaceDll.FPVCamera.Draw(Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
+            <summary>
+            
+            </summary>
+            <param name="view"></param>
+            <param name="projection"></param>
+        </member>
         <member name="M:_3DRadSpaceDll.FPVCamera.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             

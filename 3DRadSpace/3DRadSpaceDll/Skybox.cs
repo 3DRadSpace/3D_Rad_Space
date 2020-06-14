@@ -204,12 +204,12 @@ namespace _3DRadSpaceDll
             if (_disposed) return;
             if (disposing)
             {
-                NX.Dispose();
-                NY.Dispose();
-                NZ.Dispose();
-                PX.Dispose();
-                PY.Dispose();
-                PZ.Dispose();
+                NX?.Dispose();
+                NY?.Dispose();
+                NZ?.Dispose();
+                PX?.Dispose();
+                PY?.Dispose();
+                PZ?.Dispose();
             }
             _disposed = true;
         }

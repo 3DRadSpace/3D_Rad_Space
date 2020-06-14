@@ -23,7 +23,13 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = sb.Name;
             checkBox1.Checked = sb.Enabled;
-            pictureBox1.ImageLocation = sb.Resource;
+            _loaded_sky = sb.Resource;
+            string[] textures = File.ReadAllLines(_loaded_sky);
+            for (int i = 0; i < 6; i++)
+            {
+                _imageslist[i] = Path.GetDirectoryName(_loaded_sky) + "\\" + textures[i];
+            }
+            pictureBox1.ImageLocation = _imageslist[0];
         }
         public GameObject Result;
         private void button1_Click(object sender, EventArgs e)

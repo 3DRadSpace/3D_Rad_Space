@@ -133,14 +133,31 @@ namespace _3DRadSpaceDll
         {
             if (keyboard.IsKeyDown(Forward)) Position += Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y)) * MovementSpeed;
             if (keyboard.IsKeyDown(Backward)) Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y)) * MovementSpeed;
-            if (keyboard.IsKeyDown(Right)) Position += Vector3.Cross(CameraTarget, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
-            if (keyboard.IsKeyDown(Left)) Position -= Vector3.Cross(CameraTarget, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
+            if (keyboard.IsKeyDown(Right)) Position -= Vector3.Cross(Vector3.Up, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
+            if (keyboard.IsKeyDown(Left)) Position += Vector3.Cross(Vector3.Up, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
 
             Mouse.SetPosition((int)ScreenSize.X / 2,(int) ScreenSize.Y / 2);
             CamScreenCoords += new Vector2((mouse.X - (ScreenSize.X / 2)) * (-Sensibility), (mouse.Y - (ScreenSize.Y / 2)) * Sensibility);
             if (CamScreenCoords.Y > (MathHelper.Pi - 0.01f)) CamScreenCoords.Y = (MathHelper.Pi - 0.01f);
             if (CamScreenCoords.Y < 0) CamScreenCoords.Y = 0.01f;
             CameraTarget = Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y));
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public void Draw(out Matrix view, out Matrix projection)
+        {
+            if (!Enabled)
+            {
+                view = Matrix.Identity;
+                projection = Matrix.Identity;
+                return;
+            }
+            view = Matrix.CreateLookAt(Position, CameraTarget, Vector3.Up);
+            projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y, MinDrawDist, MaxDrawDist);
+            base.Draw(null, view, projection); //Calls base class to get the event called too.
         }
         /// <summary>
         /// 

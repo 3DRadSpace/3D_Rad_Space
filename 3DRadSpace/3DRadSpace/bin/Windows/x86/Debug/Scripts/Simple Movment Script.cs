@@ -18,8 +18,8 @@ class Script
     {
         if(keyboard.IsKeyDown(Keys.Up)) _ourCamera.Position.Z += 1;
         if(keyboard.IsKeyDown(Keys.Down)) _ourCamera.Position.Z -= 1;
-        if(keyboard.IsKeyDown(Keys.Right)) _ourCamera.Position.X += 1;
-        if(keyboard.IsKeyDown(Keys.Left)) _ourCamera.Position.X -= 1;
+        if(keyboard.IsKeyDown(Keys.Right)) _ourCamera.Position.X -= 1;
+        if(keyboard.IsKeyDown(Keys.Left)) _ourCamera.Position.X += 1;
         if(keyboard.IsKeyDown(Keys.Q)) _ourCamera.Position.Y += 1;
         if(keyboard.IsKeyDown(Keys.E)) _ourCamera.Position.Y -= 1;
         _ourCamera.CameraTarget = _ourCamera.Position + new Vector3(0,0,1);

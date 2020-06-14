@@ -19,17 +19,17 @@ namespace _3DRadSpace
 			checkBox1.Checked = sp.Enabled;
 			textBox2.Text = sp.Resource;
 			pictureBox1.ImageLocation = sp.Resource;
-			textBox3.Text = sp.Position.X.ToString("0.0", Program.CultureInfo);
-			textBox4.Text = sp.Position.Y.ToString("0.0", Program.CultureInfo);
-			textBox5.Text = sp.Rotation.ToString("0.0", Program.CultureInfo);
-			textBox6.Text = sp.Size.X.ToString("0.0", Program.CultureInfo);
-			textBox7.Text = sp.Size.Y.ToString("0.0", Program.CultureInfo);
+			textBox3.Text = sp.Position.X.ToString( Program.CultureInfo);
+			textBox4.Text = sp.Position.Y.ToString( Program.CultureInfo);
+			textBox5.Text = sp.Rotation.ToString( Program.CultureInfo);
+			textBox6.Text = sp.Size.X.ToString( Program.CultureInfo);
+			textBox7.Text = sp.Size.Y.ToString( Program.CultureInfo);
 			if (sp.SpriteSheetSection.HasValue)
 			{
-				textBox8.Text = sp.SpriteSheetSection.Value.X.ToString("0.0", Program.CultureInfo);
-				textBox9.Text = sp.SpriteSheetSection.Value.Y.ToString("0.0", Program.CultureInfo);
-				textBox10.Text = sp.SpriteSheetSection.Value.Width.ToString("0.0", Program.CultureInfo);
-				textBox11.Text = sp.SpriteSheetSection.Value.Height.ToString("0.0", Program.CultureInfo);
+				textBox8.Text = sp.SpriteSheetSection.Value.X.ToString( Program.CultureInfo);
+				textBox9.Text = sp.SpriteSheetSection.Value.Y.ToString( Program.CultureInfo);
+				textBox10.Text = sp.SpriteSheetSection.Value.Width.ToString( Program.CultureInfo);
+				textBox11.Text = sp.SpriteSheetSection.Value.Height.ToString( Program.CultureInfo);
 			}
 			else
 			{
@@ -38,9 +38,9 @@ namespace _3DRadSpace
 				textBox10.Text = "0";
 				textBox11.Text = "0";
 			}
-			textBox12.Text = ""+sp.Layer.ToString("0.0", Program.CultureInfo);
-			textBox13.Text = ""+sp.Center.X.ToString("0.0", Program.CultureInfo);
-			textBox14.Text = ""+sp.Center.Y.ToString("0.0", Program.CultureInfo);
+			textBox12.Text = ""+sp.Layer.ToString( Program.CultureInfo);
+			textBox13.Text = ""+sp.Center.X.ToString( Program.CultureInfo);
+			textBox14.Text = ""+sp.Center.Y.ToString( Program.CultureInfo);
 			textBox15.Text = sp.Mask.R + "";
 			textBox16.Text = sp.Mask.G + "";
 			textBox17.Text = sp.Mask.B + "";

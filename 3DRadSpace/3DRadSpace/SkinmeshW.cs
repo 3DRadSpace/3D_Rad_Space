@@ -15,22 +15,22 @@ namespace _3DRadSpace
             textBox1.Text = sk.Name;
             checkBox1.Checked = sk.Enabled;
             textBox2.Text = sk.Resource;
-            textBox3.Text = sk.Position.X.ToString("0.0",Program.CultureInfo);
-            textBox4.Text = sk.Position.Y.ToString("0.0", Program.CultureInfo);
-            textBox5.Text = sk.Position.Z.ToString("0.0", Program.CultureInfo);
-            textBox8.Text = sk.Rotation.X.ToString("0.0", Program.CultureInfo);
-            textBox7.Text = sk.Rotation.Y.ToString("0.0", Program.CultureInfo);
-            textBox6.Text = sk.Rotation.Z.ToString("0.0", Program.CultureInfo);
-            textBox11.Text = sk.Scale.X.ToString("0.0", Program.CultureInfo);
-            textBox10.Text = sk.Scale.Y.ToString("0.0", Program.CultureInfo);
-            textBox9.Text = sk.Scale.Z.ToString("0.0", Program.CultureInfo);
-            textBox12.Text = sk.BoundingSphere.Radius.ToString("0.0", Program.CultureInfo);
-            textBox13.Text = sk.BoundingBox.Min.X.ToString("0.0", Program.CultureInfo);
-            textBox14.Text = sk.BoundingBox.Min.Y.ToString("0.0", Program.CultureInfo);
-            textBox15.Text = sk.BoundingBox.Min.Z.ToString("0.0", Program.CultureInfo);
-            textBox18.Text = sk.BoundingBox.Max.X.ToString("0.0", Program.CultureInfo);
-            textBox17.Text = sk.BoundingBox.Max.Y.ToString("0.0", Program.CultureInfo);
-            textBox16.Text = sk.BoundingBox.Max.Z.ToString("0.0", Program.CultureInfo);
+            textBox3.Text = sk.Position.X.ToString(Program.CultureInfo);
+            textBox4.Text = sk.Position.Y.ToString( Program.CultureInfo);
+            textBox5.Text = sk.Position.Z.ToString( Program.CultureInfo);
+            textBox8.Text = sk.Rotation.X.ToString( Program.CultureInfo);
+            textBox7.Text = sk.Rotation.Y.ToString( Program.CultureInfo);
+            textBox6.Text = sk.Rotation.Z.ToString( Program.CultureInfo);
+            textBox11.Text = sk.Scale.X.ToString( Program.CultureInfo);
+            textBox10.Text = sk.Scale.Y.ToString( Program.CultureInfo);
+            textBox9.Text = sk.Scale.Z.ToString( Program.CultureInfo);
+            textBox12.Text = sk.BoundingSphere.Radius.ToString( Program.CultureInfo);
+            textBox13.Text = sk.BoundingBox.Min.X.ToString( Program.CultureInfo);
+            textBox14.Text = sk.BoundingBox.Min.Y.ToString( Program.CultureInfo);
+            textBox15.Text = sk.BoundingBox.Min.Z.ToString( Program.CultureInfo);
+            textBox18.Text = sk.BoundingBox.Max.X.ToString( Program.CultureInfo);
+            textBox17.Text = sk.BoundingBox.Max.Y.ToString( Program.CultureInfo);
+            textBox16.Text = sk.BoundingBox.Max.Z.ToString( Program.CultureInfo);
         }
         public SkinmeshW()
         {

@@ -26,7 +26,7 @@ namespace _3DRadSpace
 			textBox2.Text = fade.Color.R + "";
 			textBox3.Text = fade.Color.G + "";
 			textBox4.Text = fade.Color.B + "";
-			textBox5.Text = ""+(fade.Time * 1000f).ToString("0.0", Program.CultureInfo);
+			textBox5.Text = ""+(fade.Time * 1000f).ToString( Program.CultureInfo);
 			textBox6.Text = fade.Resource;
 		}
 

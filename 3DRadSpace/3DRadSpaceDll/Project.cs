@@ -45,7 +45,7 @@ namespace _3DRadSpaceDll
 						{
 							FPVCamera c = new FPVCamera(Obj[1], Convert.ToBoolean(Obj[2],Main.CultureInfo), new Vector3(Convert.ToSingle(Obj[3],Main.CultureInfo), Convert.ToSingle(Obj[4],Main.CultureInfo), Convert.ToSingle(Obj[5],Main.CultureInfo)),
 								new Vector2(Convert.ToSingle(Obj[6],Main.CultureInfo), Convert.ToSingle(Obj[7], Main.CultureInfo)),
-								new Vector3(Convert.ToSingle(Obj[9], Main.CultureInfo), Convert.ToSingle(Obj[9], Main.CultureInfo), Convert.ToSingle(Obj[10], Main.CultureInfo)),
+								new Vector3(Convert.ToSingle(Obj[8], Main.CultureInfo), Convert.ToSingle(Obj[9], Main.CultureInfo), Convert.ToSingle(Obj[10], Main.CultureInfo)),
 								MathHelper.ToRadians(Convert.ToSingle(Obj[11], Main.CultureInfo)), Convert.ToSingle(Obj[12], Main.CultureInfo), Convert.ToSingle(Obj[13], Main.CultureInfo),
 								(Keys)Convert.ToInt32(Obj[14], Main.CultureInfo),(Keys)Convert.ToInt32(Obj[15]),(Keys)Convert.ToInt32(Obj[16], Main.CultureInfo),(Keys)Convert.ToInt32(Obj[17], Main.CultureInfo),
 								Convert.ToSingle(Obj[18]),Convert.ToSingle(Obj[19], Main.CultureInfo));
@@ -316,7 +316,7 @@ namespace _3DRadSpaceDll
 					ToBeSaved[j] = "fpvcam " + fpv.Name + ' ' + fpv.Enabled + ' ' + Vector2String(fpv.Position) + ' ' + Vector2String(fpv.CamScreenCoords) +
 						' ' + Vector2String(fpv.CameraRotation) + ' ' + MathHelper.ToDegrees(fpv.FOV) + ' ' + fpv.MinDrawDist + ' ' + fpv.MaxDrawDist +
 						' ' + ((int)fpv.Forward) + ' ' + ((int)fpv.Left) + ' ' + ((int)fpv.Backward) + ' ' + ((int)fpv.Right) +
-						' ' + fpv.MovementSpeed + ' ' + fpv.Sensibility;
+						' ' + fpv.MovementSpeed + ' ' + fpv.Sensibility.ToString(Main.CultureInfo);
 				}
 				if (Game.GameObjects[i] is Camera c)
 				{

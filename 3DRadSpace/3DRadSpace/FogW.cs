@@ -22,11 +22,11 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = fog.Name;
             checkBox1.Checked = fog.Enabled;
-            textBox2.Text = fog.FogColor.X.ToString("0.0",Program.CultureInfo);
-            textBox3.Text = fog.FogColor.Y.ToString("0.0", Program.CultureInfo);
-            textBox4.Text = fog.FogColor.Z.ToString("0.0", Program.CultureInfo);
-            textBox5.Text = fog.FogStart.ToString("0.0", Program.CultureInfo);
-            textBox6.Text = fog.FogEnd.ToString("0.0", Program.CultureInfo);
+            textBox2.Text = fog.FogColor.X.ToString(Program.CultureInfo);
+            textBox3.Text = fog.FogColor.Y.ToString( Program.CultureInfo);
+            textBox4.Text = fog.FogColor.Z.ToString( Program.CultureInfo);
+            textBox5.Text = fog.FogStart.ToString( Program.CultureInfo);
+            textBox6.Text = fog.FogEnd.ToString( Program.CultureInfo);
         }
         public GameObject Result;
         private void button1_Click(object sender, EventArgs e)
