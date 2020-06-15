@@ -15,6 +15,6 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Haha, fixes related to computers using other languages
         /// </summary>
-        public static CultureInfo CultureInfo { get; } = new CultureInfo("EN-en"); //An fix for the culture related issues
+        public static CultureInfo CultureInfo { get; } = CultureInfo.InvariantCulture; //An fix for the culture related issues
     }
 }

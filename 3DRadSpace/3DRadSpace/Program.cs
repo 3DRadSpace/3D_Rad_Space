@@ -40,7 +40,7 @@ namespace _3DRadSpace
                 script.ShowDialog();
             }
         }
-        public static CultureInfo CultureInfo { get; } = new CultureInfo("EN-en"); //An fix for the culture related issues
+        public static CultureInfo CultureInfo { get; } = CultureInfo.InvariantCulture; //An fix for the culture related issues
     }
 #endif
 }
