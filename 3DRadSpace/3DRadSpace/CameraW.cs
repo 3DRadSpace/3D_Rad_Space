@@ -29,7 +29,7 @@ namespace _3DRadSpace
             textBox10.Text = c.CameraRotation.X.ToString( Main.CultureInfo);
             textBox9.Text = c.CameraRotation.Y.ToString( Main.CultureInfo);
             textBox8.Text = c.CameraRotation.Z.ToString( Main.CultureInfo);
-            numericUpDown1.Value = (decimal)c.GetFOVDegrees();
+            numericUpDown1.Value = (decimal)c.FOVDegrees;
             textBox11.Text = c.MinDrawDist.ToString( Main.CultureInfo);
             textBox12.Text = c.MaxDrawDist.ToString( Main.CultureInfo);
             Behiavour = c.Behiavours;

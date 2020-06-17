@@ -145,7 +145,7 @@ namespace _3DRadSpaceDll
         public Vector3 CameraRotation;
 
         /// <summary>
-        /// Fielf of view (Measured in radians).
+        /// Field of view (Measured in radians).
         /// </summary>
         public float FOV;
 
@@ -155,21 +155,20 @@ namespace _3DRadSpaceDll
         public static Vector2 ScreenSize;
 
         /// <summary>
-        /// Sets the FOV with a degree value
+        /// Field of view angle in degrees.
         /// </summary>
-        /// <param name="deg">Degrees</param>
-        public void SetFOVDegrees(float deg)
+        public float FOVDegrees
         {
-            FOV = MathHelper.ToRadians(deg);
+            get
+            {
+                return MathHelper.ToDegrees(FOV);
+            }
+            set
+            {
+                FOV = MathHelper.ToRadians(value);
+            }
         }
-        /// <summary>
-        /// Converts FOV to degrees.
-        /// </summary>
-        /// <returns>Degrees</returns>
-        public float GetFOVDegrees()
-        {
-            return MathHelper.ToDegrees(FOV);
-        }
+
 
         /// <summary>
         /// Minimum drawing distance. A recommended value is 0.1f.
@@ -189,6 +188,7 @@ namespace _3DRadSpaceDll
         /// <param name="time">Not used</param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
+            if (!Enabled) return;
             for (int i = 0; i < Behiavours.Count; i++)
             {
                 GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
@@ -209,10 +209,9 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Camera drawing for game code. This method doesn't override the GameObject's Draw function. :thinking:
         /// </summary>
-        /// <param name="spriteBatch">Not used.</param>
         /// <param name="view">Uses it's own view</param>
         /// <param name="projection"></param>
-        public void Draw(SpriteBatch spriteBatch,out Matrix view,out Matrix projection)
+        public void Draw(out Matrix view,out Matrix projection)
         {
             if (!Enabled)
             {

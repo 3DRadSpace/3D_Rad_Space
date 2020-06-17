@@ -35,11 +35,11 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Path to source code to be compiled and run.
         /// </summary>
-        public string Path { get; set; }
+        public string Path;
         /// <summary>
         /// Script entry class.
         /// </summary>
-        public string ClassName { get; set; }
+        public string ClassName;
         /// <summary>
         /// Script object main constructor.
         /// </summary>
@@ -119,7 +119,7 @@ namespace _3DRadSpaceDll
                 return true;
             }
         }
-        private string _errorType(bool IsWarning)
+        string _errorType(bool IsWarning)
         {
             if (IsWarning == true) return "Warning";
             else return "Error";
@@ -172,6 +172,7 @@ namespace _3DRadSpaceDll
         /// <param name="time">Used by the user if the case.</param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
+            if (!Enabled) return;
             Run(mouse,keyboard,time);
             base.Update(mouse, keyboard, time);
         }
@@ -183,6 +184,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">User by the user, if the case...</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
+            if (!Enabled) return;
             if(_draw != null) _draw.Invoke(_script_object, new object[] { spriteBatch, view, projection });
             base.Draw(spriteBatch, view, projection);
         }

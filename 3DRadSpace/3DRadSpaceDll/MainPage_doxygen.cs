@@ -7,6 +7,5 @@
  *  \section m_doc About this documentation
  *  This documentation is only about the scripting engine and the 3DRadSpaceDll (_3DRadSpaceDll).
  * 
- *  Last updated: 09/02/2020.
  * 
  */

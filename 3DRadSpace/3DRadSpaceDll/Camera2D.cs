@@ -42,11 +42,27 @@ namespace _3DRadSpaceDll
         /// Adds an object to be drawn by the camera.
         /// </summary>
         /// <param name="obj">Object to be added.</param>
-        public void Add(object obj)
+        public void Push(object obj)
         {
             if (obj is Sprite sp) sp.IsUsedByCam2D = true;
             _scene.Add(obj);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public object Top()
+        {
+            return _scene[_scene.Count - 1];
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Pop()
+        {
+            _scene.RemoveAt(_scene.Count - 1);
+        }
+
         /// <summary>
         /// Camera drawing bounds.
         /// </summary>
@@ -59,7 +75,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Not used, use the null value.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            if (!Hidden)
+            if (!Hidden || !Enabled)
             {
                 for(int i =0; i < _scene.Count; i++)
                 {

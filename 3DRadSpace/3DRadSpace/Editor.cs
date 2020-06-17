@@ -130,7 +130,7 @@ namespace _3DRadSpace
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
-			Editor_View.Draw(null, out View, out Projection);
+			Editor_View.Draw( out View, out Projection);
 
 			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
 			_3DRadSpaceDll.Game.DrawModel(Axis,Matrix.CreateRotationY(MathHelper.Pi*1.5f)* Matrix.CreateTranslation(0, 0, 0), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);

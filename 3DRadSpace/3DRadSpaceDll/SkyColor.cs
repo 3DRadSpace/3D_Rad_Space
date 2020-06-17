@@ -45,15 +45,5 @@ namespace _3DRadSpaceDll
             Enabled = false;
             Color = Color.Black;
         }
-        /// <summary>
-        /// Gets the color.
-        /// <para>Returns null if the object is inactive, otherwise returns this.Color .</para>
-        /// </summary>
-        /// <returns>Returns null if the object is inactive, otherwise returns this.Color .</returns>
-        public Color? GetColor()
-        {
-            if (Enabled) return Color;
-            else return null;
-        }
     }
 }

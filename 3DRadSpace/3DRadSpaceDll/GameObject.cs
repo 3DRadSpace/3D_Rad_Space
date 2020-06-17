@@ -58,21 +58,21 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Object Name. Used as a string identifier.
 		/// </summary>
-		public string Name { get; set; }
+		public string Name;
 
 		/// <summary>
 		/// Tag object.
 		/// </summary>
-		public object Tag { get; set; }
-		
+		public object Tag;
+
 		/// <summary>
 		/// Checks if object is enabled.
 		/// </summary>
-		public bool Enabled { get; set; }
+		public bool Enabled;
 		/// <summary>
 		/// Checks if object is being drawn.
 		/// </summary>
-		public bool Hidden { get; set; }
+		public bool Hidden;
 		/// <summary>
 		/// Object position
 		/// </summary>
@@ -85,7 +85,7 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Relation with other objects
 		/// </summary>
-		public List<ObjectBehiavour> Behiavours { get; set; }
+		public List<ObjectBehiavour> Behiavours;
 
 		/// <summary>
 		/// Used for editor.
@@ -105,7 +105,7 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Resource file
 		/// </summary>
-		public string Resource { get; set; }
+		public string Resource;
 		/// <summary>
 		/// Enables object.
 		/// </summary>
@@ -133,10 +133,6 @@ namespace _3DRadSpaceDll
 		{
 			OnObjectLoad?.Invoke(this);
 		}
-		/// <summary>
-		/// Unloads the resource.
-		/// </summary>
-
 		/// <summary>
 		/// Object Drawing code
 		/// </summary>

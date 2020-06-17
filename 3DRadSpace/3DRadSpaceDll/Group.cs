@@ -5,7 +5,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpaceDll
 {
@@ -54,6 +54,16 @@ namespace _3DRadSpaceDll
                 Game.GameObjects[ObjectsInList[i]].Rotation += euler;
             }
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mouse"></param>
+        /// <param name="keyboard"></param>
+        /// <param name="time"></param>
+        public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
+        {
+
+            base.Update(mouse, keyboard, time);
+        }
     }
 }

@@ -177,6 +177,7 @@ namespace _3DRadSpaceDll
         /// <param name="time"></param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
+            if (!Enabled) return;
             switch (BoundingType)
             {
                 case BoundingObject.Box:
@@ -294,16 +295,6 @@ namespace _3DRadSpaceDll
                 }
                 base.EditorDraw(spriteBatch, view, projection);
             }
-        }
-        /// <summary>
-        /// Loads the sphere and box markings.
-        /// </summary>
-        /// <param name="content"></param>
-        public override void Load(ContentManager content)
-        {
-            Cube = content.Load<Model>("EOL_Cube");
-            Sphere = content.Load<Model>("EOL_Sphere");
-            base.Load(content);
         }
     }
 }

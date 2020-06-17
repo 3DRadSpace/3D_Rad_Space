@@ -195,7 +195,7 @@ namespace _3DRadSpace_Player
                 }
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)
                 {
-                    c.Draw(null, out view, out projection);
+                    c.Draw( out view, out projection);
                     continue;
                 }
                 if (_3DRadSpaceDll.Game.GameObjects[i] is SkyColor s)

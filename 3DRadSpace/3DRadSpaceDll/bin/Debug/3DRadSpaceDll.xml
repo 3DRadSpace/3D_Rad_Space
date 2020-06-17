@@ -85,7 +85,7 @@
         </member>
         <member name="F:_3DRadSpaceDll.Camera.FOV">
             <summary>
-            Fielf of view (Measured in radians).
+            Field of view (Measured in radians).
             </summary>
         </member>
         <member name="F:_3DRadSpaceDll.Camera.ScreenSize">
@@ -93,17 +93,10 @@
             Screen size. Used to calculate the projection's aspect ratio.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera.SetFOVDegrees(System.Single)">
+        <member name="P:_3DRadSpaceDll.Camera.FOVDegrees">
             <summary>
-            Sets the FOV with a degree value
+            Field of view angle in degrees.
             </summary>
-            <param name="deg">Degrees</param>
-        </member>
-        <member name="M:_3DRadSpaceDll.Camera.GetFOVDegrees">
-            <summary>
-            Converts FOV to degrees.
-            </summary>
-            <returns>Degrees</returns>
         </member>
         <member name="F:_3DRadSpaceDll.Camera.MinDrawDist">
             <summary>
@@ -123,11 +116,10 @@
             <param name="keyboard">Not used</param>
             <param name="time">Not used</param>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
+        <member name="M:_3DRadSpaceDll.Camera.Draw(Microsoft.Xna.Framework.Matrix@,Microsoft.Xna.Framework.Matrix@)">
             <summary>
             Camera drawing for game code. This method doesn't override the GameObject's Draw function. :thinking:
             </summary>
-            <param name="spriteBatch">Not used.</param>
             <param name="view">Uses it's own view</param>
             <param name="projection"></param>
         </member>
@@ -150,11 +142,22 @@
             Empty Camera2D Constructor.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Camera2D.Add(System.Object)">
+        <member name="M:_3DRadSpaceDll.Camera2D.Push(System.Object)">
             <summary>
             Adds an object to be drawn by the camera.
             </summary>
             <param name="obj">Object to be added.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.Top">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Camera2D.Pop">
+            <summary>
+            
+            </summary>
         </member>
         <member name="P:_3DRadSpaceDll.Camera2D.DrawingBounds">
             <summary>
@@ -452,12 +455,6 @@
             <param name="spriteBatch">Not used.</param>
             <param name="view">View Matrix.</param>
             <param name="projection">Projection Matrix.</param>
-        </member>
-        <member name="M:_3DRadSpaceDll.EventOnLocation.Load(Microsoft.Xna.Framework.Content.ContentManager)">
-            <summary>
-            Loads the sphere and box markings.
-            </summary>
-            <param name="content"></param>
         </member>
         <member name="T:_3DRadSpaceDll.EventOnValue">
             <summary>
@@ -802,22 +799,22 @@
             Default constructor.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Name">
+        <member name="F:_3DRadSpaceDll.GameObject.Name">
             <summary>
             Object Name. Used as a string identifier.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Tag">
+        <member name="F:_3DRadSpaceDll.GameObject.Tag">
             <summary>
             Tag object.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Enabled">
+        <member name="F:_3DRadSpaceDll.GameObject.Enabled">
             <summary>
             Checks if object is enabled.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Hidden">
+        <member name="F:_3DRadSpaceDll.GameObject.Hidden">
             <summary>
             Checks if object is being drawn.
             </summary>
@@ -832,7 +829,7 @@
             Rotation in a Euler angles system.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Behiavours">
+        <member name="F:_3DRadSpaceDll.GameObject.Behiavours">
             <summary>
             Relation with other objects
             </summary>
@@ -847,7 +844,7 @@
             Rotation in a Quaterion system.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.GameObject.Resource">
+        <member name="F:_3DRadSpaceDll.GameObject.Resource">
             <summary>
             Resource file
             </summary>
@@ -883,9 +880,6 @@
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.GameObject.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
-            <summary>
-            Unloads the resource.
-            </summary>
             <summary>
             Object Drawing code
             </summary>
@@ -1044,6 +1038,14 @@
             Applies a euler angle rotation to the group objects.
             </summary>
             <param name="euler"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            
+            </summary>
+            <param name="mouse"></param>
+            <param name="keyboard"></param>
+            <param name="time"></param>
         </member>
         <member name="T:_3DRadSpaceDll.ICustomGameObject">
             <summary>
@@ -1398,12 +1400,12 @@
             Time for compilation.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Script.Path">
+        <member name="F:_3DRadSpaceDll.Script.Path">
             <summary>
             Path to source code to be compiled and run.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Script.ClassName">
+        <member name="F:_3DRadSpaceDll.Script.ClassName">
             <summary>
             Script entry class.
             </summary>
@@ -1689,13 +1691,6 @@
             <summary>
             Empty SkyColor constructor.
             </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.SkyColor.GetColor">
-            <summary>
-            Gets the color.
-            <para>Returns null if the object is inactive, otherwise returns this.Color .</para>
-            </summary>
-            <returns>Returns null if the object is inactive, otherwise returns this.Color .</returns>
         </member>
         <member name="T:_3DRadSpaceDll.SoundEffect">
             <summary>

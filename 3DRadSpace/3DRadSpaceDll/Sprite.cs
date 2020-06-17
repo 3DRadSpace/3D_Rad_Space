@@ -137,6 +137,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Use a null value.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
+            if (!Enabled) return;
             spriteBatch.Draw(Texture, Position, SpriteSheetSection, Mask, Rotation, Center, Size, Effects, Layer);
             base.Draw(spriteBatch, view, projection);
         }
@@ -159,6 +160,7 @@ namespace _3DRadSpaceDll
         /// <param name="time"></param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
+            if (!Enabled) return;
             if(Position.X >= mouse.X && mouse.X <= Position.X+Size.X &&
                 Position.Y >= mouse.Y && mouse.Y <= Position.Y + Size.Y)
             {

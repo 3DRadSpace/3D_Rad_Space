@@ -145,6 +145,7 @@ namespace _3DRadSpaceDll
 		/// <param name="time">Game time used to get the dt value</param>
 		public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
 		{
+			if (!Enabled) return;
 			if (Key.State == KeyInputType.Released && keyboard.IsKeyUp(Key.Key))
 			{
 				OpCodeCall.Run(Behiavours);

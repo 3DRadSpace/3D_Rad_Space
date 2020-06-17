@@ -142,6 +142,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection">Not used.</param>
         public override void Draw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
+            if (!Enabled) return;
             spriteBatch.DrawString(Font, Text, Position, Color, Rotation, Center, Size, Effects, Layer);
             base.Draw(spriteBatch, view, projection);
         }

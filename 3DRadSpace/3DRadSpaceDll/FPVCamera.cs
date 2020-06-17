@@ -131,6 +131,7 @@ namespace _3DRadSpaceDll
         /// <param name="time"></param>
         public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
         {
+            if (!Enabled) return;
             if (keyboard.IsKeyDown(Forward)) Position += Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y)) * MovementSpeed;
             if (keyboard.IsKeyDown(Backward)) Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y)) * MovementSpeed;
             if (keyboard.IsKeyDown(Right)) Position -= Vector3.Cross(Vector3.Up, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CamScreenCoords.X, 0, CamScreenCoords.Y))) * MovementSpeed;
@@ -147,7 +148,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         /// <param name="view"></param>
         /// <param name="projection"></param>
-        public void Draw(out Matrix view, out Matrix projection)
+        public new void Draw(out Matrix view, out Matrix projection)
         {
             if (!Enabled)
             {
