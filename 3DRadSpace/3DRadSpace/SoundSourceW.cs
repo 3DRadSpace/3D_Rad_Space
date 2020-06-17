@@ -50,10 +50,10 @@ namespace _3DRadSpace
                     }
                 default: break;
             }
-            textBox3.Text = ""+sound.Position.X.ToString( Program.CultureInfo);
-            textBox4.Text = ""+sound.Position.Y.ToString( Program.CultureInfo);
-            textBox5.Text = ""+sound.Position.Z.ToString( Program.CultureInfo);
-            textBox6.Text = ""+sound.DopplerScale.ToString( Program.CultureInfo);
+            textBox3.Text = ""+sound.Position.X.ToString( Main.CultureInfo);
+            textBox4.Text = ""+sound.Position.Y.ToString( Main.CultureInfo);
+            textBox5.Text = ""+sound.Position.Z.ToString( Main.CultureInfo);
+            textBox6.Text = ""+sound.DopplerScale.ToString( Main.CultureInfo);
         }
 
 
@@ -82,13 +82,13 @@ namespace _3DRadSpace
                 Resource = textBox2.Text,
                 LinkedCam = _linkedcam,
                 Position = new Microsoft.Xna.Framework.Vector3(
-                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
-                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo),
-                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo)),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Main.CultureInfo),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Main.CultureInfo),
+                    Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Main.CultureInfo)),
                 Pitch = trackBar2.Value / 100f,
                 Pan = trackBar3.Value / 100f,
                 SoundState = sw,
-                DopplerScale = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo)
+                DopplerScale = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Main.CultureInfo)
             };
             Close();
         }

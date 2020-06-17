@@ -20,18 +20,18 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = c.Name;
             checkBox1.Checked = c.Enabled;
-            textBox2.Text = c.Position.X.ToString(Program.CultureInfo);
-            textBox3.Text = c.Position.Y.ToString( Program.CultureInfo);
-            textBox4.Text = c.Position.Z.ToString( Program.CultureInfo);
-            textBox7.Text = c.Rotation.X.ToString( Program.CultureInfo);
-            textBox6.Text = c.Rotation.Y.ToString( Program.CultureInfo);
-            textBox5.Text = c.Rotation.Z.ToString( Program.CultureInfo);
-            textBox10.Text = c.CameraRotation.X.ToString( Program.CultureInfo);
-            textBox9.Text = c.CameraRotation.Y.ToString( Program.CultureInfo);
-            textBox8.Text = c.CameraRotation.Z.ToString( Program.CultureInfo);
+            textBox2.Text = c.Position.X.ToString(Main.CultureInfo);
+            textBox3.Text = c.Position.Y.ToString( Main.CultureInfo);
+            textBox4.Text = c.Position.Z.ToString( Main.CultureInfo);
+            textBox7.Text = c.Rotation.X.ToString( Main.CultureInfo);
+            textBox6.Text = c.Rotation.Y.ToString( Main.CultureInfo);
+            textBox5.Text = c.Rotation.Z.ToString( Main.CultureInfo);
+            textBox10.Text = c.CameraRotation.X.ToString( Main.CultureInfo);
+            textBox9.Text = c.CameraRotation.Y.ToString( Main.CultureInfo);
+            textBox8.Text = c.CameraRotation.Z.ToString( Main.CultureInfo);
             numericUpDown1.Value = (decimal)c.GetFOVDegrees();
-            textBox11.Text = c.MinDrawDist.ToString( Program.CultureInfo);
-            textBox12.Text = c.MaxDrawDist.ToString( Program.CultureInfo);
+            textBox11.Text = c.MinDrawDist.ToString( Main.CultureInfo);
+            textBox12.Text = c.MaxDrawDist.ToString( Main.CultureInfo);
             Behiavour = c.Behiavours;
             UpdateList();
         }
@@ -52,15 +52,15 @@ namespace _3DRadSpace
                 Enabled = checkBox1.Checked,
                 Position = new Vector3()
                 {
-                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text), Program.CultureInfo),
-                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
-                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)
+                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text), Main.CultureInfo),
+                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Main.CultureInfo),
+                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Main.CultureInfo)
                 },
                 Rotation = new Vector3()
                 {
-                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo),
-                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo),
-                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo)
+                    X = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Main.CultureInfo),
+                    Y = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Main.CultureInfo),
+                    Z = Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Main.CultureInfo)
                 },
                 CameraRotation = new Vector3()
                 {

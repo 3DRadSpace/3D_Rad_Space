@@ -15,22 +15,22 @@ namespace _3DRadSpace
             textBox1.Text = sk.Name;
             checkBox1.Checked = sk.Enabled;
             textBox2.Text = sk.Resource;
-            textBox3.Text = sk.Position.X.ToString(Program.CultureInfo);
-            textBox4.Text = sk.Position.Y.ToString( Program.CultureInfo);
-            textBox5.Text = sk.Position.Z.ToString( Program.CultureInfo);
-            textBox8.Text = sk.Rotation.X.ToString( Program.CultureInfo);
-            textBox7.Text = sk.Rotation.Y.ToString( Program.CultureInfo);
-            textBox6.Text = sk.Rotation.Z.ToString( Program.CultureInfo);
-            textBox11.Text = sk.Scale.X.ToString( Program.CultureInfo);
-            textBox10.Text = sk.Scale.Y.ToString( Program.CultureInfo);
-            textBox9.Text = sk.Scale.Z.ToString( Program.CultureInfo);
-            textBox12.Text = sk.BoundingSphere.Radius.ToString( Program.CultureInfo);
-            textBox13.Text = sk.BoundingBox.Min.X.ToString( Program.CultureInfo);
-            textBox14.Text = sk.BoundingBox.Min.Y.ToString( Program.CultureInfo);
-            textBox15.Text = sk.BoundingBox.Min.Z.ToString( Program.CultureInfo);
-            textBox18.Text = sk.BoundingBox.Max.X.ToString( Program.CultureInfo);
-            textBox17.Text = sk.BoundingBox.Max.Y.ToString( Program.CultureInfo);
-            textBox16.Text = sk.BoundingBox.Max.Z.ToString( Program.CultureInfo);
+            textBox3.Text = sk.Position.X.ToString(Main.CultureInfo);
+            textBox4.Text = sk.Position.Y.ToString( Main.CultureInfo);
+            textBox5.Text = sk.Position.Z.ToString( Main.CultureInfo);
+            textBox8.Text = sk.Rotation.X.ToString( Main.CultureInfo);
+            textBox7.Text = sk.Rotation.Y.ToString( Main.CultureInfo);
+            textBox6.Text = sk.Rotation.Z.ToString( Main.CultureInfo);
+            textBox11.Text = sk.Scale.X.ToString( Main.CultureInfo);
+            textBox10.Text = sk.Scale.Y.ToString( Main.CultureInfo);
+            textBox9.Text = sk.Scale.Z.ToString( Main.CultureInfo);
+            textBox12.Text = sk.BoundingSphere.Radius.ToString( Main.CultureInfo);
+            textBox13.Text = sk.BoundingBox.Min.X.ToString( Main.CultureInfo);
+            textBox14.Text = sk.BoundingBox.Min.Y.ToString( Main.CultureInfo);
+            textBox15.Text = sk.BoundingBox.Min.Z.ToString( Main.CultureInfo);
+            textBox18.Text = sk.BoundingBox.Max.X.ToString( Main.CultureInfo);
+            textBox17.Text = sk.BoundingBox.Max.Y.ToString( Main.CultureInfo);
+            textBox16.Text = sk.BoundingBox.Max.Z.ToString( Main.CultureInfo);
         }
         public SkinmeshW()
         {
@@ -46,13 +46,13 @@ namespace _3DRadSpace
             }
             DialogResult = DialogResult.OK;
             Skinmesh r = new Skinmesh(Editor.ValidateTextInput(textBox1.Text) , checkBox1.Checked, textBox2.Text,
-                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text),Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text),Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo))
-               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo))
-               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text), Program.CultureInfo))
+                new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text),Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text),Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Main.CultureInfo))
+               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox8.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Main.CultureInfo))
+               ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox11.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox10.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox9.Text), Main.CultureInfo))
                 ,checkBox2.Checked,new BoundingBox(
-                    new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text), Program.CultureInfo))
-                    ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox18.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox17.Text), Program.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox16.Text), Program.CultureInfo)))
-                ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Program.CultureInfo)));
+                    new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox14.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox15.Text), Main.CultureInfo))
+                    ,new Vector3(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox18.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox17.Text), Main.CultureInfo), Convert.ToSingle(Editor.ValidateNumberTextInput(textBox16.Text), Main.CultureInfo)))
+                ,new BoundingSphere(Vector3.Zero,Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Main.CultureInfo)));
             Result = r;
             Close();
         }

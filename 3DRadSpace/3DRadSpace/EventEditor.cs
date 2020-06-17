@@ -126,7 +126,7 @@ namespace _3DRadSpace
 				case (int)Opcode.Hide:
 				case (int)Opcode.RunOneFrame:
 					c = new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text),Program.CultureInfo)
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text),Main.CultureInfo)
 					});
 					break;
 				case (int)Opcode.SetPos:
@@ -134,11 +134,11 @@ namespace _3DRadSpace
 				case (int)Opcode.SetRot:
 				case (int)Opcode.AddRot:
 					c = new OpCodeCall((Opcode)comboBox1.SelectedIndex, new object[] {
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text),Program.CultureInfo),
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text),Main.CultureInfo),
 					new Vector3( 
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox1.Text),Program.CultureInfo),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text),Program.CultureInfo),
-						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text),Program.CultureInfo))
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox1.Text),Main.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox2.Text),Main.CultureInfo),
+						Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text),Main.CultureInfo))
 					});
 					break;
 				default: c = new OpCodeCall(Opcode.NOP, null); break;

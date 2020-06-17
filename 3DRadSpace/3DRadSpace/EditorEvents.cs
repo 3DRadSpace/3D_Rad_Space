@@ -143,7 +143,7 @@ namespace _3DRadSpace
 			WebClient client = new WebClient();
 			string v = client.DownloadString("https://drive.google.com/uc?export=download&id=0B9yRO5eZEvTjeHhPa05OZDRxUmM");
 			bool NewVersionAvalable = false;
-			if (Convert.ToInt32(v,Program.CultureInfo) > Program.Version)
+			if (Convert.ToInt32(v,Main.CultureInfo) > Program.Version)
 			{
 				NewVersionAvalable = true;
 				toolStripStatusLabel1.Text = "Status: Downloading new update...";

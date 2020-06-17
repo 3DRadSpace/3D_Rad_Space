@@ -20,23 +20,23 @@ namespace _3DRadSpace
             InitializeComponent();
             textBox1.Text = c.Name;
             checkBox1.Checked = c.Enabled;
-            textBox2.Text = c.Position.X.ToString(Program.CultureInfo);
-            textBox3.Text = c.Position.Y.ToString( Program.CultureInfo);
-            textBox4.Text = c.Position.Z.ToString( Program.CultureInfo);
-            textBox7.Text = c.Rotation.X.ToString( Program.CultureInfo);
-            textBox6.Text = c.Rotation.Y.ToString( Program.CultureInfo);
-            textBox10.Text = c.CameraRotation.X.ToString( Program.CultureInfo);
-            textBox9.Text = c.CameraRotation.Y.ToString( Program.CultureInfo);
-            textBox8.Text = c.CameraRotation.Z.ToString( Program.CultureInfo);
+            textBox2.Text = c.Position.X.ToString(Main.CultureInfo);
+            textBox3.Text = c.Position.Y.ToString( Main.CultureInfo);
+            textBox4.Text = c.Position.Z.ToString( Main.CultureInfo);
+            textBox7.Text = c.Rotation.X.ToString( Main.CultureInfo);
+            textBox6.Text = c.Rotation.Y.ToString( Main.CultureInfo);
+            textBox10.Text = c.CameraRotation.X.ToString( Main.CultureInfo);
+            textBox9.Text = c.CameraRotation.Y.ToString( Main.CultureInfo);
+            textBox8.Text = c.CameraRotation.Z.ToString( Main.CultureInfo);
             numericUpDown1.Value = (decimal)c.GetFOVDegrees();
-            textBox11.Text = c.MinDrawDist.ToString( Program.CultureInfo);
-            textBox12.Text = c.MaxDrawDist.ToString( Program.CultureInfo);
+            textBox11.Text = c.MinDrawDist.ToString( Main.CultureInfo);
+            textBox12.Text = c.MaxDrawDist.ToString( Main.CultureInfo);
             comboBox1.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Forward);
             comboBox2.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Backward);
             comboBox3.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Right);
             comboBox4.SelectedItem = EventOnKeyW.GetKeyFromListBox_rev(c.Left);
-            textBox5.Text = c.Sensibility.ToString( Program.CultureInfo);
-            textBox13.Text = c.MovementSpeed.ToString( Program.CultureInfo);
+            textBox5.Text = c.Sensibility.ToString( Main.CultureInfo);
+            textBox13.Text = c.MovementSpeed.ToString( Main.CultureInfo);
         }
         public GameObject Result;
         public List<ObjectBehiavour> Behiavour;
@@ -53,19 +53,19 @@ namespace _3DRadSpace
             {
                 Name = textBox1.Text,
                 Enabled = checkBox1.Checked,
-                Position = new Vector3(Convert.ToSingle(textBox2.Text, Program.CultureInfo),
-                                        Convert.ToSingle(textBox3.Text, Program.CultureInfo),
-                                        Convert.ToSingle(textBox4.Text,Program.CultureInfo)),
-                CamScreenCoords = new Vector2(Convert.ToSingle(textBox7.Text, Program.CultureInfo),
-                                        Convert.ToSingle(textBox6.Text, Program.CultureInfo)),
-                CameraRotation = new Vector3(Convert.ToSingle(textBox10.Text, Program.CultureInfo),
-                                            Convert.ToSingle(textBox9.Text, Program.CultureInfo),
-                                            Convert.ToSingle(textBox8.Text, Program.CultureInfo)),
+                Position = new Vector3(Convert.ToSingle(textBox2.Text, Main.CultureInfo),
+                                        Convert.ToSingle(textBox3.Text, Main.CultureInfo),
+                                        Convert.ToSingle(textBox4.Text,Main.CultureInfo)),
+                CamScreenCoords = new Vector2(Convert.ToSingle(textBox7.Text, Main.CultureInfo),
+                                        Convert.ToSingle(textBox6.Text, Main.CultureInfo)),
+                CameraRotation = new Vector3(Convert.ToSingle(textBox10.Text, Main.CultureInfo),
+                                            Convert.ToSingle(textBox9.Text, Main.CultureInfo),
+                                            Convert.ToSingle(textBox8.Text, Main.CultureInfo)),
                 FOV = MathHelper.ToRadians((float)numericUpDown1.Value),
-                MinDrawDist = Convert.ToSingle(textBox11.Text, Program.CultureInfo),
-                MaxDrawDist = Convert.ToSingle(textBox12.Text, Program.CultureInfo),
-                Sensibility = Convert.ToSingle(textBox5.Text, Program.CultureInfo),
-                MovementSpeed = Convert.ToSingle(textBox13.Text, Program.CultureInfo),
+                MinDrawDist = Convert.ToSingle(textBox11.Text, Main.CultureInfo),
+                MaxDrawDist = Convert.ToSingle(textBox12.Text, Main.CultureInfo),
+                Sensibility = Convert.ToSingle(textBox5.Text, Main.CultureInfo),
+                MovementSpeed = Convert.ToSingle(textBox13.Text, Main.CultureInfo),
 
                 Forward = EventOnKeyW.GetKeyFromListBox((string)comboBox1.SelectedItem),
                 Backward = EventOnKeyW.GetKeyFromListBox((string)comboBox2.SelectedItem),

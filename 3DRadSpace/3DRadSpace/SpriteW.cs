@@ -19,17 +19,17 @@ namespace _3DRadSpace
 			checkBox1.Checked = sp.Enabled;
 			textBox2.Text = sp.Resource;
 			pictureBox1.ImageLocation = sp.Resource;
-			textBox3.Text = sp.Position.X.ToString( Program.CultureInfo);
-			textBox4.Text = sp.Position.Y.ToString( Program.CultureInfo);
-			textBox5.Text = sp.Rotation.ToString( Program.CultureInfo);
-			textBox6.Text = sp.Size.X.ToString( Program.CultureInfo);
-			textBox7.Text = sp.Size.Y.ToString( Program.CultureInfo);
+			textBox3.Text = sp.Position.X.ToString( Main.CultureInfo);
+			textBox4.Text = sp.Position.Y.ToString( Main.CultureInfo);
+			textBox5.Text = sp.Rotation.ToString( Main.CultureInfo);
+			textBox6.Text = sp.Size.X.ToString( Main.CultureInfo);
+			textBox7.Text = sp.Size.Y.ToString( Main.CultureInfo);
 			if (sp.SpriteSheetSection.HasValue)
 			{
-				textBox8.Text = sp.SpriteSheetSection.Value.X.ToString( Program.CultureInfo);
-				textBox9.Text = sp.SpriteSheetSection.Value.Y.ToString( Program.CultureInfo);
-				textBox10.Text = sp.SpriteSheetSection.Value.Width.ToString( Program.CultureInfo);
-				textBox11.Text = sp.SpriteSheetSection.Value.Height.ToString( Program.CultureInfo);
+				textBox8.Text = sp.SpriteSheetSection.Value.X.ToString( Main.CultureInfo);
+				textBox9.Text = sp.SpriteSheetSection.Value.Y.ToString( Main.CultureInfo);
+				textBox10.Text = sp.SpriteSheetSection.Value.Width.ToString( Main.CultureInfo);
+				textBox11.Text = sp.SpriteSheetSection.Value.Height.ToString( Main.CultureInfo);
 			}
 			else
 			{
@@ -38,9 +38,9 @@ namespace _3DRadSpace
 				textBox10.Text = "0";
 				textBox11.Text = "0";
 			}
-			textBox12.Text = ""+sp.Layer.ToString( Program.CultureInfo);
-			textBox13.Text = ""+sp.Center.X.ToString( Program.CultureInfo);
-			textBox14.Text = ""+sp.Center.Y.ToString( Program.CultureInfo);
+			textBox12.Text = ""+sp.Layer.ToString( Main.CultureInfo);
+			textBox13.Text = ""+sp.Center.X.ToString( Main.CultureInfo);
+			textBox14.Text = ""+sp.Center.Y.ToString( Main.CultureInfo);
 			textBox15.Text = sp.Mask.R + "";
 			textBox16.Text = sp.Mask.G + "";
 			textBox17.Text = sp.Mask.B + "";
@@ -58,16 +58,16 @@ namespace _3DRadSpace
 				return;
 			}
 			Rectangle? r = new Rectangle(
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox8.Text),Program.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text), Program.CultureInfo),
-					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox10.Text), Program.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox11.Text), Program.CultureInfo));
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox8.Text),Main.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox9.Text), Main.CultureInfo),
+					Convert.ToInt32(Editor.ValidateNumberTextInput(textBox10.Text), Main.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox11.Text), Main.CultureInfo));
 			if (r.Value.Height + r.Value.Width == 0) r = null;
 			Result = new Sprite(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked, textBox2.Text,
-				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)),
-				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo)),
-				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox13.Text), Program.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox14.Text), Program.CultureInfo)),
-				Convert.ToSingle(textBox5.Text, Program.CultureInfo),r,
+				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox3.Text), Main.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox4.Text), Main.CultureInfo)),
+				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox6.Text), Main.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox7.Text), Main.CultureInfo)),
+				new Vector2(Convert.ToInt32(Editor.ValidateNumberTextInput(textBox13.Text), Main.CultureInfo), Convert.ToInt32(Editor.ValidateNumberTextInput(textBox14.Text), Main.CultureInfo)),
+				Convert.ToSingle(textBox5.Text, Main.CultureInfo),r,
 				new Color(Convert.ToByte(Editor.ValidateNumberTextInput(textBox15.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox16.Text)),Convert.ToByte(Editor.ValidateNumberTextInput(textBox17.Text))),
-				(SpriteEffects)(Convert.ToInt32( (Convert.ToInt32(checkBox2.Checked)) + 2*Convert.ToInt32(checkBox3.Checked))),Convert.ToInt32(Editor.ValidateNumberTextInput(textBox12.Text), Program.CultureInfo));
+				(SpriteEffects)(Convert.ToInt32( (Convert.ToInt32(checkBox2.Checked)) + 2*Convert.ToInt32(checkBox3.Checked))),Convert.ToInt32(Editor.ValidateNumberTextInput(textBox12.Text), Main.CultureInfo));
 			DialogResult = DialogResult.OK;
 			Close();
 		}

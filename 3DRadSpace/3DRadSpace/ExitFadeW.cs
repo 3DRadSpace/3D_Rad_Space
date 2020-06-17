@@ -26,7 +26,7 @@ namespace _3DRadSpace
 			textBox2.Text = fade.Color.R + "";
 			textBox3.Text = fade.Color.G + "";
 			textBox4.Text = fade.Color.B + "";
-			textBox5.Text = ""+(fade.Time * 1000f).ToString( Program.CultureInfo);
+			textBox5.Text = ""+(fade.Time * 1000f).ToString( Main.CultureInfo);
 			textBox6.Text = fade.Resource;
 		}
 
@@ -55,8 +55,8 @@ namespace _3DRadSpace
 				return;
 			}
 			Result = new ExitFade(textBox1.Text, textBox6.Text, new Microsoft.Xna.Framework.Color(
-				Convert.ToByte(textBox2.Text, Program.CultureInfo), Convert.ToByte(textBox3.Text, Program.CultureInfo), Convert.ToByte(textBox4.Text, Program.CultureInfo))
-				,Convert.ToInt32(textBox5.Text, Program.CultureInfo),checkBox2.Checked);
+				Convert.ToByte(textBox2.Text, Main.CultureInfo), Convert.ToByte(textBox3.Text, Main.CultureInfo), Convert.ToByte(textBox4.Text, Main.CultureInfo))
+				,Convert.ToInt32(textBox5.Text, Main.CultureInfo),checkBox2.Checked);
 			DialogResult = DialogResult.OK;
 			Close();
 		}

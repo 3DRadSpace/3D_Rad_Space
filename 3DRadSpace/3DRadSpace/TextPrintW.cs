@@ -46,19 +46,19 @@ namespace _3DRadSpace
 				return;
 			}
 			Result = new TextPrint(Editor.ValidateTextInput(textBox1.Text), checkBox1.Checked,Editor.ValidateTextInput(textBox2.Text),textBox8.Text, new Vector2(
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Program.CultureInfo),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Program.CultureInfo)),
-			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Program.CultureInfo),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Program.CultureInfo)),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Program.CultureInfo),
-			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Program.CultureInfo),
-				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Program.CultureInfo)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox3.Text), Main.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox4.Text), Main.CultureInfo)),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox12.Text), Main.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox13.Text), Main.CultureInfo)),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox5.Text), Main.CultureInfo),
+			new Vector2(Convert.ToSingle(Editor.ValidateNumberTextInput(textBox6.Text), Main.CultureInfo),
+				Convert.ToSingle(Editor.ValidateNumberTextInput(textBox7.Text), Main.CultureInfo)),
 			new Color(
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox9.Text), Program.CultureInfo),
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox10.Text), Program.CultureInfo),
-				Convert.ToByte(Editor.ValidateNumberTextInput(textBox11.Text), Program.CultureInfo)),
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox9.Text), Main.CultureInfo),
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox10.Text), Main.CultureInfo),
+				Convert.ToByte(Editor.ValidateNumberTextInput(textBox11.Text), Main.CultureInfo)),
 			(SpriteEffects)(Convert.ToInt32(checkBox2.Checked) + Convert.ToInt32(checkBox3.Checked)),
-			Convert.ToInt32(textBox14.Text, Program.CultureInfo));
+			Convert.ToInt32(textBox14.Text, Main.CultureInfo));
 			DialogResult = DialogResult.OK;
 			Close();
 		}

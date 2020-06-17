@@ -12,13 +12,13 @@ namespace _3DRadSpace
     public static class Program
     {
         public static bool ProjectTypeScript = false;
-        public static readonly int Version = 5;
+        public static readonly int Version = 3;
         [STAThread]
         static void Main(string[] Arguments) //Command line arguments
         {
             Environment.CurrentDirectory = Application.StartupPath;
             Application.EnableVisualStyles();
-            Application.CurrentCulture = CultureInfo;
+            Application.CurrentCulture = CultureInfo.InvariantCulture;
             using (var Editor = new Editor())
             {
                 bool EditorOpen = true;
@@ -40,7 +40,6 @@ namespace _3DRadSpace
                 script.ShowDialog();
             }
         }
-        public static CultureInfo CultureInfo { get; } = CultureInfo.InvariantCulture; //An fix for the culture related issues
     }
 #endif
 }
