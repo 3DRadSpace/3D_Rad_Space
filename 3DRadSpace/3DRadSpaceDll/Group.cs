@@ -5,12 +5,13 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpaceDll
 {
     /// <summary>
-    /// Represents a group of objects.
+    /// Represents a group of objects. Only use as a Editor helper object. It's no use in any standalone project.
     /// </summary>
     public class Group : GameObject
     {
@@ -24,13 +25,13 @@ namespace _3DRadSpaceDll
         {
             Name = name;
             Enabled = enabled;
-            ObjectsInList = new List<int>(objs.Count());
-            ObjectsInList.AddRange(objs);
+            GroupedObjs = new List<int>(objs.Count());
+            GroupedObjs.AddRange(objs);
         }
         /// <summary>
         /// Represents a list of the linked objects.
         /// </summary>
-        public List<int> ObjectsInList;
+        public List<int> GroupedObjs;
 
         /// <summary>
         /// Applies a translation to the objects.
@@ -38,9 +39,9 @@ namespace _3DRadSpaceDll
         /// <param name="translation"></param>
         public void ApplyTranslation(Vector3 translation)
         {
-            for(int i =0; i < ObjectsInList.Count;i++)
+            for(int i =0; i < GroupedObjs.Count;i++)
             {
-                Game.GameObjects[ObjectsInList[i]].Position += translation;
+                Game.GameObjects[GroupedObjs[i]].Position += translation;
             }
         }
         /// <summary>
@@ -49,21 +50,10 @@ namespace _3DRadSpaceDll
         /// <param name="euler"></param>
         public void ApplyRotation(Vector3 euler)
         {
-            for (int i = 0; i < ObjectsInList.Count; i++)
+            for (int i = 0; i < GroupedObjs.Count; i++)
             {
-                Game.GameObjects[ObjectsInList[i]].Rotation += euler;
+                Game.GameObjects[GroupedObjs[i]].Rotation += euler;
             }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mouse"></param>
-        /// <param name="keyboard"></param>
-        /// <param name="time"></param>
-        public override void Update(MouseState mouse, KeyboardState keyboard, GameTime time)
-        {
-
-            base.Update(mouse, keyboard, time);
         }
     }
 }

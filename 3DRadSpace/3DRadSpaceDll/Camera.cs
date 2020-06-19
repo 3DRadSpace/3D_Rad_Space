@@ -178,7 +178,22 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Maximum drawing distance.
         /// </summary>
-        public float MaxDrawDist;
+        public float MaxDrawDist
+        {
+            get 
+            {
+                return _maxdst; 
+            }
+            set
+            {
+                _maxdst = value;
+                for(int  i=0; i < Game.GameObjects.Count;i++)
+                {
+                    if (Game.GameObjects[i] is Skybox sb) sb.UpdateSize(); //set skybox size
+                }
+            }
+        }
+        float _maxdst;
 
         /// <summary>
         /// Updates the Camera object. In this case, the Camera object is affected by it's 'relationship(s)'.

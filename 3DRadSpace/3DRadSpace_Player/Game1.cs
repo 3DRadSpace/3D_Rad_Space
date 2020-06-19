@@ -233,7 +233,9 @@ namespace _3DRadSpace_Player
                 }
                 if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb)
                 {
+                    GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                     sb.Draw(null, view, projection);
+                    GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
                     continue;
                 }
             }

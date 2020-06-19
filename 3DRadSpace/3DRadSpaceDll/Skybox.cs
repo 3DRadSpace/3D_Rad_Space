@@ -175,16 +175,28 @@ namespace _3DRadSpaceDll
         {
             for (int i = 0; i < Game.GameObjects.Count; i++)
             {
-                if (Game.GameObjects[i] is Camera c)
-                {
-                    if (c.Enabled)
-                    {
-                        _size = c.MaxDrawDist - 1;
-                        _linkedc = c;
-                        Position = c.Position;
-                    }
-                }
+                if (Game.GameObjects[i] is Camera c) LinkCamera(c);
             }
+        }
+        /// <summary>
+        /// Links a camera to the object
+        /// </summary>
+        /// <param name="c"></param>
+        public void LinkCamera(Camera c)
+        {
+            if (c.Enabled)
+            {
+                _size = c.MaxDrawDist - 1;
+                _linkedc = c;
+                Position = c.Position;
+            }
+        }
+        /// <summary>
+        /// Updates the skyboxes size in case that the linked camera's maximum drawing distance also changed.
+        /// </summary>
+        public void UpdateSize()
+        {
+            _size = _linkedc.MaxDrawDist - 1;
         }
         /// <summary>
         /// Frees the loaded texture.

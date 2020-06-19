@@ -508,29 +508,31 @@ namespace _3DRadSpace
 			GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
 			if (e.NewValue == CheckState.Unchecked)
 			{
-				for (int i = 0; i < o.Behiavours.Count; i++)
+				if (o is Camera)
 				{
-					if (o.Behiavours[i].ObjectID == listBox1.SelectedItems[0].Index)
+					for (int i = 0; i < o.Behiavours.Count; i++)
 					{
-						o.Behiavours.RemoveAt(i);
-						//break;
+						if (o.Behiavours[i].ObjectID == e.Index)
+						{
+							o.Behiavours.RemoveAt(i);
+						}
 					}
 				}
-				for (int j = 0; j < o.SelectedObjects.Count; j++)
+				else
 				{
-					if (o.SelectedObjects[j] == listBox1.SelectedItems[0].Index)
+					for (int j = 0; j < o.SelectedObjects.Count; j++)
 					{
-						o.SelectedObjects.RemoveAt(j);
-						//break;
+						if (o.SelectedObjects[j] == e.Index)
+						{
+							o.SelectedObjects.RemoveAt(j);
+						}
 					}
 				}
 			}
 			if (e.NewValue == CheckState.Checked)
 			{
-				if (o is EventOnLocation eol) eol.SelectedObjects.Add(e.Index);
-				if (o is EventOnKey eok) eok.SelectedObjects.Add(e.Index);
-				if (o is _3DRadSpaceDll.Timer t) t.SelectedObjects.Add(e.Index);
-				else o.Behiavours.Add(new ObjectBehiavour(e.Index));
+				if (o is Camera) o.Behiavours.Add(new ObjectBehiavour(e.Index, 0));
+				else o.SelectedObjects.Add(e.Index);
 			}
 		}
 		bool _deselect;
@@ -541,24 +543,18 @@ namespace _3DRadSpace
 			{
 				listBox1.Items[i].Checked = false;
 			}
-			if (listBox1.SelectedItems.Count > 0 )
-			{
-				for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects.Count; i++)
-				{
-					listBox1.Items[_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects[i]].Checked = true;
-				}
-			}
 			if (listBox1.SelectedItems.Count > 0)
 			{
-				if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects != null)
+				GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
+				if (o.SelectedObjects != null)
 				{
-					int l = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects.Count;
+					int l = o.SelectedObjects.Count;
 					for (int i = 0; i < l; i++)
 					{
-						listBox1.Items[_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].SelectedObjects[i]].Checked = true;
+						listBox1.Items[o.SelectedObjects[i]].Checked = true;
 					}
 				}
-				/*
+				
 				if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours != null)
 				{
 					int l = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours.Count;
@@ -567,7 +563,7 @@ namespace _3DRadSpace
 						listBox1.Items[_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours[i].ObjectID].Checked = true;
 					}
 				}
-				*/
+				
 			}
 			_deselect = false;
 		}
