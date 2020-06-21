@@ -103,7 +103,7 @@
             Minimum drawing distance. A recommended value is 0.1f.
             </summary>
         </member>
-        <member name="F:_3DRadSpaceDll.Camera.MaxDrawDist">
+        <member name="P:_3DRadSpaceDll.Camera.MaxDrawDist">
             <summary>
             Maximum drawing distance.
             </summary>
@@ -1011,7 +1011,7 @@
         </member>
         <member name="T:_3DRadSpaceDll.Group">
             <summary>
-            Represents a group of objects.
+            Represents a group of objects. Only use as a Editor helper object. It's no use in any standalone project.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Group.#ctor(System.String,System.Boolean,System.Collections.Generic.IEnumerable{System.Int32})">
@@ -1022,7 +1022,7 @@
             <param name="enabled">Checks if the object is enabled</param>
             <param name="objs">List ob objects</param>
         </member>
-        <member name="F:_3DRadSpaceDll.Group.ObjectsInList">
+        <member name="F:_3DRadSpaceDll.Group.GroupedObjs">
             <summary>
             Represents a list of the linked objects.
             </summary>
@@ -1038,14 +1038,6 @@
             Applies a euler angle rotation to the group objects.
             </summary>
             <param name="euler"></param>
-        </member>
-        <member name="M:_3DRadSpaceDll.Group.Update(Microsoft.Xna.Framework.Input.MouseState,Microsoft.Xna.Framework.Input.KeyboardState,Microsoft.Xna.Framework.GameTime)">
-            <summary>
-            
-            </summary>
-            <param name="mouse"></param>
-            <param name="keyboard"></param>
-            <param name="time"></param>
         </member>
         <member name="T:_3DRadSpaceDll.ICustomGameObject">
             <summary>
@@ -1648,6 +1640,17 @@
         <member name="M:_3DRadSpaceDll.Skybox.LinkAvalableCamera">
             <summary>
             Finds a camera object to link the skybox to.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.LinkCamera(_3DRadSpaceDll.Camera)">
+            <summary>
+            Links a camera to the object
+            </summary>
+            <param name="c"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Skybox.UpdateSize">
+            <summary>
+            Updates the skyboxes size in case that the linked camera's maximum drawing distance also changed.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Skybox.Dispose">

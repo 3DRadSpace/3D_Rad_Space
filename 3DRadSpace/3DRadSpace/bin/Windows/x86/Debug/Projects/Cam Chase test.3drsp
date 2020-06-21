@@ -1,5 +1,4 @@
 3DRSP_text
-skinmesh Skinmesh True 0 8 5 0 0 0 1 1 1 False -1 -1 -1 1 1 1 2 EOL_Sphere
-skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 False -1 -1 -1 1 1 1 2 Skinmeshes/Terrain0100
-camera Camera True 0 8 0 0 0 0 0 1 0 75 0.1 500 1 0 1 
-script Script True Script Scripts//Camera Chase Test.cs
+skycolor SkyColor True 255 255 255
+textprint TextPrint True 0 0 1 1 0 0 0 0 0 0 0 0 Sample text þ Arial_12px
+script Script True Script Scripts//Memory Leak Test 1.cs

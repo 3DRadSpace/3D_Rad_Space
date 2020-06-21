@@ -50,6 +50,7 @@ namespace _3DRadSpace_Player
         protected override void Initialize()
         {
             Camera.ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             base.Initialize();
         }
         protected override void LoadContent()
@@ -184,8 +185,6 @@ namespace _3DRadSpace_Player
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
             for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
             {
                 if(_3DRadSpaceDll.Game.GameObjects[i] is FPVCamera fps)

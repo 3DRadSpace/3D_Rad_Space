@@ -187,6 +187,7 @@ namespace _3DRadSpaceDll
             set
             {
                 _maxdst = value;
+                if (Game.GameObjects == null) return;
                 for(int  i=0; i < Game.GameObjects.Count;i++)
                 {
                     if (Game.GameObjects[i] is Skybox sb) sb.UpdateSize(); //set skybox size
@@ -234,6 +235,7 @@ namespace _3DRadSpaceDll
                 projection = Matrix.Identity;
                 return;
             }
+            //Update(Mouse.GetState(), Keyboard.GetState(), null);
             view = Matrix.CreateLookAt(Position, CameraTarget, CameraRotation);
             projection = Matrix.CreatePerspectiveFieldOfView(FOV, ScreenSize.X / ScreenSize.Y,MinDrawDist,MaxDrawDist);
             base.Draw(null,view,projection); //Calls base class to get the event called too.

@@ -236,6 +236,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="Resources\OBJ_Script.png" />
+    <None Include="Resources\OBJ_Script.bmp" />
     <None Include="Resources\OBJ_Fog.png" />
     <None Include="Resources\OBJ_SoundSource.png" />
     <None Include="Resources\OBJ_FPVCamera.png" />
@@ -248,7 +250,6 @@
     <None Include="Resources\OBJ_SkyColor.png" />
     <None Include="Resources\OBJ_SkyBox.png" />
     <None Include="Resources\OBJ_Skinmesh.png" />
-    <None Include="Resources\OBJ_Script.png" />
     <None Include="Resources\OBJ_Rigidbody.png" />
     <None Include="Resources\OBJ_NetworkChat.png" />
     <None Include="Resources\OBJ_GForce.png" />
