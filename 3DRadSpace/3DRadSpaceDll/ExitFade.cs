@@ -77,14 +77,6 @@ namespace _3DRadSpaceDll
 		public bool FadeType { get; set; }
 
 		/// <summary>
-		/// When starting the object in the editor events, or scripts, this will get called.
-		/// </summary>
-		public override void Trigger()
-		{
-			Enabled = true;
-			base.Trigger();
-		}
-		/// <summary>
 		/// Draws the fading.
 		/// </summary>
 		/// <param name="spriteBatch">Needed for drawing the fading.</param>
@@ -100,7 +92,6 @@ namespace _3DRadSpaceDll
 					_blank_1x1.SetData(new Color[] { Color });
 				}
 				spriteBatch.Draw(_blank_1x1, new Rectangle(0, 0, 10000, 10000), Color);
-				base.Draw(spriteBatch, view, projection);
 			}
 		}
 		/// <summary>

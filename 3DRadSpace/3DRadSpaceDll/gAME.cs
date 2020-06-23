@@ -14,7 +14,7 @@ namespace _3DRadSpaceDll
     public static class Game
     {
         /// <summary>
-        /// Contains the objects. Note this is a System.Collections.Generic.List (a linked list)
+        /// Contains the objects.
         /// </summary>
         public static List<GameObject> GameObjects { get; set; }
         /// <summary>

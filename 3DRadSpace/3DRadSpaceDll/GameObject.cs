@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using System.Data.SqlTypes;
 
 namespace _3DRadSpaceDll
 {
@@ -109,7 +110,11 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// Enables object.
 		/// </summary>
-		public void Enable() { Enabled = true; }
+		public void Enable() 
+		{
+			Enabled = true;
+			Trigger();
+		}
 		/// <summary>
 		/// Disables object.
 		/// </summary>

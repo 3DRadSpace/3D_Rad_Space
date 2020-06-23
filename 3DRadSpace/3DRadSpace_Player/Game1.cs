@@ -101,29 +101,7 @@ namespace _3DRadSpace_Player
         }
         protected override void UnloadContent()
         {
-            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
-            {
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script)
-                {
-                    script.End();
-                    continue;
-                }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
-                {
-                    sp.Dispose();
-                    continue;
-                }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
-                {
-                    tp.Dispose();
-                    continue;
-                }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb)
-                {
-                    sb.Dispose();
-                    continue;
-                }
-            }
+            Project.UnloadObjects();
         }
         protected override void Update(GameTime gameTime)
         {
@@ -177,6 +155,7 @@ namespace _3DRadSpace_Player
                     continue;
                 }
             }
+            if (_3DRadSpaceDll.Game.RequestExit) Exit();
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)

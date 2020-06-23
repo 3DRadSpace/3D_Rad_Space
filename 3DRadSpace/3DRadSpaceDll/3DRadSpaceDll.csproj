@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="Counter.cs" />
     <Compile Include="CustomObjectInfo.cs" />
     <Compile Include="EventOnKey.cs" />
     <Compile Include="EventOnLocation.cs" />

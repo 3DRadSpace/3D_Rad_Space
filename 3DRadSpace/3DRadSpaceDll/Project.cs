@@ -291,6 +291,12 @@ namespace _3DRadSpaceDll
 							};
 							break;
 						}
+					case "counter":
+						{
+							string file;
+							a = null;
+							break;
+						}
 					default:
 						{
 							throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -410,6 +416,10 @@ namespace _3DRadSpaceDll
 				{
 					ToBeSaved[j] = "skybox " + sb.Name + ' ' + sb.Enabled + ' ' + sb.Resource;
 				}
+				if(Game.GameObjects[i] is Counter cpp)
+				{
+					ToBeSaved[j] = "counter " + cpp.Name + ' ' + cpp.Enabled + ' ' + cpp.InitialValue + ' ' + cpp.Increment + ' ' + cpp.FileIOSafe;
+				}
 			}
 			File.WriteAllLines(filename, ToBeSaved);
 		}
@@ -466,14 +476,11 @@ namespace _3DRadSpaceDll
 		{
 			for (int i = 0; i < Game.GameObjects.Count; i++)
 			{
-				if (Game.GameObjects[i] is Sprite sp)
-				{
-					sp.Dispose();
-				}
-				if (Game.GameObjects[i] is TextPrint tp)
-				{
-					tp.Dispose();
-				}
+				if (Game.GameObjects[i] is Script sc) sc.End();
+				if (Game.GameObjects[i] is Sprite sp) sp.Dispose();
+				if (Game.GameObjects[i] is TextPrint tp) tp.Dispose();
+				if (Game.GameObjects[i] is Skybox sb) sb.Dispose();
+				if (Game.GameObjects[i] is Counter c) c.SaveFile();
 			}
 			Game.GameObjects.Clear();
 		}

@@ -114,8 +114,10 @@ namespace _3DRadSpaceDll
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
 							Game.GameObjects[id].Enable();
+							//yandere dev simulator
 							if (Game.GameObjects[id] is SoundEffect sfx) sfx.Trigger();
-							//if (Game.GameObjects[id] is ExitFade ef) ef.Trigger();
+							else if (Game.GameObjects[id] is ExitFade ef) ef.Trigger();
+							else if (Game.GameObjects[id] is Counter c) c.Trigger(); 
 							break;
 						}
 					case Opcode.Stop:
