@@ -58,20 +58,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Text to be drawn
         /// </summary>
-        public string Text
-        {
-            get
-            {
-                return _text;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value) == false) _text = value;
-                else throw new ArgumentNullException("Text", "Text cannot be null or empty.");
-            }
-        }
-
-        string _text;
+        public string Text;
 
         /// <summary>
         /// Position in 2D space of the text.

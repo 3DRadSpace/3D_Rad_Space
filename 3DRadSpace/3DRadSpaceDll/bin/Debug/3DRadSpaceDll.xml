@@ -172,6 +172,87 @@
             <param name="view">Not used, use the null value.</param>
             <param name="projection">Not used, use the null value.</param>
         </member>
+        <member name="T:_3DRadSpaceDll.Counter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Counter.InitialValue">
+            <summary>
+            The value this object was initialized with.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Counter.Value">
+            <summary>
+            Stored value.
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Counter.Increment">
+            <summary>
+            Increment value. (can be negative)
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Counter.File">
+            <summary>
+            File to get the value saved.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.#ctor">
+            <summary>
+            Empty constructor.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.#ctor(System.String,System.Boolean,System.Single,System.Single,System.String)">
+            <summary>
+            Main constructor.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Can this object `trigger`?</param>
+            <param name="increment">Addidion value. Negatives are also allowed.</param>
+            <param name="initialv">Start value.</param>
+            <param name="file">File to save the stored value.</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.#ctor(System.String,System.Boolean,System.Single,System.String)">
+            <summary>
+            Constructor for use if loading from a file.
+            </summary>
+            <param name="name">Object name</param>
+            <param name="enabled">Can this object get triggered?</param>
+            <param name="increment">Increment value</param>
+            <param name="f">File</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.#ctor(System.Single)">
+            <summary>
+            Constrcuctor allowing setting a private value.
+            </summary>
+            <param name="i">Initial</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.SaveFile">
+            <summary>
+            Saves the stored value into the specified file.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.Load(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Used only in 3DRadSpacePlayer.
+            </summary>
+            <param name="content"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.LoadFile">
+            <summary>
+            Loads the saved number from the specified file.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Counter.Trigger">
+            <summary>
+            Increment the value.
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Counter.FileIOSafe">
+            <summary>
+            Only used in 3DRad editor IO
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.CustomObjectInfo">
             <summary>
             Represents information and metadata about the custom object.
@@ -501,11 +582,6 @@
             <para>false = fade out</para>
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.ExitFade.Trigger">
-            <summary>
-            When starting the object in the editor events, or scripts, this will get called.
-            </summary>
-        </member>
         <member name="M:_3DRadSpaceDll.ExitFade.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
             <summary>
             Draws the fading.
@@ -688,7 +764,7 @@
         </member>
         <member name="P:_3DRadSpaceDll.Game.GameObjects">
             <summary>
-            Contains the objects. Note this is a System.Collections.Generic.List (a linked list)
+            Contains the objects.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
@@ -2005,7 +2081,7 @@
             Empty TextPrint constructor.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.TextPrint.Text">
+        <member name="F:_3DRadSpaceDll.TextPrint.Text">
             <summary>
             Text to be drawn
             </summary>

@@ -113,7 +113,6 @@ namespace _3DRadSpaceDll
 		public void Enable() 
 		{
 			Enabled = true;
-			Trigger();
 		}
 		/// <summary>
 		/// Disables object.

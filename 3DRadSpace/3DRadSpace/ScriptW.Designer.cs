@@ -204,7 +204,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(816, 489);
             this.Name = "ScriptW";
-            this.Text = "Script Object v1.0.0";
+            this.Text = "Script Object";
             this.Load += new System.EventHandler(this.ScriptW_Load);
             this.SizeChanged += new System.EventHandler(this.ScriptW_SizeChanged);
             this.groupBox1.ResumeLayout(false);

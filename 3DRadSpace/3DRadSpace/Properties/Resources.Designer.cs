@@ -123,6 +123,16 @@ namespace _3DRadSpace.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap OBJ_Counter {
+            get {
+                object obj = ResourceManager.GetObject("OBJ_Counter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OBJ_EOK {
             get {
                 object obj = ResourceManager.GetObject("OBJ_EOK", resourceCulture);

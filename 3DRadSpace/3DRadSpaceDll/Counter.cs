@@ -79,6 +79,18 @@ namespace _3DRadSpaceDll
             File = f;
         }
         /// <summary>
+        /// Constrcuctor allowing setting a private value.
+        /// </summary>
+        /// <param name="i">Initial</param>
+        public Counter(float i)
+        {
+            _initialv = i;
+            Value = i;
+            Increment = 1;
+            Name = "Counter";
+            Enabled = true;
+        }
+        /// <summary>
         /// Saves the stored value into the specified file.
         /// </summary>
         public void SaveFile()

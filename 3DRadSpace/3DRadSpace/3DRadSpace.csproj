@@ -70,6 +70,12 @@
     <Compile Include="AddObject.Designer.cs">
       <DependentUpon>AddObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="CounterW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CounterW.Designer.cs">
+      <DependentUpon>CounterW.cs</DependentUpon>
+    </Compile>
     <Compile Include="FPVCameraW .cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="Resources\OBJ_Counter.png" />
     <None Include="Resources\OBJ_Script.png" />
     <None Include="Resources\OBJ_Script.bmp" />
     <None Include="Resources\OBJ_Fog.png" />
@@ -282,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddObject.resx">
       <DependentUpon>AddObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterW.resx">
+      <DependentUpon>CounterW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FPVCameraW .resx">
       <DependentUpon>FPVCameraW .cs</DependentUpon>

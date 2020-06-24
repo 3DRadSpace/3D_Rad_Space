@@ -351,6 +351,14 @@ namespace _3DRadSpace
 				skyboxW.Dispose();
 				return;
 			}
+			if(b is Counter counter)
+			{
+				CounterW counterW = new CounterW(counter);
+				counterW.ShowDialog();
+				if(counterW.Result != null) _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] = (Counter)counterW.Result;
+				counterW.Dispose();
+				return;
+			}
 		}
 		void M_DeleteObject(object obj,EventArgs e)
 		{

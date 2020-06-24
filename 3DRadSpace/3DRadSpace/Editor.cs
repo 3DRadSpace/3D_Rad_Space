@@ -54,7 +54,7 @@ namespace _3DRadSpace
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
-			Window.Title = "3DRadSpace - Editor v0.0.5 alpha";
+			Window.Title = "3DRadSpace - Editor v0.0.6 alpha";
 			IsMouseVisible = true;
 			if (Settings[0])
 			{
@@ -174,7 +174,7 @@ namespace _3DRadSpace
 				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
-			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords+ " CamPos "+Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];

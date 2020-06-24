@@ -446,7 +446,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SoundSourceW";
-            this.Text = "SoundSource Object v1.0.0";
+            this.Text = "SoundSource Object";
             this.Load += new System.EventHandler(this.SoundEffectW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

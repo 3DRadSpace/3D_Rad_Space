@@ -285,7 +285,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ExitFadeW";
-            this.Text = "ExitFade Object v1.0.0";
+            this.Text = "ExitFade Object";
             this.Load += new System.EventHandler(this.ExitFadeW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

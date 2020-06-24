@@ -503,7 +503,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EventOnLocationW";
-            this.Text = "EventOnLocation Object v1.0.0";
+            this.Text = "EventOnLocation Object";
             this.Load += new System.EventHandler(this.EventOnLocationW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

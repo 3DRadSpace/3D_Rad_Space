@@ -293,8 +293,21 @@ namespace _3DRadSpaceDll
 						}
 					case "counter":
 						{
-							string file;
-							a = null;
+							string file= null;
+							if (Obj[5] != ((char)0 + ""))
+							{
+								for (int j = 5; j < Obj.Length; j++)
+								{
+									file += Obj[j] + ' ';
+								}
+							}
+							a = new Counter(Convert.ToSingle(Obj[3], Main.CultureInfo))
+							{
+								Name = Obj[1],
+								Enabled = Convert.ToBoolean(Obj[2], Main.CultureInfo),
+								Increment = Convert.ToSingle(Obj[4], Main.CultureInfo),
+								File = file
+							};
 							break;
 						}
 					default:

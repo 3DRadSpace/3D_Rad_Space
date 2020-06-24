@@ -752,7 +752,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FPVCameraW";
-            this.Text = "FPVCamera Object v1.0";
+            this.Text = "FPVCamera Object";
             this.Load += new System.EventHandler(this.FPVCameraW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

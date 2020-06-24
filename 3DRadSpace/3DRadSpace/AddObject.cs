@@ -173,5 +173,13 @@ namespace _3DRadSpace
 			cameraW.Dispose();
 			Close();
 		}
+
+		private void pictureBox27_Click(object sender, EventArgs e)
+		{
+			CounterW counterW = new CounterW();
+			if (counterW.ShowDialog() == DialogResult.OK) Result = counterW.Result;
+			counterW.Dispose();
+			Close();
+		}
 	}
 }

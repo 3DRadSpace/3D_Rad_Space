@@ -146,7 +146,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 3;
-            this.textBox4.Text = "12";
+            this.textBox4.Text = "255";
             // 
             // textBox3
             // 
@@ -266,7 +266,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FogW";
-            this.Text = "Fog Object v1.0.0";
+            this.Text = "Fog Object";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
