@@ -2081,7 +2081,7 @@
             Empty TextPrint constructor.
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.TextPrint.Text">
+        <member name="F:_3DRadSpaceDll.TextPrint.Text">
             <summary>
             Text to be drawn
             </summary>

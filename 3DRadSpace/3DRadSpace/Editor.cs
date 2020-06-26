@@ -84,13 +84,15 @@ namespace _3DRadSpace
 		{
 
 		}
+		Vector3 _3dcursor_loc = Vector3.Zero;
+		int selected_object_index = -1;
 
 		protected override void Update(GameTime gameTime)
 		{
-			KeyboardState keyboard = Keyboard.GetState();
-			MouseState mouse = Mouse.GetState();
 			if (Form.ActiveForm == GameWindow)
 			{
+				KeyboardState keyboard = Keyboard.GetState();
+				MouseState mouse = Mouse.GetState();
 				//keyboard shortcuts
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.N)) newProject(null, null);
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.O)) openProject(null, null);
@@ -99,12 +101,13 @@ namespace _3DRadSpace
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.P)) playProject(null, null);
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A)) addObject(null, null);
 
-				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position +=  Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
+				//camera movement
+				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position += Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
 				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
 				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) Editor_View.Position += Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
 				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) Editor_View.Position -= Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
 
-				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+				if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
 					if (mouse.X >= 150 && mouse.X <= graphics.PreferredBackBufferWidth &&
 					   mouse.Y >= 25 && mouse.Y <= graphics.PreferredBackBufferHeight - 25)
@@ -120,8 +123,48 @@ namespace _3DRadSpace
 				{
 					IsMouseVisible = true;
 				}
-			 }
-			Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
+				Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
+				//editing an object by double clicking in the editor
+				if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+				{
+					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
+					for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+					{
+						BoundingSphere sph;
+						GameObject o = _3DRadSpaceDll.Game.GameObjects[i];
+						if(o is Skinmesh sk)
+						{
+							for(int j =0; j < sk.Model.Meshes.Count;i++)
+							{
+								sph = sk.Model.Meshes[j].BoundingSphere;
+								if(finder.Intersects(sph) != null)
+								{
+									selected_object_index = i;
+									break;
+								}
+							}
+						}
+						if(o is Camera c)
+						{
+							sph = new BoundingSphere(o.Position, 1);
+							if (finder.Intersects(sph) != null)
+							{
+								selected_object_index = i;
+								break;
+							}
+						}
+						if(o is EventOnLocation eol)
+						{
+							switch(eol.BoundingType)
+							{
+								case BoundingObject.Box:
+
+								default:break;
+							}
+						}
+					}
+				}
+			}
 			base.Update(gameTime);
 		}
 		protected override void Draw(GameTime gameTime)
@@ -133,7 +176,7 @@ namespace _3DRadSpace
 			Editor_View.Draw( out View, out Projection);
 
 			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
-			_3DRadSpaceDll.Game.DrawModel(Axis,Matrix.CreateRotationY(MathHelper.Pi*1.5f)* Matrix.CreateTranslation(0, 0, 0), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
+			_3DRadSpaceDll.Game.DrawModel(Axis,Matrix.CreateRotationY(MathHelper.Pi*1.5f)* Matrix.CreateTranslation(_3dcursor_loc), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
 			
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
@@ -226,6 +269,43 @@ namespace _3DRadSpace
 				return true;
 			}
 			return false;
+		}
+		public static Ray GetMouseRay(Vector2 mousePosition, Viewport viewport, Matrix view, Matrix projection)
+		{
+			Vector3 nearPoint = new Vector3(mousePosition, 0);
+			Vector3 farPoint = new Vector3(mousePosition, 1);
+			nearPoint = viewport.Unproject(nearPoint, projection, view, Matrix.Identity);
+			farPoint = viewport.Unproject(farPoint, projection, view, Matrix.Identity);
+			Vector3 direction = farPoint - nearPoint;
+			direction.Normalize();
+			return new Ray(nearPoint, direction);
+		}
+		public bool RayI(Ray finder,BoundingBox obj, int i)
+		{
+			if (finder.Intersects(obj) != null)
+			{
+				selected_object_index = i;
+				_3dcursor_loc = GetBoxCenter(obj);
+				return true;
+			}
+			else return false;
+		}
+		public bool RayI(Ray finder, BoundingSphere obj, int i)
+		{
+			if (finder.Intersects(obj) != null)
+			{
+				selected_object_index = i;
+				_3dcursor_loc = obj.Center;
+				return true;
+			}
+			else return false;
+		}
+		public static Vector3 GetBoxCenter(BoundingBox box)
+		{
+			float x = MathHelper.Lerp(box.Min.X, box.Max.X, 0.5f);
+			float y = MathHelper.Lerp(box.Min.Y, box.Max.Y, 0.5f);
+			float z = MathHelper.Lerp(box.Min.Z, box.Max.Z, 0.5f);
+			return new Vector3(x, y, z);
 		}
 	}
 }

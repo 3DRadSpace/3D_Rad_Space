@@ -263,7 +263,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EventOnKeyW";
             this.Text = "EventOnKey Object";
-            this.Load += new System.EventHandler(this.EventOnKeyW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

@@ -1,4 +1,4 @@
 3DRSP_text
 skybox Skybox True Content\Skybox\TestSkybox\skybox.sky
 fpvcam FPVCamera True 0 7 0 0 0 1 1 0 75 0.1 500 38 37 40 39 1 0.0010 
-skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 True -1 -1 -1 1 1 1 2 Skinmeshes/Terrain0100
+skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 False -1 -1 -1 1 1 1 2 Skinmeshes/Terrain0100

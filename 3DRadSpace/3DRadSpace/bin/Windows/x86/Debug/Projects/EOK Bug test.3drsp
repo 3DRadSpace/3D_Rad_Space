@@ -1,0 +1,5 @@
+3DRSP_text
+counter Counter True 0 1       
+textprint TextPrint True 0 0 1 1 0 0 0 255 255 255 0 0 Counter value: {0}       þ Arial_12px
+eok EventOnKey True 13 2 50 1 0
+script Script True Script Scripts//Counter Demo.cs
