@@ -18,6 +18,7 @@ namespace _3DRadSpace
 		{
 			InitializeComponent();
 			comboBox1.SelectedIndex = 0;
+			opcodes = new List<OpCodeCall>();
 		}
 		public EventOnKeyW(EventOnKey eok)
 		{
@@ -38,7 +39,7 @@ namespace _3DRadSpace
 			opcodes = eok.Behiavours;
 		}
 		public GameObject Result;
-		List<OpCodeCall> opcodes = new List<OpCodeCall>();
+		List<OpCodeCall> opcodes;
 		EventOnKey _eok;
 
 		private void button1_Click(object sender, EventArgs e)

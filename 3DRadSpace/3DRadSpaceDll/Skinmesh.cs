@@ -136,7 +136,7 @@ namespace _3DRadSpaceDll
                 {
                     effect.View = (Matrix)view;
                     effect.Projection = (Matrix)projection;
-                    effect.World = Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
+                    effect.World = TranslationMatrix;
                     if (FogExists)
                     {
                         effect.FogEnabled = FogEnabled;
@@ -177,6 +177,16 @@ namespace _3DRadSpaceDll
                 mesh.Draw();
             }
             base.EditorDraw(spriteBatch, view, projection);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Matrix TranslationMatrix
+        {
+            get
+            {
+                return Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
+            }
         }
     }
 }

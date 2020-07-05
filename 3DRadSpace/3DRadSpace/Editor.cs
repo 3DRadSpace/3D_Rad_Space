@@ -102,10 +102,6 @@ namespace _3DRadSpace
 				if (GetKeyShortcut(keyboard, Microsoft.Xna.Framework.Input.Keys.A)) addObject(null, null);
 
 				//camera movement
-				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W)) Editor_View.Position += Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
-				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S)) Editor_View.Position -= Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y)) * CameraSpeed;
-				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A)) Editor_View.Position += Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
-				if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D)) Editor_View.Position -= Vector3.Cross(Editor_View.CameraRotation, Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y))) * CameraSpeed;
 
 				if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
@@ -123,42 +119,67 @@ namespace _3DRadSpace
 				{
 					IsMouseVisible = true;
 				}
-				Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
+				Vector3 UnitV = Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
+				Editor_View.Position = UnitV * (5+mouse.ScrollWheelValue) * 0.01f;
+				Editor_View.CameraTarget = _3dcursor_loc;
 				//editing an object by double clicking in the editor
 				if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
+					float d = float.MaxValue;
 					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
 					for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
 					{
-						BoundingSphere sph;
 						GameObject o = _3DRadSpaceDll.Game.GameObjects[i];
 						if(o is Skinmesh sk)
 						{
-							for(int j =0; j < sk.Model.Meshes.Count;i++)
+							if (RayI(finder, sk.Model.Meshes[0].BoundingSphere, i,out float ?cdst))
 							{
-								sph = sk.Model.Meshes[j].BoundingSphere;
-								if(finder.Intersects(sph) != null)
-								{
-									selected_object_index = i;
-									break;
-								}
+								Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
+								if (_3dcursor_loc != null)
+                                {
+									if (d > cdst)
+									{
+										d = (float)cdst;
+										_3dcursor_loc = val.Value;
+									}
+                                }
 							}
 						}
 						if(o is Camera c)
 						{
-							sph = new BoundingSphere(o.Position, 1);
-							if (finder.Intersects(sph) != null)
-							{
-								selected_object_index = i;
-								break;
-							}
+							if(RayI(finder, new BoundingSphere(c.Position, 2), i,out float? cdst))
+                            {
+								if (d > cdst)
+								{
+									d = (float)cdst;
+									_3dcursor_loc = c.Position;
+								}
+                            }
 						}
 						if(o is EventOnLocation eol)
 						{
 							switch(eol.BoundingType)
 							{
 								case BoundingObject.Box:
-
+									if(RayI(finder,eol.BoundingBox,i,out float? cdst))
+                                    {
+										if (d > cdst)
+										{
+											d = (float)cdst;
+											_3dcursor_loc = eol.Position;
+										}
+									}
+									break;
+								case BoundingObject.Sphere:
+									if (RayI(finder, eol.BoundingSphere, i, out float? cdsts))
+									{
+										if (d > cdsts)
+										{
+											d = (float)cdsts;
+											_3dcursor_loc = eol.Position;
+										}
+									}
+									break;
 								default:break;
 							}
 						}
@@ -280,9 +301,10 @@ namespace _3DRadSpace
 			direction.Normalize();
 			return new Ray(nearPoint, direction);
 		}
-		public bool RayI(Ray finder,BoundingBox obj, int i)
+		public bool RayI(Ray finder,BoundingBox obj, int i,out float? dist)
 		{
-			if (finder.Intersects(obj) != null)
+			dist = finder.Intersects(obj);
+			if (dist != null)
 			{
 				selected_object_index = i;
 				_3dcursor_loc = GetBoxCenter(obj);
@@ -290,9 +312,10 @@ namespace _3DRadSpace
 			}
 			else return false;
 		}
-		public bool RayI(Ray finder, BoundingSphere obj, int i)
+		public bool RayI(Ray finder, BoundingSphere obj, int i,out float? dist)
 		{
-			if (finder.Intersects(obj) != null)
+			dist = finder.Intersects(obj);
+			if (dist != null)
 			{
 				selected_object_index = i;
 				_3dcursor_loc = obj.Center;
@@ -306,6 +329,83 @@ namespace _3DRadSpace
 			float y = MathHelper.Lerp(box.Min.Y, box.Max.Y, 0.5f);
 			float z = MathHelper.Lerp(box.Min.Z, box.Max.Z, 0.5f);
 			return new Vector3(x, y, z);
+		}
+		public static Vector3? RayMeshCollision(Ray r,Model m,Matrix translation)
+		{
+			VertexPosition[] tri_r = new VertexPosition[10];
+			for (int i =0; i < m.Meshes.Count;i++)
+			{
+				for(int j =0; j < m.Meshes[i].MeshParts.Count;j++)
+				{
+					for (int k = m.Meshes[i].MeshParts[j].VertexOffset;
+						k < m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount - 3;
+						k += 3)
+					{
+						m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r, k, 3);
+						Triangle tri = new Triangle(tri_r[0].Position, tri_r[1].Position, tri_r[2].Position);
+						if (MollerTrumboreIntersection(r, tri, out Vector3? intersection)) return intersection;
+					}
+				}
+			}
+			return null;
+		}
+		public static bool MollerTrumboreIntersection(Ray r,Triangle tri,out Vector3? intersectionP)
+		{
+			//Source : https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+			const float EPSILON = 0.0000001f;
+			Vector3 vertex0 = tri.vertex0;
+			Vector3 vertex1 = tri.vertex1;
+			Vector3 vertex2 = tri.vertex2;
+			Vector3 edge1, edge2, h, s, q;
+			float a, f, u, v;
+			edge1 = vertex1 - vertex0;
+			edge2 = vertex2 - vertex0;
+			h = Vector3.Cross(r.Direction,edge2); 
+			a = Vector3.Dot(edge1,h);
+			if (a > -EPSILON && a < EPSILON)
+			{
+				intersectionP = null;
+				return false;    // This ray is parallel to this triangle.
+			}
+			f = 1.0f / a;
+			s = r.Position - vertex0;
+			u = f * Vector3.Dot(s,h);
+			if (u < 0.0 || u > 1.0)
+			{
+				intersectionP = null;
+				return false;
+			}
+			q = Vector3.Cross(s, edge1);
+			v = f * Vector3.Dot( r.Direction,q);
+			if (v < 0.0 || u + v > 1.0)
+			{
+				intersectionP = null;
+				return false;
+			}
+			// At this stage we can compute t to find out where the intersection point is on the line.
+			float t = f * Vector3.Dot(edge2, q);
+			if (t > EPSILON) // ray intersection
+			{
+				intersectionP = r.Position + r.Direction * t;
+				return true;
+			}
+			else // This means that there is a line intersection but not a ray intersection.
+			{
+				intersectionP = null;
+				return false;
+			}
+		}
+	}
+	public struct Triangle
+	{
+		public Vector3 vertex0;
+		public Vector3 vertex1;
+		public Vector3 vertex2;
+		public Triangle(Vector3 a,Vector3 b,Vector3 c)
+		{
+			vertex0 = a;
+			vertex1 = b;
+			vertex2 = c;
 		}
 	}
 }

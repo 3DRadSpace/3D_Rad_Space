@@ -1626,6 +1626,11 @@
             <param name="view">View Matrix.</param>
             <param name="projection">Projection Matrix</param>
         </member>
+        <member name="P:_3DRadSpaceDll.Skinmesh.TranslationMatrix">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:_3DRadSpaceDll.Skybox">
             <summary>
             Represents an Skybox object.
