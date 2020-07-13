@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace _3DRadSpace
@@ -120,9 +121,14 @@ namespace _3DRadSpace
 					IsMouseVisible = true;
 				}
 				Vector3 UnitV = Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
-				Editor_View.Position = UnitV * (5+mouse.ScrollWheelValue) * 0.01f;
+				Editor_View.Position = _3dcursor_loc + (UnitV * (5+mouse.ScrollWheelValue) * 0.01f);
 				Editor_View.CameraTarget = _3dcursor_loc;
+				//
+				//
 				//editing an object by double clicking in the editor
+				// (CURRENTLY DISABLED, IT'S BUGGY AS F*CK
+				//
+				/*
 				if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
 					float d = float.MaxValue;
@@ -135,26 +141,27 @@ namespace _3DRadSpace
 							if (RayI(finder, sk.Model.Meshes[0].BoundingSphere, i,out float ?cdst))
 							{
 								Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
+								if (val == null) continue;
 								if (_3dcursor_loc != null)
-                                {
+								{
 									if (d > cdst)
 									{
 										d = (float)cdst;
 										_3dcursor_loc = val.Value;
 									}
-                                }
+								}
 							}
 						}
 						if(o is Camera c)
 						{
 							if(RayI(finder, new BoundingSphere(c.Position, 2), i,out float? cdst))
-                            {
+							{
 								if (d > cdst)
 								{
 									d = (float)cdst;
 									_3dcursor_loc = c.Position;
 								}
-                            }
+							}
 						}
 						if(o is EventOnLocation eol)
 						{
@@ -162,7 +169,7 @@ namespace _3DRadSpace
 							{
 								case BoundingObject.Box:
 									if(RayI(finder,eol.BoundingBox,i,out float? cdst))
-                                    {
+									{
 										if (d > cdst)
 										{
 											d = (float)cdst;
@@ -185,6 +192,7 @@ namespace _3DRadSpace
 						}
 					}
 				}
+				*/
 			}
 			base.Update(gameTime);
 		}
@@ -332,17 +340,18 @@ namespace _3DRadSpace
 		}
 		public static Vector3? RayMeshCollision(Ray r,Model m,Matrix translation)
 		{
-			VertexPosition[] tri_r = new VertexPosition[10];
 			for (int i =0; i < m.Meshes.Count;i++)
 			{
 				for(int j =0; j < m.Meshes[i].MeshParts.Count;j++)
 				{
+					VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount];
+					m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r);
+					
 					for (int k = m.Meshes[i].MeshParts[j].VertexOffset;
 						k < m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount - 3;
 						k += 3)
 					{
-						m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r, k, 3);
-						Triangle tri = new Triangle(tri_r[0].Position, tri_r[1].Position, tri_r[2].Position);
+						Triangle tri = new Triangle(tri_r[k].Position, tri_r[k + 1].Position, tri_r[k + 2].Position);
 						if (MollerTrumboreIntersection(r, tri, out Vector3? intersection)) return intersection;
 					}
 				}
