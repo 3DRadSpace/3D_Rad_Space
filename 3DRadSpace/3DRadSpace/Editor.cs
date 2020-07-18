@@ -56,6 +56,7 @@ namespace _3DRadSpace
 		{
 			Window.AllowUserResizing = true;
 			Window.Title = "3DRadSpace - Editor v0.0.6 alpha";
+			GameWindow.WindowState = FormWindowState.Maximized;
 			IsMouseVisible = true;
 			if (Settings[0])
 			{
@@ -121,14 +122,15 @@ namespace _3DRadSpace
 					IsMouseVisible = true;
 				}
 				Vector3 UnitV = Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
-				Editor_View.Position = _3dcursor_loc + (UnitV * (5+mouse.ScrollWheelValue) * 0.01f);
+				Editor_View.Position = _3dcursor_loc + (UnitV * ( mouse.ScrollWheelValue) * 0.01f);
 				Editor_View.CameraTarget = _3dcursor_loc;
 				//
 				//
 				//editing an object by double clicking in the editor
-				// (CURRENTLY DISABLED, IT'S BUGGY AS F*CK
+				// pls fix
+				// I'm waiting for miracles to happen.
 				//
-				/*
+				
 				if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
 					float d = float.MaxValue;
@@ -192,7 +194,6 @@ namespace _3DRadSpace
 						}
 					}
 				}
-				*/
 			}
 			base.Update(gameTime);
 		}
@@ -358,6 +359,13 @@ namespace _3DRadSpace
 			}
 			return null;
 		}
+		/// <summary>
+		///  *insert prayer for this to work*
+		/// </summary>
+		/// <param name="r"></param>
+		/// <param name="tri"></param>
+		/// <param name="intersectionP"></param>
+		/// <returns></returns>
 		public static bool MollerTrumboreIntersection(Ray r,Triangle tri,out Vector3? intersectionP)
 		{
 			//Source : https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm

@@ -17,7 +17,7 @@ namespace _3DRadSpace
 		public EventOnKeyW()
 		{
 			InitializeComponent();
-			comboBox1.SelectedIndex = 0;
+			//comboBox1.SelectedIndex = 0;
 			opcodes = new List<OpCodeCall>();
 		}
 		public EventOnKeyW(EventOnKey eok)
@@ -33,7 +33,7 @@ namespace _3DRadSpace
 					break;
 				}
 			}
-			comboBox1.SelectedIndex = (int)eok.Key.State;
+			comboBox1.Text = GetStrFromInputType(eok.Key.State);
 			textBox2.Text = "" + eok.HoldingTime;
 			_eok = eok;
 			opcodes = eok.Behiavours;
@@ -48,9 +48,10 @@ namespace _3DRadSpace
 			EventOnKey k = new EventOnKey(
 				Editor.ValidateTextInput(textBox1.Text), 
 				checkBox1.Checked, 
-				new KeyInput(GetKeyFromListBox(
-					listBox1.Items[listBox1.SelectedIndex]+""),
-					(KeyInputType)comboBox1.SelectedIndex),
+				new KeyInput(
+							GetKeyFromListBox(listBox1.Items[listBox1.SelectedIndex]+""),
+							GetInputTypeFromStr(comboBox1.Text)
+							),
 				Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text))
 			);
 
@@ -170,6 +171,25 @@ namespace _3DRadSpace
 				case Microsoft.Xna.Framework.Input.Keys.Enter: return "Enter";
 				case Microsoft.Xna.Framework.Input.Keys.Space: return "Space";
 				default: return null;
+			}
+		}
+
+		string GetStrFromInputType(KeyInputType t)
+		{
+			switch (t)
+			{
+				case KeyInputType.Holding: return "Holding";
+				case KeyInputType.Released: return "Released";
+				default: return "Pressed";
+			}
+		}
+		KeyInputType GetInputTypeFromStr(string str)
+		{
+			switch (str)
+			{
+				case "Holding": return KeyInputType.Holding;
+				case "Released": return KeyInputType.Released;
+				default: return KeyInputType.Pressed;
 			}
 		}
 

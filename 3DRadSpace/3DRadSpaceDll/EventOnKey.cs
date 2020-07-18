@@ -37,7 +37,7 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		/// <param name="key">Specified keyboard button.</param>
 		/// <param name="state">Specified state.</param>
-		public KeyInput(Keys key= Keys.None, KeyInputType state= KeyInputType.Released)
+		public KeyInput(Keys key = Keys.None, KeyInputType state = KeyInputType.Released)
 		{
 			Key = key;
 			State = state;
