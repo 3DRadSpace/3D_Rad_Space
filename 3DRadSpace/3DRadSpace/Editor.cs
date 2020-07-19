@@ -71,6 +71,7 @@ namespace _3DRadSpace
 			Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
 			base.Initialize();
 		}
+		Effect sh_red;
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -80,6 +81,9 @@ namespace _3DRadSpace
 			D_Font = Content.Load<SpriteFont>("Font");
 			EventOnLocation.LoadModels(Content);
 			SoundSource.ModelMarker = Content.Load<Model>("SoundEffect_Model");
+			sh_red = Content.Load<Effect>("Shaders/RedVertexSh");
+
+			red_veticle_drwn = new BasicEffect(GraphicsDevice);
 		}
 
 		protected override void UnloadContent()
@@ -122,7 +126,7 @@ namespace _3DRadSpace
 					IsMouseVisible = true;
 				}
 				Vector3 UnitV = Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
-				Editor_View.Position = _3dcursor_loc + (UnitV * ( mouse.ScrollWheelValue) * 0.01f);
+				Editor_View.Position = _3dcursor_loc + (UnitV * (mouse.ScrollWheelValue - 500f) * 0.01f);
 				Editor_View.CameraTarget = _3dcursor_loc;
 				//
 				//
@@ -130,17 +134,17 @@ namespace _3DRadSpace
 				// pls fix
 				// I'm waiting for miracles to happen.
 				//
-				
-				if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+
+				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
 					float d = float.MaxValue;
 					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
-					for(int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+					for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 					{
 						GameObject o = _3DRadSpaceDll.Game.GameObjects[i];
-						if(o is Skinmesh sk)
+						if (o is Skinmesh sk)
 						{
-							if (RayI(finder, sk.Model.Meshes[0].BoundingSphere, i,out float ?cdst))
+							if (RayI_D(finder, sk.Model.Meshes[0].BoundingSphere, i, out float? cdst))
 							{
 								Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
 								if (val == null) continue;
@@ -154,9 +158,9 @@ namespace _3DRadSpace
 								}
 							}
 						}
-						if(o is Camera c)
+						if (o is Camera c)
 						{
-							if(RayI(finder, new BoundingSphere(c.Position, 2), i,out float? cdst))
+							if (RayI(finder, new BoundingSphere(c.Position, 2), i, out float? cdst))
 							{
 								if (d > cdst)
 								{
@@ -165,12 +169,12 @@ namespace _3DRadSpace
 								}
 							}
 						}
-						if(o is EventOnLocation eol)
+						if (o is EventOnLocation eol)
 						{
-							switch(eol.BoundingType)
+							switch (eol.BoundingType)
 							{
 								case BoundingObject.Box:
-									if(RayI(finder,eol.BoundingBox,i,out float? cdst))
+									if (RayI(finder, eol.BoundingBox, i, out float? cdst))
 									{
 										if (d > cdst)
 										{
@@ -189,7 +193,7 @@ namespace _3DRadSpace
 										}
 									}
 									break;
-								default:break;
+								default: break;
 							}
 						}
 					}
@@ -197,31 +201,55 @@ namespace _3DRadSpace
 			}
 			base.Update(gameTime);
 		}
+
+		void DrawModelRed(Model m)
+		{
+			for (int i = 0; i < m.Meshes.Count; i++)
+			{
+				for (int j = 0; j < m.Meshes[i].MeshParts.Count; j++)
+				{
+					VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount];
+					m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r);
+
+					//debug: draw dem triangles
+
+					sh_red.Parameters["World"].SetValue(Matrix.Identity);
+					sh_red.Parameters["View"].SetValue(View);
+					sh_red.Parameters["Projection"].SetValue(Projection);
+					sh_red.Parameters["SolidColor"].SetValue(Vector4.UnitX);
+					foreach (var pass in sh_red.CurrentTechnique.Passes)
+					{
+						pass.Apply();
+						GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tri_r, 0, tri_r.Length / 3);
+					}
+				}
+			}
+		}
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(ClearColor);
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
-			Editor_View.Draw( out View, out Projection);
+			Editor_View.Draw(out View, out Projection);
 
 			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
-			_3DRadSpaceDll.Game.DrawModel(Axis,Matrix.CreateRotationY(MathHelper.Pi*1.5f)* Matrix.CreateTranslation(_3dcursor_loc), View, Projection,FogEnabled,FogColor,FogStart,FogEnd);
-			
+			_3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateRotationY(MathHelper.Pi * 1.5f) * Matrix.CreateTranslation(_3dcursor_loc), View, Projection, FogEnabled, FogColor, FogStart, FogEnd);
+
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
 				if (gameObject is FPVCamera fc) fc.EditorDraw(null, View, Projection);
 				else if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
 				if (gameObject is SkyColor s) ClearColor = s.Color;
-				if(gameObject is Fog f)
+				if (gameObject is Fog f)
 				{
 					FogEnabled = f.Enabled;
 					FogColor = f.FogColor;
 					FogStart = f.FogStart;
 					FogEnd = f.FogEnd;
 				}
-				if(gameObject is Skinmesh sk)
+				if (gameObject is Skinmesh sk)
 				{
 					if (FogEnabled)
 					{
@@ -236,6 +264,7 @@ namespace _3DRadSpace
 						sk.FogEnabled = false;
 					}
 					sk.EditorDraw(null, View, Projection);
+					DrawModelRed(sk.Model);
 				}
 				if (gameObject is Skybox sb)
 				{
@@ -247,7 +276,7 @@ namespace _3DRadSpace
 				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
-			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords+ " CamPos "+Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
@@ -261,7 +290,7 @@ namespace _3DRadSpace
 		//bool _first_use; <- currently disabled.
 		private bool[] Settings_Load()
 		{
-			if(!Directory.Exists(Environment.ExpandEnvironmentVariables("%appdata%\\3DRadSpace")))
+			if (!Directory.Exists(Environment.ExpandEnvironmentVariables("%appdata%\\3DRadSpace")))
 			{
 				//_first_use = true;
 				Directory.CreateDirectory(Environment.ExpandEnvironmentVariables("%appdata%\\3DRadSpace"));
@@ -269,18 +298,18 @@ namespace _3DRadSpace
 			string appd = Environment.ExpandEnvironmentVariables("%AppData%\\3DRadSpace");
 			if (!File.Exists(appd + "\\Config.cfg"))
 			{
-				File.WriteAllText(appd + "\\Config.cfg","1 1 1 1");
+				File.WriteAllText(appd + "\\Config.cfg", "1 1 1 1");
 				return new[] { true, true, true };
 			}
 			string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
-			if(split.Length != 5)
+			if (split.Length != 5)
 			{
 				File.WriteAllText(appd + "\\Config.cfg", "1 1 1 1 1");
 				return new[] { true, true, true };
 			}
 			bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
-			CameraRotationSpeed = 0.001f * Convert.ToInt32(split[3],Main.CultureInfo);
-			CameraSpeed = 0.1f * Convert.ToInt32(split[4],Main.CultureInfo);
+			CameraRotationSpeed = 0.001f * Convert.ToInt32(split[3], Main.CultureInfo);
+			CameraSpeed = 0.1f * Convert.ToInt32(split[4], Main.CultureInfo);
 			return result;
 		}
 		bool GetKeyShortcut(KeyboardState keyboard, Microsoft.Xna.Framework.Input.Keys key)
@@ -310,7 +339,7 @@ namespace _3DRadSpace
 			direction.Normalize();
 			return new Ray(nearPoint, direction);
 		}
-		public bool RayI(Ray finder,BoundingBox obj, int i,out float? dist)
+		public bool RayI(Ray finder, BoundingBox obj, int i, out float? dist)
 		{
 			dist = finder.Intersects(obj);
 			if (dist != null)
@@ -321,13 +350,23 @@ namespace _3DRadSpace
 			}
 			else return false;
 		}
-		public bool RayI(Ray finder, BoundingSphere obj, int i,out float? dist)
+		public bool RayI(Ray finder, BoundingSphere obj, int i, out float? dist)
 		{
 			dist = finder.Intersects(obj);
 			if (dist != null)
 			{
 				selected_object_index = i;
 				_3dcursor_loc = obj.Center;
+				return true;
+			}
+			else return false;
+		}
+		public bool RayI_D(Ray finder, BoundingSphere obj, int i, out float? dist)
+		{
+			dist = finder.Intersects(obj);
+			if (dist != null)
+			{
+				selected_object_index = i;
 				return true;
 			}
 			else return false;
@@ -339,18 +378,32 @@ namespace _3DRadSpace
 			float z = MathHelper.Lerp(box.Min.Z, box.Max.Z, 0.5f);
 			return new Vector3(x, y, z);
 		}
-		public static Vector3? RayMeshCollision(Ray r,Model m,Matrix translation)
+		BasicEffect red_veticle_drwn;
+		public Vector3? RayMeshCollision(Ray r, Model m, Matrix translation)
 		{
-			for (int i =0; i < m.Meshes.Count;i++)
+			for (int i = 0; i < m.Meshes.Count; i++)
 			{
-				for(int j =0; j < m.Meshes[i].MeshParts.Count;j++)
+				for (int j = 0; j < m.Meshes[i].MeshParts.Count; j++)
 				{
 					VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount];
 					m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r);
-					
+
+					//debug: draw dem triangles
+					/*
+					sh_red.Parameters["World"].SetValue(translation);
+					sh_red.Parameters["View"].SetValue(View);
+					sh_red.Parameters["Projection"].SetValue(Projection);
+					sh_red.Parameters["SolidColor"].SetValue(Vector4.UnitX);
+					foreach (var pass in sh_red.CurrentTechnique.Passes)
+					{
+						pass.Apply();
+						GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tri_r, 0, tri_r.Length / 3);
+					}
+					*/
+
 					for (int k = m.Meshes[i].MeshParts[j].VertexOffset;
-						k < m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount - 3;
-						k += 3)
+								k < m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount - 3;
+								k += 3)
 					{
 						Triangle tri = new Triangle(tri_r[k].Position, tri_r[k + 1].Position, tri_r[k + 2].Position);
 						if (MollerTrumboreIntersection(r, tri, out Vector3? intersection)) return intersection;
@@ -366,7 +419,7 @@ namespace _3DRadSpace
 		/// <param name="tri"></param>
 		/// <param name="intersectionP"></param>
 		/// <returns></returns>
-		public static bool MollerTrumboreIntersection(Ray r,Triangle tri,out Vector3? intersectionP)
+		public static bool MollerTrumboreIntersection(Ray r, Triangle tri, out Vector3? intersectionP)
 		{
 			//Source : https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 			const float EPSILON = 0.0000001f;
@@ -377,8 +430,8 @@ namespace _3DRadSpace
 			float a, f, u, v;
 			edge1 = vertex1 - vertex0;
 			edge2 = vertex2 - vertex0;
-			h = Vector3.Cross(r.Direction,edge2); 
-			a = Vector3.Dot(edge1,h);
+			h = Vector3.Cross(r.Direction, edge2);
+			a = Vector3.Dot(edge1, h);
 			if (a > -EPSILON && a < EPSILON)
 			{
 				intersectionP = null;
@@ -386,14 +439,14 @@ namespace _3DRadSpace
 			}
 			f = 1.0f / a;
 			s = r.Position - vertex0;
-			u = f * Vector3.Dot(s,h);
+			u = f * Vector3.Dot(s, h);
 			if (u < 0.0 || u > 1.0)
 			{
 				intersectionP = null;
 				return false;
 			}
 			q = Vector3.Cross(s, edge1);
-			v = f * Vector3.Dot( r.Direction,q);
+			v = f * Vector3.Dot(r.Direction, q);
 			if (v < 0.0 || u + v > 1.0)
 			{
 				intersectionP = null;
@@ -418,7 +471,7 @@ namespace _3DRadSpace
 		public Vector3 vertex0;
 		public Vector3 vertex1;
 		public Vector3 vertex2;
-		public Triangle(Vector3 a,Vector3 b,Vector3 c)
+		public Triangle(Vector3 a, Vector3 b, Vector3 c)
 		{
 			vertex0 = a;
 			vertex1 = b;

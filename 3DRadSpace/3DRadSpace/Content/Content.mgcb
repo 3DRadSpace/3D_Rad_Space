@@ -103,6 +103,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin Shaders/RedVertexSh.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/RedVertexSh.fx
+
 #begin Shaders/SH_Skybox.fx
 /importer:EffectImporter
 /processor:EffectProcessor

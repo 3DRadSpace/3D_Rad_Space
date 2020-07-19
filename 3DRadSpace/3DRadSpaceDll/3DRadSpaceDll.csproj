@@ -64,6 +64,7 @@
     <Compile Include="GameSettings.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="ICustomGameObject.cs" />
+    <Compile Include="IShader.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MainPage_doxygen.cs" />
     <Compile Include="ObjectBehiavour.cs" />

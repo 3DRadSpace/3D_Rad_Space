@@ -1148,6 +1148,36 @@
             <param name="b">Buffer representing the entire project.</param>
             <param name="offset">Buffer offset</param>
         </member>
+        <member name="T:_3DRadSpaceDll.IShader">
+            <summary>
+            Base interface for 3D shader effect classes
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.IShader.Effect">
+            <summary>
+            The class containing the shader itself
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.IShader.LoadEffect">
+            <summary>
+            A function used internally by the game engine.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.IShader.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Draws a model using the specified shader.
+            </summary>
+            <param name="mesh"></param>
+            <param name="world"></param>
+            <param name="view"></param>
+            <param name="projection"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.IShader.DrawSkinmesh(_3DRadSpaceDll.Skinmesh)">
+            <summary>
+            Draws a skinmesh with the specified shader.
+            </summary>
+            <param name="skinmesh"></param>
+        </member>
         <member name="T:_3DRadSpaceDll.Main">
             <summary>
             Global stuff there and over there.
