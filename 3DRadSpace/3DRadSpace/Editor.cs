@@ -37,8 +37,6 @@ namespace _3DRadSpace
 
 		SpriteFont D_Font;
 
-		//Possible skybox fix
-		//SamplerState ss = new SamplerState() { AddressU = TextureAddressMode.Wrap, AddressV = TextureAddressMode.Wrap};
 		public Editor()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -71,7 +69,6 @@ namespace _3DRadSpace
 			Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
 			base.Initialize();
 		}
-		Effect sh_red;
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -81,9 +78,6 @@ namespace _3DRadSpace
 			D_Font = Content.Load<SpriteFont>("Font");
 			EventOnLocation.LoadModels(Content);
 			SoundSource.ModelMarker = Content.Load<Model>("SoundEffect_Model");
-			sh_red = Content.Load<Effect>("Shaders/RedVertexSh");
-
-			red_veticle_drwn = new BasicEffect(GraphicsDevice);
 		}
 
 		protected override void UnloadContent()
@@ -93,6 +87,7 @@ namespace _3DRadSpace
 		Vector3 _3dcursor_loc = Vector3.Zero;
 		int selected_object_index = -1;
 
+		MouseState oldState;
 		protected override void Update(GameTime gameTime)
 		{
 			if (Form.ActiveForm == GameWindow)
@@ -128,14 +123,9 @@ namespace _3DRadSpace
 				Vector3 UnitV = Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
 				Editor_View.Position = _3dcursor_loc + (UnitV * (mouse.ScrollWheelValue - 500f) * 0.01f);
 				Editor_View.CameraTarget = _3dcursor_loc;
-				//
-				//
-				//editing an object by double clicking in the editor
-				// pls fix
-				// I'm waiting for miracles to happen.
-				//
 
-				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed &&
+					oldState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
 				{
 					float d = float.MaxValue;
 					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
@@ -144,16 +134,21 @@ namespace _3DRadSpace
 						GameObject o = _3DRadSpaceDll.Game.GameObjects[i];
 						if (o is Skinmesh sk)
 						{
-							if (RayI_D(finder, sk.Model.Meshes[0].BoundingSphere, i, out float? cdst))
+							for (int j = 0; j < sk.Model.Meshes.Count; j++)
 							{
-								Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
-								if (val == null) continue;
-								if (_3dcursor_loc != null)
+								BoundingSphere sph = sk.Model.Meshes[j].BoundingSphere;
+								sph.Center += sk.Position;
+								if (RayI_D(finder, sph, i, out float? cdst))
 								{
-									if (d > cdst)
+									Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
+									if (val == null) continue;
+									if (_3dcursor_loc != null)
 									{
-										d = (float)cdst;
-										_3dcursor_loc = val.Value;
+										if (d > cdst)
+										{
+											d = (float)cdst;
+											_3dcursor_loc = val.Value;
+										}
 									}
 								}
 							}
@@ -198,33 +193,16 @@ namespace _3DRadSpace
 						}
 					}
 				}
+				oldState = mouse;
+				//edit object keyboard shortcut
+				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && selected_object_index != -1)
+                {
+					EditObj(selected_object_index);
+                }
 			}
 			base.Update(gameTime);
 		}
 
-		void DrawModelRed(Model m)
-		{
-			for (int i = 0; i < m.Meshes.Count; i++)
-			{
-				for (int j = 0; j < m.Meshes[i].MeshParts.Count; j++)
-				{
-					VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount];
-					m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r);
-
-					//debug: draw dem triangles
-
-					sh_red.Parameters["World"].SetValue(Matrix.Identity);
-					sh_red.Parameters["View"].SetValue(View);
-					sh_red.Parameters["Projection"].SetValue(Projection);
-					sh_red.Parameters["SolidColor"].SetValue(Vector4.UnitX);
-					foreach (var pass in sh_red.CurrentTechnique.Passes)
-					{
-						pass.Apply();
-						GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tri_r, 0, tri_r.Length / 3);
-					}
-				}
-			}
-		}
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(ClearColor);
@@ -264,7 +242,7 @@ namespace _3DRadSpace
 						sk.FogEnabled = false;
 					}
 					sk.EditorDraw(null, View, Projection);
-					DrawModelRed(sk.Model);
+					//DrawModelRed(sk.Model);
 				}
 				if (gameObject is Skybox sb)
 				{
@@ -378,34 +356,29 @@ namespace _3DRadSpace
 			float z = MathHelper.Lerp(box.Min.Z, box.Max.Z, 0.5f);
 			return new Vector3(x, y, z);
 		}
-		BasicEffect red_veticle_drwn;
 		public Vector3? RayMeshCollision(Ray r, Model m, Matrix translation)
 		{
 			for (int i = 0; i < m.Meshes.Count; i++)
 			{
 				for (int j = 0; j < m.Meshes[i].MeshParts.Count; j++)
 				{
-					VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount];
-					m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r);
+					//VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].PrimitiveCount + m.Meshes[i].MeshParts[j].StartIndex];
+					//m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r,m.Meshes[i].MeshParts[j].StartIndex,m.Meshes[i].MeshParts[j].PrimitiveCount);
 
-					//debug: draw dem triangles
-					/*
-					sh_red.Parameters["World"].SetValue(translation);
-					sh_red.Parameters["View"].SetValue(View);
-					sh_red.Parameters["Projection"].SetValue(Projection);
-					sh_red.Parameters["SolidColor"].SetValue(Vector4.UnitX);
-					foreach (var pass in sh_red.CurrentTechnique.Passes)
+					Vector3[] verts = new Vector3[m.Meshes[i].MeshParts[j].NumVertices];
+					m.Meshes[i].MeshParts[j].VertexBuffer.GetData<Vector3>(m.Meshes[i].MeshParts[j].VertexOffset + (m.Meshes[i].MeshParts[j].VertexOffset * m.Meshes[i].MeshParts[j].VertexBuffer.VertexDeclaration.VertexStride),
+						verts, 0, m.Meshes[i].MeshParts[j].NumVertices, m.Meshes[i].MeshParts[j].VertexBuffer.VertexDeclaration.VertexStride);
+
+					short[] indicies = new short[m.Meshes[i].MeshParts[j].IndexBuffer.IndexCount];
+					m.Meshes[i].MeshParts[j].IndexBuffer.GetData(m.Meshes[i].MeshParts[j].StartIndex * 2, indicies, 0, m.Meshes[i].MeshParts[j].PrimitiveCount * 3);
+
+					for (int k = 0; k < verts.Length; k++)
 					{
-						pass.Apply();
-						GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tri_r, 0, tri_r.Length / 3);
+						Vector3.Transform(ref verts[i], ref translation, out verts[i]);
 					}
-					*/
-
-					for (int k = m.Meshes[i].MeshParts[j].VertexOffset;
-								k < m.Meshes[i].MeshParts[j].VertexBuffer.VertexCount - 3;
-								k += 3)
+					for (int k = 0; k < indicies.Length ; k += 3)
 					{
-						Triangle tri = new Triangle(tri_r[k].Position, tri_r[k + 1].Position, tri_r[k + 2].Position);
+						Triangle tri = new Triangle(verts[indicies[k]], verts[indicies[k + 1]], verts[indicies[k + 2]]);
 						if (MollerTrumboreIntersection(r, tri, out Vector3? intersection)) return intersection;
 					}
 				}

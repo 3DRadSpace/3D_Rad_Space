@@ -207,7 +207,7 @@ namespace _3DRadSpaceDll
             if (!Enabled) return;
             for (int i = 0; i < Behiavours.Count; i++)
             {
-                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
+                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID];
                 int b = Behiavours[i].BehiavourID;
                 if (b == 2)
                 {

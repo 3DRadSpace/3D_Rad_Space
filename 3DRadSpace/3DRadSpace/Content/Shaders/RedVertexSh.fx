@@ -30,8 +30,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	float4 worldPosition = mul(input.Position, World);
 	float4 viewPosition = mul(worldPosition, View);
 	output.Position = mul(viewPosition, Projection);
-	output.Color = SolidColor;
 
+	output.Color = SolidColor;
 	return output;
 }
 

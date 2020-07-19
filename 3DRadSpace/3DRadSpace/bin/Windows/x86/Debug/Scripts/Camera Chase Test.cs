@@ -18,10 +18,12 @@ class Script
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {
-        if(keyboard.IsKeyDown(Keys.Up)) _ourmesh.Position.Z += 1;
-        if(keyboard.IsKeyDown(Keys.Down)) _ourmesh.Position.Z -= 1;
-        if(keyboard.IsKeyDown(Keys.Right)) _ourmesh.Position.X -= 1;
-        if(keyboard.IsKeyDown(Keys.Left)) _ourmesh.Position.X += 1;
+        float dt = (float)time.ElapsedGameTime.TotalSeconds;
+        
+        if(keyboard.IsKeyDown(Keys.Up)) _ourmesh.Position.Z += 10*dt;
+        if(keyboard.IsKeyDown(Keys.Down)) _ourmesh.Position.Z -= 10*dt;
+        if(keyboard.IsKeyDown(Keys.Right)) _ourmesh.Position.X -= 10*dt;
+        if(keyboard.IsKeyDown(Keys.Left)) _ourmesh.Position.X += 10*dt;
         c.Update(mouse,keyboard,time);
     }
     public void Draw(SpriteBatch batch,Matrix? view, Matrix? projection)
