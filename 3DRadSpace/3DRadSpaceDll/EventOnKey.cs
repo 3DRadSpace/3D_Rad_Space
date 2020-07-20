@@ -17,7 +17,7 @@ namespace _3DRadSpaceDll
 		/// <summary>
 		/// The key is up.
 		/// </summary>
-		Released=0,
+		Released,
 		/// <summary>
 		/// The key is being pressed.
 		/// </summary>

@@ -475,6 +475,7 @@ namespace _3DRadSpace
 			}
 			_3DRadSpaceDll.Game.GameObjects.Clear();
 			UpdateObjects();
+			Reset3DCursor();
 		}
 		void LoadAllObjects()
 		{
@@ -578,6 +579,22 @@ namespace _3DRadSpace
 				
 			}
 			_deselect = false;
+		}
+		private void reset3DCursor_e(object sender, EventArgs e)
+		{
+			Reset3DCursor();
+		}
+		void Reset3DCursor()
+		{
+			_3dcursor_loc = Vector3.Zero;
+		}
+		void setFocusFalse(object sender,EventArgs e)
+        {
+			_viewportfocus = false;
+		}
+		void setFocusTrue(object sender, EventArgs e)
+		{
+			_viewportfocus = true;
 		}
 	}
 }

@@ -262,6 +262,7 @@ namespace _3DRadSpaceDll
 				List<OpCodeCall> c = new List<OpCodeCall>();
 				for(int i =offset; i < stop;i++)
 				{
+					if (string.IsNullOrEmpty(str[i])) continue;
 					Opcode op = (Opcode)Convert.ToInt32(str[i], Main.CultureInfo);
 					switch (op)
 					{

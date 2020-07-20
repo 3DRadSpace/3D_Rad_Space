@@ -88,9 +88,10 @@ namespace _3DRadSpace
 		int selected_object_index = -1;
 
 		MouseState oldState;
+		bool _viewportfocus = true;
 		protected override void Update(GameTime gameTime)
 		{
-			if (Form.ActiveForm == GameWindow)
+			if (Form.ActiveForm == GameWindow && _viewportfocus)
 			{
 				KeyboardState keyboard = Keyboard.GetState();
 				MouseState mouse = Mouse.GetState();
@@ -127,7 +128,7 @@ namespace _3DRadSpace
 				if (mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed &&
 					oldState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
 				{
-					float d = float.MaxValue;
+					float d = float.MinValue;
 					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
 					for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 					{
@@ -138,16 +139,17 @@ namespace _3DRadSpace
 							{
 								BoundingSphere sph = sk.Model.Meshes[j].BoundingSphere;
 								sph.Center += sk.Position;
-								if (RayI_D(finder, sph, i, out float? cdst))
+								if (RayI(finder, sph, out float? cdst))
 								{
 									Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
 									if (val == null) continue;
 									if (_3dcursor_loc != null)
 									{
-										if (d > cdst)
+										if (d < cdst)
 										{
 											d = (float)cdst;
 											_3dcursor_loc = val.Value;
+											selected_object_index = i;
 										}
 									}
 								}
@@ -155,12 +157,13 @@ namespace _3DRadSpace
 						}
 						if (o is Camera c)
 						{
-							if (RayI(finder, new BoundingSphere(c.Position, 2), i, out float? cdst))
+							if (RayI(finder, new BoundingSphere(c.Position, 2), out float? cdst))
 							{
-								if (d > cdst)
+								if (d < cdst)
 								{
 									d = (float)cdst;
 									_3dcursor_loc = c.Position;
+									selected_object_index = i;
 								}
 							}
 						}
@@ -169,22 +172,24 @@ namespace _3DRadSpace
 							switch (eol.BoundingType)
 							{
 								case BoundingObject.Box:
-									if (RayI(finder, eol.BoundingBox, i, out float? cdst))
+									if (RayI(finder, eol.BoundingBox, out float? cdst))
 									{
-										if (d > cdst)
+										if (d < cdst)
 										{
 											d = (float)cdst;
-											_3dcursor_loc = eol.Position;
+											_3dcursor_loc = finder.Position + finder.Direction * d;
+											selected_object_index = i;
 										}
 									}
 									break;
 								case BoundingObject.Sphere:
-									if (RayI(finder, eol.BoundingSphere, i, out float? cdsts))
+									if (RayI(finder, eol.BoundingSphere, out float? cdsts))
 									{
-										if (d > cdsts)
+										if (d < cdsts)
 										{
 											d = (float)cdsts;
-											_3dcursor_loc = eol.Position;
+											_3dcursor_loc = finder.Position + finder.Direction * d;
+											selected_object_index = i;
 										}
 									}
 									break;
@@ -196,9 +201,7 @@ namespace _3DRadSpace
 				oldState = mouse;
 				//edit object keyboard shortcut
 				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && selected_object_index != -1)
-                {
 					EditObj(selected_object_index);
-                }
 			}
 			base.Update(gameTime);
 		}
@@ -254,7 +257,7 @@ namespace _3DRadSpace
 				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
-			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(270, graphics.PreferredBackBufferHeight - 50), Color.White);
 			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
 			{
 				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
@@ -317,34 +320,20 @@ namespace _3DRadSpace
 			direction.Normalize();
 			return new Ray(nearPoint, direction);
 		}
-		public bool RayI(Ray finder, BoundingBox obj, int i, out float? dist)
+		public bool RayI(Ray finder, BoundingBox obj, out float? dist)
 		{
 			dist = finder.Intersects(obj);
 			if (dist != null)
 			{
-				selected_object_index = i;
-				_3dcursor_loc = GetBoxCenter(obj);
 				return true;
 			}
 			else return false;
 		}
-		public bool RayI(Ray finder, BoundingSphere obj, int i, out float? dist)
+		public bool RayI(Ray finder, BoundingSphere obj, out float? dist)
 		{
 			dist = finder.Intersects(obj);
 			if (dist != null)
 			{
-				selected_object_index = i;
-				_3dcursor_loc = obj.Center;
-				return true;
-			}
-			else return false;
-		}
-		public bool RayI_D(Ray finder, BoundingSphere obj, int i, out float? dist)
-		{
-			dist = finder.Intersects(obj);
-			if (dist != null)
-			{
-				selected_object_index = i;
 				return true;
 			}
 			else return false;
@@ -362,9 +351,6 @@ namespace _3DRadSpace
 			{
 				for (int j = 0; j < m.Meshes[i].MeshParts.Count; j++)
 				{
-					//VertexPosition[] tri_r = new VertexPosition[m.Meshes[i].MeshParts[j].PrimitiveCount + m.Meshes[i].MeshParts[j].StartIndex];
-					//m.Meshes[i].MeshParts[j].VertexBuffer.GetData(tri_r,m.Meshes[i].MeshParts[j].StartIndex,m.Meshes[i].MeshParts[j].PrimitiveCount);
-
 					Vector3[] verts = new Vector3[m.Meshes[i].MeshParts[j].NumVertices];
 					m.Meshes[i].MeshParts[j].VertexBuffer.GetData<Vector3>(m.Meshes[i].MeshParts[j].VertexOffset + (m.Meshes[i].MeshParts[j].VertexOffset * m.Meshes[i].MeshParts[j].VertexBuffer.VertexDeclaration.VertexStride),
 						verts, 0, m.Meshes[i].MeshParts[j].NumVertices, m.Meshes[i].MeshParts[j].VertexBuffer.VertexDeclaration.VertexStride);
@@ -374,8 +360,9 @@ namespace _3DRadSpace
 
 					for (int k = 0; k < verts.Length; k++)
 					{
-						Vector3.Transform(ref verts[i], ref translation, out verts[i]);
+						verts[k] = Vector3.Transform(verts[k], translation);
 					}
+
 					for (int k = 0; k < indicies.Length ; k += 3)
 					{
 						Triangle tri = new Triangle(verts[indicies[k]], verts[indicies[k + 1]], verts[indicies[k + 2]]);
@@ -386,7 +373,7 @@ namespace _3DRadSpace
 			return null;
 		}
 		/// <summary>
-		///  *insert prayer for this to work*
+		///  Ray-Triangle intersection algorithm
 		/// </summary>
 		/// <param name="r"></param>
 		/// <param name="tri"></param>

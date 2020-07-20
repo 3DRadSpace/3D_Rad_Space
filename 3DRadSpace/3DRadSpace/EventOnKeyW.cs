@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace _3DRadSpace
 		public EventOnKeyW()
 		{
 			InitializeComponent();
-			//comboBox1.SelectedIndex = 0;
+			listBox1.SelectedIndex = 0;
 			opcodes = new List<OpCodeCall>();
 		}
 		public EventOnKeyW(EventOnKey eok)
@@ -33,7 +34,7 @@ namespace _3DRadSpace
 					break;
 				}
 			}
-			comboBox1.Text = GetStrFromInputType(eok.Key.State);
+			DetermineInputType(eok.Key.State);
 			textBox2.Text = "" + eok.HoldingTime;
 			_eok = eok;
 			opcodes = eok.Behiavours;
@@ -50,7 +51,7 @@ namespace _3DRadSpace
 				checkBox1.Checked, 
 				new KeyInput(
 							GetKeyFromListBox(listBox1.Items[listBox1.SelectedIndex]+""),
-							GetInputTypeFromStr(comboBox1.Text)
+							GetInputType()
 							),
 				Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text))
 			);
@@ -174,31 +175,25 @@ namespace _3DRadSpace
 			}
 		}
 
-		string GetStrFromInputType(KeyInputType t)
-		{
-			switch (t)
-			{
-				case KeyInputType.Holding: return "Holding";
-				case KeyInputType.Released: return "Released";
-				default: return "Pressed";
-			}
-		}
-		KeyInputType GetInputTypeFromStr(string str)
-		{
-			switch (str)
-			{
-				case "Holding": return KeyInputType.Holding;
-				case "Released": return KeyInputType.Released;
-				default: return KeyInputType.Pressed;
-			}
-		}
-
 		private void button2_Click(object sender, EventArgs e)
 		{
 			DialogResult = DialogResult.Cancel;
 			Close();
 		}
-
+		bool DetermineInputType(KeyInputType t)
+		{
+			if (t == KeyInputType.Released) return radioButton1.Checked = true;
+			if (t == KeyInputType.Pressed) return radioButton2.Checked = true;
+			if (t == KeyInputType.Holding) return radioButton3.Checked = true;
+            throw new Exception("some horrible bug happened there. It's because of WinForms.");
+		}
+		KeyInputType GetInputType()
+		{
+			if (radioButton1.Checked == true) return KeyInputType.Released;
+			if (radioButton2.Checked == true) return KeyInputType.Pressed;
+			if (radioButton3.Checked == true) return KeyInputType.Holding;
+			throw new Exception("nothing was checked. this shouldn't happen in the first place,");
+		}
 		private void button3_Click(object sender, EventArgs e)
 		{
 			//open docs...
@@ -216,9 +211,10 @@ namespace _3DRadSpace
 			editor.Dispose();
 		}
 
-		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		private void radioButton3_CheckedChanged(object sender, EventArgs e)
 		{
-			if (comboBox1.SelectedIndex != (int)KeyInputType.Holding) textBox2.Text = "0";
+			if (radioButton3.Checked == false) textBox2.Text = "0";
+			else textBox2.Text = "50";
 		}
 	}
 }

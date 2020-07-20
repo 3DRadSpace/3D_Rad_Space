@@ -25,6 +25,7 @@ namespace _3DRadSpace
         private System.Windows.Forms.ToolStripMenuItem addAObjectCtrlAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addAAddonToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem installResourcesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetCursorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
@@ -57,6 +58,7 @@ namespace _3DRadSpace
             this.addAObjectCtrlAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAAddonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.installResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetCursorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +91,8 @@ namespace _3DRadSpace
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.MouseEnter += setFocusFalse;
+            menuStrip1.MouseLeave += setFocusTrue;
             // 
             // fileToolStripMenuItem
             // 
@@ -103,6 +107,8 @@ namespace _3DRadSpace
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.MouseEnter += setFocusFalse;
+            fileToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // newToolStripMenuItem
             // 
@@ -110,6 +116,8 @@ namespace _3DRadSpace
             this.newToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.newToolStripMenuItem.Text = "&New Project (Ctrl+N)";
             newToolStripMenuItem.Click += newProject;
+            newToolStripMenuItem.MouseEnter += setFocusFalse;
+            newToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // openCtrlOToolStripMenuItem
             // 
@@ -117,6 +125,8 @@ namespace _3DRadSpace
             this.openCtrlOToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.openCtrlOToolStripMenuItem.Text = "&Open Project (Ctrl+O)";
             openCtrlOToolStripMenuItem.Click += openProject;
+            openCtrlOToolStripMenuItem.MouseEnter += setFocusFalse;
+            openCtrlOToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // saveCtrlSToolStripMenuItem
             // 
@@ -124,6 +134,8 @@ namespace _3DRadSpace
             this.saveCtrlSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.saveCtrlSToolStripMenuItem.Text = "&Save Project (Ctrl+S)";
             saveCtrlSToolStripMenuItem.Click += saveProject;
+            saveCtrlSToolStripMenuItem.MouseEnter += setFocusFalse;
+            saveCtrlSToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // saveProjectAsCtrlshiftSToolStripMenuItem
             // 
@@ -131,6 +143,8 @@ namespace _3DRadSpace
             this.saveProjectAsCtrlshiftSToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.saveProjectAsCtrlshiftSToolStripMenuItem.Text = "Save Project As (Ctrl+Alt+S)";
             saveProjectAsCtrlshiftSToolStripMenuItem.Click += saveProjectAs;
+            saveProjectAsCtrlshiftSToolStripMenuItem.MouseEnter += setFocusFalse;
+            saveProjectAsCtrlshiftSToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // playProjectCtrlPToolStripMenuItem
             // 
@@ -138,6 +152,8 @@ namespace _3DRadSpace
             this.playProjectCtrlPToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.playProjectCtrlPToolStripMenuItem.Text = "&Play Project (Ctrl+P)";
             playProjectCtrlPToolStripMenuItem.Click += playProject;
+            playProjectCtrlPToolStripMenuItem.MouseEnter += setFocusFalse;
+            playProjectCtrlPToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // compileProjectToolStripMenuItem
             // 
@@ -145,6 +161,8 @@ namespace _3DRadSpace
             this.compileProjectToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.compileProjectToolStripMenuItem.Text = "Compile Project";
             compileProjectToolStripMenuItem.Click += compileProject;
+            compileProjectToolStripMenuItem.MouseEnter += setFocusFalse;
+            compileProjectToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // exitToolStripMenuItem
             // 
@@ -152,16 +170,21 @@ namespace _3DRadSpace
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.exitToolStripMenuItem.Text = "Exit (Alt+F4)";
             exitToolStripMenuItem.Click += exitEditor;
+            exitToolStripMenuItem.MouseEnter += setFocusFalse;
+            exitToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // objectToolStripMenuItem
             // 
             this.objectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAObjectCtrlAToolStripMenuItem,
             this.addAAddonToolStripMenuItem,
-            this.installResourcesToolStripMenuItem});
+            this.installResourcesToolStripMenuItem,
+            this.resetCursorToolStripMenuItem});
             this.objectToolStripMenuItem.Name = "objectToolStripMenuItem";
             this.objectToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.objectToolStripMenuItem.Text = "Edit";
+            objectToolStripMenuItem.MouseEnter += setFocusFalse;
+            objectToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // addAObjectCtrlAToolStripMenuItem
             // 
@@ -169,6 +192,9 @@ namespace _3DRadSpace
             this.addAObjectCtrlAToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addAObjectCtrlAToolStripMenuItem.Text = "&Add a Object (Ctrl+A)";
             addAObjectCtrlAToolStripMenuItem.Click += addObject;
+            addAObjectCtrlAToolStripMenuItem.MouseEnter += setFocusFalse;
+            addAObjectCtrlAToolStripMenuItem.MouseLeave += setFocusTrue;
+
             // 
             // addAAddonToolStripMenuItem
             // 
@@ -176,6 +202,8 @@ namespace _3DRadSpace
             this.addAAddonToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addAAddonToolStripMenuItem.Text = "Add a Addon";
             addAAddonToolStripMenuItem.Click += addAddon;
+            addAAddonToolStripMenuItem.MouseEnter += setFocusFalse;
+            addAAddonToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // installResourcesToolStripMenuItem
             // 
@@ -183,6 +211,17 @@ namespace _3DRadSpace
             this.installResourcesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.installResourcesToolStripMenuItem.Text = "Install resources";
             installResourcesToolStripMenuItem.Click += installResources;
+            installResourcesToolStripMenuItem.MouseEnter += setFocusFalse;
+            installResourcesToolStripMenuItem.MouseLeave += setFocusTrue;
+            // 
+            // resetCursorToolStripMenuItem
+            // 
+            this.resetCursorToolStripMenuItem.Name = "resetCursorToolStripMenuItem";
+            this.resetCursorToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.resetCursorToolStripMenuItem.Text = "Reset 3D Cursor Location";
+            resetCursorToolStripMenuItem.Click += reset3DCursor_e;
+            resetCursorToolStripMenuItem.MouseEnter += setFocusFalse;
+            resetCursorToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // optionsToolStripMenuItem
             // 
@@ -192,6 +231,8 @@ namespace _3DRadSpace
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
+            optionsToolStripMenuItem.MouseEnter += setFocusFalse;
+            optionsToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // checkForUpdatesToolStripMenuItem
             // 
@@ -199,6 +240,8 @@ namespace _3DRadSpace
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
             checkForUpdatesToolStripMenuItem.Click += checkforUpdatesEvent;
+            checkForUpdatesToolStripMenuItem.MouseEnter += setFocusFalse;
+            checkForUpdatesToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // settingsToolStripMenuItem
             // 
@@ -206,6 +249,8 @@ namespace _3DRadSpace
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             settingsToolStripMenuItem.Click += settingsOpen;
+            settingsToolStripMenuItem.MouseEnter += setFocusFalse;
+            settingsToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // helpToolStripMenuItem
             // 
@@ -218,6 +263,8 @@ namespace _3DRadSpace
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            helpToolStripMenuItem.MouseEnter += setFocusFalse;
+            helpToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // aboutToolStripMenuItem
             // 
@@ -225,6 +272,8 @@ namespace _3DRadSpace
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutBoxOpen;
+            aboutToolStripMenuItem.MouseEnter += setFocusFalse;
+            aboutToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // documentationToolStripMenuItem
             // 
@@ -232,6 +281,8 @@ namespace _3DRadSpace
             this.documentationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentationToolStripMenuItem.Text = "Documentation";
             documentationToolStripMenuItem.Click += openDocumentation;
+            documentationToolStripMenuItem.MouseEnter += setFocusFalse;
+            documentationToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // officialWebsiteToolStripMenuItem
             // 
@@ -239,6 +290,8 @@ namespace _3DRadSpace
             this.officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.officialWebsiteToolStripMenuItem.Text = "Official Website";
             officialWebsiteToolStripMenuItem.Click += officialWebsite;
+            officialWebsiteToolStripMenuItem.MouseEnter += setFocusFalse;
+            officialWebsiteToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // forumToolStripMenuItem
             // 
@@ -246,6 +299,8 @@ namespace _3DRadSpace
             this.forumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.forumToolStripMenuItem.Text = "Forum";
             forumToolStripMenuItem.Click += openForum;
+            forumToolStripMenuItem.MouseEnter += setFocusFalse;
+            forumToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // reportABugToolStripMenuItem
             // 
@@ -253,6 +308,8 @@ namespace _3DRadSpace
             this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportABugToolStripMenuItem.Text = "Report a bug";
             reportABugToolStripMenuItem.Click += reportBug;
+            reportABugToolStripMenuItem.MouseEnter += setFocusFalse;
+            reportABugToolStripMenuItem.MouseLeave += setFocusTrue;
             // 
             // contextMenuStrip1
             // 
