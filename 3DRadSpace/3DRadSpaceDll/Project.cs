@@ -241,7 +241,7 @@ namespace _3DRadSpaceDll
 						}
 					case "eok":
 						{
-							a = new EventOnKey()
+							EventOnKey eok = new EventOnKey()
 							{
 								Name = Obj[1],
 								Enabled = Convert.ToBoolean(Obj[2], Main.CultureInfo),
@@ -250,6 +250,8 @@ namespace _3DRadSpaceDll
 								HoldingTime = Convert.ToUInt32(Obj[5], Main.CultureInfo),
 								Behiavours = OpcodeEvent.OpCodeCall.CreateFromString(6, Obj, Obj.Length)
 							};
+							eok.Key.State = (KeyInputType)Convert.ToInt32(Obj[4], Main.CultureInfo);
+							a = eok;
 							break;
 						}
 					case "gamesettings":

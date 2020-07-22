@@ -323,6 +323,12 @@
             The key state.
             </summary>
         </member>
+        <member name="M:_3DRadSpaceDll.KeyInput.ToString">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.KeyEvent">
             <summary>
             Triggers when the key is up/down/ hold for enough time.

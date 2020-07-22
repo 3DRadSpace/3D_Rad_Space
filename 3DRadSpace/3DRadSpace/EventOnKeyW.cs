@@ -35,6 +35,7 @@ namespace _3DRadSpace
 				}
 			}
 			DetermineInputType(eok.Key.State);
+			Debug.Print("loading ->" + eok.Key.State);
 			textBox2.Text = "" + eok.HoldingTime;
 			_eok = eok;
 			opcodes = eok.Behiavours;
@@ -46,17 +47,20 @@ namespace _3DRadSpace
 		private void button1_Click(object sender, EventArgs e)
 		{
 			DialogResult = DialogResult.OK;
-			EventOnKey k = new EventOnKey(
-				Editor.ValidateTextInput(textBox1.Text), 
-				checkBox1.Checked, 
-				new KeyInput(
-							GetKeyFromListBox(listBox1.Items[listBox1.SelectedIndex]+""),
-							GetInputType()
-							),
-				Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text))
-			);
+			EventOnKey k = new EventOnKey() {
+				Name =Editor.ValidateTextInput(textBox1.Text),
+				Enabled = checkBox1.Checked,
+				Key = new KeyInput()
+				{
+					Key = GetKeyFromListBox(listBox1.Items[listBox1.SelectedIndex] + ""),
+					State = GetInputType()
+				},
+				HoldingTime = Convert.ToUInt32(Editor.ValidateNumberTextInput(textBox2.Text))
+			};
 
 			k.Behiavours = opcodes;
+			Debug.Print("saving -> "+k.Key.State + " " + GetInputType());
+			k.Key.State = GetInputType();
 			Result = k;
 			Close();
 		}
@@ -182,6 +186,7 @@ namespace _3DRadSpace
 		}
 		bool DetermineInputType(KeyInputType t)
 		{
+			Debug.Print(t + " " + radioButton1.Checked + " " + radioButton2.Checked + " " + radioButton3.Checked);
 			if (t == KeyInputType.Released) return radioButton1.Checked = true;
 			if (t == KeyInputType.Pressed) return radioButton2.Checked = true;
 			if (t == KeyInputType.Holding) return radioButton3.Checked = true;
@@ -189,6 +194,7 @@ namespace _3DRadSpace
 		}
 		KeyInputType GetInputType()
 		{
+			Debug.Print( radioButton1.Checked + " " + radioButton2.Checked + " " + radioButton3.Checked);
 			if (radioButton1.Checked == true) return KeyInputType.Released;
 			if (radioButton2.Checked == true) return KeyInputType.Pressed;
 			if (radioButton3.Checked == true) return KeyInputType.Holding;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using _3DRadSpaceDll.OpcodeEvent;
+using System.Diagnostics;
 
 namespace _3DRadSpaceDll
 {
@@ -50,7 +51,15 @@ namespace _3DRadSpaceDll
 		/// The key state.
 		/// </summary>
 		public KeyInputType State;
-	}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+        public override string ToString()
+        {
+			return "{" + Key + " " + State + "}";
+        }
+    }
 	/// <summary>
 	/// Triggers when the key is up/down/ hold for enough time.
 	/// </summary>
