@@ -29,6 +29,16 @@ namespace _3DRadSpaceDll
             GroupedObjs.AddRange(objs);
         }
         /// <summary>
+        /// Empty Group constructor.
+        /// </summary>
+        public Group()
+        {
+            Name = "Group";
+            Enabled = false;
+            GroupedObjs = new List<int>();
+        }
+
+        /// <summary>
         /// Represents a list of the linked objects.
         /// </summary>
         public List<int> GroupedObjs;

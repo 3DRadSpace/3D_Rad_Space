@@ -53,7 +53,7 @@ namespace _3DRadSpace
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
-			Window.Title = "3DRadSpace - Editor v0.0.6 alpha";
+			Window.Title = "3DRadSpace - Editor v0.0.7 alpha";
 			GameWindow.WindowState = FormWindowState.Maximized;
 			IsMouseVisible = true;
 			if (Settings[0])
