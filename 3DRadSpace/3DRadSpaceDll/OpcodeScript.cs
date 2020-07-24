@@ -113,59 +113,59 @@ namespace _3DRadSpaceDll
 					case Opcode.Start:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Enable();
+							Main.GameObjects[id].Enable();
 							//yandere dev simulator
-							if (Game.GameObjects[id] is SoundEffect sfx) sfx.Trigger();
-							else if (Game.GameObjects[id] is ExitFade ef) ef.Trigger();
-							else if (Game.GameObjects[id] is Counter c) c.Trigger(); 
+							if (Main.GameObjects[id] is SoundEffect sfx) sfx.Trigger();
+							else if (Main.GameObjects[id] is ExitFade ef) ef.Trigger();
+							else if (Main.GameObjects[id] is Counter c) c.Trigger(); 
 							break;
 						}
 					case Opcode.Stop:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Disable();
+							Main.GameObjects[id].Disable();
 							break;
 						}
 					case Opcode.Toggle:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Toggle();
+							Main.GameObjects[id].Toggle();
 							break;
 						}
 					case Opcode.Show:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Show();
+							Main.GameObjects[id].Show();
 							break;
 						}
 					case Opcode.Hide:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Hide();
+							Main.GameObjects[id].Hide();
 							break;
 						}
 					case Opcode.SetPos:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Position = (Vector3)Arguments[1];
+							Main.GameObjects[id].Position = (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.AddPos:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Position += (Vector3)Arguments[1];
+							Main.GameObjects[id].Position += (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.SetRot:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Rotation = (Vector3)Arguments[1];
+							Main.GameObjects[id].Rotation = (Vector3)Arguments[1];
 							break;
 						}
 					case Opcode.AddRot:
 						{
 							int id = Convert.ToInt32(Arguments[0], Main.CultureInfo);
-							Game.GameObjects[id].Rotation += (Vector3)Arguments[1];
+							Main.GameObjects[id].Rotation += (Vector3)Arguments[1];
 							break;
 						}
 					default: break;

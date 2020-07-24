@@ -184,7 +184,7 @@ namespace _3DRadSpaceDll
                     {
                         for (int i = 0; i < ColidingObjects.Count; i++)
                         {
-                            GameObject obj = Game.GameObjects[ColidingObjects[i]];
+                            GameObject obj = Main.GameObjects[ColidingObjects[i]];
                             if (obj is Skinmesh skinmesh)
                             {
                                 for (int j = 0; j < skinmesh.Model.Meshes.Count; i++)
@@ -211,7 +211,7 @@ namespace _3DRadSpaceDll
                     {
                         for (int i = 0; i < ColidingObjects.Count; i++)
                         {
-                            GameObject obj = Game.GameObjects[ColidingObjects[i]];
+                            GameObject obj = Main.GameObjects[ColidingObjects[i]];
                             if (obj is Skinmesh skinmesh)
                             {
                                 for (int j = 0; j < skinmesh.Model.Meshes.Count; i++)
@@ -238,7 +238,7 @@ namespace _3DRadSpaceDll
                     {
                         for (int i = 0; i < ColidingObjects.Count; i++)
                         {
-                            GameObject obj = Game.GameObjects[ColidingObjects[i]];
+                            GameObject obj = Main.GameObjects[ColidingObjects[i]];
                             if (obj is Skinmesh skinmesh)
                             {
                                 for (int j = 0; j < skinmesh.Model.Meshes.Count; i++)
@@ -279,19 +279,19 @@ namespace _3DRadSpaceDll
                 {
                     Vector3 Size = BoundingBox.Max - BoundingBox.Min;
                     Matrix translation = Matrix.CreateScale(Size) * Matrix.CreateTranslation(BoundingBox.Min);
-                    Game.DrawModelAlpha(Cube, translation, view.Value, projection.Value,0.5f, false);
+                    Main.DrawModelAlpha(Cube, translation, view.Value, projection.Value,0.5f, false);
                 }
                 if (BoundingType == BoundingObject.Sphere)
                 {
                     Matrix translation = Matrix.CreateScale(BoundingSphere.Radius) * Matrix.CreateTranslation(BoundingSphere.Center);
-                    Game.DrawModelAlpha(Sphere, translation, view.Value, projection.Value, 0.5f, false);
+                    Main.DrawModelAlpha(Sphere, translation, view.Value, projection.Value, 0.5f, false);
                 }
                 if (BoundingType == BoundingObject.Plane)
                 {
                     Vector3 Size = new Vector3(1000, 0.1f, 1000);
                     Vector3 Rotation = new Vector3(BoundingPlane.Normal.X, BoundingPlane.Normal.Y, BoundingPlane.Normal.Z);
                     Matrix translation = Matrix.CreateScale(Size) * Matrix.CreateTranslation(Rotation*BoundingPlane.D);
-                    Game.DrawModelAlpha(Cube, translation, view.Value, projection.Value, 0.5f, false);
+                    Main.DrawModelAlpha(Cube, translation, view.Value, projection.Value, 0.5f, false);
                 }
                 base.EditorDraw(spriteBatch, view, projection);
             }

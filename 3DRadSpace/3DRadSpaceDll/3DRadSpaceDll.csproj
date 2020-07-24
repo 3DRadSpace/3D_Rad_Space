@@ -59,7 +59,6 @@
     <Compile Include="ExitFade.cs" />
     <Compile Include="Fog.cs" />
     <Compile Include="FPVCamera.cs" />
-    <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Group.cs" />

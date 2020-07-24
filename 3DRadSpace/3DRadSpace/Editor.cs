@@ -37,6 +37,11 @@ namespace _3DRadSpace
 
 		SpriteFont D_Font;
 
+		Texture2D I_MovX, I_MovY, I_MovZ, I_RotX, I_RotY, I_RotZ,I_ScalX,I_ScalY,I_ScalZ;
+		Rectangle R_MovX, R_MovY, R_MovZ, R_RotX, R_RotY, R_RotZ, R_ScalX,R_ScalY,R_ScalZ;
+		Point M_MovX, M_MovY, M_MovZ, M_RotX, M_RotY, M_RotZ, M_ScalX, M_ScalY, M_ScalZ;
+		int sX, sY;
+
 		public Editor()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -47,7 +52,7 @@ namespace _3DRadSpace
 			GameWindow_SizeChanged(GameWindow, null);
 			discordRichPresence = new DiscordRichPresence();
 			Editor_View = new Camera(null, true, new Vector3(5, 10, 5), new Vector3(0, 0, 0), Vector3.Up, 75, 0.01f, 500f);
-			_3DRadSpaceDll.Game.GameObjects = new List<GameObject>();
+			Main.GameObjects = new List<GameObject>();
 			Settings = Settings_Load();
 		}
 		protected override void Initialize()
@@ -62,13 +67,40 @@ namespace _3DRadSpace
 			}
 			if (OpenedFile != null)
 			{
-				_3DRadSpaceDll.Game.GameObjects = Project.Open(OpenedFile);
+				_3DRadSpaceDll.Main.GameObjects = Project.Open(OpenedFile);
 				LoadAllObjects();
 				UpdateObjects();
 			}
 			Editor_View.CameraTarget = Editor_View.Position + Vector3.Transform(Vector3.UnitZ + Vector3.Up, Matrix.CreateFromYawPitchRoll(CameraRotationCoords.X, 0, CameraRotationCoords.Y));
+			
+			sX = graphics.PreferredBackBufferWidth; //these will be needed when I will make the coordinates compatible with multiple screen resolutions
+			sY = graphics.PreferredBackBufferHeight;
+			R_MovX = new Rectangle(170, 35, 80, 80);
+			R_MovY = new Rectangle(250, 35, 80, 80);
+			R_MovZ = new Rectangle(330, 35, 80, 80);
+			R_RotX = new Rectangle(410, 35, 80, 80);
+			R_RotY = new Rectangle(490, 35, 80, 80);
+			R_RotZ = new Rectangle(570, 35, 80, 80);
+			R_ScalX = new Rectangle(650, 35, 80, 80);
+			R_ScalY = new Rectangle(730, 35, 80, 80);
+			R_ScalZ = new Rectangle(810, 35, 80, 80);
+
+			M_MovX = InterpolateRectangle(R_MovX, 0.5f);
+			M_MovY = InterpolateRectangle(R_MovY, 0.5f);
+			M_MovZ = InterpolateRectangle(R_MovZ, 0.5f);
+			M_RotX = InterpolateRectangle(R_RotX, 0.5f);
+			M_RotY = InterpolateRectangle(R_RotY, 0.5f);
+			M_RotZ = InterpolateRectangle(R_RotZ, 0.5f);
+			M_ScalX = InterpolateRectangle(R_ScalX, 0.5f);
+			M_ScalY = InterpolateRectangle(R_ScalY, 0.5f);
+			M_ScalZ = InterpolateRectangle(R_ScalZ, 0.5f);
+
 			base.Initialize();
 		}
+		Point InterpolateRectangle(Rectangle r,float lerp)
+        {
+			return new Point((int)MathHelper.Lerp(r.X, r.Width + r.X, lerp),(int)MathHelper.Lerp(r.Y, r.Y + r.Height, lerp));
+        }
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -78,6 +110,15 @@ namespace _3DRadSpace
 			D_Font = Content.Load<SpriteFont>("Font");
 			EventOnLocation.LoadModels(Content);
 			SoundSource.ModelMarker = Content.Load<Model>("SoundEffect_Model");
+			I_MovX = Content.Load<Texture2D>("Editor//MovmentX");
+			I_MovY = Content.Load<Texture2D>("Editor//MovmentY");
+			I_MovZ = Content.Load<Texture2D>("Editor//MovmentZ");
+			I_RotX = Content.Load<Texture2D>("Editor//RotationX");
+			I_RotY = Content.Load<Texture2D>("Editor//Rotationy");
+			I_RotZ = Content.Load<Texture2D>("Editor//RotationZ");
+			I_ScalX = Content.Load<Texture2D>("Editor//ScaleX");
+			I_ScalY = Content.Load<Texture2D>("Editor//ScaleY");
+			I_ScalZ = Content.Load<Texture2D>("Editor//ScaleZ");
 		}
 
 		protected override void UnloadContent()
@@ -108,7 +149,7 @@ namespace _3DRadSpace
 				if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
 				{
 					if (mouse.X >= 150 && mouse.X <= graphics.PreferredBackBufferWidth &&
-					   mouse.Y >= 25 && mouse.Y <= graphics.PreferredBackBufferHeight - 25)
+					   mouse.Y >= 105 && mouse.Y <= graphics.PreferredBackBufferHeight - 25)
 					{
 						Mouse.SetPosition(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
 						IsMouseVisible = false;
@@ -130,9 +171,9 @@ namespace _3DRadSpace
 				{
 					float d = float.MinValue;
 					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
-					for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+					for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
 					{
-						GameObject o = _3DRadSpaceDll.Game.GameObjects[i];
+						GameObject o = _3DRadSpaceDll.Main.GameObjects[i];
 						if (o is Skinmesh sk)
 						{
 							for (int j = 0; j < sk.Model.Meshes.Count; j++)
@@ -215,11 +256,11 @@ namespace _3DRadSpace
 			Editor_View.Draw(out View, out Projection);
 
 			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
-			_3DRadSpaceDll.Game.DrawModel(Axis, Matrix.CreateRotationY(MathHelper.Pi * 1.5f) * Matrix.CreateTranslation(_3dcursor_loc), View, Projection, FogEnabled, FogColor, FogStart, FogEnd);
+			_3DRadSpaceDll.Main.DrawModel(Axis, Matrix.CreateRotationY(MathHelper.Pi * 1.5f) * Matrix.CreateTranslation(_3dcursor_loc), View, Projection, FogEnabled, FogColor, FogStart, FogEnd);
 
-			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
 			{
-				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
+				object gameObject = _3DRadSpaceDll.Main.GameObjects[i];
 				if (gameObject is FPVCamera fc) fc.EditorDraw(null, View, Projection);
 				else if (gameObject is Camera c) c.EditorDraw(null, View, Projection);
 				if (gameObject is SkyColor s) ClearColor = s.Color;
@@ -257,10 +298,19 @@ namespace _3DRadSpace
 				if (gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
-			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(270, graphics.PreferredBackBufferHeight - 50), Color.White);
-			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
+			spriteBatch.Draw(I_MovX, R_MovX, Color.White);
+			spriteBatch.Draw(I_MovY, R_MovY, Color.White);
+			spriteBatch.Draw(I_MovZ, R_MovZ, Color.White);
+			spriteBatch.Draw(I_RotX, R_RotX, Color.White);
+			spriteBatch.Draw(I_RotY, R_RotY, Color.White);
+			spriteBatch.Draw(I_RotZ, R_RotZ, Color.White);
+			spriteBatch.Draw(I_ScalX, R_ScalX, Color.White);
+			spriteBatch.Draw(I_ScalY, R_ScalY, Color.White);
+			spriteBatch.Draw(I_ScalZ, R_ScalZ, Color.White);
+			for (int i = 0; i < Main.GameObjects.Count; i++)
 			{
-				object gameObject = _3DRadSpaceDll.Game.GameObjects[i];
+				object gameObject = Main.GameObjects[i];
 				if (gameObject is Sprite sp) sp.EditorDraw(spriteBatch, null, null);
 				if (gameObject is TextPrint tp) tp.EditorDraw(spriteBatch, null, null);
 			}

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace _3DRadSpaceDll
@@ -19,14 +20,12 @@ namespace _3DRadSpaceDll
         /// Complete group object constructor.
         /// </summary>
         /// <param name="name">Object name</param>
-        /// <param name="enabled">Checks if the object is enabled</param>
         /// <param name="objs">List ob objects</param>
-        public Group(string name,bool enabled, IEnumerable<int> objs)
+        public Group(string name, IEnumerable<int> objs)
         {
             Name = name;
-            Enabled = enabled;
-            GroupedObjs = new List<int>(objs.Count());
-            GroupedObjs.AddRange(objs);
+            SelectedObjects = new List<int>(objs.Count());
+            SelectedObjects.AddRange(objs);
         }
         /// <summary>
         /// Empty Group constructor.
@@ -34,14 +33,8 @@ namespace _3DRadSpaceDll
         public Group()
         {
             Name = "Group";
-            Enabled = false;
-            GroupedObjs = new List<int>();
+            SelectedObjects = new List<int>();
         }
-
-        /// <summary>
-        /// Represents a list of the linked objects.
-        /// </summary>
-        public List<int> GroupedObjs;
 
         /// <summary>
         /// Applies a translation to the objects.
@@ -49,9 +42,9 @@ namespace _3DRadSpaceDll
         /// <param name="translation"></param>
         public void ApplyTranslation(Vector3 translation)
         {
-            for(int i =0; i < GroupedObjs.Count;i++)
+            for(int i =0; i < SelectedObjects.Count;i++)
             {
-                Game.GameObjects[GroupedObjs[i]].Position += translation;
+                Main.GameObjects[SelectedObjects[i]].Position += translation;
             }
         }
         /// <summary>
@@ -60,10 +53,22 @@ namespace _3DRadSpaceDll
         /// <param name="euler"></param>
         public void ApplyRotation(Vector3 euler)
         {
-            for (int i = 0; i < GroupedObjs.Count; i++)
+            for (int i = 0; i < SelectedObjects.Count; i++)
             {
-                Game.GameObjects[GroupedObjs[i]].Rotation += euler;
+                Main.GameObjects[SelectedObjects[i]].Rotation += euler;
             }
         }
+        /// <summary>
+        /// Used only in the editor.
+        /// </summary>
+        /// <param name="spriteBatch">not used</param>
+        /// <param name="view">view matrix</param>
+        /// <param name="projection">projection matrix</param>
+        public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
+        {
+
+            base.EditorDraw(spriteBatch, view, projection);
+        }
+        public static Model Marker;
     }
 }

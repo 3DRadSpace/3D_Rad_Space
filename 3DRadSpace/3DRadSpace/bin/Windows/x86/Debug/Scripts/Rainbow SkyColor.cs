@@ -30,7 +30,7 @@ class Script
     SkyColor ourSky; //I have achieved communism
     public void Start()
     {
-        ourSky = (SkyColor)_3DRadSpaceDll.Game.FindObject(0);
+        ourSky = (SkyColor)Main.FindObject(0);
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {

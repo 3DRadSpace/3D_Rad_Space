@@ -12,7 +12,7 @@ class Script
     Camera _ourCamera; //*insert ussr athemn
     public void Start()
     {
-        _ourCamera = (Camera)_3DRadSpaceDll.Game.GameObjects[0];
+        _ourCamera = (Camera)Main.GameObjects[0];
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {

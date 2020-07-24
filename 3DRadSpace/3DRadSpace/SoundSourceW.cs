@@ -140,9 +140,9 @@ namespace _3DRadSpace
 
         private void button4_Click(object sender, EventArgs e)
         {
-            for(int i=0; i < Game.GameObjects.Count;i++)
+            for(int i=0; i < Main.GameObjects.Count;i++)
             {
-                if(Game.GameObjects[i] is Camera c)
+                if(Main.GameObjects[i] is Camera c)
                 {
                     _linkedcam = c;
                     break;

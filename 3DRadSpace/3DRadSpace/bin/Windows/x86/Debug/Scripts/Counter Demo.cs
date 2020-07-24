@@ -13,8 +13,8 @@ class Script
     Counter c;
     public void Start()
     {
-        c = (Counter)_3DRadSpaceDll.Game.GameObjects[0];
-        txtprnt = (TextPrint)_3DRadSpaceDll.Game.GameObjects[1];
+        c = (Counter)Main.GameObjects[0];
+        txtprnt = (TextPrint)Main.GameObjects[1];
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {

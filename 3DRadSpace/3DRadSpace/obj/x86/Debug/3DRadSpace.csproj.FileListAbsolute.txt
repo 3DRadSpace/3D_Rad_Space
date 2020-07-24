@@ -67,3 +67,13 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windo
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.FPVCameraW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.CounterW.resources
 C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Shaders\RedVertexSh.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\obj\x86\Debug\_3DRadSpace.GroupW.resources
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\MovmentX.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\MovmentY.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\MovmentZ.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\RotationX.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\Rotationy.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\RotationZ.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\ScaleX.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\ScaleY.xnb
+C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\bin\Windows\x86\Debug\Content\Editor\ScaleZ.xnb

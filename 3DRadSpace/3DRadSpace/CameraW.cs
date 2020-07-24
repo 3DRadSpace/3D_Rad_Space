@@ -86,7 +86,7 @@ namespace _3DRadSpace
             listBox1.Items.Clear();
             for(int i =0; i < Behiavour.Count;i++)
             {
-                listBox1.Items.Add(_3DRadSpaceDll.Game.GameObjects[Behiavour[i].ObjectID] + " ["+ GetBehiavourText(Behiavour[i].BehiavourID)+ "]");
+                listBox1.Items.Add(Main.GameObjects[Behiavour[i].ObjectID] + " ["+ GetBehiavourText(Behiavour[i].BehiavourID)+ "]");
             }
         }
         string GetBehiavourText(int id)

@@ -27,7 +27,7 @@ namespace _3DRadSpace_Player
             {
                 Window.Title = "Debugging - " + DebugProject;
                 Content.RootDirectory = "Content";
-                _3DRadSpaceDll.Game.GameObjects = Project.Open(DebugProject);
+                _3DRadSpaceDll.Main.GameObjects = Project.Open(DebugProject);
             }
             else
             {
@@ -40,7 +40,7 @@ namespace _3DRadSpace_Player
                 }
                 try
                 {
-                    _3DRadSpaceDll.Game.GameObjects = Project.Open(Settings[2]);
+                    _3DRadSpaceDll.Main.GameObjects = Project.Open(Settings[2]);
                 }
                 catch (FileNotFoundException)
                 {
@@ -55,44 +55,44 @@ namespace _3DRadSpace_Player
         }
         protected override void LoadContent()
         {
-            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
             {
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Camera c)
                 {
                     c.Load(null);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Script script)
                 {
                     script.Load(null);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Skinmesh sk)
                 {
                     sk.Load(Content);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Sprite sp)
                 {
                     sp.Load(Content, GraphicsDevice);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is TextPrint tp)
                 {
                     tp.Load(Content);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundSource sounds)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is SoundSource sounds)
                 {
                     sounds.Load(Content);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundEffect sound)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is SoundEffect sound)
                 {
                     sound.Load(Content);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Skybox sb)
                 {
                     sb.Load(Content, GraphicsDevice);
                     continue;
@@ -107,55 +107,55 @@ namespace _3DRadSpace_Player
         {
             MouseState mouse = Mouse.GetState();
             KeyboardState keyboard = Keyboard.GetState();
-            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
             {
-                if (_3DRadSpaceDll.Game.GameObjects[i] is FPVCamera fps)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is FPVCamera fps)
                 {
                     fps.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Camera c)
                 {
                     c.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script s)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Script s)
                 {
                     s.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is EventOnLocation eol)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is EventOnLocation eol)
                 {
                     eol.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is EventOnKey eok)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is EventOnKey eok)
                 {
                     eok.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Timer t)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Timer t)
                 {
                     t.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is ExitFade ef)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is ExitFade ef)
                 {
                     ef.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundSource sounds)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is SoundSource sounds)
                 {
                     sounds.Update(mouse, keyboard, gameTime);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is SoundEffect sef)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is SoundEffect sef)
                 {
                     sef.Update(mouse, keyboard, gameTime);
                     continue;
                 }
             }
-            if (_3DRadSpaceDll.Game.RequestExit) Exit();
+            if (_3DRadSpaceDll.Main.RequestExit) Exit();
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
@@ -164,29 +164,29 @@ namespace _3DRadSpace_Player
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+            for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
             {
-                if(_3DRadSpaceDll.Game.GameObjects[i] is FPVCamera fps)
+                if(_3DRadSpaceDll.Main.GameObjects[i] is FPVCamera fps)
                 {
                     fps.Draw(out view,out projection);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Camera c)
                 {
                     c.Draw( out view, out projection);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is SkyColor s)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is SkyColor s)
                 {
                     ClearColor = s.Color;
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Script script)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Script script)
                 {
                     script.Draw(spriteBatch, view, projection);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Fog f)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Fog f)
                 {
                     FogEnabled = f.Enabled;
                     FogColor = f.FogColor;
@@ -194,7 +194,7 @@ namespace _3DRadSpace_Player
                     FogEnd = f.FogEnd;
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh skinmesh)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Skinmesh skinmesh)
                 {
                     if (FogEnabled)
                     {
@@ -209,7 +209,7 @@ namespace _3DRadSpace_Player
                     skinmesh.Draw(null, view, projection);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Skybox sb)
                 {
                     GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                     sb.Draw(null, view, projection);
@@ -218,14 +218,14 @@ namespace _3DRadSpace_Player
                 }
             }
             spriteBatch.Begin();
-            for(int i=0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+            for(int i=0; i < _3DRadSpaceDll.Main.GameObjects.Count;i++)
             {
-                if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is Sprite sp)
                 {
                     sp.Draw(spriteBatch, null, null);
                     continue;
                 }
-                if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
+                if (_3DRadSpaceDll.Main.GameObjects[i] is TextPrint tp)
                 {
                     tp.Draw(spriteBatch, null, null);
                     continue;

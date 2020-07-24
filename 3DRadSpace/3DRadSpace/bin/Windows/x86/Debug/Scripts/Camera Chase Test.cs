@@ -13,8 +13,8 @@ class Script
     Camera c;
     public void Start()
     {
-        _ourmesh = (Skinmesh)_3DRadSpaceDll.Game.GameObjects[0];
-        c = (Camera)_3DRadSpaceDll.Game.GameObjects[2];
+        _ourmesh = (Skinmesh)Main.GameObjects[0];
+        c = (Camera)Main.GameObjects[2];
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {

@@ -38,8 +38,8 @@ namespace _3DRadSpace
 			if(b == DialogResult.OK)
 			{
 				ClearObjects();
-				_3DRadSpaceDll.Game.GameObjects = Project.Open(openFile.FileName);
-				if(_3DRadSpaceDll.Game.GameObjects == null)
+				_3DRadSpaceDll.Main.GameObjects = Project.Open(openFile.FileName);
+				if(_3DRadSpaceDll.Main.GameObjects == null)
 				{
 					MessageBox.Show("Opened file is not a valid 3DRadSpace project", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
 					return;
@@ -101,7 +101,7 @@ namespace _3DRadSpace
 			add.ShowDialog();
 			if (add.Result != null)
 			{
-				_3DRadSpaceDll.Game.GameObjects.Add(add.Result);
+				_3DRadSpaceDll.Main.GameObjects.Add(add.Result);
 				if(add.Result is Skinmesh s) s.Load(Content);
 				if (add.Result is Sprite sp) sp.Load(Content,GraphicsDevice);
 				if (add.Result is TextPrint tp) tp.Load(Content);
@@ -126,7 +126,7 @@ namespace _3DRadSpace
 			if (b == DialogResult.OK)
 			{
 				List<GameObject> c = Project.Open(openFile.FileName);
-				_3DRadSpaceDll.Game.GameObjects.AddRange(c);
+				_3DRadSpaceDll.Main.GameObjects.AddRange(c);
 				UpdateObjects();
 				ProjectSaved = false;
 			}
@@ -218,12 +218,12 @@ namespace _3DRadSpace
 		}
 		void EditObj(int i)
         {
-			object b = _3DRadSpaceDll.Game.GameObjects[i];
+			object b = _3DRadSpaceDll.Main.GameObjects[i];
 			if (b is Script)
 			{
-				ScriptW scriptW = new ScriptW((Script)_3DRadSpaceDll.Game.GameObjects[i]);
+				ScriptW scriptW = new ScriptW((Script)_3DRadSpaceDll.Main.GameObjects[i]);
 				scriptW.ShowDialog();
-				if (scriptW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = scriptW.Result;
+				if (scriptW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = scriptW.Result;
 				scriptW.Dispose();
 				return;
 			}
@@ -231,31 +231,31 @@ namespace _3DRadSpace
 			{
 				FPVCameraW wnd = new FPVCameraW(fpv);
 				wnd.ShowDialog();
-				if (wnd.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = wnd.Result;
+				if (wnd.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = wnd.Result;
 				wnd.Dispose();
 				return;
 			}
 			if (b is Camera)
 			{
-				CameraW cameraW = new CameraW((Camera)_3DRadSpaceDll.Game.GameObjects[i]);
+				CameraW cameraW = new CameraW((Camera)_3DRadSpaceDll.Main.GameObjects[i]);
 				cameraW.ShowDialog();
-				if (cameraW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = cameraW.Result;
+				if (cameraW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = cameraW.Result;
 				cameraW.Dispose();
 				return;
 			}
 			if (b is SkyColor)
 			{
-				SkyColorW colorW = new SkyColorW((SkyColor)_3DRadSpaceDll.Game.GameObjects[i]);
+				SkyColorW colorW = new SkyColorW((SkyColor)_3DRadSpaceDll.Main.GameObjects[i]);
 				colorW.ShowDialog();
-				if (colorW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = colorW.Result;
+				if (colorW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = colorW.Result;
 				colorW.Dispose();
 				return;
 			}
 			if (b is Fog)
 			{
-				FogW fogW = new FogW((Fog)_3DRadSpaceDll.Game.GameObjects[i]);
+				FogW fogW = new FogW((Fog)_3DRadSpaceDll.Main.GameObjects[i]);
 				fogW.ShowDialog();
-				if (fogW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = fogW.Result;
+				if (fogW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = fogW.Result;
 				fogW.Dispose();
 				return;
 			}
@@ -265,8 +265,8 @@ namespace _3DRadSpace
 				skinmeshW.ShowDialog();
 				if (skinmeshW.Result != null)
 				{
-					_3DRadSpaceDll.Game.GameObjects[i] = skinmeshW.Result;
-					Skinmesh sk = _3DRadSpaceDll.Game.GameObjects[i] as Skinmesh;
+					_3DRadSpaceDll.Main.GameObjects[i] = skinmeshW.Result;
+					Skinmesh sk = _3DRadSpaceDll.Main.GameObjects[i] as Skinmesh;
 					sk.Load(Content);
 				}
 				skinmeshW.Dispose();
@@ -278,8 +278,8 @@ namespace _3DRadSpace
 				spriteW.ShowDialog();
 				if (spriteW.Result != null)
 				{
-					_3DRadSpaceDll.Game.GameObjects[i] = (Sprite)spriteW.Result;
-					Sprite s = _3DRadSpaceDll.Game.GameObjects[i] as Sprite;
+					_3DRadSpaceDll.Main.GameObjects[i] = (Sprite)spriteW.Result;
+					Sprite s = _3DRadSpaceDll.Main.GameObjects[i] as Sprite;
 					s.Load(Content, GraphicsDevice);
 				}
 				spriteW.Dispose();
@@ -293,7 +293,7 @@ namespace _3DRadSpace
 				{
 					p = (TextPrint)textPrintW.Result;
 					p.Load(Content);
-					_3DRadSpaceDll.Game.GameObjects[i] = p;
+					_3DRadSpaceDll.Main.GameObjects[i] = p;
 				}
 				textPrintW.Dispose();
 				return;
@@ -302,7 +302,7 @@ namespace _3DRadSpace
 			{
 				SoundEffectW soundEffectW = new SoundEffectW(se);
 				soundEffectW.ShowDialog();
-				if (soundEffectW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = soundEffectW.Result;
+				if (soundEffectW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = soundEffectW.Result;
 				soundEffectW.Dispose();
 				return;
 			}
@@ -310,7 +310,7 @@ namespace _3DRadSpace
 			{
 				SoundSourceW soundSourceW = new SoundSourceW(soundSource);
 				soundSourceW.ShowDialog();
-				if (soundSourceW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = soundSourceW.Result;
+				if (soundSourceW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = soundSourceW.Result;
 				soundSourceW.Dispose();
 				return;
 			}
@@ -318,7 +318,7 @@ namespace _3DRadSpace
 			{
 				EventOnLocationW eolw = new EventOnLocationW(eol);
 				eolw.ShowDialog();
-				if (eolw.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = eolw.Result;
+				if (eolw.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = eolw.Result;
 				eolw.Dispose();
 				return;
 			}
@@ -326,7 +326,7 @@ namespace _3DRadSpace
 			{
 				EventOnKeyW eokw = new EventOnKeyW(eok);
 				eokw.ShowDialog();
-				if (eokw.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = eokw.Result;
+				if (eokw.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = eokw.Result;
 				eokw.Dispose();
 				return;
 			}
@@ -334,7 +334,7 @@ namespace _3DRadSpace
 			{
 				TimerW w = new TimerW(t);
 				w.ShowDialog();
-				if (w.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = w.Result;
+				if (w.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = w.Result;
 				w.Dispose();
 				return;
 			}
@@ -344,8 +344,8 @@ namespace _3DRadSpace
 				skyboxW.ShowDialog();
 				if (skyboxW.Result != null)
 				{
-					_3DRadSpaceDll.Game.GameObjects[i] = (Skybox)skyboxW.Result;
-					Skybox s = _3DRadSpaceDll.Game.GameObjects[i] as Skybox;
+					_3DRadSpaceDll.Main.GameObjects[i] = (Skybox)skyboxW.Result;
+					Skybox s = _3DRadSpaceDll.Main.GameObjects[i] as Skybox;
 					s.Load(Content, GraphicsDevice);
 				}
 				skyboxW.Dispose();
@@ -355,10 +355,18 @@ namespace _3DRadSpace
 			{
 				CounterW counterW = new CounterW(counter);
 				counterW.ShowDialog();
-				if (counterW.Result != null) _3DRadSpaceDll.Game.GameObjects[i] = (Counter)counterW.Result;
+				if (counterW.Result != null) _3DRadSpaceDll.Main.GameObjects[i] = (Counter)counterW.Result;
 				counterW.Dispose();
 				return;
 			}
+			if(b is Group group)
+            {
+				GroupW groupW = new GroupW(group);
+				groupW.ShowDialog();
+				if (groupW.Result != null) Main.GameObjects[i] = (Group)groupW.Result;
+				groupW.Dispose();
+				return;
+            }
 		}
 		void EditObj()
 		{
@@ -366,24 +374,24 @@ namespace _3DRadSpace
 		}
 		void M_DeleteObject(object obj,EventArgs e)
 		{
-			if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is SkyColor)
+			if(Main.GameObjects[listBox1.SelectedItems[0].Index] is SkyColor)
 			{
 				ClearColor = Color.Black;
 			}
-			if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Sprite sp)
+			if(_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Sprite sp)
 			{
 				sp.Dispose();
 			}
-			if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Skybox sb)
+			if (_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Skybox sb)
 			{
 				sb.Dispose();
 			}
-			if(_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is Fog f)
+			if(_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Fog f)
 			{
 				FogEnabled = false;
 			}
-			if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
-			_3DRadSpaceDll.Game.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
+			if (_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
+			_3DRadSpaceDll.Main.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
 			UpdateObjects();
 		}
 		void GameWindow_DragEnter(object sender, DragEventArgs e)
@@ -392,12 +400,12 @@ namespace _3DRadSpace
 		}
 		void GameWindow_DragDrop(object sender, DragEventArgs e)
 		{
-			int l = _3DRadSpaceDll.Game.GameObjects.Count;
+			int l = Main.GameObjects.Count;
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			for(int i =0; i < files.Length;i++)
 			{
 				string[] ext = files[i].Split('.');
-			   if(ext[ext.Length- 1] == "3drsp") _3DRadSpaceDll.Game.GameObjects.AddRange(Project.Open(files[i]));
+			   if(ext[ext.Length- 1] == "3drsp") Main.GameObjects.AddRange(Project.Open(files[i]));
 			}
 			ProjectSaved = false;
 			LoadAllObjects(l);
@@ -406,9 +414,9 @@ namespace _3DRadSpace
 		void UpdateObjects()
 		{
 			listBox1.Items.Clear();
-			for(int  i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+			for(int  i =0; i < _3DRadSpaceDll.Main.GameObjects.Count;i++)
 			{
-				GameObject obj = _3DRadSpaceDll.Game.GameObjects[i];
+				GameObject obj = _3DRadSpaceDll.Main.GameObjects[i];
 				if(obj) listBox1.Items.Add(obj.Name);
 			}
 		}
@@ -462,41 +470,41 @@ namespace _3DRadSpace
 		{
 			ClearColor = Color.Black;
 			FogEnabled = false;
-			for (int i =0; i < _3DRadSpaceDll.Game.GameObjects.Count;i++)
+			for (int i =0; i < _3DRadSpaceDll.Main.GameObjects.Count;i++)
 			{
-				if(_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp)
+				if(_3DRadSpaceDll.Main.GameObjects[i] is Sprite sp)
 				{
 					sp.Dispose();
 				}
-				if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp)
+				if (_3DRadSpaceDll.Main.GameObjects[i] is TextPrint tp)
 				{
 					tp.Dispose();
 				}
 			}
-			_3DRadSpaceDll.Game.GameObjects.Clear();
+			_3DRadSpaceDll.Main.GameObjects.Clear();
 			UpdateObjects();
 			Reset3DCursor();
 		}
 		void LoadAllObjects()
 		{
-			for (int i = 0; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			for (int i = 0; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
 			{
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Camera c) c.Load(null);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Skinmesh sk) sk.Load(Content);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is TextPrint tp) tp.Load(Content);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
 			}
 		}
 		void LoadAllObjects(int offset)
 		{
-			for (int i = offset; i < _3DRadSpaceDll.Game.GameObjects.Count; i++)
+			for (int i = offset; i < _3DRadSpaceDll.Main.GameObjects.Count; i++)
 			{
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Camera c) c.Load(null);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Skinmesh sk) sk.Load(Content);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is TextPrint tp) tp.Load(Content);
-				if (_3DRadSpaceDll.Game.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Camera c) c.Load(null);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Skinmesh sk) sk.Load(Content);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Sprite sp) sp.Load(Content, GraphicsDevice);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is TextPrint tp) tp.Load(Content);
+				if (_3DRadSpaceDll.Main.GameObjects[i] is Skybox sb) sb.Load(Content, GraphicsDevice);
 			}
 		}
 		private void ListBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -518,7 +526,7 @@ namespace _3DRadSpace
 				if (listBox1.Items[e.Index].Checked != false) e.NewValue = CheckState.Unchecked;
 				return;
 			}
-			GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
+			GameObject o = _3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index];
 			if (e.NewValue == CheckState.Unchecked)
 			{
 				if (o is Camera)
@@ -558,7 +566,7 @@ namespace _3DRadSpace
 			}
 			if (listBox1.SelectedItems.Count > 0)
 			{
-				GameObject o = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index];
+				GameObject o = _3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index];
 				if (o.SelectedObjects != null)
 				{
 					int l = o.SelectedObjects.Count;
@@ -568,12 +576,12 @@ namespace _3DRadSpace
 					}
 				}
 				
-				if (_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours != null)
+				if (_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index].Behiavours != null)
 				{
-					int l = _3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours.Count;
+					int l = _3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index].Behiavours.Count;
 					for (int i = 0; i < l; i++)
 					{
-						listBox1.Items[_3DRadSpaceDll.Game.GameObjects[listBox1.SelectedItems[0].Index].Behiavours[i].ObjectID].Checked = true;
+						listBox1.Items[_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index].Behiavours[i].ObjectID].Checked = true;
 					}
 				}
 				

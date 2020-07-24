@@ -115,7 +115,7 @@ namespace _3DRadSpaceDll
             {
                 for (int i = 0; i < Behiavours.Count; i++)
                 {
-                    GameObject obj = Game.GameObjects[Behiavours[i].ObjectID] as GameObject;
+                    GameObject obj = Main.GameObjects[Behiavours[i].ObjectID];
                     int b = Behiavours[i].BehiavourID;
                     if (b == 1)
                     {
@@ -130,7 +130,7 @@ namespace _3DRadSpaceDll
         /// </summary>
         public override void EditorDraw(SpriteBatch spriteBatch,Matrix? view,Matrix? projection)
         {
-            Game.DrawModel(model, Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
+            Main.DrawModel(model, Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
             Matrix.CreateTranslation(Position), (Matrix)view, (Matrix)projection);
         }
 
@@ -187,10 +187,10 @@ namespace _3DRadSpaceDll
             set
             {
                 _maxdst = value;
-                if (Game.GameObjects == null) return;
-                for(int  i=0; i < Game.GameObjects.Count;i++)
+                if (Main.GameObjects == null) return;
+                for(int  i=0; i < Main.GameObjects.Count;i++)
                 {
-                    if (Game.GameObjects[i] is Skybox sb) sb.UpdateSize(); //set skybox size
+                    if (Main.GameObjects[i] is Skybox sb) sb.UpdateSize(); //set skybox size
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace _3DRadSpaceDll
             if (!Enabled) return;
             for (int i = 0; i < Behiavours.Count; i++)
             {
-                GameObject obj = Game.GameObjects[Behiavours[i].ObjectID];
+                GameObject obj = Main.GameObjects[Behiavours[i].ObjectID];
                 int b = Behiavours[i].BehiavourID;
                 if (b == 2)
                 {

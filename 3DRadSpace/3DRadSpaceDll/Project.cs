@@ -327,21 +327,21 @@ namespace _3DRadSpaceDll
 		/// <param name="filename">File path</param>
 		public static void Save(string filename)
 		{
-			string[] ToBeSaved = new string[Game.GameObjects.Count+1];
+			string[] ToBeSaved = new string[Main.GameObjects.Count+1];
 			ToBeSaved[0] = "3DRSP_text";
-			for (int i = 0; i < Game.GameObjects.Count; i++)
+			for (int i = 0; i < Main.GameObjects.Count; i++)
 			{
 				int j = i + 1;
-				if (Game.GameObjects[i] is FPVCamera fpv)
+				if (Main.GameObjects[i] is FPVCamera fpv)
 				{
 					ToBeSaved[j] = "fpvcam " + fpv.Name + ' ' + fpv.Enabled + ' ' + Vector2String(fpv.Position) + ' ' + Vector2String(fpv.CamScreenCoords) +
 						' ' + Vector2String(fpv.CameraRotation) + ' ' + MathHelper.ToDegrees(fpv.FOV) + ' ' + fpv.MinDrawDist + ' ' + fpv.MaxDrawDist +
 						' ' + ((int)fpv.Forward) + ' ' + ((int)fpv.Left) + ' ' + ((int)fpv.Backward) + ' ' + ((int)fpv.Right) +
 						' ' + fpv.MovementSpeed + ' ' + fpv.Sensibility.ToString(Main.CultureInfo);
 				}
-				if (Game.GameObjects[i] is Camera c)
+				if (Main.GameObjects[i] is Camera c)
 				{
-					if(!(Game.GameObjects[i] is FPVCamera))
+					if(!(Main.GameObjects[i] is FPVCamera))
 					ToBeSaved[j] = "camera " + c.Name + ' ' + c.Enabled + ' ' + Vector2String(c.Position) + ' ' + Vector2String(c.Rotation) +
 						' ' + Vector2String(c.CameraRotation) + ' ' + MathHelper.ToDegrees(c.FOV) + ' ' + c.MinDrawDist + ' ' + c.MaxDrawDist + ' ';
 					if (c.Behiavours != null)
@@ -354,25 +354,25 @@ namespace _3DRadSpaceDll
 					}
 					else ToBeSaved[j] += "0";
 				}
-				if (Game.GameObjects[i] is Script s)
+				if (Main.GameObjects[i] is Script s)
 				{
 					ToBeSaved[j] = "script " + s.Name + ' ' + s.Enabled + ' ' + s.ClassName + ' ' + s.Path;
 				}
-				if (Game.GameObjects[i] is SkyColor sky)
+				if (Main.GameObjects[i] is SkyColor sky)
 				{
 					ToBeSaved[j] = "skycolor " + sky.Name + ' ' + sky.Enabled + ' ' + sky.Color.R + ' ' + sky.Color.G + ' ' + sky.Color.B;
 				}
-				if (Game.GameObjects[i] is Fog fog)
+				if (Main.GameObjects[i] is Fog fog)
 				{
 					ToBeSaved[j] = "fog " + fog.Name + ' ' + fog.Enabled + ' ' + Vector2String(fog.FogColor) + ' ' + fog.FogStart + ' ' + fog.FogEnd;
 				}
-				if (Game.GameObjects[i] is Skinmesh skinmesh)
+				if (Main.GameObjects[i] is Skinmesh skinmesh)
 				{
 					ToBeSaved[j] = "skinmesh " + skinmesh.Name + ' ' + skinmesh.Enabled + ' ' + Vector2String(skinmesh.Position) + ' ' +
 						Vector2String(skinmesh.Rotation) + ' ' + Vector2String(skinmesh.Scale) + ' ' + skinmesh.FogEnabled + ' ' +
 						Vector2String(skinmesh.BoundingBox.Min) + ' ' + Vector2String(skinmesh.BoundingBox.Max) +' ' + skinmesh.BoundingSphere.Radius + ' ' + skinmesh.Resource;
 				}
-				if (Game.GameObjects[i] is Sprite sprite)
+				if (Main.GameObjects[i] is Sprite sprite)
 				{
 					string rectangle_string = "0 0 0 0";
 					if (sprite.SpriteSheetSection.HasValue)
@@ -382,21 +382,21 @@ namespace _3DRadSpaceDll
 					ToBeSaved[j] = "sprite " + sprite.Name + ' ' + sprite.Enabled + ' ' + Vector2String(sprite.Position) + ' ' + Vector2String(sprite.Size) + ' ' + Vector2String(sprite.Center) +
 						' '+sprite.Rotation+ ' '  + rectangle_string + ' ' + sprite.Mask.R + ' ' + sprite.Mask.G + ' ' + sprite.Mask.B + ' ' + (int)(sprite.Effects) + ' ' + sprite.Layer + ' ' + sprite.Resource;
 				}
-				if (Game.GameObjects[i] is TextPrint textPrint)
+				if (Main.GameObjects[i] is TextPrint textPrint)
 				{
 					ToBeSaved[j] = "textprint " + textPrint.Name + ' ' + textPrint.Enabled + ' ' + Vector2String(textPrint.Position) + ' ' + Vector2String(textPrint.Size) + ' ' + textPrint.Rotation +
 						' ' + Vector2String(textPrint.Center) + ' ' + textPrint.Color.R + ' ' + textPrint.Color.G + ' ' + textPrint.Color.B + ' ' + (int)(textPrint.Effects) + ' ' + textPrint.Layer + ' ' + textPrint.Text + ' ' + (char)0xfe + ' ' + textPrint.Resource;
 				}
-				if(Game.GameObjects[i] is SoundEffect sound)
+				if(Main.GameObjects[i] is SoundEffect sound)
 				{
-					if(!(Game.GameObjects[i] is SoundSource ))
+					if(!(Main.GameObjects[i] is SoundSource ))
 						ToBeSaved[j] = "soundeffect " + sound.Name + ' ' + sound.Enabled + ' ' + sound.Volume + ' ' + sound.Pitch + ' ' +sound.Pan + ' '+(int)sound.SoundState+' ' + sound.Resource;
 				}
-				if(Game.GameObjects[i] is ExitFade fade)
+				if(Main.GameObjects[i] is ExitFade fade)
 				{
 					ToBeSaved[j] = "exitfade " + fade.Name + ' ' + fade.Enabled + ' ' + fade.Color.R + ' ' + fade.Color.G + ' ' + fade.Color.B + ' ' + fade.Time + ' ' + fade.FadeType;
 				}
-				if(Game.GameObjects[i] is EventOnLocation eol)
+				if(Main.GameObjects[i] is EventOnLocation eol)
 				{
 					string beh = null;
 					for(int k =0; k < eol.Behiavours.Count;k++)
@@ -405,7 +405,7 @@ namespace _3DRadSpaceDll
 					}
 					ToBeSaved[j] = "eol " + eol.Name + ' ' + eol.Enabled + ' ' + Box2str(eol.BoundingBox) + ' ' + Sph2str(eol.BoundingSphere) + ' ' + Plane2str(eol.BoundingPlane) + ' ' + eol.VisibleInEditor + ' ' + beh;
 				}
-				if (Game.GameObjects[i] is EventOnKey eok)
+				if (Main.GameObjects[i] is EventOnKey eok)
 				{
 					string beh = null;
 					for (int k = 0; k < eok.Behiavours.Count; k++)
@@ -414,11 +414,11 @@ namespace _3DRadSpaceDll
 					}
 					ToBeSaved[j] = "eok " + eok.Name + ' ' + eok.Enabled + ' ' + (int)eok.Key.Key + ' ' + (int)eok.Key.State + ' ' + eok.HoldingTime + ' ' + beh;
 				}
-				if (Game.GameObjects[i] is SoundSource sounds)
+				if (Main.GameObjects[i] is SoundSource sounds)
 				{
 					ToBeSaved[j] = "soundsource " + sounds.Name + ' ' + sounds.Enabled + ' ' + sounds.Volume + ' ' + sounds.Pitch + ' ' + sounds.Pan + ' ' + (int)sounds.SoundState + ' '+Vector2String(sounds.Position)+' '+sounds.DopplerScale+' ' + sounds.Resource;
 				}
-				if(Game.GameObjects[i] is Timer timer)
+				if(Main.GameObjects[i] is Timer timer)
 				{
 					string beh = null;
 					for (int k = 0; k < timer.Behiavours.Count; k++)
@@ -427,11 +427,11 @@ namespace _3DRadSpaceDll
 					}
 					ToBeSaved[j] = "timer " + timer.Name + ' ' + timer.Enabled + ' ' + timer.Period + ' ' + timer.Repetitions + ' ' + beh;
 				}
-				if(Game.GameObjects[i] is Skybox sb)
+				if(Main.GameObjects[i] is Skybox sb)
 				{
 					ToBeSaved[j] = "skybox " + sb.Name + ' ' + sb.Enabled + ' ' + sb.Resource;
 				}
-				if(Game.GameObjects[i] is Counter cpp)
+				if(Main.GameObjects[i] is Counter cpp)
 				{
 					ToBeSaved[j] = "counter " + cpp.Name + ' ' + cpp.Enabled + ' ' + cpp.InitialValue + ' ' + cpp.Increment + ' ' + cpp.FileIOSafe;
 				}
@@ -489,15 +489,15 @@ namespace _3DRadSpaceDll
 		/// </summary>
 		public static void UnloadObjects()
 		{
-			for (int i = 0; i < Game.GameObjects.Count; i++)
+			for (int i = 0; i < Main.GameObjects.Count; i++)
 			{
-				if (Game.GameObjects[i] is Script sc) sc.End();
-				if (Game.GameObjects[i] is Sprite sp) sp.Dispose();
-				if (Game.GameObjects[i] is TextPrint tp) tp.Dispose();
-				if (Game.GameObjects[i] is Skybox sb) sb.Dispose();
-				if (Game.GameObjects[i] is Counter c) c.SaveFile();
+				if (Main.GameObjects[i] is Script sc) sc.End();
+				if (Main.GameObjects[i] is Sprite sp) sp.Dispose();
+				if (Main.GameObjects[i] is TextPrint tp) tp.Dispose();
+				if (Main.GameObjects[i] is Skybox sb) sb.Dispose();
+				if (Main.GameObjects[i] is Counter c) c.SaveFile();
 			}
-			Game.GameObjects.Clear();
+			Main.GameObjects.Clear();
 		}
 	}
 	/// <summary>

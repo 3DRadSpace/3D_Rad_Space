@@ -763,78 +763,6 @@
             
             </summary>
         </member>
-        <member name="T:_3DRadSpaceDll.Game">
-            <summary>
-            Contains methods and fields for managing game objects.
-            </summary>
-        </member>
-        <member name="P:_3DRadSpaceDll.Game.GameObjects">
-            <summary>
-            Contains the objects.
-            </summary>
-        </member>
-        <member name="M:_3DRadSpaceDll.Game.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
-            <summary>
-            Draws a 3D Model.
-            </summary>
-            <param name="model">3D Model</param>
-            <param name="world">Scale*Rotaion*Position Matrix</param>
-            <param name="view">View matrix</param>
-            <param name="projection">Projection Matrix</param>
-            <param name="FogEnabled">Allows Fog effects on the model</param>
-            <param name="FogColor">Fog colour if allowed</param>
-            <param name="FogStart">Fog Start Distance</param>
-            <param name="FogEnd">Fog End Distance</param>
-        </member>
-        <member name="M:_3DRadSpaceDll.Game.DrawModelAlpha(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Single,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
-            <summary>
-            Draws a model with the specified transparency.
-            </summary>
-            <param name="model">3D Model</param>
-            <param name="world">Scale*Rotaion*Position Matrix</param>
-            <param name="view">View matrix</param>
-            <param name="alpha">Alpha value ranging from 0.0f to 1.0f</param>
-            <param name="projection">Projection Matrix</param>
-            <param name="FogEnabled">Allows Fog effects on the model</param>
-            <param name="FogColor">Fog colour if allowed</param>
-            <param name="FogStart">Fog Start Distance</param>
-            <param name="FogEnd">Fog End Distance</param>
-        </member>
-        <member name="M:_3DRadSpaceDll.Game.FindObject(System.Int32)">
-            <summary>
-            Finds an objects after it's id.
-            <para>Time complexity is O(n) since GameObjects is a linked list.</para>
-            </summary>
-            <param name="i">Numeric indentifier.</param>
-            <returns>Returns the found object.</returns>
-        </member>
-        <member name="M:_3DRadSpaceDll.Game.FindObject(System.String)">
-            <summary>
-            Finds an objects after it's name. If objects have the same name, the object with the lowest numerical ID will be returned.
-            <para>Time complexity in the worst case is about O(n^2)</para>
-            </summary>
-            <param name="Name">Object's name</param>
-            <returns>Returns the object, else null.</returns>
-        </member>
-        <member name="M:_3DRadSpaceDll.Game.SetObject(System.Int32,_3DRadSpaceDll.GameObject)">
-            <summary>
-            Sets an object in the list.
-            </summary>
-            <param name="i">Object unique numeric (ID)entifier / array index
-            <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
-            </param>
-            <param name="obj">Value</param>
-        </member>
-        <member name="F:_3DRadSpaceDll.Game.ScreenSize">
-            <summary>
-            Gets or sets the screen-size used for the objects like Camera2D, ExitFade...
-            </summary>
-        </member>
-        <member name="F:_3DRadSpaceDll.Game.RequestExit">
-            <summary>
-            If true, the game will close next frame.
-            </summary>
-        </member>
         <member name="T:_3DRadSpaceDll.onDraw">
             <summary>
             Called when drawing the object
@@ -1096,17 +1024,16 @@
             Represents a group of objects. Only use as a Editor helper object. It's no use in any standalone project.
             </summary>
         </member>
-        <member name="M:_3DRadSpaceDll.Group.#ctor(System.String,System.Boolean,System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:_3DRadSpaceDll.Group.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
             Complete group object constructor.
             </summary>
             <param name="name">Object name</param>
-            <param name="enabled">Checks if the object is enabled</param>
             <param name="objs">List ob objects</param>
         </member>
-        <member name="F:_3DRadSpaceDll.Group.GroupedObjs">
+        <member name="M:_3DRadSpaceDll.Group.#ctor">
             <summary>
-            Represents a list of the linked objects.
+            Empty Group constructor.
             </summary>
         </member>
         <member name="M:_3DRadSpaceDll.Group.ApplyTranslation(Microsoft.Xna.Framework.Vector3)">
@@ -1120,6 +1047,14 @@
             Applies a euler angle rotation to the group objects.
             </summary>
             <param name="euler"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
+            <summary>
+            Used only in the editor.
+            </summary>
+            <param name="spriteBatch">not used</param>
+            <param name="view">view matrix</param>
+            <param name="projection">projection matrix</param>
         </member>
         <member name="T:_3DRadSpaceDll.ICustomGameObject">
             <summary>
@@ -1192,6 +1127,73 @@
         <member name="P:_3DRadSpaceDll.Main.CultureInfo">
             <summary>
             Haha, fixes related to computers using other languages
+            </summary>
+        </member>
+        <member name="P:_3DRadSpaceDll.Main.GameObjects">
+            <summary>
+            Contains the objects.
+            </summary>
+        </member>
+        <member name="M:_3DRadSpaceDll.Main.DrawModel(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            Draws a 3D Model.
+            </summary>
+            <param name="model">3D Model</param>
+            <param name="world">Scale*Rotaion*Position Matrix</param>
+            <param name="view">View matrix</param>
+            <param name="projection">Projection Matrix</param>
+            <param name="FogEnabled">Allows Fog effects on the model</param>
+            <param name="FogColor">Fog colour if allowed</param>
+            <param name="FogStart">Fog Start Distance</param>
+            <param name="FogEnd">Fog End Distance</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Main.DrawModelAlpha(Microsoft.Xna.Framework.Graphics.Model,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,System.Single,System.Boolean,Microsoft.Xna.Framework.Vector3,System.Single,System.Single)">
+            <summary>
+            Draws a model with the specified transparency.
+            </summary>
+            <param name="model">3D Model</param>
+            <param name="world">Scale*Rotaion*Position Matrix</param>
+            <param name="view">View matrix</param>
+            <param name="alpha">Alpha value ranging from 0.0f to 1.0f</param>
+            <param name="projection">Projection Matrix</param>
+            <param name="FogEnabled">Allows Fog effects on the model</param>
+            <param name="FogColor">Fog colour if allowed</param>
+            <param name="FogStart">Fog Start Distance</param>
+            <param name="FogEnd">Fog End Distance</param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Main.FindObject(System.Int32)">
+            <summary>
+            Finds an objects after it's id.
+            <para>Time complexity is O(n) since GameObjects is a linked list.</para>
+            </summary>
+            <param name="i">Numeric indentifier.</param>
+            <returns>Returns the found object.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Main.FindObject(System.String)">
+            <summary>
+            Finds an objects after it's name. If objects have the same name, the object with the lowest numerical ID will be returned.
+            <para>Time complexity in the worst case is about O(n^2)</para>
+            </summary>
+            <param name="Name">Object's name</param>
+            <returns>Returns the object, else null.</returns>
+        </member>
+        <member name="M:_3DRadSpaceDll.Main.SetObject(System.Int32,_3DRadSpaceDll.GameObject)">
+            <summary>
+            Sets an object in the list.
+            </summary>
+            <param name="i">Object unique numeric (ID)entifier / array index
+            <para>Time complexity is O(n), since the objects are stored in a linked list.</para>
+            </param>
+            <param name="obj">Value</param>
+        </member>
+        <member name="F:_3DRadSpaceDll.Main.ScreenSize">
+            <summary>
+            Gets or sets the screen-size used for the objects like Camera2D, ExitFade...
+            </summary>
+        </member>
+        <member name="F:_3DRadSpaceDll.Main.RequestExit">
+            <summary>
+            If true, the game will close next frame.
             </summary>
         </member>
         <member name="T:_3DRadSpaceDll.ObjectBehiavour">

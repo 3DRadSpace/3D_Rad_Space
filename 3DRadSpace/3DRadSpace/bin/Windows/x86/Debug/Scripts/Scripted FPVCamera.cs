@@ -14,7 +14,7 @@ class Script
     float CameraRotationSpeed = 0.001f;
     public void Start()
     {
-        _fpvcam = (Camera)_3DRadSpaceDll.Game.GameObjects[0];
+        _fpvcam = (Camera)Main.GameObjects[0];
     }
     public void Run(MouseState mouse, KeyboardState keyboard, GameTime time)
     {

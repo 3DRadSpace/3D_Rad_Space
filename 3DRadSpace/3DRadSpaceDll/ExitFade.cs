@@ -124,11 +124,11 @@ namespace _3DRadSpaceDll
 			Project.UnloadObjects();
 
 			//If project to load is nulll, exit.
-			if(string.IsNullOrEmpty(Resource)) Game.RequestExit = true;
+			if(string.IsNullOrEmpty(Resource)) Main.RequestExit = true;
 
 			//If the project file doesn't exist, exit the project
-			if (!System.IO.File.Exists(Resource)) Game.RequestExit = true;
-			Game.GameObjects = Project.Open(Resource);
+			if (!System.IO.File.Exists(Resource)) Main.RequestExit = true;
+			Main.GameObjects = Project.Open(Resource);
 		}
 
 	}

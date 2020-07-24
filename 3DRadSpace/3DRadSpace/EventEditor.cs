@@ -31,7 +31,7 @@ namespace _3DRadSpace
 			{
 				for (int i = 0; i < ids.Count; i++)
 				{
-					listBox1.Items.Add(_3DRadSpaceDll.Game.GameObjects[ids[i]]+" ("+i+')');
+					listBox1.Items.Add(_3DRadSpaceDll.Main.GameObjects[ids[i]]+" ("+i+')');
 				}
 			}
 			else Result = new List<OpCodeCall>();

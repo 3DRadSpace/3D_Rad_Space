@@ -168,8 +168,8 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            Game.DrawModel(EventOnLocation.Sphere, Matrix.CreateScale(2f) * Matrix.CreateTranslation(Position),view.Value,projection.Value);
-            Game.DrawModel(model, Matrix.CreateTranslation(Position + new Vector3(1f, 1.8f, 0.5f)),view.Value,projection.Value);
+            Main.DrawModel(EventOnLocation.Sphere, Matrix.CreateScale(2f) * Matrix.CreateTranslation(Position),view.Value,projection.Value);
+            Main.DrawModel(model, Matrix.CreateTranslation(Position + new Vector3(1f, 1.8f, 0.5f)),view.Value,projection.Value);
         }
         /// <summary>
         /// 

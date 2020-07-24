@@ -181,5 +181,13 @@ namespace _3DRadSpace
 			counterW.Dispose();
 			Close();
 		}
-	}
+
+        private void pictureBox28_Click(object sender, EventArgs e)
+        {
+			GroupW groupW = new GroupW();
+			if (groupW.ShowDialog() == DialogResult.OK) Result = groupW.Result;
+			groupW.Dispose();
+			Close();
+        }
+    }
 }

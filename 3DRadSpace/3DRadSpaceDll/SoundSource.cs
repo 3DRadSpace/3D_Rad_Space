@@ -151,7 +151,7 @@ namespace _3DRadSpaceDll
         /// <param name="projection"></param>
         public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
         {
-            Game.DrawModel(ModelMarker, Matrix.CreateTranslation(Position), view.Value, projection.Value);
+            Main.DrawModel(ModelMarker, Matrix.CreateTranslation(Position), view.Value, projection.Value);
             base.EditorDraw(spriteBatch, view, projection);
         }
     }

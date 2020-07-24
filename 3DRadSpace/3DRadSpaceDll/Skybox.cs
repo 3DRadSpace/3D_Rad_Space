@@ -173,9 +173,9 @@ namespace _3DRadSpaceDll
         /// </summary>
         public void LinkAvalableCamera()
         {
-            for (int i = 0; i < Game.GameObjects.Count; i++)
+            for (int i = 0; i < Main.GameObjects.Count; i++)
             {
-                if (Game.GameObjects[i] is Camera c) LinkCamera(c);
+                if (Main.GameObjects[i] is Camera c) LinkCamera(c);
             }
         }
         /// <summary>

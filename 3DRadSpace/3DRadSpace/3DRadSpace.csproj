@@ -328,6 +328,9 @@
     <EmbeddedResource Include="GameSettingsW.resx">
       <DependentUpon>GameSettingsW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GroupW.resx">
+      <DependentUpon>GroupW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectCompiler.resx">
       <DependentUpon>ProjectCompiler.cs</DependentUpon>
     </EmbeddedResource>
