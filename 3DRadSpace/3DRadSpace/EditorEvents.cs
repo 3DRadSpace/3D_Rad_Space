@@ -126,7 +126,7 @@ namespace _3DRadSpace
 			if (b == DialogResult.OK)
 			{
 				List<GameObject> c = Project.Open(openFile.FileName);
-				_3DRadSpaceDll.Main.GameObjects.AddRange(c);
+				Main.GameObjects.AddRange(c);
 				UpdateObjects();
 				ProjectSaved = false;
 			}
@@ -378,21 +378,48 @@ namespace _3DRadSpace
 			{
 				ClearColor = Color.Black;
 			}
-			if(_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Sprite sp)
+			if(Main.GameObjects[listBox1.SelectedItems[0].Index] is Sprite sp)
 			{
 				sp.Dispose();
 			}
-			if (_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Skybox sb)
+			if (Main.GameObjects[listBox1.SelectedItems[0].Index] is Skybox sb)
 			{
 				sb.Dispose();
 			}
-			if(_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is Fog f)
+			if(Main.GameObjects[listBox1.SelectedItems[0].Index] is Fog f)
 			{
 				FogEnabled = false;
 			}
-			if (_3DRadSpaceDll.Main.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
-			_3DRadSpaceDll.Main.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
+			if (Main.GameObjects[listBox1.SelectedItems[0].Index] is TextPrint tp) tp.Dispose();
+			Main.GameObjects.RemoveAt(listBox1.SelectedItems[0].Index);
 			UpdateObjects();
+		}
+		void DeleteObject(int index)
+        {
+			DialogResult warning = MessageBox.Show("Are sure you want to remove this object: \n " + Main.GameObjects[index].Name + "(" + index + ")", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if(warning == DialogResult.Yes)
+            {
+				if(Main.GameObjects[index] is SkyColor)
+				{
+					ClearColor = Color.Black;
+				}
+				if(Main.GameObjects[index] is Sprite sp)
+				{
+					sp.Dispose();
+				}
+				if(Main.GameObjects[index] is Skybox sb)
+				{
+					sb.Dispose();
+				}
+				if(Main.GameObjects[index] is Fog f)
+				{
+					FogEnabled = false;
+				}
+				if(Main.GameObjects[index] is TextPrint tp)
+					tp.Dispose();
+				Main.GameObjects.RemoveAt(index);
+				UpdateObjects();
+			}
 		}
 		void GameWindow_DragEnter(object sender, DragEventArgs e)
 		{
@@ -595,6 +622,8 @@ namespace _3DRadSpace
 		void Reset3DCursor()
 		{
 			_3dcursor_loc = Vector3.Zero;
+			DisallowTr();
+			selected_object_index = -1;
 		}
 		void setFocusFalse(object sender,EventArgs e)
         {

@@ -58,17 +58,5 @@ namespace _3DRadSpaceDll
                 Main.GameObjects[SelectedObjects[i]].Rotation += euler;
             }
         }
-        /// <summary>
-        /// Used only in the editor.
-        /// </summary>
-        /// <param name="spriteBatch">not used</param>
-        /// <param name="view">view matrix</param>
-        /// <param name="projection">projection matrix</param>
-        public override void EditorDraw(SpriteBatch spriteBatch, Matrix? view, Matrix? projection)
-        {
-
-            base.EditorDraw(spriteBatch, view, projection);
-        }
-        public static Model Marker;
     }
 }
