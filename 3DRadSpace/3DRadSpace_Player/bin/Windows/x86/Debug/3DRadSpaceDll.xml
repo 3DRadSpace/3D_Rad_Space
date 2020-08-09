@@ -1048,14 +1048,6 @@
             </summary>
             <param name="euler"></param>
         </member>
-        <member name="M:_3DRadSpaceDll.Group.EditorDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Nullable{Microsoft.Xna.Framework.Matrix},System.Nullable{Microsoft.Xna.Framework.Matrix})">
-            <summary>
-            Used only in the editor.
-            </summary>
-            <param name="spriteBatch">not used</param>
-            <param name="view">view matrix</param>
-            <param name="projection">projection matrix</param>
-        </member>
         <member name="T:_3DRadSpaceDll.ICustomGameObject">
             <summary>
             A interface that should be used when creating custom object

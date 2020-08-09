@@ -72,6 +72,7 @@
     <Compile Include="AddObject.Designer.cs">
       <DependentUpon>AddObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="backup code.cs" />
     <Compile Include="CounterW.cs">
       <SubType>Form</SubType>
     </Compile>

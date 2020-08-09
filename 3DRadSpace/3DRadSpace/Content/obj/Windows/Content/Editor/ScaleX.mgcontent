@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Editor/ScaleX.png</SourceFile>
-  <SourceTime>2020-07-24T23:19:34.9639207+03:00</SourceTime>
-  <DestFile>C:/Users/Athanatos/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Editor/ScaleX.xnb</DestFile>
-  <DestTime>2020-07-24T23:24:03.5866566+03:00</DestTime>
+  <SourceFile>C:/Users/Pavilion/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Editor/ScaleX.png</SourceFile>
+  <SourceTime>2020-08-09T16:53:29.298887+03:00</SourceTime>
+  <DestFile>C:/Users/Pavilion/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Editor/ScaleX.xnb</DestFile>
+  <DestTime>2020-08-09T21:38:04.807121+03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-02-26T07:46:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

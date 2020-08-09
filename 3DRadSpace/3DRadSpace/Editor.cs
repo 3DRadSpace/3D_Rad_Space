@@ -129,11 +129,19 @@ namespace _3DRadSpace
 		int selected_object_index = -1;
 
 		MouseState oldState;
+		KeyboardState keyOld;
 		bool _viewportfocus = true;
 
 		bool _allowmov = false;
 		bool _allowrot = false;
 		bool _allowscal = false;
+
+		bool _gizmos = false;
+		// 0 = disabled
+		// 1 = movment
+		// 2 = rotation
+		// 3 = scaling
+		int _gizmo_mode = 0;
 
 		protected override void Update(GameTime gameTime)
 		{
@@ -174,7 +182,7 @@ namespace _3DRadSpace
 					oldState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
 				{
 					float d = float.MinValue;
-					Ray finder = GetMouseRay(new Vector2(mouse.X, mouse.Y), GraphicsDevice.Viewport, View, Projection);
+					Ray finder = GetMouseRay(new Vector2(mouse.X,mouse.Y),GraphicsDevice.Viewport,View,Projection);
 					for(int i = 0; i < Main.GameObjects.Count; i++)
 					{
 						GameObject o = Main.GameObjects[i];
@@ -184,9 +192,9 @@ namespace _3DRadSpace
 							{
 								BoundingSphere sph = sk.Model.Meshes[j].BoundingSphere;
 								sph.Center += sk.Position;
-								if(RayI(finder, sph, out float? cdst))
+								if(RayI(finder,sph,out float? cdst))
 								{
-									Vector3? val = RayMeshCollision(finder, sk.Model, sk.TranslationMatrix);
+									Vector3? val = RayMeshCollision(finder,sk.Model,sk.TranslationMatrix);
 									if(val == null) continue;
 									if(_3dcursor_loc != null)
 									{
@@ -203,7 +211,7 @@ namespace _3DRadSpace
 						}
 						if(o is Camera c)
 						{
-							if(RayI(finder, new BoundingSphere(c.Position, 2), out float? cdst))
+							if(RayI(finder,new BoundingSphere(c.Position,2),out float? cdst))
 							{
 								if(d < cdst)
 								{
@@ -219,7 +227,7 @@ namespace _3DRadSpace
 							switch(eol.BoundingType)
 							{
 								case BoundingObject.Box:
-									if(RayI(finder, eol.BoundingBox, out float? cdst))
+									if(RayI(finder,eol.BoundingBox,out float? cdst))
 									{
 										if(d < cdst)
 										{
@@ -231,7 +239,7 @@ namespace _3DRadSpace
 									}
 									break;
 								case BoundingObject.Sphere:
-									if(RayI(finder, eol.BoundingSphere, out float? cdsts))
+									if(RayI(finder,eol.BoundingSphere,out float? cdsts))
 									{
 										if(d < cdsts)
 										{
@@ -247,7 +255,7 @@ namespace _3DRadSpace
 						}
 						if(o is SoundSource sound)
 						{
-							if(RayI(finder, new BoundingSphere(sound.Position, 2), out float? cdst))
+							if(RayI(finder,new BoundingSphere(sound.Position,2),out float? cdst))
 							{
 								if(d < cdst)
 								{
@@ -260,8 +268,7 @@ namespace _3DRadSpace
 						}
 					}
 				}
-				oldState = mouse;
-				if(selected_object_index != -1)
+                if(selected_object_index != -1)
 				{
 					//edit/remove 3d selected object keyboard shortcuts
 					if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter))
@@ -358,6 +365,37 @@ namespace _3DRadSpace
 						else if(mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
 							mv = true;
 					}
+					///Object manipulation using gizmos
+					if(_gizmos)
+                    {
+						switch(_gizmo_mode)
+                        {
+							case 1:
+                            {
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Forward, 1);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Backward, 1);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Left, 1);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Right, 1);
+								if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Up, 1);
+								if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Down, 1);
+								break;
+                            }
+							case 2:
+                            {
+								break;
+                            }
+							case 3:
+                            {
+								break;
+                            }
+                        }
+                    }
 				}
 				IsMouseVisible = mv;
 			}
@@ -371,7 +409,7 @@ namespace _3DRadSpace
 			GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
 			Editor_View.Draw(out View, out Projection);
 
-			//Draws the axis: Rotating it 3/2*pi rad because the model is wrong lol
+			//Draws the axis: Rotating it 3/2*pi radians because the model is wrong
 			Main.DrawModel(Axis, Matrix.CreateRotationY(MathHelper.Pi * 1.5f) * Matrix.CreateTranslation(_3dcursor_loc), View, Projection, FogEnabled, FogColor, FogStart, FogEnd);
 
 			for(int i = 0; i < Main.GameObjects.Count; i++)
@@ -460,7 +498,7 @@ namespace _3DRadSpace
 			string[] split = File.ReadAllText(appd + "\\Config.cfg").Split(' ');
 			if(split.Length != 5)
 			{
-				File.WriteAllText(appd + "\\Config.cfg", "1 1 1 1 1");
+				File.WriteAllText(appd + "\\Config.cfg", "true true true 1 1");
 				return new[] { true, true, true };
 			}
 			bool[] result = { Convert.ToBoolean(split[0]), Convert.ToBoolean(split[1]), Convert.ToBoolean(split[2]) };
