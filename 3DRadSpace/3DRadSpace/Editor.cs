@@ -192,6 +192,7 @@ namespace _3DRadSpace
 							{
 								BoundingSphere sph = sk.Model.Meshes[j].BoundingSphere;
 								sph.Center += sk.Position;
+								sph.Radius *= sk.Scale.Length();
 								if(RayI(finder,sph,out float? cdst))
 								{
 									Vector3? val = RayMeshCollision(finder,sk.Model,sk.TranslationMatrix);
@@ -388,15 +389,60 @@ namespace _3DRadSpace
                             }
 							case 2:
                             {
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Forward*0.1f,2);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Backward*0.1f,2);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Left*0.1f,2);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Right*0.1f,2);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Up*0.1f,2);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Down*0.1f,2);
 								break;
                             }
 							case 3:
                             {
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Forward,3);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Backward,3);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Left,3);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Right,3);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Up,3);
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Down,3);
 								break;
                             }
                         }
                     }
 				}
+				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.G) && keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.T))
+                {
+					_gizmos = true;
+					_gizmo_mode = 1;
+                }				
+				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.G) && keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.R))
+                {
+					_gizmos = true;
+					_gizmo_mode = 2;
+                }				
+				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.G) && keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
+                {
+					_gizmos = true;
+					_gizmo_mode = 3;
+                }
+				if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.G) && keyOld.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.G))
+                {
+					_gizmos = !_gizmos;
+                }
+				oldState = mouse;
+				keyOld = keyboard;
 				IsMouseVisible = mv;
 			}
 			base.Update(gameTime);
@@ -452,7 +498,7 @@ namespace _3DRadSpace
 				if(gameObject is SoundSource ss) ss.EditorDraw(spriteBatch, View, Projection);
 			}
 			spriteBatch.Begin();
-			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position, new Vector2(170, graphics.PreferredBackBufferHeight - 50), Color.White);
+			spriteBatch.DrawString(D_Font, "CamRot: " + CameraRotationCoords + " CamPos " + Editor_View.Position+ "\n Gizmo:" + _gizmos + " Mode:" + _gizmo_mode, new Vector2(170, graphics.PreferredBackBufferHeight - 75), Color.White);
 			if(_allowmov)
 			{
 				spriteBatch.Draw(I_MovX, R_MovX, Color.White);
@@ -477,6 +523,10 @@ namespace _3DRadSpace
 				if(gameObject is Sprite sp) sp.EditorDraw(spriteBatch, null, null);
 				if(gameObject is TextPrint tp) tp.EditorDraw(spriteBatch, null, null);
 			}
+			if(selected_object_index != -1)
+            {
+
+            }
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}

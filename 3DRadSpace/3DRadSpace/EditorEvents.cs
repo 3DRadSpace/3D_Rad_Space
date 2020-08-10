@@ -218,7 +218,7 @@ namespace _3DRadSpace
 		}
 		void EditObj(int i)
         {
-			object b = _3DRadSpaceDll.Main.GameObjects[i];
+			object b = Main.GameObjects[i];
 			if (b is Script)
 			{
 				ScriptW scriptW = new ScriptW((Script)_3DRadSpaceDll.Main.GameObjects[i]);

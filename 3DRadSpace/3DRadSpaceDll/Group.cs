@@ -58,5 +58,16 @@ namespace _3DRadSpaceDll
                 Main.GameObjects[SelectedObjects[i]].Rotation += euler;
             }
         }
+        public void ApplyScale(Vector3 scale)
+        {
+            for(int i =0; i < SelectedObjects.Count;i++)
+            {
+                GameObject sk = Main.GameObjects[SelectedObjects[i]];
+                if(sk is Skinmesh mesh)
+                {
+                    mesh.Scale += scale;
+                }
+            }
+        }
     }
 }
