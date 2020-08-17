@@ -189,5 +189,16 @@ namespace _3DRadSpace
 			groupW.Dispose();
 			Close();
         }
+
+        private void AddObject_Load(object sender,EventArgs e)
+        {
+			pictureBox2.ImageLocation = "Resources\\OBJ_Sprite.png";
+			pictureBox3.ImageLocation = "Resources\\OBJ_TextPrint.png";
+			pictureBox5.ImageLocation = "Resources\\OBJ_EOL.png";
+			pictureBox6.ImageLocation = "Resources\\OBJ_EOK.png";
+			pictureBox8.ImageLocation = "Resources\\OBJ_Timer.png";
+			pictureBox9.ImageLocation = "Resources\\OBJ_ExitFade.png";
+			pictureBox10.ImageLocation = "Resources\\OBJ_Script.png";
+        }
     }
 }

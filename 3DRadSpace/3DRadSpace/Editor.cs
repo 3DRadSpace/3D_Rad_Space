@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -372,21 +373,39 @@ namespace _3DRadSpace
 						switch(_gizmo_mode)
                         {
 							case 1:
-                            {
+							{
 								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Forward, 1);
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Forward,1);
+									_3dcursor_loc += Vector3.Forward;
+								}
 								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Backward, 1);
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Backward,1);
+									_3dcursor_loc += Vector3.Backward;
+								}
 								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Left, 1);
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Left,1);
+									_3dcursor_loc += Vector3.Left;
+								}
 								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Right, 1);
-								if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Up, 1);
-								if (keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
-									ApplyTransformation(Main.GameObjects[selected_object_index], Vector3.Down, 1);
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Right,1);
+									_3dcursor_loc += Vector3.Right;
+								}
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Up,1);
+									_3dcursor_loc += Vector3.Up;
+								}
+								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+								{
+									ApplyTransformation(Main.GameObjects[selected_object_index],Vector3.Down,1);
+									_3dcursor_loc += Vector3.Down;
+								}
 								break;
-                            }
+							}
 							case 2:
                             {
 								if(keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) || keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up))
@@ -525,7 +544,10 @@ namespace _3DRadSpace
 			}
 			if(selected_object_index != -1)
             {
-
+				string a = "";
+				GameObject o = Main.GameObjects[selected_object_index];
+				if(o is Skinmesh sk) a = "Scale " + sk.Scale;
+				spriteBatch.DrawString(D_Font,"Obj loc:" + o.Position + " Rot:" + o.Rotation + " " + a,new Vector2(160,120),Color.Red,0f,Vector2.Zero,1f,SpriteEffects.None,1f); ;
             }
 			spriteBatch.End();
 			base.Draw(gameTime);
@@ -708,8 +730,24 @@ namespace _3DRadSpace
 			_allowrot = false;
 			_allowscal = false;
 		}
-		void ApplyTransformation(GameObject obj,Vector3 tr,byte flag)
+		void ApplyTransformation(GameObject obj,Vector3 tr,byte flag,bool recursive = true)
 		{
+			if(recursive)
+			{
+				for(int i = 0; i < Main.GameObjects.Count; i++)
+				{
+					if(Main.GameObjects[i] is Group g)
+					{
+						for(int j = 0; j < g.SelectedObjects.Count; j++)
+						{
+							if(Main.GameObjects[g.SelectedObjects[j]] == obj)
+							{
+								ApplyTransformation(Main.GameObjects[g.SelectedObjects[j]],tr,flag,false);
+							}
+						}
+					}
+				}
+			}
 			switch(obj)
 			{
 				case SoundSource ss:

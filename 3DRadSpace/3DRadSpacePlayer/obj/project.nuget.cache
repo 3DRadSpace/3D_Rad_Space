@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "qENl0Adj0B67iwRHIDDdMh0hHkTvhTnqX5DV0FM2ko3kRqX8nA+M0kcJYwCFINyj3yBMU03hlCZA8hLSIOaOdQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Pavilion\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\Pavilion\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+  ],
+  "logs": []
+}

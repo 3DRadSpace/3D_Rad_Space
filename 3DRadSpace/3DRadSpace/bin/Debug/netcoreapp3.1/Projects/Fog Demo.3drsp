@@ -1,0 +1,4 @@
+3DRSP_text
+fog Fog True 255 255 255 25 1000
+skycolor SkyColor True 255 255 255
+skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 True 0 0 0 1 1 1 2 Skinmeshes/Terrain0100

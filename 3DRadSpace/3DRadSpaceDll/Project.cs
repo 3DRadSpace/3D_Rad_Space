@@ -312,6 +312,16 @@ namespace _3DRadSpaceDll
 							};
 							break;
 						}
+					case "group":
+                    {
+						int[] vec = new int[Obj.Length - 1];
+						for(int j = 1; j < Obj.Length; j++)
+						{
+							vec[j - 1] = Convert.ToInt32(Obj[j]);
+						}
+						a = new Group(Obj[1],vec);
+						break;
+                    }
 					default:
 						{
 							throw new FormatException("Unknown object found. Line :" + i + " Identifier:" + Obj[0]);
@@ -435,6 +445,10 @@ namespace _3DRadSpaceDll
 				{
 					ToBeSaved[j] = "counter " + cpp.Name + ' ' + cpp.Enabled + ' ' + cpp.InitialValue + ' ' + cpp.Increment + ' ' + cpp.FileIOSafe;
 				}
+				if(Main.GameObjects[i] is Group gr)
+                {
+					ToBeSaved[j] = "group " + gr.GetListString();
+                }
 			}
 			File.WriteAllLines(filename, ToBeSaved);
 		}

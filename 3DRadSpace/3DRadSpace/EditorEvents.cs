@@ -293,7 +293,7 @@ namespace _3DRadSpace
 				{
 					p = (TextPrint)textPrintW.Result;
 					p.Load(Content);
-					_3DRadSpaceDll.Main.GameObjects[i] = p;
+					Main.GameObjects[i] = p;
 				}
 				textPrintW.Dispose();
 				return;

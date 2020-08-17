@@ -44,7 +44,6 @@ C:\Users\Athanatos\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\obj\De
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.xml
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.dll
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\3DRadSpaceDll.pdb
-C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\MonoGame.Framework.dll
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.DXGI.dll
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.dll
 C:\Users\Pavilion\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpaceDll\bin\Debug\SharpDX.Direct3D11.dll

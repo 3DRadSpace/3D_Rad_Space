@@ -87,16 +87,7 @@ namespace _3DRadSpaceDll
         /// <summary>
         /// Model scale. Default is (1,1,1).
         /// </summary>
-        public Vector3 Scale
-        {
-            get { return _scale;  }
-            set
-            {
-                if (value == Vector3.Zero) throw new ArgumentException("Skinmesh.Scale", "Zero scales are not supported.");
-                else _scale = value;
-            }
-        }
-        Vector3 _scale;
+        public Vector3 Scale;
         /// <summary>
         /// <para>Bounding Box allowing basic hitbox/collision detection.</para>
         /// <para>Note: Please note that this object doesn't use physics</para>
@@ -185,7 +176,7 @@ namespace _3DRadSpaceDll
         {
             get
             {
-                return Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
+                return Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) * Matrix.CreateTranslation(Position);
             }
         }
     }

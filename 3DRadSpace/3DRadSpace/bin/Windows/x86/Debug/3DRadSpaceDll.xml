@@ -1048,6 +1048,18 @@
             </summary>
             <param name="euler"></param>
         </member>
+        <member name="M:_3DRadSpaceDll.Group.ApplyScale(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            Applies a scale vector to the group skinmeshes.
+            </summary>
+            <param name="scale"></param>
+        </member>
+        <member name="M:_3DRadSpaceDll.Group.GetListString">
+            <summary>
+            Used in I/O format
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:_3DRadSpaceDll.ICustomGameObject">
             <summary>
             A interface that should be used when creating custom object
@@ -1618,7 +1630,7 @@
             Determines if fog is defined
             </summary>
         </member>
-        <member name="P:_3DRadSpaceDll.Skinmesh.Scale">
+        <member name="F:_3DRadSpaceDll.Skinmesh.Scale">
             <summary>
             Model scale. Default is (1,1,1).
             </summary>

@@ -5,7 +5,6 @@ using System.Globalization;
 
 namespace _3DRadSpace
 {
-#if WINDOWS || LINUX
     /// <summary>
     /// The main class.
     /// </summary>
@@ -41,5 +40,4 @@ namespace _3DRadSpace
             }
         }
     }
-#endif
 }

@@ -58,6 +58,10 @@ namespace _3DRadSpaceDll
                 Main.GameObjects[SelectedObjects[i]].Rotation += euler;
             }
         }
+        /// <summary>
+        /// Applies a scale vector to the group skinmeshes.
+        /// </summary>
+        /// <param name="scale"></param>
         public void ApplyScale(Vector3 scale)
         {
             for(int i =0; i < SelectedObjects.Count;i++)
@@ -68,6 +72,19 @@ namespace _3DRadSpaceDll
                     mesh.Scale += scale;
                 }
             }
+        }
+        /// <summary>
+        /// Used in I/O format
+        /// </summary>
+        /// <returns></returns>
+        public string GetListString()
+        {
+            string s = "";
+            for(int i = 0; i < SelectedObjects.Count; i++)
+            {
+                s += SelectedObjects[i]+" ";
+            }
+            return s;
         }
     }
 }
