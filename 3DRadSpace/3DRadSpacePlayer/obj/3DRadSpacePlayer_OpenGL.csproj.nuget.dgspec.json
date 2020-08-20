@@ -1,33 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj": {}
+    "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj": {
+    "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj",
+        "projectUniqueName": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj",
         "projectName": "3DRadSpaceDll",
-        "projectPath": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj"
+        "projectPath": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj"
       },
       "frameworks": {
         "net45": {}
       }
     },
-    "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj": {
+    "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj",
+        "projectUniqueName": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj",
         "projectName": "3DRadSpacePlayer_OpenGL",
-        "projectPath": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj",
-        "packagesPath": "C:\\Users\\Pavilion\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\obj\\",
+        "projectPath": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\3DRadSpacePlayer_OpenGL.csproj",
+        "packagesPath": "C:\\Users\\NicusorN5\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpacePlayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Pavilion\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\NicusorN5\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -41,8 +41,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj": {
-                "projectPath": "C:\\Users\\Pavilion\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj"
+              "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj": {
+                "projectPath": "C:\\Users\\NicusorN5\\Documents\\GitHub\\3D_Rad_Space\\3DRadSpace\\3DRadSpaceDll\\3DRadSpaceDll.csproj"
               }
             }
           }
@@ -80,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
