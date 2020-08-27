@@ -373,6 +373,20 @@ namespace _3DRadSpace_Engine
             this.DebugButton.Size = new System.Drawing.Size(78, 24);
             this.DebugButton.Text = "Debug";
             this.DebugButton.Click += new System.EventHandler(this.playProjClick);
+            //
+            //
+            //
+            this.ObjectsList.Location = new System.Drawing.Point(0, menuStrip1.Size.Height);
+            this.ObjectsList.Name = "ObjectsList";
+            this.ObjectsList.Size = new System.Drawing.Size(140, 519);
+            this.ObjectsList.TabIndex = 2;
+            ObjectsList.MouseDown += ObjectsList_MouseDown;
+            ObjectsList.KeyDown += ObjectsList_KeyDown;
+            ObjectsList.ItemCheck += ObjectsList_ItemCheck;
+            ObjectsList.SelectedIndexChanged += ObjectsList_SelectedIndexChanged;
+            ObjectsList.MultiSelect = false;
+            ObjectsList.CheckBoxes = true;
+            ObjectsList.View = System.Windows.Forms.View.List;
             // 
             // EditorWindow_winforms
             // 

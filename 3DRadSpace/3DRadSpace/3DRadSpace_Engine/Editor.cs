@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
 using System.Threading;
+using BepuPhysics.Constraints;
 
 namespace _3DRadSpace_Engine
 {
@@ -22,12 +23,20 @@ namespace _3DRadSpace_Engine
         Form EditorWindow;
         DiscordRichPresence discord;
         Camera _editorCamera;
+
+        Model E_Axis;
+
+        Matrix MVIEW = Matrix.CreateLookAt(Vector3.One * 5, Vector3.Zero, Vector3.Up);
+        Matrix MPROJECTION = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(65f), 800f / 600f, 0.01f, 1000f);
+        BoundingFrustum CameraFrustrum;
+
         public Editor()
         {
             _graphics = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
             _editorCamera = new Camera();
             _editorCamera.RecalculateMatrices();
+            CameraFrustrum = new BoundingFrustum(MVIEW * MPROJECTION);
         }
         protected override void Initialize()
         {
@@ -45,6 +54,7 @@ namespace _3DRadSpace_Engine
         {
             _batch = new SpriteBatch(GraphicsDevice);
             Content.RootDirectory = "Resources";
+            E_Axis = Content.Load<Model>("Editor\\Meshes\\Axis");
             base.LoadContent();
         }
         protected override void Draw(GameTime gameTime)
@@ -53,6 +63,9 @@ namespace _3DRadSpace_Engine
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
+
+            Main.DrawModel(E_Axis, Matrix.Identity, MVIEW, MPROJECTION);
+
             _batch.Begin();
             _batch.End();
             base.Draw(gameTime);

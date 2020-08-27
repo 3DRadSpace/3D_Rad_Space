@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Net;
 
 namespace _3DRadSpace_Engine
 {
@@ -75,7 +76,9 @@ namespace _3DRadSpace_Engine
 
         private void checkForUpdates(object sender, EventArgs e)
         {
-
+            WebClient client = new WebClient();
+            client.DownloadString("<insert info>");
+            
         }
 
         private void OpenSettings(object sender, EventArgs e)
