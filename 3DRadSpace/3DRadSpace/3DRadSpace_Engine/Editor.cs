@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Forms;
-
+using System.Threading;
 
 namespace _3DRadSpace_Engine
 {
@@ -32,7 +32,12 @@ namespace _3DRadSpace_Engine
         protected override void Initialize()
         {
             Window.Title = "3DRadSpace v0.1.0a";
+            Window.AllowUserResizing = true;
+            
             EditorWindow = (Form)Control.FromHandle(Window.Handle);
+            InitializeComponent();
+            EditorWindow.Location = new System.Drawing.Point(0, 0);
+            EditorWindow.WindowState = FormWindowState.Maximized;
             discord = new DiscordRichPresence();
             base.Initialize();
         }

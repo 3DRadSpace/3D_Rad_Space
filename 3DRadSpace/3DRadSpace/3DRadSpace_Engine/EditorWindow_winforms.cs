@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace _3DRadSpace_Engine
 {
@@ -17,99 +18,95 @@ namespace _3DRadSpace_Engine
             InitializeComponent();
         }
 
-        private void newProjectCtrlNToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newProjClick(object sender, EventArgs e)
         {
 
         }
 
-        private void openProjectCtrlOToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openProjClick(object sender, EventArgs e)
         {
 
         }
 
-        private void saveProjectAsShitfCtrlSToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveProjClick(object sender, EventArgs e)
         {
 
         }
 
-        private void saveProjectAsShiftCtrlSToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveProjAsClick(object sender, EventArgs e)
         {
 
         }
 
-        private void playProjectCtrlPToolStripMenuItem_Click(object sender, EventArgs e)
+        private void playProjClick(object sender, EventArgs e)
         {
 
         }
 
-        private void compileProjectCtrlBToolStripMenuItem_Click(object sender, EventArgs e)
+        private void compileProjClick(object sender, EventArgs e)
         {
 
         }
 
-        private void exitAltF4ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void addObjectCtrlAToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addObjectClick(object sender, EventArgs e)
         {
 
         }
 
-        private void addAddonToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addAddon_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void addResourcesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addResourcesClick(object sender, EventArgs e)
         {
 
         }
 
-        private void reset3DCursorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void reset3DCursor(object sender, EventArgs e)
         {
 
         }
 
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void checkForUpdates(object sender, EventArgs e)
         {
 
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenSettings(object sender, EventArgs e)
         {
 
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenAboutW(object sender, EventArgs e)
         {
 
         }
 
-        private void forumToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenForum(object sender, EventArgs e)
         {
-
+            Process.Start("https://3dradspace.tk/Forum");
         }
 
-        private void websiteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenWebsite(object sender, EventArgs e)
         {
-
+            Process.Start("https://3dradspace.tk");
         }
 
-        private void discordToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenDiscord(object sender, EventArgs e)
         {
-
+            Process.Start("https://discord.gg/9BcQQyu");
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void Switch2D3D(object sender, EventArgs e)
         {
-
+            
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

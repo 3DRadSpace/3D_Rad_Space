@@ -48,3 +48,4 @@ C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\3DRadSpac
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\3DRadSpace_Engine\bin\Debug\_3DRadSpaceDll_DX11.pdb
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\3DRadSpace_Engine\obj\Debug\3DRadSpace_Engine.csproj.GenerateResource.cache
 C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\3DRadSpace_Engine\obj\Debug\_3DRadSpace_Engine.EditorWindow_winforms.resources
+C:\Users\NicusorN5\Documents\GitHub\3D_Rad_Space\3DRadSpace\3DRadSpace\3DRadSpace_Engine\obj\Debug\_3DRadSpace_Engine.Properties.Resources.resources

@@ -12,7 +12,7 @@ namespace _3DRadSpaceDll
     /// </summary>
     public static class Main
     {
-        public static List<Object> Objects = new List<object>();
+        public static List<GameObject> Objects = new List<GameObject>();
         public static bool TryExit;
         public static CultureInfo Culture = CultureInfo.InvariantCulture;
     }

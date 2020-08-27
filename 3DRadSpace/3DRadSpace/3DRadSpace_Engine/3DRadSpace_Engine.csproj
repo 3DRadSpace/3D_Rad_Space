@@ -112,6 +112,8 @@
   <ItemGroup>
     <Compile Include="Discord.cs" />
     <Compile Include="Editor.cs" />
+    <Compile Include="EditorEvents.cs" />
+    <Compile Include="EditorWindow.cs" />
     <Compile Include="EditorWindow_winforms.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +121,11 @@
       <DependentUpon>EditorWindow_winforms.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
@@ -135,6 +142,10 @@
   <ItemGroup>
     <EmbeddedResource Include="EditorWindow_winforms.resx">
       <DependentUpon>EditorWindow_winforms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
