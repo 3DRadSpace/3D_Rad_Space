@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace _3DRadSpace_Engine
 {
@@ -70,6 +71,7 @@ namespace _3DRadSpace_Engine
             this.Switch2D3DButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.DebugButton = new System.Windows.Forms.ToolStripButton();
+            this.ObjectsList = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.EditorWindow.SuspendLayout();
@@ -442,6 +444,7 @@ namespace _3DRadSpace_Engine
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton DebugButton;
         private System.Windows.Forms.ToolStripMenuItem I_P10;
+        private System.Windows.Forms.ListView ObjectsList;
     }
 }
 

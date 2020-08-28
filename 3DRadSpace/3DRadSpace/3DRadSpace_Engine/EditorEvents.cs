@@ -98,5 +98,24 @@ namespace _3DRadSpace_Engine
         {
 
         }
+        private void ObjectsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ObjectsList_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ObjectsList_KeyDown(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ObjectsList_MouseDown(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
