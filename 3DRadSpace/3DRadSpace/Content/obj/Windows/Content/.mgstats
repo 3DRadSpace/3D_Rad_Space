@@ -1,3 +1,0 @@
-Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Shaders/SH_Skybox.fx","C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Shaders/SH_Skybox.xnb","EffectProcessor","CompiledEffectContent",2405,2188,0.6143326
-"C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/Sounds/sound.ogg","C:/Users/NicusorN5/Documents/GitHub/3D_Rad_Space/3DRadSpace/3DRadSpace/Content/bin/Windows/Content/Sounds/sound.xnb","SoundEffectProcessor","SoundEffectContent",6625,36201,0.2926665

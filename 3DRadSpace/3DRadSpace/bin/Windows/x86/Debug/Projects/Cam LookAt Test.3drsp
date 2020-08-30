@@ -1,5 +1,0 @@
-3DRSP_text
-skinmesh Skinmesh True 0 8 5 0 0 0 1 1 1 False -1 -1 -1 1 1 1 2 EOL_Sphere
-skinmesh Skinmesh True 0 0 0 0 0 0 1 1 1 False -1 -1 -1 1 1 1 2 Skinmeshes/Terrain0100
-camera Camera True 0 8 0 0 0 0 0 1 0 75 0.1 500 1 0 2 
-script Script True Script Scripts//Camera Chase Test.cs
