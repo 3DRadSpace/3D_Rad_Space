@@ -4,6 +4,3 @@
 Please create a pull request if you want to contribuite in this project...
 
 To edit clone the repository in GitHub Desktop, then have fun! :)
-
-
-test
