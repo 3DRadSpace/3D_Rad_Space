@@ -117,34 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="scintilla1.Text" xml:space="preserve">
-    <value>using System;
-using Lib3DRadSpace_DX;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-
-class Script
-{
-    public void Load(ContentManager content)
-    {
-        //write initialization logic here (allocate memory, load models, textures, shaders, etc)
-    }
-    public void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time)
-    {
-        //write physics/input logic here
-    }
-    public void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
-    {
-        //write drawing code here
-    }
-    public void Unload()
-    {
-        //uninitialize unmanaged memory here
-    }
-}</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

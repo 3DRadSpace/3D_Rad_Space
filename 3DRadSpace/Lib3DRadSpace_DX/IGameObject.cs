@@ -21,6 +21,11 @@ namespace Lib3DRadSpace_DX
         string Name { get; set; }
 
         /// <summary>
+        /// Represents the asset file the object is using.
+        /// </summary>
+        string Asset { get; set; }
+
+        /// <summary>
         /// Checks if the object will do anything in the update loop.
         /// </summary>
         bool Enabled { get; set; }

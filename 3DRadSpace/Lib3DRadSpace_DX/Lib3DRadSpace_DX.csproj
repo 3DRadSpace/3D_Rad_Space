@@ -92,11 +92,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicColorShader.cs" />
+    <Compile Include="Behiavour.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CurrentProject.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Script.cs" />
+    <Compile Include="Shader.cs" />
+    <Compile Include="Skinmesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

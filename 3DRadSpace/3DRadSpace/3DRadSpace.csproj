@@ -57,6 +57,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddObjectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddObjectWnd.Designer.cs">
+      <DependentUpon>AddObjectWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CameraWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraWnd.Designer.cs">
+      <DependentUpon>CameraWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorUI.cs" />
     <Compile Include="EditorUIEvents.cs" />
     <Compile Include="Main.cs" />
@@ -109,6 +122,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AddObjectWnd.resx">
+      <DependentUpon>AddObjectWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraWnd.resx">
+      <DependentUpon>CameraWnd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ScriptWnd.resx">
       <DependentUpon>ScriptWnd.cs</DependentUpon>
     </EmbeddedResource>

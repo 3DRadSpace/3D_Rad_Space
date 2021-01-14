@@ -31,12 +31,13 @@ namespace Lib3DRadSpace_DX
             Name = name;
             Enabled = enabled;
             Position = pos;
-            Rotation = Quaternion.CreateFromRotationMatrix(Matrix.CreateFromYawPitchRoll(rot.Y,rot.X,rot.Z));
+            Rotation = Quaternion.CreateFromYawPitchRoll(rot.Y,rot.X,rot.Z);
             AspectRatio = ar;
             FOV = fov;
             NearPlaneDistance = npd;
             FarPlaneDistance = fpd;
             Up = up;
+            LookAtLocation = false;
         }
 
         /// <summary>
@@ -63,15 +64,32 @@ namespace Lib3DRadSpace_DX
         public float FarPlaneDistance;
 
         /// <summary>
+        /// Makes the camera object look at a specific point rather than using a rotation.
+        /// </summary>
+        public bool LookAtLocation;
+
+        /// <summary>
+        /// Toggles 2D elements like sprites, textprints, etc
+        /// </summary>
+        public bool Allow2DSprites;
+
+        /// <summary>
         /// Camera look-at position.
         /// </summary>
         public Vector3 Target
         {
             get
             {
-                return Position+Vector3.Transform(Vector3.UnitZ, Matrix.CreateFromQuaternion(Rotation));
+                if (LookAtLocation == false) return Position + Vector3.Transform(Vector3.UnitZ, Matrix.CreateFromQuaternion(Rotation));
+                else return _target;
+            }
+            set
+            {
+                if (LookAtLocation) _target = value;
+                else throw new InvalidOperationException("Cannot set the camera target location when the camera is using a quaternion.");
             }
         }
+        Vector3 _target;
         /// <summary>
         /// Camera View Matrix.
         /// </summary>
@@ -79,7 +97,8 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return Matrix.CreateLookAt(Position, Target, Up);
+                if (!LookAtLocation) return Matrix.CreateLookAt(Position, Target, Up);
+                else return Matrix.CreateLookAt(Position, _target, Up);
             }
         }
         /// <summary>

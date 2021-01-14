@@ -17,7 +17,7 @@ namespace Lib3DRadSpace_DX
     /// </summary>
     public class Script : BaseGameObject
     {
-        string[] Text;
+        string Text;
         object scriptInstance;
         MethodInfo _load;
         MethodInfo _update;
@@ -45,7 +45,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="enabled">Checks if the script object will execute the provided script</param>
         /// <param name="mainclass">Entry point class name</param>
         /// <param name="code">Source code provided to the compiler.</param>
-        public Script(string name,bool enabled,string mainclass,string[] code)
+        public Script(string name,bool enabled,string mainclass,string code)
         {
             Name = name;
             Enabled = enabled;
@@ -100,13 +100,13 @@ namespace Lib3DRadSpace_DX
             CompilerParameters parameters = new CompilerParameters(Assemblies)
             {
                 MainClass = _mainClass,
-                GenerateInMemory = true
+                GenerateInMemory = true,
             };
             CompilerResults result = Compiler.CompileAssemblyFromSource(parameters, Text);
 
-            if (result.CompiledAssembly == null)
+            if (result.Errors.Count > 0)
             {
-                errors = new string[result.Errors.Count];
+                errors = new string[result.Errors.Count + 1];
                 for (int i = 0; i < result.Errors.Count; i++)
                 {
                     string a = "[ERROR]";
@@ -135,7 +135,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="time">Delta Time.</param>
         public override void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time)
         {
-            _update?.Invoke(scriptInstance, new object[] { input, keyboard, time });
+            if(Enabled) _update?.Invoke(scriptInstance, new object[] { input, keyboard, time });
         }
         /// <summary>
         /// Calls 'MainClass'.Draw(time,frustrum,view,projection)
@@ -146,7 +146,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="projection">Projection Matrix</param>
         public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
         {
-            _draw?.Invoke(scriptInstance, new object[] {time,frustrum,view,projection });
+            if(Enabled) _draw?.Invoke(scriptInstance, new object[] {time,frustrum,view,projection });
         }
         /// <summary>
         /// 

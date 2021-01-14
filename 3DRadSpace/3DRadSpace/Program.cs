@@ -1,15 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _3DRadSpace
 {
     public static class Program
     {
+        public static string Version;
         [STAThread]
         public static void Main(string[] args)
         {
@@ -29,7 +26,7 @@ namespace _3DRadSpace
             if(!script) using (Main main = new Main(file)) main.Run();
             else
             {
-                ScriptWnd wnd = new ScriptWnd(new Lib3DRadSpace_DX.Script("Script", true, "Script", File.ReadAllLines(file)));
+                ScriptWnd wnd = new ScriptWnd(new Lib3DRadSpace_DX.Script("Script", true, "Script", File.ReadAllText(file)));
                 wnd.ShowDialog();
             }
         }
