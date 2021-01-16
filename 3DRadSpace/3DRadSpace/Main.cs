@@ -92,7 +92,13 @@ namespace _3DRadSpace
                 _lrb = mouse.RightButton;
             }
             Camera.Target = _cursor;
-            Camera.Position = Vector3.Transform(new Vector3(0, 1, 1), Matrix.CreateFromYawPitchRoll(camera_rotation.X, 0, camera_rotation.Y));
+            Camera.Position = Vector3.Transform(new Vector3(0, 1, 1), Matrix.CreateFromYawPitchRoll(camera_rotation.X, 0, 0));
+
+            float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
+            yangle = (float)Math.Tan(yangle);
+
+            Camera.Position = new Vector3(Camera.Position.X,yangle,Camera.Position.Z);
+            
             Camera.Position *= Zoom;
             base.Update(gameTime);
         }

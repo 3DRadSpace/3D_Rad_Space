@@ -22,6 +22,7 @@ namespace _3DRadSpace
             
         }
 
+        public BaseGameObject Result;
 
         private void b_ok_Click(object sender, EventArgs e)
         {
