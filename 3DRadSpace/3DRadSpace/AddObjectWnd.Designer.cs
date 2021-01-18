@@ -107,10 +107,13 @@
             listViewItem11.Group = listViewGroup6;
             listViewItem12.Group = listViewGroup3;
             listViewItem13.Group = listViewGroup7;
+            listViewItem14.Group = listViewGroup6;
             listViewItem15.Group = listViewGroup1;
             listViewItem16.Group = listViewGroup4;
             listViewItem17.Group = listViewGroup4;
             listViewItem18.Group = listViewGroup4;
+            listViewItem19.Group = listViewGroup4;
+            listViewItem20.Group = listViewGroup2;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,

@@ -70,6 +70,12 @@
     <Compile Include="CameraWnd.Designer.cs">
       <DependentUpon>CameraWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="CounterWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CounterWnd.Designer.cs">
+      <DependentUpon>CounterWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorUI.cs" />
     <Compile Include="EditorUIEvents.cs" />
     <Compile Include="Main.cs" />
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CameraWnd.resx">
       <DependentUpon>CameraWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterWnd.resx">
+      <DependentUpon>CounterWnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptWnd.resx">
       <DependentUpon>ScriptWnd.cs</DependentUpon>

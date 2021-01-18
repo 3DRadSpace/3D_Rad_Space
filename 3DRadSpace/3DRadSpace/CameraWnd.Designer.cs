@@ -34,20 +34,6 @@
             this.TXTBOXobject_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tb_zpos = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tb_ypos = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.TB_xpos = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tb_rotZ = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tb_rotY = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tb_rotX = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.tb_nz = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -55,14 +41,28 @@
             this.label12 = new System.Windows.Forms.Label();
             this.tb_nX = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.tb_rotZ = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tb_rotY = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tb_rotX = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tb_zpos = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tb_ypos = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TB_xpos = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.tb_npd = new System.Windows.Forms.TextBox();
-            this.tb_fpd = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.tb_fov = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tb_fov = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tb_fpd = new System.Windows.Forms.TextBox();
+            this.tb_npd = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lb_behiavours = new System.Windows.Forms.ListBox();
             this.b_help = new System.Windows.Forms.Button();
@@ -149,128 +149,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Translation";
             // 
-            // tb_zpos
-            // 
-            this.tb_zpos.Location = new System.Drawing.Point(354, 27);
-            this.tb_zpos.Name = "tb_zpos";
-            this.tb_zpos.Size = new System.Drawing.Size(100, 22);
-            this.tb_zpos.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(331, 30);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 17);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Z";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(9, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(58, 17);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Position";
-            // 
-            // tb_ypos
-            // 
-            this.tb_ypos.Location = new System.Drawing.Point(225, 27);
-            this.tb_ypos.Name = "tb_ypos";
-            this.tb_ypos.Size = new System.Drawing.Size(100, 22);
-            this.tb_ypos.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(17, 17);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Y";
-            // 
-            // TB_xpos
-            // 
-            this.TB_xpos.Location = new System.Drawing.Point(96, 27);
-            this.TB_xpos.Name = "TB_xpos";
-            this.TB_xpos.Size = new System.Drawing.Size(100, 22);
-            this.TB_xpos.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(73, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "X";
-            // 
-            // tb_rotZ
-            // 
-            this.tb_rotZ.Location = new System.Drawing.Point(354, 58);
-            this.tb_rotZ.Name = "tb_rotZ";
-            this.tb_rotZ.Size = new System.Drawing.Size(100, 22);
-            this.tb_rotZ.TabIndex = 13;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(331, 61);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 17);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Z";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(9, 61);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 17);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Rotation";
-            // 
-            // tb_rotY
-            // 
-            this.tb_rotY.Location = new System.Drawing.Point(224, 58);
-            this.tb_rotY.Name = "tb_rotY";
-            this.tb_rotY.Size = new System.Drawing.Size(100, 22);
-            this.tb_rotY.TabIndex = 10;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(201, 61);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(17, 17);
-            this.label8.TabIndex = 9;
-            this.label8.Text = "Y";
-            // 
-            // tb_rotX
-            // 
-            this.tb_rotX.Location = new System.Drawing.Point(95, 58);
-            this.tb_rotX.Name = "tb_rotX";
-            this.tb_rotX.Size = new System.Drawing.Size(100, 22);
-            this.tb_rotX.TabIndex = 8;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(73, 61);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 17);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "X";
-            // 
             // tb_nz
             // 
             this.tb_nz.Location = new System.Drawing.Point(355, 86);
             this.tb_nz.Name = "tb_nz";
             this.tb_nz.Size = new System.Drawing.Size(100, 22);
             this.tb_nz.TabIndex = 20;
+            this.tb_nz.Text = "0";
             // 
             // label10
             // 
@@ -297,6 +182,7 @@
             this.tb_ny.Name = "tb_ny";
             this.tb_ny.Size = new System.Drawing.Size(100, 22);
             this.tb_ny.TabIndex = 17;
+            this.tb_ny.Text = "1";
             // 
             // label12
             // 
@@ -313,6 +199,7 @@
             this.tb_nX.Name = "tb_nX";
             this.tb_nX.Size = new System.Drawing.Size(100, 22);
             this.tb_nX.TabIndex = 15;
+            this.tb_nX.Text = "0";
             // 
             // label13
             // 
@@ -322,6 +209,128 @@
             this.label13.Size = new System.Drawing.Size(17, 17);
             this.label13.TabIndex = 14;
             this.label13.Text = "X";
+            // 
+            // tb_rotZ
+            // 
+            this.tb_rotZ.Location = new System.Drawing.Point(354, 58);
+            this.tb_rotZ.Name = "tb_rotZ";
+            this.tb_rotZ.Size = new System.Drawing.Size(100, 22);
+            this.tb_rotZ.TabIndex = 13;
+            this.tb_rotZ.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(331, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(17, 17);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Z";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(9, 61);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 17);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Rotation";
+            // 
+            // tb_rotY
+            // 
+            this.tb_rotY.Location = new System.Drawing.Point(224, 58);
+            this.tb_rotY.Name = "tb_rotY";
+            this.tb_rotY.Size = new System.Drawing.Size(100, 22);
+            this.tb_rotY.TabIndex = 10;
+            this.tb_rotY.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(201, 61);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(17, 17);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "Y";
+            // 
+            // tb_rotX
+            // 
+            this.tb_rotX.Location = new System.Drawing.Point(95, 58);
+            this.tb_rotX.Name = "tb_rotX";
+            this.tb_rotX.Size = new System.Drawing.Size(100, 22);
+            this.tb_rotX.TabIndex = 8;
+            this.tb_rotX.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(73, 61);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(17, 17);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "X";
+            // 
+            // tb_zpos
+            // 
+            this.tb_zpos.Location = new System.Drawing.Point(354, 27);
+            this.tb_zpos.Name = "tb_zpos";
+            this.tb_zpos.Size = new System.Drawing.Size(100, 22);
+            this.tb_zpos.TabIndex = 6;
+            this.tb_zpos.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(331, 30);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(17, 17);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Z";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(9, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(58, 17);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Position";
+            // 
+            // tb_ypos
+            // 
+            this.tb_ypos.Location = new System.Drawing.Point(225, 27);
+            this.tb_ypos.Name = "tb_ypos";
+            this.tb_ypos.Size = new System.Drawing.Size(100, 22);
+            this.tb_ypos.TabIndex = 3;
+            this.tb_ypos.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(202, 30);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 17);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Y";
+            // 
+            // TB_xpos
+            // 
+            this.TB_xpos.Location = new System.Drawing.Point(96, 27);
+            this.TB_xpos.Name = "TB_xpos";
+            this.TB_xpos.Size = new System.Drawing.Size(100, 22);
+            this.TB_xpos.TabIndex = 1;
+            this.TB_xpos.Text = "0";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(73, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 17);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "X";
             // 
             // groupBox4
             // 
@@ -339,54 +348,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Rendering";
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 29);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(120, 17);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "Minimum distance";
-            // 
-            // tb_npd
-            // 
-            this.tb_npd.Location = new System.Drawing.Point(135, 29);
-            this.tb_npd.Name = "tb_npd";
-            this.tb_npd.Size = new System.Drawing.Size(100, 22);
-            this.tb_npd.TabIndex = 1;
-            // 
-            // tb_fpd
-            // 
-            this.tb_fpd.Location = new System.Drawing.Point(135, 57);
-            this.tb_fpd.Name = "tb_fpd";
-            this.tb_fpd.Size = new System.Drawing.Size(100, 22);
-            this.tb_fpd.TabIndex = 2;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(10, 60);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(123, 17);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "Maximum distance";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(241, 32);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(36, 17);
-            this.label16.TabIndex = 4;
-            this.label16.Text = "FOV";
-            // 
-            // tb_fov
-            // 
-            this.tb_fov.Location = new System.Drawing.Point(283, 29);
-            this.tb_fov.Name = "tb_fov";
-            this.tb_fov.Size = new System.Drawing.Size(100, 22);
-            this.tb_fov.TabIndex = 5;
-            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -398,6 +359,57 @@
             this.checkBox1.TabIndex = 6;
             this.checkBox1.Text = "Allow 2D graphics";
             this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // tb_fov
+            // 
+            this.tb_fov.Location = new System.Drawing.Point(283, 29);
+            this.tb_fov.Name = "tb_fov";
+            this.tb_fov.Size = new System.Drawing.Size(100, 22);
+            this.tb_fov.TabIndex = 5;
+            this.tb_fov.Text = "65";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(241, 32);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(36, 17);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "FOV";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(10, 60);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(123, 17);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "Maximum distance";
+            // 
+            // tb_fpd
+            // 
+            this.tb_fpd.Location = new System.Drawing.Point(135, 57);
+            this.tb_fpd.Name = "tb_fpd";
+            this.tb_fpd.Size = new System.Drawing.Size(100, 22);
+            this.tb_fpd.TabIndex = 2;
+            this.tb_fpd.Text = "500";
+            // 
+            // tb_npd
+            // 
+            this.tb_npd.Location = new System.Drawing.Point(135, 29);
+            this.tb_npd.Name = "tb_npd";
+            this.tb_npd.Size = new System.Drawing.Size(100, 22);
+            this.tb_npd.TabIndex = 1;
+            this.tb_npd.Text = "0.01";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(9, 29);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(120, 17);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "Minimum distance";
             // 
             // label17
             // 

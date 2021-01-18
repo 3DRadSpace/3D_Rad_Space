@@ -94,5 +94,10 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <returns></returns>
         void SaveF(List<byte> buff,ref int position);
+
+        /// <summary>
+        /// Unloads native resources when loading an other project.
+        /// </summary>
+        void Unload();
     }
 }

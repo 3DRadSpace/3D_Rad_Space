@@ -95,8 +95,10 @@
     <Compile Include="BasicColorShader.cs" />
     <Compile Include="Behiavour.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Counter.cs" />
     <Compile Include="CurrentProject.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Shader.cs" />

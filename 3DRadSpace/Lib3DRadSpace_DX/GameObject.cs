@@ -31,12 +31,11 @@ namespace Lib3DRadSpace_DX
             }
         }
         /// <summary>
-        /// Checks if the object will do anything in the update loop.
+        /// 
         /// </summary>
         public bool Enabled { get; set; }
-
         /// <summary>
-        /// Checks if the object will be visible in the drawing loop.
+        /// 
         /// </summary>
         public bool Visible { get; set; }
 
@@ -113,7 +112,18 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// 
         /// </summary>
-        public string Asset { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Asset 
+        {
+            get
+            {
+                return _asset;
+            }
+            set
+            {
+                _asset = value;
+            }
+        }
+        string _asset;
 
         /// <summary>
         /// Gets the World matrix, passed to shaders as a argument.
@@ -170,6 +180,25 @@ namespace Lib3DRadSpace_DX
         /// <returns></returns>
         public virtual void SaveF(List<byte> buff, ref int position) { }
 
-        List<BehiavourStruct> Behiavours;
+        /// <summary>
+        /// List of editor selected behiavours.
+        /// </summary>
+        public List<BehiavourStruct> Behiavours;
+
+        /// <summary>
+        /// Triggers the object's action.
+        /// </summary>
+        public virtual void Trigger()
+        {
+            this.Enabled = true;
+        }
+
+        /// <summary>
+        /// Unloads native resources.
+        /// </summary>
+        public virtual void Unload()
+        {
+            
+        }
     }
 }

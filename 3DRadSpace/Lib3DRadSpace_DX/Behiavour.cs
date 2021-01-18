@@ -14,10 +14,20 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// 
         /// </summary>
-        public uint ObjectID;
+        /// <param name="id"></param>
+        /// <param name="beh"></param>
+        public BehiavourStruct(int id,int beh)
+        {
+            ObjectID = id;
+            Behiavour = beh;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public uint Behiavour;
+        public int ObjectID;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Behiavour;
     }
 }
