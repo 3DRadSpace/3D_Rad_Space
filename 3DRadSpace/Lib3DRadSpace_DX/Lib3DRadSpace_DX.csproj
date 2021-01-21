@@ -100,6 +100,7 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
+    <Compile Include="Maths.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="Skinmesh.cs" />

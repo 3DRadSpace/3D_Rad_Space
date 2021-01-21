@@ -92,6 +92,10 @@ namespace _3DRadSpace
 					Close();
 					break;
 				}
+				case 2:
+				{
+					break;
+				}
 				default: break;
 			}
 		}

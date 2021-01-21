@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using System.Globalization;
 
 namespace Lib3DRadSpace_DX
 {
@@ -28,6 +29,8 @@ namespace Lib3DRadSpace_DX
             Value = val;
             Increment = inc;
             Asset = filename;
+            if(filename == null) SaveToDrive = false;
+            else SaveToDrive = true;
         }
         /// <summary>
         /// Counter value.
@@ -90,7 +93,7 @@ namespace Lib3DRadSpace_DX
                 if(File.Exists("//SaveData//" + Asset))
                 {
                     string f = File.ReadAllText("//SaveData//" + Asset);
-                    Value = Convert.ToSingle(f);
+                    Value = Convert.ToSingle(f, CultureInfo.CurrentCulture);
                 }
                 else SaveData(); //saves the default value.
             }

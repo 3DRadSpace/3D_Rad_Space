@@ -34,15 +34,17 @@
             this.TXTBOXobject_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.TB_initialv = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.tb_inc = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TB_initialv = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cb_savefile = new System.Windows.Forms.CheckBox();
+            this.tb_filename = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.b_ok = new System.Windows.Forms.Button();
+            this.b_cancel = new System.Windows.Forms.Button();
+            this.Help = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -107,22 +109,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Value fields";
             // 
-            // label2
+            // tb_inc
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Initial value";
-            // 
-            // TB_initialv
-            // 
-            this.TB_initialv.Location = new System.Drawing.Point(93, 21);
-            this.TB_initialv.Name = "TB_initialv";
-            this.TB_initialv.Size = new System.Drawing.Size(100, 22);
-            this.TB_initialv.TabIndex = 1;
-            this.TB_initialv.Text = "0";
+            this.tb_inc.Location = new System.Drawing.Point(93, 51);
+            this.tb_inc.Name = "tb_inc";
+            this.tb_inc.Size = new System.Drawing.Size(100, 22);
+            this.tb_inc.TabIndex = 3;
+            this.tb_inc.Text = "100";
             // 
             // label3
             // 
@@ -133,18 +126,27 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Increment";
             // 
-            // tb_inc
+            // TB_initialv
             // 
-            this.tb_inc.Location = new System.Drawing.Point(93, 51);
-            this.tb_inc.Name = "tb_inc";
-            this.tb_inc.Size = new System.Drawing.Size(100, 22);
-            this.tb_inc.TabIndex = 3;
-            this.tb_inc.Text = "100";
+            this.TB_initialv.Location = new System.Drawing.Point(93, 21);
+            this.TB_initialv.Name = "TB_initialv";
+            this.TB_initialv.Size = new System.Drawing.Size(100, 22);
+            this.TB_initialv.TabIndex = 1;
+            this.TB_initialv.Text = "0";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 17);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Initial value";
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.cb_savefile);
+            this.groupBox3.Controls.Add(this.tb_filename);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Location = new System.Drawing.Point(12, 182);
             this.groupBox3.Name = "groupBox3";
@@ -152,6 +154,23 @@
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Saving and loading";
+            // 
+            // cb_savefile
+            // 
+            this.cb_savefile.AutoSize = true;
+            this.cb_savefile.Location = new System.Drawing.Point(10, 53);
+            this.cb_savefile.Name = "cb_savefile";
+            this.cb_savefile.Size = new System.Drawing.Size(183, 21);
+            this.cb_savefile.TabIndex = 2;
+            this.cb_savefile.Text = "Save in game directory?";
+            this.cb_savefile.UseVisualStyleBackColor = true;
+            // 
+            // tb_filename
+            // 
+            this.tb_filename.Location = new System.Drawing.Point(80, 25);
+            this.tb_filename.Name = "tb_filename";
+            this.tb_filename.Size = new System.Drawing.Size(100, 22);
+            this.tb_filename.TabIndex = 1;
             // 
             // label4
             // 
@@ -162,38 +181,44 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Filename";
             // 
-            // textBox1
+            // b_ok
             // 
-            this.textBox1.Location = new System.Drawing.Point(80, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 1;
+            this.b_ok.Location = new System.Drawing.Point(171, 279);
+            this.b_ok.Name = "b_ok";
+            this.b_ok.Size = new System.Drawing.Size(75, 23);
+            this.b_ok.TabIndex = 6;
+            this.b_ok.Text = "OK";
+            this.b_ok.UseVisualStyleBackColor = true;
+            this.b_ok.Click += new System.EventHandler(this.b_ok_Click);
             // 
-            // checkBox1
+            // b_cancel
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(10, 53);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(183, 21);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Save in game directory?";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.b_cancel.Location = new System.Drawing.Point(252, 279);
+            this.b_cancel.Name = "b_cancel";
+            this.b_cancel.Size = new System.Drawing.Size(75, 23);
+            this.b_cancel.TabIndex = 7;
+            this.b_cancel.Text = "Cancel";
+            this.b_cancel.UseVisualStyleBackColor = true;
+            this.b_cancel.Click += new System.EventHandler(this.b_cancel_Click);
             // 
-            // button1
+            // Help
             // 
-            this.button1.Location = new System.Drawing.Point(252, 279);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Help.Location = new System.Drawing.Point(11, 279);
+            this.Help.Name = "Help";
+            this.Help.Size = new System.Drawing.Size(75, 23);
+            this.Help.TabIndex = 8;
+            this.Help.Text = "Help";
+            this.Help.UseVisualStyleBackColor = true;
+            this.Help.Click += new System.EventHandler(this.Help_Click);
             // 
             // CounterWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 419);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(345, 312);
+            this.Controls.Add(this.Help);
+            this.Controls.Add(this.b_cancel);
+            this.Controls.Add(this.b_ok);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -223,8 +248,10 @@
         private System.Windows.Forms.TextBox tb_inc;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox cb_savefile;
+        private System.Windows.Forms.TextBox tb_filename;
+        private System.Windows.Forms.Button b_ok;
+        private System.Windows.Forms.Button b_cancel;
+        private System.Windows.Forms.Button Help;
     }
 }

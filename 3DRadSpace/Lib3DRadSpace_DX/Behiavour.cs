@@ -29,5 +29,23 @@ namespace Lib3DRadSpace_DX
         /// 
         /// </summary>
         public int Behiavour;
+
+        /// <summary>
+        /// Returns a string representation used in UI.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "[" + ObjectID + "]" + CurrentProject.GameObjects[ObjectID].Name;
+        }
+        /// <summary>
+        /// Returns a string representation used in UI.
+        /// </summary>
+        /// <param name="f">Function containing a switch-case for all the Behiavour ID names.</param>
+        /// <returns>A string designed for UI interfaces.</returns>
+        public string ToString(Func<int,string> f)
+        {
+            return "[" + ObjectID + "]" + CurrentProject.GameObjects[ObjectID].Name + "(" + f(Behiavour) + ")[" + Behiavour + "]";
+        }
     }
 }
