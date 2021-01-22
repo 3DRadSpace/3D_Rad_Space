@@ -58,6 +58,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BEPUphysics, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEPUphysics.1.5.1\lib\netstandard2.0\BEPUphysics.dll</HintPath>
+    </Reference>
+    <Reference Include="BEPUutilities, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEPUutilities.1.5.1\lib\netstandard2.0\BEPUutilities.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\lib\net452\MonoGame.Framework.dll</HintPath>
@@ -97,7 +103,10 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="CurrentProject.cs" />
+    <Compile Include="EmptyGameObject.cs" />
+    <Compile Include="FirstPersonCamera.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjectType.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Maths.cs" />

@@ -96,6 +96,30 @@ namespace _3DRadSpace
 				{
 					break;
 				}
+				case 18:
+                {
+					GroupWnd wnd = new GroupWnd();
+					if(wnd.ShowDialog() == DialogResult.OK)
+                    {
+						DialogResult = DialogResult.OK;
+						Result = wnd.Result;
+                    }
+					wnd.Dispose();
+					Close();
+					break;
+                }
+				case 19:
+                {
+					EmptyObjWnd wnd = new EmptyObjWnd();
+					if(wnd.ShowDialog() == DialogResult.OK)
+                    {
+						DialogResult = DialogResult.OK;
+						Result = wnd.Result;
+                    }
+					wnd.Dispose();
+					Close();
+					break;
+                }
 				default: break;
 			}
 		}

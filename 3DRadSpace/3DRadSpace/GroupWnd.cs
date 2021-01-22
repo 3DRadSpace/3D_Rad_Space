@@ -18,6 +18,7 @@ namespace _3DRadSpace
 		public GroupWnd()
 		{
 			InitializeComponent();
+			LinkedObjects = null;
 		}
 		public GroupWnd(Group g)
 		{
@@ -35,14 +36,16 @@ namespace _3DRadSpace
 			tb_sX.Text = g.Scale.Y + "";
 			tb_sX.Text = g.Scale.Z + "";
 
+			LinkedObjects = new List<int>(g.Behiavours.Count);
 			listBox1.Items.Clear();
 			for(int i =0; i < g.Behiavours.Count;i++)
 			{
 				listBox1.Items.Add(g.Behiavours.ToString());
+				LinkedObjects[i] = g.Behiavours[i].ObjectID;
 			}
 		}
 
-		public BaseGameObject Result;
+        public BaseGameObject Result;
 		List<int> LinkedObjects;
 
 		private void b_ok_Click(object sender, EventArgs e)
@@ -60,9 +63,9 @@ namespace _3DRadSpace
 					Convert.ToSingle(tb_rotZ.Text, CultureInfo.InvariantCulture)
 				),
 				new Vector3(
-					Convert.ToSingle(tb_rotX.Text, CultureInfo.InvariantCulture),
-					Convert.ToSingle(tb_rotY.Text, CultureInfo.InvariantCulture),
-					Convert.ToSingle(tb_rotZ.Text, CultureInfo.InvariantCulture)
+					Convert.ToSingle(tb_sX.Text, CultureInfo.InvariantCulture),
+					Convert.ToSingle(tb_sY.Text, CultureInfo.InvariantCulture),
+					Convert.ToSingle(tb_sZ.Text, CultureInfo.InvariantCulture)
 				), 
 			LinkedObjects);
 			DialogResult = DialogResult.OK;

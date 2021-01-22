@@ -79,7 +79,7 @@ namespace _3DRadSpace
                     float dx = mouse.X - (_graphics.PreferredBackBufferWidth/2);
                     float dy = mouse.Y - (_graphics.PreferredBackBufferHeight/2);
 
-                    camera_rotation += new Vector2(dx * dt, -dy * dt);
+                    camera_rotation += new Vector2(dx * dt * dt, -dy * dt * dt);
 
                     IsMouseVisible = false;
                 }
@@ -92,12 +92,11 @@ namespace _3DRadSpace
                 _lrb = mouse.RightButton;
             }
             Camera.Target = _cursor;
-            Camera.Position = Vector3.Transform(new Vector3(0, 1, 1), Matrix.CreateFromYawPitchRoll(camera_rotation.X, 0, 0));
 
             float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
-            yangle = (float)Math.Tan(yangle);
-
-            Camera.Position = new Vector3(Camera.Position.X,yangle,Camera.Position.Z);
+            //tfw it took me ~2 years to realise how to rotate a vector around the origin
+            //I feel so dumb rn
+            Camera.Position = new Vector3((float)Math.Sin(camera_rotation.X), (float)Math.Tan(yangle), (float)Math.Cos(camera_rotation.X));  
             
             Camera.Position *= Zoom;
             base.Update(gameTime);

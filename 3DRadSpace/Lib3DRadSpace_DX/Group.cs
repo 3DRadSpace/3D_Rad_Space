@@ -22,6 +22,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="objects"></param>
         /// <param name="pos"></param>
         /// <param name="rot"></param>
+        /// <param name="scale"></param>
         public Group(string name,bool enabled,Vector3 pos,Vector3 rot,Vector3 scale,List<int> objects)
         {
             Name = name;

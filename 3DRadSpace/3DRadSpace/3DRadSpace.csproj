@@ -78,6 +78,12 @@
     </Compile>
     <Compile Include="EditorUI.cs" />
     <Compile Include="EditorUIEvents.cs" />
+    <Compile Include="EmptyObjWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmptyObjWnd.Designer.cs">
+      <DependentUpon>EmptyObjWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="GroupWnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CounterWnd.resx">
       <DependentUpon>CounterWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmptyObjWnd.resx">
+      <DependentUpon>EmptyObjWnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GroupWnd.resx">
       <DependentUpon>GroupWnd.cs</DependentUpon>

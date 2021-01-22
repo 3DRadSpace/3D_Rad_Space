@@ -1,6 +1,6 @@
 ﻿namespace _3DRadSpace
 {
-    partial class GroupWnd
+    partial class EmptyObjWnd
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GroupWnd));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cb_enabled = new System.Windows.Forms.CheckBox();
-            this.tb_objname = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmptyObjWnd));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tb_sZ = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -55,60 +51,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TB_xpos = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_enabled = new System.Windows.Forms.CheckBox();
+            this.tb_objname = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.b_cancel = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.b_ok = new System.Windows.Forms.Button();
             this.b_help = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.cb_enabled);
-            this.groupBox1.Controls.Add(this.tb_objname);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(16, 15);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Size = new System.Drawing.Size(477, 64);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Common settings";
-            // 
-            // cb_enabled
-            // 
-            this.cb_enabled.AutoSize = true;
-            this.cb_enabled.Checked = true;
-            this.cb_enabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_enabled.Location = new System.Drawing.Point(203, 28);
-            this.cb_enabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cb_enabled.Name = "cb_enabled";
-            this.cb_enabled.Size = new System.Drawing.Size(90, 21);
-            this.cb_enabled.TabIndex = 2;
-            this.cb_enabled.Text = "Enabled?";
-            this.cb_enabled.UseVisualStyleBackColor = true;
-            // 
-            // tb_objname
-            // 
-            this.tb_objname.Location = new System.Drawing.Point(63, 27);
-            this.tb_objname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tb_objname.Name = "tb_objname";
-            this.tb_objname.Size = new System.Drawing.Size(132, 22);
-            this.tb_objname.TabIndex = 1;
-            this.tb_objname.Text = "Group";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 31);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Name";
             // 
             // groupBox2
             // 
@@ -133,12 +85,12 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.TB_xpos);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(16, 86);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Location = new System.Drawing.Point(13, 85);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(477, 123);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Translation";
             // 
@@ -334,41 +286,65 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "X";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cb_enabled);
+            this.groupBox1.Controls.Add(this.tb_objname);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(13, 13);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(477, 64);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Common settings";
+            // 
+            // cb_enabled
+            // 
+            this.cb_enabled.AutoSize = true;
+            this.cb_enabled.Checked = true;
+            this.cb_enabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_enabled.Location = new System.Drawing.Point(203, 28);
+            this.cb_enabled.Margin = new System.Windows.Forms.Padding(4);
+            this.cb_enabled.Name = "cb_enabled";
+            this.cb_enabled.Size = new System.Drawing.Size(90, 21);
+            this.cb_enabled.TabIndex = 2;
+            this.cb_enabled.Text = "Enabled?";
+            this.cb_enabled.UseVisualStyleBackColor = true;
+            // 
+            // tb_objname
+            // 
+            this.tb_objname.Location = new System.Drawing.Point(63, 27);
+            this.tb_objname.Margin = new System.Windows.Forms.Padding(4);
+            this.tb_objname.Name = "tb_objname";
+            this.tb_objname.Size = new System.Drawing.Size(132, 22);
+            this.tb_objname.TabIndex = 1;
+            this.tb_objname.Text = "Empty";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 31);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 17);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Name";
+            // 
             // b_cancel
             // 
-            this.b_cancel.Location = new System.Drawing.Point(393, 359);
-            this.b_cancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.b_cancel.Location = new System.Drawing.Point(390, 212);
             this.b_cancel.Name = "b_cancel";
             this.b_cancel.Size = new System.Drawing.Size(100, 28);
-            this.b_cancel.TabIndex = 5;
+            this.b_cancel.TabIndex = 7;
             this.b_cancel.Text = "Cancel";
             this.b_cancel.UseVisualStyleBackColor = true;
             this.b_cancel.Click += new System.EventHandler(this.b_cancel_Click);
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(16, 235);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(476, 116);
-            this.listBox1.TabIndex = 6;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(16, 215);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(99, 17);
-            this.label14.TabIndex = 7;
-            this.label14.Text = "Linked objects";
-            // 
             // b_ok
             // 
-            this.b_ok.Location = new System.Drawing.Point(285, 359);
-            this.b_ok.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.b_ok.Location = new System.Drawing.Point(284, 212);
             this.b_ok.Name = "b_ok";
             this.b_ok.Size = new System.Drawing.Size(100, 28);
             this.b_ok.TabIndex = 8;
@@ -378,48 +354,45 @@
             // 
             // b_help
             // 
-            this.b_help.Location = new System.Drawing.Point(16, 359);
-            this.b_help.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.b_help.Location = new System.Drawing.Point(13, 215);
             this.b_help.Name = "b_help";
             this.b_help.Size = new System.Drawing.Size(100, 28);
             this.b_help.TabIndex = 9;
             this.b_help.Text = "Help";
             this.b_help.UseVisualStyleBackColor = true;
-            this.b_help.Click += new System.EventHandler(this.button1_Click);
+            this.b_help.Click += new System.EventHandler(this.b_help_Click);
             // 
-            // GroupWnd
+            // EmptyObjWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 406);
+            this.ClientSize = new System.Drawing.Size(509, 266);
             this.Controls.Add(this.b_help);
             this.Controls.Add(this.b_ok);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.b_cancel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "GroupWnd";
-            this.Text = "Group Object";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Name = "EmptyObjWnd";
+            this.Text = "Empty Object";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox cb_enabled;
-        private System.Windows.Forms.TextBox tb_objname;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tb_sZ;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tb_sY;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tb_sX;
+        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox tb_rotZ;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
@@ -434,16 +407,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TB_xpos;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox cb_enabled;
+        private System.Windows.Forms.TextBox tb_objname;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button b_cancel;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button b_ok;
         private System.Windows.Forms.Button b_help;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox tb_sY;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox tb_sX;
-        private System.Windows.Forms.Label label13;
     }
 }
