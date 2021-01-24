@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using BEPUphysics.Character;
 
 namespace Lib3DRadSpace_DX
 {
@@ -28,7 +29,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="speed"></param>
         /// <param name="sensibility"></param>
         /// <param name="height"></param>
-        public FirstPersonCamera(string name,bool enabled,Vector3 pos,Vector2 look,Vector3 norm,float npd = 0.01f,float fpd = 500.0f,float speed = 5f,float height = 1.7f,float sensibility = 1f)
+        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector2 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float speed = 5f,float height = 1.7f,float sensibility = 1f)
         {
             Name = name;
             Enabled = enabled;
@@ -39,7 +40,9 @@ namespace Lib3DRadSpace_DX
             FarPlaneDistance = fpd;
             Height = height;
             Sensibility = sensibility;
+            _controller = new CharacterController(BEPU2XNA.CvVec(pos), height);
         }
+        CharacterController _controller;
         /// <summary>
         /// Contains the rotation degrees given by the input.
         /// </summary>
@@ -155,6 +158,39 @@ namespace Lib3DRadSpace_DX
         public float FOV;
 
         /// <summary>
+        /// Defines the forward movment key.
+        /// </summary>
+        public Keys Key_Forward;
+        /// <summary>
+        /// Defines the backward movment key.
+        /// </summary>
+        public Keys Key_Backwards;
+        /// <summary>
+        /// Defines the left movment key.
+        /// </summary>
+        public Keys Key_Left;
+        /// <summary>
+        /// Defines the right movment key.
+        /// </summary>
+        public Keys Key_Right;
+        /// <summary>
+        /// Defines the jump key.
+        /// </summary>
+        public Keys Key_Jump;
+        /// <summary>
+        /// Defines the crouch key.
+        /// </summary>
+        public Keys Key_Crouch;
+        /// <summary>
+        /// Defines the prone key.
+        /// </summary>
+        public Keys Key_Prone;
+        /// <summary>
+        /// Defines the sprinting key.
+        /// </summary>
+        public Keys Key_Sprint;
+
+        /// <summary>
         /// Updates the matrices used when drawing 3D elements.
         /// </summary>
         /// <param name="time">DT value</param>
@@ -164,8 +200,7 @@ namespace Lib3DRadSpace_DX
         public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
         {
             view = Matrix.CreateLookAt(Position, Position + LookDir, Normal);
-            projection = Matrix.CreatePerspectiveFieldOfView(0, 0, NearPlaneDistance, FarPlaneDistance);
-            base.Draw(time, frustrum, ref view, ref projection);
+            projection = Matrix.CreatePerspectiveFieldOfView(FOV, 0, NearPlaneDistance, FarPlaneDistance);
         }
         /// <summary>
         /// Handles the camera rotation by taking the mouse as input.
@@ -186,6 +221,27 @@ namespace Lib3DRadSpace_DX
             Look_At += (new Vector2(dx * dt2, dy * dt2)) * Sensibility;
 
             LookDir = new Vector3((float)Math.Sin(Look_At.X), (float)Math.Tan(Look_At.Y),(float) Math.Cos(Look_At.X));
+            _controller.ViewDirection = BEPU2XNA.CvVec(LookDir);
+
+            BEPUutilities.Vector2 movsum = BEPUutilities.Vector2.Zero;
+            if(keyboard.IsKeyDown(Key_Forward)) movsum += BEPUutilities.Vector2.UnitY;
+            if(keyboard.IsKeyDown(Key_Backwards)) movsum -= BEPUutilities.Vector2.UnitY;
+            if(keyboard.IsKeyDown(Key_Left)) movsum -= BEPUutilities.Vector2.UnitX;
+            if(keyboard.IsKeyDown(Key_Right)) movsum += BEPUutilities.Vector2.UnitX;
+            if(keyboard.IsKeyDown(Key_Jump)) _controller.Jump();
+
+            if(keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
+            {
+                if(_controller.StanceManager.DesiredStance == BEPUphysics.Character.Stance.Standing) _controller.StandingSpeed = 12;
+            }
+            else _controller.StandingSpeed = 8;
+            if(keyboard.IsKeyDown(Keys.C)) _controller.StanceManager.DesiredStance = BEPUphysics.Character.Stance.Crouching;
+            else _controller.StanceManager.DesiredStance = BEPUphysics.Character.Stance.Standing;
+
+            BEPUutilities.Vector2 movf = BEPUutilities.Vector2.Zero;
+            if(movsum.LengthSquared() != 0) movf = BEPUutilities.Vector2.Normalize(movsum);
+
+            _controller.HorizontalMotionConstraint.MovementDirection = movf;
 
             base.Update(ref input, ref keyboard, time);
         }
