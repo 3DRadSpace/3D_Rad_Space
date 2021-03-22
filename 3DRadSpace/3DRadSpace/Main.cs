@@ -31,7 +31,7 @@ namespace _3DRadSpace
         {
             LoadedFIle = file;
             _graphics = new GraphicsDeviceManager(this);
-            Camera = new Camera(null, true, Vector3.One * 5, Vector3.Zero, Vector3.Up, new Vector2(800, 600), MathHelper.ToRadians(65));
+            Camera = new Camera(null, true, Vector3.One * 5, Vector3.Zero, Vector3.Up, MathHelper.ToRadians(65));
             Camera.LookAtLocation = true;
             if (file != null)
             {
@@ -50,6 +50,8 @@ namespace _3DRadSpace
             MainWindow = Control.FromHandle(Window.Handle) as Form;
             InitializeComponents();
             basic_shader = new BasicEffect(GraphicsDevice);
+
+            CurrentProject.Resolution = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             base.Initialize();
         }
@@ -70,7 +72,7 @@ namespace _3DRadSpace
             MouseState mouse = Mouse.GetState();
             KeyboardState keyboard = Keyboard.GetState();
 
-            if (Form.ActiveForm == MainWindow && _3dviewfocus)
+            if (Form.ActiveForm == MainWindow && _3dviewfocus && mouse.X >= 150 && mouse.Y >= 50)
             {
                 Zoom = (mouse.ScrollWheelValue*0.01f) + 5;
                 if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)

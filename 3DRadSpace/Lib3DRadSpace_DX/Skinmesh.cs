@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+
 
 namespace Lib3DRadSpace_DX
 {
     /// <summary>
-    /// Represents a 3D model.
+    /// Represents a 3D model. No animation support (yet, I hope)
     /// </summary>
     public class Skinmesh : BaseGameObject
     {
@@ -88,13 +90,59 @@ namespace Lib3DRadSpace_DX
         {
             Draw(time, frustrum,ref view,ref projection);
         }
+        Texture2D[] _Textures;
         /// <summary>
         /// Loads the model by using the content pipeline.
         /// </summary>
         /// <param name="content"></param>
         public override void Load(ContentManager content)
         {
-            Model = content.Load<Model>(Asset);
+            //load shader list and parameters
+            string[] details = File.ReadAllLines(Asset);
+
+            Shaders = new List<Shaders.IShader>(details.Length - 1);
+            for(int i =1; i < details.Length; i++)
+            {
+                string[] shader_info = details[i].Split(' ');
+                for(int j =0; j < shader_info.Length;j++)
+                {
+                    switch(shader_info[j])
+                    {
+                        case "default":
+                            break;
+                    }
+                }
+            }
+
+            //load model.
+            Model = content.Load<Model>(details[0]);
+
+            //make model compatible with other shaders.
+
+            //count number of meshparts.
+            int c = 0;
+            for(int i =0; i < Model.Meshes.Count;i++)
+            {
+                for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
+                {
+                    c++;
+                }
+            }
+            //allocate basic textures.
+            _Textures = new Texture2D[c];
+            //copy textures.
+            for(int i = 0; i < Model.Meshes.Count;i++)
+            {
+                for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
+                {
+                    BasicEffect eff = (BasicEffect)Model.Meshes[i].MeshParts[j].Effect;
+                    if(eff.TextureEnabled)
+                    {
+                        _Textures[i] = eff.Texture;
+                    }
+                    else _Textures[i] = null;
+                }
+            }
         }
     }
 }

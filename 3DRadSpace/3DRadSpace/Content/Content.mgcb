@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Shaders/Phong.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/Phong.fx
-
 #begin Shaders/VertexColor.fx
 /importer:EffectImporter
 /processor:EffectProcessor

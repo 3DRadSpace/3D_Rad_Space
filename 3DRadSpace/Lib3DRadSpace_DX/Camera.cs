@@ -22,17 +22,15 @@ namespace Lib3DRadSpace_DX
         /// <param name="pos">Camera position.</param>
         /// <param name="rot">Camera rotation quaternion.</param>
         /// <param name="up">Camera up direction. A normalized vector perpendicular to the surface the camera is standing on.</param>
-        /// <param name="ar">Aspect ratio.</param>
         /// <param name="fov">FOV in radians.</param>
         /// <param name="npd">Near plane distance.</param>
         /// <param name="fpd">Far plane distance.</param>
-        public Camera(string name,bool enabled,Vector3 pos,Vector3 rot,Vector3 up,Vector2 ar,float fov ,float npd = 0.01f,float fpd = 500f)
+        public Camera(string name,bool enabled,Vector3 pos,Vector3 rot,Vector3 up,float fov ,float npd = 0.01f,float fpd = 500f)
         {
             Name = name;
             Enabled = enabled;
             Position = pos;
             Rotation = Quaternion.CreateFromYawPitchRoll(rot.Y,rot.X,rot.Z);
-            AspectRatio = ar;
             FOV = fov;
             NearPlaneDistance = npd;
             FarPlaneDistance = fpd;
@@ -48,10 +46,6 @@ namespace Lib3DRadSpace_DX
         /// Field of view in radians.
         /// </summary>
         public float FOV;
-        /// <summary>
-        /// Game window resolution / aspect ratio.
-        /// </summary>
-        public Vector2 AspectRatio;
 
         /// <summary>
         /// Minimum drawing distance.
@@ -108,7 +102,7 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return Matrix.CreatePerspectiveFieldOfView(FOV, AspectRatio.X / AspectRatio.Y, NearPlaneDistance, FarPlaneDistance);
+                return Matrix.CreatePerspectiveFieldOfView(FOV, CurrentProject.Resolution.X / CurrentProject.Resolution.Y , NearPlaneDistance, FarPlaneDistance);
             }
         }
         /// <summary>

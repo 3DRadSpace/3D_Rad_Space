@@ -68,17 +68,13 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// Character movement speed.
         /// </summary>
-        public float MovmentSpeed
-        {
-            get
-            {
-                return 0;
-            }
-            set
-            {
+        public float MovmentSpeed;
 
-            }
-        }
+        /// <summary>
+        /// Character running speed.
+        /// </summary>
+        public float SprintSpeed;
+
         /// <summary>
         /// Character height.
         /// </summary>
@@ -200,7 +196,7 @@ namespace Lib3DRadSpace_DX
         public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
         {
             view = Matrix.CreateLookAt(Position, Position + LookDir, Normal);
-            projection = Matrix.CreatePerspectiveFieldOfView(FOV, 0, NearPlaneDistance, FarPlaneDistance);
+            projection = Matrix.CreatePerspectiveFieldOfView(FOV, CurrentProject.Resolution.X / CurrentProject.Resolution.Y, NearPlaneDistance, FarPlaneDistance);
         }
         /// <summary>
         /// Handles the camera rotation by taking the mouse as input.
@@ -232,10 +228,10 @@ namespace Lib3DRadSpace_DX
 
             if(keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
             {
-                if(_controller.StanceManager.DesiredStance == BEPUphysics.Character.Stance.Standing) _controller.StandingSpeed = 12;
+                if(_controller.StanceManager.DesiredStance == BEPUphysics.Character.Stance.Standing) _controller.StandingSpeed = SprintSpeed;
             }
-            else _controller.StandingSpeed = 8;
-            if(keyboard.IsKeyDown(Keys.C)) _controller.StanceManager.DesiredStance = BEPUphysics.Character.Stance.Crouching;
+            else _controller.StandingSpeed = MovmentSpeed;
+            if(keyboard.IsKeyDown(Key_Crouch)) _controller.StanceManager.DesiredStance = BEPUphysics.Character.Stance.Crouching;
             else _controller.StanceManager.DesiredStance = BEPUphysics.Character.Stance.Standing;
 
             BEPUutilities.Vector2 movf = BEPUutilities.Vector2.Zero;

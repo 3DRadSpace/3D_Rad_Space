@@ -46,6 +46,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Teapot.fbx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />

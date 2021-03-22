@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Xna.Framework;
 
 namespace Lib3DRadSpace_DX
 {
@@ -63,5 +64,9 @@ namespace Lib3DRadSpace_DX
                 GameObjects[i].SaveF(buffer, ref i);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Vector2 Resolution;
     }
 }

@@ -70,9 +70,9 @@ namespace _3DRadSpace
                     Convert.ToSingle(tb_nX.Text, CultureInfo.InvariantCulture), //normal x
                     Convert.ToSingle(tb_ny.Text, CultureInfo.InvariantCulture), //normal y
                     Convert.ToSingle(tb_nz.Text, CultureInfo.InvariantCulture) //normal z
-                ), Vector2.Zero, Convert.ToSingle(tb_fov, CultureInfo.InvariantCulture), //fov
-                Convert.ToSingle(tb_fpd, CultureInfo.InvariantCulture), //far plane distance
-                Convert.ToSingle(tb_npd, CultureInfo.InvariantCulture)) //near-plane distance
+                ),Convert.ToSingle(tb_fov.Text, CultureInfo.InvariantCulture), //fov
+                Convert.ToSingle(tb_fpd.Text, CultureInfo.InvariantCulture), //far plane distance
+                Convert.ToSingle(tb_npd.Text, CultureInfo.InvariantCulture)) //near-plane distance
             {
                 Allow2DSprites = checkBox1.Checked,
                 Behiavours = bCopy

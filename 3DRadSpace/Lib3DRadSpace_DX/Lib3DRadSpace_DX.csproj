@@ -110,10 +110,12 @@
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Maths.cs" />
+    <Compile Include="PhongShader.cs" />
     <Compile Include="PhysicsHelper.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="Skinmesh.cs" />
+    <Compile Include="VertexColorShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
