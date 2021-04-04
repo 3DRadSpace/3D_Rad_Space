@@ -47,7 +47,7 @@ namespace Lib3DRadSpace_DX.Shaders
 
         public void LoadShader(ContentManager content, GraphicsDevice dev)
         {
-            content.Load<Effect>("Shaders//VertexColor");
+            _shader = content.Load<Effect>("Shaders//VertexColor");
             _gdev = dev;
         }
     }

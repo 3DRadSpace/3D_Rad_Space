@@ -31,32 +31,36 @@ namespace Lib3DRadSpace_DX
             }
         }
         /// <summary>
-        /// 
+        /// Checks if the object will cycle it's update loop.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled;
         /// <summary>
-        /// 
+        /// Checks if the object is visible or not.
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible;
 
-        Vector3 _position;
         /// <summary>
         /// Object 3D position in the game-world.
         /// </summary>
-        public Vector3 Position
-        {
-            get { return _position; }
-            set { _position = value; }
-        }
-        Quaternion _rotation;
+        public Vector3 Position;
+
         /// <summary>
         /// Object rotation.
         /// </summary>
         public Quaternion Rotation
         {
-            get { return _rotation; }
-            set { _rotation = value; }
+            get
+            {
+                return _rotation;
+            }
+            set
+            {
+                _rotation = value;
+                //TODO: Set the Euler Angle rotation.
+            }
         }
+        Quaternion _rotation;
+
         /// <summary>
         /// Rotation euler 
         /// </summary>
@@ -100,30 +104,20 @@ namespace Lib3DRadSpace_DX
             if (b < 0) return Math.Abs(a);
             else return -Math.Abs(a);
         }
-        Vector3 _scale;
         /// <summary>
         /// 3D Scale of the object.
         /// </summary>
-        public Vector3 Scale
-        {
-            get { return _scale; }
-            set { _scale = value; }
-        }
+        public Vector3 Scale;
+
         /// <summary>
-        /// 
+        /// Specifies the rotation center
         /// </summary>
-        public string Asset 
-        {
-            get
-            {
-                return _asset;
-            }
-            set
-            {
-                _asset = value;
-            }
-        }
-        string _asset;
+        public Vector3 RotationCenter;
+
+        /// <summary>
+        /// Asset file name. May differ from object to object.
+        /// </summary>
+        public string Asset;
 
         /// <summary>
         /// Gets the World matrix, passed to shaders as a argument.
@@ -132,7 +126,7 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return Matrix.CreateScale(_scale) * Matrix.CreateFromQuaternion(_rotation) * Matrix.CreateTranslation(_position);
+                return Matrix.CreateScale(Scale) * Matrix.CreateTranslation(RotationCenter) * Matrix.CreateFromQuaternion(_rotation) * Matrix.CreateTranslation(Position);
             }
         }
 
@@ -190,7 +184,7 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         public virtual void Trigger()
         {
-            this.Enabled = true;
+            Enabled = true;
         }
 
         /// <summary>

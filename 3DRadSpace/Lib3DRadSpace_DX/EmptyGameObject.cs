@@ -26,7 +26,7 @@ namespace Lib3DRadSpace_DX
             Enabled = enabled;
             Position = pos;
             RotationEuler = rot;
-            Scale = Scale;
+            Scale = s;
         }
         /// <summary>
         /// 

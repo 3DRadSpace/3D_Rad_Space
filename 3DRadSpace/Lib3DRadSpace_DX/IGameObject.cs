@@ -16,41 +16,6 @@ namespace Lib3DRadSpace_DX
     public interface IGameObject
     {
         /// <summary>
-        /// Object name.
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Represents the asset file the object is using.
-        /// </summary>
-        string Asset { get; set; }
-
-        /// <summary>
-        /// Checks if the object will do anything in the update loop.
-        /// </summary>
-        bool Enabled { get; set; }
-
-        /// <summary>
-        /// Checks if the object will be visible in the drawing loop.
-        /// </summary>
-        bool Visible { get; set; }
-
-        /// <summary>
-        /// Object 3D position in the game-world.
-        /// </summary>
-        Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Object rotation.
-        /// </summary>
-        Quaternion Rotation { get; set; }
-
-        /// <summary>
-        /// 3D Scale of the object.
-        /// </summary>
-        Vector3 Scale { get; set; }
-
-        /// <summary>
         /// Loads the object.
         /// </summary>
         void Load(ContentManager content);
