@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lib3DRadSpace_DX
 {
-    class PhongShader
+    namespace Shaders
     {
+        class PhongShader
+        {
+            
+        }
     }
 }

@@ -28,7 +28,10 @@ namespace Lib3DRadSpace_DX.Shaders
 
         GraphicsDevice _gdev;
 
-        public Effect ShaderEffect => _shader;
+        public Effect ShaderEffect
+        {
+            get { return _shader; }
+        }
 
         public void DrawModelPart(Effect effect, ModelMeshPart part, Matrix world, Matrix view, Matrix projection)
         {

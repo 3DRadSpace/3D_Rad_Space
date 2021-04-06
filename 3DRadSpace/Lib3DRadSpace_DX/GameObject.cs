@@ -82,7 +82,7 @@ namespace Lib3DRadSpace_DX
                 // pitch (y-axis rotation)
                 double sinp = 2 * (q.W * q.Y - q.Z * q.X);
                 if (Math.Abs(sinp) >= 1)
-                    angles.Y = (float)CopySign(MathHelper.Pi / 2, sinp); // use 90 degrees if out of range
+                    angles.Y = (float)Maths.CopySign(MathHelper.Pi / 2, sinp); // use 90 degrees if out of range
                 else
                     angles.Y = (float)Math.Asin(sinp);
 
@@ -93,16 +93,6 @@ namespace Lib3DRadSpace_DX
 
                 return angles;
             }
-        }
-        static double CopySign(double a,double b)
-        {
-            if (b < 0) return Math.Abs(a);
-            else return -Math.Abs(a);
-        }
-        static float CopySign(float a, float b)
-        {
-            if (b < 0) return Math.Abs(a);
-            else return -Math.Abs(a);
         }
         /// <summary>
         /// 3D Scale of the object.

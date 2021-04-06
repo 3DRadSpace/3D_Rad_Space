@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Lib3DRadSpace_DX
 {
@@ -126,6 +122,35 @@ namespace Lib3DRadSpace_DX
         {
             view = View;
             projection = Projection;
+        }
+        /// <summary>
+        /// Draws the camera marker.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="frustrum"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public override void EditorDraw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
+        {
+            if(frustrum.Contains(new BoundingSphere(Position,1)) != ContainmentType.Disjoint)
+            {
+                CameraModel.Draw(World, view, projection);
+            }
+        }
+        /// <summary>
+        /// Editor only. Draws
+        /// </summary>
+        public static Model CameraModel;
+
+        /// <summary>
+        /// Represents the translation matrix.
+        /// </summary>
+        public new Matrix World
+        {
+            get
+            {
+                return Matrix.CreateFromYawPitchRoll(RotationEuler.Y, RotationEuler.X, RotationEuler.Z) * Matrix.CreateTranslation(Position);
+            }
         }
     }
 }
