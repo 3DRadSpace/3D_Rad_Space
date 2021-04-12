@@ -209,14 +209,14 @@ namespace Lib3DRadSpace_DX
             float dt = (float)time.ElapsedGameTime.TotalSeconds;
             float dt2 = dt * dt;
 
-            float mx=0, my=0;
+            float mx= CurrentProject.Resolution.X/2, my= CurrentProject.Resolution.Y / 2;
             Mouse.SetPosition((int)mx, (int)my); //TODO: get the middle point.
             float dx = mx - input.X;
             float dy = my - input.Y;
 
-            Look_At += (new Vector2(dx * dt2, dy * dt2)) * Sensibility;
+            Look_At += (new Vector2(dx * dt2, -dy * dt2)) * Sensibility;
 
-            LookDir = new Vector3((float)Math.Sin(Look_At.X), (float)Math.Tan(Look_At.Y),(float) Math.Cos(Look_At.X));
+            LookDir = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(Look_At.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, Look_At.Y, 0));
             _controller.ViewDirection = BEPU2XNA.CvVec(LookDir);
 
             BEPUutilities.Vector2 movsum = BEPUutilities.Vector2.Zero;
@@ -238,8 +238,16 @@ namespace Lib3DRadSpace_DX
             if(movsum.LengthSquared() != 0) movf = BEPUutilities.Vector2.Normalize(movsum);
 
             _controller.HorizontalMotionConstraint.MovementDirection = movf;
-
-            base.Update(ref input, ref keyboard, time);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        /// <param name="position"></param>
+        /// <param name="result"></param>
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
+        {
+            result = new FirstPersonCamera();
         }
     }
 }

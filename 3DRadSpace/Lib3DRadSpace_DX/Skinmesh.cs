@@ -1,148 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
-
 
 namespace Lib3DRadSpace_DX
 {
     /// <summary>
-    /// Represents a 3D model. No animation support (yet, I hope)
+    /// Implements a basic Mesh model that supports color textures.
     /// </summary>
     public class Skinmesh : BaseGameObject
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="visible"></param>
-        /// <param name="pos"></param>
-        /// <param name="rotation"></param>
-        /// <param name="scale"></param>
-        /// <param name="t_shaders"></param>
-        /// <param name="effects"></param>
-        public Skinmesh(string name,bool visible,Vector3 pos,Quaternion rotation, Vector3 scale,List<Shaders.IShader> t_shaders,List<Effect> effects)
+        /// <param name="name">Name of the object</param>
+        /// <param name="visible">Checks if the skinmesh will get rendered</param>
+        /// <param name="meshxnbfile">XNB resource file</param>
+        /// <param name="p"></param>
+        /// <param name="r"></param>
+        /// <param name="rc"></param>
+        /// <param name="s"></param>
+        public Skinmesh(string name,bool visible,string meshxnbfile,Vector3 p,Vector3 r,Vector3 rc,Vector3 s)
         {
             Name = name;
             Visible = visible;
-            Position = pos;
-            Rotation = rotation;
-            Scale = scale;
-            Shaders = t_shaders;
-            Effects = effects;
+            Asset = meshxnbfile;
+            Position = p;
+            RotationEuler = r;
+            RotationCenter = rc;
+            Scale = s;
+            Model = null;
         }
         /// <summary>
-        /// Represents the 3D model itself. (Containts the index and vertex buffer).
+        /// 
         /// </summary>
         public Model Model;
+
         /// <summary>
-        /// Contains a list of shaders to be atributted to each mesh part (textured mesh)
-        /// </summary>
-        public List<Shaders.IShader> Shaders;
-        /// <summary>
-        /// List of effects to be used with the mesh parts.
-        /// </summary>
-        public List<Effect> Effects;
-        /// <summary>
-        /// Draws the 3D model using the specified shaders.
-        /// </summary>
-        /// <param name="time">Not used.</param>
-        /// <param name="frustrum">Bounding frustrum used to optimise the drawing by checking if the model can be seen by the camera.</param>
-        /// <param name="view">View matrix.</param>
-        /// <param name="projection">Projection matrix</param>
-        public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
-        {
-            if (Model == null) return;
-            if (!Visible) return;
-            bool canDraw = false;
-            for(int i =0; i < Model.Meshes.Count;i++)
-            {
-                if(frustrum.Contains(Model.Meshes[i].BoundingSphere) == ContainmentType.Contains)
-                {
-                    canDraw = true;
-                    break;
-                }
-            }
-            if(canDraw)
-            {
-                for (int i = 0; i < Model.Meshes.Count; i++)
-                {
-                    for (int j = 0; j < Shaders.Count; j++)
-                    {
-                        Shaders[j].DrawModelPart(Effects[j], Model.Meshes[i].MeshParts[j], World, view, projection);
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Draws the model for the editor. This is the same as Draw() since there's no difference.
-        /// </summary>
-        /// <param name="time">Not used</param>
-        /// <param name="frustrum">Used to optimise the drawing.</param>
-        /// <param name="view">View matrix.</param>
-        /// <param name="projection">Projection matrix.</param>
-        public override void EditorDraw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
-        {
-            Draw(time, frustrum,ref view,ref projection);
-        }
-        Texture2D[] _Textures;
-        /// <summary>
-        /// Loads the model by using the content pipeline.
+        /// 
         /// </summary>
         /// <param name="content"></param>
         public override void Load(ContentManager content)
         {
-            //load shader list and parameters
-            string[] details = File.ReadAllLines(Asset);
-
-            Shaders = new List<Shaders.IShader>(details.Length - 1);
-            for(int i =1; i < details.Length; i++)
-            {
-                string[] shader_info = details[i].Split(' ');
-                for(int j =0; j < shader_info.Length;j++)
-                {
-                    switch(shader_info[j])
-                    {
-                        case "default":
-                            break;
-                    }
-                }
-            }
-
-            //load model.
-            Model = content.Load<Model>(details[0]);
-
-            //make model compatible with other shaders.
-
-            //count number of meshparts.
-            int c = 0;
-            for(int i =0; i < Model.Meshes.Count;i++)
-            {
-                for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
-                {
-                    c++;
-                }
-            }
-            //allocate basic textures.
-            _Textures = new Texture2D[c];
-            //copy textures.
+            Model = content.Load<Model>(Asset);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="frustrum"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
+        {
+            if(!Visible) return;
             for(int i = 0; i < Model.Meshes.Count;i++)
             {
-                for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
+                if(frustrum.Contains(Model.Meshes[i].BoundingSphere) != ContainmentType.Disjoint)
                 {
-                    BasicEffect eff = (BasicEffect)Model.Meshes[i].MeshParts[j].Effect;
-                    if(eff.TextureEnabled)
-                    {
-                        _Textures[i] = eff.Texture;
-                    }
-                    else _Textures[i] = null;
+                    Model.Draw(World, view, projection);
+                    break;
                 }
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="frustrum"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public override void EditorDraw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
+        {
+            for(int i = 0; i < Model.Meshes.Count; i++)
+            {
+                if(frustrum.Contains(Model.Meshes[i].BoundingSphere) != ContainmentType.Disjoint)
+                {
+                    Model.Draw(World, view, projection);
+                    break;
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        /// <param name="position"></param>
+        /// <param name="result"></param>
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
+        {
+            string name = ByteCodeParser.GetString(buff,ref position);
+            bool visible = ByteCodeParser.GetBool(buff, ref position);
+            string asset = ByteCodeParser.GetString(buff, ref position);
+            Vector3 pos = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 rot_euler = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 rot_center = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 scale = ByteCodeParser.GetVector3(buff, ref position);
+
+            result = new Skinmesh(name, visible, asset, pos, rot_euler, rot_center, scale);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        public override void SaveF(List<byte> buff)
+        {
+            ByteCodeParser.SetString(buff, Name);
+            ByteCodeParser.SetBool(buff, Visible);
+            ByteCodeParser.SetString(buff, Asset);
+            ByteCodeParser.SetVector3(buff, Position);
+            ByteCodeParser.SetVector3(buff, RotationEuler);
+            ByteCodeParser.SetVector3(buff, RotationCenter);
+            ByteCodeParser.SetVector3(buff, Scale);
         }
     }
 }

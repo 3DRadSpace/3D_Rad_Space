@@ -133,11 +133,11 @@ namespace Lib3DRadSpace_DX
         /// <param name="time">dt. delta-time</param>
         public virtual void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time) { }
         /// <summary>
-        /// Draws the game to the ID3D11DeviceContext
+        /// Draws the "game-object" to the ID3D11DeviceContext
         /// </summary>
         /// <param name="time">dt. delta-time</param>
         /// <param name="frustrum">Bounding frustrum for 3D models for GPU optimisation.</param>
-        /// <param name="view">View Matrix</param>
+        /// <param name="view">View Matrix. Represents the camera's coordinates</param>
         /// <param name="projection">Projection Matrix.</param>
         public virtual void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection) { }
         /// <summary>
@@ -154,7 +154,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="buff">file buffer</param>
         /// <param name="position">Buffer position</param>
         /// <param name="result">Loaded IGameObject. Null if failed.</param>
-        public virtual void LoadF(List<byte> buff, ref int position, out IGameObject result) 
+        public virtual void LoadF(byte[] buff, ref int position, out IGameObject result) 
         {
             result = null;
         }
@@ -162,7 +162,7 @@ namespace Lib3DRadSpace_DX
         /// Saves the game object into a buffer that can be stored in a file.
         /// </summary>
         /// <returns></returns>
-        public virtual void SaveF(List<byte> buff, ref int position) { }
+        public virtual void SaveF(List<byte> buff) { }
 
         /// <summary>
         /// List of editor selected behiavours.

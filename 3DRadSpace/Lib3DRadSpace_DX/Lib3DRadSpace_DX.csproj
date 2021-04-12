@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="BasicColorShader.cs" />
     <Compile Include="Behiavour.cs" />
+    <Compile Include="ByteCodeParser.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="CurrentProject.cs" />

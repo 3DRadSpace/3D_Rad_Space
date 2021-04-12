@@ -148,6 +148,42 @@ namespace Lib3DRadSpace_DX
         {
             if(Enabled) _draw?.Invoke(scriptInstance, new object[] {time,frustrum,view,projection });
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Unload()
+        {
+            _end?.Invoke(scriptInstance, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        /// <param name="position"></param>
+        /// <param name="result"></param>
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
+        {
+            string name = ByteCodeParser.GetString(buff, ref position);
+            bool enabled = ByteCodeParser.GetBool(buff, ref position);
+            string mainclass = ByteCodeParser.GetString(buff, ref position);
+            string script = ByteCodeParser.GetString(buff, ref position);
+            result = new Script(name, enabled, mainclass, script);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        public override void SaveF(List<byte> buff)
+        {
+            ByteCodeParser.SetString(buff, Name);
+            ByteCodeParser.SetBool(buff, Enabled);
+            ByteCodeParser.SetString(buff, MainClass);
+            ByteCodeParser.SetString(buff, Text);
+        }
+
         /// <summary>
         /// 
         /// </summary>

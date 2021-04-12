@@ -58,11 +58,12 @@ namespace Lib3DRadSpace_DX
         /// <param name="filename"></param>
         public static void Save(string filename)
         {
-            List<byte> buffer = new List<byte>(1024*10); //allocate ~10 initial KBs lol
+            List<byte> buffer = new List<byte>(1024*10); //allocate 10 KBs xd
             for(int i =0; i< GameObjects.Count;i++)
             {
-                GameObjects[i].SaveF(buffer, ref i);
+                GameObjects[i].SaveF(buffer);
             }
+            File.WriteAllBytes(filename, buffer.ToArray());
         }
         /// <summary>
         /// 

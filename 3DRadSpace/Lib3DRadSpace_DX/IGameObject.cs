@@ -52,13 +52,13 @@ namespace Lib3DRadSpace_DX
         /// <param name="buff">file buffer</param>
         /// <param name="position">Buffer position</param>
         /// <param name="result">Loaded IGameObject. Null if failed.</param>
-        void LoadF(List<byte> buff,ref int position,out IGameObject result);
+        void LoadF(byte[] buff,ref int position,out IGameObject result);
 
         /// <summary>
         /// Saves the game object into a buffer that can be stored in a file.
         /// </summary>
         /// <returns></returns>
-        void SaveF(List<byte> buff,ref int position);
+        void SaveF(List<byte> buff);
 
         /// <summary>
         /// Unloads native resources when loading an other project.

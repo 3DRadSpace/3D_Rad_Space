@@ -119,9 +119,24 @@ namespace Lib3DRadSpace_DX
         /// <param name="buff"></param>
         /// <param name="position"></param>
         /// <param name="result"></param>
-        public override void LoadF(List<byte> buff, ref int position, out IGameObject result)
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
         {
-            result = null;
+            string name = ByteCodeParser.GetString(buff, ref position);
+            bool enabled = ByteCodeParser.GetBool(buff, ref position);
+            Microsoft.Xna.Framework.Vector2 d1 = ByteCodeParser.GetVector2(buff, ref position);
+            string filename = ByteCodeParser.GetString(buff, ref position);
+            result = new Counter(name, enabled, d1.X, d1.Y, filename);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        public override void SaveF(List<byte> buff)
+        {
+            ByteCodeParser.SetString(buff, Name);
+            ByteCodeParser.SetBool(buff, Enabled);
+            ByteCodeParser.SetVector2(buff, new Microsoft.Xna.Framework.Vector2(Value, Increment));
+            ByteCodeParser.SetString(buff, Name);
         }
     }
 }

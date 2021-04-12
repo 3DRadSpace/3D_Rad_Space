@@ -34,18 +34,25 @@ namespace Lib3DRadSpace_DX
         /// <param name="buff"></param>
         /// <param name="position"></param>
         /// <param name="result"></param>
-        public override void LoadF(List<byte> buff, ref int position, out IGameObject result)
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
         {
-            result = null;
+            string name = ByteCodeParser.GetString(buff, ref position);
+            bool enabled = ByteCodeParser.GetBool(buff, ref position);
+            Vector3 pos = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 rot = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 scl = ByteCodeParser.GetVector3(buff, ref position);
+            result = new EmptyGameObject(name,enabled,pos,rot,scl);
         }
         /// <summary>
-        /// 
+        /// Saves the data into a file
         /// </summary>
         /// <param name="buff"></param>
-        /// <param name="position"></param>
-        public override void SaveF(List<byte> buff, ref int position)
+        public override void SaveF(List<byte> buff)
         {
-            
+            ByteCodeParser.SetString(buff, Name);
+            ByteCodeParser.SetVector3(buff, Position);
+            ByteCodeParser.SetVector3(buff, RotationEuler);
+            ByteCodeParser.SetVector3(buff, Scale);
         }
     }
 }

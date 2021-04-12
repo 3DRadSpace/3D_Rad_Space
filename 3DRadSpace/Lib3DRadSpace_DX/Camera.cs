@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,10 +19,11 @@ namespace Lib3DRadSpace_DX
         /// <param name="pos">Camera position.</param>
         /// <param name="rot">Camera rotation quaternion.</param>
         /// <param name="up">Camera up direction. A normalized vector perpendicular to the surface the camera is standing on.</param>
-        /// <param name="fov">FOV in radians.</param>
+        /// <param name="fov">FOV in radians. Default is ~65.</param>
         /// <param name="npd">Near plane distance.</param>
         /// <param name="fpd">Far plane distance.</param>
-        public Camera(string name,bool enabled,Vector3 pos,Vector3 rot,Vector3 up,float fov ,float npd = 0.01f,float fpd = 500f)
+        /// <param name="allow2d">Toggles drawing 2D elements like Sprites and TextPrints</param>
+        public Camera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 rot=default,Vector3 up=default,float fov= 1.1344f, float npd = 0.01f,float fpd = 500f,bool allow2d = true)
         {
             Name = name;
             Enabled = enabled;
@@ -32,6 +34,7 @@ namespace Lib3DRadSpace_DX
             FarPlaneDistance = fpd;
             Up = up;
             LookAtLocation = false;
+            Allow2DSprites = allow2d;
         }
 
         /// <summary>
@@ -126,10 +129,10 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// Draws the camera marker.
         /// </summary>
-        /// <param name="time"></param>
-        /// <param name="frustrum"></param>
-        /// <param name="view"></param>
-        /// <param name="projection"></param>
+        /// <param name="time">dt</param>
+        /// <param name="frustrum">view frustrum</param>
+        /// <param name="view">view matrix</param>
+        /// <param name="projection">projection matrix</param>
         public override void EditorDraw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
         {
             if(frustrum.Contains(new BoundingSphere(Position,1)) != ContainmentType.Disjoint)
@@ -138,7 +141,7 @@ namespace Lib3DRadSpace_DX
             }
         }
         /// <summary>
-        /// Editor only. Draws
+        /// Editor only. Represents the Camera marker model.
         /// </summary>
         public static Model CameraModel;
 
@@ -151,6 +154,38 @@ namespace Lib3DRadSpace_DX
             {
                 return Matrix.CreateFromYawPitchRoll(RotationEuler.Y, RotationEuler.X, RotationEuler.Z) * Matrix.CreateTranslation(Position);
             }
+        }
+        /// <summary>
+        /// Function used inside the file I/O system.
+        /// </summary>
+        /// <param name="buff">Byte buffer</param>
+        /// <param name="position">Byte position</param>
+        /// <param name="result">Resulting Camera Object</param>
+        public override void LoadF(byte[] buff, ref int position, out IGameObject result)
+        {
+            string name = ByteCodeParser.GetString(buff,ref position);
+
+            bool enabled = ByteCodeParser.GetBool(buff, ref position);
+            Vector3 pos = ByteCodeParser.GetVector3(buff,ref position);
+            Vector3 rot = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 up = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 d1 = ByteCodeParser.GetVector3(buff, ref position);
+            bool allow2d = ByteCodeParser.GetBool(buff, ref position);
+            result = new Camera(name,enabled,pos,rot,up,d1.X,d1.Y,d1.Z,allow2d);
+        }
+        /// <summary>
+        /// Function used inside the file I/O system
+        /// </summary>
+        /// <param name="buff"></param>
+        public override void SaveF(List<byte> buff)
+        {
+            ByteCodeParser.SetString(buff,Name);
+            ByteCodeParser.SetBool(buff, Enabled);
+            ByteCodeParser.SetVector3(buff, Position);
+            ByteCodeParser.SetVector3(buff, RotationEuler);
+            ByteCodeParser.SetVector3(buff, Up);
+            ByteCodeParser.SetVector3(buff, new Vector3(FOV, NearPlaneDistance, FarPlaneDistance));
+            ByteCodeParser.SetBool(buff, Allow2DSprites);
         }
     }
 }
