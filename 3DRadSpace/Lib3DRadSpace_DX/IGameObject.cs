@@ -47,6 +47,13 @@ namespace Lib3DRadSpace_DX
         void EditorDraw(GameTime time, BoundingFrustum frustrum,ref Matrix view,ref Matrix projection);
 
         /// <summary>
+        /// Used in the editor. Can also be used when ray tracing objects.
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
+        float? RayIntersection(Ray ray);
+
+        /// <summary>
         /// Loads the game object from a file buffer.
         /// </summary>
         /// <param name="buff">file buffer</param>

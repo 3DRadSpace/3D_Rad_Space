@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Lib3DRadSpace_DX
@@ -22,8 +23,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="fov">FOV in radians. Default is ~65.</param>
         /// <param name="npd">Near plane distance.</param>
         /// <param name="fpd">Far plane distance.</param>
-        /// <param name="allow2d">Toggles drawing 2D elements like Sprites and TextPrints</param>
-        public Camera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 rot=default,Vector3 up=default,float fov= 1.1344f, float npd = 0.01f,float fpd = 500f,bool allow2d = true)
+        public Camera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 rot=default,Vector3 up=default,float fov= 1.1344f, float npd = 0.01f,float fpd = 500f)
         {
             Name = name;
             Enabled = enabled;
@@ -34,7 +34,6 @@ namespace Lib3DRadSpace_DX
             FarPlaneDistance = fpd;
             Up = up;
             LookAtLocation = false;
-            Allow2DSprites = allow2d;
         }
 
         /// <summary>
@@ -60,11 +59,6 @@ namespace Lib3DRadSpace_DX
         /// Makes the camera object look at a specific point rather than using a rotation.
         /// </summary>
         public bool LookAtLocation;
-
-        /// <summary>
-        /// Toggles 2D elements like sprites, textprints, etc
-        /// </summary>
-        public bool Allow2DSprites;
 
         /// <summary>
         /// Camera look-at position.
@@ -126,6 +120,17 @@ namespace Lib3DRadSpace_DX
             view = View;
             projection = Projection;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
+        public override float? RayIntersection(Ray ray)
+        {
+            return ray.Intersects(new BoundingSphere(Position, 2f));
+        }
+
         /// <summary>
         /// Draws the camera marker.
         /// </summary>
@@ -170,8 +175,7 @@ namespace Lib3DRadSpace_DX
             Vector3 rot = ByteCodeParser.GetVector3(buff, ref position);
             Vector3 up = ByteCodeParser.GetVector3(buff, ref position);
             Vector3 d1 = ByteCodeParser.GetVector3(buff, ref position);
-            bool allow2d = ByteCodeParser.GetBool(buff, ref position);
-            result = new Camera(name,enabled,pos,rot,up,d1.X,d1.Y,d1.Z,allow2d);
+            result = new Camera(name,enabled,pos,rot,up,d1.X,d1.Y,d1.Z);
         }
         /// <summary>
         /// Function used inside the file I/O system
@@ -185,7 +189,6 @@ namespace Lib3DRadSpace_DX
             ByteCodeParser.SetVector3(buff, RotationEuler);
             ByteCodeParser.SetVector3(buff, Up);
             ByteCodeParser.SetVector3(buff, new Vector3(FOV, NearPlaneDistance, FarPlaneDistance));
-            ByteCodeParser.SetBool(buff, Allow2DSprites);
         }
     }
 }

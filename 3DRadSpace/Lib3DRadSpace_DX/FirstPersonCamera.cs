@@ -10,37 +10,62 @@ using BEPUphysics.Character;
 namespace Lib3DRadSpace_DX
 {
     /// <summary>
-    /// Class representing a first person camera allowing looking around and moving on the map, jumping, crouching, and staying prone.
+    /// A class representing a first person camera allowing looking around and moving on the map, jumping, crouching, and staying prone.
     /// This class is not inhereted from the Camera object, because levels of inheritance will slow down the performance of the game project.
-    /// The OOP nature of 3DRadSpace + the fact that 3DRadSpace is bulid from Monogame instead of DirectX 11/12 or OpenGL are already big enough slowdowns.
+    /// The OOP nature of 3DRadSpace + the fact that 3DRadSpace is bulid from Monogame instead of pure DirectX 11/12 or OpenGL are already big enough slowdowns.
     /// </summary>
     public class FirstPersonCamera : BaseGameObject
     {
         /// <summary>
-        /// FPCamera main constructor containing all the arguments.
+        /// FirstPersonCamera constructor. Provides all the necessary initialization arguments.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="enabled"></param>
-        /// <param name="pos"></param>
-        /// <param name="look"></param>
-        /// <param name="norm"></param>
-        /// <param name="npd"></param>
-        /// <param name="fpd"></param>
-        /// <param name="speed"></param>
-        /// <param name="sensibility"></param>
-        /// <param name="height"></param>
-        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector2 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float speed = 5f,float height = 1.7f,float sensibility = 1f)
+        /// <param name="name">Name of the object</param>
+        /// <param name="enabled">Checks if the object will do physics + rendering logic (setting the view and projection matrices)</param>
+        /// <param name="pos">Location in the 3D coordinates</param>
+        /// <param name="look">A normalized vector defining the characters's direction.</param>
+        /// <param name="norm">Camera's UP direction.</param>
+        /// <param name="npd">Minimum render frustrum distance.</param>
+        /// <param name="fpd">Maximum render frustrum distance.</param>
+        /// <param name="speed">Base movment speed</param>
+        /// <param name="sensibility">Mouse sensibility</param>
+        /// <param name="height">Defines the character's height</param>
+        /// <param name="crouchingHeight">Defines the camera height at the crouching stance</param>
+        /// <param name="proneHeight">Defines the camera height at the prone stance</param>
+        /// <param name="crouchingspeed">Defines the movment speed in the crouching stance</param>
+        /// <param name="pronespeed">Defines the movement speed in the prone stance</param>
+        /// <param name="runningspeed">Defines the running speed.</param>
+        /// <param name="mass">Defines the mass of the character's body</param>
+        /// <param name="backward">Keyboard key defining the backward movement</param>
+        /// <param name="forward">Keyboard key defining the forward movement</param>
+        /// <param name="left">Keyboard key defining the left movement</param>
+        /// <param name="right">Keyboard key defining the rights movement</param>
+        /// <param name="crouch">Chrouching key</param>
+        /// <param name="sprint">Sprinting key</param>
+        /// <param name="prone">Sprinting key</param>
+        /// <param name="fov">Field of view in radians. Default value is ~65 degrees.</param>
+        /// <param name="jmp">Jumping key</param>
+        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F, float sensibility = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
         {
             Name = name;
             Enabled = enabled;
             Position = pos;
-            Look_At = look;
+            LookDir = look;
             Normal = norm;
             NearPlaneDistance = npd;
             FarPlaneDistance = fpd;
-            Height = height;
             Sensibility = sensibility;
-            _controller = new CharacterController(BEPU2XNA.CvVec(pos), height);
+            SprintSpeed = runningspeed;
+            FOV = fov;
+            _controller = new CharacterController(BEPU2XNA.CvVec(pos), height,crouchingHeight,proneHeight,0.6f,0.1f,mass,0.8f,1.3f,speed,crouchingspeed,pronespeed);
+            _controller.ViewDirection = BEPU2XNA.CvVec(new Vector3(look.X,0,look.Y));
+            Key_Forward = forward;
+            Key_Backwards = backward;
+            Key_Left = left;
+            Key_Right = right;
+            Key_Crouch = crouch;
+            Key_Prone = prone;
+            Key_Jump = jmp;
+            Key_Sprint = sprint;
         }
         CharacterController _controller;
         /// <summary>
@@ -68,7 +93,46 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// Character movement speed.
         /// </summary>
-        public float MovmentSpeed;
+        public float MovmentSpeed
+        {
+            get
+            {
+                return _controller.StandingSpeed;
+            }
+            set
+            {
+                _controller.StandingSpeed = value;
+            }
+        }
+        /// <summary>
+        /// Gets or sets the crouching speed.
+        /// </summary>
+        public float CrouchingSpeed
+        {
+            get
+            {
+                return _controller.CrouchingSpeed;
+            }
+            set
+            {
+                _controller.CrouchingSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the prone movement speed.
+        /// </summary>
+        public float ProneSpeed
+        {
+            get
+            {
+                return _controller.ProneSpeed;
+            }
+            set
+            {
+                _controller.ProneSpeed = value;
+            }
+        }
 
         /// <summary>
         /// Character running speed.
@@ -76,23 +140,25 @@ namespace Lib3DRadSpace_DX
         public float SprintSpeed;
 
         /// <summary>
-        /// Character height.
+        /// Represents mouse->character rotation movment speed.
+        /// </summary>
+        public float Sensibility;
+
+
+        /// <summary>
+        /// 
         /// </summary>
         public float Height
         {
             get
             {
-                return 0;
+                return _controller.StanceManager.StandingHeight;
             }
             set
             {
-
+                _controller.StanceManager.StandingHeight = value;
             }
         }
-        /// <summary>
-        /// Represents mouse->character rotation movment speed.
-        /// </summary>
-        public float Sensibility;
 
         /// <summary>
         /// Represents the camera height when crouching.
@@ -101,11 +167,11 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return 0;
+                return _controller.StanceManager.CrouchingHeight;
             }
             set
             {
-
+                _controller.StanceManager.CrouchingHeight = value;
             }
         }
         /// <summary>
@@ -115,17 +181,13 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return 0;
+                return _controller.StanceManager.ProneHeight;
             }
             set
             {
-
+                _controller.StanceManager.ProneHeight = value;
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool Render2DSprites;
 
         /// <summary>
         /// Represents the stances of the character.
@@ -140,11 +202,11 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return 0;
+                return (byte)_controller.StanceManager.CurrentStance;
             }
             set
             {
-
+                _controller.StanceManager.DesiredStance = (BEPUphysics.Character.Stance)value;
             }
         }
 
@@ -152,6 +214,21 @@ namespace Lib3DRadSpace_DX
         /// Represents the camera's field of view (FoV) in radians.
         /// </summary>
         public float FOV;
+
+        /// <summary>
+        /// Defines the mass of the character's body.
+        /// </summary>
+        public float Mass
+        {
+            get
+            {
+                return _controller.Body.Mass;
+            }
+            set
+            {
+                _controller.Body.Mass = value;
+            }
+        }
 
         /// <summary>
         /// Defines the forward movment key.
@@ -240,6 +317,16 @@ namespace Lib3DRadSpace_DX
             _controller.HorizontalMotionConstraint.MovementDirection = movf;
         }
         /// <summary>
+        /// Checks if (an approximation of the hitbox) intersects the given ray
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
+        public override float? RayIntersection(Ray ray)
+        {
+            return ray.Intersects(new BoundingSphere(Position, Height));
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="buff"></param>
@@ -247,7 +334,47 @@ namespace Lib3DRadSpace_DX
         /// <param name="result"></param>
         public override void LoadF(byte[] buff, ref int position, out IGameObject result)
         {
-            result = new FirstPersonCamera();
+            string name = ByteCodeParser.GetString(buff, ref position);
+            bool enabled = ByteCodeParser.GetBool(buff, ref position);
+            Vector3 pos = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 look_dir = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 norm = ByteCodeParser.GetVector3(buff,ref position);
+            Vector3 d1 = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 d2 = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 d3 = ByteCodeParser.GetVector3(buff, ref position);
+            Vector3 d4 = ByteCodeParser.GetVector3(buff, ref position);
+            Keys w = ByteCodeParser.GetKey(buff, ref position);
+            Keys s = ByteCodeParser.GetKey(buff, ref position);
+            Keys d = ByteCodeParser.GetKey(buff, ref position);
+            Keys a = ByteCodeParser.GetKey(buff, ref position);
+            Keys c = ByteCodeParser.GetKey(buff, ref position);
+            Keys z = ByteCodeParser.GetKey(buff, ref position);
+            Keys jmp = ByteCodeParser.GetKey(buff, ref position);
+            result = new FirstPersonCamera(name, enabled, pos, look_dir, norm, d1.X, d1.Y, d1.Z, d2.X, d2.Y, d2.Z, d3.X, d3.Y, d3.Z, d4.X, d4.Y,d4.Z,w,s,d,a,c,z,jmp);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buff"></param>
+        public override void SaveF(List<byte> buff)
+        {
+            ByteCodeParser.SetString(buff, Name);
+            ByteCodeParser.SetBool(buff, Enabled);
+            ByteCodeParser.SetVector3(buff, Position);
+            ByteCodeParser.SetVector3(buff, LookDir);
+            ByteCodeParser.SetVector3(buff, Normal);
+            ByteCodeParser.SetVector3(buff, new Vector3(NearPlaneDistance,FarPlaneDistance,FOV));
+            ByteCodeParser.SetVector3(buff, new Vector3(Mass,MovmentSpeed,SprintSpeed));
+            ByteCodeParser.SetVector3(buff, new Vector3(CrouchingSpeed,ProneSpeed,Height));
+            ByteCodeParser.SetVector3(buff, new Vector3(CrouchingHeight,ProneHeight,Sensibility));
+            ByteCodeParser.SetKey(buff, Key_Forward);
+            ByteCodeParser.SetKey(buff, Key_Backwards);
+            ByteCodeParser.SetKey(buff, Key_Right);
+            ByteCodeParser.SetKey(buff, Key_Left);
+            ByteCodeParser.SetKey(buff, Key_Crouch);
+            ByteCodeParser.SetKey(buff, Key_Prone);
+            ByteCodeParser.SetKey(buff, Key_Jump);
+            base.SaveF(buff);
         }
     }
 }

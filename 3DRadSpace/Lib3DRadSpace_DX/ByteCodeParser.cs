@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Lib3DRadSpace_DX
 {
@@ -10,12 +11,10 @@ namespace Lib3DRadSpace_DX
 
         public static string GetString(byte[] buff,ref int pos)
         {
-            int i = pos;
             string str = "";
-            while(buff[i] != 0)
+            while(buff[pos] != 0)
             {
-                str += (char)buff[i];
-                i++;
+                str += (char)buff[pos];
                 pos++;
             }
             return str;
@@ -23,12 +22,12 @@ namespace Lib3DRadSpace_DX
         public static float GetFloat(byte[] buff,ref int pos)
         {
             pos += sizeof(float);
-            return BitConverter.ToSingle(buff, pos);
+            return BitConverter.ToSingle(buff, pos-sizeof(float));
         }
         public static int GetInt(byte[] buff,ref int pos)
         {
             pos += sizeof(int);
-            return BitConverter.ToInt32(buff, pos);
+            return BitConverter.ToInt32(buff, pos-sizeof(int));
         }
         public static bool GetBool(byte[] buff,ref int pos)
         {
@@ -39,16 +38,21 @@ namespace Lib3DRadSpace_DX
         {
             pos += 3 * sizeof(float);
             return new Vector3(
-                BitConverter.ToSingle(buff, pos),
-                BitConverter.ToSingle(buff, pos+sizeof(float)),
-                BitConverter.ToSingle(buff, pos+(2*sizeof(float))));
+                BitConverter.ToSingle(buff, pos-(3*sizeof(float))),
+                BitConverter.ToSingle(buff, pos-(2*sizeof(float))),
+                BitConverter.ToSingle(buff, pos- sizeof(float)));
         }
         public static Vector2 GetVector2(byte[] buff,ref int pos)
         {
             pos += 2 * sizeof(float);
             return new Vector2(
-                BitConverter.ToSingle(buff, pos),
-                BitConverter.ToSingle(buff, pos + sizeof(float)));
+                BitConverter.ToSingle(buff, pos - (2*sizeof(float))),
+                BitConverter.ToSingle(buff, pos - sizeof(float)));
+        }
+        public static Keys GetKey(byte[] buff,ref int pos)
+        {
+            pos += sizeof(byte);
+            return (Keys)buff[pos - 1];
         }
 
 
@@ -87,6 +91,10 @@ namespace Lib3DRadSpace_DX
         {
             buff.AddRange(BitConverter.GetBytes(v.X));
             buff.AddRange(BitConverter.GetBytes(v.Y));
+        }
+        public static void SetKey(List<byte> buff,Keys k)
+        {
+            buff.Add((byte)k);
         }
     }
 }

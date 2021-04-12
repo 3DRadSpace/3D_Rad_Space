@@ -184,5 +184,15 @@ namespace Lib3DRadSpace_DX
         {
             
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
+        public virtual float? RayIntersection(Ray ray)
+        {
+            return null;
+        }
     }
 }

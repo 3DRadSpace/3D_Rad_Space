@@ -59,6 +59,10 @@ namespace _3DRadSpace
         {
             _spritebatch = new SpriteBatch(GraphicsDevice);
             InitializeAxis();
+
+            Content.RootDirectory = "EngineData";
+            Camera.CameraModel = Content.Load<Model>("Editor\\Models\\Camera\\Camera");
+
             base.LoadContent();
         }
 
@@ -98,7 +102,7 @@ namespace _3DRadSpace
             float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
             //tfw it took me ~2 years to realise how to rotate a vector around the origin
             //I feel so dumb rn
-            Camera.Position = new Vector3((float)Math.Sin(camera_rotation.X), (float)Math.Tan(yangle), (float)Math.Cos(camera_rotation.X));  
+            Camera.Position = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(camera_rotation.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, yangle, 0));
             
             Camera.Position *= Zoom;
             base.Update(gameTime);
