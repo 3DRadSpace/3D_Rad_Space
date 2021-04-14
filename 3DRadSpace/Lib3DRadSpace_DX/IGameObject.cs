@@ -21,6 +21,12 @@ namespace Lib3DRadSpace_DX
         void Load(ContentManager content);
 
         /// <summary>
+        /// Adds the object to the physics updateables list. Internal use only.
+        /// </summary>
+        /// <param name="space"></param>
+        void PhysicsInitialize(BEPUphysics.Space space);
+
+        /// <summary>
         /// Updates the physics and input logic.
         /// </summary>
         /// <param name="input">Mouse input. Passed by reference, for the sake of optimisation.</param>

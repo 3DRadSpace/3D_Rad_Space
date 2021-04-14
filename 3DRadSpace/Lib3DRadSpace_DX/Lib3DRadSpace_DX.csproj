@@ -108,6 +108,7 @@
     <Compile Include="FirstPersonCamera.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectType.cs" />
+    <Compile Include="GForce.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="InputHelper.cs" />

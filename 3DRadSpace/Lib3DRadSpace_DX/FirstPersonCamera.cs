@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using BEPUphysics.Character;
+using BEPUphysics;
 
 namespace Lib3DRadSpace_DX
 {
@@ -44,7 +45,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="prone">Sprinting key</param>
         /// <param name="fov">Field of view in radians. Default value is ~65 degrees.</param>
         /// <param name="jmp">Jumping key</param>
-        /// <param name="jumpingheight"></param>
+        /// <param name="jumpingheight">Jumping height</param>
         public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F,float jumpingheight = 10f, float sensibility = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
         {
             Name = name;
@@ -207,7 +208,7 @@ namespace Lib3DRadSpace_DX
             }
             set
             {
-                _controller.StanceManager.DesiredStance = (BEPUphysics.Character.Stance)value;
+                _controller.StanceManager.DesiredStance = (Stance)value;
             }
         }
 
@@ -278,6 +279,15 @@ namespace Lib3DRadSpace_DX
         /// Defines the sprinting key.
         /// </summary>
         public Keys Key_Sprint;
+
+        /// <summary>
+        /// Enabled physics of the Camera object.
+        /// </summary>
+        /// <param name="space"></param>
+        public override void PhysicsInitialize(Space space)
+        {
+            space.Add(_controller);
+        }
 
         /// <summary>
         /// Updates the matrices used when drawing 3D elements.
