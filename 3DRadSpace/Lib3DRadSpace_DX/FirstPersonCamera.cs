@@ -44,7 +44,8 @@ namespace Lib3DRadSpace_DX
         /// <param name="prone">Sprinting key</param>
         /// <param name="fov">Field of view in radians. Default value is ~65 degrees.</param>
         /// <param name="jmp">Jumping key</param>
-        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F, float sensibility = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
+        /// <param name="jumpingheight"></param>
+        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F,float jumpingheight = 10f, float sensibility = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
         {
             Name = name;
             Enabled = enabled;
@@ -56,7 +57,7 @@ namespace Lib3DRadSpace_DX
             Sensibility = sensibility;
             SprintSpeed = runningspeed;
             FOV = fov;
-            _controller = new CharacterController(BEPU2XNA.CvVec(pos), height,crouchingHeight,proneHeight,0.6f,0.1f,mass,0.8f,1.3f,speed,crouchingspeed,pronespeed);
+            _controller = new CharacterController(BEPU2XNA.CvVec(pos), height,crouchingHeight,proneHeight,0.6f,0.1f,mass,0.8f,1.3f,speed,crouchingspeed,pronespeed,jumpSpeed:jumpingheight);
             _controller.ViewDirection = BEPU2XNA.CvVec(new Vector3(look.X,0,look.Y));
             Key_Forward = forward;
             Key_Backwards = backward;
@@ -231,6 +232,21 @@ namespace Lib3DRadSpace_DX
         }
 
         /// <summary>
+        /// Gets or sets the jumping height
+        /// </summary>
+        public float JumpingHeight
+        {
+            get
+            {
+                return _controller.JumpSpeed;
+            }
+            set
+            {
+                _controller.JumpSpeed = value;
+            }
+        }
+
+        /// <summary>
         /// Defines the forward movment key.
         /// </summary>
         public Keys Key_Forward;
@@ -343,6 +359,7 @@ namespace Lib3DRadSpace_DX
             Vector3 d2 = ByteCodeParser.GetVector3(buff, ref position);
             Vector3 d3 = ByteCodeParser.GetVector3(buff, ref position);
             Vector3 d4 = ByteCodeParser.GetVector3(buff, ref position);
+            float jmph = ByteCodeParser.GetFloat(buff, ref position);
             Keys w = ByteCodeParser.GetKey(buff, ref position);
             Keys s = ByteCodeParser.GetKey(buff, ref position);
             Keys d = ByteCodeParser.GetKey(buff, ref position);
@@ -350,7 +367,7 @@ namespace Lib3DRadSpace_DX
             Keys c = ByteCodeParser.GetKey(buff, ref position);
             Keys z = ByteCodeParser.GetKey(buff, ref position);
             Keys jmp = ByteCodeParser.GetKey(buff, ref position);
-            result = new FirstPersonCamera(name, enabled, pos, look_dir, norm, d1.X, d1.Y, d1.Z, d2.X, d2.Y, d2.Z, d3.X, d3.Y, d3.Z, d4.X, d4.Y,d4.Z,w,s,d,a,c,z,jmp);
+            result = new FirstPersonCamera(name, enabled, pos, look_dir, norm, d1.X, d1.Y, d1.Z, d2.X, d2.Y, d2.Z, d3.X, d3.Y, d3.Z, d4.X, d4.Y,d4.Z,jmph,w,s,d,a,c,z,jmp);
         }
         /// <summary>
         /// 

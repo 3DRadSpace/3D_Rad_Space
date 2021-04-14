@@ -110,6 +110,7 @@
     <Compile Include="GameObjectType.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
+    <Compile Include="InputHelper.cs" />
     <Compile Include="Maths.cs" />
     <Compile Include="PhongShader.cs" />
     <Compile Include="PhysicsHelper.cs" />

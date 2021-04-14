@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Windows.Forms;
 using Lib3DRadSpace_DX;
 
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+
 namespace _3DRadSpace
 {
     public partial class Main : Game
@@ -66,7 +68,7 @@ namespace _3DRadSpace
             base.LoadContent();
         }
 
-        Microsoft.Xna.Framework.Input.ButtonState _lrb = Microsoft.Xna.Framework.Input.ButtonState.Released;
+        ButtonState _lrb = ButtonState.Released;
         bool _3dviewfocus = true;
 
         protected override void Update(GameTime gameTime)
@@ -79,7 +81,7 @@ namespace _3DRadSpace
             if (Form.ActiveForm == MainWindow && _3dviewfocus && mouse.X >= 150 && mouse.Y >= 50)
             {
                 Zoom = (mouse.ScrollWheelValue*0.01f) + 5;
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed)
                 {
                     Mouse.SetPosition(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
                     float dx = mouse.X - (_graphics.PreferredBackBufferWidth/2);
@@ -91,7 +93,7 @@ namespace _3DRadSpace
                 }
                 else IsMouseVisible = true;
 
-                if(mouse.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && _lrb != mouse.RightButton)
+                if(mouse.RightButton == ButtonState.Pressed && _lrb != mouse.RightButton)
                 {
                     
                 }
@@ -100,8 +102,6 @@ namespace _3DRadSpace
             Camera.Target = _cursor;
 
             float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
-            //tfw it took me ~2 years to realise how to rotate a vector around the origin
-            //I feel so dumb rn
             Camera.Position = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(camera_rotation.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, yangle, 0));
             
             Camera.Position *= Zoom;

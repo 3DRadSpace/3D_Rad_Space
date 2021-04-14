@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lib3DRadSpace_DX;
 
@@ -96,6 +90,18 @@ namespace _3DRadSpace
 				{
 					break;
 				}
+				case 14:
+                {
+					FirstPersonCameraWnd wnd = new FirstPersonCameraWnd();
+					if(wnd.ShowDialog() == DialogResult.OK)
+                    {
+						DialogResult = DialogResult.OK;
+						Result = wnd.Result;
+                    }
+					wnd.Dispose();
+					Close();
+					break;
+                }
 				case 18:
                 {
 					GroupWnd wnd = new GroupWnd();

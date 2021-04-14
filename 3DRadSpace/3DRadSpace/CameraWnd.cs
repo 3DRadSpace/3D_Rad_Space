@@ -42,8 +42,6 @@ namespace _3DRadSpace
             tb_npd.Text = cam.NearPlaneDistance + "";
             tb_fpd.Text = cam.FarPlaneDistance + "";
 
-            checkBox1.Checked = cam.Allow2DSprites;
-
             bCopy = cam.Behiavours;
             for(int i =0; i < bCopy.Count;i++)
             {
@@ -74,7 +72,6 @@ namespace _3DRadSpace
                 Convert.ToSingle(tb_fpd.Text, CultureInfo.InvariantCulture), //far plane distance
                 Convert.ToSingle(tb_npd.Text, CultureInfo.InvariantCulture)) //near-plane distance
             {
-                Allow2DSprites = checkBox1.Checked,
                 Behiavours = bCopy
             };
             DialogResult = DialogResult.OK;
