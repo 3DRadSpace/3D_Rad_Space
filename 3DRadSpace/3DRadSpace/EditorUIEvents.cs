@@ -167,12 +167,13 @@ namespace _3DRadSpace
             if(addObj.DialogResult == DialogResult.OK)
             {
                 AddObject(addObj.Result);
+                addObj.Result.Load(Content);
             }
             addObj.Dispose();
         }
         private void Ts_sw2d3d_CheckedChanged(object sender, EventArgs e)
         {
-            
+            _3DMode = !_3DMode;
         }
         private void MainWindow_Resize(object sender, EventArgs e)
         {

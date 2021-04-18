@@ -347,9 +347,9 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="ray"></param>
         /// <returns></returns>
-        public override float? RayIntersection(Ray ray)
+        public override Vector3? RayIntersection(Ray ray)
         {
-            return ray.Intersects(new BoundingSphere(Position, Height));
+            return ray.Position + (ray.Direction*ray.Intersects(new BoundingSphere(Position, Height)));
         }
 
         /// <summary>

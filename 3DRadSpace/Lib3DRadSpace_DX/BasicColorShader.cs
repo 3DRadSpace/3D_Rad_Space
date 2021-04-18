@@ -23,7 +23,7 @@ namespace Lib3DRadSpace_DX
             /// <summary>
             /// 
             /// </summary>
-            public static Effect MainEffect;
+            Effect _eff;
             /// <summary>
             /// 
             /// </summary>
@@ -31,26 +31,25 @@ namespace Lib3DRadSpace_DX
             {
                 get
                 {
-                    return MainEffect.Clone();
+                    return _eff;
                 }
             }
             /// <summary>
             /// 
             /// </summary>
-            /// <param name="effect"></param>
             /// <param name="part"></param>
             /// <param name="world"></param>
             /// <param name="view"></param>
             /// <param name="projection"></param>
-            public void DrawModelPart(Effect effect, ModelMeshPart part, Matrix world, Matrix view, Matrix projection)
+            public void DrawModelPart(ModelMeshPart part, Matrix world, Matrix view, Matrix projection)
             {
                 if (part.PrimitiveCount > 0)
                 {
-                    effect.Parameters["MColor"].SetValue(ModelColor.ToVector4());
-                    effect.Parameters["World"].SetValue(world);
-                    effect.Parameters["View"].SetValue(view);
-                    effect.Parameters["Projection"].SetValue(projection);
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                    _eff.Parameters["MColor"].SetValue(ModelColor.ToVector4());
+                    _eff.Parameters["World"].SetValue(world);
+                    _eff.Parameters["View"].SetValue(view);
+                    _eff.Parameters["Projection"].SetValue(projection);
+                    foreach (EffectPass pass in _eff.CurrentTechnique.Passes)
                     {
                         pass.Apply();
                         _dev.Indices = part.IndexBuffer;
@@ -68,7 +67,7 @@ namespace Lib3DRadSpace_DX
             public void LoadShader(ContentManager content, GraphicsDevice dev)
             {
                 _dev = dev;
-                MainEffect = content.Load<Effect>("Shaders\\BasicColorShader");
+                _eff = content.Load<Effect>("Shaders\\BasicColorShader");
             }
             GraphicsDevice _dev;
         }

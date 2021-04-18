@@ -24,7 +24,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,8 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>_3DRadSpace.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -105,6 +104,13 @@
     <Compile Include="ScriptWnd.Designer.cs">
       <DependentUpon>ScriptWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkinmeshPreviewer.cs" />
+    <Compile Include="SkinmeshWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinmeshWnd.Designer.cs">
+      <DependentUpon>SkinmeshWnd.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, processorArchitecture=MSIL">
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptWnd.resx">
       <DependentUpon>ScriptWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinmeshWnd.resx">
+      <DependentUpon>SkinmeshWnd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -50,6 +50,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Phong.fx
 
+#begin Shaders/Skybox.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Skybox.fx
+
 #begin Shaders/VertexColor.fx
 /importer:EffectImporter
 /processor:EffectProcessor

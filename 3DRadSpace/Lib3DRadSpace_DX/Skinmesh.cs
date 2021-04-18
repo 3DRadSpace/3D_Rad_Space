@@ -82,6 +82,17 @@ namespace Lib3DRadSpace_DX
                 }
             }
         }
+
+        /// <summary>
+        /// Checks an intersection with the Skinmesh object using a Moller Trumbore algorithm.
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <returns></returns>
+        public override Vector3? RayIntersection(Ray ray)
+        {
+            return MollerTrumbore.RayMeshCollision(ray, Model, World);
+        }
+
         /// <summary>
         /// 
         /// </summary>

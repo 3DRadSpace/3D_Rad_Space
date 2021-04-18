@@ -88,8 +88,31 @@ namespace _3DRadSpace
 				}
 				case 2:
 				{
+					SkinmeshWnd wnd = new SkinmeshWnd();
+					if(wnd.ShowDialog() == DialogResult.OK)
+                    {
+						DialogResult = DialogResult.OK;
+						Result = wnd.Result;
+                    }
+					wnd.Dispose();
+					Close();
 					break;
 				}
+				case 3:
+                {
+					//sprite
+					break;
+                }
+				case 4:
+                {
+					//textprint
+					break;
+                }
+				case 5:
+                {
+					//skybox
+					break;
+                }
 				case 14:
                 {
 					FirstPersonCameraWnd wnd = new FirstPersonCameraWnd();

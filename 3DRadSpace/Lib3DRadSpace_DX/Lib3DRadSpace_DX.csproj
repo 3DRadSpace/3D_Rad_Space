@@ -64,6 +64,12 @@
     <Reference Include="BEPUutilities, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BEPUutilities.1.5.1\lib\netstandard2.0\BEPUutilities.dll</HintPath>
     </Reference>
+    <Reference Include="Cyotek.Drawing.BitmapFont, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cyotek.Drawing.BitmapFont.2.0.1\lib\net48\Cyotek.Drawing.BitmapFont.dll</HintPath>
+    </Reference>
+    <Reference Include="FontStashSharp.MonoGame, Version=0.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontStashSharp.MonoGame.0.9.2\lib\net45\FontStashSharp.MonoGame.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\lib\net452\MonoGame.Framework.dll</HintPath>
@@ -95,6 +101,12 @@
     <Reference Include="SharpDX.XInput, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.XInput.4.0.1\lib\net45\SharpDX.XInput.dll</HintPath>
     </Reference>
+    <Reference Include="StbImageSharp, Version=2.22.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StbImageSharp.2.22.4\lib\net45\StbImageSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StbTrueTypeSharp, Version=1.24.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StbTrueTypeSharp.1.24.7\lib\net45\StbTrueTypeSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -113,11 +125,15 @@
     <Compile Include="IGameObject.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="Maths.cs" />
+    <Compile Include="MollerTrumboreImplementation.cs" />
     <Compile Include="PhongShader.cs" />
     <Compile Include="PhysicsHelper.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="Skinmesh.cs" />
+    <Compile Include="SkyboxShader.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="TextPrint.cs" />
     <Compile Include="VertexColorShader.cs" />
   </ItemGroup>
   <ItemGroup>

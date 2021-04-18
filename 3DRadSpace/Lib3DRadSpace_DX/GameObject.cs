@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BEPUphysics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Lib3DRadSpace_DX
@@ -172,7 +173,7 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="ray"></param>
         /// <returns></returns>
-        public virtual float? RayIntersection(Ray ray)
+        public virtual Vector3? RayIntersection(Ray ray)
         {
             return null;
         }
@@ -182,6 +183,16 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="space"></param>
         public virtual void PhysicsInitialize(Space space)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="batch"></param>
+        public virtual void Draw2D(GameTime time, SpriteBatch batch)
         {
 
         }

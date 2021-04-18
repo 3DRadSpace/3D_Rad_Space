@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
+
 namespace _3DRadSpace
 {
     public static class Program
@@ -32,3 +33,21 @@ namespace _3DRadSpace
         }
     }
 }
+
+
+/*
+namespace _3DRadSpace
+{
+    public static class Program
+    {
+        public static string Version;
+        [STAThread]
+        public static void Main()
+        {
+            using(SkinmeshPreviewer skm = new SkinmeshPreviewer("Editor\\Models\\Camera\\Camera", "EngineData"))
+            {
+                skm.Run();
+            }
+        }
+    }
+}*/

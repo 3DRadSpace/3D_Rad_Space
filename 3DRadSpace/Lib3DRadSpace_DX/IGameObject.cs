@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Lib3DRadSpace_DX
 {
@@ -38,10 +39,17 @@ namespace Lib3DRadSpace_DX
         /// Draws the game to the ID3D11DeviceContext
         /// </summary>
         /// <param name="time">dt. delta-time</param>
-        /// <param name="frustrum">Bounding frustrum for 3D models for GPU optimisation.</param>
+        /// <param name="frustrum">Bounding frustrum for 3D models for a culling optimisation.</param>
         /// <param name="view">View Matrix</param>
         /// <param name="projection">Projection Matrix.</param>
         void Draw(GameTime time,BoundingFrustum frustrum, ref Matrix view, ref Matrix projection);
+
+        /// <summary>
+        /// Draws 2D elements into the sprite batch.
+        /// </summary>
+        /// <param name="time">dt</param>
+        /// <param name="batch">SpriteBatch</param>
+        void Draw2D(GameTime time, SpriteBatch batch);
 
         /// <summary>
         /// Debug draw. Specific to the game engine editor(s).
@@ -57,7 +65,7 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="ray"></param>
         /// <returns></returns>
-        float? RayIntersection(Ray ray);
+        Vector3? RayIntersection(Ray ray);
 
         /// <summary>
         /// Loads the game object from a file buffer.

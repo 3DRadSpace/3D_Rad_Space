@@ -71,6 +71,8 @@ namespace _3DRadSpace
         ButtonState _lrb = ButtonState.Released;
         bool _3dviewfocus = true;
 
+        bool _3DMode = true;
+
         protected override void Update(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -78,45 +80,72 @@ namespace _3DRadSpace
             MouseState mouse = Mouse.GetState();
             KeyboardState keyboard = Keyboard.GetState();
 
-            if (Form.ActiveForm == MainWindow && _3dviewfocus && mouse.X >= 150 && mouse.Y >= 50)
+            if(_3DMode)
             {
-                Zoom = (mouse.ScrollWheelValue*0.01f) + 5;
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if(Form.ActiveForm == MainWindow && _3dviewfocus && mouse.X >= 150 && mouse.Y >= 50)
                 {
-                    Mouse.SetPosition(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-                    float dx = mouse.X - (_graphics.PreferredBackBufferWidth/2);
-                    float dy = mouse.Y - (_graphics.PreferredBackBufferHeight/2);
+                    Zoom = (mouse.ScrollWheelValue * 0.01f) + 5;
+                    if(mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Mouse.SetPosition(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+                        float dx = mouse.X - (_graphics.PreferredBackBufferWidth / 2);
+                        float dy = mouse.Y - (_graphics.PreferredBackBufferHeight / 2);
 
-                    camera_rotation += new Vector2(dx * dt * dt, -dy * dt * dt);
+                        camera_rotation += new Vector2(dx * dt * dt, -dy * dt * dt);
 
-                    IsMouseVisible = false;
+                        IsMouseVisible = false;
+                    }
+                    else IsMouseVisible = true;
+
+                    if(mouse.RightButton == ButtonState.Pressed && _lrb != mouse.RightButton)
+                    {
+
+                    }
+                    _lrb = mouse.RightButton;
                 }
-                else IsMouseVisible = true;
+                Camera.Target = _cursor;
 
-                if(mouse.RightButton == ButtonState.Pressed && _lrb != mouse.RightButton)
-                {
-                    
-                }
-                _lrb = mouse.RightButton;
+                float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.0001f, MathHelper.PiOver2 - 0.0001f);
+                Camera.Position = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(camera_rotation.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, yangle, 0));
+
+                Camera.Position *= Zoom;
             }
-            Camera.Target = _cursor;
+            else
+            {
 
-            float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
-            Camera.Position = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(camera_rotation.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, yangle, 0));
-            
-            Camera.Position *= Zoom;
+            }
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
 
-            DrawAxis();
-            Camera.Draw(gameTime, null, ref MView, ref MProjection);
-
-            for (int i = 0; i < CurrentProject.GameObjects.Count; i++)
+            GraphicsDevice.BlendFactor = new Color(255, 255, 255, 255);
+            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            for(int i =0; i < 16;i++)
             {
-                CurrentProject.GameObjects[i].EditorDraw(gameTime, Camera.CameraFrustum, ref MView, ref MProjection);
+                GraphicsDevice.SamplerStates[i] = SamplerState.LinearWrap;
+            }
+            if(_3DMode)
+            {
+                DrawAxis();
+                Camera.Draw(gameTime, null, ref MView, ref MProjection);
+
+                int s = CurrentProject.GameObjects.Count;
+                for(int i = 0; i < s; i++)
+                {
+                    CurrentProject.GameObjects[i].EditorDraw(gameTime, Camera.CameraFrustum, ref MView, ref MProjection);
+                }
+            }
+            else
+            {
+                int l = CurrentProject.GameObjects.Count;
+                for(int i = 0; i < l; i++)
+                {
+                    CurrentProject.GameObjects[i].Draw2D(gameTime,_spritebatch);
+                }
             }
             base.Draw(gameTime);
         }

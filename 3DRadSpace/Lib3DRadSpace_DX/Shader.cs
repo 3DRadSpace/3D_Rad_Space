@@ -25,14 +25,13 @@ namespace Lib3DRadSpace_DX
             /// <summary>
             /// Draw a shaded mesh
             /// </summary>
-            /// <param name="effect">Effect parameters.</param>
             /// <param name="part">Mesh to be drawn</param>
             /// <param name="world">World matrix</param>
             /// <param name="view">View matrix</param>
             /// <param name="projection">Projection matrix</param>
-            void DrawModelPart(Effect effect,ModelMeshPart part,Matrix world, Matrix view, Matrix projection);
+            void DrawModelPart(ModelMeshPart part,Matrix world, Matrix view, Matrix projection);
             /// <summary>
-            /// Shortcut to clone the shader.
+            /// Gets the shader.
             /// </summary>
             Effect ShaderEffect { get; }
         }

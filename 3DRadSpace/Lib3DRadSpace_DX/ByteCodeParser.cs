@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Lib3DRadSpace_DX
 {
-    static class ByteCodeParser
+    static internal class ByteCodeParser
     {
         //GETTERS
 
@@ -55,9 +55,14 @@ namespace Lib3DRadSpace_DX
             return (Keys)buff[pos - 1];
         }
 
+        public static Color GetColor(byte[] buff, ref int position)
+        {
+            position += sizeof(byte) * 4;
+            return new Color(buff[position - 4], buff[position - 3], buff[position - 2], buff[position - 1]);
+        }
 
         //SETTERS
-        
+
         public static void SetString(List<byte> buff,string str)
         {
             int l = str.Length;
@@ -95,6 +100,13 @@ namespace Lib3DRadSpace_DX
         public static void SetKey(List<byte> buff,Keys k)
         {
             buff.Add((byte)k);
+        }
+        public static void SetColor(List<byte> buff,Color colour)
+        {
+            buff.Add(colour.R);
+            buff.Add(colour.G);
+            buff.Add(colour.B);
+            buff.Add(colour.A);
         }
     }
 }

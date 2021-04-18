@@ -9,36 +9,28 @@ using System.Threading.Tasks;
 
 namespace Lib3DRadSpace_DX.Shaders
 {
-    class VertexColorShader : IShader
+    class SkyboxShader : IShader
     {
-        public Color VertexColor
-        {
-            get
-            {
-                return new Color(vColorParam.X * 255, vColorParam.Y * 255, vColorParam.Z * 255, vColorParam.W * 255);
-            }
-            set
-            {
-                vColorParam = value.ToVector4();
-            }
-        }
-        Vector4 vColorParam;
-
-        public static Effect _shader;
-
-        GraphicsDevice _gdev;
+        Effect _shader;
 
         public Effect ShaderEffect
         {
-            get { return _shader; }
+            get
+            {
+                return _shader;
+            }
         }
+
+        public Texture2D SkyboxTexure;
+
+        GraphicsDevice _gdev;
 
         public void DrawModelPart(ModelMeshPart part, Matrix world, Matrix view, Matrix projection)
         {
-            _shader.Parameters["VertexColor"].SetValue(vColorParam);
             _shader.Parameters["World"].SetValue(world);
             _shader.Parameters["View"].SetValue(view);
             _shader.Parameters["Projection"].SetValue(projection);
+            _shader.Parameters["SkyboxTexture"].SetValue(SkyboxTexure);
             _gdev.SetVertexBuffer(part.VertexBuffer);
             _gdev.Indices = part.IndexBuffer;
             foreach(EffectPass pass in _shader.CurrentTechnique.Passes)
@@ -50,7 +42,7 @@ namespace Lib3DRadSpace_DX.Shaders
 
         public void LoadShader(ContentManager content, GraphicsDevice dev)
         {
-            _shader = content.Load<Effect>("Shaders//VertexColor");
+            _shader = content.Load<Effect>("Shaders//Skybox");
             _gdev = dev;
         }
     }

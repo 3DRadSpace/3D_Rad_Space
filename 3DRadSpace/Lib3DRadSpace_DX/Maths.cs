@@ -6,7 +6,7 @@ namespace Lib3DRadSpace_DX
     /// <summary>
     /// 
     /// </summary>
-    public static class Maths
+    internal static class Maths
     {
         /// <summary>
         /// Scales the first vector with the second vector.
@@ -14,7 +14,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="a">First vector</param>
         /// <param name="b">Second vector</param>
         /// <returns></returns>
-        public static Vector3 MultiplyScale(Vector3 a,Vector3 b)
+        internal static Vector3 MultiplyScale(Vector3 a,Vector3 b)
         {
             return new Vector3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
         }
@@ -24,7 +24,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="a">Magnitude number</param>
         /// <param name="b">Sign number</param>
         /// <returns></returns>
-        public static double CopySign(double a, double b)
+        internal static double CopySign(double a, double b)
         {
             if(b < 0) return Math.Abs(a);
             else return -Math.Abs(a);
@@ -35,7 +35,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="a">Magnitude number</param>
         /// <param name="b">Sign number</param>
         /// <returns></returns>
-        public static float CopySign(float a, float b)
+        internal static float CopySign(float a, float b)
         {
             if(b < 0) return Math.Abs(a);
             else return -Math.Abs(a);
@@ -45,7 +45,7 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public static int Sgn(float x)
+        internal static int Sgn(float x)
         {
             if(x > 0) return 1;
             if(x < 0) return -1;
@@ -56,7 +56,7 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         /// <param name="q"></param>
         /// <returns></returns>
-        public static Vector3 QuaternionToVector3(Quaternion q)
+        internal static Vector3 QuaternionToVector3(Quaternion q)
         {
             Vector3 angles;
             // roll (x-axis rotation)
@@ -67,7 +67,7 @@ namespace Lib3DRadSpace_DX
             // pitch (y-axis rotation)
             double sinp = 2 * (q.W * q.Y - q.Z * q.X);
             if(Math.Abs(sinp) >= 1)
-                angles.Y = (float)Maths.CopySign(MathHelper.Pi / 2, sinp); // use 90 degrees if out of range
+                angles.Y = (float)CopySign(MathHelper.Pi / 2, sinp); // use 90 degrees if out of range
             else
                 angles.Y = (float)Math.Asin(sinp);
 

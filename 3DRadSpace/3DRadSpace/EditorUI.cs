@@ -171,6 +171,8 @@ namespace _3DRadSpace
             VisualObjectsList.Location = new Point(0, 48);
             VisualObjectsList.Size = new Size(150, 600);
             VisualObjectsList.CheckBoxes = true;
+            VisualObjectsList.MultiSelect = false;
+            VisualObjectsList.View = View.List;
             MainWindow.Controls.Add(VisualObjectsList);
 
             //toolstrip
@@ -203,11 +205,12 @@ namespace _3DRadSpace
             ts_compile.Text = "Compile";
             ts_compile.Click += F_compile_Click;
 
-            ToolStripMenuItem ts_sw2d3d = new ToolStripMenuItem();
+            ToolStripButton ts_sw2d3d = new ToolStripButton();
             ts_sw2d3d.Image = Image.FromFile("EngineData\\IconSwitch2D3D.ico");
             ts_sw2d3d.Text = "Switch 2D/3D";
-            ts_sw2d3d.Checked = true;
             ts_sw2d3d.CheckOnClick = true;
+            ts_sw2d3d.Checked = true;
+            ts_sw2d3d.CheckState = CheckState.Checked;
             ts_sw2d3d.CheckedChanged += Ts_sw2d3d_CheckedChanged;
 
             toolStrip.Items.AddRange(new ToolStripItem[] {ts_new,ts_open,ts_save,ts_debug,ts_compile,ts_sw2d3d });

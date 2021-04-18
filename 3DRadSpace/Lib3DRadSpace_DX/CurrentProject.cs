@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Lib3DRadSpace_DX
 {
@@ -69,5 +70,10 @@ namespace Lib3DRadSpace_DX
         /// 
         /// </summary>
         public static Vector2 Resolution;
+
+        /// <summary>
+        /// Contains a reference to the current ID3D11GraphicsDevice + ID3D11DeviceContext.
+        /// </summary>
+        public static GraphicsDevice GraphicsDevice;
     }
 }
