@@ -20,7 +20,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="pos"></param>
         /// <param name="rot"></param>
         /// <param name="s"></param>
-        public EmptyGameObject(string name, bool enabled, Vector3 pos, Vector3 rot, Vector3 s)
+        public EmptyGameObject(string name="Untitled", bool enabled=true, Vector3 pos=default, Vector3 rot=default, Vector3 s=default)
         {
             Name = name;
             Enabled = enabled;

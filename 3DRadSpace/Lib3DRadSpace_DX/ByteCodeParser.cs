@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lib3DRadSpace_DX.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -61,6 +62,12 @@ namespace Lib3DRadSpace_DX
             return new Color(buff[position - 4], buff[position - 3], buff[position - 2], buff[position - 1]);
         }
 
+        internal static byte GetByte(byte[] buff,ref int position)
+        {
+            position++;
+            return buff[position - 1];
+        }
+
         //SETTERS
 
         public static void SetString(List<byte> buff,string str)
@@ -107,6 +114,11 @@ namespace Lib3DRadSpace_DX
             buff.Add(colour.G);
             buff.Add(colour.B);
             buff.Add(colour.A);
+        }
+
+        public static void SetByte(List<byte> buff, byte b)
+        {
+            buff.Add(b);
         }
     }
 }

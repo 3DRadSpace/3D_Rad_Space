@@ -65,11 +65,11 @@ namespace Lib3DRadSpace_DX
         /// <param name="time"></param>
         public override void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time)
         {
-            for(int i=0;i< Behiavours.Count;i++)
+            for(int i = 0; i < Behiavours.Count; i++)
             {
                 CurrentProject.GameObjects[Behiavours[i].ObjectID].Position += _prev;
                 CurrentProject.GameObjects[Behiavours[i].ObjectID].RotationEuler += _prev_rot;
-                CurrentProject.GameObjects[Behiavours[i].ObjectID].Scale = Maths.MultiplyScale(_scales[i],Scale);
+                CurrentProject.GameObjects[Behiavours[i].ObjectID].Scale = Maths.MultiplyScale(_scales[i], Scale);
             }
             _prev = Position;
         }

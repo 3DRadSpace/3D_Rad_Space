@@ -99,13 +99,14 @@ namespace _3DRadSpace
 
                     if(mouse.RightButton == ButtonState.Pressed && _lrb != mouse.RightButton)
                     {
-
+                        
                     }
                     _lrb = mouse.RightButton;
                 }
                 Camera.Target = _cursor;
 
                 float yangle = MathHelper.Clamp(camera_rotation.Y, -MathHelper.PiOver2 + 0.0001f, MathHelper.PiOver2 - 0.0001f);
+
                 Camera.Position = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(camera_rotation.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, yangle, 0));
 
                 Camera.Position *= Zoom;

@@ -44,6 +44,12 @@
 /processorParam:TextureFormat=Color
 /build:Editor/Models/Camera/camera_eye.png
 
+#begin Shaders/BasicColor.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/BasicColor.fx
+
 #begin Shaders/Phong.fx
 /importer:EffectImporter
 /processor:EffectProcessor

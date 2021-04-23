@@ -84,9 +84,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="content"></param>
         public override void Load(ContentManager content)
         {
-            FileStream fstr = new FileStream(Asset, FileMode.Open);
-            Texture = Texture2D.FromStream(CurrentProject.GraphicsDevice, fstr);
-            fstr.Dispose();
+            Texture = ContentHelper.LoadTextureFromFile(CurrentProject.GraphicsDevice, Asset);
         }
 
         /// <summary>

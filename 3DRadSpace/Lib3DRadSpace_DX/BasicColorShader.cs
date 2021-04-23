@@ -45,7 +45,7 @@ namespace Lib3DRadSpace_DX
             {
                 if (part.PrimitiveCount > 0)
                 {
-                    _eff.Parameters["MColor"].SetValue(ModelColor.ToVector4());
+                    _eff.Parameters["PlainColor"].SetValue(ModelColor.ToVector4());
                     _eff.Parameters["World"].SetValue(world);
                     _eff.Parameters["View"].SetValue(view);
                     _eff.Parameters["Projection"].SetValue(projection);
@@ -67,7 +67,7 @@ namespace Lib3DRadSpace_DX
             public void LoadShader(ContentManager content, GraphicsDevice dev)
             {
                 _dev = dev;
-                _eff = content.Load<Effect>("Shaders\\BasicColorShader");
+                _eff = content.Load<Effect>("Shaders\\BasicColor");
             }
             GraphicsDevice _dev;
         }

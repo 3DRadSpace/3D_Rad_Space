@@ -26,24 +26,23 @@ namespace Lib3DRadSpace_DX
         public static void Open(string filename)
         {
             GameObjects.Clear();
-            byte[] filebuffer = File.ReadAllBytes(filename);
-            for(int i =0; i < filebuffer.Length;i++)
+            Add(filename);
+        }
+        static BaseGameObject ReadObject(byte[] buffer,ref int position)
+        {
+            IGameObject result = null;
+            byte id = buffer[position];
+            position++;
+            switch((GameObjectType)id)
             {
-                ReadObject(filebuffer, i);
-                i++;
-                switch(true)
+                case GameObjectType.Empty:
                 {
-                    default: break;
+                    EmptyGameObject e = new EmptyGameObject();
+                    e.LoadF(buffer, ref position, out result);
+                    break;
                 }
             }
-        }
-        static void ReadObject(byte[] buffer,int position)
-        {
-            //3DRadSpace would allow by this implementation a maximum of 255 objects XD
-            switch(buffer[position])
-            {
-                default: break;
-            }
+            return (BaseGameObject)result;
         }
         /// <summary>
         /// Opens a project, concatenating the current project with the opened project.
@@ -51,7 +50,12 @@ namespace Lib3DRadSpace_DX
         /// <param name="filename"></param>
         public static void Add(string filename)
         {
-            
+            byte[] filebuffer = File.ReadAllBytes(filename);
+            for(int i = 0; i < filebuffer.Length; i++)
+            {
+                BaseGameObject obj = ReadObject(filebuffer, ref i);
+                GameObjects.Add(obj);
+            }
         }
         /// <summary>
         /// Saves the current project into a file.
@@ -75,5 +79,9 @@ namespace Lib3DRadSpace_DX
         /// Contains a reference to the current ID3D11GraphicsDevice + ID3D11DeviceContext.
         /// </summary>
         public static GraphicsDevice GraphicsDevice;
+
+        internal static Shaders.SkyboxShader SkyboxShader;
+
+        internal static Shaders.BasicColorShader BasicColorShader;
     }
 }

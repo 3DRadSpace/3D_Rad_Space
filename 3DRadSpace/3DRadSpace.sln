@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DRadSpace", "3DRadSpace\3DRadSpace.csproj", "{D25AE6C9-DB24-494F-95C9-DB0E5274A4C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib3DRadSpace_DX", "Lib3DRadSpace_DX\Lib3DRadSpace_DX.csproj", "{0BB96CAD-360C-4880-AAAA-2E87F2DF1FE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib3DRadSpace", "Lib3DRadSpace_DX\Lib3DRadSpace.csproj", "{0BB96CAD-360C-4880-AAAA-2E87F2DF1FE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DRadSpace_Player_DX", "3DRadSpace_Player_DX\3DRadSpace_Player_DX.csproj", "{9AD62670-C1DF-42BA-9556-5EE0EB0EFD0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3DRadSpace_Player_DX", "3DRadSpace_Player_DX\3DRadSpace_Player_DX.csproj", "{9AD62670-C1DF-42BA-9556-5EE0EB0EFD0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

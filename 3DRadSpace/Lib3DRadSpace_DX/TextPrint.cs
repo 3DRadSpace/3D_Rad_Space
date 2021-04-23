@@ -71,6 +71,9 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         public string Text;
 
+        /// <summary>
+        /// Represents the text color.
+        /// </summary>
         public Color Colour;
 
         /// <summary>
