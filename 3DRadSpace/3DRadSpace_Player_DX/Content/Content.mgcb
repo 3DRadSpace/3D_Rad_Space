@@ -62,9 +62,54 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Skybox.fx
 
+#begin Shaders/TexturedMesh.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/TexturedMesh.fx
+
 #begin Shaders/VertexColor.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/VertexColor.fx
+
+#begin Skybox/NegativeX.xnb
+/copy:Skybox/NegativeX.xnb
+
+#begin Skybox/NegativeX_0.xnb
+/copy:Skybox/NegativeX_0.xnb
+
+#begin Skybox/NegativeY.xnb
+/copy:Skybox/NegativeY.xnb
+
+#begin Skybox/NegativeY_0.xnb
+/copy:Skybox/NegativeY_0.xnb
+
+#begin Skybox/NegativeZ.xnb
+/copy:Skybox/NegativeZ.xnb
+
+#begin Skybox/NegativeZ_0.xnb
+/copy:Skybox/NegativeZ_0.xnb
+
+#begin Skybox/PositiveX.xnb
+/copy:Skybox/PositiveX.xnb
+
+#begin Skybox/PositiveX_0.xnb
+/copy:Skybox/PositiveX_0.xnb
+
+#begin Skybox/PositiveY.xnb
+/copy:Skybox/PositiveY.xnb
+
+#begin Skybox/PositiveY_0.xnb
+/copy:Skybox/PositiveY_0.xnb
+
+#begin Skybox/PositiveZ.xnb
+/copy:Skybox/PositiveZ.xnb
+
+#begin Skybox/PositiveZ_0.xnb
+/copy:Skybox/PositiveZ_0.xnb
+
+#begin Skybox/Skybox.xnb
+/copy:Skybox/Skybox.xnb
 

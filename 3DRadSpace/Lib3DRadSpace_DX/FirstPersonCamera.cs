@@ -51,7 +51,6 @@ namespace Lib3DRadSpace_DX
         {
             Name = name;
             Enabled = enabled;
-            Position = pos;
             LookDir = look;
             Normal = norm;
             _npd = npd;
@@ -60,7 +59,13 @@ namespace Lib3DRadSpace_DX
             SprintSpeed = runningspeed;
             FOV = fov;
             _controller = new CharacterController(BEPU2XNA.CvVec(pos), height,crouchingHeight,proneHeight,0.6f,0.1f,mass,0.8f,1.3f,speed,crouchingspeed,pronespeed,jumpSpeed:jumpingheight);
-            _controller.ViewDirection = BEPU2XNA.CvVec(new Vector3(look.X,0,look.Y));
+            Vector3 lookdir = new Vector3(look.X, 0, look.Y);
+            _controller.ViewDirection = BEPU2XNA.CvVec(lookdir);
+            if(lookdir.Length() != 0)
+            {
+                throw new ArgumentException("ViewDirection must be a normalized vector");
+            }
+            //_controller.Body.Gravity = new BEPUutilities.Vector3(0, 9f, 0);
             Key_Forward = forward;
             Key_Backwards = backward;
             Key_Left = left;

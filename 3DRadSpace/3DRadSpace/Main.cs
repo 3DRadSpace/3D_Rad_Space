@@ -47,7 +47,6 @@ namespace _3DRadSpace
             IsMouseVisible = true;
             Window.Title = "3DRadSpace v0.1.0 alpha";
             Window.AllowUserResizing = true;
-            CurrentProject.GameObjects = new List<BaseGameObject>(300);
 
             MainWindow = Control.FromHandle(Window.Handle) as Form;
             InitializeComponents();

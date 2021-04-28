@@ -42,7 +42,7 @@ namespace Lib3DRadSpace_DX
             {
                 switch(primitives[i].Type)
                 {
-                    case Physics.PhysicsPrimitiveType.Box:
+                    case PhysicsPrimitiveType.Box:
                     {
                         //Entities.Add(new Entity(new BEPUphysics.CollisionShapes.ConvexShapes.BoxShape()))
                         break;

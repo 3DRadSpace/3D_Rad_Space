@@ -136,6 +136,9 @@
     <Compile Include="PhysicsHelper.cs" />
     <Compile Include="PhysicsPrimitive.cs" />
     <Compile Include="PhysicsPrimitiveType.cs" />
+    <Compile Include="SBOpcodeInterpreter.cs" />
+    <Compile Include="SBOpcodes.cs" />
+    <Compile Include="ScriptingFunctionsOldStyle.cs" />
     <Compile Include="StaticRigidBody.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Shader.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="SkyboxShader.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="TextPrint.cs" />
+    <Compile Include="TexturedMeshShader.cs" />
     <Compile Include="VertexColorShader.cs" />
   </ItemGroup>
   <ItemGroup>

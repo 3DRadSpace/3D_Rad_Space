@@ -17,7 +17,7 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// A list containing the game objects.
         /// </summary>
-        public static List<BaseGameObject> GameObjects;
+        public static List<BaseGameObject> GameObjects = new List<BaseGameObject>(300);
 
         /// <summary>
         /// Opens a project, resetting the gameobject's content.
@@ -28,7 +28,7 @@ namespace Lib3DRadSpace_DX
             GameObjects.Clear();
             Add(filename);
         }
-        static BaseGameObject ReadObject(byte[] buffer,ref int position)
+        static BaseGameObject ReadObject(byte[] buffer, ref int position)
         {
             IGameObject result = null;
             byte id = buffer[position];
@@ -63,8 +63,8 @@ namespace Lib3DRadSpace_DX
         /// <param name="filename"></param>
         public static void Save(string filename)
         {
-            List<byte> buffer = new List<byte>(1024*10); //allocate 10 KBs xd
-            for(int i =0; i< GameObjects.Count;i++)
+            List<byte> buffer = new List<byte>(1024 * 10); //allocate 10 KBs xd
+            for(int i = 0; i < GameObjects.Count; i++)
             {
                 GameObjects[i].SaveF(buffer);
             }
@@ -80,8 +80,19 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         public static GraphicsDevice GraphicsDevice;
 
-        internal static Shaders.SkyboxShader SkyboxShader;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Shaders.SkyboxShader SkyboxShader { get; } = new Shaders.SkyboxShader();
 
-        internal static Shaders.BasicColorShader BasicColorShader;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Shaders.BasicColorShader BasicColorShader { get; } = new Shaders.BasicColorShader();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Shaders.TexturedMeshShader TexturedMeshShader { get; } =  new Shaders.TexturedMeshShader();
     }
 }

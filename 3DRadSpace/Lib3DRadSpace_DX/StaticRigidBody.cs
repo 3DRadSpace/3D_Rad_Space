@@ -32,7 +32,7 @@ namespace Lib3DRadSpace_DX
         public StaticRigidBody(string name,bool enabled,bool visible, XNAVector3 translation, XNAVector3 rotation_euler, XNAVector3 initial_scale,string modelasset)
         {
             Name = name;
-            Enabled = enabled;
+            _enabled = enabled;
             Visible = visible;
             _pos = translation;
             Asset = modelasset;

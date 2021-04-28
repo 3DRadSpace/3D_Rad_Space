@@ -44,6 +44,14 @@ namespace Lib3DRadSpace_DX
 			}
 		}
 		/// <summary>
+		/// Links a camera to the skybox object.
+		/// </summary>
+		/// <param name="cam"></param>
+		public void LinkCamera(IRenderer cam)
+        {
+			_linkedcamera = cam;
+        }
+		/// <summary>
 		/// Loads the skybox textures/
 		/// </summary>
 		/// <param name="content"></param>
@@ -52,13 +60,14 @@ namespace Lib3DRadSpace_DX
 			FindLinkedCamera();
 			GraphicsDevice gd = CurrentProject.GraphicsDevice;
 			Textures = new Texture2D[6];
-			string[] skyb = File.ReadAllLines(Asset);
+			string[] skyb = File.ReadAllLines(content.RootDirectory+"\\"+Asset);
 
+			string folder = Path.GetDirectoryName(content.RootDirectory + "\\"+Asset);
 			for(int i = 0; i < 6; i++)
-				Textures[i] = ContentHelper.LoadTextureFromFile(gd, skyb[i]);
+				Textures[i] = ContentHelper.LoadTextureFromFile(gd, folder + "\\"+ skyb[i]);
 
 			if(_cube == null)
-				_cube = content.Load<Model>("Skybox\\Cube");
+				_cube = content.Load<Model>("Skybox\\Skybox");
 		}
 		static Model _cube;
 
@@ -69,9 +78,20 @@ namespace Lib3DRadSpace_DX
 		{
 			get
 			{
-				return Matrix.CreateScale(_linkedcamera.FarPlaneDistance - 1) * Matrix.CreateTranslation(_linkedcamera.Position);
+				return Matrix.CreateScale(_linkedcamera.FarPlaneDistance - 20) * Matrix.CreateTranslation(_linkedcamera.Position);
 			}
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public Texture3D TextureBox
+        {
+			get
+            {
+				Texture3D t = new Texture3D(CurrentProject.GraphicsDevice, 1024, 1024, 1024, false, SurfaceFormat.Color);
+				return t;
+            }
+        }
 		/// <summary>
 		/// Draws the skybox.
 		/// </summary>
@@ -81,7 +101,7 @@ namespace Lib3DRadSpace_DX
 		/// <param name="projection">Projection matrix</param>
 		public override void Draw(GameTime time, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
 		{
-			drawCube(view, projection);
+			if(Visible) drawCube(view, projection);
 		}
 		/// <summary>
 		/// Draws the skybox in the editor.
@@ -96,10 +116,20 @@ namespace Lib3DRadSpace_DX
         }
         void drawCube(Matrix view,Matrix proj)
 		{
+			/*
+			 *  THE PAIN WRITING THIS FUNCTION
+			 *  THE CODE I USED FROM 0.0.6A WORKED FINE BEFORE, BUT NOT NOW WHEN USING A CUSTOM SKYBOX SHADER
+			 *  Hope it wont break in the future. If it does, I'll cry for real...
+			 */
 			Shaders.SkyboxShader skybsh = CurrentProject.SkyboxShader;
+			int[] table = {1,5,0,2,3,4 };
+			float[] flipoffsetx = { 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,0.0f };
+			float[] flipoffsety = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,0.0f };
 			for(int i =0; i < 6;i++)
             {
-				skybsh.SkyboxTexure = Textures[i];
+				skybsh.FlipOffsetX = flipoffsetx[i];
+				skybsh.FlipOffsetY = flipoffsety[i];
+				skybsh.SkyboxTexure = Textures[table[i]];
 				skybsh.DrawModelPart(_cube.Meshes[0].MeshParts[i], World, view, proj);
             }
 		}
