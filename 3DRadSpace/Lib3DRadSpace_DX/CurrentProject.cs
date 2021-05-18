@@ -94,5 +94,64 @@ namespace Lib3DRadSpace_DX
         /// 
         /// </summary>
         public static Shaders.TexturedMeshShader TexturedMeshShader { get; } =  new Shaders.TexturedMeshShader();
+        
+        /// <summary>
+        /// Returns the first object that matches the exact name specified.
+        /// Returns null if there isn't any object that has the exact Name as the specified parameter.
+        /// </summary>
+        /// <param name="filename">Specified name.</param>
+        public static BaseGameObject FindObjectByName(string name)
+        {
+            for(int i =0 ; i < GameObjects.Count; i++)
+            {
+                if(GameObjects[i].Name == name) return GameObjects[i];
+            }
+            return null;
+        }
+        /// <summary>
+        /// Returns a collection of objects that share the the specified name.
+        /// Notice: Use the FindObjectsByName(string name,int capacity) for a more GC-friendly approach.
+        /// </summary>
+        /// <param name="filename">Specified name.</param>
+        public static BaseGameObject[] FindObjectsByName(string name)
+        {
+            List<BaseGameObject> _r = new List<BaseGameObject>(20);
+            for(int i =0 ; i < GameObjects.Count; i++)
+            {
+                if(GameObjects[i].Name == name) _r.Add(GameObjects[i]);
+            }
+            return _r.ToArray();
+        }
+        /// <summary>
+        /// Returns a collection of objects that share the the specified name.
+        /// Notice: Use the FindObjectsByName(string name,int capacity) for a more GC-friendly approach.
+        /// </summary>
+        /// <param name="filename">Specified name.</param>
+        /// <param name="capacity">Number of objects that are going potentially going to be returned.</param>
+        public static BaseGameObject[] FindObjectsByName(string name,int capacity)
+        {
+            BaseGameObject[] r = new BaseGameObject[capacity];
+            int j =0;
+            for(int i =0 ; i < GameObjects.Count;i++)
+            {
+                if(GameObjects[i].Name == name)
+                {
+                    r[j] = GameObjects[i];
+                    j++;
+                }
+                if(j == capacity-1) break;
+            }
+            return r;
+        }
+        /// <summary>
+        /// Returns the object with the specified ID.
+        /// This is a shorter way of writing CurrentProject.GameObjects[id];
+        /// Notice: This doesn't check the bounds of the object list.
+        /// </summary>
+        /// <param name="filename">Specified identifier.</param>
+        public static BaseGameObject FindObjectByID(int id)
+        {
+            return GameObjects[id];
+        }
     }
 }
