@@ -58,7 +58,11 @@ namespace _3DRadSpace
 				DialogResult r = MessageBox.Show("Cannot load file " + Model + ". Exception details: \r\n" + e.Message, "Loading error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error); ;
 				if(r == DialogResult.Retry)
 					LoadContent();
-				else Exit();
+				else
+				{
+					Exit();
+					return;
+				}
 			}
 			float mxdst = 0;
 			for(int i =0; i < LoadedModel.Meshes.Count;i++)

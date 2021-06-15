@@ -119,12 +119,15 @@
     <Compile Include="CurrentProject.cs" />
     <Compile Include="DynamicRigidBody.cs" />
     <Compile Include="EmptyGameObject.cs" />
+    <Compile Include="EventOnLocation.cs" />
+    <Compile Include="IEventObject.cs" />
     <Compile Include="FirstPersonCamera.cs" />
     <Compile Include="Fog.cs" />
     <Compile Include="Force.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectType.cs" />
     <Compile Include="GForce.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="InputHelper.cs" />

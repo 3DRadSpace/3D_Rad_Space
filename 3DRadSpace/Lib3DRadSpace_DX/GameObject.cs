@@ -114,7 +114,10 @@ namespace Lib3DRadSpace_DX
         /// <param name="input">Mouse input. Passed by reference, for the sake of optimisation.</param>
         /// <param name="keyboard">Keyboard input. Passed by reference, for the sake of speed. Microptimisation :TM:</param>
         /// <param name="time">dt. delta-time</param>
-        public virtual void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time) { }
+        public virtual void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time)
+        {
+            if(RunOnce) RunOnce = false;
+        }
         /// <summary>
         /// Draws the "game-object" to the ID3D11DeviceContext
         /// </summary>
@@ -196,5 +199,9 @@ namespace Lib3DRadSpace_DX
         {
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RunOnce = true;
     }
 }

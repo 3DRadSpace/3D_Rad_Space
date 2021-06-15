@@ -34,6 +34,24 @@ namespace Lib3DRadSpace_DX
             /// Gets the shader.
             /// </summary>
             Effect ShaderEffect { get; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="vbuff"></param>
+            /// <param name="indb"></param>
+            /// <param name="world"></param>
+            /// <param name="view"></param>
+            /// <param name="projection"></param>
+            //void DrawVertexIndexBuffers(VertexBuffer vbuff, IndexBuffer indb, Matrix world, Matrix view, Matrix projection);
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="vbuff"></param>
+            /// <param name="world"></param>
+            /// <param name="view"></param>
+            /// <param name="projection"></param>
+            //void DrawVertexBuffer(VertexBuffer vbuff, Matrix world, Matrix view, Matrix projection);
         }
     }
 }

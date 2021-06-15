@@ -29,7 +29,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="npd">Minimum render frustrum distance.</param>
         /// <param name="fpd">Maximum render frustrum distance.</param>
         /// <param name="speed">Base movment speed</param>
-        /// <param name="sensibility">Mouse sensibility</param>
+        /// <param name="sensitivity">Mouse sensitivity</param>
         /// <param name="height">Defines the character's height</param>
         /// <param name="crouchingHeight">Defines the camera height at the crouching stance</param>
         /// <param name="proneHeight">Defines the camera height at the prone stance</param>
@@ -47,7 +47,7 @@ namespace Lib3DRadSpace_DX
         /// <param name="fov">Field of view in radians. Default value is ~65 degrees.</param>
         /// <param name="jmp">Jumping key</param>
         /// <param name="jumpingheight">Jumping height</param>
-        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F,float jumpingheight = 10f, float sensibility = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
+        public FirstPersonCamera(string name = "Name",bool enabled = true,Vector3 pos=default,Vector3 look=default,Vector3 norm=default,float npd = 0.01f,float fpd = 500.0f,float fov= 1.1344641f, float mass = 10,float speed = 8f,float runningspeed=12f,float crouchingspeed=3,float pronespeed=1.5f,float height = 1.7f,float crouchingHeight=1.19f,float proneHeight= 0.51000005F,float jumpingheight = 10f, float sensitivity = 1f, Keys forward = Keys.Up,Keys backward = Keys.Down, Keys right = Keys.Right,Keys left = Keys.Left,Keys crouch = Keys.C,Keys prone = Keys.Z,Keys sprint = Keys.LeftShift,Keys jmp = Keys.Space )
         {
             Name = name;
             Enabled = enabled;
@@ -55,17 +55,13 @@ namespace Lib3DRadSpace_DX
             Normal = norm;
             _npd = npd;
             _fpd = fpd;
-            Sensibility = sensibility;
+            Sensitivity = sensitivity;
             SprintSpeed = runningspeed;
             FOV = fov;
             _controller = new CharacterController(BEPU2XNA.CvVec(pos), height,crouchingHeight,proneHeight,0.6f,0.1f,mass,0.8f,1.3f,speed,crouchingspeed,pronespeed,jumpSpeed:jumpingheight);
             Vector3 lookdir = new Vector3(look.X, 0, look.Y);
             _controller.ViewDirection = BEPU2XNA.CvVec(lookdir);
-            if(lookdir.Length() != 0)
-            {
-                throw new ArgumentException("ViewDirection must be a normalized vector");
-            }
-            //_controller.Body.Gravity = new BEPUutilities.Vector3(0, 9f, 0);
+            if(lookdir.Length() != 0) throw new ArgumentException("ViewDirection must be a normalized vector");
             Key_Forward = forward;
             Key_Backwards = backward;
             Key_Left = left;
@@ -187,7 +183,7 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// Represents mouse->character rotation movment speed.
         /// </summary>
-        public float Sensibility;
+        public float Sensitivity;
 
 
         /// <summary>
@@ -330,7 +326,7 @@ namespace Lib3DRadSpace_DX
         {
             get
             {
-                return Matrix.CreateLookAt(Position, Position + LookDir, Normal); ;
+                return Matrix.CreateLookAt(Position, Position + LookDir, Normal);
             }
         }
         /// <summary>
@@ -362,6 +358,8 @@ namespace Lib3DRadSpace_DX
             space.Add(_controller);
         }
 
+        
+
         /// <summary>
         /// Updates the matrices used when drawing 3D elements.
         /// </summary>
@@ -390,7 +388,7 @@ namespace Lib3DRadSpace_DX
             float dx = mx - input.X;
             float dy = my - input.Y;
 
-            Look_At += (new Vector2(dx * dt2, -dy * dt2)) * Sensibility;
+            Look_At += (new Vector2(dx * dt2, -dy * dt2)) * Sensitivity;
 
             LookDir = Vector3.Transform(Vector3.UnitZ, Quaternion.CreateFromYawPitchRoll(Look_At.X, 0, 0) * Quaternion.CreateFromYawPitchRoll(0, Look_At.Y, 0));
             _controller.ViewDirection = BEPU2XNA.CvVec(LookDir);
@@ -466,7 +464,7 @@ namespace Lib3DRadSpace_DX
             ByteCodeParser.SetVector3(buff, new Vector3(_npd,_fpd,FOV));
             ByteCodeParser.SetVector3(buff, new Vector3(Mass,MovmentSpeed,SprintSpeed));
             ByteCodeParser.SetVector3(buff, new Vector3(CrouchingSpeed,ProneSpeed,Height));
-            ByteCodeParser.SetVector3(buff, new Vector3(CrouchingHeight,ProneHeight,Sensibility));
+            ByteCodeParser.SetVector3(buff, new Vector3(CrouchingHeight,ProneHeight, Sensitivity));
             ByteCodeParser.SetKey(buff, Key_Forward);
             ByteCodeParser.SetKey(buff, Key_Backwards);
             ByteCodeParser.SetKey(buff, Key_Right);
@@ -500,6 +498,32 @@ namespace Lib3DRadSpace_DX
                 }
                 default: return;
             }    
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ISpaceObject[] Entity
+        {
+            get
+            {
+                return new ISpaceObject[]{ _controller};
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetLinearVelocity()
+        {
+            return BEPU2XNA.XNAVector(_controller.Body.LinearVelocity);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetAngularVelocity()
+        {
+            return BEPU2XNA.XNAVector(_controller.Body.AngularVelocity);
         }
     }
 }

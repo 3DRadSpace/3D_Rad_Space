@@ -15,7 +15,7 @@ namespace Lib3DRadSpace_DX
         /// <summary>
         /// Defines an operation code, an identifier for operations and or functions in the ScriptBlocks language.
         /// </summary>
-        internal enum Opcode
+        public enum Opcode
         {
             /// <summary>
             /// No operation.
@@ -66,6 +66,14 @@ namespace Lib3DRadSpace_DX
             /// Increases the object's Euler rotation angles.
             /// </summary>
             AddRot,
+            /// <summary>
+            /// Sets the object's scale.
+            /// </summary>
+            SetScale,
+            /// <summary>
+            /// Increases the object's scale.
+            /// </summary>
+            AddScale,
         }
     }
 }

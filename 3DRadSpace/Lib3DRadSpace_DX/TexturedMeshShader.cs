@@ -42,7 +42,7 @@ namespace Lib3DRadSpace_DX.Shaders
             _effect.Parameters["World"].SetValue(world);
             _effect.Parameters["View"].SetValue(view);
             _effect.Parameters["Projection"].SetValue(projection);
-            _effect.Parameters["SkyboxTexture"].SetValue(Texture);
+            _effect.Parameters["ModelTexture"].SetValue(Texture);
             gd.SetVertexBuffer(part.VertexBuffer);
             gd.Indices = part.IndexBuffer;
             foreach(EffectPass pass in _effect.CurrentTechnique.Passes)

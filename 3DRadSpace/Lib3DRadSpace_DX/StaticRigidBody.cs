@@ -11,13 +11,14 @@ using Quaternion = BEPUutilities.Quaternion;
 using Matrix = Microsoft.Xna.Framework.Matrix;
 using ContainmentType = Microsoft.Xna.Framework.ContainmentType;
 using BEPUphysics.CollisionRuleManagement;
+using Lib3DRadSpace_DX.Physics;
 
 namespace Lib3DRadSpace_DX
 {
     /// <summary>
     /// Represents a static rigidbody generated from a mesh.
     /// </summary>
-    public class StaticRigidBody : BaseGameObject
+    public class StaticRigidBody : BaseGameObject, IPhysicsObject
     {
         /// <summary>
         /// Represents the Rigidbody constructor.
@@ -200,6 +201,38 @@ namespace Lib3DRadSpace_DX
                     break;
                 }
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ISpaceObject[] Entity
+        {
+            get
+            {
+                return collisionmap;
+            }
+        }
+        public XNAVector3 GetLinearVelocity()
+        {
+            return XNAVector3.Zero;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public XNAVector3 GetAngularVelocity()
+        {
+            return XNAVector3.Zero;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="force"></param>
+        /// <param name="t"></param>
+        /// <param name="i"></param>
+        public void ApplyForce(XNAVector3 force,ForceType t,float i)
+        {
+
         }
     }
 }

@@ -42,7 +42,7 @@ namespace _3DRadSpace
             tb_fpd.Text = cam.FarPlaneDistance + "";
 
             tb_mass.Text = cam.Mass + "";
-            tb_sensibility.Text = cam.Sensibility + "";
+            tb_sensibility.Text = cam.Sensitivity + "";
 
             tb_standingspeed.Text = cam.MovmentSpeed + "";
             tb_sprintspeed.Text = cam.SprintSpeed + "";

@@ -44,9 +44,24 @@ namespace Lib3DRadSpace_DX
                 {
                     case PhysicsPrimitiveType.Box:
                     {
-                        //Entities.Add(new Entity(new BEPUphysics.CollisionShapes.ConvexShapes.BoxShape()))
+                        BEPUphysics.CollisionShapes.ConvexShapes.BoxShape b = new BEPUphysics.CollisionShapes.ConvexShapes.BoxShape(primitives[i].Coordinates[3],primitives[i].Coordinates[4],primitives[i].Coordinates[5]);
+
+                        Entity e = new Entity(b);
+                        e.Position = new Vector3(primitives[i].Coordinates[0], primitives[i].Coordinates[1], primitives[i].Coordinates[2]);
+
+                        Entities.Add(e);
                         break;
                     }
+                    case PhysicsPrimitiveType.Sphere:
+                    {
+                        BEPUphysics.CollisionShapes.ConvexShapes.SphereShape sph = new BEPUphysics.CollisionShapes.ConvexShapes.SphereShape(primitives[i].Coordinates[3]);
+                        Entity e = new Entity(sph);
+                        e.Position = new Vector3(primitives[i].Coordinates[0], primitives[i].Coordinates[1], primitives[i].Coordinates[2]);
+
+                        Entities.Add(e);
+                        break;
+                    }
+                    default:break;
                 }
             }
         }
@@ -84,7 +99,7 @@ namespace Lib3DRadSpace_DX
         {
             for(int i = 0; i < Entities.Count; i++)
             {
-                Entities[i].CollisionInformation.CollisionRules.Personal = CollisionRule.Normal;
+                Entities[i].CollisionInformation.CollisionRules.Personal = CollisionRule.NoSolver;
             }
         }
         bool _enabled;
@@ -97,8 +112,8 @@ namespace Lib3DRadSpace_DX
         {
             for(int i = 0; i < Entities.Count; i++)
             {
-                Entities[i].Position = BEPU2XNA.BEPUVector(Position);
-                Entities[i].Orientation = BEPU2XNA.BEPUQuaternion(Quaternion.CreateFromYawPitchRoll(RotationEuler.Y, RotationEuler.X, RotationEuler.Z));
+                Entities[i].Position += BEPU2XNA.BEPUVector(Position);
+                Entities[i].Orientation *= BEPU2XNA.BEPUQuaternion(Quaternion.CreateFromYawPitchRoll(RotationEuler.Y, RotationEuler.X, RotationEuler.Z));
                 space.Add(Entities[i]);
             }
         }
@@ -142,6 +157,32 @@ namespace Lib3DRadSpace_DX
                     default: return;
                 }
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ISpaceObject[] Entity
+        {
+            get
+            {
+                return Entities.ToArray();
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public XNAVector3 GetLinearVelocity()
+        {
+            return XNAVector3.Zero;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public XNAVector3 GetAngularVelocity()
+        {
+            return XNAVector3.Zero;
         }
     }
 }

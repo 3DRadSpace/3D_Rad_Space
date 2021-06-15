@@ -148,7 +148,7 @@ namespace Lib3DRadSpace_DX
         /// This is a shorter way of writing CurrentProject.GameObjects[id];
         /// Notice: This doesn't check the bounds of the object list.
         /// </summary>
-        /// <param name="filename">Specified identifier.</param>
+        /// <param name="id">Specified identifier.</param>
         public static BaseGameObject FindObjectByID(int id)
         {
             return GameObjects[id];

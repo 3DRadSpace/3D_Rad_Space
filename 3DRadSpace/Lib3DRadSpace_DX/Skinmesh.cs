@@ -65,6 +65,15 @@ namespace Lib3DRadSpace_DX
             }
         }
         /// <summary>
+        /// Draws the model without taking in consideration the bouding frustrum.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public void Draw(ref Matrix view,ref Matrix projection)
+        {
+            Model.Draw(World, view, projection);
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="time"></param>
@@ -124,6 +133,94 @@ namespace Lib3DRadSpace_DX
             ByteCodeParser.SetVector3(buff, RotationEuler);
             ByteCodeParser.SetVector3(buff, RotationCenter);
             ByteCodeParser.SetVector3(buff, Scale);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="frustrum"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public void DrawMeshIndex(int i, BoundingFrustum frustrum, ref Matrix view, ref Matrix projection)
+        {
+            if(frustrum.Contains(Model.Meshes[i].BoundingSphere) == ContainmentType.Disjoint) return;
+            for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
+            {
+                BasicEffect eff = (BasicEffect)Model.Meshes[i].MeshParts[j].Effect;
+                eff.World = World;
+                eff.View = view;
+                eff.Projection = projection;
+            }
+            Model.Meshes[i].Draw();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public void DrawMeshPartIndex(int i ,int j,ref Matrix view,ref Matrix projection)
+        {
+            BasicEffect eff = (BasicEffect)Model.Meshes[i].MeshParts[j].Effect;
+            eff.World = World;
+            eff.View = view;
+            eff.Projection = projection;
+
+            ModelMeshPart part = Model.Meshes[i].MeshParts[j];
+            CurrentProject.GraphicsDevice.SetVertexBuffer(part.VertexBuffer);
+            CurrentProject.GraphicsDevice.Indices = part.IndexBuffer;
+
+            foreach(EffectPass pass in eff.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                CurrentProject.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.VertexOffset, part.StartIndex, part.PrimitiveCount);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <param name="frustum"></param>
+        /// <param name="view"></param>
+        /// <param name="projection"></param>
+        public void DrawMeshWithoutPart(int no_i, int no_j, BoundingFrustum frustrum, ref Matrix view,ref Matrix projection)
+        {
+            bool candraw = false;
+            for(int i = 0; i < Model.Meshes.Count; i++)
+            {
+                if(frustrum.Contains(Model.Meshes[i].BoundingSphere) != ContainmentType.Disjoint)
+                {
+                    candraw = true;
+                    break;
+                }
+            }
+            if(candraw)
+            {
+                for(int i =0; i < Model.Meshes.Count;i++)
+                {
+                    for(int j =0; j < Model.Meshes[i].MeshParts.Count;j++)
+                    {
+                        if(no_i == i && no_j == j) continue;
+
+                        BasicEffect eff = (BasicEffect)Model.Meshes[i].MeshParts[j].Effect;
+                        eff.World = World;
+                        eff.View = view;
+                        eff.Projection = projection;
+
+                        ModelMeshPart part = Model.Meshes[i].MeshParts[j];
+                        CurrentProject.GraphicsDevice.SetVertexBuffer(part.VertexBuffer);
+                        CurrentProject.GraphicsDevice.Indices = part.IndexBuffer;
+
+                        foreach(EffectPass pass in eff.CurrentTechnique.Passes)
+                        {
+                            pass.Apply();
+                            CurrentProject.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.VertexOffset, part.StartIndex, part.PrimitiveCount);
+                        }
+                    }
+                }
+            }
         }
     }
 }

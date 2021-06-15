@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Lib3DRadSpace_DX.Physics
 {
@@ -39,9 +40,9 @@ namespace Lib3DRadSpace_DX.Physics
             Coordinates[0] = box.Min.X;
             Coordinates[1] = box.Min.Y;
             Coordinates[2] = box.Min.Z;
-            Coordinates[3] = box.Max.X;
-            Coordinates[4] = box.Max.Y;
-            Coordinates[5] = box.Max.Z;
+            Coordinates[3] = box.Max.X - box.Min.X;
+            Coordinates[4] = box.Max.Y - box.Min.Y;
+            Coordinates[5] = box.Max.Z - box.Min.Z;
         }
     }
 }

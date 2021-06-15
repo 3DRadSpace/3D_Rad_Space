@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 
+#pragma warning disable IDE1006 // Naming Styles
 namespace Lib3DRadSpace_DX
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace Lib3DRadSpace_DX
         /// Starts or triggers the specified object.
         /// </summary>
         /// <param name="id"></param>
+
         public static void iObjectStart(int id)
         {
             CurrentProject.GameObjects[id].Trigger();
@@ -76,70 +78,143 @@ namespace Lib3DRadSpace_DX
             //How the heck are we even going to store the initial object values? Who wants an exta copy of an array?
             throw new NotImplementedException("iObjectReset is not implemented because there's a need for an extra array containinig the project data. ImPleMeNT iT yOUrSeLF");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="q"></param>
         public static void iObjectOrientation(int id, out Quaternion q)
         {
             q = CurrentProject.GameObjects[id].Rotation;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="q"></param>
         public static void iObjectOrientationSet(int id,Quaternion q)
         {
             CurrentProject.GameObjects[id].Rotation = q;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="q"></param>
         [ObsoleteAttribute("Resetting objects won't be implemented in 0.1.0a. This will only set the quaternion.")]
         public static void iObjectOrientationReset(int id,Quaternion q)
         {
             CurrentProject.GameObjects[id].Rotation = q;
         }
-        void iObjectLocation(int id, out Vector3 loc)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="loc"></param>
+        public static void iObjectLocation(int id, out Vector3 loc)
         {
             loc = CurrentProject.GameObjects[id].Position;
         }
-        void iObjectLocationSet(int id,Vector3 pos)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pos"></param>
+        public static void iObjectLocationSet(int id,Vector3 pos)
         {
             CurrentProject.GameObjects[id].Position = pos;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pos"></param>
         [ObsoleteAttribute("Resetting objects is not implemented. This will only set the object's position.")]
-        void iObjectLocationReset(int id, Vector3 pos)
+        public static void iObjectLocationReset(int id, Vector3 pos)
         {
             CurrentProject.GameObjects[id].Position = pos;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="q"></param>
+        /// <param name="pos"></param>
         [ObsoleteAttribute("Resetting objects is not implemented. This will only set the object's position plus rotation.")]
-        void iObjectPositionReset(int id,Quaternion q,Vector3 pos)
+        public static void iObjectPositionReset(int id,Quaternion q,Vector3 pos)
         {
             CurrentProject.GameObjects[id].Rotation = q;
             CurrentProject.GameObjects[id].Position = pos;
         }
-        void iObjectScaleSet(int id,int scale)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="scale"></param>
+        public static void iObjectScaleSet(int id,int scale)
         {
             CurrentProject.GameObjects[id].Scale = new Vector3(scale,scale,scale);
         }
-        int iObjectScaleSet(int id,Vector3 s)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="s"></param>
+        public static void iObjectScaleSet(int id,Vector3 s)
         {
             CurrentProject.GameObjects[id].Scale = s;
         }
-        void iObjectScale(int id, out Vector3 scale)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="scale"></param>
+        public static void iObjectScale(int id, out Vector3 scale)
         {
             scale = CurrentProject.GameObjects[id].Scale;
         }
-        float iObjectKmh(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static float iObjectKmh(int id)
         {
             //TODO: Determine speed for dynamic rigicbodies and FPVCameras. Do the physics interface check. Return 0 if not.
             return 0;
         }
-        void iObjectVelocity(int id,out Vector3 vel)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vel"></param>
+        public static void iObjectVelocity(int id,out Vector3 vel)
         {
             vel = Vector3.Zero;
         }
-        void iObjectVelocitySet(int id,Vector3 vel)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vel"></param>
+        public static void iObjectVelocitySet(int id,Vector3 vel)
         {
-            IPhysicsObject pobj = (IPhysicsObject)CurrentProject.GameObjects[i].ApplyForce(vel.Normalize(),Physics.ForceType.Acceleration,vel.Lenght); //check for comillation errors as this is written inside a browser lel       
+            ((IPhysicsObject)CurrentProject.GameObjects[id]).ApplyForce(Vector3.Normalize(vel),Physics.ForceType.Acceleration,vel.Length()); //check for comillation errors as this is written inside a browser lel       
         }
-        void iObjectSpin(int id,out Vector3 speen)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="speen"></param>
+        public static void iObjectSpin(int id,out Vector3 speen)
         {
+            
             speen = Vector3.Zero;
         }
-        void iObjectSpinSet(int id,Vector3 spin)
+        ///
+        public static void iObjectSpinSet(int id,Vector3 spin)
         { 
-            IPhysicsObject pobj = (IPhysicsObject)CurrentProject.GameObjects[i].ApplyForce(vel.Normalize(),Physics.Spin.Spin,vel.Lenght);
+            ((IPhysicsObject)CurrentProject.GameObjects[id]).ApplyForce(Vector3.Normalize(spin),Physics.ForceType.Spin,spin.Length());
         }
     }
 }
