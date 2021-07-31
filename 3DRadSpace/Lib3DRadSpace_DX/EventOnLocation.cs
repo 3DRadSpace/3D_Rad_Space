@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Lib3DRadSpace_DX
 {
@@ -20,9 +17,27 @@ namespace Lib3DRadSpace_DX
         /// </summary>
         public ScriptBlocks.Opcode[] EventsOpcodes { get; }
 
-        public EventOnLocation()
-        {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="e"></param>
+        /// <param name="p"></param>
+        /// <param name="s"></param>
+        /// <param name="objs"></param>
+        /// <param name="events"></param>
+        public EventOnLocation(string n,bool e,Vector3 p,Vector3 s,int[] objs,ScriptBlocks.Opcode[] events)
+        {
+            Name = n;
+            Enabled = e;
+            Position = p;
+            Scale = s;
+            EventsOpcodes = events;
+        }
+        public override void Update(ref MouseState input, ref KeyboardState keyboard, GameTime time)
+        {
+            
         }
     }
 }
