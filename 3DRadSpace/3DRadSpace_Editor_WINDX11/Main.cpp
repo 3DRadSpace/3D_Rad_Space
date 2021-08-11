@@ -69,6 +69,10 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 	MainWindow = CreateWindowExW(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
 	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 0, 800, 600, MainWindow, nullptr, hInstance, 0);
 
+	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
+	ShowWindow(RenderWindow, SW_NORMAL);
+	ResizeWindows();
+
 	RS_DX11::Game game(RenderWindow);
 	ID3D11Device* device = game.GetDevice();
 	ID3D11DeviceContext* context = game.GetDeviceContext();
@@ -145,7 +149,7 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 	if (DepthStencilView == nullptr)
 	{
 		MessageBox(nullptr, L"Failed to create ID3D11DepthSentcilView", L"Fatal error", MB_OK | MB_ICONERROR);
-		//exit(1);
+		exit(1);
 	}
 
 	context->OMSetRenderTargets(1, &MainRenderTarget, DepthStencilView);
@@ -161,10 +165,47 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 
 	context->RSSetViewports(1, &Viewport);
 
+	struct LocalVertexDeclaration
+	{
+		struct
+		{
+			float X, Y, Z;
+		} Pos;
+		struct
+		{
+			float R, G, B, A;
+		} Color;
+
+	} Triangle[3];
+	Triangle[0] = { {0,0,0},{0,0,0,0} };
+
+	D3D11_BUFFER_DESC trianglebufferdesc;
+	memset(&trianglebufferdesc, 0, sizeof(D3D11_BUFFER_DESC));
+	trianglebufferdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	trianglebufferdesc.ByteWidth = sizeof(LocalVertexDeclaration) * 3;
+
+	D3D11_SUBRESOURCE_DATA trianglebufferfiller;
+	memset(&trianglebufferfiller, 0, sizeof(D3D11_SUBRESOURCE_DATA));
+	trianglebufferfiller.pSysMem = Triangle;
+
+	ID3D11Buffer* trianglebuffer = nullptr;
+	HRESULT testr = device->CreateBuffer(&trianglebufferdesc, &trianglebufferfiller, &trianglebuffer);
+
+	assert(SUCCEEDED(testr));
+	
+	ID3DBlob *vs_blob,*vs_e_blob, *ps_blob,*ps_e_blob;
+
+	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_vs", "vs_4_0", 0, 0, &vs_blob, &vs_e_blob);
+	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_ps", "ps_4_0", 0, 0, &ps_blob, &ps_e_blob);
+
+	assert(SUCCEEDED(testr));
+
+	//device->CreateInputLayout(nullptr, 0, nullptr, 0, nullptr);
+
 	MSG m = { 0 };
 	while (true)
 	{
-		while (PeekMessage(&m, nullptr, 0, 0, 1));
+		while(PeekMessage(&m,nullptr,0,0,PM_REMOVE))
 		{
 			TranslateMessage(&m);
 			DispatchMessageW(&m);
@@ -219,6 +260,55 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					exit(0);
 					break;
 				}
+				case MENU_ADDOBJ:
+				{
+					break;
+				}
+				case MENU_ADDPROJECT:
+				{
+					break;
+				}
+				case MENU_INSTALLFILES:
+				{
+					break;
+				}
+				case MENU_RESETCURSOR:
+				{
+					break;
+				}
+				case MENU_UPDATECHECK:
+				{
+					CheckAndDownloadUpdate();
+					break;
+				}
+				case MENU_PREFERENCES:
+				{
+					break;
+				}
+				case MENU_ABOUT:
+				{
+					break;
+				}
+				case MENU_DOCS:
+				{
+					ShellExecute(nullptr, nullptr, L"https://3dradspace.com/Documentation/index.html", nullptr, nullptr, 0);
+					break;
+				}
+				case MENU_HOMEPAGE:
+				{
+					ShellExecute(nullptr, nullptr, L"https://3dradspace.com",nullptr,nullptr,0);
+					break;
+				}
+				case MENU_FORUM:
+				{
+					ShellExecute(nullptr, nullptr, L"https://3dradspace.com/Forum",nullptr,nullptr,0);
+					break;
+				}
+				case MENU_GITHUB:
+				{
+					ShellExecute(nullptr, nullptr, L"https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
+					break;
+				}
 				default: break;
 			}
 			break;
@@ -237,6 +327,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			exit(0);
 			break;
 		}
+		default: break;
 	}
 	return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
@@ -244,8 +335,13 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 void ResizeWindows()
 {
 	RECT r = { 0 };
+	GetWindowRect(MainWindow,&r);
 	int width = r.right - r.left;
 	int height = r.bottom - r.top;
-	GetWindowRect(MainWindow,&r);
 	SetWindowPos(RenderWindow, nullptr, 0, 0, width, height, SWP_SHOWWINDOW);
+}
+
+void CheckAndDownloadUpdate()
+{
+
 }

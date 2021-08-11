@@ -2,6 +2,11 @@
 #include <windows.h>
 #include <d3d11.h>
 #include "3DRadSpaceDll/Game_DX11.h"
+#include "UpdateDownloadManager.h"
+#include <cassert>
+#include <d3dcompiler.h>
+
+#pragma comment(lib,"d3dcompiler.lib")
 
 extern HWND MainWindow, RenderWindow;
 
@@ -11,6 +16,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void ResizeWindows();
+void CheckAndDownloadUpdate();
 
 #define MENU_NEWFILE 300
 #define MENU_OPENFILE 301
@@ -28,8 +34,8 @@ void ResizeWindows();
 #define MENU_UPDATECHECK 311
 #define MENU_PREFERENCES 312
 
-#define MENU_ABOUT 311
-#define MENU_DOCS 312
-#define MENU_HOMEPAGE 313
-#define MENU_FORUM 314
-#define MENU_GITHUB 315
+#define MENU_ABOUT 313
+#define MENU_DOCS 314
+#define MENU_HOMEPAGE 315
+#define MENU_FORUM 316
+#define MENU_GITHUB 317
