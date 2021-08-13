@@ -24,9 +24,6 @@
     <ClInclude Include="UpdateDownloadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Comments.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

@@ -6,32 +6,6 @@ HWND MainWindow, RenderWindow;
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
-/*
-	Let me explain all of this
-
-	1.) I know making a game engine like that is dumb, and I might be inexperienced or whatsoever
-	but I'm doing this atleast for the sake of learning
-
-	2.) In a ideal case, this game engine is going to be some drag and drop Unity rip off 
-
-	3.) I made it in Monogame before and it has functional C# scripting
-
-	So there's the issue. Only 2 D3D11 warnings:
-		D3D11 WARNING: ID3D11DeviceContext::Draw: The Pixel Shader expects a Render Target View bound to slot 0, but the Render Target View was unbound during a call to Present. A successful Present call for DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL SwapChains unbinds backbuffer 0 from all GPU writeable bind points.  [ EXECUTION WARNING #3146082: DEVICE_DRAW_RENDERTARGETVIEW_NOT_SET_DUE_TO_FLIP_PRESENT]
-		D3D11 WARNING: ID3D11DeviceContext::Draw: The Pixel Shader expects a Render Target View bound to slot 0, but none is bound. This is OK, as writes of an unbound Render Target View are discarded. It is also possible the developer knows the data will not be used anyway. This is only a problem if the developer actually intended to bind a Render Target View here. [ EXECUTION WARNING #3146081: DEVICE_DRAW_RENDERTARGETVIEW_NOT_SET]
-
-	And no null pointers over here apparently. Triangle still not drawing. Just a black screen like the scIreenshot  sent ya in Discord.
-
-
-
-	I guess that you can't see the window
-
-	There's not any console lol since this is a winforms app
-
-	I'd have to use AllocConsole I guess
-
-*/
-
 int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args, int nShowCmd)
 {
 	//load editor icon
@@ -191,10 +165,10 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 			float R, G, B, A;
 		} Color;
 
-	} Triangles[3]; //I'm looking still at you Triangles[3]
-	Triangles[0] = { {0.0f,  0.5f,  0.0f, 1.0f},{1.0f,0,0,1.0f} }; //THE COLORS ARE NOT RIGHT (THIS WAS SUPPOSED TO BE RED, NOT WHITE) :pain:
-	Triangles[1] = { {0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,1.0f,0,1.0f} }; //GREEN
-	Triangles[2] = { {-0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,0,1.0f,1.0f} }; // BLUE
+	} Triangles[3]; 
+	Triangles[0] = { {0.0f,  0.5f,  0.0f, 1.0f},{1.0f,0,0,1.0f} }; 
+	Triangles[1] = { {0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,1.0f,0,1.0f} }; 
+	Triangles[2] = { {-0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,0,1.0f,1.0f} }; 
 
 	D3D11_BUFFER_DESC trianglebufferdesc;
 	memset(&trianglebufferdesc, 0, sizeof(D3D11_BUFFER_DESC));
@@ -290,17 +264,11 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 		context->OMSetRenderTargets(1, &MainRenderTarget, nullptr);
 		context->ClearRenderTargetView(MainRenderTarget, cleancolor);
 
-		//all right. i'm going to look at the shader and buffer
-
 		D3D11_VIEWPORT Viewport;
 		memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
 		Viewport.TopLeftX = 0;
 		Viewport.TopLeftY = 0;
-		//Viewport.Width = window_width;
 		Viewport.Width = 800;
-		//Viewport.Height = window_height;
-
-		//right yo, gonna chekc
 		Viewport.Height = 600;
 		Viewport.MinDepth = 0.0f;
 		Viewport.MaxDepth = 1.0f;
@@ -313,7 +281,7 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 		uint32_t vstride = sizeof(LocalVertexDeclaration);
 		uint32_t voffset = 0;
 
-		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST); //<- possibly the wrong topology??? TRIANGLESTRIP instead?
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
 		context->IASetVertexBuffers(0, 1, &trianglebuffer, &vstride, &voffset);
 		context->Draw(3, 0);
 
