@@ -24,6 +24,9 @@
     <ClInclude Include="UpdateDownloadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Comments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -57,8 +60,5 @@
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="VS_NoTransform_PositionColor.hlsl" />
   </ItemGroup>
 </Project>

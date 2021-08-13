@@ -6,6 +6,32 @@ HWND MainWindow, RenderWindow;
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
+/*
+	Let me explain all of this
+
+	1.) I know making a game engine like that is dumb, and I might be inexperienced or whatsoever
+	but I'm doing this atleast for the sake of learning
+
+	2.) In a ideal case, this game engine is going to be some drag and drop Unity rip off 
+
+	3.) I made it in Monogame before and it has functional C# scripting
+
+	So there's the issue. Only 2 D3D11 warnings:
+		D3D11 WARNING: ID3D11DeviceContext::Draw: The Pixel Shader expects a Render Target View bound to slot 0, but the Render Target View was unbound during a call to Present. A successful Present call for DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL SwapChains unbinds backbuffer 0 from all GPU writeable bind points.  [ EXECUTION WARNING #3146082: DEVICE_DRAW_RENDERTARGETVIEW_NOT_SET_DUE_TO_FLIP_PRESENT]
+		D3D11 WARNING: ID3D11DeviceContext::Draw: The Pixel Shader expects a Render Target View bound to slot 0, but none is bound. This is OK, as writes of an unbound Render Target View are discarded. It is also possible the developer knows the data will not be used anyway. This is only a problem if the developer actually intended to bind a Render Target View here. [ EXECUTION WARNING #3146081: DEVICE_DRAW_RENDERTARGETVIEW_NOT_SET]
+
+	And no null pointers over here apparently. Triangle still not drawing. Just a black screen like the scIreenshot  sent ya in Discord.
+
+
+
+	I guess that you can't see the window
+
+	There's not any console lol since this is a winforms app
+
+	I'd have to use AllocConsole I guess
+
+*/
+
 int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args, int nShowCmd)
 {
 	//load editor icon
@@ -154,53 +180,103 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 
 	context->OMSetRenderTargets(1, &MainRenderTarget, DepthStencilView);
 
-	D3D11_VIEWPORT Viewport;
-	memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
-	Viewport.TopLeftX = 0;
-	Viewport.TopLeftY = 0;
-	Viewport.Width = 800;
-	Viewport.Height = 600;
-	Viewport.MinDepth = 0.0f;
-	Viewport.MaxDepth = 1.0f;
-
-	context->RSSetViewports(1, &Viewport);
-
 	struct LocalVertexDeclaration
 	{
-		struct
+		struct p
 		{
-			float X, Y, Z;
+			float X, Y, Z, W;
 		} Pos;
-		struct
+		struct c
 		{
 			float R, G, B, A;
 		} Color;
 
-	} Triangle[3];
-	Triangle[0] = { {0,0,0},{0,0,0,0} };
+	} Triangles[3]; //I'm looking still at you Triangles[3]
+	Triangles[0] = { {0.0f,  0.5f,  0.0f, 1.0f},{1.0f,0,0,1.0f} }; //THE COLORS ARE NOT RIGHT (THIS WAS SUPPOSED TO BE RED, NOT WHITE) :pain:
+	Triangles[1] = { {0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,1.0f,0,1.0f} }; //GREEN
+	Triangles[2] = { {-0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,0,1.0f,1.0f} }; // BLUE
 
 	D3D11_BUFFER_DESC trianglebufferdesc;
 	memset(&trianglebufferdesc, 0, sizeof(D3D11_BUFFER_DESC));
 	trianglebufferdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	trianglebufferdesc.ByteWidth = sizeof(LocalVertexDeclaration) * 3;
-
+	trianglebufferdesc.ByteWidth = sizeof(Triangles);
+	
 	D3D11_SUBRESOURCE_DATA trianglebufferfiller;
 	memset(&trianglebufferfiller, 0, sizeof(D3D11_SUBRESOURCE_DATA));
-	trianglebufferfiller.pSysMem = Triangle;
+	trianglebufferfiller.pSysMem = Triangles;
 
 	ID3D11Buffer* trianglebuffer = nullptr;
 	HRESULT testr = device->CreateBuffer(&trianglebufferdesc, &trianglebufferfiller, &trianglebuffer);
-
 	assert(SUCCEEDED(testr));
 	
 	ID3DBlob *vs_blob,*vs_e_blob, *ps_blob,*ps_e_blob;
 
 	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_vs", "vs_4_0", 0, 0, &vs_blob, &vs_e_blob);
 	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_ps", "ps_4_0", 0, 0, &ps_blob, &ps_e_blob);
+	
+	assert(SUCCEEDED(testr));
+	
+	ID3D11PixelShader *_simpleps = nullptr;
+	testr = device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), nullptr, &_simpleps);
+	
+	assert(SUCCEEDED(testr));
+
+	ID3D11VertexShader* _simplevs = nullptr;
+	testr = device->CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), nullptr, &_simplevs);
 
 	assert(SUCCEEDED(testr));
 
-	//device->CreateInputLayout(nullptr, 0, nullptr, 0, nullptr);
+	D3D11_SAMPLER_DESC samplerstatedesc;
+	memset(&samplerstatedesc, 0, sizeof(samplerstatedesc));
+	samplerstatedesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerstatedesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerstatedesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+	samplerstatedesc.BorderColor[0] = 1.0f;
+	samplerstatedesc.BorderColor[1] = 1.0f;
+	samplerstatedesc.BorderColor[2] = 1.0f;
+	samplerstatedesc.BorderColor[3] = 1.0f;
+
+	samplerstatedesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerstatedesc.MaxLOD = FLT_MAX;
+	samplerstatedesc.ComparisonFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_NEVER;
+	samplerstatedesc.MaxAnisotropy = 1;
+
+	ID3D11SamplerState* samplerstate = nullptr;
+	testr = device->CreateSamplerState(&samplerstatedesc, &samplerstate);
+	assert(SUCCEEDED(testr));
+
+	context->VSSetSamplers(0, 1, &samplerstate);
+	context->PSSetSamplers(0, 1, &samplerstate);
+
+	ID3D11RasterizerState* rasterizerstate = 0;
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	rasterizerDesc.AntialiasedLineEnable = false;
+	rasterizerDesc.CullMode = D3D11_CULL_NONE;
+
+	rasterizerDesc.DepthBias = 0;
+	rasterizerDesc.DepthBiasClamp = 0.0f;
+	rasterizerDesc.DepthClipEnable = true;
+	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+	rasterizerDesc.FrontCounterClockwise = true;
+	rasterizerDesc.MultisampleEnable = false;
+	rasterizerDesc.ScissorEnable = false;
+	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
+	testr = device->CreateRasterizerState(&rasterizerDesc, &rasterizerstate);
+	assert(SUCCEEDED(testr));
+	context->RSSetState(rasterizerstate);
+
+	D3D11_INPUT_ELEMENT_DESC vs_input_l[] =
+	{
+		{"POSITION",0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0}, // <- this
+		{"COLOR",0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,16,D3D11_INPUT_PER_VERTEX_DATA,0} //<- i took D3D11_APPEND_ALIGNED_ELEMENT from some tutorial article
+	};
+
+	ID3D11InputLayout* _inputLayout;
+	testr = device->CreateInputLayout(vs_input_l, 2, vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), &_inputLayout);
+	assert(SUCCEEDED(testr));
+
+	context->IASetInputLayout(_inputLayout);
 
 	MSG m = { 0 };
 	while (true)
@@ -210,8 +286,37 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 			TranslateMessage(&m);
 			DispatchMessageW(&m);
 		}
-		float cleancolor[] = { 0.0f,0.0f,0.0f,1.0f };
+		float cleancolor[] = {0,0,0,1 };
+		context->OMSetRenderTargets(1, &MainRenderTarget, nullptr);
 		context->ClearRenderTargetView(MainRenderTarget, cleancolor);
+
+		//all right. i'm going to look at the shader and buffer
+
+		D3D11_VIEWPORT Viewport;
+		memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
+		Viewport.TopLeftX = 0;
+		Viewport.TopLeftY = 0;
+		//Viewport.Width = window_width;
+		Viewport.Width = 800;
+		//Viewport.Height = window_height;
+
+		//right yo, gonna chekc
+		Viewport.Height = 600;
+		Viewport.MinDepth = 0.0f;
+		Viewport.MaxDepth = 1.0f;
+
+		context->RSSetViewports(1, &Viewport);
+		
+		context->VSSetShader(_simplevs, nullptr, 0);
+		context->PSSetShader(_simpleps, nullptr, 0);
+		
+		uint32_t vstride = sizeof(LocalVertexDeclaration);
+		uint32_t voffset = 0;
+
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST); //<- possibly the wrong topology??? TRIANGLESTRIP instead?
+		context->IASetVertexBuffers(0, 1, &trianglebuffer, &vstride, &voffset);
+		context->Draw(3, 0);
+
 		swapchain->Present(1, 0);
 	}
 	return EXIT_SUCCESS;

@@ -5,6 +5,8 @@
 #include "UpdateDownloadManager.h"
 #include <cassert>
 #include <d3dcompiler.h>
+#include <cfloat>
+#include <cstdint>
 
 #pragma comment(lib,"d3dcompiler.lib")
 

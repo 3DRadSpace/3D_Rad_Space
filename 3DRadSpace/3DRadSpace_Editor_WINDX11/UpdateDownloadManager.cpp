@@ -18,7 +18,6 @@ HRESULT __stdcall UpdateDownloadManager::OnLowResource(DWORD reserved)
 
 HRESULT __stdcall UpdateDownloadManager::OnProgress(ULONG ulProgress, ULONG ulProgressMax, ULONG ulStatusCode, LPCWSTR szStatusText)
 {
-
     return 0;
 }
 

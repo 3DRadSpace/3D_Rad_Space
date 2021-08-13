@@ -1,18 +1,18 @@
 struct PosColInput
 {
-	float4 Pos : SV_POSITION;
+	float4 Pos : POSITION; //input is POS0 and it was set to SV_POS0 in the input layout???
 	float4 Color : COLOR;
 };
 
 struct PosColOutput
 {
-	float4 Pos : POSITION;
+	float4 Pos : SV_POSITION; 
 	float4 Color : COLOR;
 };
 
-PosColInput basic_vs(PosColInput inp)
+PosColOutput basic_vs(PosColInput inp)
 {
-	PosColInput o;
+	PosColOutput o;
 	o.Pos = inp.Pos;
 	o.Color = inp.Color;
 

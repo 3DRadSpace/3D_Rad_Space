@@ -2,6 +2,8 @@
 
 RS_DX11::Game::Game(HWND window)
 {
+	//can you switch files?
+	//huh ok
 	DXGI_SWAP_CHAIN_DESC swChDesc;
 	memset(&swChDesc, 0, sizeof(DXGI_SWAP_CHAIN_DESC));
 	swChDesc.Windowed = true;
