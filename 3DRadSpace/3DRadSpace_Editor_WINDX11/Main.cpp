@@ -1,12 +1,14 @@
 #include "Main.h"
-#include "resource.h"
 
 HWND MainWindow, RenderWindow;
 
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
-int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args, int nShowCmd)
+Vector3 _3DCursor(0, 0, 0);
+bool _3DMode = true;
+
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
 	//load editor icon
 	HICON hAppIcon = static_cast<HICON>(::LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, LR_DEFAULTCOLOR));
@@ -73,86 +75,22 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 	ShowWindow(RenderWindow, SW_NORMAL);
 	ResizeWindows();
 
-	RS_DX11::Game game(RenderWindow);
+	Game game(RenderWindow);
 	ID3D11Device* device = game.GetDevice();
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
 
-	ID3D11Texture2D* backtexture = nullptr;
-	HRESULT r = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backtexture);
-	if (backtexture == nullptr)
-	{
-		MessageBox(nullptr, L"Failed to create the back buffer texture ID3D11Texture2D.", L"Fatal error", MB_ICONERROR | MB_OK);
-		exit(1);
-	}
-
-	ID3D11RenderTargetView* MainRenderTarget = nullptr;
-	device->CreateRenderTargetView(backtexture, nullptr, &MainRenderTarget);
-	backtexture->Release();
-	
+	ID3D11RenderTargetView* MainRenderTarget = game.GetRenderTargetBackBuffer();
 	if (MainRenderTarget == nullptr)
 	{
 		MessageBox(nullptr, L"Failed to create the main render target.", L"Fatal error", MB_ICONERROR | MB_OK);
 		exit(1);
 	}
 
-	ID3D11Texture2D* StencilTexture;
-	D3D11_TEXTURE2D_DESC StencilTxtDesc;
-	memset(&StencilTxtDesc, 0, sizeof(D3D11_TEXTURE2D_DESC));
-	StencilTxtDesc.ArraySize = 1;
-	StencilTxtDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	StencilTxtDesc.MipLevels = 1;
-	StencilTxtDesc.Width = 800;
-	StencilTxtDesc.Height = 600;
-	StencilTxtDesc.SampleDesc.Count = 1;
-	StencilTxtDesc.SampleDesc.Quality = 0;
-	StencilTxtDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	HRESULT r = 0;
 
-	device->CreateTexture2D(&StencilTxtDesc,nullptr,&StencilTexture);
-
-	if (StencilTexture == nullptr)
-	{
-		MessageBox(nullptr, L"Failed to create the depth stencil texture.", L"Fatal error", MB_ICONERROR | MB_OK);
-		exit(1);
-	}
-
-	D3D11_DEPTH_STENCIL_DESC StencilDesc;
-	memset(&StencilDesc,0,sizeof(D3D11_DEPTH_STENCIL_DESC));
-	StencilDesc.DepthEnable = true;
-	StencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-	StencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	StencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	StencilDesc.StencilEnable = true;
-	StencilDesc.StencilReadMask = 0xFF;
-	StencilDesc.StencilWriteMask = 0xFF;
-	StencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	StencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	StencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	StencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	StencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	StencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	StencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	StencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	ID3D11DepthStencilState* DepthStencilState = nullptr;
-	device->CreateDepthStencilState(&StencilDesc, &DepthStencilState);
-	context->OMSetDepthStencilState(DepthStencilState, 1);
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC StencilViewDesc;
-	memset(&StencilViewDesc, 0, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
-	StencilViewDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
-	StencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2D;
-
-	ID3D11DepthStencilView* DepthStencilView = nullptr;
-	r = device->CreateDepthStencilView(StencilTexture, &StencilViewDesc, &DepthStencilView);
-
-	if (DepthStencilView == nullptr)
-	{
-		MessageBox(nullptr, L"Failed to create ID3D11DepthSentcilView", L"Fatal error", MB_OK | MB_ICONERROR);
-		exit(1);
-	}
-
-	context->OMSetRenderTargets(1, &MainRenderTarget, DepthStencilView);
+	StencilState stencil(&game, 800, 600);
+	stencil.SetStencilState(context);
 
 	struct LocalVertexDeclaration
 	{
@@ -166,6 +104,7 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 		} Color;
 
 	} Triangles[3]; 
+	memset(Triangles, 0, sizeof(Triangles)); //useless but it removes LNT1006 from my errors list (I love seeing it empty)
 	Triangles[0] = { {0.0f,  0.5f,  0.0f, 1.0f},{1.0f,0,0,1.0f} }; 
 	Triangles[1] = { {0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,1.0f,0,1.0f} }; 
 	Triangles[2] = { {-0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,0,1.0f,1.0f} }; 
@@ -225,6 +164,7 @@ int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args,
 
 	ID3D11RasterizerState* rasterizerstate = 0;
 	D3D11_RASTERIZER_DESC rasterizerDesc;
+	memset(&rasterizerDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
 	rasterizerDesc.AntialiasedLineEnable = false;
 	rasterizerDesc.CullMode = D3D11_CULL_NONE;
 
@@ -347,6 +287,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_RESETCURSOR:
 				{
+					_3DCursor = Vector3::Zero();
 					break;
 				}
 				case MENU_UPDATECHECK:
@@ -416,5 +357,15 @@ void ResizeWindows()
 
 void CheckAndDownloadUpdate()
 {
-
+	HRESULT r = URLDownloadToFile(nullptr, L"", L"version.txt", 0, nullptr);
+	if (r == INET_E_DOWNLOAD_FAILURE)
+	{
+		int d = MessageBox(nullptr, L"Cannot check the lastest version. Check your internet connection.", L"Network error", MB_RETRYCANCEL | MB_ICONWARNING);
+		if (d == IDRETRY) CheckAndDownloadUpdate();
+	}
+	if (r == E_OUTOFMEMORY)
+	{
+		MessageBox(nullptr, L"Cannot download a temporary file. Please try cleaning up some space from your drive.", L"Out of memory", MB_OK | MB_ICONERROR);
+	}
+	DeleteFile(L"version.txt");
 }

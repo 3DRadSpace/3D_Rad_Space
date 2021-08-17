@@ -1,18 +1,10 @@
 #pragma once
-#include <windows.h>
-#include <d3d11.h>
-#include "3DRadSpaceDll/Game_DX11.h"
-#include "UpdateDownloadManager.h"
-#include <cassert>
-#include <d3dcompiler.h>
-#include <cfloat>
-#include <cstdint>
-
-#pragma comment(lib,"d3dcompiler.lib")
+#include "Libs.h"
+#include "resource.h"
 
 extern HWND MainWindow, RenderWindow;
 
-int __stdcall wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR args, int nShowCmd);
+int __stdcall wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd);
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

@@ -1,15 +1,21 @@
 #pragma once
-#include "Libs.h"
+#include "Globals.h"
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "Matrix.h"
 
-class __declspec(dllexport) IObject
+#pragma warning( push )
+#pragma warning( disable : 4251 )
+
+class DLLEXPORT IObject
 {
 	std::string Name;
 
 	Vector3 Position;
+	
+	Vector3 Center;
 	Quaternion Rotation;
+
 	Vector3 Scale;
 
 	std::string Resource;
@@ -21,3 +27,4 @@ class __declspec(dllexport) IObject
 	~IObject();
 };
 
+#pragma warning( pop )
