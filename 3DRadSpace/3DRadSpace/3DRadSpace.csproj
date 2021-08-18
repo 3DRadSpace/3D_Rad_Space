@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.props" Condition="Exists('..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D25AE6C9-DB24-494F-95C9-DB0E5274A4C9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>_3DRadSpace</RootNamespace>
+    <AssemblyName>3DRadSpace</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>2</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>_3DRadSpace.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Teapot.fbx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lib3DRadSpace_DX\Lib3DRadSpace.csproj">
+      <Project>{0bb96cad-360c-4880-aaaa-2e87f2df1fe8}</Project>
+      <Name>Lib3DRadSpace</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddObjectWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddObjectWnd.Designer.cs">
+      <DependentUpon>AddObjectWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="FirstPersonCameraWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FirstPersonCameraWnd.Designer.cs">
+      <DependentUpon>FirstPersonCameraWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CameraWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraWnd.Designer.cs">
+      <DependentUpon>CameraWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CounterWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CounterWnd.Designer.cs">
+      <DependentUpon>CounterWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorUI.cs" />
+    <Compile Include="EditorUIEvents.cs" />
+    <Compile Include="EmptyObjWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmptyObjWnd.Designer.cs">
+      <DependentUpon>EmptyObjWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GroupWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupWnd.Designer.cs">
+      <DependentUpon>GroupWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ScriptWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptWnd.Designer.cs">
+      <DependentUpon>ScriptWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkinmeshPreviewer.cs" />
+    <Compile Include="SkinmeshWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinmeshWnd.Designer.cs">
+      <DependentUpon>SkinmeshWnd.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\lib\net452\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.0.1\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct3D11.4.0.1\lib\net45\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct3D9.4.0.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DXGI.4.0.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.MediaFoundation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.MediaFoundation.4.0.1\lib\net45\SharpDX.MediaFoundation.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XAudio2, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.XAudio2.4.0.1\lib\net45\SharpDX.XAudio2.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XInput, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.XInput.4.0.1\lib\net45\SharpDX.XInput.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddObjectWnd.resx">
+      <DependentUpon>AddObjectWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FirstPersonCameraWnd.resx">
+      <DependentUpon>FirstPersonCameraWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraWnd.resx">
+      <DependentUpon>CameraWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CounterWnd.resx">
+      <DependentUpon>CounterWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmptyObjWnd.resx">
+      <DependentUpon>EmptyObjWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GroupWnd.resx">
+      <DependentUpon>GroupWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptWnd.resx">
+      <DependentUpon>ScriptWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinmeshWnd.resx">
+      <DependentUpon>SkinmeshWnd.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets" Condition="Exists('..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets'))" />
+    <Error Condition="!Exists('..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.props'))" />
+    <Error Condition="!Exists('..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.targets'))" />
+  </Target>
+  <Import Project="..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.targets" Condition="Exists('..\packages\MonoGame.Content.Builder.Task.3.8.0.1641\build\MonoGame.Content.Builder.Task.targets')" />
+</Project>
