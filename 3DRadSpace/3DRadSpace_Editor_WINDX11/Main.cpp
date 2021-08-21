@@ -2,6 +2,8 @@
 
 HWND MainWindow, RenderWindow;
 
+HINSTANCE hGlobCurrentInst;
+
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
@@ -48,7 +50,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	HMENU ObjectMenu = CreateMenu();
 	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDOBJ, L"Add object (Ctrl+A)");
 	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDPROJECT, L"Add a addon");
-	AppendMenuW(ObjectMenu, MF_STRING, MENU_INSTALLFILES, L"Import resources");
+	AppendMenuW(ObjectMenu, MF_STRING, MENU_IMPORTRESOURCES, L"Import resources");
 	AppendMenuW(ObjectMenu, MF_STRING, MENU_RESETCURSOR, L"Reset 3D Cursor");
 
 	HMENU OptionsMenu = CreateMenu();
@@ -204,6 +206,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		context->OMSetRenderTargets(1, &MainRenderTarget, nullptr);
 		context->ClearRenderTargetView(MainRenderTarget, cleancolor);
 
+		
+
 		D3D11_VIEWPORT Viewport;
 		memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
 		Viewport.TopLeftX = 0;
@@ -281,7 +285,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				{
 					break;
 				}
-				case MENU_INSTALLFILES:
+				case MENU_IMPORTRESOURCES:
 				{
 					break;
 				}
@@ -292,7 +296,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_UPDATECHECK:
 				{
-					CheckAndDownloadUpdate();
+					CheckUpdate();
 					break;
 				}
 				case MENU_PREFERENCES:
@@ -355,17 +359,88 @@ void ResizeWindows()
 	SetWindowPos(RenderWindow, nullptr, 0, 0, width, height, SWP_SHOWWINDOW);
 }
 
-void CheckAndDownloadUpdate()
+void CheckUpdate()
 {
-	HRESULT r = URLDownloadToFile(nullptr, L"", L"version.txt", 0, nullptr);
+	HRESULT r = URLDownloadToFile(nullptr, L"https://3dradspace.com/UpdateInfo/LastestVersion.txt", L"version.txt", 0, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
 	{
 		int d = MessageBox(nullptr, L"Cannot check the lastest version. Check your internet connection.", L"Network error", MB_RETRYCANCEL | MB_ICONWARNING);
-		if (d == IDRETRY) CheckAndDownloadUpdate();
+		if (d == IDRETRY) CheckUpdate();
 	}
 	if (r == E_OUTOFMEMORY)
 	{
 		MessageBox(nullptr, L"Cannot download a temporary file. Please try cleaning up some space from your drive.", L"Out of memory", MB_OK | MB_ICONERROR);
 	}
+
+	char buffer[255];
+	memset(buffer, 0, 255);
+
+	char version_online[10];
+	memset(version_online, 0, 10);
+
+	char* context = nullptr;
+	std::ifstream read_update_info(L"version.txt");
+	read_update_info.getline(buffer, 255);
+
+	char* p = strtok_s(buffer, " ",&context);
+	
 	DeleteFile(L"version.txt");
+
+	int i = 0;
+	while (p)
+	{
+		if (strcmp(p, __3DRADSPACE_VERSION) == 0)
+		{
+			MessageBox(nullptr, L"No new update found!", L"Update check", MB_OK | MB_ICONINFORMATION);
+			return;
+		}
+		else if( i == 0)
+		{
+			strcpy_s<10>(version_online, p);
+			p = strtok_s(nullptr, " ", &context);
+			i += 1;
+			continue;
+		}
+		if (strstr(p, "https://") != nullptr)
+		{
+			int mr = MessageBox(nullptr, L"A new update was found! Do you want it to be downloaded and installed?", L"Update check", MB_YESNO | MB_ICONQUESTION);
+			if (mr == IDYES)
+			{
+				DownloadUpdate(p,version_online);
+			}
+		}
+		p = strtok_s(nullptr, " ", &context);
+	}
+
+}
+
+void DownloadUpdate(char* link,char* version)
+{
+	std::string file = "3DRadSpace v";
+	file += version;
+	file += " Setup.exe";
+
+	std::string downloadlink = link;
+
+	DownloadStatusWindow::Reset();
+
+	UpdateDownloadManager m;
+
+	std::thread downloadthread([](std::string link, std::string file,UpdateDownloadManager m) -> void
+		{
+			DownloadStatusWindow::SetManager(&m);
+			HRESULT r = URLDownloadToFileA(nullptr, link.c_str(), file.c_str(), 0, &m);
+		}
+	,downloadlink,file,m);
+
+	DownloadStatusWindow::Register(hGlobCurrentInst);
+	DownloadStatusWindow::Create(nullptr);
+
+	downloadthread.detach();
+
+	if (DownloadStatusWindow::Finished && !DownloadStatusWindow::Cancelled)
+	{
+		ShellExecuteA(nullptr, nullptr, file.c_str(), nullptr, nullptr, 0);
+		exit(0);
+	}
 }

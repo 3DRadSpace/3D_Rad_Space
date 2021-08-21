@@ -2,6 +2,8 @@
 
 StencilState::StencilState(Game* g, int width, int height)
 {
+	_stencilview = nullptr;
+
 	ID3D11Device* device = g->GetDevice();
 	this->_rendertarget = g->GetRenderTargetBackBuffer();
 
