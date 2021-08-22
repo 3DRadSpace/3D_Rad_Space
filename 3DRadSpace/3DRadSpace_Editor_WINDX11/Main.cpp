@@ -194,6 +194,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	context->IASetInputLayout(_inputLayout);
 
+	StartDiscordPresence();
+
 	MSG m = { 0 };
 	while (true)
 	{
@@ -205,8 +207,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		float cleancolor[] = {0,0,0,1 };
 		context->OMSetRenderTargets(1, &MainRenderTarget, nullptr);
 		context->ClearRenderTargetView(MainRenderTarget, cleancolor);
-
-		
 
 		D3D11_VIEWPORT Viewport;
 		memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
@@ -240,7 +240,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 	{
 		case WM_CLOSE:
 		{
-			exit(0);
+			ExitEditor();
 			break;
 		}
 		case WM_PAINT:
@@ -274,7 +274,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					break;
 				case MENU_EXIT:
 				{
-					exit(0);
+					ExitEditor();
 					break;
 				}
 				case MENU_ADDOBJ:
@@ -342,7 +342,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	{
 		case WM_CLOSE:
 		{
-			exit(0);
+			ExitEditor();
 			break;
 		}
 		default: break;
@@ -441,6 +441,35 @@ void DownloadUpdate(char* link,char* version)
 	if (DownloadStatusWindow::Finished && !DownloadStatusWindow::Cancelled)
 	{
 		ShellExecuteA(nullptr, nullptr, file.c_str(), nullptr, nullptr, 0);
-		exit(0);
+		ExitEditor();
 	}
+}
+
+void StartDiscordPresence()
+{
+	Discord_Initialize("612682115208708098", nullptr, 1, nullptr);
+
+	DiscordRichPresence drp;
+	memset(&drp, 0, sizeof(DiscordRichPresence));
+	drp.startTimestamp = time(nullptr);
+	drp.largeImageKey = "mainicon";
+	drp.state = "New project";
+	Discord_UpdatePresence(&drp);
+}
+
+void UpdateDiscordRichPresence()
+{
+
+}
+
+void StopDiscordRichPresence()
+{
+	Discord_ClearPresence();
+	Discord_Shutdown();
+}
+
+void ExitEditor()
+{
+	StopDiscordRichPresence();
+	exit(0);
 }

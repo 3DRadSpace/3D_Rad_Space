@@ -4,6 +4,7 @@
 #include <Mouse.h>
 #include "DownloadStatusWindow.h"
 #include <dxgidebug.h>
+#include <discord_rpc.h>
 
 extern HWND MainWindow, RenderWindow;
 
@@ -17,6 +18,12 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 void ResizeWindows();
 void CheckUpdate();
 void DownloadUpdate(char* link,char* version);
+
+void StartDiscordPresence();
+void UpdateDiscordRichPresence();
+void StopDiscordRichPresence();
+
+void ExitEditor();
 
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
