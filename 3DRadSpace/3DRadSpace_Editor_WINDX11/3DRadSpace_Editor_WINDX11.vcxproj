@@ -169,6 +169,13 @@
     <Image Include="..\..\..\..\..\Desktop\3DRadSpace\openicon.png" />
     <Image Include="..\..\..\..\..\Desktop\3DRadSpace\saveicon.png" />
     <Image Include="..\..\..\..\..\Desktop\3DRadSpace\switch2d_icon.png" />
+    <Image Include="..\..\..\Icons\compile_icon.ico" />
+    <Image Include="..\..\..\Icons\Debug-Button.ico" />
+    <Image Include="..\..\..\Icons\newicon.ico" />
+    <Image Include="..\..\..\Icons\openicon.ico" />
+    <Image Include="..\..\..\Icons\saveicon.ico" />
+    <Image Include="..\..\..\Icons\switch2d_icon.ico" />
+    <Image Include="..\..\..\newicon.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

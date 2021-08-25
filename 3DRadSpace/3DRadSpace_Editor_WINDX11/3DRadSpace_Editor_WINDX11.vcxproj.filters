@@ -67,6 +67,27 @@
     <Image Include="..\..\..\..\..\Desktop\3DRadSpace\Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\newicon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\newicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\openicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\saveicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\Debug-Button.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\compile_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Icons\switch2d_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

@@ -54,6 +54,18 @@ END
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icon.ico"
 
+IDI_ICON2               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\newicon.ico"
+
+IDI_ICON3               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\openicon.ico"
+
+IDI_ICON4               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\saveicon.ico"
+
+IDI_ICON5               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\Debug-Button.ico"
+
+IDI_ICON6               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\compile_icon.ico"
+
+IDI_ICON7               ICON                    "C:\\Users\\NicusorN5\\Desktop\\3DRadSpace\\Icons\\switch2d_icon.ico"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

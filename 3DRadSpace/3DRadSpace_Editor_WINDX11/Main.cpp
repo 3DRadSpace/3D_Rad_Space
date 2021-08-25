@@ -1,6 +1,6 @@
 #include "Main.h"
 
-HWND MainWindow, RenderWindow;
+HWND MainWindow, RenderWindow, ToolBarWindow;
 
 HINSTANCE hGlobCurrentInst;
 
@@ -31,7 +31,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	editorwndclass.lpfnWndProc = WindowProcessEditor;
 	editorwndclass.hInstance = hInstance;
 	editorwndclass.lpszClassName = EditorWindowClassName;
-	editorwndclass.hIcon = hAppIcon;
 
 	RegisterClass(&editorwndclass);
 
@@ -71,10 +70,43 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	//create windows
 	MainWindow = CreateWindowExW(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
-	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 0, 800, 600, MainWindow, nullptr, hInstance, 0);
+	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
 
+	//Create toolbar
+
+	/*
+		Should use a Rebar control instead????????????????????
+	*/
+
+	HIMAGELIST toolBarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 6, 0);
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON2)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON3)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON4)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON5)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON6)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON7)));
+
+	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
+	SendMessage(ToolBarWindow, TB_SETIMAGELIST, 0, (LPARAM)toolBarImageList);
+	SendMessage(ToolBarWindow, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
+	
+	TBBUTTON toolBarButtons[6] =
+	{
+		{0,MENU_NEWFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"New"},
+		{1,MENU_OPENFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Open"},
+		{2,MENU_SAVEFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Save"},
+		{3,MENU_PLAYPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Play"},
+		{4,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Compile"},
+		{5,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Switch 2D/3D"},
+	};
+	SendMessage(ToolBarWindow, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)6, (LPARAM)&toolBarButtons);
+	SendMessage(ToolBarWindow, TB_AUTOSIZE, 0, 0);
+
+	//Show windows
 	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
 	ShowWindow(RenderWindow, SW_NORMAL);
+	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
 	ResizeWindows();
 
 	Game game(RenderWindow);
@@ -356,7 +388,8 @@ void ResizeWindows()
 	GetWindowRect(MainWindow,&r);
 	int width = r.right - r.left;
 	int height = r.bottom - r.top;
-	SetWindowPos(RenderWindow, nullptr, 0, 0, width, height, SWP_SHOWWINDOW);
+	SetWindowPos(RenderWindow, nullptr, 0, 30, width, height - 30, SWP_SHOWWINDOW);
+	SetWindowPos(ToolBarWindow, (HWND)0, 0, 0, width, 30, SWP_SHOWWINDOW);
 }
 
 void CheckUpdate()

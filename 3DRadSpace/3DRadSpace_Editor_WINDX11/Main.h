@@ -6,7 +6,7 @@
 #include <dxgidebug.h>
 #include <discord_rpc.h>
 
-extern HWND MainWindow, RenderWindow;
+extern HWND MainWindow, RenderWindow, ToolBarWindow;
 
 extern HINSTANCE hGlobCurrentInst;
 
