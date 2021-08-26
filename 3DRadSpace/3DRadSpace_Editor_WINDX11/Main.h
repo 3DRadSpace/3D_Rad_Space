@@ -47,4 +47,6 @@ constexpr int MENU_HOMEPAGE = 315;
 constexpr int MENU_FORUM = 316;
 constexpr int MENU_GITHUB = 317;
 
+constexpr int MENU_SWITCH3D2D = 318;
+
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";

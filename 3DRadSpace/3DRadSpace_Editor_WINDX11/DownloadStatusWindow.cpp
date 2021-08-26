@@ -47,6 +47,7 @@ void DownloadStatusWindow::Create(HWND parent)
 	INITCOMMONCONTROLSEX icc;
 	icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	icc.dwICC = ICC_PROGRESS_CLASS;
+	InitCommonControlsEx(&icc);
 
 	progressbar = CreateWindowEx(0, PROGRESS_CLASS, nullptr, WS_VISIBLE | WS_CHILD, 80, 30, 200, 20, window, nullptr, hInstance, nullptr);
 	SendMessage(progressbar, PBM_SETSTEP, 1, 0);

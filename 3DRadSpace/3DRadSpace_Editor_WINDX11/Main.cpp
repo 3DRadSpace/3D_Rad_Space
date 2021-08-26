@@ -12,6 +12,7 @@ bool _3DMode = true;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
+
 	//load editor icon
 	HICON hAppIcon = static_cast<HICON>(::LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, LR_DEFAULTCOLOR));
 	
@@ -34,7 +35,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	RegisterClass(&editorwndclass);
 
-	//Create main window menu
+	/*
+		Create Menu control
+	*/
 	HMENU MainMenu = CreateMenu();
 	
 	HMENU FileMenu = CreateMenu();
@@ -42,7 +45,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	AppendMenuW(FileMenu, MF_STRING, MENU_OPENFILE, L"Open project (Ctrl+O)");
 	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILE, L"Save project (Ctrl+S)");
 	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILEAS, L"Save project as (Ctrl+Shift+S)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_PLAYPROJECT, L"Play project (Ctrl+p)");
+	AppendMenuW(FileMenu, MF_STRING, MENU_PLAYPROJECT, L"Play project (Ctrl+P)");
 	AppendMenuW(FileMenu, MF_STRING, MENU_COMPILEPROJECT, L"Build project (Ctrl+Shift+B)");
 	AppendMenuW(FileMenu, MF_STRING, MENU_EXIT, L"Exit (Alt+F4)");
 	
@@ -72,11 +75,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	MainWindow = CreateWindowExW(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
 	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
 
-	//Create toolbar
-
 	/*
-		Should use a Rebar control instead????????????????????
+		Create toolbar with an image list
 	*/
+
+	INITCOMMONCONTROLSEX icc;
+	icc.dwICC = ICC_BAR_CLASSES;
+	icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	InitCommonControlsEx(&icc);
 
 	HIMAGELIST toolBarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 6, 0);
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON2)));
@@ -86,7 +92,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON6)));
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON7)));
 
-	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
+	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0,MainWindow, nullptr, hInstance, nullptr);
 	SendMessage(ToolBarWindow, TB_SETIMAGELIST, 0, (LPARAM)toolBarImageList);
 	SendMessage(ToolBarWindow, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
 	
@@ -97,16 +103,41 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		{2,MENU_SAVEFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Save"},
 		{3,MENU_PLAYPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Play"},
 		{4,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Compile"},
-		{5,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Switch 2D/3D"},
+		{5,MENU_SWITCH3D2D,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Switch 2D/3D"},
 	};
 	SendMessage(ToolBarWindow, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
 	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)6, (LPARAM)&toolBarButtons);
 	SendMessage(ToolBarWindow, TB_AUTOSIZE, 0, 0);
 
+
+	/*
+		Rebar control
+	*/
+	icc.dwICC = ICC_COOL_CLASSES;
+	InitCommonControlsEx(&icc);
+
+	HWND RebarC = CreateWindowEx(0, REBARCLASSNAME, nullptr, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | RBS_VARHEIGHT | CCS_NODIVIDER | RBS_BANDBORDERS, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
+
+	DWORD buttonSize = (DWORD)SendMessage(ToolBarWindow, TB_GETBUTTONSIZE, 0, 0);
+
+	REBARBANDINFO rebarInfo;
+	memset(&rebarInfo, 0, sizeof(REBARBANDINFO));
+	rebarInfo.cbSize = sizeof(REBARBANDINFO);
+
+	rebarInfo.fMask = RBBIM_STYLE | RBBIM_TEXT | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_SIZE;
+	rebarInfo.fStyle = RBBS_CHILDEDGE | RBBS_GRIPPERALWAYS;
+	rebarInfo.lpText = (PWSTR)L"";
+	rebarInfo.hwndChild = ToolBarWindow;
+	rebarInfo.cyChild = LOWORD(buttonSize);
+	rebarInfo.cxMinChild = 6 * HIWORD(buttonSize);
+	rebarInfo.cyMinChild = LOWORD(buttonSize);
+
+	SendMessage(RebarC, RB_INSERTBAND, (WPARAM)-1, (LPARAM)&rebarInfo);
+
 	//Show windows
 	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
 	ShowWindow(RenderWindow, SW_NORMAL);
-	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
+	ShowWindow(RebarC, SW_NORMAL);
 	ResizeWindows();
 
 	Game game(RenderWindow);
@@ -126,6 +157,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	StencilState stencil(&game, 800, 600);
 	stencil.SetStencilState(context);
 
+	//Draw simple triangle for test purposes
+	/*
+	 TODO: Remove this from this place, and write code that will generalize vertex buffers and 3D models
+	*/
 	struct LocalVertexDeclaration
 	{
 		struct p
@@ -389,7 +424,6 @@ void ResizeWindows()
 	int width = r.right - r.left;
 	int height = r.bottom - r.top;
 	SetWindowPos(RenderWindow, nullptr, 0, 30, width, height - 30, SWP_SHOWWINDOW);
-	SetWindowPos(ToolBarWindow, (HWND)0, 0, 0, width, 30, SWP_SHOWWINDOW);
 }
 
 void CheckUpdate()
