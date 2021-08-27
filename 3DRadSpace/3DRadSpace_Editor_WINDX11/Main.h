@@ -8,7 +8,11 @@
 
 extern HWND MainWindow, RenderWindow, ToolBarWindow;
 
+extern std::wstring CurrentFile;
+
 extern HINSTANCE hGlobCurrentInst;
+
+extern bool IsSaved, _3DMode;
 
 int __stdcall wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd);
 
@@ -20,6 +24,12 @@ void CheckUpdate();
 void DownloadUpdate(char* link,char* version);
 
 void StartDiscordPresence();
+
+void ResetLoadedProject();
+bool ShowProjectNotSavedWarning();
+void SaveProject();
+void SaveProjectAs();
+
 void UpdateDiscordRichPresence();
 void StopDiscordRichPresence();
 
@@ -50,3 +60,4 @@ constexpr int MENU_GITHUB = 317;
 constexpr int MENU_SWITCH3D2D = 318;
 
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
+constexpr const wchar_t* __3DRADSPACE_FD_FILTER = L"3DRadSpace Project (*.3drsp)\0*.3drsp";

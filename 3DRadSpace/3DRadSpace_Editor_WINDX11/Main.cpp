@@ -4,14 +4,21 @@ HWND MainWindow, RenderWindow, ToolBarWindow;
 
 HINSTANCE hGlobCurrentInst;
 
+std::wstring CurrentFile(L"");
+
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
 Vector3 _3DCursor(0, 0, 0);
-bool _3DMode = true;
+bool _3DMode = true, IsSaved = true;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
+	//set current directory
+	wchar_t currPath[MAX_PATH];
+	GetModuleFileName(nullptr, currPath, MAX_PATH);
+	PathCchRemoveFileSpec(currPath, MAX_PATH);
+	SetCurrentDirectory(currPath);
 
 	//load editor icon
 	HICON hAppIcon = static_cast<HICON>(::LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, LR_DEFAULTCOLOR));
@@ -72,7 +79,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)HelpMenu, L"Help");
 
 	//create windows
-	MainWindow = CreateWindowExW(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
+	MainWindow = CreateWindowEx(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
 	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
 
 	/*
@@ -109,35 +116,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)6, (LPARAM)&toolBarButtons);
 	SendMessage(ToolBarWindow, TB_AUTOSIZE, 0, 0);
 
-
-	/*
-		Rebar control
-	*/
-	icc.dwICC = ICC_COOL_CLASSES;
-	InitCommonControlsEx(&icc);
-
-	HWND RebarC = CreateWindowEx(0, REBARCLASSNAME, nullptr, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | RBS_VARHEIGHT | CCS_NODIVIDER | RBS_BANDBORDERS, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
-
-	DWORD buttonSize = (DWORD)SendMessage(ToolBarWindow, TB_GETBUTTONSIZE, 0, 0);
-
-	REBARBANDINFO rebarInfo;
-	memset(&rebarInfo, 0, sizeof(REBARBANDINFO));
-	rebarInfo.cbSize = sizeof(REBARBANDINFO);
-
-	rebarInfo.fMask = RBBIM_STYLE | RBBIM_TEXT | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_SIZE;
-	rebarInfo.fStyle = RBBS_CHILDEDGE | RBBS_GRIPPERALWAYS;
-	rebarInfo.lpText = (PWSTR)L"";
-	rebarInfo.hwndChild = ToolBarWindow;
-	rebarInfo.cyChild = LOWORD(buttonSize);
-	rebarInfo.cxMinChild = 6 * HIWORD(buttonSize);
-	rebarInfo.cyMinChild = LOWORD(buttonSize);
-
-	SendMessage(RebarC, RB_INSERTBAND, (WPARAM)-1, (LPARAM)&rebarInfo);
-
 	//Show windows
 	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
 	ShowWindow(RenderWindow, SW_NORMAL);
-	ShowWindow(RebarC, SW_NORMAL);
+	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
 	ResizeWindows();
 
 	Game game(RenderWindow);
@@ -328,13 +310,51 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			switch (LOWORD(wParam))
 			{
 				case MENU_NEWFILE:
+				{
+					if(ShowProjectNotSavedWarning())
+						ResetLoadedProject();
 					break;
+				}
 				case MENU_OPENFILE:
+				{
+					if (!ShowProjectNotSavedWarning()) break;
+					wchar_t projPath[MAX_PATH];
+					GetModuleFileName(nullptr, projPath, MAX_PATH);
+					PathCchRemoveFileSpec(projPath, MAX_PATH);
+					lstrcatW(projPath, L"\\Projects\\");
+
+					wchar_t filePath[MAX_PATH];
+					memset(filePath, 0, sizeof(filePath));
+
+					OPENFILENAME ofn;
+					memset(&ofn, 0, sizeof(ofn));
+					ofn.lStructSize = sizeof(OPENFILENAME);
+					ofn.hwndOwner = MainWindow;
+					ofn.lpstrFilter = __3DRADSPACE_FD_FILTER;
+					ofn.lpstrTitle = L"Open a project...";
+					ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+					ofn.lpstrInitialDir = projPath;
+					ofn.lpstrFile = filePath;
+					ofn.hInstance = hGlobCurrentInst;
+					ofn.nMaxFile = MAX_PATH;
+					if (GetOpenFileName(&ofn))
+					{
+						CurrentFile = ofn.lpstrFile; //C6504 is useless 
+						UpdateDiscordRichPresence();
+						IsSaved = true;
+					}
 					break;
+				}
 				case MENU_SAVEFILE:
+				{
+					SaveProject();
 					break;
+				}
 				case MENU_SAVEFILEAS:
+				{
+					SaveProjectAs();
 					break;
+				}
 				case MENU_PLAYPROJECT:
 					break;
 				case MENU_COMPILEPROJECT:
@@ -423,7 +443,11 @@ void ResizeWindows()
 	GetWindowRect(MainWindow,&r);
 	int width = r.right - r.left;
 	int height = r.bottom - r.top;
-	SetWindowPos(RenderWindow, nullptr, 0, 30, width, height - 30, SWP_SHOWWINDOW);
+
+	GetWindowRect(ToolBarWindow, &r);
+	int toolbarheight = r.bottom - r.top;
+
+	SetWindowPos(RenderWindow, nullptr, 0, toolbarheight, width, height - toolbarheight, SWP_SHOWWINDOW);
 }
 
 void CheckUpdate()
@@ -524,9 +548,91 @@ void StartDiscordPresence()
 	Discord_UpdatePresence(&drp);
 }
 
+
+void ResetLoadedProject()
+{
+	//reset internal data
+	CurrentFile.erase();
+	//<- reset object list
+
+	DiscordRichPresence drp;
+	memset(&drp, 0, sizeof(DiscordRichPresence));
+	drp.startTimestamp = time(nullptr);
+	drp.largeImageKey = "mainicon";
+	drp.state = "New project";
+	Discord_UpdatePresence(&drp);
+	IsSaved = true;
+}
+
+bool ShowProjectNotSavedWarning()
+{
+	if (!IsSaved)
+	{
+		int m = MessageBox(nullptr, L"This project is not saved. Unsaved progress may be lost. Save project?", L"Project not saved", MB_YESNOCANCEL | MB_ICONWARNING);
+		if (m == IDYES)
+		{
+			SaveProject();
+			return true;
+		}
+		if (m == IDNO)
+		{
+			return true;
+		}
+		else return false;
+	}
+	return true;
+}
+
+void SaveProject()
+{
+	if (CurrentFile == L"") SaveProjectAs();
+	else
+	{
+		IsSaved = true;
+		//...
+	}
+}
+void SaveProjectAs()
+{
+	if (CurrentFile != L"") SaveProject();
+	wchar_t filebuffer[MAX_PATH];
+	memset(filebuffer, 0, sizeof(filebuffer));
+
+	OPENFILENAME sfn;
+	memset(&sfn, 0, sizeof(sfn));
+	sfn.lStructSize = sizeof(sfn);
+	sfn.hwndOwner = MainWindow;
+	sfn.lpstrFilter = __3DRADSPACE_FD_FILTER;
+	sfn.hInstance = hGlobCurrentInst;
+	sfn.Flags = OFN_DONTADDTORECENT | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+	sfn.lpstrFile = filebuffer;
+	sfn.nMaxFile = MAX_PATH;
+	if (GetSaveFileName(&sfn))
+	{
+		CurrentFile = sfn.lpstrFile;
+		SaveProject();
+	}
+}
+
 void UpdateDiscordRichPresence()
 {
+	DiscordRichPresence drp;
+	memset(&drp, 0, sizeof(DiscordRichPresence));
+	drp.startTimestamp = time(nullptr);
+	drp.largeImageKey = "mainicon";
+	drp.details = "Working on a project";
 
+	size_t fileindex = CurrentFile.find_last_of('\\') + 1;
+	size_t extension_index = CurrentFile.find_last_of('.');
+
+	char filebuffer[MAX_PATH];
+	memset(filebuffer, 0, sizeof(filebuffer));
+	
+	sprintf_s<MAX_PATH>(filebuffer,"%ws", CurrentFile.c_str() + fileindex);
+	filebuffer[extension_index - fileindex] = 0;
+
+	drp.state = filebuffer;
+	Discord_UpdatePresence(&drp);
 }
 
 void StopDiscordRichPresence()
@@ -537,6 +643,7 @@ void StopDiscordRichPresence()
 
 void ExitEditor()
 {
+	if(!ShowProjectNotSavedWarning()) return;
 	StopDiscordRichPresence();
 	exit(0);
 }
