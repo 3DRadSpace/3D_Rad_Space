@@ -1,5 +1,6 @@
 #include "ShaderInputLayout.h"
 
+#ifdef __DIRECTXVER
 ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list)
 {
 	this->_layout = nullptr;
@@ -70,3 +71,4 @@ ShaderInputLayout::~ShaderInputLayout()
 	if (this->_layout != nullptr) this->_layout->Release();
 	delete this->_inputelements;
 }
+#endif

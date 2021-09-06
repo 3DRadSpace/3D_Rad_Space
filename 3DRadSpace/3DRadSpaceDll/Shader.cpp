@@ -1,5 +1,6 @@
 #include "Shader.h"
 
+#ifdef __DIRECTXVER
 void Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)
 {
 	switch (this->_shadertype)
@@ -25,7 +26,6 @@ void Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)
 		default:
 		{
 			throw std::logic_error("Unknown shader type to be compiled." + std::to_string((uint8_t)this->_shadertype));
-			break;
 		}
 	}
 }
@@ -130,3 +130,4 @@ Shader::~Shader()
 	if (_errorblob != nullptr) _errorblob->Release();
 	if (_shader != nullptr) _shader->Release();
 }
+#endif

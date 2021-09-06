@@ -32,3 +32,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #pragma comment(lib,"pathcch.lib")
 
 #include "3DRadSpaceDll/Shader.h"
+#include "3DRadSpaceDll/SamplerState.h"
+#include "3DRadSpaceDll/RasterizerState.h"
+#include "3DRadSpaceDll/Viewport.h"
+#include "3DRadSpaceDll/Camera.h"

@@ -11,23 +11,25 @@ struct VertexPositionDeclaration
 {
 	Vector4 Pos;
 };
+
 struct VertexPositionColorDeclaration
 {
 	Vector4 Pos;
 	ColorShader Color;
 };
+
 struct VertexPositionNormalDeclaration
 {
 	Vector4 Pos;
 	Vector4 Normal;
 };
+
 struct VertexPositionNormalColorDeclaration
 {
 	Vector4 Pos;
 	Vector4 Normal;
 	ColorShader Color;
 };
-
 
 template<class T>
 class VertexBuffer
@@ -40,10 +42,13 @@ public:
 	VertexBuffer(T vertexdata[]) : data(vertexdata), size(sizeof(vertexdata) / sizeof(T)) , _buffer(nullptr),_vertexbuffercreated(false) {};
 	VertexBuffer(T* vertexdata, size_t size) : data(vertexdata), size(size) , _buffer(nullptr), _vertexbuffercreated(false) {};
 	VertexBuffer(const std::initializer_list<T> &data);
-	~VertexBuffer();
 
 	void CreateVertexBuffer(ID3D11Device* dev);
 	ID3D11Buffer* GetCreatedVertexBuffer() noexcept;
+
+	void Draw(ID3D11DeviceContext* context);
+
+	~VertexBuffer();
 };
 
 template<class T>
@@ -102,6 +107,16 @@ template<class T>
 ID3D11Buffer* VertexBuffer<T>::GetCreatedVertexBuffer() noexcept
 {
 	return this->_vertexbuffercreated ? this->_buffer : nullptr;
+}
+
+template<class T>
+void VertexBuffer<T>::Draw(ID3D11DeviceContext* context)
+{
+	unsigned offset = 0;
+	unsigned stride = sizeof(T);
+
+	context->IASetVertexBuffers(0, 1, &this->_buffer, &stride, &offset);
+	context->Draw(this->size, 0);
 }
 
 #endif

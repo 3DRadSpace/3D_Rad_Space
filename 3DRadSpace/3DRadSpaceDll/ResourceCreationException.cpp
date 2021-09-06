@@ -2,8 +2,7 @@
 
 inline ResourceCreationException::ResourceCreationException(const std::string& message, const std::type_info& type)
 {
-	_message = message;
-	_message += "Faulty type :" + std::string(type.name());
+	_message = message + "Faulty type :" + std::string(type.name());
 }
 
 inline const char* ResourceCreationException::what() const

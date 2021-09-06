@@ -10,7 +10,7 @@ const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
 Vector3 _3DCursor(0, 0, 0);
-bool _3DMode = true, IsSaved = true;
+bool _3DMode = true, IsSaved = true, ShouldExit = false;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
@@ -41,7 +41,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	editorwndclass.lpszClassName = EditorWindowClassName;
 
 	RegisterClass(&editorwndclass);
-
 	/*
 		Create Menu control
 	*/
@@ -125,18 +124,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
 
-	ID3D11RenderTargetView* MainRenderTarget = game.GetRenderTargetBackBuffer();
-	if (MainRenderTarget == nullptr)
-	{
-		MessageBox(nullptr, L"Failed to create the main render target.", L"Fatal error", MB_ICONERROR | MB_OK);
-		exit(1);
-	}
-
 	HRESULT r = 0;
 
-	StencilState stencil(&game, 800, 600);
-	stencil.SetStencilState(context);
-
+	StencilState stencil(&game);
+	game.SetStencilState(&stencil);
 
 	//Basic coloured triangle test code. Will be removed in the future.
 	VertexPositionColorDeclaration *Triangles = new VertexPositionColorDeclaration[3]; //use heap memory since we call delete[] in the destructor
@@ -155,52 +146,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	SimplePixelShader.LoadFromFile(L"VS_NoTransform_PositionColor.hlsl", "basic_ps");
 	SimplePixelShader.CompileShader(device);
 
-	HRESULT testr = 0;
+	SamplerState SamplerState(device);
+	SamplerState.SetSamplerVertexShader(context);
+	SamplerState.SetSamplerPixelShader(context);
 
-	//TODO: Write SamplerState class
-
-	D3D11_SAMPLER_DESC samplerstatedesc;
-	memset(&samplerstatedesc, 0, sizeof(samplerstatedesc));
-	samplerstatedesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	samplerstatedesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	samplerstatedesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-
-	samplerstatedesc.BorderColor[0] = 1.0f;
-	samplerstatedesc.BorderColor[1] = 1.0f;
-	samplerstatedesc.BorderColor[2] = 1.0f;
-	samplerstatedesc.BorderColor[3] = 1.0f;
-
-	samplerstatedesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerstatedesc.MaxLOD = std::numeric_limits<float>::max();
-	samplerstatedesc.ComparisonFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_NEVER;
-	samplerstatedesc.MaxAnisotropy = 1;
-
-	ID3D11SamplerState* samplerstate = nullptr;
-	testr = device->CreateSamplerState(&samplerstatedesc, &samplerstate);
-	assert(SUCCEEDED(testr));
-
-	context->VSSetSamplers(0, 1, &samplerstate);
-	context->PSSetSamplers(0, 1, &samplerstate);
-
-	//TODO: Write Rasterizer state class
-
-	ID3D11RasterizerState* rasterizerstate = 0;
-	D3D11_RASTERIZER_DESC rasterizerDesc;
-	memset(&rasterizerDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
-	rasterizerDesc.AntialiasedLineEnable = false;
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;
-
-	rasterizerDesc.DepthBias = 0;
-	rasterizerDesc.DepthBiasClamp = 0.0f;
-	rasterizerDesc.DepthClipEnable = true;
-	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-	rasterizerDesc.FrontCounterClockwise = true;
-	rasterizerDesc.MultisampleEnable = false;
-	rasterizerDesc.ScissorEnable = false;
-	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
-	testr = device->CreateRasterizerState(&rasterizerDesc, &rasterizerstate);
-	assert(SUCCEEDED(testr));
-	context->RSSetState(rasterizerstate);
+	RasterizerState RasterizerState(device);
+	RasterizerState.SetRasterizerState(context);
 
 	ShaderInputLayout inputlayout({ InputLayoutElement::Position,InputLayoutElement::Color });
 	inputlayout.CreateInputLayout(device, &SimpleVertexShader);
@@ -208,44 +159,30 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	StartDiscordPresence();
 
 	MSG m = { 0 };
-	while (true)
+	while (!ShouldExit)
 	{
 		while(PeekMessage(&m,nullptr,0,0,PM_REMOVE))
 		{
 			TranslateMessage(&m);
 			DispatchMessageW(&m);
 		}
-		float cleancolor[] = {0,0,0,1 };
-		context->OMSetRenderTargets(1, &MainRenderTarget, nullptr);
-		context->ClearRenderTargetView(MainRenderTarget, cleancolor);
 
-		D3D11_VIEWPORT Viewport;
-		memset(&Viewport, 0, sizeof(D3D11_VIEWPORT));
-		Viewport.TopLeftX = 0;
-		Viewport.TopLeftY = 0;
-		Viewport.Width = 800;
-		Viewport.Height = 600;
-		Viewport.MinDepth = 0.0f;
-		Viewport.MaxDepth = 1.0f;
+		game.Clear({ 0,0,0,1 });
 
-		context->RSSetViewports(1, &Viewport);
+		Viewport Viewport;
+		Viewport.SetViewport(context);
 		
 		inputlayout.SetInputLayout(context);
 		SimpleVertexShader.SetShader(context);
 		SimplePixelShader.SetShader(context);
 		
-		uint32_t vstride = sizeof(VertexPositionColorDeclaration);
-		uint32_t voffset = 0;
+		game.SetTopology(PrimitiveTopology::TriangleList);
+		TestTriangle.Draw(context);
 
-		ID3D11Buffer* triangle = TestTriangle.GetCreatedVertexBuffer();
+		game.Present();
 
-		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-		context->IASetVertexBuffers(0, 1, &triangle, &vstride, &voffset);
-		context->Draw(3, 0);
-
-		swapchain->Present(1, 0);
 	}
-	return EXIT_SUCCESS;
+	return 0;
 }
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -614,5 +551,5 @@ void ExitEditor()
 {
 	if(!ShowProjectNotSavedWarning()) return;
 	StopDiscordRichPresence();
-	exit(0);
+	ShouldExit = true;
 }

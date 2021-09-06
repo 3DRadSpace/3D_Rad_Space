@@ -1,5 +1,6 @@
 #include "Texture2D.h"
 
+#ifdef __DIRECTXVER
 Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 {
 	this->_device = g->GetDevice();
@@ -21,9 +22,13 @@ Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 	texturedesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	HRESULT r = this->_device->CreateTexture2D(&texturedesc, nullptr, &this->_texture);
+	if (FAILED(r))
+	{
+		throw std::runtime_error("Failed to create a Texture2D!");
+	}
 }
 
-Texture2D::Texture2D(std::string path)
+Texture2D::Texture2D(const std::string &path)
 {
 	_texture = nullptr;
 	_context = nullptr;
@@ -33,8 +38,6 @@ Texture2D::Texture2D(std::string path)
 Texture2D::~Texture2D()
 {
 	if (_texture != nullptr) _texture->Release();
-	if (_device != nullptr) _device->Release();
-	if (_context != nullptr) _context->Release();
 }
 
 template<class T>
@@ -47,3 +50,4 @@ template<class T>
 inline void Texture2D::SetData(T* data, size_t size)
 {
 }
+#endif

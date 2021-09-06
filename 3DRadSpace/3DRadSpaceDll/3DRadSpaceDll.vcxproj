@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="IObject.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="RasterizerState.h" />
     <ClInclude Include="ResourceCreationException.h" />
+    <ClInclude Include="SamplerState.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderInputLayout.h" />
     <ClInclude Include="StencilState.h" />
@@ -33,14 +37,19 @@
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IObject.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="RasterizerState.cpp" />
     <ClCompile Include="ResourceCreationException.cpp" />
+    <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderInputLayout.cpp" />
     <ClCompile Include="StencilState.cpp" />
@@ -48,6 +57,7 @@
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

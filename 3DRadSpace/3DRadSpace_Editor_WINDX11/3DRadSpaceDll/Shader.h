@@ -42,6 +42,8 @@ public:
 	void CreateInputLayout(ID3D11Device* device, ShaderInputLayout* input);
 	void SetInputLayout(ID3D11DeviceContext *context,ShaderInputLayout *input);
 
+	//void SetShaderParameters(...);
+
 	ID3DBlob* GetShaderBlob() const;
 	ID3DBlob* GetErrorBlob() const;
 

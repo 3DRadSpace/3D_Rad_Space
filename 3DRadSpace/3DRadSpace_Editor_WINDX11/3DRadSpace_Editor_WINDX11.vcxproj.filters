@@ -33,7 +33,7 @@
     <ClInclude Include="DownloadStatusWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInputLayout.h">
+    <ClInclude Include="Viewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClCompile Include="DownloadStatusWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderInputLayout.cpp">
+    <ClCompile Include="Viewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

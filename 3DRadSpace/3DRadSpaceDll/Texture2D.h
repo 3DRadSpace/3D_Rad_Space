@@ -13,7 +13,7 @@ class Texture2D
 	ID3D11DeviceContext* _context;
 public:
 	Texture2D(Game *g,int width, int height, DXGI_FORMAT format);
-	Texture2D(std::string path);
+	Texture2D(const std::string &path);
 
 	template<class T> T* GetData(size_t &size);
 	template<class T> void SetData(T* data, size_t size);

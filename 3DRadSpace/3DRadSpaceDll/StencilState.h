@@ -1,11 +1,13 @@
 #pragma once
 #include "Globals.h"
 #include "Game.h"
-#ifdef __DIRECTXVER
-#include <d3d11.h>
-#endif
 
 #ifdef __DIRECTXVER
+
+#include <d3d11.h>
+
+class DLLEXPORT Game; //:pain:
+
 class DLLEXPORT StencilState
 {
 	ID3D11Texture2D* _stenciltexture;
@@ -13,9 +15,10 @@ class DLLEXPORT StencilState
 	ID3D11DepthStencilView* _stencilview;
 	ID3D11RenderTargetView* _rendertarget;
 public:
-	StencilState(Game* g, int width, int height);
+	StencilState(Game* g);
 
-	void SetStencilState(ID3D11DeviceContext* context);
+	ID3D11DepthStencilView* GetStencilView();
+	ID3D11DepthStencilState* GetStencilState();
 
 	~StencilState();
 };

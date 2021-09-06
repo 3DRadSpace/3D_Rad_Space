@@ -56,8 +56,12 @@ Vector3 Vector3::operator*=(const Matrix& m)
 	float x = (this->X * m.M11) + (this->Y * m.M21) + (this->Z * m.M31) + m.M41;
 	float y = (this->X * m.M12) + (this->Y * m.M22) + (this->Z * m.M32) + m.M42;
 	float z = (this->X * m.M13) + (this->Y * m.M23) + (this->Z * m.M33) + m.M43;
-	float w = (this->X * m.M13) + (this->Y * m.M23) + (this->Z * m.M33) + m.M43;
 	return Vector3(x, y, z);
+}
+
+Vector3 Vector3::operator-()
+{
+	return Vector3(-this->X,-this->Y,-this->Z);
 }
 
 float Vector3::Dot(const Vector3& v)

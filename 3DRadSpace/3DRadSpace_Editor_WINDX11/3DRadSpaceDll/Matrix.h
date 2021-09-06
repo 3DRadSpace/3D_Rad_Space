@@ -21,16 +21,30 @@ struct DLLEXPORT Matrix
 			   M21(0), M22(1), M23(0), M24(0),
 			   M31(0), M32(0), M33(1), M34(0),
 			   M41(0), M42(0), M43(0), M44(1) {};
+	//Awful awful
+	Matrix( float m11,float m12,float m13,float m14,
+			float m21,float m22,float m23, float m24,
+			float m31,float m32,float m33, float m34,
+			float m41,float m42,float m43, float m44) : M11(m11), M12(m12), M13(m13), M14(m14),
+														M21(m21), M22(m22), M23(m23), M24(m24),
+														M31(m31), M32(m32), M33(m33), M34(m34),
+														M41(m41), M42(m42), M43(m43), M44(m44) {};
 
 	static Matrix CreateScale(float scale);
 	static Matrix CreateScale(const Vector3 &v);
+
 	static Matrix CreateTranslation(const Vector3& p);
-	Matrix CreateRotationX(float alpha);
-	Matrix CreateRotationY(float beta);
-	Matrix CreateRotationZ(float gamma);
-	Matrix CreateFromQuaternion(Quaternion q);
+
+	static Matrix CreateRotationX(float alpha);
+	static Matrix CreateRotationY(float beta);
+	static Matrix CreateRotationZ(float gamma);
+
+	static Matrix CreateFromQuaternion(Quaternion q);
+
 	static Matrix CreateLookAt(const Vector3& camerapos, const Vector3& camera_look_at, const Vector3& normal);
+
 	static Matrix CreateProjectionFOV(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance);
-	Matrix CreateProjectionScreenRatio(float screenX, float screenY, float npd, float dpf);
+	static Matrix CreateProjectionScreenRatio(float screenX, float screenY, float npd, float dpf);
 };
 
+Matrix operator * (const Matrix& a, const Matrix& b);

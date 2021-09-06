@@ -1,6 +1,7 @@
 #include "StencilState.h"
 
-StencilState::StencilState(Game* g, int width, int height)
+#ifdef __DIRECTXVER
+StencilState::StencilState(Game* g)
 {
 	_stencilview = nullptr;
 
@@ -15,8 +16,8 @@ StencilState::StencilState(Game* g, int width, int height)
 	stencilTextureDesc.SampleDesc.Count = 1;
 	stencilTextureDesc.SampleDesc.Quality = 0;
 	stencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	stencilTextureDesc.Width = width;
-	stencilTextureDesc.Height = height;
+	stencilTextureDesc.Width = g->GetResolution().X;
+	stencilTextureDesc.Height = g->GetResolution().Y;
 
 	HRESULT r = device->CreateTexture2D(&stencilTextureDesc, nullptr, &this->_stenciltexture);
 	if (FAILED(r)) throw std::exception("Failed to create the Stencil State texture");
@@ -51,10 +52,14 @@ StencilState::StencilState(Game* g, int width, int height)
 
 }
 
-void StencilState::SetStencilState(ID3D11DeviceContext* context)
+ID3D11DepthStencilView* StencilState::GetStencilView()
 {
-	context->OMSetDepthStencilState(this->_stencilstate, 1);
-	context->OMSetRenderTargets(1, &this->_rendertarget, this->_stencilview);
+	return this->_stencilview;
+}
+
+ID3D11DepthStencilState* StencilState::GetStencilState()
+{
+	return this->_stencilstate;
 }
 
 StencilState::~StencilState()
@@ -67,3 +72,4 @@ StencilState::~StencilState()
 	this->_stencilstate = nullptr;
 	this->_stencilview = nullptr;
 }
+#endif

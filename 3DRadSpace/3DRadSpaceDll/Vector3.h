@@ -24,6 +24,8 @@ struct DLLEXPORT Vector3
 
 	Vector3 operator *=(const Matrix& m);
 
+	Vector3 operator -();
+
 	float Dot(const Vector3 &v);
 	static float Dot(const Vector3& a,const Vector3& b);
 
