@@ -86,9 +86,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		Create toolbar with an image list
 	*/
 
-	INITCOMMONCONTROLSEX icc;
-	icc.dwICC = ICC_BAR_CLASSES;
-	icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	INITCOMMONCONTROLSEX icc = { sizeof(INITCOMMONCONTROLSEX) , ICC_BAR_CLASSES };
 	InitCommonControlsEx(&icc);
 
 	HIMAGELIST toolBarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 6, 0);
@@ -139,56 +137,27 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	StencilState stencil(&game, 800, 600);
 	stencil.SetStencilState(context);
 
-	//Draw simple triangle for test purposes
-	/*
-	 TODO: Remove this from this place, and write code that will generalize vertex buffers and 3D models
-	*/
-	struct LocalVertexDeclaration
-	{
-		struct p
-		{
-			float X, Y, Z, W;
-		} Pos;
-		struct c
-		{
-			float R, G, B, A;
-		} Color;
 
-	} Triangles[3]; 
-	memset(Triangles, 0, sizeof(Triangles)); //useless but it removes LNT1006 from my errors list (I love seeing it empty)
-	Triangles[0] = { {0.0f,  0.5f,  0.0f, 1.0f},{1.0f,0,0,1.0f} }; 
-	Triangles[1] = { {0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,1.0f,0,1.0f} }; 
-	Triangles[2] = { {-0.5f,  -0.5f,  0.0f, 1.0f},{0.0f,0,1.0f,1.0f} }; 
+	//Basic coloured triangle test code. Will be removed in the future.
+	VertexPositionColorDeclaration *Triangles = new VertexPositionColorDeclaration[3]; //use heap memory since we call delete[] in the destructor
+	Triangles[0] = { {0.0f,  0.5f,  0.0f,1.0f},{1.0f,0,0,1.0f} };
+	Triangles[1] = { {0.5f,  -0.5f,  0.0f,1.0f},{0.0f,1.0f,0,1.0f} };
+	Triangles[2] = { {-0.5f,  -0.5f,  0.0f,1.0f},{0.0f,0,1.0f,1.0f} };
 
-	D3D11_BUFFER_DESC trianglebufferdesc;
-	memset(&trianglebufferdesc, 0, sizeof(D3D11_BUFFER_DESC));
-	trianglebufferdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	trianglebufferdesc.ByteWidth = sizeof(Triangles);
-	
-	D3D11_SUBRESOURCE_DATA trianglebufferfiller;
-	memset(&trianglebufferfiller, 0, sizeof(D3D11_SUBRESOURCE_DATA));
-	trianglebufferfiller.pSysMem = Triangles;
+	VertexBuffer<VertexPositionColorDeclaration> TestTriangle(Triangles, 3);
+	TestTriangle.CreateVertexBuffer(device);
 
-	ID3D11Buffer* trianglebuffer = nullptr;
-	HRESULT testr = device->CreateBuffer(&trianglebufferdesc, &trianglebufferfiller, &trianglebuffer);
-	assert(SUCCEEDED(testr));
-	
-	ID3DBlob *vs_blob,*vs_e_blob, *ps_blob,*ps_e_blob;
+	Shader SimpleVertexShader(ShaderType::Vertex);
+	SimpleVertexShader.LoadFromFile(L"VS_NoTransform_PositionColor.hlsl", "basic_vs");
+	SimpleVertexShader.CompileShader(device);
 
-	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_vs", "vs_4_0", 0, 0, &vs_blob, &vs_e_blob);
-	testr = D3DCompileFromFile(L"VS_NoTransform_PositionColor.hlsl", nullptr, nullptr, "basic_ps", "ps_4_0", 0, 0, &ps_blob, &ps_e_blob);
-	
-	assert(SUCCEEDED(testr));
-	
-	ID3D11PixelShader *_simpleps = nullptr;
-	testr = device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), nullptr, &_simpleps);
-	
-	assert(SUCCEEDED(testr));
+	Shader SimplePixelShader(ShaderType::Pixel);
+	SimplePixelShader.LoadFromFile(L"VS_NoTransform_PositionColor.hlsl", "basic_ps");
+	SimplePixelShader.CompileShader(device);
 
-	ID3D11VertexShader* _simplevs = nullptr;
-	testr = device->CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), nullptr, &_simplevs);
+	HRESULT testr = 0;
 
-	assert(SUCCEEDED(testr));
+	//TODO: Write SamplerState class
 
 	D3D11_SAMPLER_DESC samplerstatedesc;
 	memset(&samplerstatedesc, 0, sizeof(samplerstatedesc));
@@ -202,7 +171,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	samplerstatedesc.BorderColor[3] = 1.0f;
 
 	samplerstatedesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerstatedesc.MaxLOD = FLT_MAX;
+	samplerstatedesc.MaxLOD = std::numeric_limits<float>::max();
 	samplerstatedesc.ComparisonFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_NEVER;
 	samplerstatedesc.MaxAnisotropy = 1;
 
@@ -212,6 +181,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	context->VSSetSamplers(0, 1, &samplerstate);
 	context->PSSetSamplers(0, 1, &samplerstate);
+
+	//TODO: Write Rasterizer state class
 
 	ID3D11RasterizerState* rasterizerstate = 0;
 	D3D11_RASTERIZER_DESC rasterizerDesc;
@@ -231,17 +202,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	assert(SUCCEEDED(testr));
 	context->RSSetState(rasterizerstate);
 
-	D3D11_INPUT_ELEMENT_DESC vs_input_l[] =
-	{
-		{"POSITION",0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0}, // <- this
-		{"COLOR",0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,16,D3D11_INPUT_PER_VERTEX_DATA,0} //<- i took D3D11_APPEND_ALIGNED_ELEMENT from some tutorial article
-	};
-
-	ID3D11InputLayout* _inputLayout;
-	testr = device->CreateInputLayout(vs_input_l, 2, vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), &_inputLayout);
-	assert(SUCCEEDED(testr));
-
-	context->IASetInputLayout(_inputLayout);
+	ShaderInputLayout inputlayout({ InputLayoutElement::Position,InputLayoutElement::Color });
+	inputlayout.CreateInputLayout(device, &SimpleVertexShader);
 
 	StartDiscordPresence();
 
@@ -268,14 +230,17 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 		context->RSSetViewports(1, &Viewport);
 		
-		context->VSSetShader(_simplevs, nullptr, 0);
-		context->PSSetShader(_simpleps, nullptr, 0);
+		inputlayout.SetInputLayout(context);
+		SimpleVertexShader.SetShader(context);
+		SimplePixelShader.SetShader(context);
 		
-		uint32_t vstride = sizeof(LocalVertexDeclaration);
+		uint32_t vstride = sizeof(VertexPositionColorDeclaration);
 		uint32_t voffset = 0;
 
+		ID3D11Buffer* triangle = TestTriangle.GetCreatedVertexBuffer();
+
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-		context->IASetVertexBuffers(0, 1, &trianglebuffer, &vstride, &voffset);
+		context->IASetVertexBuffers(0, 1, &triangle, &vstride, &voffset);
 		context->Draw(3, 0);
 
 		swapchain->Present(1, 0);
@@ -323,7 +288,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					PathCchRemoveFileSpec(projPath, MAX_PATH);
 					lstrcatW(projPath, L"\\Projects\\");
 
-					wchar_t filePath[MAX_PATH];
+					wchar_t filePath[MAX_PATH+1];
 					memset(filePath, 0, sizeof(filePath));
 
 					OPENFILENAME ofn;
@@ -339,7 +304,8 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					ofn.nMaxFile = MAX_PATH;
 					if (GetOpenFileName(&ofn))
 					{
-						CurrentFile = ofn.lpstrFile; //C6504 is useless 
+						filePath[MAX_PATH] = 0; // STFU C6054
+						CurrentFile = filePath; //C6504 is useless, stfu Intellisense:tm:
 						UpdateDiscordRichPresence();
 						IsSaved = true;
 					}
@@ -475,6 +441,8 @@ void CheckUpdate()
 
 	char* p = strtok_s(buffer, " ",&context);
 	
+	read_update_info.close();
+
 	DeleteFile(L"version.txt");
 
 	int i = 0;
@@ -595,7 +563,7 @@ void SaveProject()
 void SaveProjectAs()
 {
 	if (CurrentFile != L"") SaveProject();
-	wchar_t filebuffer[MAX_PATH];
+	wchar_t filebuffer[MAX_PATH+1];
 	memset(filebuffer, 0, sizeof(filebuffer));
 
 	OPENFILENAME sfn;
@@ -609,7 +577,8 @@ void SaveProjectAs()
 	sfn.nMaxFile = MAX_PATH;
 	if (GetSaveFileName(&sfn))
 	{
-		CurrentFile = sfn.lpstrFile;
+		filebuffer[MAX_PATH] = 0;
+		CurrentFile = filebuffer;
 		SaveProject();
 	}
 }

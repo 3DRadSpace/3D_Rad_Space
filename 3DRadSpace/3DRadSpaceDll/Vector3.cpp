@@ -1,6 +1,6 @@
 #include "Vector3.h"
 
-float Vector3::Lenght()
+float Vector3::Lenght() const
 {
 	return (float)std::sqrt(std::pow<float>(X, 2) + std::pow<float>(Y, 2) + std::pow<float>(Z, 2));
 }
@@ -15,7 +15,8 @@ void Vector3::Normalize()
 
 Vector3 Vector3::Normalize(const Vector3& v)
 {
-	return Vector3(v.X, v.Y, v.Z);
+	float l = v.Lenght();
+	return Vector3(v.X/l, v.Y/l, v.Z/l);
 }
 
 inline Vector3 Vector3::operator+=(const Vector3 &v)
@@ -55,6 +56,7 @@ Vector3 Vector3::operator*=(const Matrix& m)
 	float x = (this->X * m.M11) + (this->Y * m.M21) + (this->Z * m.M31) + m.M41;
 	float y = (this->X * m.M12) + (this->Y * m.M22) + (this->Z * m.M32) + m.M42;
 	float z = (this->X * m.M13) + (this->Y * m.M23) + (this->Z * m.M33) + m.M43;
+	float w = (this->X * m.M13) + (this->Y * m.M23) + (this->Z * m.M33) + m.M43;
 	return Vector3(x, y, z);
 }
 

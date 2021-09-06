@@ -10,9 +10,10 @@ struct DLLEXPORT Vector3
 {
 	float X, Y, Z;
 
+	Vector3() = default;
 	Vector3(float x,float y,float z): X(x),Y(y),Z(z) {}
 
-	float Lenght();
+	float Lenght() const;
 	void Normalize();
 	static Vector3 Normalize(const Vector3& v);
 

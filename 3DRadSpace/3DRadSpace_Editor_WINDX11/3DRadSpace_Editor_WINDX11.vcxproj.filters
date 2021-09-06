@@ -33,6 +33,9 @@
     <ClInclude Include="DownloadStatusWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderInputLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DownloadStatusWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInputLayout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
