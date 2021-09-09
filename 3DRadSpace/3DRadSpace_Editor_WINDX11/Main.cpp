@@ -119,7 +119,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
 	ResizeWindows();
 
-	Game game(RenderWindow);
+	Game game(RenderWindow, GetRenderWindowResolution());
 	ID3D11Device* device = game.GetDevice();
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
@@ -169,7 +169,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 		game.Clear({ 0,0,0,1 });
 
-		Viewport Viewport;
+		Viewport Viewport(&game);
 		Viewport.SetViewport(context);
 		
 		inputlayout.SetInputLayout(context);
@@ -552,4 +552,14 @@ void ExitEditor()
 	if(!ShowProjectNotSavedWarning()) return;
 	StopDiscordRichPresence();
 	ShouldExit = true;
+}
+
+Point GetRenderWindowResolution()
+{
+	RECT r = { 0 };
+	GetWindowRect(MainWindow, &r);
+	int width = r.right - r.left;
+	int height = r.bottom - r.top;
+
+	return Point(width,height);
 }

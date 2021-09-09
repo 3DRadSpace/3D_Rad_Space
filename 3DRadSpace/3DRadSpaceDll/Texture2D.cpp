@@ -4,10 +4,8 @@
 Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 {
 	this->_device = g->GetDevice();
-	_device->GetImmediateContext(&this->_context);
-	_device->AddRef();
-	_context->AddRef();
-	
+	this->_context = g->GetDeviceContext();
+
 	D3D11_TEXTURE2D_DESC texturedesc;
 	memset(&texturedesc, 0, sizeof(D3D11_TEXTURE2D_DESC));
 	texturedesc.Format = format;
@@ -26,28 +24,45 @@ Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 	{
 		throw std::runtime_error("Failed to create a Texture2D!");
 	}
+
+	r = this->_device->CreateShaderResourceView((ID3D11Resource*)this->_texture, nullptr, &this->_shaderresourceview);
+	if (FAILED(r))
+	{
+		throw ResourceCreationException("Failed to create the shader resource view", typeid(ID3D11ShaderResourceView));
+	}
 }
 
-Texture2D::Texture2D(const std::string &path)
+Texture2D::Texture2D(Game* game,const std::wstring &path)
 {
 	_texture = nullptr;
-	_context = nullptr;
-	_device = nullptr;
+	_shaderresourceview = nullptr;
+
+	_context = game->GetDeviceContext();
+	_device = game->GetDevice();
+
+	HRESULT r = DirectX::CreateWICTextureFromFile(_device, path.c_str(), (ID3D11Resource**)&_texture, &_shaderresourceview);
+	if (FAILED(r))
+	{
+		r = DirectX::CreateDDSTextureFromFile(_device, path.c_str(), (ID3D11Resource**)&_texture, &_shaderresourceview);
+		if (FAILED(r))
+		{
+			throw ResourceCreationException("Failed to create a texture from file!", typeid(ID3D11Texture2D));
+		}
+	}
+}
+
+ID3D11Texture2D* Texture2D::GetTexture2D()
+{
+	return this->_texture;
+}
+
+ID3D11ShaderResourceView* Texture2D::GetShaderResourceView()
+{
+	return this->_shaderresourceview;
 }
 
 Texture2D::~Texture2D()
 {
 	if (_texture != nullptr) _texture->Release();
-}
-
-template<class T>
-inline T* Texture2D::GetData(size_t &size_out)
-{
-	
-}
-
-template<class T>
-inline void Texture2D::SetData(T* data, size_t size)
-{
 }
 #endif

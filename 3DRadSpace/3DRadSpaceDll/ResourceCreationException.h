@@ -10,7 +10,8 @@ class DLLEXPORT ResourceCreationException : public std::exception
 	std::string _message;
 public: 
 	ResourceCreationException() = delete;
-	ResourceCreationException(const std::string& message, const std::type_info& type);
+	ResourceCreationException(const std::string& message, const std::type_info& type) :
+		_message(message + "Faulty type :" + std::string(type.name())) { };
 
 	const char* what() const override;
 

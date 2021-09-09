@@ -1,4 +1,6 @@
 #include "Globals.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "Vector4.h"
 #include "Color.h"
 #pragma once
@@ -29,6 +31,29 @@ struct VertexPositionNormalColorDeclaration
 	Vector4 Pos;
 	Vector4 Normal;
 	ColorShader Color;
+};
+struct VertexPositionNormalTextureDeclaration
+{
+	Vector4 Pos;
+	Vector4 Normal;
+	Vector4 UV;
+};
+
+struct VertexPositionNormalTextureColorDeclaration
+{
+	Vector4 Pos;
+	Vector4 Normal;
+	Vector4 UV;
+	ColorShader Color;
+};
+
+struct VertexPositionNormalTextureTangentBitangentDeclaration
+{
+	Vector4 Pos;
+	Vector4 Normal;
+	Vector4 UV;
+	Vector4 Tangent;
+	Vector4 Bitangent;
 };
 
 template<class T>

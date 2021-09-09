@@ -4,7 +4,7 @@
 
 #include <windows.h>
 #include <d3d11.h>
-#include "3DRadSpaceDll/Game.h"
+#include "Game.h"
 #include "UpdateDownloadManager.h"
 #include <cassert>
 
@@ -13,9 +13,9 @@
 
 #include <cfloat>
 #include <cstdint>
-#include "3DRadSpaceDll/Matrix.h"
-#include "3DRadSpaceDll/StencilState.h"
-#include "3DRadSpaceDll/VertexBuffer.h"
+#include "Matrix.h"
+#include "StencilState.h"
+#include "VertexBuffer.h"
 
 #include <urlmon.h>
 #pragma comment(lib, "urlmon.lib")
@@ -31,8 +31,8 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <pathcch.h>
 #pragma comment(lib,"pathcch.lib")
 
-#include "3DRadSpaceDll/Shader.h"
-#include "3DRadSpaceDll/SamplerState.h"
-#include "3DRadSpaceDll/RasterizerState.h"
-#include "3DRadSpaceDll/Viewport.h"
-#include "3DRadSpaceDll/Camera.h"
+#include "Shader.h"
+#include "SamplerState.h"
+#include "RasterizerState.h"
+#include "Viewport.h"
+#include "Camera.h"

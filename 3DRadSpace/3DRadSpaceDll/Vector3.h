@@ -39,6 +39,7 @@ struct DLLEXPORT Vector3
 	static Vector3 One();
 	Vector3 Transform(const Vector3& v, const Matrix& m);
 	Vector3 Transform(const Vector3& v, const Quaternion& q);
+
 };
 
 Vector3 DLLEXPORT operator +(const Vector3 &a, const Vector3 &b);

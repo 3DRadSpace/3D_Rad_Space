@@ -92,11 +92,13 @@ void Shader::SetShader(ID3D11DeviceContext* context)
 	{
 		case ShaderType::Vertex:
 		{
+			if(this->_constantbuffercreated) context->VSSetConstantBuffers(0, 1, &this->_constantbuffer);
 			context->VSSetShader((ID3D11VertexShader*)this->_shader, nullptr, 0);
 			break;
 		}
 		case ShaderType::Pixel:
 		{
+			if (this->_constantbuffercreated) context->PSGetConstantBuffers(0, 1, &this->_constantbuffer);
 			context->PSSetShader((ID3D11PixelShader*)this->_shader, nullptr, 0);
 			break;
 		}
@@ -114,6 +116,36 @@ void Shader::SetInputLayout(ID3D11DeviceContext* context, ShaderInputLayout* inp
 	input->SetInputLayout(context);
 }
 
+void Shader::SetShaderParametersLayout(ID3D11Device* device, size_t size)
+{
+	if (this->_constantbuffercreated) return;
+	D3D11_BUFFER_DESC constantBuffer;
+	memset(&constantBuffer, 0, sizeof(D3D11_BUFFER_DESC));
+	constantBuffer.ByteWidth = size;
+	constantBuffer.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
+	constantBuffer.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+	constantBuffer.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	this->_constantbufferstruct = malloc(size); //initialize unused memory
+
+	D3D11_SUBRESOURCE_DATA constantBufferNullVals;
+	memset(&constantBufferNullVals, 0, sizeof(D3D11_SUBRESOURCE_DATA));
+	constantBufferNullVals.pSysMem = this->_constantbufferstruct;
+
+	HRESULT r = device->CreateBuffer(&constantBuffer, &constantBufferNullVals, &this->_constantbuffer);
+	if (FAILED(r))
+		throw ResourceCreationException("Failed to create shader arguments", typeid(ID3D11Buffer));
+	this->_constantbuffercreated = true;
+}
+
+void Shader::SetShaderParameters(ID3D11DeviceContext* context, void* arguments, size_t size)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedSubresource;
+	context->Map(this->_constantbuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &mappedSubresource);
+	memcpy(mappedSubresource.pData, arguments, size);
+	context->Unmap(this->_constantbuffer, 0);
+}
+
 ID3DBlob* Shader::GetShaderBlob() const
 {
 	return this->_shadercode;
@@ -126,8 +158,10 @@ ID3DBlob* Shader::GetErrorBlob() const
 
 Shader::~Shader()
 {
-	if (_shadercode != nullptr) _shadercode->Release();
-	if (_errorblob != nullptr) _errorblob->Release();
-	if (_shader != nullptr) _shader->Release();
+	if (this->_shadercode != nullptr) this->_shadercode->Release();
+	if (this->_errorblob != nullptr) this->_errorblob->Release();
+	if (this->_shader != nullptr) this->_shader->Release();
+	if (this->_constantbuffer != nullptr) this->_constantbuffer->Release();
+	if (this->_constantbufferstruct != nullptr) free(this->_constantbufferstruct);
 }
 #endif

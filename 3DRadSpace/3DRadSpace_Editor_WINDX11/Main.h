@@ -35,6 +35,8 @@ void StopDiscordRichPresence();
 
 void ExitEditor();
 
+Point GetRenderWindowResolution();
+
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
 constexpr int MENU_SAVEFILE = 302;
