@@ -18,8 +18,8 @@ public:
 
 
 	Camera() = default;
-	Camera(std::string name, bool enabled,const Vector3 &pos, const Quaternion &rot,const Vector3 &normal, float fov,float aspect_ratio, float npd, float fpd) :
-		IObject(name, enabled, pos, rot), Normal(normal),FOV(fov),AspectRatio(aspect_ratio), NearPlaneDistance(npd), FarPlaneDistance(fpd), lookat(Vector3::UnitZ() * rot) {};
+	Camera(Game *g,std::string name, bool enabled,const Vector3 &pos, const Quaternion &rot,const Vector3 &normal, float fov,float aspect_ratio, float npd, float fpd) :
+		IObject(g,name, enabled, pos, rot), Normal(normal),FOV(fov),AspectRatio(aspect_ratio), NearPlaneDistance(npd), FarPlaneDistance(fpd), lookat(Vector3::UnitZ() * rot) {};
 	
 	Matrix GetTranslation() override;
 
@@ -29,7 +29,6 @@ public:
 	void Enable() override;
 
 	char* WriteToFileBuffer(size_t& s);
-	IObject* ReadFromFileBuffer(char* fbuff, size_t s) override;
 	
 	void SetLookDirection(const Quaternion &q);
 	void SetLookDirection(const Vector3& v);

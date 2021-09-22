@@ -12,8 +12,8 @@ class DLLEXPORT IObject
 {
 public:
 
-	IObject(std::string name = "Empty object",bool enabled = false, Vector3 pos = { 0,0,0 }, Quaternion rot = { 0,0,0,1 }, Vector3 cen = { 0,0,0 }, Vector3 scal = { 1,1,1 }, std::string resource = "") :
-		Name(name),Enabled(enabled), Position(pos), Rotation(rot) , Center(cen), Scale(scal), Resource() {};
+	IObject(Game* game,std::string name = "Empty object",bool enabled = false, Vector3 pos = { 0,0,0 }, Quaternion rot = { 0,0,0,1 }, Vector3 cen = { 0,0,0 }, Vector3 scal = { 1,1,1 }, std::string resource = "") :
+		Name(name),Enabled(enabled), Position(pos), Rotation(rot) , Center(cen), Scale(scal), Resource(resource), game(game) {};
 
 	std::string Name;
 
@@ -28,6 +28,8 @@ public:
 
 	std::string Resource;
 
+	Game* game;
+
 	virtual Matrix GetTranslation() = 0;
 
 	virtual void Update(float dt) = 0;
@@ -35,8 +37,6 @@ public:
 
 	virtual void Enable() = 0;
 
-	virtual char* WriteToFileBuffer(size_t& s) = 0;
-	virtual IObject* ReadFromFileBuffer(char* fbuff, size_t s) = 0;
 	~IObject();
 };
 

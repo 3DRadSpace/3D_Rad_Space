@@ -12,6 +12,8 @@ const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 Vector3 _3DCursor(0, 0, 0);
 bool _3DMode = true, IsSaved = true, ShouldExit = false;
 
+Matrix View, Projection;
+
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
 	//set current directory
@@ -119,32 +121,64 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
 	ResizeWindows();
 
-	Game game(RenderWindow, GetRenderWindowResolution());
+	Point resolution = GetRenderWindowResolution();
+
+	Game game(RenderWindow, resolution);
 	ID3D11Device* device = game.GetDevice();
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
+
+	View = Matrix::CreateLookAt({ 5,5,5 }, { 0,0,0 }, { 0,1,0 });
+	Projection = Matrix::CreateProjectionFOV(Math::ToRadians<float>(65), 800.0f / 600.0f , 0.001f, 500.0f);
 
 	HRESULT r = 0;
 
 	StencilState stencil(&game);
 	game.SetStencilState(&stencil);
 
-	//Basic coloured triangle test code. Will be removed in the future.
-	VertexPositionColorDeclaration *Triangles = new VertexPositionColorDeclaration[3]; //use heap memory since we call delete[] in the destructor
-	Triangles[0] = { {0.0f,  0.5f,  0.0f,1.0f},{1.0f,0,0,1.0f} };
-	Triangles[1] = { {0.5f,  -0.5f,  0.0f,1.0f},{0.0f,1.0f,0,1.0f} };
-	Triangles[2] = { {-0.5f,  -0.5f,  0.0f,1.0f},{0.0f,0,1.0f,1.0f} };
+	//Axis Cursor Vertex buffer, to be moved in an other file
+	VertexPositionColorDeclaration *AxisLines = new VertexPositionColorDeclaration[12]; //use heap memory since we call delete[] in the destructor
+	AxisLines[0] = { {0.0f,  0.0f,  0.0f}, {1.0f,0,0,1.0f} };
+	AxisLines[1] = { {500.0f,  0.0f,  0.0f}, {1.0f,0.0f,0,1.0f} };
+	AxisLines[2] = { {0.0f,  0.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
+	AxisLines[3] = { {0.0f,  500.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
+	AxisLines[4] = { {0.0f,  0.0f,  0.0f}, {0.0f,0.0,1.0f,1.0f} };
+	AxisLines[5] = { {0.0f,  0.0f,  500.0f}, {0.0f,0.0,1.0f,1.0f} };
 
-	VertexBuffer<VertexPositionColorDeclaration> TestTriangle(Triangles, 3);
-	TestTriangle.CreateVertexBuffer(device);
+	AxisLines[6] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[7] = { {-500.0f,  0.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[8] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[9] = { {0.0f,  -500.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[10] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[11] = { {0.0f,  0.0f,  -500.0f}, {1,1,1,1} };
+
+	VertexBuffer<VertexPositionColorDeclaration> CursorAxis(AxisLines, 12);
+	CursorAxis.CreateVertexBuffer(device);
 
 	Shader SimpleVertexShader(ShaderType::Vertex);
-	SimpleVertexShader.LoadFromFile(L"VS_NoTransform_PositionColor.hlsl", "basic_vs");
+	SimpleVertexShader.LoadFromFile(L"Shaders\\TR_VertexPositionColor.hlsl", "basic_vs");
 	SimpleVertexShader.CompileShader(device);
 
+	struct ls_AxisTranslation
+	{
+		Matrix World;
+		Matrix View;
+		Matrix Projection;
+	} AxisTr;
+
+	AxisTr.World = Matrix::CreateTranslation({ 0,0,0 });
+	AxisTr.View = View;
+	AxisTr.Projection = Projection;
+
+	SimpleVertexShader.SetShaderParametersLayout(device,context, sizeof(ls_AxisTranslation));
+	SimpleVertexShader.SetShaderParameters(context,&AxisTr);
+
 	Shader SimplePixelShader(ShaderType::Pixel);
-	SimplePixelShader.LoadFromFile(L"VS_NoTransform_PositionColor.hlsl", "basic_ps");
+	SimplePixelShader.LoadFromFile(L"Shaders\\TR_VertexPositionColor.hlsl", "basic_ps");
 	SimplePixelShader.CompileShader(device);
+
+	SimplePixelShader.SetShaderParametersLayout(device, context, sizeof(ls_AxisTranslation));
+	SimplePixelShader.SetShaderParameters(context, &AxisTr);
 
 	SamplerState SamplerState(device);
 	SamplerState.SetSamplerVertexShader(context);
@@ -174,10 +208,13 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		
 		inputlayout.SetInputLayout(context);
 		SimpleVertexShader.SetShader(context);
+		SimpleVertexShader.SetShaderParameters(context, &AxisTr);
+
 		SimplePixelShader.SetShader(context);
+		SimplePixelShader.SetShaderParameters(context, &AxisTr);
 		
-		game.SetTopology(PrimitiveTopology::TriangleList);
-		TestTriangle.Draw(context);
+		game.SetTopology(PrimitiveTopology::Lines);
+		CursorAxis.Draw(context);
 
 		game.Present();
 
@@ -241,8 +278,8 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					ofn.nMaxFile = MAX_PATH;
 					if (GetOpenFileName(&ofn))
 					{
-						filePath[MAX_PATH] = 0; // STFU C6054
-						CurrentFile = filePath; //C6504 is useless, stfu Intellisense:tm:
+						filePath[MAX_PATH] = 0; 
+						CurrentFile = filePath;
 						UpdateDiscordRichPresence();
 						IsSaved = true;
 					}
@@ -299,22 +336,22 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_DOCS:
 				{
-					ShellExecute(nullptr, nullptr, L"https://3dradspace.com/Documentation/index.html", nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, L"http://3dradspace.com/Documentation/index.html", nullptr, nullptr, 0);
 					break;
 				}
 				case MENU_HOMEPAGE:
 				{
-					ShellExecute(nullptr, nullptr, L"https://3dradspace.com",nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, L"http://3dradspace.com",nullptr,nullptr,0);
 					break;
 				}
 				case MENU_FORUM:
 				{
-					ShellExecute(nullptr, nullptr, L"https://3dradspace.com/Forum",nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, L"http://3dradspace.com/Forum",nullptr,nullptr,0);
 					break;
 				}
 				case MENU_GITHUB:
 				{
-					ShellExecute(nullptr, nullptr, L"https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, L"http://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
 					break;
 				}
 				default: break;
@@ -355,7 +392,7 @@ void ResizeWindows()
 
 void CheckUpdate()
 {
-	HRESULT r = URLDownloadToFile(nullptr, L"https://3dradspace.com/UpdateInfo/LastestVersion.txt", L"version.txt", 0, nullptr);
+	HRESULT r = URLDownloadToFile(nullptr, L"http://3dradspace.com/UpdateInfo/LastestVersion.txt", L"version.txt", 0, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
 	{
 		int d = MessageBox(nullptr, L"Cannot check the lastest version. Check your internet connection.", L"Network error", MB_RETRYCANCEL | MB_ICONWARNING);
@@ -397,7 +434,7 @@ void CheckUpdate()
 			i += 1;
 			continue;
 		}
-		if (strstr(p, "https://") != nullptr)
+		if (strstr(p, "http://") != nullptr)
 		{
 			int mr = MessageBox(nullptr, L"A new update was found! Do you want it to be downloaded and installed?", L"Update check", MB_YESNO | MB_ICONQUESTION);
 			if (mr == IDYES)

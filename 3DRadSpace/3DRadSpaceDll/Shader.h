@@ -10,6 +10,7 @@
 
 #include "Game.h"
 #include "ShaderInputLayout.h"
+#include "Texture2D.h"
 
 enum class ShaderType : uint8_t
 {
@@ -46,9 +47,15 @@ public:
 	void CreateInputLayout(ID3D11Device* device, ShaderInputLayout* input);
 	void SetInputLayout(ID3D11DeviceContext *context,ShaderInputLayout *input);
 
-	void SetShaderParametersLayout(ID3D11Device* device, size_t size);
+	void SetShaderParametersLayout(ID3D11Device* device ,ID3D11DeviceContext *context,size_t size);
 
 	void SetShaderParameters(ID3D11DeviceContext* context, void* arguments, size_t size);
+
+	void SetShaderTexture(ID3D11DeviceContext* context, Texture2D* texture);
+	void SetShaderTextures(ID3D11DeviceContext* context, Texture2D** textures, size_t numtextures);
+
+	template <class P>
+	void SetShaderParameters(ID3D11DeviceContext* context, P* arguments);
 
 	ID3DBlob* GetShaderBlob() const;
 	ID3DBlob* GetErrorBlob() const;
@@ -56,5 +63,13 @@ public:
 	~Shader();
 };
 
-#endif // __DIRECTXVER
+template<class P>
+inline void Shader::SetShaderParameters(ID3D11DeviceContext* context, P* arguments)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedSubresource;
+	context->Map(this->_constantbuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &mappedSubresource);
+	memcpy(mappedSubresource.pData, arguments, sizeof(P));
+	context->Unmap(this->_constantbuffer, 0);
+}
 
+#endif // __DIRECTXVER

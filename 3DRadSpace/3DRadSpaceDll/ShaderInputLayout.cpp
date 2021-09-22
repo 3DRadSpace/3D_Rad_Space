@@ -9,7 +9,7 @@ ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list
 	size_t l = list.size();
 	this->_inputelements = new D3D11_INPUT_ELEMENT_DESC[l];;
 	size_t aglinement = 0;
-	unsigned semantic_index_counter[10] = { 0 };
+	unsigned semantic_index_counter[11] = { 0 };
 
 	for (size_t i = 0; i < l; i++)
 	{
@@ -18,9 +18,9 @@ ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list
 		{
 			case InputLayoutElement::Position:
 			{
-				this->_inputelements[i] = { "POSITION",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				this->_inputelements[i] = { "POSITION",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
 				semantic_index_counter[(uint8_t)elem]++;
-				aglinement += sizeof(float) * 4;
+				aglinement += sizeof(float) * 3;
 				break;
 			}
 			case InputLayoutElement::Color:
@@ -35,6 +35,48 @@ ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list
 				this->_inputelements[i] = { "TEXCOORD",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
 				semantic_index_counter[(uint8_t)elem]++;
 				aglinement += sizeof(float) * 4;
+				break;
+			}
+			case InputLayoutElement::Normal:
+			{
+				this->_inputelements[i] = { "NORMAL",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float) * 4;
+				break;
+			}
+			case InputLayoutElement::Tangent:
+			{
+				this->_inputelements[i] = { "TANGENT",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float) * 4;
+				break;
+			}
+			case InputLayoutElement::Binormal:
+			{
+				this->_inputelements[i] = { "BINORMAL",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float) * 4;
+				break;
+			}
+			case InputLayoutElement::PointSize:
+			{
+				this->_inputelements[i] = { "PSIZE",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float);
+				break;
+			}
+			case InputLayoutElement::BlendIndicies:
+			{
+				this->_inputelements[i] = { "BLENDINDICES",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32_UINT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float);
+				break;
+			}
+			case InputLayoutElement::BlendWeight:
+			{
+				this->_inputelements[i] = { "BLENDWEIGHT",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				semantic_index_counter[(uint8_t)elem]++;
+				aglinement += sizeof(float);
 				break;
 			}
 			default:break;

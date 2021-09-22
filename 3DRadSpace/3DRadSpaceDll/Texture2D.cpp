@@ -51,6 +51,29 @@ Texture2D::Texture2D(Game* game,const std::wstring &path)
 	}
 }
 
+Texture2D::Texture2D(Game* game, const std::string& path)
+{
+	_texture = nullptr;
+	_shaderresourceview = nullptr;
+
+	_context = game->GetDeviceContext();
+	_device = game->GetDevice();
+
+	wchar_t filepath[260]; //Windows has a 260 characters limit on the path
+
+	mbstowcs(filepath, path.c_str(), 260); //goddammit M$ WHY
+
+	HRESULT r = DirectX::CreateWICTextureFromFile(_device, filepath, (ID3D11Resource**)&_texture, &_shaderresourceview);
+	if (FAILED(r))
+	{
+		r = DirectX::CreateDDSTextureFromFile(_device, filepath, (ID3D11Resource**)&_texture, &_shaderresourceview);
+		if (FAILED(r))
+		{
+			throw ResourceCreationException("Failed to create a texture from file!", typeid(ID3D11Texture2D));
+		}
+	}
+}
+
 ID3D11Texture2D* Texture2D::GetTexture2D()
 {
 	return this->_texture;

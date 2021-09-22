@@ -22,14 +22,39 @@ class Texture2D
 public:
 	Texture2D(Game *g,int width, int height, DXGI_FORMAT format);
 	Texture2D(Game *g, const std::wstring &path);
+	Texture2D(Game* game, const std::string &path);
+
+	template<class T>
+	Texture2D(Game* g, const T* data, size_t size);
 
 	template<class T> void SetData(T* data, size_t size);
+	//template<class T> T* GetData(size_t &size_out);
 
 	ID3D11Texture2D* GetTexture2D();
 	ID3D11ShaderResourceView* GetShaderResourceView();
 
 	~Texture2D();
 };
+
+template<class T>
+inline Texture2D::Texture2D(Game* g, const T* data, size_t size)
+{
+	_texture = nullptr;
+	_shaderresourceview = nullptr;
+
+	_context = g->GetDeviceContext();
+	_device = g->GetDevice();
+
+	HRESULT r = DirectX::CreateWICTextureFromMemory(this->_device, (const uint8_t*)data, sizeof(T), (ID3D11Resource**)&this->_texture, &this->_shaderresourceview);
+	if (FAILED(r))
+	{
+		r = DirectX::CreateDDSTextureFromMemory(this->_device, (const uint8_t*)data, sizeof(T), (ID3D11Resource**)&this->_texture, &this->_shaderresourceview);
+		if (FAILED(r))
+		{
+			throw ResourceCreationException("Failed to create a texture from memory!", typeid(ID3D11Texture2D));
+		}
+	}
+}
 
 template<class T>
 inline void Texture2D::SetData(T* data, size_t size)

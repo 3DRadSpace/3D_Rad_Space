@@ -25,11 +25,6 @@ char* Camera::WriteToFileBuffer(size_t& s)
 	return nullptr;
 }
 
-IObject* Camera::ReadFromFileBuffer(char* fbuff, size_t s)
-{
-	return nullptr;
-}
-
 void Camera::SetLookDirection(const Quaternion& q)
 {
 	this->Rotation = q;

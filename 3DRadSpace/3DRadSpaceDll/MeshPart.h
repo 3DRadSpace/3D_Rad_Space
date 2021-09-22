@@ -18,13 +18,17 @@ public:
 	Shader* PixelShader;
 
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer) : Verticies(vertexbuffer), Indexes(indexbuffer) {};
-	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D* texture) : 
-		Verticies(vertexbuffer), Indexes(indexbuffer),Textures(texture) {};
+	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D* texture) :
+		Verticies(vertexbuffer), Indexes(indexbuffer), Textures({ texture }) {};
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures,size_t numTextures);
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures,size_t numTextures, Shader* vertexshader, Shader* pixelshader);
 
-	template<class S>
-	void Draw(ID3D11DeviceContext* context, S constantBufferStruct);
+	void SetTexture(Texture2D* texture);
+	void SetTextures(Texture2D** textures, size_t NumTextures);
+
+	void SetShaders(Shader* vertexshader, Shader* fragmentshader);
+
+	void Draw(ID3D11DeviceContext* context);
 
 };
 
@@ -58,8 +62,26 @@ inline MeshPart<T>::MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbu
 }
 
 template<class T>
-template<class S>
-inline void MeshPart<T>::Draw(ID3D11DeviceContext* context,S constantBufferStruct)
+inline void MeshPart<T>::SetTexture(Texture2D* texture)
+{
+	Textures[0] = texture;
+}
+
+template<class T>
+inline void MeshPart<T>::SetTextures(Texture2D** textures, size_t NumTextures)
+{
+	//to overwrite or not the textures? hmmm
+}
+
+template<class T>
+inline void MeshPart<T>::SetShaders(Shader* vertexshader, Shader* fragmentshader)
+{
+	this->VertexShader = vertexshader;
+	this->PixelShader = fragmentshader;
+}
+
+template<class T>
+inline void MeshPart<T>::Draw(ID3D11DeviceContext* context)
 {
 	//...
 }

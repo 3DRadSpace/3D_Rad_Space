@@ -5,6 +5,7 @@ Game::Game(HWND window)
 {
 	this->_stencilview = nullptr;
 	this->_resolution = Point(800, 600);
+	this->hWindow = window;
 
 	DXGI_SWAP_CHAIN_DESC swChDesc;
 	memset(&swChDesc, 0, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -45,6 +46,7 @@ Game::Game(HWND window, const Point &resolution)
 {
 	this->_stencilview = nullptr;
 	this->_resolution = resolution;
+	this->hWindow = window;
 
 	DXGI_SWAP_CHAIN_DESC swChDesc;
 	memset(&swChDesc, 0, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -165,6 +167,11 @@ void Game::Clear(ColorShader clearcolor)
 void Game::Present()
 {
 	this->_swapchain->Present(1,0);
+}
+
+HWND Game::GetWindow()
+{
+	return this->hWindow;
 }
 
 Game::~Game()

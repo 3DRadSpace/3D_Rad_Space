@@ -11,12 +11,12 @@
 
 struct VertexPositionDeclaration
 {
-	Vector4 Pos;
+	Vector3 Pos;
 };
 
 struct VertexPositionColorDeclaration
 {
-	Vector4 Pos;
+	Vector3 Pos;
 	ColorShader Color;
 };
 
@@ -95,14 +95,6 @@ VertexBuffer<T>::VertexBuffer(const std::initializer_list<T>& list)
 }
 
 template<class T>
-inline VertexBuffer<T>::~VertexBuffer()
-{
-	delete[] this->data;
-
-	_buffer->Release();
-}
-
-template<class T>
 void VertexBuffer<T>::CreateVertexBuffer(ID3D11Device* dev)
 {
 	if (this->_vertexbuffercreated) return;
@@ -125,7 +117,6 @@ void VertexBuffer<T>::CreateVertexBuffer(ID3D11Device* dev)
 	}
 
 	this->_vertexbuffercreated = true;
-
 }
 
 template<class T>
@@ -142,6 +133,82 @@ void VertexBuffer<T>::Draw(ID3D11DeviceContext* context)
 
 	context->IASetVertexBuffers(0, 1, &this->_buffer, &stride, &offset);
 	context->Draw(this->size, 0);
+}
+
+template<class T>
+inline VertexBuffer<T>::~VertexBuffer()
+{
+	delete[] this->data;
+
+	_buffer->Release();
+}
+
+
+//cringe af
+
+template<>
+class VertexBuffer<void>
+{
+	void* data;
+	size_t size;
+	bool _vertexbuffercreated;
+	ID3D11Buffer* _buffer;
+	size_t _structsize;
+public:
+	VertexBuffer(void* vertexdata, size_t total_size,size_t stride) : data(vertexdata), size(total_size),_structsize(stride), _buffer(nullptr), _vertexbuffercreated(false) {};
+
+	void CreateVertexBuffer(ID3D11Device* dev);
+	ID3D11Buffer* GetCreatedVertexBuffer() noexcept;
+
+	void Draw(ID3D11DeviceContext* context);
+
+	~VertexBuffer();
+};
+
+
+inline void VertexBuffer<void>::CreateVertexBuffer(ID3D11Device* dev)
+{
+	if (this->_vertexbuffercreated) return;
+
+	D3D11_BUFFER_DESC buffDesc;
+	memset(&buffDesc, 0, sizeof(D3D11_BUFFER_DESC));
+	buffDesc.ByteWidth = this->_structsize * this->size;
+	buffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA buffFiller;
+	memset(&buffFiller, 0, sizeof(D3D11_SUBRESOURCE_DATA));
+	buffFiller.pSysMem = this->data;
+
+	HRESULT r = dev->CreateBuffer(&buffDesc, &buffFiller, &this->_buffer);
+
+	if (FAILED(r))
+	{
+		const type_info& ti = typeid(ID3D11Device);
+		throw ResourceCreationException("Failed to create a vertex buffer.", ti);
+	}
+
+	this->_vertexbuffercreated = true;
+}
+
+inline ID3D11Buffer* VertexBuffer<void>::GetCreatedVertexBuffer() noexcept
+{
+	return this->_vertexbuffercreated ? this->_buffer : nullptr;
+}
+
+inline void VertexBuffer<void>::Draw(ID3D11DeviceContext* context)
+{
+	unsigned offset = 0;
+	unsigned stride = this->_structsize;
+
+	context->IASetVertexBuffers(0, 1, &this->_buffer, &stride, &offset);
+	context->Draw(this->size, 0);
+}
+
+inline VertexBuffer<void>::~VertexBuffer()
+{
+	delete[] this->data;
+
+	_buffer->Release();
 }
 
 #endif

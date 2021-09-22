@@ -2,7 +2,7 @@
 
 RayResult Ray::Intersects(const Triangle& triangle)
 {
-    const float EPSILON = 0.0000001;
+    const float EPSILON = 0.0000001f;
     Vector3 vertex0 = triangle.PointA;
     Vector3 vertex1 = triangle.PointB;
     Vector3 vertex2 = triangle.PointC;
@@ -14,7 +14,7 @@ RayResult Ray::Intersects(const Triangle& triangle)
     a = edge1.Dot(h);
     if (a > -EPSILON && a < EPSILON)
         return { false, std::numeric_limits<float>::infinity() };    // This ray is parallel to this triangle.
-    f = 1.0 / a;
+    f = 1.0f / a;
     s = Origin - vertex0;
     u = f * s.Dot(h);
     if (u < 0.0 || u > 1.0)

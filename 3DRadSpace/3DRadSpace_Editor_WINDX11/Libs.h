@@ -36,3 +36,4 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "RasterizerState.h"
 #include "Viewport.h"
 #include "Camera.h"
+#include "Maths.h"

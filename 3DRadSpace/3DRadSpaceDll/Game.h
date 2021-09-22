@@ -30,6 +30,7 @@ class DLLEXPORT Game
 
 	ID3D11DepthStencilView* _stencilview;
 	
+	HWND hWindow;
 public:
 	Game(HWND window);
 	Game(HWND window,const Point &resolution);
@@ -48,6 +49,8 @@ public:
 	void Clear(ColorShader clearcolor);
 
 	void Present();
+
+	HWND GetWindow();
 
 	~Game();
 };
