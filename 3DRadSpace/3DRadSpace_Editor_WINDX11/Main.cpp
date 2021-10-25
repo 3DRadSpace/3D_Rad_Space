@@ -9,10 +9,16 @@ std::wstring CurrentFile(L"");
 const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
 const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
 
-Vector3 _3DCursor(0, 0, 0);
+Vector3 _3DCursor(0, 0, 0) , CameraPos(5,5,5);
 bool _3DMode = true, IsSaved = true, ShouldExit = false;
 
-Matrix View, Projection;
+//Matrix View, Projection;
+DirectX::XMMATRIX View, Projection;
+
+std::unique_ptr<DirectX::Mouse> ptrMouse = std::make_unique<DirectX::Mouse>();
+Point pMouseDelta;
+float camRotX, camRotY;
+float camZoom = 5;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
@@ -121,15 +127,23 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
 	ResizeWindows();
 
-	Point resolution = GetRenderWindowResolution();
+	Point resolution = GetDisplaySize();
+	Point screenCenter = resolution * 0.5f;
 
-	Game game(RenderWindow, resolution);
+	Game game(RenderWindow, Point(800,600));
 	ID3D11Device* device = game.GetDevice();
+
+	if (device == nullptr)
+	{
+		MessageBox(MainWindow, L"Failed to create the ID3D11GraphicsDevice instance. The program cannot proceed.", L"Fatal error!", MB_OK | MB_ICONERROR);
+		return E_FAIL;
+	}
+
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
 
-	View = Matrix::CreateLookAt({ 5,5,5 }, { 0,0,0 }, { 0,1,0 });
-	Projection = Matrix::CreateProjectionFOV(Math::ToRadians<float>(65), 800.0f / 600.0f , 0.001f, 500.0f);
+	View = DirectX::XMMatrixLookAtLH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
+	Projection = DirectX::XMMatrixPerspectiveFovLH(Math::ToRadians(65.0f), (float)(resolution.X / resolution.Y), 0.001f, 500.0f);
 
 	HRESULT r = 0;
 
@@ -137,20 +151,38 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	game.SetStencilState(&stencil);
 
 	//Axis Cursor Vertex buffer, to be moved in an other file
+	
 	VertexPositionColorDeclaration *AxisLines = new VertexPositionColorDeclaration[12]; //use heap memory since we call delete[] in the destructor
+	
 	AxisLines[0] = { {0.0f,  0.0f,  0.0f}, {1.0f,0,0,1.0f} };
-	AxisLines[1] = { {500.0f,  0.0f,  0.0f}, {1.0f,0.0f,0,1.0f} };
+	AxisLines[1] = { {100.0f,  0.0f,  0.0f}, {1.0f,0.0f,0,1.0f} };
 	AxisLines[2] = { {0.0f,  0.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
-	AxisLines[3] = { {0.0f,  500.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
+	AxisLines[3] = { {0.0f,  100.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
 	AxisLines[4] = { {0.0f,  0.0f,  0.0f}, {0.0f,0.0,1.0f,1.0f} };
-	AxisLines[5] = { {0.0f,  0.0f,  500.0f}, {0.0f,0.0,1.0f,1.0f} };
+	AxisLines[5] = { {0.0f,  0.0f,  100.0f}, {0.0f,0.0,1.0f,1.0f} };
 
 	AxisLines[6] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[7] = { {-500.0f,  0.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[7] = { {-100.0f,  0.0f,  0.0f}, {1,1,1,1} };
 	AxisLines[8] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[9] = { {0.0f,  -500.0f,  0.0f}, {1,1,1,1} };
+	AxisLines[9] = { {0.0f,  -100.0f,  0.0f}, {1,1,1,1} };
 	AxisLines[10] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[11] = { {0.0f,  0.0f,  -500.0f}, {1,1,1,1} };
+	AxisLines[11] = { {0.0f,  0.0f,  -100.0f}, {1,1,1,1} };
+	
+
+	/*
+	AxisLines[0] = {{ 0.000f, 1.000f, 0.000f} , {1,0,0,1} };
+	AxisLines[1] = {{-0.816f, -0.333f, -0.471f}, {0,1,0,1} };
+	AxisLines[2] = {{0.000f, -0.333f, 0.943f},   {0,0,1,1} };
+	AxisLines[3] = {{0.000f, 1.000f, 0.000f},    {1,0,0,1} };
+	AxisLines[4] = {{0.816f, -0.333f, -0.471f},  {0,1,0,1} };
+	AxisLines[5] = {{-0.816f, -0.333f, -0.471f}, {0,0,1,1} };
+	AxisLines[6] = {{0.000f, -0.333f, 0.943f},   {1,0,0,1} };
+	AxisLines[7] = {{0.816f, -0.333f, -0.471f},  {0,1,0,1} };
+	AxisLines[8] = {{0.000f, 1.000f, 0.000f},    {0,0,1,1} };
+	AxisLines[9] = {{-0.816f, -0.333f, -0.471f}, {1,0,0,1} };
+	AxisLines[10] = {{0.816f, -0.333f, -0.471f}, {0,1,0,1} };
+	AxisLines[11] = {{0.000f, -0.333f, 0.943f},  {0,0,1,1} };
+	*/
 
 	VertexBuffer<VertexPositionColorDeclaration> CursorAxis(AxisLines, 12);
 	CursorAxis.CreateVertexBuffer(device);
@@ -161,14 +193,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	struct ls_AxisTranslation
 	{
-		Matrix World;
-		Matrix View;
-		Matrix Projection;
+		DirectX::XMMATRIX World;
+		DirectX::XMMATRIX View;
+		DirectX::XMMATRIX Projection;
 	} AxisTr;
-
-	AxisTr.World = Matrix::CreateTranslation({ 0,0,0 });
-	AxisTr.View = View;
-	AxisTr.Projection = Projection;
 
 	SimpleVertexShader.SetShaderParametersLayout(device,context, sizeof(ls_AxisTranslation));
 	SimpleVertexShader.SetShaderParameters(context,&AxisTr);
@@ -180,45 +208,120 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	SimplePixelShader.SetShaderParametersLayout(device, context, sizeof(ls_AxisTranslation));
 	SimplePixelShader.SetShaderParameters(context, &AxisTr);
 
-	SamplerState SamplerState(device);
-	SamplerState.SetSamplerVertexShader(context);
-	SamplerState.SetSamplerPixelShader(context);
+	//SamplerState SamplerState(device);
+	//SamplerState.SetSamplerVertexShader(context);
+	//SamplerState.SetSamplerPixelShader(context);
 
-	RasterizerState RasterizerState(device);
-	RasterizerState.SetRasterizerState(context);
+	//RasterizerState RasterizerState(device);
+	//RasterizerState.SetRasterizerState(context);
 
-	ShaderInputLayout inputlayout({ InputLayoutElement::Position,InputLayoutElement::Color });
-	inputlayout.CreateInputLayout(device, &SimpleVertexShader);
+	SimpleVertexShader.CreateInputLayout(device,{ InputLayoutElement::Position,InputLayoutElement::Color });
 
 	StartDiscordPresence();
+
+	ptrMouse->SetWindow(RenderWindow);
+	pMouseDelta = { 0,0 };
+
+	DirectX::BasicEffect basiceffect(device);
+
+	std::unique_ptr<DirectX::IEffectFactory> m_fx = std::make_unique<DirectX::EffectFactory>(device);
+
+	std::unique_ptr<DirectX::Model> TestModel = DirectX::Model::CreateFromCMO(device, L"Testmesh//cup.cmo",*m_fx);
+	std::unique_ptr<DirectX::CommonStates> l_cmst = std::make_unique<DirectX::CommonStates>(device);
+
+	std::chrono::duration<double,std::ratio<1,1>> update_dt, draw_dt;
 
 	MSG m = { 0 };
 	while (!ShouldExit)
 	{
+		auto time1 = std::chrono::high_resolution_clock::now();
+		//WINAPI message handing
 		while(PeekMessage(&m,nullptr,0,0,PM_REMOVE))
 		{
 			TranslateMessage(&m);
 			DispatchMessageW(&m);
 		}
+		//update part
 
+		DirectX::Mouse::State mouse = ptrMouse->GetState();
+
+		HWND focusWindow = GetActiveWindow();
+
+		if (mouse.leftButton && (focusWindow == MainWindow || focusWindow == RenderWindow))
+		{
+			ptrMouse->SetVisible(false);
+			pMouseDelta = screenCenter - Point(mouse.x, mouse.y);
+			
+			RECT r = { 0 };
+			GetWindowRect(RenderWindow, &r);
+			SetCursorPos(screenCenter.X + r.left, screenCenter.Y + r.top);
+
+			camRotX += pMouseDelta.X * 0.001f;
+			camRotY += pMouseDelta.Y * 0.001f;
+
+			Quaternion q = Quaternion::CreateFromYawPitchRoll(camRotX, 0, 0) * Quaternion::CreateFromYawPitchRoll(0,camRotY,0);
+
+			camZoom = static_cast<float>(5 + (mouse.scrollWheelValue* 10));
+			CameraPos = Vector3::Transform(Vector3::UnitZ(), q) * camZoom;
+		}
+		else
+		{
+			ptrMouse->SetVisible(true);
+		}
+		View = DirectX::XMMatrixLookAtLH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
+
+		AxisTr.World = DirectX::XMMatrixIdentity();
+		AxisTr.View = View;
+		AxisTr.Projection = Projection;
+
+		auto time2 = std::chrono::high_resolution_clock::now();
+
+		update_dt = time2 - time1;
+
+		auto time3 = std::chrono::high_resolution_clock::now();
+
+		//draw part
 		game.Clear({ 0,0,0,1 });
 
 		Viewport Viewport(&game);
 		Viewport.SetViewport(context);
 		
-		inputlayout.SetInputLayout(context);
+		/*
+		SimpleVertexShader.SetInputLayout(context);
 		SimpleVertexShader.SetShader(context);
 		SimpleVertexShader.SetShaderParameters(context, &AxisTr);
 
 		SimplePixelShader.SetShader(context);
 		SimplePixelShader.SetShaderParameters(context, &AxisTr);
 		
+		game.SetStencilState(&stencil);
+		RasterizerState.SetRasterizerState(context);
+		
+		//game.SetTopology(PrimitiveTopology::TriangleList);
 		game.SetTopology(PrimitiveTopology::Lines);
 		CursorAxis.Draw(context);
+		
+		//context->OMSetDepthStencilState(model_depthstencilstate, 0);
+		//context->RSSetState(model_rasterizerstate);
+		*/
+
+		TestModel->Draw(context, *l_cmst, AxisTr.World, AxisTr.View, AxisTr.Projection,false); //<- ????
+
+		/*
+			I'm running out of ideas. Help me
+		*/
 
 		game.Present();
 
+		auto time4 = std::chrono::high_resolution_clock::now();
+		draw_dt = time4 - time3;
 	}
+
+#if _DEBUG
+	IDXGIDebug* debugDev;
+	HRESULT hr = DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugDev));
+	debugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+#endif
 	return 0;
 }
 
@@ -227,6 +330,11 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 	switch (msg)
 	{
 		case WM_CLOSE:
+		{
+			ExitEditor();
+			break;
+		}
+		case WM_QUIT:
 		{
 			ExitEditor();
 			break;
@@ -370,6 +478,24 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_CLOSE:
 		{
 			ExitEditor();
+			break;
+		}
+		case WM_ACTIVATEAPP:
+		case WM_INPUT:
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MOUSEWHEEL:
+		case WM_XBUTTONDOWN:
+		case WM_XBUTTONUP:
+		case WM_MOUSEHOVER:
+		{
+			DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
+			DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 			break;
 		}
 		default: break;
@@ -599,4 +725,23 @@ Point GetRenderWindowResolution()
 	int height = r.bottom - r.top;
 
 	return Point(width,height);
+}
+
+Point GetDisplaySize()
+{
+	HMONITOR monitor = MonitorFromWindow(MainWindow, MONITOR_DEFAULTTONEAREST);
+	MONITORINFO info;
+	memset(&info, 0, sizeof(MONITORINFO));
+	info.cbSize = sizeof(MONITORINFO);
+	GetMonitorInfo(monitor, &info);
+	int monitor_width = info.rcMonitor.right - info.rcMonitor.left;
+	int monitor_height = info.rcMonitor.bottom - info.rcMonitor.top;
+	return Point(monitor_width, monitor_height);
+}
+
+void __cdecl LostGDevice()
+{
+	SaveProject();
+	MessageBox(MainWindow, L"Lost the graphics device.", L"Fatal error!", MB_OK | MB_ICONERROR);
+	ExitEditor();
 }

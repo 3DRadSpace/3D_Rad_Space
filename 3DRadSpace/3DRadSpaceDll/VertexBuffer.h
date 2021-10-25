@@ -209,6 +209,9 @@ inline VertexBuffer<void>::~VertexBuffer()
 	delete[] this->data;
 
 	_buffer->Release();
+
+	this->data = nullptr;
+	this->_buffer = nullptr;
 }
 
 #endif

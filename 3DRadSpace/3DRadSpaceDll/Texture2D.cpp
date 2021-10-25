@@ -87,5 +87,9 @@ ID3D11ShaderResourceView* Texture2D::GetShaderResourceView()
 Texture2D::~Texture2D()
 {
 	if (_texture != nullptr) _texture->Release();
+	if (_shaderresourceview != nullptr) this->_shaderresourceview->Release();
+
+	this->_texture = nullptr;
+	this->_shaderresourceview = nullptr;
 }
 #endif

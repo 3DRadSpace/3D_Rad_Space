@@ -5,6 +5,13 @@
 #include "DownloadStatusWindow.h"
 #include <dxgidebug.h>
 #include <discord_rpc.h>
+#include <Keyboard.h>
+#include <DirectXMath.h>
+#include <Model.h>
+#include <Effects.h>
+#include <CommonStates.h>
+#include <chrono>
+#include <dxgi1_3.h>
 
 extern HWND MainWindow, RenderWindow, ToolBarWindow;
 
@@ -36,6 +43,9 @@ void StopDiscordRichPresence();
 void ExitEditor();
 
 Point GetRenderWindowResolution();
+Point GetDisplaySize();
+
+void __cdecl LostGDevice();
 
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;

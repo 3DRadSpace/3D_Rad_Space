@@ -6,7 +6,6 @@ StencilState::StencilState(Game* g)
 	_stencilview = nullptr;
 
 	ID3D11Device* device = g->GetDevice();
-	this->_rendertarget = g->GetRenderTargetBackBuffer();
 
 	D3D11_TEXTURE2D_DESC stencilTextureDesc;
 	memset(&stencilTextureDesc, 0, sizeof(D3D11_TEXTURE2D_DESC));
@@ -30,10 +29,12 @@ StencilState::StencilState(Game* g)
 	depthStencilDesc.StencilEnable = true;
 	depthStencilDesc.StencilReadMask = 0xFF;
 	depthStencilDesc.StencilWriteMask = 0xFF;
+
 	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
 	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	
 	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
@@ -44,12 +45,27 @@ StencilState::StencilState(Game* g)
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC stencilViewDesc;
 	memset(&stencilViewDesc, 0, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
-	stencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2D;
+	stencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2DMS;
 	stencilViewDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	stencilViewDesc.Texture2D.MipSlice = 0;
 
 	r = device->CreateDepthStencilView(_stenciltexture, &stencilViewDesc, &this->_stencilview);
 	if (FAILED(r)) throw std::runtime_error("Failed to create the Depth Stencil View");
+	
+	
+	/* This below is the code from the DirectX Template code. Still doesn't work somehow :/ 
+	
+	HRESULT r;
 
+	CD3D11_TEXTURE2D_DESC depthStencilDesc(DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, g->GetResolution().X, g->GetResolution().Y, 1, 1, D3D11_BIND_DEPTH_STENCIL);
+
+	r = device->CreateTexture2D(&depthStencilDesc, nullptr, &this->_stenciltexture);
+	if (FAILED(r)) throw std::runtime_error("Failed to create the depth stencil texture");
+
+	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+	r = device->CreateDepthStencilView(this->_stenciltexture, &depthStencilViewDesc,&this->_stencilview);
+	if (FAILED(r)) throw std::runtime_error("Failed to create the depth stencil view");
+	*/
 }
 
 ID3D11DepthStencilView* StencilState::GetStencilView()
@@ -64,9 +80,9 @@ ID3D11DepthStencilState* StencilState::GetStencilState()
 
 StencilState::~StencilState()
 {
-	this->_stenciltexture->Release();
-	this->_stencilstate->Release();
-	this->_stencilview->Release();
+	if(this->_stenciltexture != nullptr) this->_stenciltexture->Release();
+	if(this->_stencilstate != nullptr) this->_stencilstate->Release();
+	if(this->_stencilview != nullptr) this->_stencilview->Release();
 
 	this->_stenciltexture = nullptr;
 	this->_stencilstate = nullptr;

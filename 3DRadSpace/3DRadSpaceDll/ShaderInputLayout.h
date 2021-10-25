@@ -22,6 +22,8 @@ enum class InputLayoutElement : uint8_t
 	PointSize,
 };
 
+class DLLEXPORT Shader;
+
 class DLLEXPORT ShaderInputLayout
 {
 	D3D11_INPUT_ELEMENT_DESC* _inputelements;

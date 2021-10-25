@@ -112,5 +112,8 @@ ShaderInputLayout::~ShaderInputLayout()
 {
 	if (this->_layout != nullptr) this->_layout->Release();
 	delete this->_inputelements;
+
+	this->_layout = nullptr;
+	this->_inputelements = nullptr;
 }
 #endif

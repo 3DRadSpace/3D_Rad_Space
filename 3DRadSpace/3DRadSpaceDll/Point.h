@@ -15,10 +15,11 @@ struct DLLEXPORT Point
 	Point operator *=(const Point& p);
 	Point operator /=(const Point& p);
 
-};
+	friend DLLEXPORT Point operator +(const Point& a, const Point& b);
+	friend DLLEXPORT Point operator -(const Point& a, const Point& b);
+	friend DLLEXPORT Point operator *(const Point& a, const Point& b);
+	friend DLLEXPORT Point operator /(const Point& a, const Point& b);
 
-Point operator +(const Point &a,const Point &b);
-Point operator -(const Point& a, const Point& b);
-Point operator *(const Point& a, const Point& b);
-Point operator /(const Point& a, const Point& b);
+	friend DLLEXPORT Point operator *(const Point& p, float s);
+};
 

@@ -13,7 +13,7 @@ class DLLEXPORT StencilState
 	ID3D11Texture2D* _stenciltexture;
 	ID3D11DepthStencilState* _stencilstate;
 	ID3D11DepthStencilView* _stencilview;
-	ID3D11RenderTargetView* _rendertarget;
+	//ID3D11RenderTargetView* _rendertarget;
 public:
 	StencilState(Game* g);
 

@@ -5,6 +5,7 @@
 void Viewport::SetViewport(ID3D11DeviceContext* context)
 {
 	D3D11_VIEWPORT view;
+	memset(&view, 0, sizeof(D3D11_VIEWPORT));
 	view.TopLeftX = (float)this->TopLeftX;
 	view.TopLeftY = (float)this->TopLeftY;
 	view.Width = (float)this->Width;

@@ -94,6 +94,8 @@ void SamplerState::SetSamplerHullShader(ID3D11DeviceContext* context)
 SamplerState::~SamplerState()
 {
     if (this->_samplerstate != nullptr) this->_samplerstate->Release();
+
+    this->_samplerstate = nullptr;
 }
 
 #endif

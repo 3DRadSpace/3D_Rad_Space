@@ -10,7 +10,7 @@ class DLLEXPORT Viewport
 {
 public:
 	Viewport() : TopLeftX(0), TopLeftY(0), Width(800), Height(600), MinDepth(0), MaxDepth(1) {};
-	Viewport(Game* game) : TopLeftX(0), TopLeftY(0), Width(game->GetResolution().X), Height(game->GetResolution().Y), MinDepth(0), MaxDepth(1) {};
+	Viewport(Game* game) : TopLeftX(0), TopLeftY(0), Width(game->GetResolution().X), Height(game->GetResolution().Y), MinDepth(0), MaxDepth(1.0f) {};
 	int TopLeftX;
 	int TopLeftY;
 	int Width;

@@ -37,3 +37,5 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "Viewport.h"
 #include "Camera.h"
 #include "Maths.h"
+
+#pragma comment(lib,"DXGI.lib")

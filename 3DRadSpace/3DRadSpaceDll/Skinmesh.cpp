@@ -18,4 +18,6 @@ void Skinmesh::Draw(float dt, Game* g)
 Skinmesh::~Skinmesh()
 {
     if(model != nullptr) delete model;
+
+    this->model = nullptr;
 }

@@ -106,14 +106,15 @@ void Shader::SetShader(ID3D11DeviceContext* context)
 	}
 }
 
-void Shader::CreateInputLayout(ID3D11Device* device, ShaderInputLayout* input)
+void Shader::CreateInputLayout(ID3D11Device* device,const std::vector<InputLayoutElement> &list)
 {
-	input->CreateInputLayout(device, this->_shadercode->GetBufferPointer(), this->_shadercode->GetBufferSize());
+	this->layout = new ShaderInputLayout(list);
+	layout->CreateInputLayout(device, this->_shadercode->GetBufferPointer(), this->_shadercode->GetBufferSize());
 }
 
-void Shader::SetInputLayout(ID3D11DeviceContext* context, ShaderInputLayout* input)
+void Shader::SetInputLayout(ID3D11DeviceContext* context)
 {
-	input->SetInputLayout(context);
+	layout->SetInputLayout(context);
 }
 
 void Shader::SetShaderParametersLayout(ID3D11Device* device, ID3D11DeviceContext* context, size_t size)
@@ -284,5 +285,13 @@ Shader::~Shader()
 	if (this->_shader != nullptr) this->_shader->Release();
 	if (this->_constantbuffer != nullptr) this->_constantbuffer->Release();
 	if (this->_constantbufferstruct != nullptr) free(this->_constantbufferstruct);
+	if (this->layout != nullptr) delete this->layout;
+
+	this->_shadercode = nullptr;
+	this->_errorblob = nullptr;
+	this->_shader = nullptr;
+	this->_constantbuffer = nullptr;
+	this->_constantbufferstruct = nullptr;
+	this->layout = nullptr;
 }
 #endif

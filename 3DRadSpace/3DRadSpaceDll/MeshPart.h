@@ -19,7 +19,7 @@ public:
 
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer) : Verticies(vertexbuffer), Indexes(indexbuffer) {};
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D* texture) :
-		Verticies(vertexbuffer), Indexes(indexbuffer), Textures({ texture }) {};
+		Verticies(vertexbuffer), Indexes(indexbuffer), Textures({ texture }),VertexShader(nullptr),PixelShader(nullptr) {};
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures,size_t numTextures);
 	MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures,size_t numTextures, Shader* vertexshader, Shader* pixelshader);
 
@@ -70,7 +70,11 @@ inline void MeshPart<T>::SetTexture(Texture2D* texture)
 template<class T>
 inline void MeshPart<T>::SetTextures(Texture2D** textures, size_t NumTextures)
 {
-	//to overwrite or not the textures? hmmm
+	unsigned j = 0;
+	for (unsigned i = 0; i < NumTextures; i++)
+	{
+		this->Textures[i] = textures[i];
+	}
 }
 
 template<class T>
@@ -83,7 +87,9 @@ inline void MeshPart<T>::SetShaders(Shader* vertexshader, Shader* fragmentshader
 template<class T>
 inline void MeshPart<T>::Draw(ID3D11DeviceContext* context)
 {
-	//...
+	this->VertexShader->SetShader(context);
+	this->PixelShader->SetShader(context);
+	this->Verticies->Draw(context);
 }
 
 #endif

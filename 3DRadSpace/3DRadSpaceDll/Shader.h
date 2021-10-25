@@ -12,6 +12,8 @@
 #include "ShaderInputLayout.h"
 #include "Texture2D.h"
 
+enum class InputLayoutElement : uint8_t; //forward declaration is needed and I don't know why
+
 enum class ShaderType : uint8_t
 {
 	Compute,
@@ -36,16 +38,21 @@ class DLLEXPORT Shader
 	ID3D11Buffer* _constantbuffer;
 	void* _constantbufferstruct;
 	bool _constantbuffercreated;
+
+	ShaderInputLayout* layout;
+	bool _layoutcreated;
 public:
-	Shader(ShaderType t) : _shadertype(t), _shadercode(nullptr), _errorblob(nullptr),_shadercreated(nullptr),_shader(nullptr), _shadercompiled(false), _constantbuffercreated(false), _constantbuffer(nullptr),_constantbufferstruct(nullptr){};
+	Shader(ShaderType t) :
+		_shadertype(t), _shadercode(nullptr), _errorblob(nullptr),_shadercreated(nullptr),_shader(nullptr), _shadercompiled(false),
+		_constantbuffercreated(false), _constantbuffer(nullptr),_constantbufferstruct(nullptr), _layoutcreated(false), layout(nullptr){};
 	
 	void LoadFromFile(const wchar_t* path, const char* entryfunction);
 	void LoadFromMemory(const char* memory, size_t lenght, const char* entryfunction);
 	void CompileShader(ID3D11Device* device);
 	void SetShader(ID3D11DeviceContext* context);
 
-	void CreateInputLayout(ID3D11Device* device, ShaderInputLayout* input);
-	void SetInputLayout(ID3D11DeviceContext *context,ShaderInputLayout *input);
+	void CreateInputLayout(ID3D11Device* device,const std::vector<InputLayoutElement> &list);
+	void SetInputLayout(ID3D11DeviceContext *context);
 
 	void SetShaderParametersLayout(ID3D11Device* device ,ID3D11DeviceContext *context,size_t size);
 

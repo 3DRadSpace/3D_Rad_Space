@@ -144,8 +144,8 @@ Matrix Matrix::CreateProjectionFOV(float fieldOfView, float aspectRatio, float n
 
     float yScale = 1.0f / (float)std::tan((double)fieldOfView * 0.5f);
     float xScale = yScale / aspectRatio;
-    float negFarRange = std::isinf(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-
+    //float negFarRange = std::isinf(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
+	float negFarRange = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
     Matrix result;
 
     result.M11 = xScale;

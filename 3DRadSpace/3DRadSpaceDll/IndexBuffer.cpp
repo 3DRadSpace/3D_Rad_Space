@@ -52,4 +52,8 @@ void IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 IndexBuffer::~IndexBuffer()
 {
 	if (this->_indexbuffer != nullptr) this->_indexbuffer->Release();
+	delete this->_indexes;
+
+	this->_indexbuffer = nullptr;
+	this->_indexes = nullptr;
 }

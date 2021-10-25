@@ -19,6 +19,8 @@ enum class PrimitiveTopology
 
 class DLLEXPORT StencilState;
 
+typedef void (__cdecl *Game_LostDeviceEvent)();
+
 class DLLEXPORT Game
 {
 	ID3D11Device* _gdev;
@@ -28,7 +30,7 @@ class DLLEXPORT Game
 	bool _dc;
 	Point _resolution;
 
-	ID3D11DepthStencilView* _stencilview;
+	StencilState* _stencilstate;
 	
 	HWND hWindow;
 public:
@@ -38,6 +40,8 @@ public:
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 	IDXGISwapChain* GetSwapChain();
+	
+	Game_LostDeviceEvent LostDeviceEvent;
 
 	bool IsDeviceCreated();
 	ID3D11RenderTargetView* GetRenderTargetBackBuffer();

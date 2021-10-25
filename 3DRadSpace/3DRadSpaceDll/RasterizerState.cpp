@@ -8,15 +8,15 @@ RasterizerState::RasterizerState(ID3D11Device *device)
 	memset(&rasterizerDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
 
 	//provide default values
-	rasterizerDesc.AntialiasedLineEnable = false;
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;
+	rasterizerDesc.AntialiasedLineEnable = true;
+	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 
 	rasterizerDesc.DepthBias = 0;
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.DepthClipEnable = true;
 	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 	rasterizerDesc.FrontCounterClockwise = true;
-	rasterizerDesc.MultisampleEnable = false;
+	rasterizerDesc.MultisampleEnable = true;
 	rasterizerDesc.ScissorEnable = false;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
@@ -57,5 +57,7 @@ void RasterizerState::SetRasterizerState(ID3D11DeviceContext* context)
 RasterizerState::~RasterizerState()
 {
 	if (this->_rasterizerState != nullptr) this->_rasterizerState->Release();
+
+	this->_rasterizerState = nullptr;
 }
 #endif

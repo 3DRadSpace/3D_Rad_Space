@@ -10,7 +10,15 @@ CppScript::CppScript(const char* modulepath, Game* game)
 	if (this->_module != nullptr)
 	{
 		this->_createInstance = (fptrGetScriptInstance)GetProcAddress(this->_module, "CreateScriptInstance");
-		if (this->_createInstance) this->_loaded = true;
+		if (this->_createInstance)
+		{
+			this->scriptInstance = this->_createInstance();
+
+			if (this->_createInstance != nullptr)
+				this->_loaded = true;
+			else
+				throw std::runtime_error("CreateScriptInstance function call failed!");
+		}
 	}
 }
 
