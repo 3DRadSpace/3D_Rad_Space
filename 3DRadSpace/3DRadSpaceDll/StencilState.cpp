@@ -51,21 +51,6 @@ StencilState::StencilState(Game* g)
 
 	r = device->CreateDepthStencilView(_stenciltexture, &stencilViewDesc, &this->_stencilview);
 	if (FAILED(r)) throw std::runtime_error("Failed to create the Depth Stencil View");
-	
-	
-	/* This below is the code from the DirectX Template code. Still doesn't work somehow :/ 
-	
-	HRESULT r;
-
-	CD3D11_TEXTURE2D_DESC depthStencilDesc(DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, g->GetResolution().X, g->GetResolution().Y, 1, 1, D3D11_BIND_DEPTH_STENCIL);
-
-	r = device->CreateTexture2D(&depthStencilDesc, nullptr, &this->_stenciltexture);
-	if (FAILED(r)) throw std::runtime_error("Failed to create the depth stencil texture");
-
-	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-	r = device->CreateDepthStencilView(this->_stenciltexture, &depthStencilViewDesc,&this->_stencilview);
-	if (FAILED(r)) throw std::runtime_error("Failed to create the depth stencil view");
-	*/
 }
 
 ID3D11DepthStencilView* StencilState::GetStencilView()

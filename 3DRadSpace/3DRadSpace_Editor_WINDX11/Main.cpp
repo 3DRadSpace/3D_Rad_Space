@@ -142,8 +142,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ID3D11DeviceContext* context = game.GetDeviceContext();
 	IDXGISwapChain* swapchain = game.GetSwapChain();
 
-	View = DirectX::XMMatrixLookAtLH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
-	Projection = DirectX::XMMatrixPerspectiveFovLH(Math::ToRadians(65.0f), (float)(resolution.X / resolution.Y), 0.001f, 500.0f);
+	View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
+	Projection = DirectX::XMMatrixPerspectiveFovRH(Math::ToRadians(65.0f), (float)(resolution.X / resolution.Y), 0.001f, 500.0f);
 
 	HRESULT r = 0;
 
@@ -208,12 +208,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	SimplePixelShader.SetShaderParametersLayout(device, context, sizeof(ls_AxisTranslation));
 	SimplePixelShader.SetShaderParameters(context, &AxisTr);
 
-	//SamplerState SamplerState(device);
-	//SamplerState.SetSamplerVertexShader(context);
-	//SamplerState.SetSamplerPixelShader(context);
+	SamplerState SamplerState(device);
+	SamplerState.SetSamplerVertexShader(context);
+	SamplerState.SetSamplerPixelShader(context);
 
-	//RasterizerState RasterizerState(device);
-	//RasterizerState.SetRasterizerState(context);
+	RasterizerState RasterizerState(device);
+	RasterizerState.SetRasterizerState(context);
 
 	SimpleVertexShader.CreateInputLayout(device,{ InputLayoutElement::Position,InputLayoutElement::Color });
 
@@ -268,7 +268,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		{
 			ptrMouse->SetVisible(true);
 		}
-		View = DirectX::XMMatrixLookAtLH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
+		View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
 
 		AxisTr.World = DirectX::XMMatrixIdentity();
 		AxisTr.View = View;
@@ -280,13 +280,13 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 		auto time3 = std::chrono::high_resolution_clock::now();
 
-		//draw part
 		game.Clear({ 0,0,0,1 });
 
 		Viewport Viewport(&game);
 		Viewport.SetViewport(context);
 		
-		/*
+		TestModel->Draw(context, *l_cmst, AxisTr.World, AxisTr.View, AxisTr.Projection, false); //<- ????
+
 		SimpleVertexShader.SetInputLayout(context);
 		SimpleVertexShader.SetShader(context);
 		SimpleVertexShader.SetShaderParameters(context, &AxisTr);
@@ -297,20 +297,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		game.SetStencilState(&stencil);
 		RasterizerState.SetRasterizerState(context);
 		
-		//game.SetTopology(PrimitiveTopology::TriangleList);
 		game.SetTopology(PrimitiveTopology::Lines);
 		CursorAxis.Draw(context);
 		
-		//context->OMSetDepthStencilState(model_depthstencilstate, 0);
-		//context->RSSetState(model_rasterizerstate);
-		*/
-
-		TestModel->Draw(context, *l_cmst, AxisTr.World, AxisTr.View, AxisTr.Projection,false); //<- ????
-
-		/*
-			I'm running out of ideas. Help me
-		*/
-
 		game.Present();
 
 		auto time4 = std::chrono::high_resolution_clock::now();
