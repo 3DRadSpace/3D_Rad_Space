@@ -49,43 +49,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\compile_icon.png">
+    <Image Include="Icons\Debug-Button.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\Debug-Button.png">
+    <Image Include="Icons\compile_icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\openicon.png">
+    <Image Include="Icons\switch2d_icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\saveicon.png">
+    <Image Include="Icons\Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\switch2d_icon.png">
+    <Image Include="Icons\newicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\Icon.ico">
+    <Image Include="Icons\openicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\newicon.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\newicon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\openicon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\saveicon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\Debug-Button.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\compile_icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Icons\switch2d_icon.ico">
+    <Image Include="Icons\saveicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

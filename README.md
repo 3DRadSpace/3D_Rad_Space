@@ -10,3 +10,12 @@
 [![GitHub issues](https://img.shields.io/github/issues/3DRadSpace/3D_Rad_Space.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/issues/)
 [![CC-0 license](https://img.shields.io/badge/License-CC--0-blue.svg)](https://creativecommons.org/licenses/by-nd/4.0)
 
+# Downloading releases
+
+Releases can be found  [here](https://github.com/3DRadSpace/3D_Rad_Space/releases) (Lastest release: 0.0.6a, currently working on 0.1.0a)
+
+# Compiling 3DRadSpace
+
+1.) Download the source using Git
+2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2019 or Visual Studio 2022
+3.) Compile the project (Ctrl+Shift+B)

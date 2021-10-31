@@ -197,6 +197,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		DirectX::XMMATRIX View;
 		DirectX::XMMATRIX Projection;
 	} AxisTr;
+	static_assert(sizeof(ls_AxisTranslation) % 16 == 0, "???");
 
 	SimpleVertexShader.SetShaderParametersLayout(device,context, sizeof(ls_AxisTranslation));
 	SimpleVertexShader.SetShaderParameters(context,&AxisTr);
@@ -225,9 +226,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	DirectX::BasicEffect basiceffect(device);
 
 	std::unique_ptr<DirectX::IEffectFactory> m_fx = std::make_unique<DirectX::EffectFactory>(device);
+	
+	auto m_fx2 = dynamic_cast<DirectX::EffectFactory*>(m_fx.get());
+	m_fx2->SetDirectory(L"Testmesh");
 
 	std::unique_ptr<DirectX::Model> TestModel = DirectX::Model::CreateFromCMO(device, L"Testmesh//cup.cmo",*m_fx);
 	std::unique_ptr<DirectX::CommonStates> l_cmst = std::make_unique<DirectX::CommonStates>(device);
+
+	m_fx2->SetDirectory(L"");
 
 	std::chrono::duration<double,std::ratio<1,1>> update_dt, draw_dt;
 
@@ -247,6 +253,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 		HWND focusWindow = GetActiveWindow();
 
+		Quaternion q;
+
 		if (mouse.leftButton && (focusWindow == MainWindow || focusWindow == RenderWindow))
 		{
 			ptrMouse->SetVisible(false);
@@ -258,16 +266,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 			camRotX += pMouseDelta.X * 0.001f;
 			camRotY += pMouseDelta.Y * 0.001f;
-
-			Quaternion q = Quaternion::CreateFromYawPitchRoll(camRotX, 0, 0) * Quaternion::CreateFromYawPitchRoll(0,camRotY,0);
-
-			camZoom = static_cast<float>(5 + (mouse.scrollWheelValue* 10));
-			CameraPos = Vector3::Transform(Vector3::UnitZ(), q) * camZoom;
 		}
 		else
 		{
 			ptrMouse->SetVisible(true);
 		}
+		
+		q = Quaternion::CreateFromYawPitchRoll(camRotX, 0, 0) * Quaternion::CreateFromYawPitchRoll(0, camRotY, 0);
+		camZoom = static_cast<float>(5);
+
+		CameraPos = Vector3::Transform(Vector3::UnitZ(), q) * camZoom;
 		View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
 
 		AxisTr.World = DirectX::XMMatrixIdentity();
@@ -448,7 +456,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_GITHUB:
 				{
-					ShellExecute(nullptr, nullptr, L"http://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, L"https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
 					break;
 				}
 				default: break;

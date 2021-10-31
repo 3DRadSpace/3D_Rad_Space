@@ -40,7 +40,6 @@ public:
 
 	Texture2D** Textures;
 	size_t NumTextures;
-
 	
 	Model3D(Game* game, const char* file);
 

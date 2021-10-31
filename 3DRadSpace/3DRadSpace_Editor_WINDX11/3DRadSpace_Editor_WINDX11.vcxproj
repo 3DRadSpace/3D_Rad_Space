@@ -89,13 +89,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>N:\Projects\3DRadSpace\3D_Rad_Space\3DRadSpace\3DRadSpaceDll;N:\discord-rpc\win32-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win32-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>discord-rpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>N:\discord-rpc\win32-dynamic\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\ExtLibs\discord-rpc\win32-dynamic\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>N:\Projects\3DRadSpace\3D_Rad_Space\3DRadSpace\3DRadSpaceDll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win32-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -115,7 +115,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>discord-rpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>N:\discord-rpc\win32-dynamic\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\ExtLibs\discord-rpc\win32-static\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,13 +124,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>N:\Projects\3DRadSpace\3D_Rad_Space\3DRadSpace\3DRadSpaceDll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win64-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>discord-rpc.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\ExtLibs\discord-rpc\win64-dynamic\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>N:\Projects\3DRadSpace\3D_Rad_Space\3DRadSpace\3DRadSpaceDll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win64-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -150,7 +151,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\ExtLibs\discord-rpc\win64-static\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -168,19 +169,13 @@
     <ClCompile Include="VisiblePropertiesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\compile_icon.png" />
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\Debug-Button.png" />
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\Icon.ico" />
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\openicon.png" />
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\saveicon.png" />
-    <Image Include="..\..\..\..\..\Desktop\3DRadSpace\switch2d_icon.png" />
-    <Image Include="..\..\..\Icons\compile_icon.ico" />
-    <Image Include="..\..\..\Icons\Debug-Button.ico" />
-    <Image Include="..\..\..\Icons\newicon.ico" />
-    <Image Include="..\..\..\Icons\openicon.ico" />
-    <Image Include="..\..\..\Icons\saveicon.ico" />
-    <Image Include="..\..\..\Icons\switch2d_icon.ico" />
-    <Image Include="..\..\..\newicon.png" />
+    <Image Include="Icons\compile_icon.ico" />
+    <Image Include="Icons\Debug-Button.ico" />
+    <Image Include="Icons\Icon.ico" />
+    <Image Include="Icons\newicon.ico" />
+    <Image Include="Icons\openicon.ico" />
+    <Image Include="Icons\saveicon.ico" />
+    <Image Include="Icons\switch2d_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

@@ -52,19 +52,19 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON                    "N:\\Projects\\3DRadSpace\\Icon.ico"
+IDI_ICON1               ICON                    "Icons\\Icon.ico"
 
-IDI_ICON2               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\newicon.ico"
+IDI_ICON2               ICON                    "Icons\\newicon.ico"
 
-IDI_ICON3               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\openicon.ico"
+IDI_ICON3               ICON                    "Icons\\openicon.ico"
 
-IDI_ICON4               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\saveicon.ico"
+IDI_ICON4               ICON                    "Icons\\saveicon.ico"
 
-IDI_ICON5               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\Debug-Button.ico"
+IDI_ICON5               ICON                    "Icons\\Debug-Button.ico"
 
-IDI_ICON6               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\compile_icon.ico"
+IDI_ICON6               ICON                    "Icons\\compile_icon.ico"
 
-IDI_ICON7               ICON                    "N:\\Projects\\3DRadSpace\\Icons\\switch2d_icon.ico"
+IDI_ICON7               ICON                    "Icons\\switch2d_icon.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
