@@ -29,7 +29,7 @@ void DownloadStatusWindow::Register(HINSTANCE hInstance)
 	memset(&wndclass, 0, sizeof(WNDCLASS));
 	wndclass.lpfnWndProc = DownloadWindowEventHandler;
 	wndclass.hInstance = hInstance;
-	wndclass.lpszClassName = L"3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS";
+	wndclass.lpszClassName = TEXT("3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS");
 	wndclass.hIcon = LoadIcon(nullptr, IDI_INFORMATION);
 	
 	RegisterClass(&wndclass);
@@ -40,9 +40,9 @@ void DownloadStatusWindow::Register(HINSTANCE hInstance)
 
 void DownloadStatusWindow::Create(HWND parent)
 {
-	window = CreateWindow(L"3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS", L"Downloading Update...", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 400, 400, 350, 150, nullptr, nullptr, DownloadStatusWindow::hInstance, nullptr);
-	label1 = CreateWindow(L"STATIC", L"Downloading update...", WS_VISIBLE | WS_CHILD, 120, 10, 300, 20, window, nullptr,hInstance, nullptr);
-	label2 = CreateWindow(L"STATIC", L"Progress:", WS_VISIBLE | WS_CHILD, 10, 30, 100, 20, window, nullptr, hInstance, nullptr);
+	window = CreateWindow(TEXT("3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS"), TEXT("Downloading Update..."), WS_OVERLAPPEDWINDOW | WS_VISIBLE, 400, 400, 350, 150, nullptr, nullptr, DownloadStatusWindow::hInstance, nullptr);
+	label1 = CreateWindow(TEXT("STATIC"), TEXT("Downloading update..."), WS_VISIBLE | WS_CHILD, 120, 10, 300, 20, window, nullptr,hInstance, nullptr);
+	label2 = CreateWindow(TEXT("STATIC"), TEXT("Progress:"), WS_VISIBLE | WS_CHILD, 10, 30, 100, 20, window, nullptr, hInstance, nullptr);
 
 	INITCOMMONCONTROLSEX icc;
 	icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
@@ -53,7 +53,7 @@ void DownloadStatusWindow::Create(HWND parent)
 	SendMessage(progressbar, PBM_SETSTEP, 1, 0);
 	SendMessage(progressbar, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
 
-	cancelbutton = CreateWindow(L"BUTTON", L"Cancel", WS_VISIBLE | BS_PUSHBUTTON | WS_CHILD , 140, 60, 70, 25, window, nullptr, hInstance, nullptr);
+	cancelbutton = CreateWindow(TEXT("BUTTON"), TEXT("Cancel"), WS_VISIBLE | BS_PUSHBUTTON | WS_CHILD , 140, 60, 70, 25, window, nullptr, hInstance, nullptr);
 
 	ShowWindow(window, SW_NORMAL);
 	ShowWindow(label1, SW_NORMAL);

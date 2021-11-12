@@ -5,6 +5,7 @@
 /*
 Provides View and Projection transformation matrices calculated from the viewer's translation 
 */
+
 class Camera : public IObject
 {
 	Vector3 lookat;

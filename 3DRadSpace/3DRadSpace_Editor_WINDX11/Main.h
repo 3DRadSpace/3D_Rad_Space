@@ -12,14 +12,25 @@
 #include <CommonStates.h>
 #include <chrono>
 #include <dxgi1_3.h>
+#include <PrimitiveBatch.h>
+#include <VertexTypes.h>
+#include <DirectXHelpers.h>
+
+#ifdef UNICODE
+#define __stdstring std::wstring
+#else
+#define __stdstring std::string
+#endif
 
 extern HWND MainWindow, RenderWindow, ToolBarWindow;
 
-extern std::wstring CurrentFile;
+extern __stdstring CurrentFile;
 
 extern HINSTANCE hGlobCurrentInst;
 
 extern bool IsSaved, _3DMode;
+
+extern std::vector<IObject*> IObjectList;
 
 int __stdcall wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd);
 
@@ -47,6 +58,10 @@ Point GetDisplaySize();
 
 void __cdecl LostGDevice();
 
+void AddObject(IObject* object);
+void RemoveObject(size_t index);
+void RefresObjectList();
+
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
 constexpr int MENU_SAVEFILE = 302;
@@ -72,4 +87,49 @@ constexpr int MENU_GITHUB = 317;
 constexpr int MENU_SWITCH3D2D = 318;
 
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
-constexpr const wchar_t* __3DRADSPACE_FD_FILTER = L"3DRadSpace Project (*.3drsp)\0*.3drsp";
+constexpr const wchar_t* __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
+
+//Todo: make this code more OOP-ish to reduce the number of global variables and also to correctly use RAII design
+//For now I just made some empty functions.
+class EditorWindow 
+{
+	HWND MainWindow, RenderWindow, ToolBarWindow;
+	__stdstring CurrentFile;
+	HINSTANCE hGlobCurrentInst;
+	bool IsSaved, _3DMode;
+	std::vector<IObject*> IObjectList;
+
+
+	static LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { }
+	static LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { }
+
+	void ResizeWindows() { }
+	void CheckUpdate() { }
+	void DownloadUpdate(char* link, char* version) { }
+
+	void StartDiscordPresence() { }
+
+	void ResetLoadedProject() { }
+	bool ShowProjectNotSavedWarning() { }
+	void SaveProject() { }
+	void SaveProjectAs() { }
+
+	void UpdateDiscordRichPresence() { }
+	void StopDiscordRichPresence() { }
+
+	void ExitEditor() { }
+
+	Point GetRenderWindowResolution() { }
+	Point GetDisplaySize() { }
+
+	void __cdecl LostGDevice() { }
+
+	void AddObject(IObject* object) { }
+	void RemoveObject(size_t index) { }
+	void RefresObjectList() { }
+public:
+	EditorWindow(HINSTANCE hInstance,PWSTR cmdArgs)
+	{
+	}
+
+};

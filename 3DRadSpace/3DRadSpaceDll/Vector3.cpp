@@ -102,7 +102,7 @@ Vector3 Vector3::UnitY()
 
 Vector3 Vector3::UnitZ()
 {
-	return Vector3(0,1,0);
+	return Vector3(0,0,1);
 }
 
 Vector3 Vector3::Zero()
@@ -125,12 +125,12 @@ Vector3 operator-(const Vector3 &a,const Vector3 &b)
 	return Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 }
 
-Vector3 operator*(const Vector3 &v,float s)
+Vector3 operator*(float s,const Vector3 &v)
 {
 	return Vector3(v.X * s, v.Y * s, v.Z * s);
 }
 
-Vector3 operator/(const Vector3 &v, float f)
+Vector3 operator/(float f,const Vector3 &v)
 {
 	return Vector3(v.X / f, v.Y / f, v.Z / f);
 }

@@ -1,13 +1,13 @@
 #include "Main.h"
 
-HWND MainWindow, RenderWindow, ToolBarWindow;
+HWND MainWindow, RenderWindow, ToolBarWindow,ObjectsListBox;
 
 HINSTANCE hGlobCurrentInst;
 
-std::wstring CurrentFile(L"");
+__stdstring CurrentFile(TEXT(""));
 
-const wchar_t* const MainWindowClassName = L"3DRADSPACE_MAIN_WINDOW";
-const wchar_t* const EditorWindowClassName = L"3DRADSPACE_EDITOR_WINDOW";
+const wchar_t* const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
+const wchar_t* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
 
 Vector3 _3DCursor(0, 0, 0) , CameraPos(5,5,5);
 bool _3DMode = true, IsSaved = true, ShouldExit = false;
@@ -17,8 +17,14 @@ DirectX::XMMATRIX View, Projection;
 
 std::unique_ptr<DirectX::Mouse> ptrMouse = std::make_unique<DirectX::Mouse>();
 Point pMouseDelta;
-float camRotX, camRotY;
+float camRotX = 0.5, camRotY = -0.5;
 float camZoom = 5;
+
+std::unique_ptr<DirectX::CommonStates> CommonStates;
+std::unique_ptr<DirectX::BasicEffect> BasicEffect;
+std::unique_ptr < DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> AxisPrimitive;
+
+std::vector<IObject*> IObjectList;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
@@ -55,39 +61,39 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	HMENU MainMenu = CreateMenu();
 	
 	HMENU FileMenu = CreateMenu();
-	AppendMenuW(FileMenu, MF_STRING, MENU_NEWFILE, L"New project (Ctrl+N)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_OPENFILE, L"Open project (Ctrl+O)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILE, L"Save project (Ctrl+S)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILEAS, L"Save project as (Ctrl+Shift+S)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_PLAYPROJECT, L"Play project (Ctrl+P)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_COMPILEPROJECT, L"Build project (Ctrl+Shift+B)");
-	AppendMenuW(FileMenu, MF_STRING, MENU_EXIT, L"Exit (Alt+F4)");
+	AppendMenuW(FileMenu, MF_STRING, MENU_NEWFILE, TEXT("New project (Ctrl+N)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_OPENFILE, TEXT("Open project (Ctrl+O)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILE, TEXT("Save project (Ctrl+S)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_SAVEFILEAS, TEXT("Save project as (Ctrl+Shift+S)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_PLAYPROJECT, TEXT("Play project (Ctrl+P)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_COMPILEPROJECT, TEXT("Build project (Ctrl+Shift+B)"));
+	AppendMenuW(FileMenu, MF_STRING, MENU_EXIT, TEXT("Exit (Alt+F4)"));
 	
 	HMENU ObjectMenu = CreateMenu();
-	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDOBJ, L"Add object (Ctrl+A)");
-	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDPROJECT, L"Add a addon");
-	AppendMenuW(ObjectMenu, MF_STRING, MENU_IMPORTRESOURCES, L"Import resources");
-	AppendMenuW(ObjectMenu, MF_STRING, MENU_RESETCURSOR, L"Reset 3D Cursor");
+	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDOBJ, TEXT("Add object (Ctrl+A)"));
+	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDPROJECT, TEXT("Add a addon"));
+	AppendMenuW(ObjectMenu, MF_STRING, MENU_IMPORTRESOURCES, TEXT("Import resources"));
+	AppendMenuW(ObjectMenu, MF_STRING, MENU_RESETCURSOR, TEXT("Reset 3D Cursor"));
 
 	HMENU OptionsMenu = CreateMenu();
-	AppendMenuW(OptionsMenu, MF_STRING, MENU_UPDATECHECK, L"Check for updates...");
-	AppendMenuW(OptionsMenu, MF_STRING, MENU_PREFERENCES, L"Preferences");
+	AppendMenuW(OptionsMenu, MF_STRING, MENU_UPDATECHECK, TEXT("Check for updates..."));
+	AppendMenuW(OptionsMenu, MF_STRING, MENU_PREFERENCES, TEXT("Preferences"));
 
 	HMENU HelpMenu = CreateMenu();
-	AppendMenuW(HelpMenu, MF_STRING, MENU_ABOUT, L"About");
-	AppendMenuW(HelpMenu, MF_STRING, MENU_DOCS, L"Documentation");
-	AppendMenuW(HelpMenu, MF_STRING, MENU_HOMEPAGE, L"Homepage");
-	AppendMenuW(HelpMenu, MF_STRING, MENU_FORUM, L"Forum");
-	AppendMenuW(HelpMenu, MF_STRING, MENU_GITHUB, L"GitHub");
+	AppendMenuW(HelpMenu, MF_STRING, MENU_ABOUT, TEXT("About"));
+	AppendMenuW(HelpMenu, MF_STRING, MENU_DOCS, TEXT("Documentation"));
+	AppendMenuW(HelpMenu, MF_STRING, MENU_HOMEPAGE, TEXT("Homepage"));
+	AppendMenuW(HelpMenu, MF_STRING, MENU_FORUM, TEXT("Forum"));
+	AppendMenuW(HelpMenu, MF_STRING, MENU_GITHUB, TEXT("GitHub"));
 
-	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)FileMenu, L"File");
-	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)ObjectMenu, L"Edit");
-	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)OptionsMenu, L"Options");
-	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)HelpMenu, L"Help");
+	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)FileMenu, TEXT("File"));
+	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)ObjectMenu, TEXT("Edit"));
+	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)OptionsMenu, TEXT("Options"));
+	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)HelpMenu, TEXT("Help"));
 
 	//create windows
-	MainWindow = CreateWindowEx(0, MainWindowClassName, L"3DRadSpace - Editor", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 800, 600, nullptr, MainMenu, hInstance, 0);
-	RenderWindow = CreateWindowExW(0, EditorWindowClassName, L"not used", WS_CHILD, 0, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
+	MainWindow = CreateWindowEx(0, MainWindowClassName, TEXT("3DRadSpace - Editor"), WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 925, 600, nullptr, MainMenu, hInstance, 0);
+	RenderWindow = CreateWindowExW(0, EditorWindowClassName, TEXT("not used"), WS_CHILD, 125, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
 
 	/*
 		Create toolbar with an image list
@@ -110,21 +116,29 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	
 	TBBUTTON toolBarButtons[6] =
 	{
-		{0,MENU_NEWFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"New"},
-		{1,MENU_OPENFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Open"},
-		{2,MENU_SAVEFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Save"},
-		{3,MENU_PLAYPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Play"},
-		{4,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Compile"},
-		{5,MENU_SWITCH3D2D,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)L"Switch 2D/3D"},
+		{0,MENU_NEWFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("New")},
+		{1,MENU_OPENFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Open")},
+		{2,MENU_SAVEFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Save")},
+		{3,MENU_PLAYPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Play")},
+		{4,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Compile")},
+		{5,MENU_SWITCH3D2D,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Switch 2D/3D")},
 	};
 	SendMessage(ToolBarWindow, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
 	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)6, (LPARAM)&toolBarButtons);
 	SendMessage(ToolBarWindow, TB_AUTOSIZE, 0, 0);
 
+	/*
+	Create a listbox.
+	*/
+	
+	ObjectsListBox = CreateWindow(TEXT("SysTreeView32"), TEXT("not used"), WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES, 0, 0, 150, 600, MainWindow, nullptr, hInstance, nullptr);
+	SetWindowLong(ObjectsListBox, GWL_ID, TVS_CHECKBOXES);
+
 	//Show windows
 	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
 	ShowWindow(RenderWindow, SW_NORMAL);
 	ShowWindow(ToolBarWindow, SW_SHOWMAXIMIZED);
+	ShowWindow(ObjectsListBox, SW_NORMAL);
 	ResizeWindows();
 
 	Point resolution = GetDisplaySize();
@@ -135,7 +149,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	if (device == nullptr)
 	{
-		MessageBox(MainWindow, L"Failed to create the ID3D11GraphicsDevice instance. The program cannot proceed.", L"Fatal error!", MB_OK | MB_ICONERROR);
+		MessageBox(MainWindow, TEXT("Failed to create the ID3D11GraphicsDevice instance. The program cannot proceed."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
 		return E_FAIL;
 	}
 
@@ -147,93 +161,30 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 	HRESULT r = 0;
 
+	CommonStates = std::make_unique<DirectX::CommonStates>(device);
+	BasicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	BasicEffect->SetVertexColorEnabled(true);
+	BasicEffect->SetProjection(Projection);
+
+	ID3D11InputLayout* colorured_line_inputlayout;
+	
+	r = DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(device, BasicEffect.get(), &colorured_line_inputlayout);
+	if (FAILED(r))
+	{
+		MessageBox(MainWindow, TEXT("Failed to create a ID3D11InputLayout!"), TEXT("Runtime error"), MB_OK | MB_ICONERROR);
+		return -1;
+	}
+
+	AxisPrimitive = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
+
+	
 	StencilState stencil(&game);
 	game.SetStencilState(&stencil);
-
-	//Axis Cursor Vertex buffer, to be moved in an other file
-	
-	VertexPositionColorDeclaration *AxisLines = new VertexPositionColorDeclaration[12]; //use heap memory since we call delete[] in the destructor
-	
-	AxisLines[0] = { {0.0f,  0.0f,  0.0f}, {1.0f,0,0,1.0f} };
-	AxisLines[1] = { {100.0f,  0.0f,  0.0f}, {1.0f,0.0f,0,1.0f} };
-	AxisLines[2] = { {0.0f,  0.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
-	AxisLines[3] = { {0.0f,  100.0f,  0.0f}, {0.0f,1.0,0.0f,1.0f} };
-	AxisLines[4] = { {0.0f,  0.0f,  0.0f}, {0.0f,0.0,1.0f,1.0f} };
-	AxisLines[5] = { {0.0f,  0.0f,  100.0f}, {0.0f,0.0,1.0f,1.0f} };
-
-	AxisLines[6] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[7] = { {-100.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[8] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[9] = { {0.0f,  -100.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[10] = { {0.0f,  0.0f,  0.0f}, {1,1,1,1} };
-	AxisLines[11] = { {0.0f,  0.0f,  -100.0f}, {1,1,1,1} };
-	
-
-	/*
-	AxisLines[0] = {{ 0.000f, 1.000f, 0.000f} , {1,0,0,1} };
-	AxisLines[1] = {{-0.816f, -0.333f, -0.471f}, {0,1,0,1} };
-	AxisLines[2] = {{0.000f, -0.333f, 0.943f},   {0,0,1,1} };
-	AxisLines[3] = {{0.000f, 1.000f, 0.000f},    {1,0,0,1} };
-	AxisLines[4] = {{0.816f, -0.333f, -0.471f},  {0,1,0,1} };
-	AxisLines[5] = {{-0.816f, -0.333f, -0.471f}, {0,0,1,1} };
-	AxisLines[6] = {{0.000f, -0.333f, 0.943f},   {1,0,0,1} };
-	AxisLines[7] = {{0.816f, -0.333f, -0.471f},  {0,1,0,1} };
-	AxisLines[8] = {{0.000f, 1.000f, 0.000f},    {0,0,1,1} };
-	AxisLines[9] = {{-0.816f, -0.333f, -0.471f}, {1,0,0,1} };
-	AxisLines[10] = {{0.816f, -0.333f, -0.471f}, {0,1,0,1} };
-	AxisLines[11] = {{0.000f, -0.333f, 0.943f},  {0,0,1,1} };
-	*/
-
-	VertexBuffer<VertexPositionColorDeclaration> CursorAxis(AxisLines, 12);
-	CursorAxis.CreateVertexBuffer(device);
-
-	Shader SimpleVertexShader(ShaderType::Vertex);
-	SimpleVertexShader.LoadFromFile(L"Shaders\\TR_VertexPositionColor.hlsl", "basic_vs");
-	SimpleVertexShader.CompileShader(device);
-
-	struct ls_AxisTranslation
-	{
-		DirectX::XMMATRIX World;
-		DirectX::XMMATRIX View;
-		DirectX::XMMATRIX Projection;
-	} AxisTr;
-	static_assert(sizeof(ls_AxisTranslation) % 16 == 0, "???");
-
-	SimpleVertexShader.SetShaderParametersLayout(device,context, sizeof(ls_AxisTranslation));
-	SimpleVertexShader.SetShaderParameters(context,&AxisTr);
-
-	Shader SimplePixelShader(ShaderType::Pixel);
-	SimplePixelShader.LoadFromFile(L"Shaders\\TR_VertexPositionColor.hlsl", "basic_ps");
-	SimplePixelShader.CompileShader(device);
-
-	SimplePixelShader.SetShaderParametersLayout(device, context, sizeof(ls_AxisTranslation));
-	SimplePixelShader.SetShaderParameters(context, &AxisTr);
-
-	SamplerState SamplerState(device);
-	SamplerState.SetSamplerVertexShader(context);
-	SamplerState.SetSamplerPixelShader(context);
-
-	RasterizerState RasterizerState(device);
-	RasterizerState.SetRasterizerState(context);
-
-	SimpleVertexShader.CreateInputLayout(device,{ InputLayoutElement::Position,InputLayoutElement::Color });
 
 	StartDiscordPresence();
 
 	ptrMouse->SetWindow(RenderWindow);
 	pMouseDelta = { 0,0 };
-
-	DirectX::BasicEffect basiceffect(device);
-
-	std::unique_ptr<DirectX::IEffectFactory> m_fx = std::make_unique<DirectX::EffectFactory>(device);
-	
-	auto m_fx2 = dynamic_cast<DirectX::EffectFactory*>(m_fx.get());
-	m_fx2->SetDirectory(L"Testmesh");
-
-	std::unique_ptr<DirectX::Model> TestModel = DirectX::Model::CreateFromCMO(device, L"Testmesh//cup.cmo",*m_fx);
-	std::unique_ptr<DirectX::CommonStates> l_cmst = std::make_unique<DirectX::CommonStates>(device);
-
-	m_fx2->SetDirectory(L"");
 
 	std::chrono::duration<double,std::ratio<1,1>> update_dt, draw_dt;
 
@@ -264,7 +215,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 			GetWindowRect(RenderWindow, &r);
 			SetCursorPos(screenCenter.X + r.left, screenCenter.Y + r.top);
 
-			camRotX += pMouseDelta.X * 0.001f;
+			camRotX -= pMouseDelta.X * 0.001f;
 			camRotY += pMouseDelta.Y * 0.001f;
 		}
 		else
@@ -273,15 +224,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		}
 		
 		q = Quaternion::CreateFromYawPitchRoll(camRotX, 0, 0) * Quaternion::CreateFromYawPitchRoll(0, camRotY, 0);
-		camZoom = static_cast<float>(5);
+		camZoom = 5 - mouse.scrollWheelValue * 0.01f;
 
-		CameraPos = Vector3::Transform(Vector3::UnitZ(), q) * camZoom;
+		CameraPos = camZoom * Vector3::Transform(Vector3::UnitZ(), q);
 		View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
 
-		AxisTr.World = DirectX::XMMatrixIdentity();
-		AxisTr.View = View;
-		AxisTr.Projection = Projection;
-
+		
 		auto time2 = std::chrono::high_resolution_clock::now();
 
 		update_dt = time2 - time1;
@@ -293,31 +241,66 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		Viewport Viewport(&game);
 		Viewport.SetViewport(context);
 		
-		TestModel->Draw(context, *l_cmst, AxisTr.World, AxisTr.View, AxisTr.Projection, false); //<- ????
+		context->OMSetBlendState(CommonStates->Opaque(), nullptr, 0xFFFFFFFF);
+		context->OMSetDepthStencilState(CommonStates->DepthNone(), 0);
+		context->RSSetState(CommonStates->CullNone());
+		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X,_3DCursor.Y,_3DCursor.Z));
+		BasicEffect->SetView(View); //the grid is going to be moved along with the selectioned object, this is desired
+		context->IASetInputLayout(colorured_line_inputlayout);
 
-		SimpleVertexShader.SetInputLayout(context);
-		SimpleVertexShader.SetShader(context);
-		SimpleVertexShader.SetShaderParameters(context, &AxisTr);
+		BasicEffect->Apply(context);
+		AxisPrimitive->Begin();
+		
+		Vector3 directions[] = { 500 * Vector3::UnitX(),500 * Vector3::UnitY(),500 * Vector3::UnitZ() };
+		ColorShader colours[] = { {1,0,0,1},{0,1,0,1},{0,0,1,1} };
+		DirectX::XMVECTOR vc_white{ 1,1,1,1 }, vc_gray{ 0.5f,0.5f,0.5f,1 };
+		DirectX::XMVECTOR nullpos{ 0,0,0 };
 
-		SimplePixelShader.SetShader(context);
-		SimplePixelShader.SetShaderParameters(context, &AxisTr);
-		
-		game.SetStencilState(&stencil);
-		RasterizerState.SetRasterizerState(context);
-		
-		game.SetTopology(PrimitiveTopology::Lines);
-		CursorAxis.Draw(context);
-		
+		for (int i = 0; i <= 20; i++)
+		{
+			if (i == 10) continue;
+
+			//x aglines gray lines
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor({ -10.f,0, 10.f - i }, vc_gray),
+				DirectX::VertexPositionColor({ 10.f,0,10.f - i }, vc_gray));
+
+			//y aglines gray lines
+
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor({-10.f +i,0,10.f},vc_gray),
+				DirectX::VertexPositionColor({-10.f + i,0,-10.f},vc_gray));
+		}
+		//the 3 coloured axis indicating the X,Y,Z vectors
+		//x - red
+		//y - greed
+		//z - blue
+		for (size_t i = 0; i < 3; i++)
+		{
+			DirectX::XMVECTOR vcolor = { colours[i].R,colours[i].G,colours[i].B,colours[i].A };
+
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor(nullpos,vcolor),
+				DirectX::VertexPositionColor({ directions[i].X,directions[i].Y,directions[i].Z }, vcolor));
+
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor(nullpos, vc_white),
+				DirectX::VertexPositionColor({ -directions[i].X,-directions[i].Y,-directions[i].Z }, vc_white));
+		}
+
+		AxisPrimitive->End();
+
 		game.Present();
 
 		auto time4 = std::chrono::high_resolution_clock::now();
 		draw_dt = time4 - time3;
 	}
+	colorured_line_inputlayout->Release();
+	delete AxisPrimitive.release();
+	delete BasicEffect.release();
+	delete CommonStates.release();
 
 #if _DEBUG
 	IDXGIDebug* debugDev;
 	HRESULT hr = DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugDev));
 	debugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+	debugDev->Release();
 #endif
 	return 0;
 }
@@ -365,7 +348,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					wchar_t projPath[MAX_PATH];
 					GetModuleFileName(nullptr, projPath, MAX_PATH);
 					PathCchRemoveFileSpec(projPath, MAX_PATH);
-					lstrcatW(projPath, L"\\Projects\\");
+					lstrcatW(projPath, TEXT("\\Projects\\"));
 
 					wchar_t filePath[MAX_PATH+1];
 					memset(filePath, 0, sizeof(filePath));
@@ -375,7 +358,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					ofn.lStructSize = sizeof(OPENFILENAME);
 					ofn.hwndOwner = MainWindow;
 					ofn.lpstrFilter = __3DRADSPACE_FD_FILTER;
-					ofn.lpstrTitle = L"Open a project...";
+					ofn.lpstrTitle = TEXT("Open a project...");
 					ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 					ofn.lpstrInitialDir = projPath;
 					ofn.lpstrFile = filePath;
@@ -441,22 +424,22 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_DOCS:
 				{
-					ShellExecute(nullptr, nullptr, L"http://3dradspace.com/Documentation/index.html", nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com/Documentation/index.html"), nullptr, nullptr, 0);
 					break;
 				}
 				case MENU_HOMEPAGE:
 				{
-					ShellExecute(nullptr, nullptr, L"http://3dradspace.com",nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com"),nullptr,nullptr,0);
 					break;
 				}
 				case MENU_FORUM:
 				{
-					ShellExecute(nullptr, nullptr, L"http://3dradspace.com/Forum",nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com/Forum"),nullptr,nullptr,0);
 					break;
 				}
 				case MENU_GITHUB:
 				{
-					ShellExecute(nullptr, nullptr, L"https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, TEXT("https://github.com/3DRadSpace/3D_Rad_Space/"), nullptr, nullptr, 0);
 					break;
 				}
 				default: break;
@@ -510,20 +493,21 @@ void ResizeWindows()
 	GetWindowRect(ToolBarWindow, &r);
 	int toolbarheight = r.bottom - r.top;
 
-	SetWindowPos(RenderWindow, nullptr, 0, toolbarheight, width, height - toolbarheight, SWP_SHOWWINDOW);
+	SetWindowPos(RenderWindow, nullptr, 150, toolbarheight, width, height - toolbarheight, SWP_SHOWWINDOW);
+	SetWindowPos(ObjectsListBox, nullptr, 0, toolbarheight, 150, height - toolbarheight, SWP_SHOWWINDOW);
 }
 
 void CheckUpdate()
 {
-	HRESULT r = URLDownloadToFile(nullptr, L"http://3dradspace.com/UpdateInfo/LastestVersion.txt", L"version.txt", 0, nullptr);
+	HRESULT r = URLDownloadToFile(nullptr, TEXT("http://3dradspace.com/UpdateInfo/LastestVersion.txt"), TEXT("version.txt"), 0, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
 	{
-		int d = MessageBox(nullptr, L"Cannot check the lastest version. Check your internet connection.", L"Network error", MB_RETRYCANCEL | MB_ICONWARNING);
+		int d = MessageBox(nullptr, TEXT("Cannot check the lastest version. Check your internet connection."), TEXT("Network error"), MB_RETRYCANCEL | MB_ICONWARNING);
 		if (d == IDRETRY) CheckUpdate();
 	}
 	if (r == E_OUTOFMEMORY)
 	{
-		MessageBox(nullptr, L"Cannot download a temporary file. Please try cleaning up some space from your drive.", L"Out of memory", MB_OK | MB_ICONERROR);
+		MessageBox(nullptr, TEXT("Cannot download a temporary file. Please try cleaning up some space from your drive."), TEXT("Out of memory"), MB_OK | MB_ICONERROR);
 	}
 
 	char buffer[255];
@@ -533,21 +517,21 @@ void CheckUpdate()
 	memset(version_online, 0, 10);
 
 	char* context = nullptr;
-	std::ifstream read_update_info(L"version.txt");
+	std::ifstream read_update_info(TEXT("version.txt"));
 	read_update_info.getline(buffer, 255);
 
 	char* p = strtok_s(buffer, " ",&context);
 	
 	read_update_info.close();
 
-	DeleteFile(L"version.txt");
+	DeleteFile(TEXT("version.txt"));
 
 	int i = 0;
 	while (p)
 	{
 		if (strcmp(p, __3DRADSPACE_VERSION) == 0)
 		{
-			MessageBox(nullptr, L"No new update found!", L"Update check", MB_OK | MB_ICONINFORMATION);
+			MessageBox(nullptr, TEXT("No new update found!"), TEXT("Update check"), MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 		else if( i == 0)
@@ -559,7 +543,7 @@ void CheckUpdate()
 		}
 		if (strstr(p, "http://") != nullptr)
 		{
-			int mr = MessageBox(nullptr, L"A new update was found! Do you want it to be downloaded and installed?", L"Update check", MB_YESNO | MB_ICONQUESTION);
+			int mr = MessageBox(nullptr, TEXT("A new update was found! Do you want it to be downloaded and installed?"), TEXT("Update check"), MB_YESNO | MB_ICONQUESTION);
 			if (mr == IDYES)
 			{
 				DownloadUpdate(p,version_online);
@@ -633,7 +617,7 @@ bool ShowProjectNotSavedWarning()
 {
 	if (!IsSaved)
 	{
-		int m = MessageBox(nullptr, L"This project is not saved. Unsaved progress may be lost. Save project?", L"Project not saved", MB_YESNOCANCEL | MB_ICONWARNING);
+		int m = MessageBox(nullptr, TEXT("This project is not saved. Unsaved progress may be lost. Save project?"), TEXT("Project not saved"), MB_YESNOCANCEL | MB_ICONWARNING);
 		if (m == IDYES)
 		{
 			SaveProject();
@@ -650,7 +634,7 @@ bool ShowProjectNotSavedWarning()
 
 void SaveProject()
 {
-	if (CurrentFile == L"") SaveProjectAs();
+	if (CurrentFile == TEXT("")) SaveProjectAs();
 	else
 	{
 		IsSaved = true;
@@ -659,7 +643,7 @@ void SaveProject()
 }
 void SaveProjectAs()
 {
-	if (CurrentFile != L"") SaveProject();
+	if (CurrentFile != TEXT("")) SaveProject();
 	wchar_t filebuffer[MAX_PATH+1];
 	memset(filebuffer, 0, sizeof(filebuffer));
 
@@ -711,6 +695,7 @@ void ExitEditor()
 {
 	if(!ShowProjectNotSavedWarning()) return;
 	StopDiscordRichPresence();
+
 	ShouldExit = true;
 }
 
@@ -739,6 +724,55 @@ Point GetDisplaySize()
 void __cdecl LostGDevice()
 {
 	SaveProject();
-	MessageBox(MainWindow, L"Lost the graphics device.", L"Fatal error!", MB_OK | MB_ICONERROR);
+	MessageBox(MainWindow, TEXT("Lost the graphics device."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
 	ExitEditor();
+}
+
+//We need an array for the tree view items apparently
+void AddObject(IObject* object)
+{
+	TVITEM tree_view_item;
+	memset(&tree_view_item, 0, sizeof(TVITEM));
+	tree_view_item.mask = TVIF_TEXT | TVIF_PARAM;
+	//UNICODE and non-UNICODE compatibility
+#ifdef UNICODE
+	wchar_t objname[255];
+	size_t num_chr_conv = 0;
+	mbstowcs_s<255>(&num_chr_conv, objname, object->Name.c_str(), 255);
+	tree_view_item.pszText = objname;
+	tree_view_item.cchTextMax = num_chr_conv;
+#else
+	tree_view_item.pszText = object->Name.c_str();
+	tree_view_item.cchTextMax = object->Name.size();
+#endif
+	tree_view_item.lParam = 0;
+
+	TVINSERTSTRUCT tv_ins;
+	memset(&tv_ins, 0, sizeof(TVINSERTSTRUCT));
+	tv_ins.hInsertAfter = nullptr; //TODO: variable with the last element. we need a global variable
+	tv_ins.hParent = TVI_ROOT;
+	tv_ins.item = tree_view_item;
+
+	HTREEITEM CurrItem = (HTREEITEM)SendMessage(ObjectsListBox, TVM_INSERTITEM,
+		0, (LPARAM)(LPTVINSERTSTRUCT)&tv_ins);
+
+	//add CurrItem to the list of handles
+}
+
+void RemoveObject(size_t index)
+{
+	SendMessage(ObjectsListBox, TVM_DELETEITEM,0x0, 0x420); // TODO CHANGE 420 to an element in the array
+}
+
+void RefresObjectList()
+{
+	for (size_t i = 0; i < 420; i++)
+	{
+		//TODO: remove i-th object
+	}
+
+	for (size_t i = 0; i < IObjectList.size(); i++)
+	{
+		AddObject(IObjectList[i]);
+	}
 }

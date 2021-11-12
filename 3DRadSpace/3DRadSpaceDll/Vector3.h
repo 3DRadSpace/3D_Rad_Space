@@ -44,8 +44,8 @@ struct DLLEXPORT Vector3
 
 Vector3 DLLEXPORT operator +(const Vector3 &a, const Vector3 &b);
 Vector3 DLLEXPORT operator -(const Vector3 &a, const Vector3 &b);
-Vector3 DLLEXPORT operator *(const Vector3 &v, float s);
-Vector3 DLLEXPORT operator /(const Vector3 &v, float f);
+Vector3 DLLEXPORT operator *(float f,const Vector3 &v);
+Vector3 DLLEXPORT operator /(float s,const Vector3 &v);
 
 Vector3 DLLEXPORT operator *(const Vector3 &v,const Matrix &m);
 Vector3 DLLEXPORT operator *(const Vector3 &v,const Quaternion &q);
