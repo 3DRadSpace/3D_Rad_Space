@@ -40,7 +40,7 @@ public:
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 	IDXGISwapChain* GetSwapChain();
-	
+
 	Game_LostDeviceEvent LostDeviceEvent;
 
 	bool IsDeviceCreated();

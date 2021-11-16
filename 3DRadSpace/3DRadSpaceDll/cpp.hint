@@ -3,4 +3,3 @@
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define DLLEXPORT __declspec(dllexport)
 #define DLLEXPORT __declspec(dllimport)
-#define DLL_T_EXTERN

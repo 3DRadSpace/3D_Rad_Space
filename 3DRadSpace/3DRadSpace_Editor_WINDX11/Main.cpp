@@ -1,42 +1,34 @@
 #include "Main.h"
 
-HWND MainWindow, RenderWindow, ToolBarWindow,ObjectsListBox;
-
-HINSTANCE hGlobCurrentInst;
-
-__stdstring CurrentFile(TEXT(""));
-
-const wchar_t* const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
-const wchar_t* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
-
-Vector3 _3DCursor(0, 0, 0) , CameraPos(5,5,5);
-bool _3DMode = true, IsSaved = true, ShouldExit = false;
-
-//Matrix View, Projection;
-DirectX::XMMATRIX View, Projection;
-
-std::unique_ptr<DirectX::Mouse> ptrMouse = std::make_unique<DirectX::Mouse>();
-Point pMouseDelta;
-float camRotX = 0.5, camRotY = -0.5;
-float camZoom = 5;
-
-std::unique_ptr<DirectX::CommonStates> CommonStates;
-std::unique_ptr<DirectX::BasicEffect> BasicEffect;
-std::unique_ptr < DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> AxisPrimitive;
-
-std::vector<IObject*> IObjectList;
+EditorWindow* EditorWindow::g_EWindow = nullptr;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
+	EditorWindow Editor(hInstance,args);
+	Editor.RenderUpdateLoop();
+	return 0;
+}
+
+EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
+{
+	EditorWindow::g_EWindow = this;
+
+	CurrentFile = TEXT("");
+
+	_3DCursor = Vector3::Zero();
+	CameraPos = 5 * Vector3::One();
+	_3DMode = IsSaved = true;
+	ShouldExit = false;
+
 	//set current directory
-	wchar_t currPath[MAX_PATH];
+	__rawstring currPath[MAX_PATH];
 	GetModuleFileName(nullptr, currPath, MAX_PATH);
 	PathCchRemoveFileSpec(currPath, MAX_PATH);
 	SetCurrentDirectory(currPath);
 
 	//load editor icon
 	HICON hAppIcon = static_cast<HICON>(::LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, LR_DEFAULTCOLOR));
-	
+
 	//Register editor class
 	WNDCLASS wndclass;
 	memset(&wndclass, 0, sizeof(WNDCLASS));
@@ -59,7 +51,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		Create Menu control
 	*/
 	HMENU MainMenu = CreateMenu();
-	
+
 	HMENU FileMenu = CreateMenu();
 	AppendMenuW(FileMenu, MF_STRING, MENU_NEWFILE, TEXT("New project (Ctrl+N)"));
 	AppendMenuW(FileMenu, MF_STRING, MENU_OPENFILE, TEXT("Open project (Ctrl+O)"));
@@ -68,7 +60,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	AppendMenuW(FileMenu, MF_STRING, MENU_PLAYPROJECT, TEXT("Play project (Ctrl+P)"));
 	AppendMenuW(FileMenu, MF_STRING, MENU_COMPILEPROJECT, TEXT("Build project (Ctrl+Shift+B)"));
 	AppendMenuW(FileMenu, MF_STRING, MENU_EXIT, TEXT("Exit (Alt+F4)"));
-	
+
 	HMENU ObjectMenu = CreateMenu();
 	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDOBJ, TEXT("Add object (Ctrl+A)"));
 	AppendMenuW(ObjectMenu, MF_STRING, MENU_ADDPROJECT, TEXT("Add a addon"));
@@ -91,9 +83,11 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)OptionsMenu, TEXT("Options"));
 	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)HelpMenu, TEXT("Help"));
 
+	AcceleratorTable = LoadAccelerators(hInstance,MAKEINTRESOURCE(IDR_ACCELERATOR1));
+
 	//create windows
 	MainWindow = CreateWindowEx(0, MainWindowClassName, TEXT("3DRadSpace - Editor"), WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 925, 600, nullptr, MainMenu, hInstance, 0);
-	RenderWindow = CreateWindowExW(0, EditorWindowClassName, TEXT("not used"), WS_CHILD, 125, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
+	RenderWindow = CreateWindowEx(WS_EX_ACCEPTFILES, EditorWindowClassName, TEXT("not used"), WS_CHILD, 125, 25, 800, 600, MainWindow, nullptr, hInstance, 0);
 
 	/*
 		Create toolbar with an image list
@@ -110,10 +104,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON6)));
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON7)));
 
-	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0,MainWindow, nullptr, hInstance, nullptr);
+	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
 	SendMessage(ToolBarWindow, TB_SETIMAGELIST, 0, (LPARAM)toolBarImageList);
 	SendMessage(ToolBarWindow, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
-	
+
 	TBBUTTON toolBarButtons[6] =
 	{
 		{0,MENU_NEWFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("New")},
@@ -130,9 +124,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	/*
 	Create a listbox.
 	*/
-	
-	ObjectsListBox = CreateWindow(TEXT("SysTreeView32"), TEXT("not used"), WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES, 0, 0, 150, 600, MainWindow, nullptr, hInstance, nullptr);
-	SetWindowLong(ObjectsListBox, GWL_ID, TVS_CHECKBOXES);
+
+	ObjectsListBox = CreateWindowEx(0,TEXT("SysTreeView32"), TEXT("not used"), WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES | TVS_CHECKBOXES, 0, 0, 150, 600, MainWindow, nullptr, hInstance, nullptr);
 
 	//Show windows
 	ShowWindow(MainWindow, SW_SHOWMAXIMIZED);
@@ -141,62 +134,67 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 	ShowWindow(ObjectsListBox, SW_NORMAL);
 	ResizeWindows();
 
-	Point resolution = GetDisplaySize();
-	Point screenCenter = resolution * 0.5f;
+	resolution = GetDisplaySize();
+	screenCenter = 0.5f * resolution;
 
-	Game game(RenderWindow, Point(800,600));
-	ID3D11Device* device = game.GetDevice();
+	game = std::make_unique<Game>(RenderWindow, resolution);
+	device = game->GetDevice();
 
 	if (device == nullptr)
 	{
 		MessageBox(MainWindow, TEXT("Failed to create the ID3D11GraphicsDevice instance. The program cannot proceed."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
-		return E_FAIL;
+		RaiseInitializationError(E_FAIL);
 	}
 
-	ID3D11DeviceContext* context = game.GetDeviceContext();
-	IDXGISwapChain* swapchain = game.GetSwapChain();
+	context = game->GetDeviceContext();
+	swapchain = game->GetSwapChain();
 
 	View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
 	Projection = DirectX::XMMatrixPerspectiveFovRH(Math::ToRadians(65.0f), (float)(resolution.X / resolution.Y), 0.001f, 500.0f);
 
 	HRESULT r = 0;
 
-	CommonStates = std::make_unique<DirectX::CommonStates>(device);
-	BasicEffect = std::make_unique<DirectX::BasicEffect>(device);
-	BasicEffect->SetVertexColorEnabled(true);
-	BasicEffect->SetProjection(Projection);
+	this->CommonStates = std::make_unique<DirectX::CommonStates>(device);
+	this->BasicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	this->BasicEffect->SetVertexColorEnabled(true);
+	this->BasicEffect->SetProjection(Projection);
 
-	ID3D11InputLayout* colorured_line_inputlayout;
-	
 	r = DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(device, BasicEffect.get(), &colorured_line_inputlayout);
 	if (FAILED(r))
 	{
 		MessageBox(MainWindow, TEXT("Failed to create a ID3D11InputLayout!"), TEXT("Runtime error"), MB_OK | MB_ICONERROR);
-		return -1;
 	}
 
 	AxisPrimitive = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 
-	
-	StencilState stencil(&game);
-	game.SetStencilState(&stencil);
+	stencil = std::make_unique<StencilState>(game.get());
+	game->SetStencilState(stencil.get());
 
 	StartDiscordPresence();
 
 	ptrMouse->SetWindow(RenderWindow);
-	pMouseDelta = { 0,0 };
 
-	std::chrono::duration<double,std::ratio<1,1>> update_dt, draw_dt;
+	//Camera c(game.get(), "Test camera object", true, Vector3::Zero(), { 0,0,0,1 },Vector3::UnitY(),Math::ToRadians(65),800.0f/600,500,0.1f);
+	//AddObject(&c);
+}
+
+void EditorWindow::RenderUpdateLoop()
+{
+	pMouseDelta = { 0,0 };
+	std::chrono::duration<double, std::ratio<1, 1>> update_dt, draw_dt;
 
 	MSG m = { 0 };
 	while (!ShouldExit)
 	{
 		auto time1 = std::chrono::high_resolution_clock::now();
 		//WINAPI message handing
-		while(PeekMessage(&m,nullptr,0,0,PM_REMOVE))
+		while (PeekMessage(&m, nullptr, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&m);
-			DispatchMessageW(&m);
+			if (!TranslateAccelerator(MainWindow, AcceleratorTable, &m))
+			{
+				TranslateMessage(&m);
+				DispatchMessageW(&m);
+			}
 		}
 		//update part
 
@@ -210,7 +208,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		{
 			ptrMouse->SetVisible(false);
 			pMouseDelta = screenCenter - Point(mouse.x, mouse.y);
-			
+
 			RECT r = { 0 };
 			GetWindowRect(RenderWindow, &r);
 			SetCursorPos(screenCenter.X + r.left, screenCenter.Y + r.top);
@@ -222,35 +220,35 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		{
 			ptrMouse->SetVisible(true);
 		}
-		
+
 		q = Quaternion::CreateFromYawPitchRoll(camRotX, 0, 0) * Quaternion::CreateFromYawPitchRoll(0, camRotY, 0);
 		camZoom = 5 - mouse.scrollWheelValue * 0.01f;
 
 		CameraPos = camZoom * Vector3::Transform(Vector3::UnitZ(), q);
 		View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
 
-		
+
 		auto time2 = std::chrono::high_resolution_clock::now();
 
 		update_dt = time2 - time1;
 
 		auto time3 = std::chrono::high_resolution_clock::now();
 
-		game.Clear({ 0,0,0,1 });
+		game->Clear({ 0,0,0,1 });
 
-		Viewport Viewport(&game);
+		Viewport Viewport(game.get());
 		Viewport.SetViewport(context);
-		
+
 		context->OMSetBlendState(CommonStates->Opaque(), nullptr, 0xFFFFFFFF);
 		context->OMSetDepthStencilState(CommonStates->DepthNone(), 0);
 		context->RSSetState(CommonStates->CullNone());
-		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X,_3DCursor.Y,_3DCursor.Z));
+		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X, _3DCursor.Y, _3DCursor.Z));
 		BasicEffect->SetView(View); //the grid is going to be moved along with the selectioned object, this is desired
 		context->IASetInputLayout(colorured_line_inputlayout);
 
 		BasicEffect->Apply(context);
 		AxisPrimitive->Begin();
-		
+
 		Vector3 directions[] = { 500 * Vector3::UnitX(),500 * Vector3::UnitY(),500 * Vector3::UnitZ() };
 		ColorShader colours[] = { {1,0,0,1},{0,1,0,1},{0,0,1,1} };
 		DirectX::XMVECTOR vc_white{ 1,1,1,1 }, vc_gray{ 0.5f,0.5f,0.5f,1 };
@@ -266,8 +264,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 			//y aglines gray lines
 
-			AxisPrimitive->DrawLine(DirectX::VertexPositionColor({-10.f +i,0,10.f},vc_gray),
-				DirectX::VertexPositionColor({-10.f + i,0,-10.f},vc_gray));
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor({ -10.f + i,0,10.f }, vc_gray),
+				DirectX::VertexPositionColor({ -10.f + i,0,-10.f }, vc_gray));
 		}
 		//the 3 coloured axis indicating the X,Y,Z vectors
 		//x - red
@@ -277,7 +275,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 		{
 			DirectX::XMVECTOR vcolor = { colours[i].R,colours[i].G,colours[i].B,colours[i].A };
 
-			AxisPrimitive->DrawLine(DirectX::VertexPositionColor(nullpos,vcolor),
+			AxisPrimitive->DrawLine(DirectX::VertexPositionColor(nullpos, vcolor),
 				DirectX::VertexPositionColor({ directions[i].X,directions[i].Y,directions[i].Z }, vcolor));
 
 			AxisPrimitive->DrawLine(DirectX::VertexPositionColor(nullpos, vc_white),
@@ -286,112 +284,101 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 		AxisPrimitive->End();
 
-		game.Present();
+		game->Present();
 
 		auto time4 = std::chrono::high_resolution_clock::now();
 		draw_dt = time4 - time3;
 	}
-	colorured_line_inputlayout->Release();
-	delete AxisPrimitive.release();
-	delete BasicEffect.release();
-	delete CommonStates.release();
-
-#if _DEBUG
-	IDXGIDebug* debugDev;
-	HRESULT hr = DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugDev));
-	debugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-	debugDev->Release();
-#endif
-	return 0;
 }
+
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
 		case WM_CLOSE:
-		{
-			ExitEditor();
-			break;
-		}
 		case WM_QUIT:
 		{
-			ExitEditor();
+			EditorWindow::g_EWindow->ExitEditor();
 			break;
 		}
 		case WM_PAINT:
 		{
 			PAINTSTRUCT sPaint;
-			HDC h = BeginPaint(MainWindow, &sPaint);
+			HDC h = BeginPaint(EditorWindow::g_EWindow->MainWindow, &sPaint);
 			FillRect(h, &sPaint.rcPaint, CreateSolidBrush(RGB(255,255,255)));
-			EndPaint(MainWindow, &sPaint);
+			EndPaint(EditorWindow::g_EWindow->MainWindow, &sPaint);
 			break;
 		}
 		case WM_SIZE:
 		{
-			ResizeWindows();
+			EditorWindow::g_EWindow->ResizeWindows();
 			break;
 		}
 		case WM_COMMAND:
 		{
 			switch (LOWORD(wParam))
 			{
+				case AID_NEWFILE:
 				case MENU_NEWFILE:
 				{
-					if(ShowProjectNotSavedWarning())
-						ResetLoadedProject();
+					if(EditorWindow::g_EWindow->ShowProjectNotSavedWarning())
+						EditorWindow::g_EWindow->ResetLoadedProject();
 					break;
 				}
+				case AID_OPENFILE:
 				case MENU_OPENFILE:
 				{
-					if (!ShowProjectNotSavedWarning()) break;
-					wchar_t projPath[MAX_PATH];
+					if (!EditorWindow::g_EWindow->ShowProjectNotSavedWarning()) break;
+					__rawstring projPath[MAX_PATH];
 					GetModuleFileName(nullptr, projPath, MAX_PATH);
 					PathCchRemoveFileSpec(projPath, MAX_PATH);
 					lstrcatW(projPath, TEXT("\\Projects\\"));
 
-					wchar_t filePath[MAX_PATH+1];
+					__rawstring filePath[MAX_PATH+1];
 					memset(filePath, 0, sizeof(filePath));
 
 					OPENFILENAME ofn;
 					memset(&ofn, 0, sizeof(ofn));
 					ofn.lStructSize = sizeof(OPENFILENAME);
-					ofn.hwndOwner = MainWindow;
+					ofn.hwndOwner = EditorWindow::g_EWindow->MainWindow;
 					ofn.lpstrFilter = __3DRADSPACE_FD_FILTER;
 					ofn.lpstrTitle = TEXT("Open a project...");
 					ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
 					ofn.lpstrInitialDir = projPath;
 					ofn.lpstrFile = filePath;
-					ofn.hInstance = hGlobCurrentInst;
+					ofn.hInstance = EditorWindow::g_EWindow->hGlobCurrentInst;
 					ofn.nMaxFile = MAX_PATH;
 					if (GetOpenFileName(&ofn))
 					{
 						filePath[MAX_PATH] = 0; 
-						CurrentFile = filePath;
-						UpdateDiscordRichPresence();
-						IsSaved = true;
 					}
 					break;
 				}
+				case AID_SAVEFILE:
 				case MENU_SAVEFILE:
 				{
-					SaveProject();
+					EditorWindow::g_EWindow->SaveProject();
 					break;
 				}
+				case AID_SAVEFILEAS:
 				case MENU_SAVEFILEAS:
 				{
-					SaveProjectAs();
+					EditorWindow::g_EWindow->SaveProjectAs();
 					break;
 				}
+				case AID_DEBUG:
 				case MENU_PLAYPROJECT:
 					break;
+				case AID_BUILD:
 				case MENU_COMPILEPROJECT:
 					break;
 				case MENU_EXIT:
 				{
-					ExitEditor();
+					EditorWindow::g_EWindow->ExitEditor();
 					break;
 				}
+				case AID_ADDOBJ:
 				case MENU_ADDOBJ:
 				{
 					break;
@@ -406,12 +393,12 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_RESETCURSOR:
 				{
-					_3DCursor = Vector3::Zero();
+					EditorWindow::g_EWindow->_3DCursor = Vector3::Zero();
 					break;
 				}
 				case MENU_UPDATECHECK:
 				{
-					CheckUpdate();
+					EditorWindow::g_EWindow->CheckUpdate();
 					break;
 				}
 				case MENU_PREFERENCES:
@@ -442,6 +429,11 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					ShellExecute(nullptr, nullptr, TEXT("https://github.com/3DRadSpace/3D_Rad_Space/"), nullptr, nullptr, 0);
 					break;
 				}
+				case AID_SW2D3D:
+				case MENU_SWITCH3D2D:
+				{
+					break;
+				}
 				default: break;
 			}
 			break;
@@ -457,7 +449,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	{
 		case WM_CLOSE:
 		{
-			ExitEditor();
+			EditorWindow::g_EWindow->ExitEditor();
 			break;
 		}
 		case WM_ACTIVATEAPP:
@@ -478,12 +470,31 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 			break;
 		}
+		case WM_DROPFILES:
+		{
+			HDROP hDrop = (HDROP)wParam;
+			__rawstring file[MAX_PATH];
+			for (size_t i = 0; DragQueryFile(hDrop, i, file, MAX_PATH); i++)
+			{
+				if (EditorWindow::g_EWindow->ShowProjectNotSavedWarning() == true)
+					EditorWindow::g_EWindow->OpenProject(file);
+			}
+			DragFinish(hDrop);
+			break;
+		}
 		default: break;
 	}
 	return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void ResizeWindows()
+void EditorWindow::OpenProject(__rawstring* path)
+{
+	CurrentFile = path;
+	UpdateDiscordRichPresence();
+	IsSaved = true;
+}
+
+void EditorWindow::ResizeWindows()
 {
 	RECT r = { 0 };
 	GetWindowRect(MainWindow,&r);
@@ -497,7 +508,7 @@ void ResizeWindows()
 	SetWindowPos(ObjectsListBox, nullptr, 0, toolbarheight, 150, height - toolbarheight, SWP_SHOWWINDOW);
 }
 
-void CheckUpdate()
+void EditorWindow::CheckUpdate()
 {
 	HRESULT r = URLDownloadToFile(nullptr, TEXT("http://3dradspace.com/UpdateInfo/LastestVersion.txt"), TEXT("version.txt"), 0, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
@@ -554,7 +565,7 @@ void CheckUpdate()
 
 }
 
-void DownloadUpdate(char* link,char* version)
+void EditorWindow::DownloadUpdate(char* link,char* version)
 {
 	std::string file = "3DRadSpace v";
 	file += version;
@@ -585,7 +596,7 @@ void DownloadUpdate(char* link,char* version)
 	}
 }
 
-void StartDiscordPresence()
+void EditorWindow::StartDiscordPresence()
 {
 	Discord_Initialize("612682115208708098", nullptr, 1, nullptr);
 
@@ -598,7 +609,7 @@ void StartDiscordPresence()
 }
 
 
-void ResetLoadedProject()
+void EditorWindow::ResetLoadedProject()
 {
 	//reset internal data
 	CurrentFile.erase();
@@ -613,7 +624,7 @@ void ResetLoadedProject()
 	IsSaved = true;
 }
 
-bool ShowProjectNotSavedWarning()
+bool EditorWindow::ShowProjectNotSavedWarning()
 {
 	if (!IsSaved)
 	{
@@ -632,7 +643,7 @@ bool ShowProjectNotSavedWarning()
 	return true;
 }
 
-void SaveProject()
+void EditorWindow::SaveProject()
 {
 	if (CurrentFile == TEXT("")) SaveProjectAs();
 	else
@@ -641,10 +652,10 @@ void SaveProject()
 		//...
 	}
 }
-void SaveProjectAs()
+void EditorWindow::SaveProjectAs()
 {
 	if (CurrentFile != TEXT("")) SaveProject();
-	wchar_t filebuffer[MAX_PATH+1];
+	__rawstring filebuffer[MAX_PATH+1];
 	memset(filebuffer, 0, sizeof(filebuffer));
 
 	OPENFILENAME sfn;
@@ -664,7 +675,7 @@ void SaveProjectAs()
 	}
 }
 
-void UpdateDiscordRichPresence()
+void EditorWindow::UpdateDiscordRichPresence()
 {
 	DiscordRichPresence drp;
 	memset(&drp, 0, sizeof(DiscordRichPresence));
@@ -685,13 +696,13 @@ void UpdateDiscordRichPresence()
 	Discord_UpdatePresence(&drp);
 }
 
-void StopDiscordRichPresence()
+void EditorWindow::StopDiscordRichPresence()
 {
 	Discord_ClearPresence();
 	Discord_Shutdown();
 }
 
-void ExitEditor()
+void EditorWindow::ExitEditor()
 {
 	if(!ShowProjectNotSavedWarning()) return;
 	StopDiscordRichPresence();
@@ -699,7 +710,7 @@ void ExitEditor()
 	ShouldExit = true;
 }
 
-Point GetRenderWindowResolution()
+Point EditorWindow::GetRenderWindowResolution()
 {
 	RECT r = { 0 };
 	GetWindowRect(MainWindow, &r);
@@ -709,7 +720,7 @@ Point GetRenderWindowResolution()
 	return Point(width,height);
 }
 
-Point GetDisplaySize()
+Point EditorWindow::GetDisplaySize()
 {
 	HMONITOR monitor = MonitorFromWindow(MainWindow, MONITOR_DEFAULTTONEAREST);
 	MONITORINFO info;
@@ -721,7 +732,7 @@ Point GetDisplaySize()
 	return Point(monitor_width, monitor_height);
 }
 
-void __cdecl LostGDevice()
+void __cdecl EditorWindow::LostGDevice()
 {
 	SaveProject();
 	MessageBox(MainWindow, TEXT("Lost the graphics device."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
@@ -729,14 +740,14 @@ void __cdecl LostGDevice()
 }
 
 //We need an array for the tree view items apparently
-void AddObject(IObject* object)
+void EditorWindow::AddObject(IObject* object)
 {
 	TVITEM tree_view_item;
 	memset(&tree_view_item, 0, sizeof(TVITEM));
 	tree_view_item.mask = TVIF_TEXT | TVIF_PARAM;
 	//UNICODE and non-UNICODE compatibility
 #ifdef UNICODE
-	wchar_t objname[255];
+	__rawstring objname[255];
 	size_t num_chr_conv = 0;
 	mbstowcs_s<255>(&num_chr_conv, objname, object->Name.c_str(), 255);
 	tree_view_item.pszText = objname;
@@ -759,12 +770,12 @@ void AddObject(IObject* object)
 	//add CurrItem to the list of handles
 }
 
-void RemoveObject(size_t index)
+void EditorWindow::RemoveObject(size_t index)
 {
 	SendMessage(ObjectsListBox, TVM_DELETEITEM,0x0, 0x420); // TODO CHANGE 420 to an element in the array
 }
 
-void RefresObjectList()
+void EditorWindow::RefresObjectList()
 {
 	for (size_t i = 0; i < 420; i++)
 	{
@@ -775,4 +786,35 @@ void RefresObjectList()
 	{
 		AddObject(IObjectList[i]);
 	}
+}
+
+EditorWindow::~EditorWindow()
+{
+#if _DEBUG
+	IDXGIDebug* debugDev;
+	HRESULT hr = DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugDev));
+	debugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+	debugDev->Release();
+#endif
+
+	colorured_line_inputlayout->Release();
+	delete AxisPrimitive.release();
+	delete BasicEffect.release();
+	delete CommonStates.release();
+}
+
+void EditorWindow::ExitWithErrorCode(DWORD err)
+{
+	if (!ShowProjectNotSavedWarning()) return;
+	StopDiscordRichPresence();
+
+	ShouldExit = true;
+	errorcode = err;
+}
+
+void EditorWindow::RaiseInitializationError(DWORD err)
+{
+	ShouldExit = true;
+	PostQuitMessage(err);
+	delete this;
 }

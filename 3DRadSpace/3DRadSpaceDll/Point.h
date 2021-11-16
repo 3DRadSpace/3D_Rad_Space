@@ -20,6 +20,6 @@ struct DLLEXPORT Point
 	friend DLLEXPORT Point operator *(const Point& a, const Point& b);
 	friend DLLEXPORT Point operator /(const Point& a, const Point& b);
 
-	friend DLLEXPORT Point operator *(const Point& p, float s);
+	friend DLLEXPORT Point operator *(float s,const Point& p);
 };
 

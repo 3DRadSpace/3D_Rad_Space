@@ -66,6 +66,24 @@ IDI_ICON6               ICON                    "Icons\\compile_icon.ico"
 
 IDI_ICON7               ICON                    "Icons\\switch2d_icon.ico"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR1 ACCELERATORS
+BEGIN
+    "B",            AID_BUILD,              VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "P",            AID_DEBUG,              VIRTKEY, CONTROL, NOINVERT
+    "N",            AID_NEWFILE,            VIRTKEY, CONTROL, NOINVERT
+    "O",            AID_OPENFILE,           VIRTKEY, CONTROL, NOINVERT
+    "S",            AID_SAVEFILE,           VIRTKEY, CONTROL, NOINVERT
+    "S",            AID_SAVEFILEAS,         VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_F2,          AID_SW2D3D,             VIRTKEY, ALT, NOINVERT
+    "A",            AID_ADDOBJ,             VIRTKEY, CONTROL, NOINVERT
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

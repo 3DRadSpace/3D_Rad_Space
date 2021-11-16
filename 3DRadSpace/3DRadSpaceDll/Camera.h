@@ -6,7 +6,7 @@
 Provides View and Projection transformation matrices calculated from the viewer's translation 
 */
 
-class Camera : public IObject
+class DLLEXPORT Camera : public IObject
 {
 	Vector3 lookat;
 public:

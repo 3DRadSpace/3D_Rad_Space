@@ -8,16 +8,18 @@
 #include <type_traits>
 
 //By default, in linux all functions are already exported. No other defined needed.
-#ifdef WIN32
+#ifdef _WIN32 //If we are compiling on Windows
 	#define NOMINMAX
-	#ifdef _MT //MSDN says it is defined when compiling as a DLL
+	#ifdef _DLL //If we are compiling as a DLL
 		#define DLLEXPORT  __declspec(dllexport)
-		#define DLL_T_EXTERN 
-	#else
+	#else //If we are using the headers inside a project
 		#define DLLEXPORT __declspec(dllimport)
-		#define DLL_T_EXTERN extern
 	#endif //DLL
-#endif //WIN32
+#endif //WIN32 (both x64 and x86)
+
+#ifdef __linux__
+	#define DLLEXPORT
+#endif
 
 #include "ResourceCreationException.h"
 #include <vector>

@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #ifdef __DIRECTXVER
+
 Game::Game(HWND window)
 {
 	this->_stencilstate = nullptr;

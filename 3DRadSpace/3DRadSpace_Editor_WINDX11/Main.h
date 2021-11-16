@@ -5,9 +5,14 @@
 #include "DownloadStatusWindow.h"
 #include <dxgidebug.h>
 #include <discord_rpc.h>
+
+#pragma warning(push)
+#pragma warning(disable : 26812)
 #include <Keyboard.h>
-#include <DirectXMath.h>
 #include <Model.h>
+#pragma warning(pop)
+
+#include <DirectXMath.h>
 #include <Effects.h>
 #include <CommonStates.h>
 #include <chrono>
@@ -18,49 +23,13 @@
 
 #ifdef UNICODE
 #define __stdstring std::wstring
+#define __rawstring wchar_t
 #else
 #define __stdstring std::string
+#define __rawstring char
 #endif
 
-extern HWND MainWindow, RenderWindow, ToolBarWindow;
-
-extern __stdstring CurrentFile;
-
-extern HINSTANCE hGlobCurrentInst;
-
-extern bool IsSaved, _3DMode;
-
-extern std::vector<IObject*> IObjectList;
-
 int __stdcall wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd);
-
-LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-void ResizeWindows();
-void CheckUpdate();
-void DownloadUpdate(char* link,char* version);
-
-void StartDiscordPresence();
-
-void ResetLoadedProject();
-bool ShowProjectNotSavedWarning();
-void SaveProject();
-void SaveProjectAs();
-
-void UpdateDiscordRichPresence();
-void StopDiscordRichPresence();
-
-void ExitEditor();
-
-Point GetRenderWindowResolution();
-Point GetDisplaySize();
-
-void __cdecl LostGDevice();
-
-void AddObject(IObject* object);
-void RemoveObject(size_t index);
-void RefresObjectList();
 
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
@@ -87,49 +56,90 @@ constexpr int MENU_GITHUB = 317;
 constexpr int MENU_SWITCH3D2D = 318;
 
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
-constexpr const wchar_t* __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
+constexpr const __rawstring* __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
 
-//Todo: make this code more OOP-ish to reduce the number of global variables and also to correctly use RAII design
-//For now I just made some empty functions.
+const __rawstring* const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
+const __rawstring* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
+
+LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 class EditorWindow 
 {
-	HWND MainWindow, RenderWindow, ToolBarWindow;
-	__stdstring CurrentFile;
-	HINSTANCE hGlobCurrentInst;
-	bool IsSaved, _3DMode;
+	Vector3 CameraPos;
+	bool  ShouldExit;
+
+	//Matrix View, Projection;
+	DirectX::XMMATRIX View, Projection;
+
+	std::unique_ptr<DirectX::Mouse> ptrMouse = std::make_unique<DirectX::Mouse>();
+	Point pMouseDelta;
+	float camRotX = 0.5, camRotY = -0.5;
+	float camZoom = 5;
+
+	std::unique_ptr<DirectX::CommonStates> CommonStates;
+	std::unique_ptr<DirectX::BasicEffect> BasicEffect;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> AxisPrimitive;
+
+	std::unique_ptr<Game> game;
+	ID3D11Device* device;
+	ID3D11DeviceContext* context;
+	IDXGISwapChain* swapchain;
+	ID3D11InputLayout* colorured_line_inputlayout;
+
+	std::unique_ptr<StencilState> stencil;
+
 	std::vector<IObject*> IObjectList;
 
-
-	static LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { }
-	static LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { }
-
-	void ResizeWindows() { }
-	void CheckUpdate() { }
-	void DownloadUpdate(char* link, char* version) { }
-
-	void StartDiscordPresence() { }
-
-	void ResetLoadedProject() { }
-	bool ShowProjectNotSavedWarning() { }
-	void SaveProject() { }
-	void SaveProjectAs() { }
-
-	void UpdateDiscordRichPresence() { }
-	void StopDiscordRichPresence() { }
-
-	void ExitEditor() { }
-
-	Point GetRenderWindowResolution() { }
-	Point GetDisplaySize() { }
-
-	void __cdecl LostGDevice() { }
-
-	void AddObject(IObject* object) { }
-	void RemoveObject(size_t index) { }
-	void RefresObjectList() { }
+	Point resolution;
+	Point screenCenter;
 public:
-	EditorWindow(HINSTANCE hInstance,PWSTR cmdArgs)
-	{
-	}
+	EditorWindow(const EditorWindow& w) = delete;
+	EditorWindow(EditorWindow&& w) = delete;
+	EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs);
 
+	HWND MainWindow, RenderWindow, ToolBarWindow, ObjectsListBox;
+	HINSTANCE hGlobCurrentInst;
+	static EditorWindow* g_EWindow;
+
+	__stdstring CurrentFile;
+	Vector3 _3DCursor;
+	bool IsSaved, _3DMode;
+
+	HACCEL AcceleratorTable; //Keyboard shortcuts
+
+	DWORD errorcode;
+
+	void RaiseInitializationError(DWORD err);
+	void RenderUpdateLoop();
+
+	void ResizeWindows();
+	void CheckUpdate();
+	void DownloadUpdate(char* link, char* version);
+
+	void UpdateDiscordRichPresence();
+	void StopDiscordRichPresence();
+
+	Point GetRenderWindowResolution();
+	Point GetDisplaySize();
+
+	void __cdecl LostGDevice();
+
+	void AddObject(IObject* object);
+	void RemoveObject(size_t index);
+	void RefresObjectList();
+
+	void StartDiscordPresence();
+
+	void ResetLoadedProject();
+	bool ShowProjectNotSavedWarning();
+
+	void OpenProject(__rawstring* path);
+	void SaveProject();
+	void SaveProjectAs();
+
+	void ExitEditor();
+	void ExitWithErrorCode(DWORD err);
+
+	~EditorWindow();
 };

@@ -50,7 +50,7 @@ Point operator/(const Point& a, const Point& b)
     return Point(a.X / b.X, a.Y / b.Y);
 }
 
-Point operator*(const Point& p, float s)
+Point operator*(float s,const Point& p)
 {
-    return Point(p.X * s, p.Y*s);
+    return Point(static_cast<int>(p.X * s),static_cast<int>(p.Y*s));
 }
