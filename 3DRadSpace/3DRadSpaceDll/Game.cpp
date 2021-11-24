@@ -2,7 +2,7 @@
 
 #ifdef __DIRECTXVER
 
-Game::Game(HWND window)
+Engine3DRadSpace::Game::Game(HWND window)
 {
 	this->_stencilstate = nullptr;
 	this->_resolution = Point(800, 600);
@@ -49,7 +49,7 @@ Game::Game(HWND window)
 	_backbuffer_texture->Release();
 }
 
-Game::Game(HWND window, const Point &resolution)
+Engine3DRadSpace::Game::Game(HWND window, const Point &resolution)
 {
 	this->_stencilstate = nullptr;
 	this->_resolution = resolution;
@@ -106,35 +106,35 @@ Game::Game(HWND window, const Point &resolution)
 	_backbuffer_texture->Release();
 }
 
-ID3D11Device* Game::GetDevice()
+ID3D11Device* Engine3DRadSpace::Game::GetDevice()
 {
 	return _gdev;
 }
 
-ID3D11DeviceContext* Game::GetDeviceContext()
+ID3D11DeviceContext* Engine3DRadSpace::Game::GetDeviceContext()
 {
 	return _gcontext;
 }
 
-IDXGISwapChain* Game::GetSwapChain()
+IDXGISwapChain* Engine3DRadSpace::Game::GetSwapChain()
 {
 	return _swapchain;
 }
 
-bool Game::IsDeviceCreated()
+bool Engine3DRadSpace::Game::IsDeviceCreated()
 {
 	return _dc;
 }
-ID3D11RenderTargetView* Game::GetRenderTargetBackBuffer()
+ID3D11RenderTargetView* Engine3DRadSpace::Game::GetRenderTargetBackBuffer()
 {
 	return _backbuffer_rendertarget;
 }
-Point Game::GetResolution()
+Engine3DRadSpace::Point Engine3DRadSpace::Game::GetResolution()
 {
 	return this->_resolution;
 }
 
-void Game::SetTopology(PrimitiveTopology topology)
+void Engine3DRadSpace::Game::SetTopology(PrimitiveTopology topology)
 {
 	D3D11_PRIMITIVE_TOPOLOGY set_topology;
 	switch (topology)
@@ -169,12 +169,12 @@ void Game::SetTopology(PrimitiveTopology topology)
 	this->_gcontext->IASetPrimitiveTopology(set_topology);
 }
 
-void Game::SetStencilState(StencilState* stencil)
+void Engine3DRadSpace::Game::SetStencilState(Engine3DRadSpace::StencilState* stencil)
 {
 	this->_stencilstate = stencil;
 }
 
-void Game::Clear(ColorShader clearcolor)
+void Engine3DRadSpace::Game::Clear(Engine3DRadSpace::ColorShader clearcolor)
 {
 	this->_gcontext->ClearRenderTargetView(this->_backbuffer_rendertarget, (float*)&clearcolor);
 	this->_gcontext->ClearDepthStencilView(this->_stencilstate->GetStencilView(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH | D3D11_CLEAR_FLAG::D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -182,7 +182,7 @@ void Game::Clear(ColorShader clearcolor)
 	this->_gcontext->OMSetRenderTargets(1, &_backbuffer_rendertarget, this->_stencilstate->GetStencilView());
 }
 
-void Game::Present()
+void Engine3DRadSpace::Game::Present()
 {
 	HRESULT r = this->_swapchain->Present(1,0);
 	if (r == NO_ERROR) return;
@@ -196,12 +196,12 @@ void Game::Present()
 		throw std::runtime_error("Unknown error when attepmting to render the scene.");
 }
 
-HWND Game::GetWindow()
+HWND Engine3DRadSpace::Game::GetWindow()
 {
 	return this->hWindow;
 }
 
-Game::~Game()
+Engine3DRadSpace::Game::~Game()
 {
 	if(_backbuffer_rendertarget != nullptr) _backbuffer_rendertarget->Release();
 	if(_gcontext != nullptr) _gcontext->Release();

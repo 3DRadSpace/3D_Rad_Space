@@ -1,6 +1,6 @@
 #include "Matrix.h"
 
-Matrix Matrix::CreateScale(float scale)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateScale(float scale)
 {
 	Matrix m;
     m.M11 = scale;
@@ -10,7 +10,7 @@ Matrix Matrix::CreateScale(float scale)
     return m;
 }
 
-Matrix Matrix::CreateScale(const Vector3& v)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateScale(const Vector3& v)
 {
 	Matrix m;
     m.M11 = v.X;
@@ -20,7 +20,7 @@ Matrix Matrix::CreateScale(const Vector3& v)
     return m;
 }
 
-Matrix Matrix::CreateTranslation(const Vector3& p)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateTranslation(const Vector3& p)
 {
 	Matrix m;
 	m.M41 = p.X;
@@ -29,7 +29,7 @@ Matrix Matrix::CreateTranslation(const Vector3& p)
 	return m;
 }
 
-Matrix Matrix::CreateRotationX(float alpha)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateRotationX(float alpha)
 {
 	Matrix result;
 
@@ -44,7 +44,7 @@ Matrix Matrix::CreateRotationX(float alpha)
 	return result;
 }
 
-Matrix Matrix::CreateRotationY(float beta)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateRotationY(float beta)
 {
 	Matrix result;
 	
@@ -59,7 +59,7 @@ Matrix Matrix::CreateRotationY(float beta)
 	return result;
 }
 
-Matrix Matrix::CreateRotationZ(float gamma)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateRotationZ(float gamma)
 {
 	Matrix result;
 
@@ -74,7 +74,7 @@ Matrix Matrix::CreateRotationZ(float gamma)
 	return result;
 }
 
-Matrix Matrix::CreateFromQuaternion(Quaternion q)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateFromQuaternion(Quaternion q)
 {
 	float num9 = q.X * q.X;
 	float num8 = q.Y * q.Y;
@@ -98,7 +98,7 @@ Matrix Matrix::CreateFromQuaternion(Quaternion q)
 	return result;
 }
 
-Matrix Matrix::CreateLookAt(const Vector3& camerapos, const Vector3& camera_look_at, const Vector3& normal)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateLookAt(const Vector3& camerapos, const Vector3& camera_look_at, const Vector3& normal)
 {
 	Vector3 vector = Vector3::Normalize(camerapos - camera_look_at);
 	Vector3 vector2 = Vector3::Normalize(Vector3::Cross(normal, vector));
@@ -123,7 +123,7 @@ Matrix Matrix::CreateLookAt(const Vector3& camerapos, const Vector3& camera_look
 	return result;
 }
 
-Matrix Matrix::CreateProjectionFOV(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateProjectionFOV(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
 {
 	if ((fieldOfView <= 0.0f) || (fieldOfView >= 3.141593f))
 	{
@@ -161,7 +161,7 @@ Matrix Matrix::CreateProjectionFOV(float fieldOfView, float aspectRatio, float n
     return result;
 }
 
-Matrix Matrix::CreateProjectionScreenRatio(float screenX, float screenY, float npd, float fpd)
+Engine3DRadSpace::Matrix Engine3DRadSpace::Matrix::CreateProjectionScreenRatio(float screenX, float screenY, float npd, float fpd)
 {
 	if (npd <= 0.0f)
 	{
@@ -192,7 +192,7 @@ Matrix Matrix::CreateProjectionScreenRatio(float screenX, float screenY, float n
 	return result;
 }
 
-Matrix operator*(const Matrix& a, const Matrix& b)
+Engine3DRadSpace::Matrix Engine3DRadSpace::operator*(const Matrix& a, const Matrix& b)
 {
 	float m11 = (((a.M11 * b.M11) + (a.M12 * b.M21)) + (a.M13 * b.M31)) + (a.M14 * b.M41);
 	float m12 = (((a.M11 * b.M12) + (a.M12 * b.M22)) + (a.M13 * b.M32)) + (a.M14 * b.M42);

@@ -1,11 +1,14 @@
 #pragma once
 #include "MeshPart.h"
 
-template<class T>
-class Mesh
+namespace Engine3DRadSpace
 {
-public:
-	MeshPart<T>** MeshParts;
-	size_t NumParts;
-};
+	template<class T>
+	class Mesh
+	{
+	public:
+		MeshPart<T>** MeshParts;
+		size_t NumParts;
+	};
+}
 

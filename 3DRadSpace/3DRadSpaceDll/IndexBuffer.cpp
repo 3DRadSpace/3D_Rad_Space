@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer(unsigned int* indexes, size_t size)
+Engine3DRadSpace::IndexBuffer::IndexBuffer(unsigned int* indexes, size_t size)
 {
 	this->_indexes = indexes;
 	this->_size = size;
@@ -8,7 +8,7 @@ IndexBuffer::IndexBuffer(unsigned int* indexes, size_t size)
 	this->_indexbuffer = nullptr;
 }
 
-IndexBuffer::IndexBuffer(const std::vector<unsigned int> &initializer)
+Engine3DRadSpace::IndexBuffer::IndexBuffer(const std::vector<unsigned int> &initializer)
 {
 	this->_createdbuffer = false;
 	this->_indexbuffer = nullptr;
@@ -25,12 +25,12 @@ IndexBuffer::IndexBuffer(const std::vector<unsigned int> &initializer)
 	}
 }
 
-ID3D11Buffer* IndexBuffer::GetCreatedBuffer()
+ID3D11Buffer* Engine3DRadSpace::IndexBuffer::GetCreatedBuffer()
 {
 	return this->_createdbuffer ? this->_indexbuffer : nullptr;
 }
 
-void IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
+void Engine3DRadSpace::IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 {
 	D3D11_BUFFER_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(D3D11_BUFFER_DESC));
@@ -49,7 +49,7 @@ void IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 		this->_createdbuffer = true;
 }
 
-IndexBuffer::~IndexBuffer()
+Engine3DRadSpace::IndexBuffer::~IndexBuffer()
 {
 	if (this->_indexbuffer != nullptr) this->_indexbuffer->Release();
 	delete this->_indexes;

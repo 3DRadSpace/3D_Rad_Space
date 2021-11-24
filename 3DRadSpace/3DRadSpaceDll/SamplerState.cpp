@@ -2,7 +2,7 @@
 
 #ifdef __DIRECTXVER
 
-SamplerState::SamplerState(ID3D11Device* device)
+Engine3DRadSpace::SamplerState::SamplerState(ID3D11Device* device)
 {
     _samplerstate = nullptr;
 
@@ -30,7 +30,7 @@ SamplerState::SamplerState(ID3D11Device* device)
     }
 }
 
-SamplerState::SamplerState(ID3D11Device* device, const SamplerStateDescription& desc)
+Engine3DRadSpace::SamplerState::SamplerState(ID3D11Device* device, const SamplerStateDescription& desc)
 {
     _samplerstate = nullptr;
 
@@ -61,37 +61,37 @@ SamplerState::SamplerState(ID3D11Device* device, const SamplerStateDescription& 
     }
 }
 
-ID3D11SamplerState* SamplerState::GetCreatedSamplerState() const noexcept
+ID3D11SamplerState* Engine3DRadSpace::SamplerState::GetCreatedSamplerState() const noexcept
 {
     return this->_samplerstate;
 }
 
-void SamplerState::SetSamplerVertexShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::SamplerState::SetSamplerVertexShader(ID3D11DeviceContext* context)
 {
     context->VSSetSamplers(0, 1, &this->_samplerstate);
 }
 
-void SamplerState::SetSamplerPixelShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::SamplerState::SetSamplerPixelShader(ID3D11DeviceContext* context)
 {
     context->PSSetSamplers(0, 1, &this->_samplerstate);
 }
 
-void SamplerState::SetSamplerGeometryShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::SamplerState::SetSamplerGeometryShader(ID3D11DeviceContext* context)
 {
     context->GSSetSamplers(0, 1, &this->_samplerstate);
 }
 
-void SamplerState::SetSamplerDomainShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::SamplerState::SetSamplerDomainShader(ID3D11DeviceContext* context)
 {
     context->DSSetSamplers(0, 1, &this->_samplerstate);
 }
 
-void SamplerState::SetSamplerHullShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::SamplerState::SetSamplerHullShader(ID3D11DeviceContext* context)
 {
     context->HSSetSamplers(0, 1, &this->_samplerstate);
 }
 
-SamplerState::~SamplerState()
+Engine3DRadSpace::SamplerState::~SamplerState()
 {
     if (this->_samplerstate != nullptr) this->_samplerstate->Release();
 

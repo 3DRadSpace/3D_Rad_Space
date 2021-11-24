@@ -1,5 +1,5 @@
 #include "IScript.h"
 
-IScript::~IScript()
+Engine3DRadSpace::IScript::~IScript()
 {
 }

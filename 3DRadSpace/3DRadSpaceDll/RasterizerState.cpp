@@ -2,7 +2,7 @@
 
 #ifdef __DIRECTXVER
 
-RasterizerState::RasterizerState(ID3D11Device *device)
+Engine3DRadSpace::RasterizerState::RasterizerState(ID3D11Device *device)
 {
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	memset(&rasterizerDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
@@ -27,7 +27,7 @@ RasterizerState::RasterizerState(ID3D11Device *device)
 	}
 }
 
-RasterizerState::RasterizerState(ID3D11Device* device,const RasterizerStateDesc& desc)
+Engine3DRadSpace::RasterizerState::RasterizerState(ID3D11Device* device,const RasterizerStateDesc& desc)
 {
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	memset(&rasterizerDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
@@ -50,11 +50,11 @@ RasterizerState::RasterizerState(ID3D11Device* device,const RasterizerStateDesc&
 	}
 }
 
-void RasterizerState::SetRasterizerState(ID3D11DeviceContext* context)
+void Engine3DRadSpace::RasterizerState::SetRasterizerState(ID3D11DeviceContext* context)
 {
 	context->RSSetState(this->_rasterizerState);
 }
-RasterizerState::~RasterizerState()
+Engine3DRadSpace::RasterizerState::~RasterizerState()
 {
 	if (this->_rasterizerState != nullptr) this->_rasterizerState->Release();
 

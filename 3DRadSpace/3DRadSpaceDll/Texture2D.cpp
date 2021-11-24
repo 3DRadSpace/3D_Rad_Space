@@ -1,7 +1,7 @@
 #include "Texture2D.h"
 
 #ifdef __DIRECTXVER
-Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
+Engine3DRadSpace::Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 {
 	this->_device = g->GetDevice();
 	this->_context = g->GetDeviceContext();
@@ -32,7 +32,7 @@ Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)
 	}
 }
 
-Texture2D::Texture2D(Game* game,const std::wstring &path)
+Engine3DRadSpace::Texture2D::Texture2D(Game* game,const std::wstring &path)
 {
 	_texture = nullptr;
 	_shaderresourceview = nullptr;
@@ -51,7 +51,7 @@ Texture2D::Texture2D(Game* game,const std::wstring &path)
 	}
 }
 
-Texture2D::Texture2D(Game* game, const std::string& path)
+Engine3DRadSpace::Texture2D::Texture2D(Game* game, const std::string& path)
 {
 	_texture = nullptr;
 	_shaderresourceview = nullptr;
@@ -74,17 +74,17 @@ Texture2D::Texture2D(Game* game, const std::string& path)
 	}
 }
 
-ID3D11Texture2D* Texture2D::GetTexture2D()
+ID3D11Texture2D* Engine3DRadSpace::Texture2D::GetTexture2D()
 {
 	return this->_texture;
 }
 
-ID3D11ShaderResourceView* Texture2D::GetShaderResourceView()
+ID3D11ShaderResourceView* Engine3DRadSpace::Texture2D::GetShaderResourceView()
 {
 	return this->_shaderresourceview;
 }
 
-Texture2D::~Texture2D()
+Engine3DRadSpace::Texture2D::~Texture2D()
 {
 	if (_texture != nullptr) _texture->Release();
 	if (_shaderresourceview != nullptr) this->_shaderresourceview->Release();

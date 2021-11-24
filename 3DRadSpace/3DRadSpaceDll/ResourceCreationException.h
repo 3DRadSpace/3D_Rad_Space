@@ -5,17 +5,20 @@
 #pragma warning(disable: 4275)
 #pragma warning(disable: 4251)
 
-class DLLEXPORT ResourceCreationException : public std::exception
+namespace Engine3DRadSpace
 {
-	std::string _message;
-public: 
-	ResourceCreationException() = delete;
-	ResourceCreationException(const std::string& message, const std::type_info& type) :
-		_message(message + "Faulty type :" + std::string(type.name())) { };
+	class DLLEXPORT ResourceCreationException : public std::exception
+	{
+		std::string _message;
+	public:
+		ResourceCreationException() = delete;
+		ResourceCreationException(const std::string& message, const std::type_info& type) :
+			_message(message + "Faulty type :" + std::string(type.name())) { };
 
-	const char* what() const override;
+		const char* what() const override;
 
-	~ResourceCreationException();
-};
+		~ResourceCreationException();
+	};
+}
 
 #pragma warning(pop)

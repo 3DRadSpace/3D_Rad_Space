@@ -1,6 +1,6 @@
 #include "Ray.h"
 
-RayResult Ray::Intersects(const Triangle& triangle)
+Engine3DRadSpace::RayResult Engine3DRadSpace::Ray::Intersects(const Triangle& triangle)
 {
     const float EPSILON = 0.0000001f;
     Vector3 vertex0 = triangle.PointA;

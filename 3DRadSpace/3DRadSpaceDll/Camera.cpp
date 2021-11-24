@@ -1,53 +1,53 @@
 #include "Camera.h"
 
-Matrix Camera::GetTranslation()
+Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetTranslation()
 {
-	return Matrix::CreateTranslation(Position);
+	return Engine3DRadSpace::Matrix::CreateTranslation(Position);
 }
 
-void Camera::Update(float dt)
+void Engine3DRadSpace::Camera::Update(float dt)
 {
 	// we don't do anything here.
 }
 
-void Camera::Draw(float dt, Game* g)
+void Engine3DRadSpace::Camera::Draw(float dt, Game* g)
 {
 	//we don't do anything here either
 }
 
-void Camera::Enable()
+void Engine3DRadSpace::Camera::Enable()
 {
 	this->Enabled = true;
 }
 
-char* Camera::WriteToFileBuffer(size_t& s)
+char* Engine3DRadSpace::Camera::WriteToFileBuffer(size_t& s)
 {
 	return nullptr;
 }
 
-void Camera::SetLookDirection(const Quaternion& q)
+void Engine3DRadSpace::Camera::SetLookDirection(const Quaternion& q)
 {
 	this->Rotation = q;
 	this->lookat = Vector3::UnitZ() * q; //I hope that UnitZ is forward
 }
 
-void Camera::SetLookDirection(const Vector3& v)
+void Engine3DRadSpace::Camera::SetLookDirection(const Vector3& v)
 {
 	this->lookat = v;
 	//there's an infinite number of solutions that match the direction vector :pain:
 	//how the heck I'm supposed to generate a quaternion from a direction vector??
 }
 
-Matrix Camera::GetViewMatrix() const
+Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetViewMatrix() const
 {
-	return Matrix::CreateLookAt(Position, lookat, Normal);
+	return Engine3DRadSpace::Matrix::CreateLookAt(Position, lookat, Normal);
 }
 
-Matrix Camera::GetProjectionMatrix() const
+Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetProjectionMatrix() const
 {
 	return Matrix::CreateProjectionFOV(this->FOV, 4.0f / 3.0f, this->NearPlaneDistance, this->FarPlaneDistance);
 }
 
-Camera::~Camera()
+Engine3DRadSpace::Camera::~Camera()
 {
 }

@@ -1,6 +1,6 @@
 #include "CppScript.h"
 
-CppScript::CppScript(const char* modulepath, Game* game)
+Engine3DRadSpace::CppScript::CppScript(const char* modulepath, Game* game)
 {
 	this->_loaded = false;
 	this->_createInstance = nullptr;
@@ -22,12 +22,12 @@ CppScript::CppScript(const char* modulepath, Game* game)
 	}
 }
 
-bool CppScript::IsLoaded()
+bool Engine3DRadSpace::CppScript::IsLoaded()
 {
 	return this->_loaded;
 }
 
-void CppScript::CallDraw(float dt)
+void Engine3DRadSpace::CppScript::CallDraw(float dt)
 {
 	if (this->_loaded)
 	{
@@ -35,7 +35,7 @@ void CppScript::CallDraw(float dt)
 	}
 }
 
-void CppScript::CallUpdate(float dt)
+void Engine3DRadSpace::CppScript::CallUpdate(float dt)
 {
 	if (this->_loaded)
 	{
@@ -43,7 +43,7 @@ void CppScript::CallUpdate(float dt)
 	}
 }
 
-void CppScript::CallEnd()
+void Engine3DRadSpace::CppScript::CallEnd()
 {
 	if (this->_loaded)
 	{
@@ -51,7 +51,7 @@ void CppScript::CallEnd()
 	}
 }
 
-CppScript::~CppScript()
+Engine3DRadSpace::CppScript::~CppScript()
 {
 	FreeLibrary(this->_module);
 }

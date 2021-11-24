@@ -17,46 +17,50 @@ enum class PrimitiveTopology
 
 #include "StencilState.h"
 
-class DLLEXPORT StencilState;
-
-typedef void (__cdecl *Game_LostDeviceEvent)();
-
-class DLLEXPORT Game
+namespace Engine3DRadSpace
 {
-	ID3D11Device* _gdev;
-	ID3D11DeviceContext* _gcontext;
-	IDXGISwapChain* _swapchain;
-	ID3D11RenderTargetView* _backbuffer_rendertarget;
-	bool _dc;
-	Point _resolution;
 
-	StencilState* _stencilstate;
-	
-	HWND hWindow;
-public:
-	Game(HWND window);
-	Game(HWND window,const Point &resolution);
+	class DLLEXPORT StencilState;
 
-	ID3D11Device* GetDevice();
-	ID3D11DeviceContext* GetDeviceContext();
-	IDXGISwapChain* GetSwapChain();
+	typedef void(__cdecl* Game_LostDeviceEvent)();
 
-	Game_LostDeviceEvent LostDeviceEvent;
+	class DLLEXPORT Game
+	{
+		ID3D11Device* _gdev;
+		ID3D11DeviceContext* _gcontext;
+		IDXGISwapChain* _swapchain;
+		ID3D11RenderTargetView* _backbuffer_rendertarget;
+		bool _dc;
+		Point _resolution;
 
-	bool IsDeviceCreated();
-	ID3D11RenderTargetView* GetRenderTargetBackBuffer();
+		StencilState* _stencilstate;
 
-	Point GetResolution();
+		HWND hWindow;
+	public:
+		Game(HWND window);
+		Game(HWND window, const Point& resolution);
 
-	void SetTopology(PrimitiveTopology topology);
-	void SetStencilState(StencilState *stencil);
-	void Clear(ColorShader clearcolor);
+		ID3D11Device* GetDevice();
+		ID3D11DeviceContext* GetDeviceContext();
+		IDXGISwapChain* GetSwapChain();
 
-	void Present();
+		Game_LostDeviceEvent LostDeviceEvent;
 
-	HWND GetWindow();
+		bool IsDeviceCreated();
+		ID3D11RenderTargetView* GetRenderTargetBackBuffer();
 
-	~Game();
-};
+		Point GetResolution();
+
+		void SetTopology(PrimitiveTopology topology);
+		void SetStencilState(StencilState* stencil);
+		void Clear(Engine3DRadSpace::ColorShader clearcolor);
+
+		void Present();
+
+		HWND GetWindow();
+
+		~Game();
+	};
+}
 #endif // __DIRECTXVER
 

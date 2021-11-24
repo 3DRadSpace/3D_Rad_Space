@@ -1,21 +1,21 @@
 #include "Skinmesh.h"
 
-Matrix Skinmesh::GetTranslation()
+Engine3DRadSpace::Matrix Engine3DRadSpace::Skinmesh::GetTranslation()
 {
     return Matrix::CreateTranslation(-this->Center) * Matrix::CreateScale(this->Scale) * Matrix::CreateFromQuaternion(this->Rotation) * Matrix::CreateTranslation(this->Position);
 }
 
-void Skinmesh::Update(float dt)
+void Engine3DRadSpace::Skinmesh::Update(float dt)
 {
 
 }
 
-void Skinmesh::Draw(float dt, Game* g)
+void Engine3DRadSpace::Skinmesh::Draw(float dt, Game* g)
 {
     model->Draw();
 }
 
-Skinmesh::~Skinmesh()
+Engine3DRadSpace::Skinmesh::~Skinmesh()
 {
     if(model != nullptr) delete model;
 

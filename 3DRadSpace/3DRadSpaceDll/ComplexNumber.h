@@ -1,29 +1,31 @@
 #pragma once
 #include "Globals.h"
 
-struct ComplexNumber
+namespace Engine3DRadSpace
 {
-	float A, B;
-	
-	ComplexNumber() :A(0), B(0) {};
-	ComplexNumber(float theta) : A(cos(theta)), B(sin(theta)) {};
-	ComplexNumber(float a, float b) : A(a), B(b) {};
+	struct ComplexNumber
+	{
+		float A, B;
 
-	float Argument() const;
-	static float Argument(const ComplexNumber& z);
-	float Lenght() const;
-	static float Lenght(const ComplexNumber& z);
+		ComplexNumber() :A(0), B(0) {};
+		ComplexNumber(float theta) : A(cos(theta)), B(sin(theta)) {};
+		ComplexNumber(float a, float b) : A(a), B(b) {};
 
-	ComplexNumber operator +=(const ComplexNumber& z);
-	ComplexNumber operator -=(const ComplexNumber& z);
-	ComplexNumber operator -();
+		float Argument() const;
+		static float Argument(const ComplexNumber& z);
+		float Lenght() const;
+		static float Lenght(const ComplexNumber& z);
 
-	ComplexNumber operator /=(const ComplexNumber& z);
-	ComplexNumber operator *=(const ComplexNumber& z);
-};
+		ComplexNumber operator +=(const ComplexNumber& z);
+		ComplexNumber operator -=(const ComplexNumber& z);
+		ComplexNumber operator -();
 
-ComplexNumber operator +(const ComplexNumber& a, const ComplexNumber& b);
-ComplexNumber operator -(const ComplexNumber& a, const ComplexNumber& b);
-ComplexNumber operator *(const ComplexNumber& a, const ComplexNumber& b);
-ComplexNumber operator /(const ComplexNumber& a, const ComplexNumber& b);
+		ComplexNumber operator /=(const ComplexNumber& z);
+		ComplexNumber operator *=(const ComplexNumber& z);
+	};
 
+	ComplexNumber operator +(const ComplexNumber& a, const ComplexNumber& b);
+	ComplexNumber operator -(const ComplexNumber& a, const ComplexNumber& b);
+	ComplexNumber operator *(const ComplexNumber& a, const ComplexNumber& b);
+	ComplexNumber operator /(const ComplexNumber& a, const ComplexNumber& b);
+}

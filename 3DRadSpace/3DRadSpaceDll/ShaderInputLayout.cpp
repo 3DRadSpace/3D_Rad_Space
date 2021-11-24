@@ -1,7 +1,7 @@
 #include "ShaderInputLayout.h"
 
 #ifdef __DIRECTXVER
-ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list)
+Engine3DRadSpace::ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list)
 {
 	this->_layout = nullptr;
 	this->_num_elements = list.size();
@@ -84,7 +84,7 @@ ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list
 	}
 }
 
-void ShaderInputLayout::CreateInputLayout(ID3D11Device* device,const void * shader,size_t shadersize)
+void Engine3DRadSpace::ShaderInputLayout::CreateInputLayout(ID3D11Device* device,const void * shader,size_t shadersize)
 {
 	HRESULT r = device->CreateInputLayout(this->_inputelements, this->_num_elements, shader, shadersize, &this->_layout);
 	if (FAILED(r))
@@ -93,7 +93,7 @@ void ShaderInputLayout::CreateInputLayout(ID3D11Device* device,const void * shad
 	}
 }
 
-void ShaderInputLayout::CreateInputLayout(ID3D11Device* device, const Shader* shader)
+void Engine3DRadSpace::ShaderInputLayout::CreateInputLayout(ID3D11Device* device, const Shader* shader)
 {
 	ID3DBlob* sh_by = shader->GetShaderBlob();
 	HRESULT r = device->CreateInputLayout(this->_inputelements, this->_num_elements, sh_by->GetBufferPointer(), sh_by->GetBufferSize(), &this->_layout);
@@ -103,12 +103,12 @@ void ShaderInputLayout::CreateInputLayout(ID3D11Device* device, const Shader* sh
 	}
 }
 
-void ShaderInputLayout::SetInputLayout(ID3D11DeviceContext* context)
+void Engine3DRadSpace::ShaderInputLayout::SetInputLayout(ID3D11DeviceContext* context)
 {
 	context->IASetInputLayout(this->_layout);
 }
 
-ShaderInputLayout::~ShaderInputLayout()
+Engine3DRadSpace::ShaderInputLayout::~ShaderInputLayout()
 {
 	if (this->_layout != nullptr) this->_layout->Release();
 	delete this->_inputelements;

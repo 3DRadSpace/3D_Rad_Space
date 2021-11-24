@@ -1,5 +1,5 @@
 #include "IObject.h"
 
-IObject::~IObject()
+Engine3DRadSpace::IObject::~IObject()
 {
 }

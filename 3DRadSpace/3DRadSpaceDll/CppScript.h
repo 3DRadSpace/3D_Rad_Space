@@ -7,26 +7,30 @@
 
 #include <Windows.h>
 
-typedef IScript* (*fptrGetScriptInstance)();
-
-class CppScript
+namespace Engine3DRadSpace
 {
-	HMODULE _module;
-	bool _loaded;
-	fptrGetScriptInstance _createInstance;
-	IScript* scriptInstance;
 
-public:
-	CppScript(const char* modulepath,Game *game);
+	typedef IScript* (*fptrGetScriptInstance)();
 
-	bool IsLoaded();
+	class CppScript
+	{
+		HMODULE _module;
+		bool _loaded;
+		fptrGetScriptInstance _createInstance;
+		IScript* scriptInstance;
 
-	void CallDraw(float dt);
-	void CallUpdate(float dt);
-	void CallEnd();
+	public:
+		CppScript(const char* modulepath, Game* game);
 
-	~CppScript();
-};
+		bool IsLoaded();
 
+		void CallDraw(float dt);
+		void CallUpdate(float dt);
+		void CallEnd();
+
+		~CppScript();
+	};
+
+}
 #endif
 #endif

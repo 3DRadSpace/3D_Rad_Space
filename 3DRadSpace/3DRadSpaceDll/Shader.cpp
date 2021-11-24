@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 #ifdef __DIRECTXVER
-void Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)
+void Engine3DRadSpace::Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)
 {
 	switch (this->_shadertype)
 	{
@@ -30,7 +30,7 @@ void Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)
 	}
 }
 
-void Shader::LoadFromMemory(const char* memory, size_t lenght, const char* entryfunction)
+void Engine3DRadSpace::Shader::LoadFromMemory(const char* memory, size_t lenght, const char* entryfunction)
 {
 	if (this->_shadercreated) return;
 	switch (this->_shadertype)
@@ -58,7 +58,7 @@ void Shader::LoadFromMemory(const char* memory, size_t lenght, const char* entry
 	this->_shadercreated = true;
 }
 
-void Shader::CompileShader(ID3D11Device* device)
+void Engine3DRadSpace::Shader::CompileShader(ID3D11Device* device)
 {
 	if (this->_shadercompiled) return;
 	switch (this->_shadertype)
@@ -86,7 +86,7 @@ void Shader::CompileShader(ID3D11Device* device)
 	this->_shadercompiled = true;
 }
 
-void Shader::SetShader(ID3D11DeviceContext* context)
+void Engine3DRadSpace::Shader::SetShader(ID3D11DeviceContext* context)
 {
 	switch (this->_shadertype)
 	{
@@ -106,18 +106,18 @@ void Shader::SetShader(ID3D11DeviceContext* context)
 	}
 }
 
-void Shader::CreateInputLayout(ID3D11Device* device,const std::vector<InputLayoutElement> &list)
+void Engine3DRadSpace::Shader::CreateInputLayout(ID3D11Device* device,const std::vector<InputLayoutElement> &list)
 {
 	this->layout = new ShaderInputLayout(list);
 	layout->CreateInputLayout(device, this->_shadercode->GetBufferPointer(), this->_shadercode->GetBufferSize());
 }
 
-void Shader::SetInputLayout(ID3D11DeviceContext* context)
+void Engine3DRadSpace::Shader::SetInputLayout(ID3D11DeviceContext* context)
 {
 	layout->SetInputLayout(context);
 }
 
-void Shader::SetShaderParametersLayout(ID3D11Device* device, ID3D11DeviceContext* context, size_t size)
+void Engine3DRadSpace::Shader::SetShaderParametersLayout(ID3D11Device* device, ID3D11DeviceContext* context, size_t size)
 {
 	if (this->_constantbuffercreated) return;
 	D3D11_BUFFER_DESC constantBuffer;
@@ -175,7 +175,7 @@ void Shader::SetShaderParametersLayout(ID3D11Device* device, ID3D11DeviceContext
 	}
 }
 
-void Shader::SetShaderParameters(ID3D11DeviceContext* context, void* arguments, size_t size)
+void Engine3DRadSpace::Shader::SetShaderParameters(ID3D11DeviceContext* context, void* arguments, size_t size)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedSubresource;
 	context->Map(this->_constantbuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &mappedSubresource);
@@ -183,7 +183,7 @@ void Shader::SetShaderParameters(ID3D11DeviceContext* context, void* arguments, 
 	context->Unmap(this->_constantbuffer, 0);
 }
 
-void Shader::SetShaderTexture(ID3D11DeviceContext* context, Texture2D* texture)
+void Engine3DRadSpace::Shader::SetShaderTexture(ID3D11DeviceContext* context, Texture2D* texture)
 {
 	ID3D11ShaderResourceView* srv = texture->GetShaderResourceView();
 
@@ -223,7 +223,7 @@ void Shader::SetShaderTexture(ID3D11DeviceContext* context, Texture2D* texture)
 	}
 }
 
-void Shader::SetShaderTextures(ID3D11DeviceContext* context, Texture2D** textures, size_t numtextures)
+void Engine3DRadSpace::Shader::SetShaderTextures(ID3D11DeviceContext* context, Texture2D** textures, size_t numtextures)
 {
 	ID3D11ShaderResourceView** srv = new ID3D11ShaderResourceView *[numtextures];
 	for (unsigned i = 0; i < numtextures; i++)
@@ -268,17 +268,17 @@ void Shader::SetShaderTextures(ID3D11DeviceContext* context, Texture2D** texture
 	delete[] srv; //inb4 it is segfault time
 }
 
-ID3DBlob* Shader::GetShaderBlob() const
+ID3DBlob* Engine3DRadSpace::Shader::GetShaderBlob() const
 {
 	return this->_shadercode;
 }
 
-ID3DBlob* Shader::GetErrorBlob() const
+ID3DBlob* Engine3DRadSpace::Shader::GetErrorBlob() const
 {
 	return this->_errorblob;
 }
 
-Shader::~Shader()
+Engine3DRadSpace::Shader::~Shader()
 {
 	if (this->_shadercode != nullptr) this->_shadercode->Release();
 	if (this->_errorblob != nullptr) this->_errorblob->Release();

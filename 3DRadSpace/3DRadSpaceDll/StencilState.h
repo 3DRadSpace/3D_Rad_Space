@@ -6,20 +6,23 @@
 
 #include <d3d11.h>
 
-class DLLEXPORT Game; //:pain:
-
-class DLLEXPORT StencilState
+namespace Engine3DRadSpace
 {
-	ID3D11Texture2D* _stenciltexture;
-	ID3D11DepthStencilState* _stencilstate;
-	ID3D11DepthStencilView* _stencilview;
-	//ID3D11RenderTargetView* _rendertarget;
-public:
-	StencilState(Game* g);
+	class DLLEXPORT Game; //:pain:
 
-	ID3D11DepthStencilView* GetStencilView();
-	ID3D11DepthStencilState* GetStencilState();
+	class DLLEXPORT StencilState
+	{
+		ID3D11Texture2D* _stenciltexture;
+		ID3D11DepthStencilState* _stencilstate;
+		ID3D11DepthStencilView* _stencilview;
+		//ID3D11RenderTargetView* _rendertarget;
+	public:
+		StencilState(Game* g);
 
-	~StencilState();
-};
+		ID3D11DepthStencilView* GetStencilView();
+		ID3D11DepthStencilState* GetStencilState();
+
+		~StencilState();
+	};
+}
 #endif // __DIRECTXVER

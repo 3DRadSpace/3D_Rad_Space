@@ -2,7 +2,7 @@
 
 #ifdef __DIRECTXVER
 
-void Viewport::SetViewport(ID3D11DeviceContext* context)
+void Engine3DRadSpace::Viewport::SetViewport(ID3D11DeviceContext* context)
 {
 	D3D11_VIEWPORT view;
 	memset(&view, 0, sizeof(D3D11_VIEWPORT));

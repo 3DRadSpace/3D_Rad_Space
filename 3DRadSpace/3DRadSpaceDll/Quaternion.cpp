@@ -1,6 +1,6 @@
 #include "Quaternion.h"
 
-Quaternion Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll)
+Engine3DRadSpace::Quaternion Engine3DRadSpace::Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll)
 {
 
     float halfRoll = roll * 0.5f;
@@ -20,7 +20,7 @@ Quaternion Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll
         (cosYaw * cosPitch * cosRoll) + (sinYaw * sinPitch * sinRoll));
 }
 
-Quaternion operator*(const Quaternion& q1, const Quaternion& q2)
+Engine3DRadSpace::Quaternion Engine3DRadSpace::operator*(const Quaternion& q1, const Quaternion& q2)
 {
 	float x = q1.X;
 	float y = q1.Y;

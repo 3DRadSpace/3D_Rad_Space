@@ -1,7 +1,7 @@
 #include "StencilState.h"
 
 #ifdef __DIRECTXVER
-StencilState::StencilState(Game* g)
+Engine3DRadSpace::StencilState::StencilState(Game* g)
 {
 	_stencilview = nullptr;
 
@@ -53,17 +53,17 @@ StencilState::StencilState(Game* g)
 	if (FAILED(r)) throw std::runtime_error("Failed to create the Depth Stencil View");
 }
 
-ID3D11DepthStencilView* StencilState::GetStencilView()
+ID3D11DepthStencilView* Engine3DRadSpace::StencilState::GetStencilView()
 {
 	return this->_stencilview;
 }
 
-ID3D11DepthStencilState* StencilState::GetStencilState()
+ID3D11DepthStencilState* Engine3DRadSpace::StencilState::GetStencilState()
 {
 	return this->_stencilstate;
 }
 
-StencilState::~StencilState()
+Engine3DRadSpace::StencilState::~StencilState()
 {
 	if(this->_stenciltexture != nullptr) this->_stenciltexture->Release();
 	if(this->_stencilstate != nullptr) this->_stencilstate->Release();

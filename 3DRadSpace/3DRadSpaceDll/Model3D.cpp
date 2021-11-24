@@ -1,21 +1,21 @@
 #include "Model3D.h"
 
-inline VertexDeclDeterminantFlag operator|(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
+inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
 {
 	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-inline VertexDeclDeterminantFlag operator|=(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
+inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|=(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
 {
 	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-inline VertexDeclDeterminantFlag operator&(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
+inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator&(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
 {
 	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) & static_cast<int>(b));
 }
 
-Model3D::Model3D(Game* game, const char* file)
+Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 {
 	this->device = game->GetDevice();
 	this->context = game->GetDeviceContext();
@@ -168,12 +168,12 @@ Model3D::Model3D(Game* game, const char* file)
 	}
 }
 
-bool Model3D::CheckVertexDeclDeterminant(VertexDeclDeterminantFlag flag, VertexDeclDeterminantFlag comp)
+bool Engine3DRadSpace::Model3D::CheckVertexDeclDeterminant(VertexDeclDeterminantFlag flag, VertexDeclDeterminantFlag comp)
 {
 	return (comp == (flag & comp));
 }
 
-void Model3D::Draw()
+void Engine3DRadSpace::Model3D::Draw()
 {
 	for (size_t i = 0; i < NumMeshes; i++)
 	{
@@ -181,7 +181,7 @@ void Model3D::Draw()
 	}
 }
 
-Model3D::~Model3D()
+Engine3DRadSpace::Model3D::~Model3D()
 {
 	size_t i;
 	for (i = 0; i < NumMeshes; i++)

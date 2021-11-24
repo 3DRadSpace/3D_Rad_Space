@@ -1,10 +1,12 @@
 #pragma once
 #include "Vector3.h"
 
-struct Triangle
+namespace Engine3DRadSpace
 {
-	Vector3 PointA;
-	Vector3 PointB;
-	Vector3 PointC;
-};
-
+	struct Triangle
+	{
+		Vector3 PointA;
+		Vector3 PointB;
+		Vector3 PointC;
+	};
+}

@@ -5,19 +5,22 @@
 
 #include <d3d11.h>
 
-class IndexBuffer
+namespace Engine3DRadSpace
 {
-	unsigned int *_indexes;
-	size_t _size;
-	ID3D11Buffer* _indexbuffer;
-	bool _createdbuffer;
-public:
-	IndexBuffer(unsigned int* indexes, size_t size);
-	IndexBuffer(const std::vector<unsigned int> &initializer);
+	class IndexBuffer
+	{
+		unsigned int* _indexes;
+		size_t _size;
+		ID3D11Buffer* _indexbuffer;
+		bool _createdbuffer;
+	public:
+		IndexBuffer(unsigned int* indexes, size_t size);
+		IndexBuffer(const std::vector<unsigned int>& initializer);
 
-	void CreateIndexBuffer(ID3D11Device* device);
-	ID3D11Buffer* GetCreatedBuffer();
+		void CreateIndexBuffer(ID3D11Device* device);
+		ID3D11Buffer* GetCreatedBuffer();
 
-	~IndexBuffer();
-};
+		~IndexBuffer();
+	};
+}
 #endif

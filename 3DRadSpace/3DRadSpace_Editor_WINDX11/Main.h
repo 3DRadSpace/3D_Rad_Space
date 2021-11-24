@@ -64,6 +64,8 @@ const __rawstring* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW"
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+using namespace Engine3DRadSpace; 
+
 class EditorWindow 
 {
 	Vector3 CameraPos;
