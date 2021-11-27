@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+#include "Quaternion.hpp"
 
 Engine3DRadSpace::Quaternion Engine3DRadSpace::Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll)
 {

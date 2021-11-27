@@ -1,4 +1,4 @@
-#include "ShaderInputLayout.h"
+#include "ShaderInputLayout.hpp"
 
 #ifdef __DIRECTXVER
 Engine3DRadSpace::ShaderInputLayout::ShaderInputLayout(const std::vector<InputLayoutElement>& list)

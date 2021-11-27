@@ -1,4 +1,4 @@
-#include "DownloadStatusWindow.h"
+#include "DownloadStatusWindow.hpp"
 
 HWND DownloadStatusWindow::window = nullptr;
 HWND DownloadStatusWindow::label1 = nullptr;

@@ -1,4 +1,4 @@
-#include "StencilState.h"
+#include "StencilState.hpp"
 
 #ifdef __DIRECTXVER
 Engine3DRadSpace::StencilState::StencilState(Game* g)

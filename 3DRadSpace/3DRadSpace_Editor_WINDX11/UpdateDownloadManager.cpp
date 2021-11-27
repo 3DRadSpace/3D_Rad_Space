@@ -1,4 +1,4 @@
-#include "UpdateDownloadManager.h"
+#include "UpdateDownloadManager.hpp"
 
 HRESULT __stdcall UpdateDownloadManager::OnStartBinding(DWORD dwReserved, __RPC__in_opt IBinding* pib)
 {

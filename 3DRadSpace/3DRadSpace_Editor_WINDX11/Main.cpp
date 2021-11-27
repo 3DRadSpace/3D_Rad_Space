@@ -1,10 +1,15 @@
-#include "Main.h"
+#include "Main.hpp"
 
 EditorWindow* EditorWindow::g_EWindow = nullptr;
+
+std::unique_ptr<AddObjectDialog> GAddObjectDialog = nullptr;
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
 	EditorWindow Editor(hInstance,args);
+
+	GAddObjectDialog = std::make_unique<AddObjectDialog>(hInstance);
+
 	Editor.RenderUpdateLoop();
 	return 0;
 }
@@ -93,7 +98,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 		Create toolbar with an image list
 	*/
 
-	INITCOMMONCONTROLSEX icc = { sizeof(INITCOMMONCONTROLSEX) , ICC_BAR_CLASSES };
+	INITCOMMONCONTROLSEX icc = { sizeof(INITCOMMONCONTROLSEX) , ICC_BAR_CLASSES | ICC_LISTVIEW_CLASSES };
 	InitCommonControlsEx(&icc);
 
 	HIMAGELIST toolBarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 6, 0);
@@ -215,6 +220,8 @@ void EditorWindow::RenderUpdateLoop()
 
 			camRotX -= pMouseDelta.X * 0.001f;
 			camRotY += pMouseDelta.Y * 0.001f;
+
+			camRotY = Engine3DRadSpace::Math::Clamp((-Math::Pi<float>()/2) + std::numeric_limits<float>::epsilon(), camRotY, (Math::Pi<float>()/2) - std::numeric_limits<float>::epsilon());
 		}
 		else
 		{
@@ -226,7 +233,6 @@ void EditorWindow::RenderUpdateLoop()
 
 		CameraPos = camZoom * Vector3::Transform(Vector3::UnitZ(), q);
 		View = DirectX::XMMatrixLookAtRH({ CameraPos.X,CameraPos.Y,CameraPos.Z }, { _3DCursor.X,_3DCursor.Y,_3DCursor.Z }, { 0.0f,1.0f,0.0f });
-
 
 		auto time2 = std::chrono::high_resolution_clock::now();
 
@@ -381,6 +387,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case AID_ADDOBJ:
 				case MENU_ADDOBJ:
 				{
+					GAddObjectDialog->ShowDialog(EditorWindow::g_EWindow->MainWindow);
 					break;
 				}
 				case MENU_ADDPROJECT:
@@ -764,24 +771,22 @@ void EditorWindow::AddObject(IObject* object)
 	tv_ins.hParent = TVI_ROOT;
 	tv_ins.item = tree_view_item;
 
-	HTREEITEM CurrItem = (HTREEITEM)SendMessage(ObjectsListBox, TVM_INSERTITEM,
-		0, (LPARAM)(LPTVINSERTSTRUCT)&tv_ins);
+	//HTREEITEM CurrItem = (HTREEITEM)SendMessage(ObjectsListBox, TVM_INSERTITEM,
+	//	0, (LPARAM)(LPTVINSERTSTRUCT)&tv_ins);
+
+	TreeView_InsertItem(ObjectsListBox, &tv_ins);
 
 	//add CurrItem to the list of handles
 }
 
 void EditorWindow::RemoveObject(size_t index)
 {
-	SendMessage(ObjectsListBox, TVM_DELETEITEM,0x0, 0x420); // TODO CHANGE 420 to an element in the array
+	SendMessage(ObjectsListBox, TVM_DELETEITEM,0x0, index); // TODO CHANGE 420 to an element in the array
 }
 
 void EditorWindow::RefresObjectList()
 {
-	for (size_t i = 0; i < 420; i++)
-	{
-		//TODO: remove i-th object
-	}
-
+	TreeView_DeleteAllItems(ObjectsListBox);
 	for (size_t i = 0; i < IObjectList.size(); i++)
 	{
 		AddObject(IObjectList[i]);

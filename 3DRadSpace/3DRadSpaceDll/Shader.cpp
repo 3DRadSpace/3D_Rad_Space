@@ -1,4 +1,4 @@
-#include "Shader.h"
+#include "Shader.hpp"
 
 #ifdef __DIRECTXVER
 void Engine3DRadSpace::Shader::LoadFromFile(const wchar_t* path, const char* entryfunction)

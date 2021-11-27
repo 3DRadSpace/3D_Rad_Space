@@ -1,4 +1,4 @@
-#include "IScript.h"
+#include "IScript.hpp"
 
 Engine3DRadSpace::IScript::~IScript()
 {

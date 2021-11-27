@@ -1,4 +1,4 @@
-#include "Skinmesh.h"
+#include "Skinmesh.hpp"
 
 Engine3DRadSpace::Matrix Engine3DRadSpace::Skinmesh::GetTranslation()
 {
@@ -7,12 +7,17 @@ Engine3DRadSpace::Matrix Engine3DRadSpace::Skinmesh::GetTranslation()
 
 void Engine3DRadSpace::Skinmesh::Update(float dt)
 {
-
+    //nothing here
 }
 
 void Engine3DRadSpace::Skinmesh::Draw(float dt, Game* g)
 {
     model->Draw();
+}
+
+void Engine3DRadSpace::Skinmesh::Enable()
+{
+    Enabled = true;
 }
 
 Engine3DRadSpace::Skinmesh::~Skinmesh()

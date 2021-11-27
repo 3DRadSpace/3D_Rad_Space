@@ -1,4 +1,4 @@
-#include "SamplerState.h"
+#include "SamplerState.hpp"
 
 #ifdef __DIRECTXVER
 

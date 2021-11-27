@@ -1,4 +1,4 @@
-#include "Ray.h"
+#include "Ray.hpp"
 
 Engine3DRadSpace::RayResult Engine3DRadSpace::Ray::Intersects(const Triangle& triangle)
 {

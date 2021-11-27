@@ -1,4 +1,4 @@
-#include "Model3D.h"
+#include "Model3D.hpp"
 
 inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
 {

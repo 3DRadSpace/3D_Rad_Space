@@ -1,4 +1,4 @@
-#include "IObject.h"
+#include "IObject.hpp"
 
 Engine3DRadSpace::IObject::~IObject()
 {

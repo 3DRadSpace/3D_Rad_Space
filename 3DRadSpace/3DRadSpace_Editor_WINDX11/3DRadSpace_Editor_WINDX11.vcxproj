@@ -155,14 +155,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DownloadStatusWindow.h" />
-    <ClInclude Include="Libs.h" />
-    <ClInclude Include="Main.h" />
+    <ClInclude Include="AddObjectDialog.hpp" />
+    <ClInclude Include="DownloadStatusWindow.hpp" />
+    <ClInclude Include="Libs.hpp" />
+    <ClInclude Include="Main.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UpdateDownloadManager.h" />
-    <ClInclude Include="VisiblePropertiesManager.h" />
+    <ClInclude Include="UpdateDownloadManager.hpp" />
+    <ClInclude Include="VisiblePropertiesManager.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="DownloadStatusWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="UpdateDownloadManager.cpp" />
@@ -176,6 +178,28 @@
     <Image Include="Icons\openicon.ico" />
     <Image Include="Icons\saveicon.ico" />
     <Image Include="Icons\switch2d_icon.ico" />
+    <Image Include="Images\OBJ_Camera.png" />
+    <Image Include="Images\OBJ_Counter.png" />
+    <Image Include="Images\OBJ_EOK.png" />
+    <Image Include="Images\OBJ_EOL.png" />
+    <Image Include="Images\OBJ_ExitFade.png" />
+    <Image Include="Images\OBJ_Fog.png" />
+    <Image Include="Images\OBJ_Force.png" />
+    <Image Include="Images\OBJ_FPVCamera.png" />
+    <Image Include="Images\OBJ_GameSettings.png" />
+    <Image Include="Images\OBJ_GForce.png" />
+    <Image Include="Images\OBJ_NetworkChat.png" />
+    <Image Include="Images\OBJ_Rigidbody.png" />
+    <Image Include="Images\OBJ_Script.png" />
+    <Image Include="Images\OBJ_Skinmesh.png" />
+    <Image Include="Images\OBJ_SkyBox.png" />
+    <Image Include="Images\OBJ_SkyColor.png" />
+    <Image Include="Images\OBJ_Sound.png" />
+    <Image Include="Images\OBJ_SoundSource.png" />
+    <Image Include="Images\OBJ_SourceCode.png" />
+    <Image Include="Images\OBJ_Sprite.png" />
+    <Image Include="Images\OBJ_TextPrint.png" />
+    <Image Include="Images\OBJ_Timer.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

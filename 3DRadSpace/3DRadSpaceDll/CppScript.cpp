@@ -1,6 +1,6 @@
-#include "CppScript.h"
+#include "CppScript.hpp"
 
-Engine3DRadSpace::CppScript::CppScript(const char* modulepath, Game* game)
+Engine3DRadSpace::CppScript::CppScript(const char* modulepath)
 {
 	this->_loaded = false;
 	this->_createInstance = nullptr;
@@ -25,6 +25,14 @@ Engine3DRadSpace::CppScript::CppScript(const char* modulepath, Game* game)
 bool Engine3DRadSpace::CppScript::IsLoaded()
 {
 	return this->_loaded;
+}
+
+void Engine3DRadSpace::CppScript::CallLoad(Game* game)
+{
+	if(this->_loaded)
+	{
+		this->scriptInstance->Load(game);
+	}
 }
 
 void Engine3DRadSpace::CppScript::CallDraw(float dt)
@@ -53,5 +61,10 @@ void Engine3DRadSpace::CppScript::CallEnd()
 
 Engine3DRadSpace::CppScript::~CppScript()
 {
+	if(this->_loaded)
+	{
+		this->scriptInstance->End();
+		this->scriptInstance->~IScript();
+	}
 	FreeLibrary(this->_module);
 }

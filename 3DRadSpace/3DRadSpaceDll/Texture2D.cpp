@@ -1,4 +1,4 @@
-#include "Texture2D.h"
+#include "Texture2D.hpp"
 
 #ifdef __DIRECTXVER
 Engine3DRadSpace::Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMAT format)

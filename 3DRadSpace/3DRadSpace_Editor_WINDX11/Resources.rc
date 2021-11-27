@@ -84,6 +84,56 @@ BEGIN
     "A",            AID_ADDOBJ,             VIRTKEY, CONTROL, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_CameraIconPNG       PNG                     "Images\\OBJ_Camera.png"
+
+IDB_CounterIconPNG      PNG                     "Images\\OBJ_Counter.png"
+
+IDB_EOKIconPNG          PNG                     "Images\\OBJ_EOK.png"
+
+IDB_EOLIconPNG          PNG                     "Images\\OBJ_EOL.png"
+
+IDB_ExitFaceIconPNG     PNG                     "Images\\OBJ_ExitFade.png"
+
+IDB_FogIconPNG          PNG                     "Images\\OBJ_Fog.png"
+
+IDB_ForceIconPNG        PNG                     "Images\\OBJ_Force.png"
+
+IDB_FPVCameraIconPNG    PNG                     "Images\\OBJ_FPVCamera.png"
+
+IDB_GameSettingsIconPNG PNG                     "Images\\OBJ_GameSettings.png"
+
+IDB_GForceIconPNG       PNG                     "Images\\OBJ_GForce.png"
+
+IDB_NetworkChatIconPNG  PNG                     "Images\\OBJ_NetworkChat.png"
+
+IDB_RigidbodyIconPNG    PNG                     "Images\\OBJ_Rigidbody.png"
+
+IDB_CSScriptIconPNG     PNG                     "Images\\OBJ_Script.png"
+
+IDB_SkinmeshIconPNG     PNG                     "Images\\OBJ_Skinmesh.png"
+
+IDB_SkyboxIconPNG       PNG                     "Images\\OBJ_SkyBox.png"
+
+IDB_SkyColorIconPNG     PNG                     "Images\\OBJ_SkyColor.png"
+
+IDB_SoundIconPNG        PNG                     "Images\\OBJ_Sound.png"
+
+IDB_SoundSourceIconPNG  PNG                     "Images\\OBJ_SoundSource.png"
+
+IDB_SourceCodeIconPNG   PNG                     "Images\\OBJ_SourceCode.png"
+
+IDB_SpriteIconPNG       PNG                     "Images\\OBJ_Sprite.png"
+
+IDB_TextPrintIconPNG    PNG                     "Images\\OBJ_TextPrint.png"
+
+IDB_TimerIconPNG        PNG                     "Images\\OBJ_Timer.png"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

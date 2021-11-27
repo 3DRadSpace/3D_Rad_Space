@@ -1,4 +1,4 @@
-#include "IndexBuffer.h"
+#include "IndexBuffer.hpp"
 
 Engine3DRadSpace::IndexBuffer::IndexBuffer(unsigned int* indexes, size_t size)
 {

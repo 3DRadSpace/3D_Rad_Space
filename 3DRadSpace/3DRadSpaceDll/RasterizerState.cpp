@@ -1,4 +1,4 @@
-#include "RasterizerState.h"
+#include "RasterizerState.hpp"
 
 #ifdef __DIRECTXVER
 

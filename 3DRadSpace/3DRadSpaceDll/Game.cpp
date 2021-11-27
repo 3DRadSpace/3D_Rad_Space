@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Game.hpp"
 
 #ifdef __DIRECTXVER
 

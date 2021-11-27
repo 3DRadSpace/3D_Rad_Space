@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Camera.hpp"
 
 Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetTranslation()
 {
@@ -22,20 +22,18 @@ void Engine3DRadSpace::Camera::Enable()
 
 char* Engine3DRadSpace::Camera::WriteToFileBuffer(size_t& s)
 {
+	s = 0;
 	return nullptr;
 }
 
 void Engine3DRadSpace::Camera::SetLookDirection(const Quaternion& q)
 {
-	this->Rotation = q;
-	this->lookat = Vector3::UnitZ() * q; //I hope that UnitZ is forward
+	this->lookat = Vector3::UnitZ() * q;
 }
 
 void Engine3DRadSpace::Camera::SetLookDirection(const Vector3& v)
 {
 	this->lookat = v;
-	//there's an infinite number of solutions that match the direction vector :pain:
-	//how the heck I'm supposed to generate a quaternion from a direction vector??
 }
 
 Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetViewMatrix() const
@@ -45,7 +43,7 @@ Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetViewMatrix() const
 
 Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetProjectionMatrix() const
 {
-	return Matrix::CreateProjectionFOV(this->FOV, 4.0f / 3.0f, this->NearPlaneDistance, this->FarPlaneDistance);
+	return Matrix::CreateProjectionFOV(this->FOV, this->AspectRatio, this->NearPlaneDistance, this->FarPlaneDistance);
 }
 
 Engine3DRadSpace::Camera::~Camera()

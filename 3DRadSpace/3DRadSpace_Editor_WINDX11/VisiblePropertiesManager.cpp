@@ -1,1 +1,1 @@
-#include "VisiblePropertiesManager.h"
+#include "VisiblePropertiesManager.hpp"

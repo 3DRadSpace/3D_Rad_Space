@@ -1,4 +1,4 @@
-#include "ResourceCreationException.h"
+#include "ResourceCreationException.hpp"
 
 inline const char* Engine3DRadSpace::ResourceCreationException::what() const
 {

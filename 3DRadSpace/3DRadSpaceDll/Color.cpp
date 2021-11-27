@@ -1,4 +1,4 @@
-#include "Color.h"
+#include "Color.hpp"
 
 Engine3DRadSpace::ColorShader Engine3DRadSpace::Color::Normalize()
 {
