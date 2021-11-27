@@ -17,5 +17,9 @@ Releases can be found  [here](https://github.com/3DRadSpace/3D_Rad_Space/release
 # Compiling 3DRadSpace
 
 1.) Download the source using Git
+
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2019 or Visual Studio 2022
+
 3.) Compile the project (Ctrl+Shift+B)
+
+4.) Set the compiling settings to x86 Release or Debug
