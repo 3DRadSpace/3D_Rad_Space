@@ -27,7 +27,7 @@ namespace Engine3DRadSpace
 		/// Constructs a index buffer from a given std::vector or std::initializer_list.
 		/// </summary>
 		/// <param name="initializer">Given index values</param>
-		IndexBuffer(const std::vector<unsigned int>& initializer);
+		explicit IndexBuffer(const std::vector<unsigned int>& initializer);
 
 		/// <summary>
 		/// Creates the infex buffer in the GPU

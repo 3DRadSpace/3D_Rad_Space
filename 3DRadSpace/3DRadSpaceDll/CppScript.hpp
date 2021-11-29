@@ -31,7 +31,7 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <param name="modulepath">Path to the module containing a CreateScriptInstance() function</param>
 		/// <param name="game">Used by the script to access data like the loaded objects, graphics handles, etc</param>
-		CppScript(const char* modulepath);
+		explicit CppScript(const char* modulepath);
 
 		/// <summary>
 		/// Checks if an error occured while loading the module.

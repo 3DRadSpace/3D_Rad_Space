@@ -21,7 +21,7 @@ namespace Engine3DRadSpace
 		/// Constructs a matrix from a array.
 		/// </summary>
 		/// <param name="f">float array. Size must be greater or equal to 16.</param>
-		Matrix(float* f) : M11(f[0]), M12(f[1]), M13(f[2]), M14(f[3]),
+		explicit Matrix(float* f) : M11(f[0]), M12(f[1]), M13(f[2]), M14(f[3]),
 			M21(f[4]), M22(f[5]), M23(f[6]), M24(f[7]),
 			M31(f[8]), M32(f[9]), M33(f[10]), M34(f[11]),
 			M41(f[12]), M42(f[13]), M43(f[14]), M44(f[15]) {};

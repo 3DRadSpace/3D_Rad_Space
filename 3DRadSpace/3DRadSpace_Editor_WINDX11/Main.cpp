@@ -2,20 +2,21 @@
 
 EditorWindow* EditorWindow::g_EWindow = nullptr;
 
-std::unique_ptr<AddObjectDialog> GAddObjectDialog = nullptr;
-
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd)
 {
+	InitializeGDI();
+
 	EditorWindow Editor(hInstance,args);
 
-	GAddObjectDialog = std::make_unique<AddObjectDialog>(hInstance);
-
 	Editor.RenderUpdateLoop();
+
+	DeinitializeGDI();
 	return 0;
 }
 
 EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 {
+
 	EditorWindow::g_EWindow = this;
 
 	CurrentFile = TEXT("");
@@ -387,7 +388,8 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case AID_ADDOBJ:
 				case MENU_ADDOBJ:
 				{
-					GAddObjectDialog->ShowDialog(EditorWindow::g_EWindow->MainWindow);
+					AddObjectDialog addobjectd(EditorWindow::g_EWindow->hGlobCurrentInst);
+					addobjectd.ShowDialog(EditorWindow::g_EWindow->MainWindow);
 					break;
 				}
 				case MENU_ADDPROJECT:

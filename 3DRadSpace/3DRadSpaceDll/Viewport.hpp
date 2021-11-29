@@ -22,7 +22,7 @@ namespace Engine3DRadSpace
 		/// Creates a viewport with settings from the given rendering instance
 		/// </summary>
 		/// <param name="game"></param>
-		Viewport(Game* game) : TopLeftX(0), TopLeftY(0), Width(game->GetResolution().X), Height(game->GetResolution().Y), MinDepth(0), MaxDepth(1.0f) {};
+		explicit Viewport(Game* game) : TopLeftX(0), TopLeftY(0), Width(game->GetResolution().X), Height(game->GetResolution().Y), MinDepth(0), MaxDepth(1.0f) {};
 		/// <summary>
 		/// Creates a viewport from the give coordinates
 		/// </summary>

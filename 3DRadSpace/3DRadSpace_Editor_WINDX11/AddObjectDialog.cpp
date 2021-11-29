@@ -21,12 +21,19 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             }
             break;
         }
+        /*
         case WM_PAINT:
         {
+
             PAINTSTRUCT ps;
             BeginPaint(hwnd, &ps);
             FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
             EndPaint(hwnd, &ps);
+            break;
+        }*/
+        case WM_SIZE:
+        {
+            AddObjectDialog::GlobalInstance->Resize();
             break;
         }
         case WM_CLOSE:
@@ -58,17 +65,16 @@ void AddObjectDialog::_createGroupForList(LVGROUP* group, wchar_t* name, int ind
 {
     memset(group, 0, sizeof(LVGROUP));
     group->cbSize = sizeof(LVGROUP);
-    group->mask = LVGF_HEADER | LVGF_GROUPID;
+    group->mask = LVGF_HEADER | LVGF_GROUPID ;
     group->pszHeader = name;
     group->cchHeader = wcslen(name) + 1;
     group->iGroupId = index;
 }
 
-void AddObjectDialog::_insertImage(HICON icon)
+void AddObjectDialog::_insertImage(HBITMAP icon)
 {
-    ImageList_AddIcon(_hImageListSmall, icon);
-    ImageList_AddIcon(_hImageListBig, icon);
-    DestroyIcon(icon);
+    int r = ImageList_Add(this->_imageList, icon, nullptr);
+    //DeleteObject(icon);
 }
 
 AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
@@ -91,8 +97,8 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 
     //Setup dialog layout
     this->lpDialogTemplate->cdit = 0;
-    this->lpDialogTemplate->cx = 200;
-    this->lpDialogTemplate->cy = 200;
+    this->lpDialogTemplate->cx = 400;
+    this->lpDialogTemplate->cy = 300;
     this->lpDialogTemplate->x = 1;
     this->lpDialogTemplate->y = 1;
 
@@ -112,20 +118,11 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 
     GlobalUnlock(this->hGlobal);
 
-    _hImageListSmall = ImageList_Create(GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON),  ILC_MASK, 3, 0);
-    _hImageListBig = ImageList_Create(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), ILC_MASK , 3, 0);
+     _imageList = ImageList_Create(128,128, ILC_COLOR32, 10, 0);
 
-    //HBITMAP icon1 = static_cast<HBITMAP>(LoadImage(_hInstance, MAKEINTRESOURCE(IDB_CameraIconPNG),IMAGE_BITMAP,128,128, LR_DEFAULTCOLOR));
-    //HBITMAP icon2 = static_cast<HBITMAP>(LoadImage(_hInstance, MAKEINTRESOURCE(IDB_FPVCameraIconPNG), IMAGE_BITMAP, 128, 128, LR_DEFAULTCOLOR));
-    //ImageList_Replace(_hImageList, 0, icon1, nullptr);
-    //ImageList_Replace(_hImageList, 1, icon2, nullptr);
-
-    //TODO: FIND A WAY TO FIX THE ICONS
-
-    this->_insertImage(static_cast<HICON>(LoadIcon(_hInstance, MAKEINTRESOURCE(IDB_CameraIconPNG))));
-    this->_insertImage(static_cast<HICON>(LoadIcon(_hInstance, MAKEINTRESOURCE(IDB_FPVCameraIconPNG))));
-    this->_insertImage(static_cast<HICON>(LoadIcon(_hInstance, MAKEINTRESOURCE(IDB_SourceCodeIconPNG))));
-    
+    this->_insertImage(loadImgResource(IDB_CameraIconPNG, (wchar_t*)L"PNG"));
+    this->_insertImage(loadImgResource(IDB_FPVCameraIconPNG, (wchar_t*)L"PNG"));
+    this->_insertImage(loadImgResource(IDB_SourceCodeIconPNG, (wchar_t*)L"PNG"));
 }
 
 int AddObjectDialog::ShowDialog(HWND owner)
@@ -139,23 +136,28 @@ int AddObjectDialog::ShowDialog(HWND owner)
 
     //Create the listview control
 
-    _listView = CreateWindow(TEXT("SysListView32"), TEXT(""), WS_VISIBLE | WS_CHILD, 0, 0, 400, 400, _dialogWindow, nullptr, this->_hInstance, nullptr);
+    _listView = CreateWindow(TEXT("SysListView32"), TEXT(""), WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 600, 600, _dialogWindow, nullptr, this->_hInstance, nullptr);
 
     ListView_EnableGroupView(_listView, true);
-    ListView_SetImageList(this->_listView, this->_hImageListSmall, LVSIL_SMALL);
-    ListView_SetImageList(this->_listView, this->_hImageListBig, LVSIL_NORMAL);
+    ListView_SetImageList(this->_listView, this->_imageList, LVSIL_NORMAL);
 
-    LVGROUP RenderingGroup,ScriptingGroup;
+    LVGROUPMETRICS groupMetrics;
+    memset(&groupMetrics, 0, sizeof(LVGROUPMETRICS));
+    groupMetrics.cbSize = sizeof(LVGROUPMETRICS);
+    
+    ListView_SetGroupMetrics(_listView, &groupMetrics);
+
+    LVGROUP RenderingGroup, ScriptingGroup;
     _createGroupForList(&RenderingGroup, (wchar_t*)L"Rendering", 1);
     _createGroupForList(&ScriptingGroup, (wchar_t*)L"Programming", 2);
-    
-    ListView_InsertGroup(this->_listView,-1, &RenderingGroup);
-    ListView_InsertGroup(this->_listView,2, &ScriptingGroup);
 
-    LVITEM CameraLVI,FPVCameraLVI;
+    ListView_InsertGroup(this->_listView, 1, &RenderingGroup);
+    ListView_InsertGroup(this->_listView, 2, &ScriptingGroup);
+
+    LVITEM CameraLVI, FPVCameraLVI;
     _createItemForList(&CameraLVI, (__rawstring*)TEXT("Camera"), 0, 1);
     _createItemForList(&FPVCameraLVI, (__rawstring*)TEXT("First Person Camera"), 1, 1);
-    
+
     LVITEM CodeLVI;
     _createItemForList(&CodeLVI, (__rawstring*)TEXT("C++ source"), 2, 2);
 
@@ -165,6 +167,7 @@ int AddObjectDialog::ShowDialog(HWND owner)
 
     ShowWindow(this->_dialogWindow, SW_NORMAL);
     ShowWindow(this->_listView, SW_NORMAL);
+    Resize();
 
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0) != 0 && AddObjectDialog::GlobalInstance->DialogOpen)
@@ -183,6 +186,20 @@ int AddObjectDialog::ShowDialog(HWND owner)
 HWND AddObjectDialog::GetWindow()
 {
     return this->_dialogWindow;
+}
+
+HWND AddObjectDialog::GetListView()
+{
+    return this->_listView;
+}
+
+void AddObjectDialog::Resize()
+{
+    RECT r;
+    GetWindowRect(this->_dialogWindow, &r);
+    int w = r.right - r.left;
+    int h = r.bottom - r.top;
+    SetWindowPos(this->_listView, nullptr, 0, 0, w, h, SWP_SHOWWINDOW);
 }
 
 AddObjectDialog::~AddObjectDialog()

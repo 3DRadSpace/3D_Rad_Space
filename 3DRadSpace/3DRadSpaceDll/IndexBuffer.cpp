@@ -52,7 +52,7 @@ void Engine3DRadSpace::IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 Engine3DRadSpace::IndexBuffer::~IndexBuffer()
 {
 	if (this->_indexbuffer != nullptr) this->_indexbuffer->Release();
-	delete this->_indexes;
+	delete[] this->_indexes;
 
 	this->_indexbuffer = nullptr;
 	this->_indexes = nullptr;

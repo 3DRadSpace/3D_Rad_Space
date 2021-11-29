@@ -60,6 +60,7 @@ Engine3DRadSpace::Texture2D::Texture2D(Game* game, const std::string& path)
 	_device = game->GetDevice();
 
 	wchar_t filepath[260]; //Windows has a 260 characters limit on the path
+	memset(filepath, 0, 260);
 
 	mbstowcs(filepath, path.c_str(), 260); //goddammit M$ WHY
 

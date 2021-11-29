@@ -25,7 +25,7 @@ namespace Engine3DRadSpace
 		/// Constructs a unit imaginary number from the specified angle theta.
 		/// </summary>
 		/// <param name="theta">angle in radians</param>
-		ComplexNumber(float theta) : A(cos(theta)), B(sin(theta)) {};
+		explicit ComplexNumber(float theta) : A(cos(theta)), B(sin(theta)) {};
 		/// <summary>
 		/// Constrcuts a imaginary number from the two specified real numbers.
 		/// </summary>

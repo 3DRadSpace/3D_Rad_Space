@@ -1,7 +1,8 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 #include "Libs.hpp"
 #include "resource.h"
+#include "Utilities.h"
 
 using namespace Engine3DRadSpace;
 
@@ -22,15 +23,15 @@ class AddObjectDialog
 	HWND _dialogWindow;
 	HWND _listView;
 
-	HIMAGELIST _hImageListSmall,_hImageListBig;
+	HIMAGELIST _imageList;
 
 	void _createItemForList(LVITEM* item,__rawstring* name,int imageIndex,int groupIndex);
 	void _createGroupForList(LVGROUP* group, wchar_t* name, int index);
 
-	void _insertImage(HICON icon);
+	void _insertImage(HBITMAP icon);
+
 public:
 	static AddObjectDialog* GlobalInstance;
-
 
 	AddObjectDialog(HINSTANCE hInstance);
 
@@ -38,6 +39,9 @@ public:
 
 	int ShowDialog(HWND owner);
 	HWND GetWindow();
+	HWND GetListView();
+
+	void Resize();
 
 	~AddObjectDialog();
 };

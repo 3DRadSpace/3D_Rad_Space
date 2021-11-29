@@ -54,7 +54,7 @@ namespace Engine3DRadSpace
 		/// Constructs a shader that is unloaded
 		/// </summary>
 		/// <param name="t">Shader type</param>
-		Shader(ShaderType t) :
+		explicit Shader(ShaderType t) :
 			_shadertype(t), _shadercode(nullptr), _errorblob(nullptr), _shadercreated(nullptr), _shader(nullptr), _shadercompiled(false),
 			_constantbuffercreated(false), _constantbuffer(nullptr), _constantbufferstruct(nullptr), _layoutcreated(false), layout(nullptr) {};
 		/// <summary>

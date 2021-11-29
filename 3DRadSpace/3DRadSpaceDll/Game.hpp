@@ -63,7 +63,7 @@ namespace Engine3DRadSpace
 		/// Constructs a Game from the given window.
 		/// </summary>
 		/// <param name="window">Windows HWND window handle.</param>
-		Game(HWND window);
+		explicit Game(HWND window);
 		/// <summary>
 		/// Constructs a Game from the given window and resolution.
 		/// </summary>

@@ -24,7 +24,7 @@ namespace Engine3DRadSpace
 		/// Constructs a stencil state from the device handles with default values.
 		/// </summary>
 		/// <param name="g">Device handles</param>
-		StencilState(Game* g);
+		explicit StencilState(Game* g);
 
 		/// <summary>
 		/// Returns the stencil texture
