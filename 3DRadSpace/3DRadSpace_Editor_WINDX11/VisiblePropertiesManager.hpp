@@ -12,6 +12,7 @@ enum class EditableFieldType : int8_t
 	ColorRGB,
 	ColorRGBA,
 	File,
+	SourceCode,
 };
 
 struct EditableField

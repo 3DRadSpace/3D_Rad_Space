@@ -161,7 +161,7 @@
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UpdateDownloadManager.hpp" />
-    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Utilities.hpp" />
     <ClInclude Include="VisiblePropertiesManager.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -180,8 +180,10 @@
     <Image Include="Icons\openicon.ico" />
     <Image Include="Icons\saveicon.ico" />
     <Image Include="Icons\switch2d_icon.ico" />
+    <Image Include="Icons\VisualStudio.ico" />
     <Image Include="Images\OBJ_Camera.png" />
     <Image Include="Images\OBJ_Counter.png" />
+    <Image Include="Images\OBJ_Empty.png" />
     <Image Include="Images\OBJ_EOK.png" />
     <Image Include="Images\OBJ_EOL.png" />
     <Image Include="Images\OBJ_ExitFade.png" />
@@ -190,6 +192,7 @@
     <Image Include="Images\OBJ_FPVCamera.png" />
     <Image Include="Images\OBJ_GameSettings.png" />
     <Image Include="Images\OBJ_GForce.png" />
+    <Image Include="Images\OBJ_Group.png" />
     <Image Include="Images\OBJ_NetworkChat.png" />
     <Image Include="Images\OBJ_Rigidbody.png" />
     <Image Include="Images\OBJ_Script.png" />

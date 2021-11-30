@@ -109,12 +109,13 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON5)));
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON6)));
 	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON7)));
+	ImageList_AddIcon(toolBarImageList, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON8)));
 
 	ToolBarWindow = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_LIST, 0, 0, 0, 0, MainWindow, nullptr, hInstance, nullptr);
 	SendMessage(ToolBarWindow, TB_SETIMAGELIST, 0, (LPARAM)toolBarImageList);
 	SendMessage(ToolBarWindow, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
 
-	TBBUTTON toolBarButtons[6] =
+	TBBUTTON toolBarButtons[7] =
 	{
 		{0,MENU_NEWFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("New")},
 		{1,MENU_OPENFILE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Open")},
@@ -122,9 +123,10 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 		{3,MENU_PLAYPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Play")},
 		{4,MENU_COMPILEPROJECT,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Compile")},
 		{5,MENU_SWITCH3D2D,TBSTATE_ENABLED,BTNS_CHECK | BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Switch 2D/3D")},
+		{6,MENU_OPEN_IDE,TBSTATE_ENABLED,BTNS_AUTOSIZE,{0},0,(INT_PTR)TEXT("Open IDE")}
 	};
 	SendMessage(ToolBarWindow, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
-	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)6, (LPARAM)&toolBarButtons);
+	SendMessage(ToolBarWindow, TB_ADDBUTTONS, (WPARAM)7, (LPARAM)&toolBarButtons);
 	SendMessage(ToolBarWindow, TB_AUTOSIZE, 0, 0);
 
 	/*
@@ -441,6 +443,11 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case AID_SW2D3D:
 				case MENU_SWITCH3D2D:
 				{
+					break;
+				}
+				case MENU_OPEN_IDE:
+				{
+					//Open a dialog asking for the default IDE
 					break;
 				}
 				default: break;

@@ -30,6 +30,8 @@ constexpr int MENU_GITHUB = 317;
 
 constexpr int MENU_SWITCH3D2D = 318;
 
+constexpr int MENU_OPEN_IDE = 319;
+
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
 constexpr const __rawstring* __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
 

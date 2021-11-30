@@ -42,7 +42,7 @@ namespace Engine3DRadSpace
 		/// Constructs a shader input layout from the given list of elements
 		/// </summary>
 		/// <param name="list"></param>
-		ShaderInputLayout(const std::vector<InputLayoutElement>& list);
+		explicit ShaderInputLayout(const std::vector<InputLayoutElement>& list);
 		/// <summary>
 		/// Creates the shader input layout in the GPU
 		/// </summary>

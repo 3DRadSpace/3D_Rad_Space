@@ -36,7 +36,7 @@
     <ClInclude Include="AddObjectDialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities.h">
+    <ClInclude Include="Utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -146,6 +146,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Images\OBJ_Timer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Icons\VisualStudio.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Empty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Group.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

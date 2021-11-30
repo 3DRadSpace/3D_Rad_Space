@@ -1,4 +1,4 @@
-#include "Utilities.h"
+#include "Utilities.hpp"
 
 Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 ULONG_PTR gdiplusToken;
@@ -10,20 +10,22 @@ void InitializeGDI()
 
 HBITMAP loadImgResource(wchar_t* pName, wchar_t* pType, HMODULE hInst)
 {
-    Gdiplus::Bitmap* m_pBitmap;
-    HBITMAP result = NULL;
+    HBITMAP result = nullptr;
 
     HRSRC hResource = FindResource(hInst, pName, pType);
     if(!hResource)
-        return NULL;
+        return nullptr;
 
     DWORD imgSize = SizeofResource(hInst, hResource);
     if(!imgSize)
-        return NULL;
+        return nullptr;
 
-    const void* pResourceData = LockResource(LoadResource(hInst, hResource));
+    HGLOBAL resource = LoadResource(hInst, hResource);
+    if(resource == nullptr)
+        return nullptr;
+    const void* pResourceData = LockResource(resource);
     if(!pResourceData)
-        return NULL;
+        return nullptr;
 
     HANDLE m_hBuffer = GlobalAlloc(GMEM_MOVEABLE, imgSize);
     if(m_hBuffer)
@@ -35,7 +37,7 @@ HBITMAP loadImgResource(wchar_t* pName, wchar_t* pType, HMODULE hInst)
             IStream* pStream = NULL;
             if(CreateStreamOnHGlobal(m_hBuffer, FALSE, &pStream) == S_OK)
             {
-                m_pBitmap = Gdiplus::Bitmap::FromStream(pStream);
+                Gdiplus::Bitmap* m_pBitmap = Gdiplus::Bitmap::FromStream(pStream);
                 pStream->Release();
                 if(m_pBitmap)
                 {

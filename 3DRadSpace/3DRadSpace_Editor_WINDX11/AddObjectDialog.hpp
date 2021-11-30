@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "Libs.hpp"
 #include "resource.h"
-#include "Utilities.h"
+#include "Utilities.hpp"
 
 using namespace Engine3DRadSpace;
 
@@ -25,8 +25,8 @@ class AddObjectDialog
 
 	HIMAGELIST _imageList;
 
-	void _createItemForList(LVITEM* item,__rawstring* name,int imageIndex,int groupIndex);
-	void _createGroupForList(LVGROUP* group, wchar_t* name, int index);
+	void _createItemForList(__rawstring* name,int imageIndex,int groupIndex);
+	void _createGroupForList(wchar_t* name, int index);
 
 	void _insertImage(HBITMAP icon);
 
