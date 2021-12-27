@@ -1,12 +1,9 @@
 #pragma once
-#include <windows.h>
 #include "Libs.hpp"
 #include "resource.h"
 #include "Utilities.hpp"
 
 using namespace Engine3DRadSpace;
-
-const __rawstring* const AddObjectDialogClassName = TEXT("3DRADSPACE_ADD0BJECT_DIALOG");
 
 INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 

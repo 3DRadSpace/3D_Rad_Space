@@ -70,8 +70,10 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), LOWORD(IDCANCEL));
             return 1;
         }
+        default:
+            return 0;
     }
-    return 0;
+    return 42069; //how did I get here?
 }
 
 void AddObjectDialog::_createItemForList( __rawstring* name, int imageIndex, int groupIndex)
@@ -180,11 +182,10 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
      };
 
      size_t l = sizeof(objectPictures) / sizeof(WORD);
-     for(int i =0 ; i < l; i++)
+     for(size_t i =0 ; i < l; i++)
      {
          _insertImage(loadImgResource(objectPictures[i], png));
      }
-
      AddObjectDialog::GlobalInstance = this;
 }
 
