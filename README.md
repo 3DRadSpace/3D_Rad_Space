@@ -1,6 +1,6 @@
 # 3DRadSpace
 
-3DRadSpace is a free, simple to use, rapid application development game engine.
+3DRadSpace is a free, simple to use, rapid application development game engine. Still in development. 
 
 [![Visual Studio](https://img.shields.io/badge/--6C33AF?logo=visual%20studio)](https://visualstudio.microsoft.com/)
 [![Github all releases](https://img.shields.io/github/downloads/3DRadSpace/3D_Rad_Space/total.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/releases/)
@@ -12,14 +12,16 @@
 
 # Downloading releases
 
-Releases can be found  [here](https://github.com/3DRadSpace/3D_Rad_Space/releases) (Lastest release: 0.0.6a, currently working on 0.1.0a)
+Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases) (Lastest release: 0.0.6a, currently working on 0.1.0a)
 
-# Compiling 3DRadSpace
+# Building 3DRadSpace
 
 1.) Download the source using Git
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2019 or Visual Studio 2022
 
-3.) Compile the project (Ctrl+Shift+B)
+3.) Upgrade the Windows SDK version to atleast 10.0.20348.0.
 
-4.) Set the compiling settings to x86 Release or Debug
+4.) Set the compiling settings to x86 Release or Debug depending on your intention (i.e fixing a bug, or compiling from source to have the lastest features)
+
+5.) Compile the solution (Ctrl+Shift+B)
