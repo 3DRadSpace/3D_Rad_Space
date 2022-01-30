@@ -24,9 +24,6 @@
     <ClInclude Include="UpdateDownloadManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisiblePropertiesManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Libs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,15 +39,24 @@
     <ClInclude Include="ObjectEditorDialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EditableField.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IObjectEditorWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableFieldValue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableFieldCollection.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UpdateDownloadManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VisiblePropertiesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DownloadStatusWindow.cpp">
@@ -63,6 +69,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectEditorDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IObjectEditorWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableFieldCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,7 +8,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
     {
         case WM_INITDIALOG:
         {
-            return TRUE;
+            return true;
         }
         case WM_COMMAND:
         {
@@ -19,7 +19,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
                     EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), wparam);
                     break;
             }
-            return TRUE;
+            return false;
         }
         case WM_PAINT:
         {
@@ -27,7 +27,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             BeginPaint(hwnd, &ps);
             FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
             EndPaint(hwnd, &ps);
-            return 0;
+            return false;
         }
         case WM_NOTIFY:
         {
@@ -51,29 +51,28 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
                             }
                             default: break;
                         }
-                        return 1;
+                        return true;
                     }
                     default: break;
                 }
             }
-            return 0;
+            return false;
         }
         case WM_SIZE:
         {
             AddObjectDialog::GlobalInstance->Resize();
-            return 0;
+            return false;
         }
         case WM_CLOSE:
         case WM_QUIT:
         {
             AddObjectDialog::GlobalInstance->DialogOpen = false;
             EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), LOWORD(IDCANCEL));
-            return 1;
+            return true;
         }
         default:
-            return 0;
+            return false;
     }
-    return 42069; //how did I get here?
 }
 
 void AddObjectDialog::_createItemForList( __rawstring* name, int imageIndex, int groupIndex)

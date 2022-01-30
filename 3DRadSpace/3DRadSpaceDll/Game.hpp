@@ -4,28 +4,31 @@
 #include "Color.hpp"
 
 
-/// <summary>
-/// Defines the topology of the drawn vertex buffer
-/// </summary>
-enum class PrimitiveTopology
+namespace Engine3DRadSpace
 {
 	/// <summary>
-	/// A list of points
+	/// Defines the topology of the drawn vertex buffer
 	/// </summary>
-	Points,
-	/// <summary>
-	/// A list of lines
-	/// </summary>
-	Lines,
-	/// <summary>
-	/// A series of connected triangles from the triangle mesh
-	/// </summary>
-	TriangleStrip,
-	/// <summary>
-	/// A list of triangles.
-	/// </summary>
-	TriangleList,
-};
+	enum class PrimitiveTopology
+	{
+		/// <summary>
+		/// A list of points
+		/// </summary>
+		Points,
+		/// <summary>
+		/// A list of lines
+		/// </summary>
+		Lines,
+		/// <summary>
+		/// A series of connected triangles from the triangle mesh
+		/// </summary>
+		TriangleStrip,
+		/// <summary>
+		/// A list of triangles.
+		/// </summary>
+		TriangleList,
+	};
+}
 
 #ifdef __DIRECTXVER
 #include <d3d11.h>

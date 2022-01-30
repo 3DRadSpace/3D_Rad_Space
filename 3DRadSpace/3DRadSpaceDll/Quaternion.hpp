@@ -46,14 +46,13 @@ namespace Engine3DRadSpace
 		/// <param name="roll">Roll (Z angle)</param>
 		/// <returns></returns>
 		static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll);
-
-		/// <summary>
-		/// Composes two rotations.
-		/// </summary>
-		/// <param name="q1">quaternion</param>
-		/// <param name="q2">quaternion</param>
-		/// <returns></returns>
-		friend Quaternion DLLEXPORT operator *(const Quaternion& q1, const Quaternion& q2);
 	};
+	/// <summary>
+	/// Composes two rotations.
+	/// </summary>
+	/// <param name="q1">quaternion</param>
+	/// <param name="q2">quaternion</param>
+	/// <returns></returns>
+	Quaternion DLLEXPORT operator *(const Quaternion& q1, const Quaternion& q2);
 }
 

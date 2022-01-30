@@ -33,18 +33,25 @@ size_t VisiblePropertiesManager::GetControlsNum() const
 			case EditableFieldType::EventList: //listbox + groupbox
 				sum += 2;
 				break;
-			case EditableFieldType::Vector2D: // 2 edit controls + 1 group box
+			case EditableFieldType::Vector2D: // 2 edit controls + 1 group box + 2 labels
+				sum += 5;
+				break;
 			case EditableFieldType::File: // 1 groupbox, 1 button , 1 edit control
 				sum += 3;
 				break;
-			case EditableFieldType::ColorRGB: //3 edit controls, 1 groupbox
-			case EditableFieldType::Vector3D: //3 edit controls, 1 groupbox
-				sum += 4;
+			case EditableFieldType::ColorRGB: //3 edit controls, 1 groupbox, 3 labels
+			case EditableFieldType::Vector3D: //3 edit controls, 1 groupbox, 3 labels
+				sum += 7;
 				break;
-			case EditableFieldType::ColorRGBA: //4 edit controls, 1 groupbox
-				sum += 5;
+			case EditableFieldType::ColorRGBA: //4 edit controls, 1 groupbox, 4 labels
+				sum += 8;
 				break;
 		}
 	}
 	return sum;
+}
+
+std::vector<EditableField> VisiblePropertiesManager::GetFields()
+{
+	return this->EditableFields;
 }

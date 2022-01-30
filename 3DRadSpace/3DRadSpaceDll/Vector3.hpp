@@ -44,44 +44,6 @@ namespace Engine3DRadSpace
 		static Vector3 Normalize(const Vector3& v);
 
 		/// <summary>
-		/// Sums two vectors
-		/// </summary>
-		/// <param name="v">vector</param>
-		/// <returns></returns>
-		Vector3 operator +=(const Vector3& v);
-		/// <summary>
-		/// Substracts two vectors
-		/// </summary>
-		/// <param name="v">vector</param>
-		/// <returns></returns>
-		Vector3 operator -=(const Vector3& v);
-		/// <summary>
-		/// Divides a vector by a number
-		/// </summary>
-		/// <param name="f">number</param>
-		/// <returns></returns>
-		Vector3 operator /=(float f);
-		/// <summary>
-		/// Multiplies a vector by a scalar
-		/// </summary>
-		/// <param name="s">scalar</param>
-		/// <returns></returns>
-		Vector3 operator *=(float s);
-
-		/// <summary>
-		/// Transforms the vector with the given matrix
-		/// </summary>
-		/// <param name="m">4x4 matrix</param>
-		/// <returns></returns>
-		Vector3 operator *=(const Matrix& m);
-
-		/// <summary>
-		/// Negates a vector
-		/// </summary>
-		/// <returns></returns>
-		Vector3 operator -();
-
-		/// <summary>
 		/// Calcaulates the dot product
 		/// </summary>
 		/// <param name="v">vector</param>
@@ -158,6 +120,15 @@ namespace Engine3DRadSpace
 	/// <param name="b">vector</param>
 	/// <returns></returns>
 	Vector3 DLLEXPORT operator +(const Vector3& a, const Vector3& b);
+
+	/// <summary>
+	/// Sums two vectors
+	/// </summary>
+	/// <param name="a">first vector</param>
+	/// <param name="b">second vector</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator +=(const Vector3& a, const Vector3& b);
+
 	/// <summary>
 	/// Substracts two vectors
 	/// </summary>
@@ -165,6 +136,22 @@ namespace Engine3DRadSpace
 	/// <param name="b">vector</param>
 	/// <returns></returns>
 	Vector3 DLLEXPORT operator -(const Vector3& a, const Vector3& b);
+
+	/// <summary>
+	/// Flips the given vector vertically and horizontally
+	/// </summary>
+	/// <param name="a">vector</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator -(const Vector3& v);
+
+	/// <summary>
+	/// Substracts two vectors
+	/// </summary>
+	/// <param name="a">first vector</param>
+	/// <param name="b">second vector</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator -=(const Vector3& a, const Vector3& b);
+
 	/// <summary>
 	/// Multiplies a vector by a scalar
 	/// </summary>
@@ -172,6 +159,15 @@ namespace Engine3DRadSpace
 	/// <param name="v">vector</param>
 	/// <returns></returns>
 	Vector3 DLLEXPORT operator *(float f, const Vector3& v);
+
+	/// <summary>
+	/// Multiplies a vector by a scalar
+	/// </summary>
+	/// <param name="v">Vector</param>
+	/// <param name="s">scalar</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator *=(const Vector3& v, float s);
+
 	/// <summary>
 	/// Multiplies the vector by the inverse of the given scalar
 	/// </summary>
@@ -181,12 +177,29 @@ namespace Engine3DRadSpace
 	Vector3 DLLEXPORT operator /(float s, const Vector3& v);
 
 	/// <summary>
-	/// Transforms the given vector by the given linear transformation
+	/// Multiplies a vector by scalar of 1/f
+	/// </summary>
+	/// <param name="v">vector</param>
+	/// <param name="f">scalar</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator /=(const Vector3& v, float f);
+
+	/// <summary>
+	/// Transforms the given vector by the given matrix
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <param name="m">matrix</param>
 	/// <returns></returns>
 	Vector3 DLLEXPORT operator *(const Vector3& v, const Matrix& m);
+
+	/// <summary>
+	/// Transforms the given vector by the given matrix
+	/// </summary>
+	/// <param name="v">vector</param>
+	/// <param name="m">matrix</param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator *=(const Vector3& v, const Matrix& m);
+
 	/// <summary>
 	/// Rotates the vector with the given quaternion
 	/// </summary>
@@ -194,4 +207,12 @@ namespace Engine3DRadSpace
 	/// <param name="q">quaterinion</param>
 	/// <returns></returns>
 	Vector3 DLLEXPORT operator *(const Vector3& v, const Quaternion& q);
+
+	/// <summary>
+	/// Rotates the vector with the given quaterinon
+	/// </summary>
+	/// <param name="v"></param>
+	/// <param name="q"></param>
+	/// <returns></returns>
+	Vector3 DLLEXPORT operator *=(const Vector3& v, const Quaternion& q);
 }

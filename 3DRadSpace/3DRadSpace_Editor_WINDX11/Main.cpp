@@ -222,7 +222,7 @@ void EditorWindow::RenderUpdateLoop()
 			SetCursorPos(screenCenter.X + r.left, screenCenter.Y + r.top);
 
 			camRotX -= pMouseDelta.X * 0.001f;
-			camRotY += pMouseDelta.Y * 0.001f;
+			camRotY -= pMouseDelta.Y * 0.001f;
 
 			camRotY = Engine3DRadSpace::Math::Clamp((-Math::Pi<float>()/2) + std::numeric_limits<float>::epsilon(), camRotY, (Math::Pi<float>()/2) - std::numeric_limits<float>::epsilon());
 		}
@@ -249,8 +249,8 @@ void EditorWindow::RenderUpdateLoop()
 		Viewport.SetViewport(context);
 
 		context->OMSetBlendState(CommonStates->Opaque(), nullptr, 0xFFFFFFFF);
-		context->OMSetDepthStencilState(CommonStates->DepthNone(), 0);
-		context->RSSetState(CommonStates->CullNone());
+		context->OMSetDepthStencilState(CommonStates->DepthDefault(), 0);
+		context->RSSetState(CommonStates->CullCounterClockwise());
 		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X, _3DCursor.Y, _3DCursor.Z));
 		BasicEffect->SetView(View); //the grid is going to be moved along with the selectioned object, this is desired
 		context->IASetInputLayout(colorured_line_inputlayout);

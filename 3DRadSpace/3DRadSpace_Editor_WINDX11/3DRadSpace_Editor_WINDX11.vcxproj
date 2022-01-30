@@ -23,32 +23,32 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{10d4dbbc-3b83-4f8a-bc38-4c295cf25ea6}</ProjectGuid>
     <RootNamespace>My3DRadSpaceEditorWINDX11</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win32-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win32-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,7 +125,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win64-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +143,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\3DRadSpaceDll;$(SolutionDir)\ExtLibs\discord-rpc\win64-dynamic\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,22 +157,27 @@
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
     <ClInclude Include="DownloadStatusWindow.hpp" />
+    <ClInclude Include="EditableField.hpp" />
+    <ClInclude Include="EditableFieldCollection.hpp" />
+    <ClInclude Include="EditableFieldValue.hpp" />
+    <ClInclude Include="IObjectEditorWindow.hpp" />
     <ClInclude Include="Libs.hpp" />
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="ObjectEditorDialog.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UpdateDownloadManager.hpp" />
     <ClInclude Include="Utilities.hpp" />
-    <ClInclude Include="VisiblePropertiesManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="DownloadStatusWindow.cpp" />
+    <ClCompile Include="EditableField.cpp" />
+    <ClCompile Include="EditableFieldCollection.cpp" />
+    <ClCompile Include="IObjectEditorWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObjectEditorDialog.cpp" />
     <ClCompile Include="UpdateDownloadManager.cpp" />
     <ClCompile Include="Utilities.cpp" />
-    <ClCompile Include="VisiblePropertiesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icons\compile_icon.ico" />

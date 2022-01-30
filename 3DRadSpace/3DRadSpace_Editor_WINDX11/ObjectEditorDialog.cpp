@@ -1,15 +1,9 @@
 #include "ObjectEditorDialog.hpp"
 
-ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance,LPCSTR object_name,const VisiblePropertiesManager& visibleFields)
-{
-	this->hGlobal = nullptr;
-	this->dlgTemplate = nullptr;
-	this->_dlgWindow = nullptr;
-	this->result = IDCANCEL;
-	this->_hInstance = hInstance;
-	this->dlgControls = nullptr;
-	
 
+ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_name,const EditableFieldCollection &visibleFields):
+	_fields(visibleFields),hGlobal(nullptr),dlgTemplate(nullptr),_dlgWindow(nullptr),result(IDCANCEL),_hInstance(hInstance),dlgControls(nullptr)
+{	
 	this->hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->hGlobal == nullptr)
 		throw Engine3DRadSpace::ResourceCreationException("Failed to allocate memory", typeid(ObjectEditorDialog));
@@ -36,30 +30,26 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance,LPCSTR object_name,co
 
 int ObjectEditorDialog::ShowDialog(HWND parent)
 {
-
 	this->_dlgWindow = CreateDialogIndirectParam(this->_hInstance, this->dlgTemplate, parent, nullptr, 0);
 	if(this->dlgTemplate == nullptr)
 	{
 		throw Engine3DRadSpace::ResourceCreationException("Failed to create the object editor dialog!", typeid(ObjectEditorDialog));
 	}
 
-	size_t numControls = this->_Fields->GetControlsNum();
-
+	size_t numControls = this->_fields.CountCreatedElements() + 6;
 	this->dlgControls = new HWND[numControls];
 
-	for(size_t i = 0; i < numControls; )
-	{
-		switch(this->_Fields->operator[](i).Type)
-		{
-
-			case EditableFieldType::Undefined:
-				break;
-		}
-	}
-
 	ShowWindow(this->_dlgWindow, SW_NORMAL);
-	
-	this->dlgControls = new HWND[this->_Fields->Size() + 2];
+
+	size_t numFields = this->_fields.Size();
+	this->dlgControls = new HWND[this->_fields.CountCreatedElements()];
+
+	unsigned x = 10, y = 10;
+
+	for(size_t i = 0, j = 0; i < numFields; i++)
+	{	
+		
+	}
 
 	MSG msg;
 	BOOL validMessage;
@@ -71,7 +61,6 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 			DispatchMessage(&msg);
 		}
 	}
-
 	return IDOK;
 }
 

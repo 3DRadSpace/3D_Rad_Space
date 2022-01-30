@@ -10,18 +10,19 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <typeparam name="N">A numeric type. Float or double.</typeparam>
 		/// <returns></returns>
-		template<class N>
+		template<class N,std::enable_if_t<std::is_floating_point_v<N>,bool> = true >
 		N Pi()
 		{
 			return (N)3.141592653589793238462643383279;
 		}
+
 		/// <summary>
 		/// Converts d degrees to radians.
 		/// </summary>
 		/// <typeparam name="N"></typeparam>
 		/// <param name="d">Degrees</param>
 		/// <returns></returns>
-		template<class N>
+		template<class N, std::enable_if_t<std::is_floating_point_v<N>, bool> = true>
 		N ToRadians(N d)
 		{
 			return d * (N)0.01745329252;
@@ -32,7 +33,7 @@ namespace Engine3DRadSpace
 		/// <typeparam name="N">A numeric type. Float or double.</typeparam>
 		/// <param name="r">Radians</param>
 		/// <returns></returns>
-		template<class N>
+		template<class N, std::enable_if_t<std::is_floating_point_v<N>, bool> = true>
 		N ToDegrees(N r)
 		{
 			return r * (N)57.2957795131;
@@ -45,7 +46,7 @@ namespace Engine3DRadSpace
 		/// <param name="t">The value that is being compared</param>
 		/// <param name="b">The right clamp value</param>
 		/// <returns>The clamped value</returns>
-		template<class N>
+		template<class N,std::enable_if_t<std::is_arithmetic_v<N>,bool> = true>
 		N Clamp(N a, N t, N b)
 		{
 			if (t < a) return a;
