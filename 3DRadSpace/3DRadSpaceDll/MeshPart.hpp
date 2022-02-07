@@ -100,12 +100,9 @@ namespace Engine3DRadSpace
 	};
 
 	template<class T>
-	inline MeshPart<T>::MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures, size_t numTextures)
+	inline MeshPart<T>::MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures, size_t numTextures) :
+		Verticies(vertexbuffer), Indexes(indexbuffer), Textures(std::vector<Texture2D*>())
 	{
-		Verticies = vertexbuffer;
-		Indexes = indexbuffer;
-		Textures = std::vector<Texture2D*>();
-
 		for (int i = 0; i < numTextures; i++)
 		{
 			Textures[i] = textures[i];
@@ -113,19 +110,13 @@ namespace Engine3DRadSpace
 	}
 
 	template<class T>
-	inline MeshPart<T>::MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures, size_t numTextures, Shader* vertexshader, Shader* pixelshader)
+	inline MeshPart<T>::MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D** textures, size_t numTextures, Shader* vertexshader, Shader* pixelshader) : 
+	Verticies(vertexbuffer),Indexes(indexbuffer), Textures(std::vector<Texture2D*>()),VertexShader(vertexshader),PixelShader(pixelshader)
 	{
-		Verticies = vertexbuffer;
-		Indexes = indexbuffer;
-		Textures = std::vector<Texture2D*>();
-
 		for (int i = 0; i < numTextures; i++)
 		{
 			Textures[i] = textures[i];
 		}
-
-		VertexShader = vertexshader;
-		PixelShader = pixelshader;
 	}
 
 	template<class T>

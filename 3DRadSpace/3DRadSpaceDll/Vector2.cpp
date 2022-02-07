@@ -71,5 +71,5 @@ Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator*=(const ComplexNum
 {
     ComplexNumber temp(this->X,this->Y);
     temp *= z;
-    return Vector2(z.A, z.B);
+    return Vector2(temp.A, temp.B);
 }

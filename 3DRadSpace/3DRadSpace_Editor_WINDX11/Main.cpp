@@ -568,7 +568,7 @@ void EditorWindow::CheckUpdate()
 			i += 1;
 			continue;
 		}
-		if (strstr(p, "http://") != nullptr)
+		if (strstr(p, "https://") != nullptr)
 		{
 			int mr = MessageBox(nullptr, TEXT("A new update was found! Do you want it to be downloaded and installed?"), TEXT("Update check"), MB_YESNO | MB_ICONQUESTION);
 			if (mr == IDYES)

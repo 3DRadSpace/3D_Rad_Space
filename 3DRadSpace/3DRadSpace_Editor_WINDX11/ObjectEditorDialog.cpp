@@ -42,13 +42,30 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 	ShowWindow(this->_dlgWindow, SW_NORMAL);
 
 	size_t numFields = this->_fields.Size();
-	this->dlgControls = new HWND[this->_fields.CountCreatedElements()];
+	this->dlgControls = new HWND[2*this->_fields.CountCreatedElements() + numFields];
 
 	unsigned x = 10, y = 10;
 
-	for(size_t i = 0, j = 0; i < numFields; i++)
+	for(size_t i = 0, j = 0; j < numFields; )
 	{	
-		
+		int gh = 0, gw = 0;
+		switch(_fields[j].Type)
+		{
+			case EditableFieldType::TextboxesOneLine:
+			{
+				this->dlgControls[i] = CreateWindow(TEXT("Button"), TEXT(""), WS_CHILD | BS_GROUPBOX, x, y, gw, gh, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+				
+				for(size_t k = 0; k < _fields[j].Size(); k++)
+				{
+					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), TEXT(""), WS_CHILD, x, y, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), nullptr, WS_CHILD, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					x += 110;
+				}
+				break;
+			}
+			default: break;
+		}
+		j++;
 	}
 
 	MSG msg;

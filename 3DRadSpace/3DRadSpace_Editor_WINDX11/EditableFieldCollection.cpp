@@ -16,6 +16,7 @@ size_t EditableFieldCollection::CountCreatedElements()
 	size_t c = 0;
 	for(size_t i = 0; i < this->_size; i++)
 	{
+		c += this->_fields[i].Size();
 	}
 	return c;
 }
