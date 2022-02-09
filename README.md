@@ -18,10 +18,12 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 
 1.) Download the source using Git
 
-2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2019 or Visual Studio 2022
+2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 
 3.) Upgrade the Windows SDK version to atleast 10.0.20348.0.
 
-4.) Set the compiling settings to x86 Release or Debug depending on your intention (i.e fixing a bug, or compiling from source to have the lastest features)
+4.) Set the starting project to `3DRadSpace_Editor_WINDX11`
 
-5.) Compile the solution (Ctrl+Shift+B)
+5.) Set the compiling settings to x86 Release or Debug depending on your intention (i.e fixing a bug, or compiling from source to have the lastest features)
+
+6.) Compile the solution (Ctrl+Shift+B)
