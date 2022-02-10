@@ -77,24 +77,6 @@ namespace Engine3DRadSpace
 		static float Dot(const Vector2& a, const Vector2& b);
 
 		/// <summary>
-		/// Sums two vectors
-		/// </summary>
-		/// <param name="v">vector</param>
-		/// <returns></returns>
-		Vector2 operator +=(const Vector2& v);
-		/// <summary>
-		/// Substracts two vectors
-		/// </summary>
-		/// <param name="v">vector</param>
-		/// <returns></returns>
-		Vector2 operator -=(const Vector2& v);
-		/// <summary>
-		/// Negates a vector
-		/// </summary>
-		/// <returns></returns>
-		Vector2 operator -();
-
-		/// <summary>
 		/// Multiplies a vector by a scalar
 		/// </summary>
 		/// <param name="scalar">scalar</param>
@@ -114,4 +96,35 @@ namespace Engine3DRadSpace
 		Vector2 operator *=(const ComplexNumber& z);
 
 	};
+	/// <summary>
+	/// Sums two vectors
+	/// </summary>
+	/// <param name="v">vector</param>
+	/// <returns></returns>
+	Vector2 operator +(const Vector2& a,const Vector2 &b);
+	/// <summary>
+	/// Substracts two vectors
+	/// </summary>
+	/// <param name="v">vector</param>
+	/// <returns></returns>
+	Vector2 operator -(const Vector2& a, const Vector2& b);
+
+	/// <summary>
+	/// Multiplies a vector by a scalar
+	/// </summary>
+	/// <param name="scalar">scalar</param>
+	/// <returns></returns>
+	Vector2 operator *=(const Vector2& v, float scalar);
+	/// <summary>
+	/// Multiplies a vector by a matrix
+	/// </summary>
+	/// <param name="m">matrix</param>
+	/// <returns></returns>
+	Vector2 operator *=(const Vector2& v, const Matrix& m);
+	/// <summary>
+	/// Multiplies a 2D vector by a complex number 
+	/// </summary>
+	/// <param name="z">complex number</param>
+	/// <returns></returns>
+	Vector2 operator *=(const Vector2& v, const ComplexNumber& z);
 }

@@ -24,6 +24,4 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 
 4.) Set the starting project to `3DRadSpace_Editor_WINDX11`
 
-5.) Set the compiling settings to x86 Release or Debug depending on your intention (i.e fixing a bug, or compiling from source to have the lastest features)
-
-6.) Compile the solution (Ctrl+Shift+B)
+5.) Compile the solution (Ctrl+Shift+B)

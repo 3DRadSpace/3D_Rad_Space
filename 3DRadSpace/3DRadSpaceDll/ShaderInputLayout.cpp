@@ -8,7 +8,7 @@ Engine3DRadSpace::ShaderInputLayout::ShaderInputLayout(const std::vector<InputLa
 
 	size_t l = list.size();
 	this->_inputelements = new D3D11_INPUT_ELEMENT_DESC[l];;
-	size_t aglinement = 0;
+	unsigned aglinement = 0;
 	unsigned semantic_index_counter[11] = { 0 };
 
 	for (size_t i = 0; i < l; i++)

@@ -12,12 +12,12 @@ Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::UnitX()
 
 Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::UnitY()
 {
-    return Vector2();
+    return Vector2(0,1);
 }
 
 Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::One()
 {
-    return Vector2();
+    return Vector2(1,1);
 }
 
 float Engine3DRadSpace::Vector2::Lenght() const
@@ -40,21 +40,6 @@ float Engine3DRadSpace::Vector2::Dot(const Vector2& a, const Vector2& b)
     return a.X * b.X + a.Y + b.Y;
 }
 
-Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator+=(const Vector2& v)
-{
-    return Vector2();
-}
-
-Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator-=(const Vector2& v)
-{
-    return Vector2();
-}
-
-Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator-()
-{
-    return Vector2();
-}
-
 Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator*=(float scalar)
 {
     return Vector2(this->X / scalar, this->Y / scalar);
@@ -70,6 +55,35 @@ Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator*=(const Matrix& m)
 Engine3DRadSpace::Vector2 Engine3DRadSpace::Vector2::operator*=(const ComplexNumber& z)
 {
     ComplexNumber temp(this->X,this->Y);
+    temp *= z;
+    return Vector2(temp.A, temp.B);
+}
+
+Engine3DRadSpace::Vector2 Engine3DRadSpace::operator+(const Vector2& a, const Vector2& b)
+{
+    return Vector2(a.X+ b.X , a.Y + b.Y);
+}
+
+Engine3DRadSpace::Vector2 Engine3DRadSpace::operator-(const Vector2& a, const Vector2& b)
+{
+    return Vector2(a.X - b.X, a.Y - b.Y);
+}
+
+Engine3DRadSpace::Vector2 Engine3DRadSpace::operator*=(const Vector2& v, float scalar)
+{
+    return Vector2(v.X * scalar, v.Y * scalar);
+}
+
+Engine3DRadSpace::Vector2 Engine3DRadSpace::operator*=(const Vector2& v, const Matrix& m)
+{
+    float x = (v.X * m.M11) + (v.Y * m.M21) + m.M41;
+    float y = (v.X * m.M12) + (v.Y * m.M22) + m.M42;
+    return Vector2(x, y);
+}
+
+Engine3DRadSpace::Vector2 Engine3DRadSpace::operator*=(const Vector2& v, const ComplexNumber& z)
+{
+    ComplexNumber temp(v.X, v.Y);
     temp *= z;
     return Vector2(temp.A, temp.B);
 }

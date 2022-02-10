@@ -63,40 +63,40 @@ namespace Engine3DRadSpace
 		/// <returns></returns>
 		Point operator /=(const Point& p);
 
-		/// <summary>
-		/// Sums two points
-		/// </summary>
-		/// <param name="a">point</param>
-		/// <param name="b">point</param>
-		/// <returns></returns>
-		friend DLLEXPORT Point operator +(const Point& a, const Point& b);
-		/// <summary>
-		/// Substracts two points
-		/// </summary>
-		/// <param name="a">point</param>
-		/// <param name="b">point</param>
-		/// <returns></returns>
-		friend DLLEXPORT Point operator -(const Point& a, const Point& b);
-		/// <summary>
-		/// Multiplies two points
-		/// </summary>
-		/// <param name="a">point</param>
-		/// <param name="b">point</param>
-		/// <returns></returns>
-		friend DLLEXPORT Point operator *(const Point& a, const Point& b);
-		/// <summary>
-		/// Divides two points
-		/// </summary>
-		/// <param name="a">point</param>
-		/// <param name="b">point</param>
-		/// <returns></returns>
-		friend DLLEXPORT Point operator /(const Point& a, const Point& b);
-		/// <summary>
-		/// Multiplies a point by a scalar.
-		/// </summary>
-		/// <param name="s">scalar value</param>
-		/// <param name="p">point</param>
-		/// <returns></returns>
-		friend DLLEXPORT Point operator *(float s, const Point& p);
 	};
+	/// <summary>
+	/// Sums two points
+	/// </summary>
+	/// <param name="a">point</param>
+	/// <param name="b">point</param>
+	/// <returns></returns>
+	DLLEXPORT Point operator +(const Point& a, const Point& b);
+	/// <summary>
+	/// Substracts two points
+	/// </summary>
+	/// <param name="a">point</param>
+	/// <param name="b">point</param>
+	/// <returns></returns>
+	DLLEXPORT Point operator -(const Point& a, const Point& b);
+	/// <summary>
+	/// Multiplies two points
+	/// </summary>
+	/// <param name="a">point</param>
+	/// <param name="b">point</param>
+	/// <returns></returns>
+	DLLEXPORT Point operator *(const Point& a, const Point& b);
+	/// <summary>
+	/// Divides two points
+	/// </summary>
+	/// <param name="a">point</param>
+	/// <param name="b">point</param>
+	/// <returns></returns>
+	DLLEXPORT Point operator /(const Point& a, const Point& b);
+	/// <summary>
+	/// Multiplies a point by a scalar.
+	/// </summary>
+	/// <param name="s">scalar value</param>
+	/// <param name="p">point</param>
+	/// <returns></returns>
+	DLLEXPORT Point operator *(float s, const Point& p);
 }

@@ -172,6 +172,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;__DIRECTXVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
