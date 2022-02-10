@@ -5,11 +5,12 @@ enum class EditableFieldType : uint8_t
 {
 	Undefined = 0,
 	TextboxesOneLine,
-	MultilineTextboxes,
+	MultilineTextbox,
 	NumericTextboxes,
 	UpDowns,
 	Color,
 	Key,
+	MultipleKeys
 };
 
 class EditableField

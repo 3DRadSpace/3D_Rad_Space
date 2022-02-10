@@ -21,6 +21,34 @@ size_t EditableFieldCollection::CountCreatedElements()
 	return c;
 }
 
+size_t EditableFieldCollection::CountHWNDs()
+{
+	size_t c = 0;
+	for(size_t i = 0; i < this->_size; i++)
+	{
+		switch(this->_fields[i].Type)
+		{
+			case EditableFieldType::TextboxesOneLine:
+			case EditableFieldType::NumericTextboxes:
+			case EditableFieldType::UpDowns:
+			case EditableFieldType::MultipleKeys:
+				c += 2 * this->_fields[i].Size() + 1;
+				break;
+			case EditableFieldType::MultilineTextbox:
+				c += 1;
+				break;
+			case EditableFieldType::Color:
+				c += 7;
+				break;
+			case EditableFieldType::Key:
+				c += 2;
+				break;
+			default: break;
+		}
+	}
+	return c;
+}
+
 EditableField& EditableFieldCollection::operator[](size_t i)
 {
 	return this->_fields[i];

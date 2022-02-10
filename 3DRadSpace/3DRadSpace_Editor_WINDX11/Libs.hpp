@@ -61,9 +61,11 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #ifdef UNICODE
 #define __stdstring std::wstring
 #define __rawstring wchar_t
+#define __to_stdstring std::to_wstring
 #else
 #define __stdstring std::string
 #define __rawstring char
+#define __to_stdstring std::to_string
 #endif
 
 #include <CommCtrl.h>

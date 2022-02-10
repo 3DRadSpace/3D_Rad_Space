@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
+    <ClInclude Include="CameraEditorWindow.h" />
     <ClInclude Include="DownloadStatusWindow.hpp" />
     <ClInclude Include="EditableField.hpp" />
     <ClInclude Include="EditableFieldCollection.hpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
+    <ClCompile Include="CameraEditorWindow.cpp" />
     <ClCompile Include="DownloadStatusWindow.cpp" />
     <ClCompile Include="EditableField.cpp" />
     <ClCompile Include="EditableFieldCollection.cpp" />
