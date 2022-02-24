@@ -16,7 +16,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 
 EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 {
-
 	EditorWindow::g_EWindow = this;
 
 	CurrentFile = TEXT("");
@@ -52,7 +51,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	editorwndclass.hInstance = hInstance;
 	editorwndclass.lpszClassName = EditorWindowClassName;
 
-	RegisterClass(&editorwndclass);
+	if(RegisterClass(&editorwndclass) == 0) return;
 	/*
 		Create Menu control
 	*/
@@ -526,15 +525,15 @@ void EditorWindow::ResizeWindows()
 
 void EditorWindow::CheckUpdate()
 {
-	HRESULT r = URLDownloadToFile(nullptr, TEXT("http://3dradspace.com/UpdateInfo/LastestVersion.txt"), TEXT("version.txt"), 0, nullptr);
+	HRESULT r = URLDownloadToFile(nullptr, TEXT("http://3dradspace.com/UpdateInfo/LastestVersion.txt"), TEXT("version.txt"), BINDF_GETNEWESTVERSION, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
 	{
-		int d = MessageBox(nullptr, TEXT("Cannot check the lastest version. Check your internet connection."), TEXT("Network error"), MB_RETRYCANCEL | MB_ICONWARNING);
+		int d = MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("Cannot check the lastest version. Check your internet connection."), TEXT("Network error"), MB_RETRYCANCEL | MB_ICONWARNING);
 		if (d == IDRETRY) CheckUpdate();
 	}
 	if (r == E_OUTOFMEMORY)
 	{
-		MessageBox(nullptr, TEXT("Cannot download a temporary file. Please try cleaning up some space from your drive."), TEXT("Out of memory"), MB_OK | MB_ICONERROR);
+		MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("Cannot download a temporary file. Please try cleaning up some space from your drive."), TEXT("Out of memory"), MB_OK | MB_ICONERROR);
 	}
 
 	char buffer[255];
@@ -558,7 +557,7 @@ void EditorWindow::CheckUpdate()
 	{
 		if (strcmp(p, __3DRADSPACE_VERSION) == 0)
 		{
-			MessageBox(nullptr, TEXT("No new update found!"), TEXT("Update check"), MB_OK | MB_ICONINFORMATION);
+			MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("No new update found!"), TEXT("Update check"), MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 		else if( i == 0)
@@ -570,7 +569,7 @@ void EditorWindow::CheckUpdate()
 		}
 		if (strstr(p, "https://") != nullptr)
 		{
-			int mr = MessageBox(nullptr, TEXT("A new update was found! Do you want it to be downloaded and installed?"), TEXT("Update check"), MB_YESNO | MB_ICONQUESTION);
+			int mr = MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("A new update was found! Do you want it to be downloaded and installed?"), TEXT("Update check"), MB_YESNO | MB_ICONQUESTION);
 			if (mr == IDYES)
 			{
 				DownloadUpdate(p,version_online);
@@ -596,7 +595,7 @@ void EditorWindow::DownloadUpdate(char* link,char* version)
 	std::thread downloadthread([](std::string link, std::string file,UpdateDownloadManager m) -> void
 		{
 			DownloadStatusWindow::SetManager(&m);
-			HRESULT r = URLDownloadToFileA(nullptr, link.c_str(), file.c_str(), 0, &m);
+			HRESULT r = URLDownloadToFileA(nullptr, link.c_str(), file.c_str(), BINDF_GETNEWESTVERSION, &m);
 		}
 	,downloadlink,file,m);
 
@@ -644,7 +643,7 @@ bool EditorWindow::ShowProjectNotSavedWarning()
 {
 	if (!IsSaved)
 	{
-		int m = MessageBox(nullptr, TEXT("This project is not saved. Unsaved progress may be lost. Save project?"), TEXT("Project not saved"), MB_YESNOCANCEL | MB_ICONWARNING);
+		int m = MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("This project is not saved. Unsaved progress may be lost. Save project?"), TEXT("Project not saved"), MB_YESNOCANCEL | MB_ICONWARNING);
 		if (m == IDYES)
 		{
 			SaveProject();
@@ -830,5 +829,4 @@ void EditorWindow::RaiseInitializationError(DWORD err)
 {
 	ShouldExit = true;
 	PostQuitMessage(err);
-	delete this;
 }

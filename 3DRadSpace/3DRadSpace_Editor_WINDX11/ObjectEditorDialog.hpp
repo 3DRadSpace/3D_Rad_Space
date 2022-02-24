@@ -31,3 +31,4 @@ public:
 	~ObjectEditorDialog();
 };
 
+INT_PTR CALLBACK ObjectEditor_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

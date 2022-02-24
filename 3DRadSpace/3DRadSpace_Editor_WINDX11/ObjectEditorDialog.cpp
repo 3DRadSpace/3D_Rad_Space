@@ -17,7 +17,7 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_n
 
 	memTemplateIndex = (LPWORD)(dlgTemplate + 1);
 	*memTemplateIndex++ = 0; //No menu
-	*memTemplateIndex++ = 0;//Predefined window class
+	*memTemplateIndex++ = 0; //Predefined window class
 	
 	int nchar;
 	title = (LPWSTR)memTemplateIndex;
@@ -33,7 +33,7 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_n
 #pragma warning(disable:6385)
 int ObjectEditorDialog::ShowDialog(HWND parent)
 {
-	this->_dlgWindow = CreateDialogIndirectParam(this->_hInstance, this->dlgTemplate, parent, nullptr, 0);
+	this->_dlgWindow = CreateDialogIndirectParam(this->_hInstance, this->dlgTemplate, parent, ObjectEditor_DlgProc, 0);
 	if(this->dlgTemplate == nullptr)
 		throw Engine3DRadSpace::ResourceCreationException("Failed to create the object editor dialog!", typeid(ObjectEditorDialog));
 
@@ -177,4 +177,29 @@ ObjectEditorDialog::~ObjectEditorDialog()
 {
 	DestroyWindow(this->_dlgWindow);
 	GlobalFree(this->hGlobal);
+}
+
+INT_PTR CALLBACK ObjectEditor_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch(msg)
+	{
+		case WM_INITDIALOG:
+			return true;
+		case WM_COMMAND:
+			return false;
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			BeginPaint(hwnd, &ps);
+			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW+1));
+			EndPaint(hwnd, &ps);
+			return false;
+		}
+		case WM_CLOSE:
+		case WM_QUIT:
+			EndDialog(hwnd, LOWORD(IDCANCEL));
+			return true;
+		default: break;
+	}
+	return true;
 }

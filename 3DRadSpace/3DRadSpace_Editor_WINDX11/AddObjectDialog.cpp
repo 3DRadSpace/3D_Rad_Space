@@ -29,6 +29,11 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             EndPaint(hwnd, &ps);
             return false;
         }
+        //case WM_NCLBUTTONDOWN:
+        //{
+        //    MessageBeep(0xFFFFFFFF);
+        //    return false;
+        //}
         case WM_NOTIFY:
         {
             LPNMHDR notif = (LPNMHDR)lparam;
@@ -64,7 +69,6 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             return false;
         }
         case WM_CLOSE:
-        case WM_QUIT:
         {
             AddObjectDialog::GlobalInstance->DialogOpen = false;
             EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), LOWORD(IDCANCEL));
@@ -134,7 +138,7 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
     this->lpDialogTemplate->x = 1;
     this->lpDialogTemplate->y = 1;
 
-    this->lpDialogTemplate->style = WS_POPUP | WS_BORDER | WS_SYSMENU | DS_MODALFRAME | WS_CAPTION;
+    this->lpDialogTemplate->style = WS_POPUP | WS_SYSMENU | WS_CAPTION | DS_MODALFRAME;//WS_POPUP | WS_BORDER | WS_SYSMENU | DS_MODALFRAME | WS_CAPTION;
     this->lpDialogTemplate->dwExtendedStyle = 0;
 
     //Setup data that is immediately after the structure
@@ -191,13 +195,14 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 int AddObjectDialog::ShowDialog(HWND owner)
 {
     //Create Dialog Window
-    _dialogWindow = CreateDialogIndirectParam(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess, 0);
+    _dialogWindow = CreateDialogIndirect(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess, 0);
     if (_dialogWindow == nullptr)
     {
         throw ResourceCreationException("Failed to show the Dialog Window", typeid(AddObjectDialog));
     }
 
     DialogOpen = true;
+    EnableWindow(owner, false);
 
     //Create the listview control
 
@@ -253,12 +258,15 @@ int AddObjectDialog::ShowDialog(HWND owner)
     BOOL validMessage = true;
     while ((validMessage = GetMessage(&msg,this->_dialogWindow, 0, 0)) != FALSE && DialogOpen)
     {
-        if (!IsWindow(this->_dialogWindow) || !IsDialogMessage(this->_dialogWindow, &msg))
+        if(validMessage == -1) throw std::exception("Exception while managing AddObjectDialog messages");
+
+        else if (!IsWindow(this->_dialogWindow) || !IsDialogMessage(this->_dialogWindow, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
     }
+    EnableWindow(owner, true);
     return IDOK;
 }
 
