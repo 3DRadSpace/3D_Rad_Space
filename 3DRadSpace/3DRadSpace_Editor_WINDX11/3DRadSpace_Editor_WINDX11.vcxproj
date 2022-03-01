@@ -156,7 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
-    <ClInclude Include="CameraEditorWindow.h" />
+    <ClInclude Include="CameraEditorWindow.hpp" />
     <ClInclude Include="DownloadStatusWindow.hpp" />
     <ClInclude Include="EditableField.hpp" />
     <ClInclude Include="EditableFieldCollection.hpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="ObjectEditorDialog.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UpdateDownloadManager.hpp" />
-    <ClInclude Include="Utilities.hpp" />
+    <ClInclude Include="GDIFuncs.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
@@ -179,7 +179,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObjectEditorDialog.cpp" />
     <ClCompile Include="UpdateDownloadManager.cpp" />
-    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="GDIFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icons\compile_icon.ico" />

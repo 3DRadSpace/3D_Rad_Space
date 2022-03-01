@@ -1,9 +1,19 @@
 #include "ObjectEditorDialog.hpp"
 
+ObjectEditorDialog* ObjectEditorDialog::GlobalInstance = nullptr;
 
-ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_name,const EditableFieldCollection &visibleFields,IObjectEditorWindow* object_info):
-	_fields(visibleFields),hGlobal(nullptr),dlgTemplate(nullptr),_dlgWindow(nullptr),result(IDCANCEL),_hInstance(hInstance),dlgControls(nullptr), _objectData(object_info)
-{	
+ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, IObjectEditorWindow* object_info) :
+	_fields(object_info->GetFields()),
+	hGlobal(nullptr),
+	dlgTemplate(nullptr),
+	_dlgWindow(nullptr),
+	result(IDCANCEL),
+	_hInstance(hInstance),
+	dlgControls(nullptr),
+	_objectData(object_info)
+{
+	ObjectEditorDialog::GlobalInstance = this;
+
 	this->hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->hGlobal == nullptr)
 		throw Engine3DRadSpace::ResourceCreationException("Failed to allocate memory", typeid(ObjectEditorDialog));
@@ -21,7 +31,7 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_n
 	
 	int nchar;
 	title = (LPWSTR)memTemplateIndex;
-	nchar = MultiByteToWideChar(CP_ACP, 0, object_name, -1, title, 50);
+	nchar = MultiByteToWideChar(CP_ACP, 0, object_info->GetObjectName(), -1, title, 50);
 	memTemplateIndex += nchar;
 	*memTemplateIndex++ = 0; //no controls created using CreateDialogIndirectParam
 
@@ -33,10 +43,11 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, const char* object_n
 #pragma warning(disable:6385)
 int ObjectEditorDialog::ShowDialog(HWND parent)
 {
-	this->_dlgWindow = CreateDialogIndirectParam(this->_hInstance, this->dlgTemplate, parent, ObjectEditor_DlgProc, 0);
-	if(this->dlgTemplate == nullptr)
-		throw Engine3DRadSpace::ResourceCreationException("Failed to create the object editor dialog!", typeid(ObjectEditorDialog));
+	return DialogBoxIndirectParam(this->_hInstance,this->dlgTemplate,parent, ObjectEditor_DlgProc,reinterpret_cast<LPARAM>(this));
+}
 
+void ObjectEditorDialog::CreateDialogForms()
+{
 	size_t numControls = this->_fields.CountCreatedElements() + 6;
 	this->dlgControls = new HWND[numControls];
 
@@ -45,8 +56,8 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 
 	unsigned x = 10, y = 10;
 
-	std::vector<std::variant<std::wstring, float>> DefaultValuesList = this->_objectData->SetEditorWindowDefaultValues();
-	std::vector<std::wstring> Labels = this->_objectData->GetEditorWindowTitles();
+	std::vector<__stdstring> Labels = this->_fields.GetTitles();
+	std::vector<__stdstring> DefaultValuesList = this->_fields.GetDefaultValues();
 
 	for(size_t i = 0, j = 0, k = 0, l = 0; j < numFields; j++)
 	{
@@ -64,8 +75,8 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 
 				for(size_t k = 0; k < _fields[j].Size(); k++)
 				{
-					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y+10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
-					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), std::get<__stdstring>(DefaultValuesList[l++]).c_str(), WS_CHILD, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y + 10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), DefaultValuesList[l++].c_str(), WS_CHILD, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 					x += 110;
 				}
 				x = 10;
@@ -74,7 +85,7 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 			case EditableFieldType::MultilineTextbox:
 			{
 				gh = 210;
-				this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), std::get<__stdstring>(DefaultValuesList[l++]).c_str(), WS_CHILD | ES_MULTILINE, x, y, 100, 200, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+				this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), DefaultValuesList[l++].c_str(), WS_CHILD | ES_MULTILINE, x, y, 100, 200, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				break;
 			}
 			case EditableFieldType::NumericTextboxes:
@@ -86,8 +97,8 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 
 				for(size_t k = 0; k < _fields[j].Size(); k++)
 				{
-					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y+10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
-					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), __to_stdstring(std::get<float>(DefaultValuesList[l++])).c_str(), WS_CHILD | ES_NUMBER, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y + 10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), DefaultValuesList[l++].c_str(), WS_CHILD | ES_NUMBER, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 					x += 110;
 				}
 				x = 10;
@@ -101,10 +112,10 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 
 				for(size_t k = 0; k < _fields[j].Size(); k++)
 				{
-					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y+10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
-					this->dlgControls[i] = CreateWindow(UPDOWN_CLASS,NULL, WS_CHILD , x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
-					SendMessage(this->dlgControls[i], UDM_SETPOS32,0,static_cast<int>(std::get<float>(DefaultValuesList[l++])));
-					SendMessage(this->dlgControls[i], UDM_SETRANGE32, static_cast<int>(std::get<float>(DefaultValuesList[l++])), static_cast<int>(std::get<float>(DefaultValuesList[l++])));
+					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y + 10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					this->dlgControls[i] = CreateWindow(UPDOWN_CLASS, NULL, WS_CHILD, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
+					SendMessage(this->dlgControls[i], UDM_SETPOS32, 0, static_cast<int>(std::stof(DefaultValuesList[l++])));
+					SendMessage(this->dlgControls[i], UDM_SETRANGE32, static_cast<int>(std::stof(DefaultValuesList[l++])), static_cast<int>(std::stof(DefaultValuesList[l++])));
 					i++;
 					x += 110;
 				}
@@ -114,7 +125,7 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 			case EditableFieldType::Color:
 			{
 				this->dlgControls[i++] = CreateWindow(TEXT("Button"), Labels[k++].c_str(), WS_CHILD | BS_GROUPBOX, x, y, 350, 50, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
-				
+
 				this->dlgControls[i++] = CreateWindow(TEXT("Button"), TEXT("Red"), WS_CHILD, x + 5, y + 10, 50, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				this->dlgControls[i++] = CreateWindow(TEXT("Button"), TEXT("Green"), WS_CHILD, x + 110, y + 10, 50, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				this->dlgControls[i++] = CreateWindow(TEXT("Button"), TEXT("Blue"), WS_CHILD, x + 210, y + 10, 50, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
@@ -122,11 +133,11 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 				this->dlgControls[i] = CreateWindow(UPDOWN_CLASS, nullptr, WS_CHILD, x, y + 30, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				SendMessage(this->dlgControls[i], UDM_SETRANGE32, 0, 255);
 				i++;
-				
+
 				this->dlgControls[i] = CreateWindow(UPDOWN_CLASS, nullptr, WS_CHILD, x + 110, y + 30, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				SendMessage(this->dlgControls[i], UDM_SETRANGE32, 0, 255);
 				i++;
-				
+
 				this->dlgControls[i] = CreateWindow(UPDOWN_CLASS, nullptr, WS_CHILD, x + 220, y + 30, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 				SendMessage(this->dlgControls[i], UDM_SETRANGE32, 0, 255);
 				i++;
@@ -146,21 +157,9 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 		}
 		y += gh;
 	}
-
 	ShowWindow(this->_dlgWindow, SW_NORMAL);
-
-	MSG msg;
-	BOOL validMessage;
-	while((validMessage = GetMessage(&msg, this->_dlgWindow, 0, 0)) != 0)
-	{
-		if(!IsWindow(this->_dlgWindow) || !IsDialogMessage(this->_dlgWindow, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
-	return IDOK;
 }
+
 #pragma warning(pop)
 
 HINSTANCE ObjectEditorDialog::GetHINSTANCE()
@@ -184,7 +183,12 @@ INT_PTR CALLBACK ObjectEditor_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	switch(msg)
 	{
 		case WM_INITDIALOG:
+		{
+			ObjectEditorDialog* oed = reinterpret_cast<ObjectEditorDialog*>(lParam);
+			oed->_dlgWindow = hwnd;
+			oed->CreateDialogForms();
 			return true;
+		}
 		case WM_COMMAND:
 			return false;
 		case WM_PAINT:
@@ -196,7 +200,6 @@ INT_PTR CALLBACK ObjectEditor_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			return false;
 		}
 		case WM_CLOSE:
-		case WM_QUIT:
 			EndDialog(hwnd, LOWORD(IDCANCEL));
 			return true;
 		default: break;

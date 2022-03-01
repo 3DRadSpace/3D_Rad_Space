@@ -44,11 +44,6 @@ void DownloadStatusWindow::Create(HWND parent)
 	label1 = CreateWindow(TEXT("STATIC"), TEXT("Downloading update..."), WS_VISIBLE | WS_CHILD, 120, 10, 300, 20, window, nullptr,hInstance, nullptr);
 	label2 = CreateWindow(TEXT("STATIC"), TEXT("Progress:"), WS_VISIBLE | WS_CHILD, 10, 30, 100, 20, window, nullptr, hInstance, nullptr);
 
-	INITCOMMONCONTROLSEX icc;
-	icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
-	icc.dwICC = ICC_PROGRESS_CLASS;
-	InitCommonControlsEx(&icc);
-
 	progressbar = CreateWindowEx(0, PROGRESS_CLASS, nullptr, WS_VISIBLE | WS_CHILD, 80, 30, 200, 20, window, nullptr, hInstance, nullptr);
 	SendMessage(progressbar, PBM_SETSTEP, 1, 0);
 	SendMessage(progressbar, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
@@ -153,6 +148,13 @@ LRESULT __stdcall DownloadWindowEventHandler(HWND hwnd, UINT msg, WPARAM wParam,
 				}
 				default: break;
 			}
+		}
+		case WM_CLOSE:
+		{
+			DownloadStatusWindow::Finished = false;
+			DownloadStatusWindow::Cancelled = true;
+			DownloadStatusWindow::downloadmanager->Abort();
+			break;
 		}
 		default:break;
 	}

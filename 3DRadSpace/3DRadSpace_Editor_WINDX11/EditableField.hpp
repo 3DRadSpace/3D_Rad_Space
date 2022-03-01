@@ -18,10 +18,11 @@ class EditableField
 	EditableFieldValue* _value;
 	size_t _size;
 public:
-	std::string Name;
+	__stdstring Name;
 	EditableFieldType Type;
 
-	EditableField(std::string name, size_t n,EditableFieldType t) : Name(name), _value(new EditableFieldValue[n]),_size(n), Type(t) {};
+	EditableField(__stdstring name, size_t n,EditableFieldType t) : Name(name), _value(new EditableFieldValue[n]),_size(n), Type(t) {};
+	EditableField(const EditableField& field);
 
 	EditableFieldValue& operator[](size_t i);
 	size_t Size();

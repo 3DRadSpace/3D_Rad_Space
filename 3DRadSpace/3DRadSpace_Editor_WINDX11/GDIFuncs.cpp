@@ -1,4 +1,4 @@
-#include "Utilities.hpp"
+#include "GDIFuncs.hpp"
 
 Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 ULONG_PTR gdiplusToken;

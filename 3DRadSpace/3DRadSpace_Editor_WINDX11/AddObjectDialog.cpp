@@ -8,6 +8,9 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
     {
         case WM_INITDIALOG:
         {
+            AddObjectDialog* addobjd = reinterpret_cast<AddObjectDialog*>(lparam);
+            addobjd->_dialogWindow = hwnd;
+            addobjd->CreateDialogForms();
             return true;
         }
         case WM_COMMAND:
@@ -16,7 +19,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             {
                 case IDOK:
                 case IDCANCEL:
-                    EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), wparam);
+                    EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), LOWORD(wparam));
                     break;
             }
             return false;
@@ -29,11 +32,6 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             EndPaint(hwnd, &ps);
             return false;
         }
-        //case WM_NCLBUTTONDOWN:
-        //{
-        //    MessageBeep(0xFFFFFFFF);
-        //    return false;
-        //}
         case WM_NOTIFY:
         {
             LPNMHDR notif = (LPNMHDR)lparam;
@@ -44,7 +42,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
             {
                 switch(notif->code)
                 {
-                    case NM_CLICK:
+                    case NM_DBLCLK:
                     {
                         LPNMITEMACTIVATE item = (LPNMITEMACTIVATE)lparam;
                         switch(21 - item->iItem) //order of ListView items is reversed
@@ -52,6 +50,8 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
                             //Handle creating objects here.
                             case 0:
                             {
+                                ObjectEditorDialog oed(AddObjectDialog::GlobalInstance->_hInstance, new CameraEditorWindow());
+                                oed.ShowDialog(AddObjectDialog::GlobalInstance->_dialogWindow);
                                 break;
                             }
                             default: break;
@@ -70,7 +70,6 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
         }
         case WM_CLOSE:
         {
-            AddObjectDialog::GlobalInstance->DialogOpen = false;
             EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), LOWORD(IDCANCEL));
             return true;
         }
@@ -79,7 +78,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
     }
 }
 
-void AddObjectDialog::_createItemForList( __rawstring* name, int imageIndex, int groupIndex)
+void AddObjectDialog::_createItemForList( __rawstring name, int imageIndex, int groupIndex)
 {
     LVITEM item;
     memset(&item, 0, sizeof(LVITEM));
@@ -120,7 +119,6 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
     this->_hInstance = hInstance;
     this->_dialogWindow = nullptr;
     this->_listView = nullptr;
-    this->DialogOpen = false;
 
     //Allocate memory
     this->hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
@@ -194,80 +192,58 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 
 int AddObjectDialog::ShowDialog(HWND owner)
 {
-    //Create Dialog Window
-    _dialogWindow = CreateDialogIndirect(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess, 0);
-    if (_dialogWindow == nullptr)
-    {
-        throw ResourceCreationException("Failed to show the Dialog Window", typeid(AddObjectDialog));
-    }
+    return DialogBoxIndirectParam(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess,(LPARAM)this);
+}
 
-    DialogOpen = true;
-    EnableWindow(owner, false);
-
-    //Create the listview control
-
+void AddObjectDialog::CreateDialogForms()
+{
     _listView = CreateWindow(TEXT("SysListView32"), TEXT(""), WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 600, 600, _dialogWindow, nullptr, this->_hInstance, nullptr);
 
     ListView_EnableGroupView(_listView, true);
     ListView_SetImageList(this->_listView, this->_imageList, LVSIL_NORMAL);
 
-    _createGroupForList((__rawstring*)TEXT("Camera objects"), 0);
-    _createGroupForList((__rawstring*)TEXT("Programming"), 1);
-    _createGroupForList((__rawstring*)TEXT("3D Visual Objects"), 2);
-    _createGroupForList((__rawstring*)TEXT("Physics"), 3);
-    _createGroupForList((__rawstring*)TEXT("2D Visual Objects"), 4);
-    _createGroupForList((__rawstring*)TEXT("Events"), 5);
-    _createGroupForList((__rawstring*)TEXT("Triggereable Objects"), 6);
-    _createGroupForList((__rawstring*)TEXT("Sound Objects"), 7);
+    _createGroupForList((__rawstring)TEXT("Camera objects"), 0);
+    _createGroupForList((__rawstring)TEXT("Programming"), 1);
+    _createGroupForList((__rawstring)TEXT("3D Visual Objects"), 2);
+    _createGroupForList((__rawstring)TEXT("Physics"), 3);
+    _createGroupForList((__rawstring)TEXT("2D Visual Objects"), 4);
+    _createGroupForList((__rawstring)TEXT("Events"), 5);
+    _createGroupForList((__rawstring)TEXT("Triggereable Objects"), 6);
+    _createGroupForList((__rawstring)TEXT("Sound Objects"), 7);
 
-    _createItemForList((__rawstring*)TEXT("Camera"), 0, 0);
-    _createItemForList((__rawstring*)TEXT("First Person Camera"), 1, 0);
+    _createItemForList((__rawstring)TEXT("Camera"), 0, 0);
+    _createItemForList((__rawstring)TEXT("First Person Camera"), 1, 0);
 
-    _createItemForList((__rawstring*)TEXT("C++ source"), 2, 1);
-    _createItemForList((__rawstring*)TEXT("C# scripts"), 3, 1);
-    _createItemForList((__rawstring*)TEXT("Empty"), 4, 1);
+    _createItemForList((__rawstring)TEXT("C++ source"), 2, 1);
+    _createItemForList((__rawstring)TEXT("C# scripts"), 3, 1);
+    _createItemForList((__rawstring)TEXT("Empty"), 4, 1);
 
-    _createItemForList((__rawstring*)TEXT("Skinmesh"), 5, 2);
-    _createItemForList((__rawstring*)TEXT("Skybox"), 6, 2);
-    _createItemForList((__rawstring*)TEXT("Fog"), 7, 2);
+    _createItemForList((__rawstring)TEXT("Skinmesh"), 5, 2);
+    _createItemForList((__rawstring)TEXT("Skybox"), 6, 2);
+    _createItemForList((__rawstring)TEXT("Fog"), 7, 2);
 
-    _createItemForList((__rawstring*)TEXT("Rigidbody"), 8, 3);
-    _createItemForList((__rawstring*)TEXT("GForce"), 9, 3);
-    _createItemForList((__rawstring*)TEXT("Force"), 10, 3);
-    _createItemForList((__rawstring*)TEXT("Group"), 11, 3);
+    _createItemForList((__rawstring)TEXT("Rigidbody"), 8, 3);
+    _createItemForList((__rawstring)TEXT("GForce"), 9, 3);
+    _createItemForList((__rawstring)TEXT("Force"), 10, 3);
+    _createItemForList((__rawstring)TEXT("Group"), 11, 3);
 
-    _createItemForList((__rawstring*)TEXT("Sprite"), 12, 4);
-    _createItemForList((__rawstring*)TEXT("TextPrint"), 13, 4);
-    _createItemForList((__rawstring*)TEXT("SkyColor"), 14, 4);
+    _createItemForList((__rawstring)TEXT("Sprite"), 12, 4);
+    _createItemForList((__rawstring)TEXT("TextPrint"), 13, 4);
+    _createItemForList((__rawstring)TEXT("SkyColor"), 14, 4);
 
-    _createItemForList((__rawstring*)TEXT("EventOnLocation"), 15, 5);
-    _createItemForList((__rawstring*)TEXT("EventOnKey"), 16, 5);
-    _createItemForList((__rawstring*)TEXT("Timer"), 17, 5);
-    _createItemForList((__rawstring*)TEXT("Counter"), 18, 5);
+    _createItemForList((__rawstring)TEXT("EventOnLocation"), 15, 5);
+    _createItemForList((__rawstring)TEXT("EventOnKey"), 16, 5);
+    _createItemForList((__rawstring)TEXT("Timer"), 17, 5);
+    _createItemForList((__rawstring)TEXT("Counter"), 18, 5);
 
-    _createItemForList((__rawstring*)TEXT("ExitFade"), 19, 6);
+    _createItemForList((__rawstring)TEXT("ExitFade"), 19, 6);
 
-    _createItemForList((__rawstring*)TEXT("SoundEffect"), 20, 7);
-    _createItemForList((__rawstring*)TEXT("SoundSource"), 21, 7);
+    _createItemForList((__rawstring)TEXT("SoundEffect"), 20, 7);
+    _createItemForList((__rawstring)TEXT("SoundSource"), 21, 7);
 
     ShowWindow(this->_dialogWindow, SW_NORMAL);
     ShowWindow(this->_listView, SW_NORMAL);
     Resize();
-
-    MSG msg;
-    BOOL validMessage = true;
-    while ((validMessage = GetMessage(&msg,this->_dialogWindow, 0, 0)) != FALSE && DialogOpen)
-    {
-        if(validMessage == -1) throw std::exception("Exception while managing AddObjectDialog messages");
-
-        else if (!IsWindow(this->_dialogWindow) || !IsDialogMessage(this->_dialogWindow, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
-    EnableWindow(owner, true);
-    return IDOK;
 }
 
 HWND AddObjectDialog::GetWindow()

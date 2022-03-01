@@ -3,6 +3,6 @@
 
 struct EditableFieldValue
 {
-	std::string Name;
-	std::variant<std::string, float> Value;
+	__stdstring Name;
+	std::variant<__stdstring,float> Value;
 };

@@ -26,7 +26,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	ShouldExit = false;
 
 	//set current directory
-	__rawstring currPath[MAX_PATH];
+	__char currPath[MAX_PATH];
 	GetModuleFileName(nullptr, currPath, MAX_PATH);
 	PathCchRemoveFileSpec(currPath, MAX_PATH);
 	SetCurrentDirectory(currPath);
@@ -338,12 +338,12 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case MENU_OPENFILE:
 				{
 					if (!EditorWindow::g_EWindow->ShowProjectNotSavedWarning()) break;
-					__rawstring projPath[MAX_PATH];
+					__char projPath[MAX_PATH];
 					GetModuleFileName(nullptr, projPath, MAX_PATH);
 					PathCchRemoveFileSpec(projPath, MAX_PATH);
 					lstrcatW(projPath, TEXT("\\Projects\\"));
 
-					__rawstring filePath[MAX_PATH+1];
+					__char filePath[MAX_PATH+1];
 					memset(filePath, 0, sizeof(filePath));
 
 					OPENFILENAME ofn;
@@ -488,7 +488,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_DROPFILES:
 		{
 			HDROP hDrop = (HDROP)wParam;
-			__rawstring file[MAX_PATH];
+			__char file[MAX_PATH];
 			for (size_t i = 0; DragQueryFile(hDrop, i, file, MAX_PATH); i++)
 			{
 				if (EditorWindow::g_EWindow->ShowProjectNotSavedWarning() == true)
@@ -502,7 +502,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void EditorWindow::OpenProject(__rawstring* path)
+void EditorWindow::OpenProject(__rawstring path)
 {
 	CurrentFile = path;
 	UpdateDiscordRichPresence();
@@ -670,7 +670,7 @@ void EditorWindow::SaveProject()
 void EditorWindow::SaveProjectAs()
 {
 	if (CurrentFile != TEXT("")) SaveProject();
-	__rawstring filebuffer[MAX_PATH+1];
+	__char filebuffer[MAX_PATH+1];
 	memset(filebuffer, 0, sizeof(filebuffer));
 
 	OPENFILENAME sfn;
@@ -762,7 +762,7 @@ void EditorWindow::AddObject(IObject* object)
 	tree_view_item.mask = TVIF_TEXT | TVIF_PARAM;
 	//UNICODE and non-UNICODE compatibility
 #ifdef UNICODE
-	__rawstring objname[255];
+	__char objname[255];
 	size_t num_chr_conv = 0;
 	mbstowcs_s<255>(&num_chr_conv, objname, object->Name.c_str(), 255);
 	tree_view_item.pszText = objname;

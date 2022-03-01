@@ -33,7 +33,7 @@
     <ClInclude Include="AddObjectDialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities.hpp">
+    <ClInclude Include="GDIFuncs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectEditorDialog.hpp">
@@ -51,7 +51,7 @@
     <ClInclude Include="EditableFieldCollection.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraEditorWindow.h">
+    <ClInclude Include="CameraEditorWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,7 +68,7 @@
     <ClCompile Include="AddObjectDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities.cpp">
+    <ClCompile Include="GDIFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectEditorDialog.cpp">

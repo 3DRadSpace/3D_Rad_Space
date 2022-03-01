@@ -1,9 +1,13 @@
 #include "EditableFieldCollection.hpp"
 
-EditableFieldCollection::EditableFieldCollection(std::vector<EditableField>& fields) : 
-	_fields(static_cast<EditableField*>(::operator new[](sizeof(EditableField)* fields.size()))), _size(fields.size())
-{
-	std::copy(fields.begin(), fields.end(), this->_fields);
+EditableFieldCollection::EditableFieldCollection(std::vector<EditableField> &fields) : 
+	_fields(static_cast<EditableField*>(::operator new(sizeof(EditableField) * fields.size()))), 
+	_size(fields.size())
+{	
+	for(size_t i = 0; i < _size; i++)
+	{
+		this->_fields[i] = fields[i];
+	}
 }
 
 size_t EditableFieldCollection::Size()
@@ -52,6 +56,41 @@ size_t EditableFieldCollection::CountHWNDs()
 EditableField& EditableFieldCollection::operator[](size_t i)
 {
 	return this->_fields[i];
+}
+
+std::vector<__stdstring> EditableFieldCollection::GetTitles()
+{
+	std::vector<__stdstring> r;
+	r.reserve(this->CountHWNDs());
+	for(size_t i = 0; i < this->Size(); i++)
+	{
+		for(size_t j = 0; j < this->_fields[i].Size(); j++)
+		{
+			r.push_back(this->_fields[i][j].Name);
+		}
+	}
+
+	return r;
+}
+
+std::vector<__stdstring> EditableFieldCollection::GetDefaultValues()
+{
+	std::vector<__stdstring> r;
+	r.reserve(this->CountHWNDs());
+	for(size_t i = 0; i < this->Size(); i++)
+	{
+		for(size_t j = 0; j < this->_fields[i].Size(); j++)
+		{
+			__stdstring *elem;
+			elem = std::get_if<__stdstring>(&this->_fields[i][j].Value);
+			if(elem == nullptr)
+				*elem = __to_stdstring(std::get<float>(this->_fields[i][j].Value));
+			if(elem == nullptr) throw std::runtime_error(std::format("Failed to get default value at {},{}",i,j));
+
+			r.push_back(*elem);
+		}
+	}
+	return r;
 }
 
 EditableFieldCollection::~EditableFieldCollection()

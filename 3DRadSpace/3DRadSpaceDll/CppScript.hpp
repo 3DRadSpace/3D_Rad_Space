@@ -7,6 +7,10 @@
 
 #include <Windows.h>
 
+///
+/// FIXME: This can't handle more classes per 1 single library
+///
+
 namespace Engine3DRadSpace
 {
 	/// <summary>

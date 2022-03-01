@@ -1,7 +1,9 @@
 #pragma once
 #include "Libs.hpp"
 #include "resource.h"
-#include "Utilities.hpp"
+#include "GDIFuncs.hpp"
+#include "ObjectEditorDialog.hpp"
+#include "CameraEditorWindow.hpp"
 
 using namespace Engine3DRadSpace;
 
@@ -22,17 +24,16 @@ class AddObjectDialog
 
 	HIMAGELIST _imageList;
 
-	void _createItemForList(__rawstring* name,int imageIndex,int groupIndex);
+	void _createItemForList(__rawstring name,int imageIndex,int groupIndex);
 	void _createGroupForList(wchar_t* name, int index);
 
 	void _insertImage(HBITMAP icon);
+	void CreateDialogForms();
 
 public:
 	static AddObjectDialog* GlobalInstance;
 
 	AddObjectDialog(HINSTANCE hInstance);
-
-	bool DialogOpen;
 
 	int ShowDialog(HWND owner);
 	HWND GetWindow();
@@ -41,5 +42,7 @@ public:
 	void Resize();
 
 	~AddObjectDialog();
+
+	friend INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 };
 

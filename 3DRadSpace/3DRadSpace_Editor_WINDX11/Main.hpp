@@ -4,8 +4,6 @@
 #include "AddObjectDialog.hpp"
 #include "DownloadStatusWindow.hpp"
 
-int __stdcall wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_  PWSTR args, _In_  int nShowCmd);
-
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
 constexpr int MENU_SAVEFILE = 302;
@@ -33,10 +31,10 @@ constexpr int MENU_SWITCH3D2D = 318;
 constexpr int MENU_OPEN_IDE = 319;
 
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
-constexpr const __rawstring* __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
+constexpr const __rawstring __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
 
-const __rawstring* const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
-const __rawstring* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
+const __rawstring const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
+const __rawstring const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -113,7 +111,7 @@ public:
 	void ResetLoadedProject();
 	bool ShowProjectNotSavedWarning();
 
-	void OpenProject(__rawstring* path);
+	void OpenProject(__rawstring path);
 	void SaveProject();
 	void SaveProjectAs();
 
