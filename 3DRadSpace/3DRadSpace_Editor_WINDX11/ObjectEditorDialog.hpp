@@ -2,7 +2,6 @@
 #include "Libs.hpp"
 #include "resource.h"
 #include "GDIFuncs.hpp"
-#include "EditableFieldCollection.hpp"
 #include "IObjectEditorWindow.hpp"
 
 class ObjectEditorDialog
@@ -13,7 +12,6 @@ class ObjectEditorDialog
 	HWND _dlgWindow;
 
 	LPDLGTEMPLATE dlgTemplate;
-	EditableFieldCollection _fields;
 	IObjectEditorWindow* _objectData;
 	HWND* dlgControls;
 public:

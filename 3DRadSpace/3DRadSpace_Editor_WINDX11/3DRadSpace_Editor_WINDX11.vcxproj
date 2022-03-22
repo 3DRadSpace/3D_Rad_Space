@@ -159,8 +159,6 @@
     <ClInclude Include="CameraEditorWindow.hpp" />
     <ClInclude Include="DownloadStatusWindow.hpp" />
     <ClInclude Include="EditableField.hpp" />
-    <ClInclude Include="EditableFieldCollection.hpp" />
-    <ClInclude Include="EditableFieldValue.hpp" />
     <ClInclude Include="IObjectEditorWindow.hpp" />
     <ClInclude Include="Libs.hpp" />
     <ClInclude Include="Main.hpp" />
@@ -173,8 +171,6 @@
     <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="CameraEditorWindow.cpp" />
     <ClCompile Include="DownloadStatusWindow.cpp" />
-    <ClCompile Include="EditableField.cpp" />
-    <ClCompile Include="EditableFieldCollection.cpp" />
     <ClCompile Include="IObjectEditorWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObjectEditorDialog.cpp" />

@@ -45,12 +45,6 @@
     <ClInclude Include="IObjectEditorWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditableFieldValue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditableFieldCollection.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CameraEditorWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -74,13 +68,7 @@
     <ClCompile Include="ObjectEditorDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditableField.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IObjectEditorWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditableFieldCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CameraEditorWindow.cpp">

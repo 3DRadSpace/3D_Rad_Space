@@ -3,7 +3,6 @@
 ObjectEditorDialog* ObjectEditorDialog::GlobalInstance = nullptr;
 
 ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, IObjectEditorWindow* object_info) :
-	_fields(object_info->GetFields()),
 	hGlobal(nullptr),
 	dlgTemplate(nullptr),
 	_dlgWindow(nullptr),
@@ -48,23 +47,23 @@ int ObjectEditorDialog::ShowDialog(HWND parent)
 
 void ObjectEditorDialog::CreateDialogForms()
 {
-	size_t numControls = this->_fields.CountCreatedElements() + 6;
+	size_t numControls = this->_objectData->GetFieldNamesCount();
 	this->dlgControls = new HWND[numControls];
 
-	size_t numFields = this->_fields.Size();
-	this->dlgControls = new HWND[this->_fields.CountHWNDs()];
+	size_t numFields = this->_objectData->GetFieldValuesCount();
 
 	unsigned x = 10, y = 10;
 
-	std::vector<__stdstring> Labels = this->_fields.GetTitles();
-	std::vector<__stdstring> DefaultValuesList = this->_fields.GetDefaultValues();
+	__stdstring* Labels = this->_objectData->GetFieldNames();
+	__stdstring* DefaultValuesList = this->_objectData->GetFieldValues();
+
+	std::vector< EditableFieldType> fieldTypes = this->_objectData->GetFieldFormTypes();
 
 	for(size_t i = 0, j = 0, k = 0, l = 0; j < numFields; j++)
 	{
 		int gh = 0, gw = 0;
-		size_t numSubFields = _fields[j].Size();
 
-		switch(_fields[j].Type)
+		switch(fieldTypes[j])
 		{
 			case EditableFieldType::TextboxesOneLine:
 			{
@@ -73,7 +72,7 @@ void ObjectEditorDialog::CreateDialogForms()
 
 				this->dlgControls[i++] = CreateWindow(TEXT("Button"), Labels[k++].c_str(), WS_CHILD | BS_GROUPBOX, x, y, gw, gh, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 
-				for(size_t k = 0; k < _fields[j].Size(); k++)
+				for(size_t k = 0; k < ; k++)
 				{
 					this->dlgControls[i++] = CreateWindow(TEXT("STATIC"), Labels[k++].c_str(), WS_CHILD, x, y + 10, 100, 25, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
 					this->dlgControls[i++] = CreateWindow(TEXT("EDIT"), DefaultValuesList[l++].c_str(), WS_CHILD, x, y + 30, 100, 22, this->_dlgWindow, nullptr, this->_hInstance, nullptr);
