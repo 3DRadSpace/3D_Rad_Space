@@ -1,5 +1,7 @@
 #include "AddObjectDialog.hpp"
 
+using namespace Engine3DRadSpace;
+
 AddObjectDialog* AddObjectDialog::GlobalInstance = nullptr;
 
 INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -133,10 +135,10 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
     this->lpDialogTemplate->cdit = 0;
     this->lpDialogTemplate->cx = 400;
     this->lpDialogTemplate->cy = 300;
-    this->lpDialogTemplate->x = 1;
-    this->lpDialogTemplate->y = 1;
+    this->lpDialogTemplate->x = 0;
+    this->lpDialogTemplate->y = 0;
 
-    this->lpDialogTemplate->style = WS_POPUP | WS_SYSMENU | WS_CAPTION | DS_MODALFRAME;//WS_POPUP | WS_BORDER | WS_SYSMENU | DS_MODALFRAME | WS_CAPTION;
+    this->lpDialogTemplate->style = WS_POPUP | WS_SYSMENU | WS_CAPTION | DS_MODALFRAME | DS_CENTER;//WS_POPUP | WS_BORDER | WS_SYSMENU | DS_MODALFRAME | WS_CAPTION;
     this->lpDialogTemplate->dwExtendedStyle = 0;
 
     //Setup data that is immediately after the structure

@@ -3,8 +3,6 @@
 #include "resource.h"
 #include "GDIFuncs.hpp"
 
-using namespace Engine3DRadSpace;
-
 INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 class AddObjectDialog
