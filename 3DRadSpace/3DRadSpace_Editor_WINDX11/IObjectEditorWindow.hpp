@@ -28,6 +28,5 @@ public:
 
 	virtual std::vector<EditableFieldType> GetFieldFormTypes() = 0;
 
-
 	Engine3DRadSpace::IObject* GameObject;
 };

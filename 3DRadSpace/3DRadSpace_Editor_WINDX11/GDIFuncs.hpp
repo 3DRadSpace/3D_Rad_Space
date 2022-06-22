@@ -6,11 +6,6 @@
 
 #pragma comment(lib,"Gdiplus.lib")
 
-//Functions for random stuff
-
-
-//GDI
-
 void InitializeGDI();
 
 HBITMAP loadImgResource(wchar_t* pName, wchar_t* pType, HMODULE hInst);

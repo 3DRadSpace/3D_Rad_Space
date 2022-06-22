@@ -2,8 +2,6 @@
 #include "Libs.hpp"
 #include "resource.h"
 #include "GDIFuncs.hpp"
-#include "ObjectEditorDialog.hpp"
-#include "CameraEditorWindow.hpp"
 
 using namespace Engine3DRadSpace;
 

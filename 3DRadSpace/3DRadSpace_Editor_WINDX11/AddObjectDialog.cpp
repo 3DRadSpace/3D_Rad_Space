@@ -50,8 +50,8 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
                             //Handle creating objects here.
                             case 0:
                             {
-                                ObjectEditorDialog oed(AddObjectDialog::GlobalInstance->_hInstance, new CameraEditorWindow());
-                                oed.ShowDialog(AddObjectDialog::GlobalInstance->_dialogWindow);
+                                //ObjectEditorDialog oed(AddObjectDialog::GlobalInstance->_hInstance, new CameraEditorWindow());
+                                //oed.ShowDialog(AddObjectDialog::GlobalInstance->_dialogWindow);
                                 break;
                             }
                             default: break;
