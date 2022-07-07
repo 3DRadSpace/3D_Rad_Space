@@ -1,3 +1,4 @@
+
 # 3DRadSpace
 
 3DRadSpace is a free, simple to use, rapid application development game engine. Still in development. 
@@ -17,11 +18,29 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 # Building 3DRadSpace
 
 1.) Download the source using Git
+`git clone https://github.com/3DRadSpace/3D_Rad_Space`
+
+2.) Install the dependencies:
+
+- Discord RPC
+> Link: https://github.com/discord/discord-rpc
+> Already included in `<root>\3DRadSpace\ExtLibs\discord-rpc`
+> Binaries for are needed for `x64-Debug` and `Win32-Debug` configurations. 
+- Google test
+> Install using vcpkg:
+> `vcpkg install gtest:x86-Windows`  
+> `vcpkg install gtest:x64-Windows`
+- Windows API 
+> Included in Windows SDK (source won't compile if using versions < 10.0.20348.0)
+- DirectX11 Toolkit (directxtk_desktop_2019)
+> Can be easily installed by using NuGet.
+- Assimp
+> Can be easily installed using NuGet.
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 
-3.) Upgrade the Windows SDK version to atleast 10.0.20348.0.
+3.) Upgrade the Windows SDK version to atleast 10.0.20348.0 in `3DRadSpace_Editor_WINDX11` project properties.
 
 4.) Set the starting project to `3DRadSpace_Editor_WINDX11`
 
-5.) Compile the solution (Ctrl+Shift+B)
+5.) Compile the solution (Ctrl+Shift+B) with any desired configuration (`Debug`/`Release`, `x86`/`x64`)
