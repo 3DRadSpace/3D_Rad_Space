@@ -19,7 +19,7 @@ namespace Engine3DRadSpace
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		Point() = default;
+		Point(): X(0),Y() {};
 		/// <summary>
 		/// Constructs a point from the given X and Y values.
 		/// </summary>

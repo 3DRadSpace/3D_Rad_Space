@@ -8,6 +8,8 @@ namespace Engine3DRadSpace
 	/// </summary>
 	struct ColorShader
 	{
+		ColorShader() = default;
+		ColorShader(float r, float g, float b, float a) : R(r), G(g), B(b), A(a) {};
 		float R, G, B, A;
 	};
 	/// <summary>
@@ -57,6 +59,12 @@ namespace Engine3DRadSpace
 		/// <returns>A normalized color</returns>
 		ColorShader Normalize();
 	};
+
+	bool DLLEXPORT operator==(const ColorShader& a, const ColorShader& b);
+	bool DLLEXPORT operator==(const Color& a, const Color& b);
+
+	bool DLLEXPORT operator!=(const ColorShader& a, const ColorShader& b);
+	bool DLLEXPORT operator!=(const Color& a, const Color& b);
 }
 
 

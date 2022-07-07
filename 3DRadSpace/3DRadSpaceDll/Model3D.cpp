@@ -151,7 +151,7 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 		}
 
 		//create index buffer
-		size_t indexbuffersize = scene->mMeshes[i]->mNumFaces * 3; //faces are triangulated, so multiply with 3
+		size_t indexbuffersize = static_cast<size_t>(scene->mMeshes[i]->mNumFaces) * 3; //faces are triangulated, so multiply with 3
 
 		unsigned* indexbuffer = new unsigned[indexbuffersize];
 

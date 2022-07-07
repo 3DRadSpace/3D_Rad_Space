@@ -223,7 +223,7 @@ void EditorWindow::RenderUpdateLoop()
 			camRotX -= pMouseDelta.X * 0.001f;
 			camRotY -= pMouseDelta.Y * 0.001f;
 
-			camRotY = Engine3DRadSpace::Math::Clamp((-Math::Pi<float>()/2) + std::numeric_limits<float>::epsilon(), camRotY, (Math::Pi<float>()/2) - std::numeric_limits<float>::epsilon());
+			camRotY = Engine3DRadSpace::Math::Clamp<float>((-std::numbers::pi/2) + std::numeric_limits<float>::epsilon(), camRotY, (std::numbers::pi/2) - std::numeric_limits<float>::epsilon());
 		}
 		else
 		{

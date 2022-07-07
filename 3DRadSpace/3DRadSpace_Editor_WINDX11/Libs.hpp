@@ -63,16 +63,20 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #define __rawstring wchar_t*
 #define __to_stdstring std::to_wstring
 #define __char wchar_t
+#define __rawstrlen wcslen
 #else
 #define __stdstring std::string
 #define __rawstring char*
 #define __to_stdstring std::to_string
 #define __char char
+#define __rawstrlen strlen
 #endif
 
 #include <CommCtrl.h>
 #include <variant>
 #include <array>
 #include <span>
-#define __cpp_lib_format
-#include <format>
+//#define __cpp_lib_format
+#include <format> //std::format (C++ 20)
+#include <functional>
+#include <numbers>

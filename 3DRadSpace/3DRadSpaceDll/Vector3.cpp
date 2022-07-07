@@ -75,9 +75,12 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator+(const Vector3 &a,const Vec
 	return Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
 }
 
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator+=(const Vector3& a, const Vector3& b)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator+=(Vector3& a, const Vector3& b)
 {
-	return Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+	a.X += b.X;
+	a.Y += b.Y;
+	a.Z += b.Z;
+	return a;
 }
 
 Engine3DRadSpace::Vector3 Engine3DRadSpace::operator-(const Vector3 &a,const Vector3 &b)
@@ -90,9 +93,12 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator-(const Vector3& v)
 	return Vector3(-v.X,v.Y,v.Z);
 }
 
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator-=(const Vector3& a, const Vector3& b)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator-=(Vector3& a, const Vector3& b)
 {
-	return Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+	a.X -= b.X;
+	a.Y -= b.Y;
+	a.Z -= b.Z;
+	return a;
 }
 
 Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*(float s,const Vector3 &v)
@@ -100,9 +106,12 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*(float s,const Vector3 &v)
 	return Vector3(v.X * s, v.Y * s, v.Z * s);
 }
 
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=(const Vector3& v, float s)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=(Vector3& v, float s)
 {
-	return Vector3(v.X * s, v.Y * s, v.Z * s);
+	v.X *= s;
+	v.Y *= s;
+	v.Z *= s;
+	return v;
 }
 
 Engine3DRadSpace::Vector3 Engine3DRadSpace::operator/(float f,const Vector3 &v)
@@ -110,9 +119,12 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator/(float f,const Vector3 &v)
 	return Vector3(v.X / f, v.Y / f, v.Z / f);
 }
 
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator/=(const Vector3& v, float f)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator/=(Vector3& v, float f)
 {
-	return Vector3(v.X / f, v.Y / f, v.Z / f);
+	v.X /= f;
+	v.Y /= f;
+	v.Z /= f;
+	return v;
 }
 
 Engine3DRadSpace::Vector3 Engine3DRadSpace::Vector3::Transform(const Vector3& v, const Matrix& m)
@@ -138,12 +150,12 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*(const Vector3& v, const Ma
 	float z = (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43;
 	return Vector3(x, y, z);
 }
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=(const Vector3& v, const Matrix& m)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=( Vector3& v, const Matrix& m)
 {
-	float x = (v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41;
-	float y = (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42;
-	float z = (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43;
-	return Vector3(x, y, z);
+	v.X = (v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41;
+	v.Y = (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42;
+	v.Z = (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43;
+	return v;
 }
 Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*(const Vector3& v, const Quaternion& q)
 {
@@ -154,12 +166,25 @@ Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*(const Vector3& v, const Qu
 	return Vector3(v.X + x * q.W + (q.Y * z - q.Z * y), v.Y + y * q.W + (q.Z * x - q.X * z), v.Z + z * q.W + (q.X * y - q.Y * x));
 }
 
-Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=(const Vector3& v, const Quaternion& q)
+Engine3DRadSpace::Vector3 Engine3DRadSpace::operator*=(Vector3& v, const Quaternion& q)
 {
 	float x = 2 * (q.Y * v.Z - q.Z * v.Y);
 	float y = 2 * (q.Z * v.X - q.X * v.Z);
 	float z = 2 * (q.X * v.Y - q.Y * v.X);
 
-	return Vector3(v.X + x * q.W + (q.Y * z - q.Z * y), v.Y + y * q.W + (q.Z * x - q.X * z), v.Z + z * q.W + (q.X * y - q.Y * x));
+	v.X = v.X + x * q.W + (q.Y * z - q.Z * y);
+	v.Y = v.Y + y * q.W + (q.Z * x - q.X * z);
+	v.Z = v.Z + z * q.W + (q.X * y - q.Y * x);
+	
+	return v;
+}
 
+bool Engine3DRadSpace::operator==(const Vector3& a, const Vector3& b)
+{
+	return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+}
+
+bool Engine3DRadSpace::operator!=(const Vector3& a, const Vector3& b)
+{
+	return a.X != b.X && a.Y != b.Y && a.Z != b.Z;
 }

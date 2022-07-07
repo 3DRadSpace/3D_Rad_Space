@@ -1,5 +1,6 @@
 #include "ObjectEditorDialog.hpp"
 
+/*
 using namespace Engine3DRadSpace;
 
 ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, IObjectEditorWindow* objectType) :
@@ -7,7 +8,9 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, IObjectE
 	_window(nullptr),
 	_owner(owner),
 	_objectType(objectType),
-	_globalInstance(nullptr)
+	_globalInstance(nullptr),
+	_controls(nullptr),
+	numControls(0)
 {
 	this->_hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->_hGlobal == nullptr)
@@ -20,8 +23,8 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, IObjectE
 	this->_dialogTemplate->cdit = 0;
 	this->_dialogTemplate->x = 0;
 	this->_dialogTemplate->y = 0;
-	this->_dialogTemplate->cx = 0;
-	this->_dialogTemplate->cy = 0;
+	this->_dialogTemplate->cx = this->_objectType->GetWindowWidth();
+	this->_dialogTemplate->cy = this->_objectType->GetWindowHeight();
 
 	this->_dialogTemplate->style = WS_POPUP | WS_SYSMENU | WS_CAPTION | DS_MODALFRAME | DS_CENTER;
 	this->_dialogTemplate->dwExtendedStyle = 0;
@@ -31,26 +34,46 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, IObjectE
 	*_templateMemIndex = 0; //No menu
 	*_templateMemIndex = 0; //Default dialog box class
 
+	std::stringstream titleText;
+	titleText << (this->_objectType->GameObject ? "Editing" : "Creating") << this->_objectType->GetObjectName() << " object";
+
 	LPWSTR title = (LPWSTR)_templateMemIndex;
-	int titleLen = MultiByteToWideChar(CP_ACP, 0, this->_objectType->GetObjectName(), -1, title, 50);
+	int titleLen = MultiByteToWideChar(CP_ACP, 0, titleText.str().c_str(), -1, title, titleText.str().length()+1);
 	*_templateMemIndex += titleLen;
 	*_templateMemIndex++ = 0; //No elements
 
 	GlobalUnlock(this->_hGlobal);
 
 	this->_globalInstance = this;
+
+	this->numControls = this->_countControls();
+	this->_controls = new HWND[this->numControls];
+
 }
 
 int ObjectEditorDialog::ShowDialog()
 {
-	return DialogBoxIndirectParam(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, (LPARAM)this);
+	return DialogBoxIndirectParam(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, reinterpret_cast<LPARAM>(this));
 }
 
 void ObjectEditorDialog::_createForms()
 {
-	unsigned ax = 10;
-	unsigned ay = 10;
 
+}
+
+void ObjectEditorDialog::update_rX(int& x, int newVal)
+{
+	if(newVal > x)
+		x = newVal;
+};
+
+Point ObjectEditorDialog::_calculateGroupSize( size_t index)
+{
+
+}
+
+size_t ObjectEditorDialog::_countControls()
+{
 
 }
 
@@ -66,10 +89,7 @@ HWND ObjectEditorDialog::GetWindow()
 
 ObjectEditorDialog::~ObjectEditorDialog()
 {
-	for(size_t i = 0; i < this->numControls; i++)
-	{
-		DestroyWindow(this->_controls[i]);
-	}
+	delete[] this->_controls;
 	GlobalFree(this->_hGlobal);
 }
 
@@ -82,9 +102,21 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			ObjectEditorDialog* objectEditor = reinterpret_cast<ObjectEditorDialog*>(lParam);
 			objectEditor->_window = hwnd;
 			objectEditor->_createForms();
-			break;
+			return true;
 		}
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			BeginPaint(hwnd, &ps);
+			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+			EndPaint(hwnd, &ps);
+			return false;
+		}
+		case WM_CLOSE:
+			EndDialog(hwnd, IDCANCEL);
+			return true;
 		default:
 			return false;
 	}
 }
+*/

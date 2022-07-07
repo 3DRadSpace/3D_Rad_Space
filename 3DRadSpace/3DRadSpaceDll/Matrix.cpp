@@ -213,3 +213,45 @@ Engine3DRadSpace::Matrix Engine3DRadSpace::operator*(const Matrix& a, const Matr
 
 	return Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
 }
+
+Engine3DRadSpace::Matrix Engine3DRadSpace::operator*=(Matrix& a, const Matrix& b)
+{
+	a = a * b;
+	return a;
+}
+
+Engine3DRadSpace::Matrix Engine3DRadSpace::operator*(const Matrix& a, float s)
+{
+	Matrix r((float*)&a);
+	for(size_t i = 0; i < 16; i++)
+	{
+		*(reinterpret_cast<float*>(&r) + i) *= s;
+	}
+	return r;
+}
+
+Engine3DRadSpace::Matrix Engine3DRadSpace::operator*=(Matrix& a, float s)
+{
+	a = a * s;
+	return a;
+}
+
+bool Engine3DRadSpace::operator==(const Matrix& a, const Matrix& b)
+{
+	for(size_t i = 0; i < 16; i++)
+	{
+		if(*(reinterpret_cast<const float*>(&a)+i) != *(reinterpret_cast<const float*>(&b)+i))
+			return false;
+	}
+	return true;
+}
+
+bool Engine3DRadSpace::operator!=(const Matrix& a, const Matrix& b)
+{
+	for(size_t i = 0; i < 16; i++)
+	{
+		if(*(reinterpret_cast<const float*>(&a)+i) == *(reinterpret_cast<const float*>(&b)+i))
+			return false;
+	}
+	return true;
+}

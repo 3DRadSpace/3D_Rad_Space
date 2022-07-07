@@ -6,17 +6,6 @@ namespace Engine3DRadSpace
 	namespace Math
 	{
 		/// <summary>
-		/// Returns the mathematical constant Pi. Pi is the ratio between the circumference and by the diameter of any given circle.
-		/// </summary>
-		/// <typeparam name="N">A numeric type. Float or double.</typeparam>
-		/// <returns></returns>
-		template<class N,std::enable_if_t<std::is_floating_point_v<N>,bool> = true >
-		N Pi()
-		{
-			return (N)3.141592653589793238462643383279;
-		}
-
-		/// <summary>
 		/// Converts d degrees to radians.
 		/// </summary>
 		/// <typeparam name="N"></typeparam>

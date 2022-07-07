@@ -54,5 +54,9 @@ namespace Engine3DRadSpace
 	/// <param name="q2">quaternion</param>
 	/// <returns></returns>
 	Quaternion DLLEXPORT operator *(const Quaternion& q1, const Quaternion& q2);
+	Quaternion DLLEXPORT operator *=( Quaternion& q1, const Quaternion& q2);
+
+	bool DLLEXPORT operator ==(const Quaternion &q1, const Quaternion& q2);
+	bool DLLEXPORT operator !=(const Quaternion& q1, const Quaternion& q2);
 }
 

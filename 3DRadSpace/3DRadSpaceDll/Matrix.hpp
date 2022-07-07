@@ -141,5 +141,33 @@ namespace Engine3DRadSpace
 	/// <param name="a">The first matrix.</param>
 	/// <param name="b">The second matrix.</param>
 	/// <returns></returns>
-	Matrix operator * (const Matrix& a, const Matrix& b);
+	Matrix DLLEXPORT operator * (const Matrix& a, const Matrix& b);
+
+	/// <summary>
+	/// Multiplies two matrices. Geometrically this means composing 2 linear transformations.
+	/// Matrix multiplication is not commutative, therefore A * B is not equal to B * A unless for some specific matrices like the identity matrix.
+	/// </summary>
+	/// <param name="a">The first matrix.</param>
+	/// <param name="b">The second matrix.</param>
+	/// <returns></returns>
+	Matrix DLLEXPORT operator *= (Matrix& a, const Matrix& b);
+
+	/// <summary>
+	/// Multiplies a matrix by a scalar.
+	/// </summary>
+	/// <param name="a">The matrix that is going to be scaled up</param>
+	/// <param name="s">Real scalar</param>
+	/// <returns></returns>
+	Matrix DLLEXPORT operator * (const Matrix& a, float s);
+
+	/// <summary>
+	/// Multiplies a matrix by a scalar.
+	/// </summary>
+	/// <param name="a">The matrix that is going to be scaled up</param>
+	/// <param name="s">Real scalar</param>
+	/// <returns></returns>
+	Matrix DLLEXPORT operator *=(Matrix& a, float s);
+
+	bool DLLEXPORT operator ==(const Matrix& a, const Matrix& b);
+	bool DLLEXPORT operator !=(const Matrix& a, const Matrix& b);
 }

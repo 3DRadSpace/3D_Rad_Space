@@ -127,7 +127,7 @@ namespace Engine3DRadSpace
 	/// <param name="a">first vector</param>
 	/// <param name="b">second vector</param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator +=(const Vector3& a, const Vector3& b);
+	Vector3 DLLEXPORT operator +=(Vector3& a, const Vector3& b);
 
 	/// <summary>
 	/// Substracts two vectors
@@ -150,7 +150,7 @@ namespace Engine3DRadSpace
 	/// <param name="a">first vector</param>
 	/// <param name="b">second vector</param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator -=(const Vector3& a, const Vector3& b);
+	Vector3 DLLEXPORT operator -=(Vector3& a, const Vector3& b);
 
 	/// <summary>
 	/// Multiplies a vector by a scalar
@@ -166,7 +166,7 @@ namespace Engine3DRadSpace
 	/// <param name="v">Vector</param>
 	/// <param name="s">scalar</param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator *=(const Vector3& v, float s);
+	Vector3 DLLEXPORT operator *=(Vector3& v, float s);
 
 	/// <summary>
 	/// Multiplies the vector by the inverse of the given scalar
@@ -182,7 +182,7 @@ namespace Engine3DRadSpace
 	/// <param name="v">vector</param>
 	/// <param name="f">scalar</param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator /=(const Vector3& v, float f);
+	Vector3 DLLEXPORT operator /=(Vector3& v, float f);
 
 	/// <summary>
 	/// Transforms the given vector by the given matrix
@@ -198,7 +198,7 @@ namespace Engine3DRadSpace
 	/// <param name="v">vector</param>
 	/// <param name="m">matrix</param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator *=(const Vector3& v, const Matrix& m);
+	Vector3 DLLEXPORT operator *=(Vector3& v, const Matrix& m);
 
 	/// <summary>
 	/// Rotates the vector with the given quaternion
@@ -214,5 +214,8 @@ namespace Engine3DRadSpace
 	/// <param name="v"></param>
 	/// <param name="q"></param>
 	/// <returns></returns>
-	Vector3 DLLEXPORT operator *=(const Vector3& v, const Quaternion& q);
+	Vector3 DLLEXPORT operator *=( Vector3& v, const Quaternion& q);
+
+	bool DLLEXPORT operator ==(const Vector3& a, const Vector3& b);
+	bool DLLEXPORT operator !=(const Vector3& a, const Vector3& b);
 }

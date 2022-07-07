@@ -3,3 +3,6 @@
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define DLLEXPORT __declspec(dllexport)
 #define DLLEXPORT __declspec(dllimport)
+#define __BEGIN_REFLECTOBJECT(ObjName) Engine3DRadSpace::Reflection::Reflect<ObjName> ObjName##ReflInst = {
+#define __REFLECTFIELD(ObjName, FType, FName, FInternalName, FDefaultValue) []() -> Engine3DRadSpace::Reflection::ReflectedFieldBase* { ObjName *o = static_cast<ObjName*>( ::operator new(sizeof(ObjName))); Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType> *field = new Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType>( #FName ,FDefaultValue); field->MemIndex = (char*)&o->FInternalName - (char*)o; ::operator delete(o); return field; }
+#define __END_REFLECTOBJECT(ObjName) }; Engine3DRadSpace::Reflection::Reflect<ObjName> DLLEXPORT &ObjName##GetRefl() { return ObjName##ReflInst; }

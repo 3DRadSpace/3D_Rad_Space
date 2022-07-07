@@ -305,7 +305,7 @@ namespace Engine3DRadSpace
 
 		D3D11_BUFFER_DESC buffDesc;
 		memset(&buffDesc, 0, sizeof(D3D11_BUFFER_DESC));
-		buffDesc.ByteWidth = this->_structsize * this->size;
+		buffDesc.ByteWidth = (unsigned)(this->_structsize * this->size);
 		buffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		D3D11_SUBRESOURCE_DATA buffFiller;
@@ -315,10 +315,7 @@ namespace Engine3DRadSpace
 		HRESULT r = dev->CreateBuffer(&buffDesc, &buffFiller, &this->_buffer);
 
 		if (FAILED(r))
-		{
-			const type_info& ti = typeid(ID3D11Device);
-			throw ResourceCreationException("Failed to create a vertex buffer.", ti);
-		}
+			throw ResourceCreationException("Failed to create a vertex buffer.", typeid(ID3D11Device));
 
 		this->_vertexbuffercreated = true;
 	}
@@ -331,10 +328,10 @@ namespace Engine3DRadSpace
 	inline void VertexBuffer<void>::Draw(ID3D11DeviceContext* context)
 	{
 		unsigned offset = 0;
-		unsigned stride = this->_structsize;
+		unsigned stride = (unsigned)this->_structsize;
 
 		context->IASetVertexBuffers(0, 1, &this->_buffer, &stride, &offset);
-		context->Draw(this->size, 0);
+		context->Draw((unsigned)this->size, 0);
 	}
 
 	inline VertexBuffer<void>::~VertexBuffer()

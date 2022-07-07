@@ -12,22 +12,30 @@ Engine3DRadSpace::Point Engine3DRadSpace::Point::One()
 
 Engine3DRadSpace::Point Engine3DRadSpace::Point::operator+=(const Point &p)
 {
-    return Point(this->X+p.X,this->Y+p.Y);
+    this->X += p.X;
+    this->Y += p.Y;
+    return *this;
 }
 
 Engine3DRadSpace::Point Engine3DRadSpace::Point::operator-=(const Point& p)
 {
-    return Point(this->X - p.X,this->Y - p.Y);
+    this->X -= p.X;
+    this->Y -= p.Y;
+    return *this;
 }
 
 Engine3DRadSpace::Point Engine3DRadSpace::Point::operator*=(const Point& p)
 {
-    return Point(this->X * p.X, this->Y * p.Y);
+    this->X *= p.X;
+    this->Y *= p.Y;
+    return *this;
 }
 
 Engine3DRadSpace::Point Engine3DRadSpace::Point::operator/=(const Point& p)
 {
-    return Point(this->X / p.X , this->Y / p.Y);
+    this->X /= p.X;
+    this->Y /= p.Y;
+    return *this;
 }
 
 Engine3DRadSpace::Point Engine3DRadSpace::operator+(const Point& a, const Point& b)

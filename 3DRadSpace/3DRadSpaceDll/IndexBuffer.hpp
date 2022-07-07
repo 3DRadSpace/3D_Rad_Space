@@ -12,7 +12,7 @@ namespace Engine3DRadSpace
 	/// </summary>
 	class IndexBuffer
 	{
-		unsigned int* _indexes;
+		unsigned * _indexes;
 		size_t _size;
 		ID3D11Buffer* _indexbuffer;
 		bool _createdbuffer;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.hpp"
 #include "Matrix.hpp"
-#include "ComplexNumber.hpp"
+#include <complex>
 
 namespace Engine3DRadSpace
 {
@@ -93,7 +93,7 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <param name="z">complex number</param>
 		/// <returns></returns>
-		Vector2 operator *=(const ComplexNumber& z);
+		Vector2 operator *=(const std::complex<float>& z);
 
 	};
 	/// <summary>
@@ -101,30 +101,14 @@ namespace Engine3DRadSpace
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
-	Vector2 operator +(const Vector2& a,const Vector2 &b);
+	Vector2 DLLEXPORT operator +(const Vector2& a,const Vector2 &b);
 	/// <summary>
 	/// Substracts two vectors
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
-	Vector2 operator -(const Vector2& a, const Vector2& b);
+	Vector2 DLLEXPORT operator -(const Vector2& a, const Vector2& b);
 
-	/// <summary>
-	/// Multiplies a vector by a scalar
-	/// </summary>
-	/// <param name="scalar">scalar</param>
-	/// <returns></returns>
-	Vector2 operator *=(const Vector2& v, float scalar);
-	/// <summary>
-	/// Multiplies a vector by a matrix
-	/// </summary>
-	/// <param name="m">matrix</param>
-	/// <returns></returns>
-	Vector2 operator *=(const Vector2& v, const Matrix& m);
-	/// <summary>
-	/// Multiplies a 2D vector by a complex number 
-	/// </summary>
-	/// <param name="z">complex number</param>
-	/// <returns></returns>
-	Vector2 operator *=(const Vector2& v, const ComplexNumber& z);
+	bool DLLEXPORT operator==(const Vector2& a, const Vector2& b);
+	bool DLLEXPORT operator!=(const Vector2& a, const Vector2& b);
 }

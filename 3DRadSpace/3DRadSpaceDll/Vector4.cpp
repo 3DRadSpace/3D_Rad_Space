@@ -114,3 +114,14 @@ Engine3DRadSpace::Vector4 Engine3DRadSpace::operator/(const Vector4 &v, float f)
 {
 	return Vector4(v.X / f, v.Y / f, v.Z / f,v.W / f);
 }
+
+bool Engine3DRadSpace::operator==(const Vector4& a, const Vector4& b)
+{
+	return a.X == b.X && a.Y == b.Y && a.Z == b.Z && a.W == b.W;
+}
+
+bool Engine3DRadSpace::operator!=(const Vector4& a, const Vector4& b)
+{
+	return a.X != b.X && a.Y != b.Y && a.Z != b.Z && a.W != b.W;
+}
+

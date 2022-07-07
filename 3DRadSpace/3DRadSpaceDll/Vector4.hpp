@@ -132,26 +132,29 @@ namespace Engine3DRadSpace
 	/// <param name="a">vector</param>
 	/// <param name="b">vector</param>
 	/// <returns></returns>
-	Engine3DRadSpace::Vector4 operator+(const Vector4& a, const Vector4& b);
+	Engine3DRadSpace::Vector4 DLLEXPORT operator+(const Vector4& a, const Vector4& b);
 	/// <summary>
 	/// Substracts two vectors
 	/// </summary>
 	/// <param name="a">vector</param>
 	/// <param name="b">vector</param>
 	/// <returns></returns>
-	Engine3DRadSpace::Vector4 operator-(const Vector4& a, const Vector4& b);
+	Engine3DRadSpace::Vector4 DLLEXPORT operator-(const Vector4& a, const Vector4& b);
 	/// <summary>
 	/// Multiplies a vector by a scalar
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <param name="s">scalar</param>
 	/// <returns></returns>
-	Engine3DRadSpace::Vector4 operator*(const Vector4& v, float s);
+	Engine3DRadSpace::Vector4 DLLEXPORT operator*(const Vector4& v, float s);
 	/// <summary>
 	/// Divides each vector's component by the given number
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <param name="f">divizor</param>
 	/// <returns></returns>
-	Engine3DRadSpace::Vector4 operator/(const Vector4& v, float f);
+	Engine3DRadSpace::Vector4 DLLEXPORT operator/(const Vector4& v, float f);
+
+	bool DLLEXPORT operator==(const Vector4& a, const Vector4& b);
+	bool DLLEXPORT operator!=(const Vector4 & a, const Vector4 & b);
 }
