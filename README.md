@@ -24,6 +24,7 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 
 - Discord RPC
 > Link: https://github.com/discord/discord-rpc
+>
 > Already included in `<root>\3DRadSpace\ExtLibs\discord-rpc`
 > Binaries for are needed for `x64-Debug` and `Win32-Debug` configurations. 
 - Google test
