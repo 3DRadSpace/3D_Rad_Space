@@ -1,7 +1,7 @@
 
 # 3DRadSpace
 
-3DRadSpace is a free, simple to use, rapid application development game engine. Still in development. 
+3DRadSpace is a free, simple to use, rapid application development game engine. Still in very early development. 
 
 [![Visual Studio](https://img.shields.io/badge/--6C33AF?logo=visual%20studio)](https://visualstudio.microsoft.com/)
 [![Github all releases](https://img.shields.io/github/downloads/3DRadSpace/3D_Rad_Space/total.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/releases/)
