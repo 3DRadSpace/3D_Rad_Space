@@ -35,7 +35,9 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 >
 > `vcpkg install gtest:x64-Windows`
 - Windows API 
-> Included in Windows SDK (source won't compile if using versions < 10.0.20348.0)
+> Included in Windows SDK
+>
+> ⚠️ (source won't compile if using versions < 10.0.20348.0)
 - DirectX11 Toolkit (directxtk_desktop_2019)
 > Can be easily installed by using NuGet.
 - Assimp
