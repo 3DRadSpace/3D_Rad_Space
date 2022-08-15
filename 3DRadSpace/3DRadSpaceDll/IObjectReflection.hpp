@@ -5,7 +5,7 @@
 #include "Vector2.hpp"
 
 #define __BEGIN_REFLECTOBJECT(ObjName) \
-Engine3DRadSpace::Reflection::Reflect<ObjName> ObjName##ReflInst = \
+Engine3DRadSpace::Reflection::Reflect ObjName##ReflInst = \
 { \
 
 #define __REFLECTFIELD(ObjName,FType,FName,FInternalName,FDefaultValue) []() -> Engine3DRadSpace::Reflection::ReflectedFieldBase* \
@@ -19,31 +19,31 @@ Engine3DRadSpace::Reflection::Reflect<ObjName> ObjName##ReflInst = \
 
 #define __END_REFLECTOBJECT(ObjName) \
 }; \
-Engine3DRadSpace::Reflection::Reflect<ObjName> DLLEXPORT &ObjName##GetRefl() \
+Engine3DRadSpace::Reflection::Reflect DLLEXPORT &ObjName##GetRefl() \
 { \
 	return ObjName##ReflInst; \
 } \
+
+//The things here are used in the Editor's internals for interactive controls - there are not meant for end users!
 
 namespace Engine3DRadSpace
 {
 	namespace Reflection
 	{
 		template<typename T>
-		concept SupportedEditorVariables =
-			std::is_same<T,bool>::value ||
+		concept SupportedEditorVariable =
 			std::is_arithmetic<T>::value || //integers
-			std::is_floating_point<T>::value || //real numbers
 			std::is_same<T, Vector2>::value || //2d vectors
 			std::is_same<T, Vector3>::value || //3d vectors
 			std::is_same<T, Vector4>::value || //4d vectors
 			std::is_same<T, Quaternion>::value || //quaternions
 			std::is_same<T, ColorShader>::value || //Normalized RGBA colors
-			std::is_same<T, std::string>::value || std::is_same<T, std::wstring>::value; //strings
+			std::is_same<T, std::string>::value; //strings
 
 		template<typename Object>
 		concept IObjectDerived = std::is_base_of<IObject, Object>::value;
 
-		class ReflectedFieldBase
+		class DLLEXPORT ReflectedFieldBase
 		{
 		public:
 			virtual const std::type_info& GetFieldType() const = 0;
@@ -54,9 +54,7 @@ namespace Engine3DRadSpace
 			template<class F,IObjectDerived obj>
 			F* TryGetF(obj* o) const
 			{
-				if(typeid(F) == GetFieldType())
-					return (F*)((char*)o + GetFieldPtr());
-				else return nullptr;
+				return typeid(F) == GetFieldType() ? (F*)((char*)o + GetFieldPtr()) : nullptr;
 			}
 
 			template<class F,IObjectDerived obj>
@@ -70,10 +68,27 @@ namespace Engine3DRadSpace
 				return false;
 			}
 
-			virtual DLLEXPORT ~ReflectedFieldBase();
+			template<IObjectDerived obj>
+			bool TrySetF(obj* o, const std::type_info& t, void* v, size_t s)
+			{
+				if(t == GetFieldType())
+				{
+					*((char*)o + GetFieldPtr()) = v;
+					return true;
+				}
+				return false;
+			}
+			
+			template<IObjectDerived obj>
+			void ForceSetF(obj* o,void* v,size_t size)
+			{
+				memcpy_s(o + GetFieldPtr(), size, v, size);
+			}
+
+			virtual ~ReflectedFieldBase();
 		};
 
-		template<IObjectDerived obj, SupportedEditorVariables T>
+		template<IObjectDerived obj, SupportedEditorVariable T>
 		class ReflectedField : public ReflectedFieldBase
 		{
 			const std::type_info& FieldType;
@@ -104,33 +119,47 @@ namespace Engine3DRadSpace
 			}
 		};
 
-		template<IObjectDerived obj>
-		class Reflect
+	#pragma warning(push)
+	#pragma warning(disable : 4251)
+		class DLLEXPORT Reflect
 		{
 			const size_t _numFields;
 			std::vector<ReflectedFieldBase*> _fields;
 		public:
-			Reflect(const std::initializer_list<std::function<ReflectedFieldBase*()>> fields) :
-				_numFields(fields.size()),
-				_fields(fields.size()),
-				Name(typeid(obj).name())
-			{
-				for(size_t i = 0; i < this->_numFields; i++)
-				{
-					_fields[i] = (*(fields.begin() + i))();
-				}
-			};
+			Reflect(const std::initializer_list<std::function<ReflectedFieldBase* ()>> fields);
 			Reflect(Reflect&& r) = delete;
-			const char* const Name;
 
-			const size_t Size()
+			inline static std::unordered_map<std::type_index, int> TypeDict =
 			{
-				return this->_numFields;
-			}
-			const ReflectedFieldBase* operator[](size_t index)
-			{
-				return this->_fields[index];
-			}
+				//bool
+				{typeid(bool),1},
+				//signed and unsigned integers
+				{typeid(uint8_t),2},
+				{typeid(uint16_t),2},
+				{typeid(uint32_t),2},
+				{typeid(uint64_t),2},
+
+				{typeid(int8_t),3},
+				{typeid(int16_t),3},
+				{typeid(int32_t),3},
+				{typeid(int64_t),3},
+				//floats
+				{typeid(float),3},
+				{typeid(double),3},
+				{typeid(long double),3},
+
+				{typeid(Vector2),4},
+				{typeid(Vector3),5},
+				{typeid(Vector4),6},
+
+				{typeid(Quaternion),7},
+				{typeid(ColorShader),8},
+				{typeid(std::string),9}
+			};
+
+			const size_t Size() const;
+			const ReflectedFieldBase* operator[](size_t index) const;
 		};
 	}
+#pragma warning(pop)
 }

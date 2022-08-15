@@ -12,7 +12,7 @@ public:
 	Vector4 Value4;
 	ColorShader Value5;
 
-	TestObject() : IObject(nullptr) {};
+	TestObject() : IObject(nullptr),Value1(0),Value2(0),Value3(0,0),Value4(0,0,0,0),Value5(0,0,0,1) {};
 
 	Matrix GetTranslation() override
 	{
@@ -48,16 +48,13 @@ __END_REFLECTOBJECT(TestObject)
 
 namespace ReflectionTests
 {
-	//Tests for Reflect<T>
+	//Test(s) for Reflection::Reflect
 	TEST(ReflectBeginMacroTest, ReflectionTest)
 	{
-		EXPECT_EQ(TestObjectReflInst.Name, typeid(TestObject).name()); //RTII test
 		EXPECT_EQ(TestObjectReflInst.Size(), 9); //size test, we expect 9 exposed fields from "TestObject"
 	}
 
-
 	//Tests for ReflectedField/ReflectedFieldBase
-
 
 	TEST(String_FieldTest, ReflectField)
 	{
@@ -170,17 +167,17 @@ namespace ReflectionTests
 	TEST(TryWriteRead_Float, ReflectFieldMem)
 	{
 		TestObject tobj;
-		TestObjectReflInst[3]->TrySetF<float, TestObject>(&tobj, std::numbers::e);
-		EXPECT_FLOAT_EQ(tobj.Value2, std::numbers::e);
+		TestObjectReflInst[3]->TrySetF<float, TestObject>(&tobj,(float) std::numbers::e);
+		EXPECT_FLOAT_EQ(tobj.Value2, (float)std::numbers::e);
 
 		float rf = *TestObjectReflInst[3]->TryGetF<float, TestObject>(&tobj);
-		EXPECT_FLOAT_EQ(rf, std::numbers::e);
+		EXPECT_FLOAT_EQ(rf, (float)std::numbers::e);
 	}
 
 	TEST(TryWriteRead_Vector2, ReflectFieldMem)
 	{
 		TestObject tobj;
-		Vector2 v{ std::numbers::pi,std::numbers::e };
+		Vector2 v{ (float)std::numbers::pi,(float)std::numbers::e };
 
 		TestObjectReflInst[4]->TrySetF<Vector2, TestObject>(&tobj, v);
 		EXPECT_EQ(tobj.Value3, v);
@@ -192,7 +189,7 @@ namespace ReflectionTests
 	TEST(TryWriteRead_Vector3, ReflectFieldMem)
 	{
 		TestObject tobj;
-		Vector3 v{ std::numbers::phi,std::numbers::sqrt2,std::numbers::sqrt3 };
+		Vector3 v{ (float)std::numbers::phi,(float)std::numbers::sqrt2,(float)std::numbers::sqrt3 };
 		TestObjectReflInst[5]->TrySetF<Vector3, TestObject>(&tobj, v);
 		EXPECT_EQ(tobj.Position, v);
 
@@ -203,7 +200,7 @@ namespace ReflectionTests
 	TEST(TryWriteRead_Quaternion, ReflectFieldMem)
 	{
 		TestObject tobj;
-		Quaternion q = Quaternion::CreateFromYawPitchRoll(std::numbers::pi / 2, 0, 0);
+		Quaternion q = Quaternion::CreateFromYawPitchRoll((float)std::numbers::pi / 2, 0, 0);
 		TestObjectReflInst[6]->TrySetF<Quaternion, TestObject>(&tobj, q);
 		EXPECT_EQ(tobj.Rotation, q);
 
@@ -214,7 +211,7 @@ namespace ReflectionTests
 	TEST(TryWriteRead_Vector4, ReflectFieldMem)
 	{
 		TestObject tobj;
-		Vector4 v{ std::numbers::inv_sqrtpi,std::numbers::ln10,std::numbers::log10e,std::numbers::log2e };
+		Vector4 v{ (float)std::numbers::inv_sqrtpi,(float)std::numbers::ln10,(float)std::numbers::log10e,(float)std::numbers::log2e };
 		TestObjectReflInst[7]->TrySetF<Vector4, TestObject>(&tobj, v);
 		EXPECT_EQ(tobj.Value4, v);
 
@@ -232,12 +229,10 @@ namespace ReflectionTests
 		ColorShader rc = *TestObjectReflInst[8]->TryGetF<ColorShader, TestObject>(&tobj);
 		EXPECT_EQ(rc, yellow);
 	}
-
-	/*
+	
 	TEST(EndReflectObject, ReflectObject)
 	{
-		EXPECT_EQ(TestObjectReflInst, TestObjectGetRefl()); //check if TestObjectGetRefl() works properly
+		EXPECT_EQ(&TestObjectReflInst, &(TestObjectGetRefl())); //check if TestObjectGetRefl() works properly
 	}
-	*/
-
+	
 }

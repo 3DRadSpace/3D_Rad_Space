@@ -26,3 +26,4 @@
 #include <unordered_map>
 #include <cstdlib>
 #include <functional>
+#include <typeindex>
