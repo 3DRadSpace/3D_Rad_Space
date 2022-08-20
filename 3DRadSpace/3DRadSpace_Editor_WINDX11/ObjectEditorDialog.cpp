@@ -66,6 +66,9 @@ void ObjectEditorDialog::_createForms()
 	//create groups
 	for(size_t j = 0; j < this->_objectWndInfo->NumGroups; j++)
 	{
+		if(this->_objectWndInfo->Groups[j].Name == std::string(""))
+			continue;
+
 		Point groupSize = _calculateGroupSize(j);
 		_controls[i++] = CreateWindowA(
 			"Button",
@@ -127,11 +130,182 @@ void ObjectEditorDialog::_createForms()
 			return r;
 		};
 
+		auto CreateVector2DControls = [=](size_t &i,Point &p,int &accX)
+		{
+			SIZE textLen{};
+			//int grpX = 190; // 75 + 75 + 20
+
+			Vector2 defVal = *static_cast<const Vector2*>(defaultValue);
+
+			//groupbox
+			_controls[i++] = CreateWindowA(
+				"Button",
+				visibleName,
+				BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+				p.X,
+				p.Y,
+				10,
+				10,
+				this->_window,
+				nullptr,
+				this->_hInstance,
+				nullptr
+			);
+
+			//X label and textbox
+			_controls[i++] = CreateLabel(
+				this->_window,
+				this->_hInstance,
+				p.X,
+				p.Y,
+				"X",
+				textLen
+			);
+			accX += textLen.cx + 10;
+
+			_controls[i++] = CreateNumericTextbox(
+				this->_owner,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				75,
+				textLen.cy,
+				std::to_string(defVal.X).c_str()
+			);
+			accX += 75;
+
+			//Y label and textbox
+			_controls[i++] = CreateLabel(
+				this->_window,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				"Y",
+				textLen
+			);
+			accX += textLen.cx + 10;
+
+			_controls[i++] = CreateNumericTextbox(
+				this->_owner,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				75,
+				textLen.cy,
+				std::to_string(defVal.Y).c_str()
+			);
+			accX += 85; // 75 + 10
+
+			SetWindowPos(_controls[i - 4], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
+
+			accX += textLen.cx;
+		};
+
+		auto CreateVector3DControls = [=](size_t& i, Point& p,int &accX)
+		{
+			CreateVector2DControls(i, p, accX);
+			SIZE textLen{};
+
+			Vector3 defVal = *static_cast<const Vector3*>(defaultValue);
+
+			//Z label and textbox
+			_controls[i++] = CreateLabel(
+				this->_window,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				"Z",
+				textLen
+			);
+			accX += textLen.cx + 10;
+
+			_controls[i++] = CreateNumericTextbox(
+				this->_owner,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				75,
+				textLen.cy,
+				std::to_string(defVal.Z).c_str()
+			);
+			accX += 85; // 75 + 10
+
+			SetWindowPos(_controls[i - 6], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
+		};
+
+		auto CreateVector4DControls = [=](size_t& i, Point& p, int& accX)
+		{
+			CreateVector3DControls(i, p, accX);
+			SIZE textLen{};
+
+			Vector4 defVal = *static_cast<const Vector4*>(defaultValue);
+
+			//Z label and textbox
+			_controls[i++] = CreateLabel(
+				this->_window,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				"W",
+				textLen
+			);
+			accX += textLen.cx + 10;
+
+			_controls[i++] = CreateNumericTextbox(
+				this->_owner,
+				this->_hInstance,
+				p.X + accX,
+				p.Y,
+				75,
+				textLen.cy,
+				std::to_string(defVal.W).c_str()
+			);
+			accX += 85; // 75 + 10
+
+			SetWindowPos(_controls[i - 8], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
+		};
+
+		auto CreateUpDown = [=](size_t &i,Point &p)
+		{
+			SIZE textLen{};
+
+			_controls[i++] = CreateWindowA(
+				"EDIT",
+				visibleName,
+				ES_NUMBER | ES_AUTOHSCROLL | WS_CHILD | WS_VISIBLE | WS_BORDER,
+				p.X + textLen.cx + 10,
+				p.Y,
+				75,
+				textLen.cy,
+				this->_window,
+				nullptr,
+				this->_hInstance,
+				nullptr
+			);
+
+			_controls[i++] = CreateWindowA(
+				UPDOWN_CLASSA,
+				"",
+				UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_ALIGNRIGHT | WS_VISIBLE | WS_CHILD, //The previous edit element is going to be set as the "buddy"
+				0, 0, 0, 0,
+				this->_window,
+				nullptr,
+				this->_hInstance,
+				nullptr
+			);
+
+			SendMessage(_controls[i - 1], UDM_GETRANGE, 100, 0);
+			SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
+
+			p.X += 75;
+		};
+		SIZE textLen{};
+
 		switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[this->_objectWndInfo->Reflection[j]->GetFieldType()])
 		{
 			case 1:
 			{
-				SIZE textLen{};
+				
 				GetTextExtentPointA(hdc, visibleName, strlen(visibleName), &textLen);
 
 				_controls[i++] = CreateWindowA("Button",
@@ -152,7 +326,6 @@ void ObjectEditorDialog::_createForms()
 			}
 			case 2:
 			{
-				SIZE textLen{};
 				_controls[i++] = CreateLabel(
 					this->_window,
 					this->_hInstance,
@@ -162,41 +335,12 @@ void ObjectEditorDialog::_createForms()
 					textLen
 				);
 
-				_controls[i++] = CreateWindowA(
-					"EDIT",
-					visibleName,
-					ES_NUMBER | ES_AUTOHSCROLL | WS_CHILD | WS_VISIBLE | WS_BORDER,
-					p.X + textLen.cx + 10,
-					p.Y,
-					75,
-					textLen.cy,
-					this->_window,
-					nullptr,
-					this->_hInstance,
-					nullptr
-				);
-
-				_controls[i++] = CreateWindowA(
-					UPDOWN_CLASSA,
-					"",
-					UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_ALIGNRIGHT | WS_VISIBLE | WS_CHILD, //The previous edit element is going to be set as the "buddy"
-					0, 0, 0, 0,
-					this->_window,
-					nullptr,
-					this->_hInstance,
-					nullptr
-				);
-
-				SendMessage(_controls[i - 1], UDM_GETRANGE, 100, 0);
-				SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
-
 				p.Y += textLen.cy + 10;
 
 				break;
 			}
 			case 3:
 			{
-				SIZE textLen{};
 				_controls[i++] = CreateLabel(
 					this->_window,
 					this->_hInstance,
@@ -221,117 +365,62 @@ void ObjectEditorDialog::_createForms()
 			}
 			case 4:
 			{
-				SIZE textLen{};
-				//int grpX = 190; // 75 + 75 + 20
 				int accX = 0;
-
-				Vector2 defVal = *static_cast<const Vector2*>(defaultValue);
-
-				//groupbox
-				_controls[i++] = CreateWindowA(
-					"Button",
-					visibleName,
-					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
-					p.X,
-					p.Y,
-					10,
-					10,
-					this->_window,
-					nullptr,
-					this->_hInstance,
-					nullptr
-				);
-
-				//X label and textbox
-				_controls[i++] = CreateLabel(
-					this->_window,
-					this->_hInstance,
-					p.X,
-					p.Y,
-					"X",
-					textLen
-				);
-				accX += textLen.cx + 10;
-
-				_controls[i++] = CreateNumericTextbox(
-					this->_owner,
-					this->_hInstance,
-					p.X + accX,
-					p.Y,
-					75,
-					textLen.cy,
-					std::to_string(defVal.X).c_str()
-				);
-				accX += 75;
-
-				//Y label and textbox
-				_controls[i++] = CreateLabel(
-					this->_window,
-					this->_hInstance,
-					p.X + accX,
-					p.Y,
-					"Y",
-					textLen
-				);
-				accX += textLen.cx + 10;
-
-				_controls[i++] = CreateNumericTextbox(
-					this->_owner,
-					this->_hInstance,
-					p.X + accX,
-					p.Y,
-					75,
-					textLen.cy,
-					std::to_string(defVal.Y).c_str()
-				);
-				accX += 85; // 75 + 10
-
-				SetWindowPos(_controls[i - 3], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
-
-				p.Y += textLen.cy + 10;
+				CreateVector2DControls(i, p,accX);
 				break;
 			}
 			case 5:
 			{
+				int accX = 0;
+				CreateVector3DControls(i, p, accX);
 				break;
 			}
-			case 6:
+			case 7: //Vector4
+			case 6: //Quaternion
 			{
-				break;
-			}
-			case 7:
-			{
+				int accX = 0;
+				CreateVector4DControls(i, p, accX);
 				break;
 			}
 			case 8:
 			{
+				_controls[i++] = CreateLabel(
+					this->_owner,
+					this->_hInstance,
+					p.X,
+					p.Y,
+					"R",
+					textLen
+				);
+
+				CreateUpDown(i, p);
+
 				break;
 			}
 			case 9:
 			{
-				SIZE textSize{};
 				_controls[i++] = CreateLabel(
 					this->_window,
 					this->_hInstance,
 					p.X,
 					p.Y,
 					visibleName,
-					textSize
+					textLen
 				);
 				_controls[i++] = CreateWindowA(
 					"Edit",
 					static_cast<const char*>(defaultValue),
 					ES_AUTOHSCROLL | WS_VISIBLE | WS_CHILD,
-					p.X + textSize.cx + 10,
+					p.X + textLen.cx + 10,
 					p.Y,
 					75,
-					textSize.cy,
+					textLen.cy,
 					this->_window,
 					nullptr,
 					this->_hInstance,
 					nullptr
 				);
-				p.Y += textSize.cy + 10;
+				p.Y += textLen.cy + 10;
 
 				break;
 			}
@@ -456,8 +545,13 @@ Point ObjectEditorDialog::_calculateGroupSize(size_t index)
 
 size_t ObjectEditorDialog::_countControls()
 {
-
 	size_t c = 0;
+	for(size_t i = 0; i < this->_objectWndInfo->NumGroups; i++)
+	{
+		if(std::string("") != this->_objectWndInfo->Groups[i].Name)
+			c++;
+	}
+
 	for(size_t i = 0; i < this->_objectWndInfo->Reflection.Size(); i++)
 	{
 		switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[this->_objectWndInfo->Reflection[i]->GetFieldType()])
@@ -491,7 +585,6 @@ size_t ObjectEditorDialog::_countControls()
 			default: break;
 		}
 	}
-	c += this->_objectWndInfo->NumGroups;
 	return c;
 }
 

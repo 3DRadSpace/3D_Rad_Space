@@ -12,7 +12,7 @@ namespace Engine3DRadSpace
 		/// <param name="d">Degrees</param>
 		/// <returns></returns>
 		template<class N, std::enable_if_t<std::is_floating_point_v<N>, bool> = true>
-		N ToRadians(N d)
+		constexpr N ToRadians(N d)
 		{
 			return d * (N)0.01745329252;
 		}
@@ -23,7 +23,7 @@ namespace Engine3DRadSpace
 		/// <param name="r">Radians</param>
 		/// <returns></returns>
 		template<class N, std::enable_if_t<std::is_floating_point_v<N>, bool> = true>
-		N ToDegrees(N r)
+		constexpr N ToDegrees(N r)
 		{
 			return r * (N)57.2957795131;
 		}
@@ -36,7 +36,7 @@ namespace Engine3DRadSpace
 		/// <param name="b">The right clamp value</param>
 		/// <returns>The clamped value</returns>
 		template<class N,std::enable_if_t<std::is_arithmetic_v<N>,bool> = true>
-		N Clamp(N a, N t, N b)
+		constexpr N Clamp(N a, N t, N b)
 		{
 			if (t < a) return a;
 			if (t > b) return b;

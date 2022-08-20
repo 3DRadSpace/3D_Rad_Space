@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IObject.hpp"
+#include "Maths.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -45,8 +46,7 @@ namespace Engine3DRadSpace
 		/// <param name="aspect_ratio">The width and height of the screen divided.</param>
 		/// <param name="npd">Viewing frustum near plane distance closest to the camera position.</param>
 		/// <param name="fpd">Viewing frustum far plane distance furthest from the camera position.</param>
-		Camera(Game* g,const std::string &name, bool enabled, const Vector3& pos, const Quaternion& rot, const Vector3& normal, float fov, float aspect_ratio, float npd, float fpd) :
-			IObject(g, name, enabled, pos, rot), Normal(normal), FOV(fov), AspectRatio(aspect_ratio), NearPlaneDistance(npd), FarPlaneDistance(fpd), lookat(Vector3::UnitZ()* rot) {};
+		Camera(Game* g, const std::string& name, bool enabled, const Vector3& pos, const Quaternion& rot, const Vector3& normal, float fov, float aspect_ratio, float npd, float fpd);
 
 		/// <summary>
 		/// Gets the 3D world position expressed as a 4x4 matrix.
@@ -97,6 +97,8 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <returns></returns>
 		Matrix GetProjectionMatrix() const;
+
+		Matrix GetCameraMatrix() const;
 
 		~Camera();
 	};
