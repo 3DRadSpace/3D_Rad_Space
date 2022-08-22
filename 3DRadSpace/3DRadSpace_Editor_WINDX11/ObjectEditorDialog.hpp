@@ -2,7 +2,8 @@
 #include "Libs.hpp"
 #include "ResourceCreationException.hpp"
 #include "ObjectEditorWindow.hpp"
-
+#include "NumericTextbox.hpp"
+#include "ColorBox.hpp"
 
 class ObjectEditorDialog
 {
@@ -17,8 +18,9 @@ class ObjectEditorDialog
 	HWND* _controls;
 	size_t numControls;
 
-	void _createForms();
+	std::vector<std::unique_ptr<ISubclassedControl>> _subclassedControls;
 
+	void _createForms();
 	void update_rX(int& x, int newVal);
 
 	Engine3DRadSpace::Point _calculateControlSize(const size_t index);
@@ -39,4 +41,3 @@ public:
 };
 
 INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT __stdcall NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

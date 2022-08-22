@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IObject.hpp"
 #include "Maths.hpp"
+#include "IObjectReflection.hpp"
 
 namespace Engine3DRadSpace
 {

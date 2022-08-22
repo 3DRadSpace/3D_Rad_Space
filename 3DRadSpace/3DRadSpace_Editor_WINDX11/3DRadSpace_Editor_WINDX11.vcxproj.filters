@@ -42,6 +42,15 @@
     <ClInclude Include="ObjectEditorWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NumericTextbox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubclassedControl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -63,6 +72,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumericTextbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ISubclassedControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

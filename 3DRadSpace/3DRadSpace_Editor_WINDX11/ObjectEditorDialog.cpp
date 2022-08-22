@@ -9,7 +9,8 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 	_objectWndInfo(objectType),
 	_globalInstance(nullptr),
 	_controls(nullptr),
-	numControls(0)
+	numControls(0),
+	_subclassedControls()
 {
 	this->_hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->_hGlobal == nullptr)
@@ -51,10 +52,10 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 
 int ObjectEditorDialog::ShowDialog()
 {
-	return DialogBoxIndirectParam(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, reinterpret_cast<LPARAM>(this));
+	return (int)DialogBoxIndirectParam(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, reinterpret_cast<LPARAM>(this));
 }
 
-WNDPROC _editProc = nullptr;
+WNDPROC _staticProc = nullptr;
 
 void ObjectEditorDialog::_createForms()
 {
@@ -112,24 +113,6 @@ void ObjectEditorDialog::_createForms()
 			);
 		};
 
-		auto CreateNumericTextbox = [](HWND owner, HINSTANCE hInstance, int x, int y, int cx, int cy, const char* defValue) -> HWND
-		{
-			HWND r = CreateWindowA(
-				"Edit",
-				defValue,
-				WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-				x,y,cx,cy,
-				owner,
-				nullptr,
-				hInstance,
-				nullptr
-			);
-			if(r == nullptr) throw std::runtime_error(std::string("Failed to create a numeric textbox with default value: ") + defValue);
-			_editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrA(r, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
-
-			return r;
-		};
-
 		auto CreateVector2DControls = [=](size_t &i,Point &p,int &accX)
 		{
 			SIZE textLen{};
@@ -163,7 +146,7 @@ void ObjectEditorDialog::_createForms()
 			);
 			accX += textLen.cx + 10;
 
-			_controls[i++] = CreateNumericTextbox(
+			_controls[i++] = NumericTextbox(
 				this->_owner,
 				this->_hInstance,
 				p.X + accX,
@@ -185,7 +168,7 @@ void ObjectEditorDialog::_createForms()
 			);
 			accX += textLen.cx + 10;
 
-			_controls[i++] = CreateNumericTextbox(
+			_controls[i++] = NumericTextbox(
 				this->_owner,
 				this->_hInstance,
 				p.X + accX,
@@ -219,7 +202,7 @@ void ObjectEditorDialog::_createForms()
 			);
 			accX += textLen.cx + 10;
 
-			_controls[i++] = CreateNumericTextbox(
+			_controls[i++] = NumericTextbox(
 				this->_owner,
 				this->_hInstance,
 				p.X + accX,
@@ -251,7 +234,7 @@ void ObjectEditorDialog::_createForms()
 			);
 			accX += textLen.cx + 10;
 
-			_controls[i++] = CreateNumericTextbox(
+			_controls[i++] = NumericTextbox(
 				this->_owner,
 				this->_hInstance,
 				p.X + accX,
@@ -265,7 +248,7 @@ void ObjectEditorDialog::_createForms()
 			SetWindowPos(_controls[i - 8], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
 		};
 
-		auto CreateUpDown = [=](size_t &i,Point &p)
+		auto CreateUpDown = [=](size_t &i,Point &p, int &accX,int max = 100,int min = 0)
 		{
 			SIZE textLen{};
 
@@ -273,7 +256,7 @@ void ObjectEditorDialog::_createForms()
 				"EDIT",
 				visibleName,
 				ES_NUMBER | ES_AUTOHSCROLL | WS_CHILD | WS_VISIBLE | WS_BORDER,
-				p.X + textLen.cx + 10,
+				p.X + accX + textLen.cx + 10,
 				p.Y,
 				75,
 				textLen.cy,
@@ -282,6 +265,8 @@ void ObjectEditorDialog::_createForms()
 				this->_hInstance,
 				nullptr
 			);
+
+			accX += textLen.cx + 10;
 
 			_controls[i++] = CreateWindowA(
 				UPDOWN_CLASSA,
@@ -294,10 +279,10 @@ void ObjectEditorDialog::_createForms()
 				nullptr
 			);
 
-			SendMessage(_controls[i - 1], UDM_GETRANGE, 100, 0);
+			SendMessage(_controls[i - 1], UDM_GETRANGE, max, min);
 			SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
 
-			p.X += 75;
+			accX += 75;
 		};
 		SIZE textLen{};
 
@@ -350,7 +335,7 @@ void ObjectEditorDialog::_createForms()
 					textLen
 				);
 
-				_controls[i++] = CreateNumericTextbox(
+				_controls[i++] = NumericTextbox(
 					this->_owner,
 					this->_hInstance,
 					p.X + textLen.cx + 10,
@@ -384,16 +369,43 @@ void ObjectEditorDialog::_createForms()
 			}
 			case 8:
 			{
+				int accX = 0;
+
 				_controls[i++] = CreateLabel(
 					this->_owner,
 					this->_hInstance,
 					p.X,
 					p.Y,
-					"R",
+					"Color",
 					textLen
 				);
+				accX += textLen.cx + 10;
 
-				CreateUpDown(i, p);
+				this->_subclassedControls.push_back(std::unique_ptr<ISubclassedControl>(static_cast<ISubclassedControl*>(new ColorBox(
+					this->_hInstance,
+					this->_owner,
+					p.X + accX,
+					p.Y,
+					0xFFFFFF,
+					textLen.cy,
+					textLen.cy
+				))));
+				_controls[i++] = *this->_subclassedControls[this->_subclassedControls.size() - 1].get();
+
+				accX += textLen.cx + 10;
+
+
+				_controls[i++] = CreateLabel(
+					this->_owner,
+					this->_hInstance,
+					p.X + accX,
+					p.Y,
+					"Alpha",
+					textLen
+				);
+				accX += textLen.cx + 10;
+
+				CreateUpDown(i, p, accX, 255, 0);
 
 				break;
 			}
@@ -407,6 +419,7 @@ void ObjectEditorDialog::_createForms()
 					visibleName,
 					textLen
 				);
+
 				_controls[i++] = CreateWindowA(
 					"Edit",
 					static_cast<const char*>(defaultValue),
@@ -506,16 +519,10 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 		}
 		case 8:
 		{
-			GetTextExtentPointA(hdc, "R", 1, &textSize);
-			Point s(440 + textSize.cx, textSize.cy); //340 = spacing between the labels and textboxes + lenght of textboxes + button to select color (100)
+			GetTextExtentPointA(hdc, "Color", 5, &textSize);
+			Point s(20 + textSize.cx, textSize.cy);
 
-			GetTextExtentPointA(hdc, "G", 1, &textSize);
-			s.X += textSize.cx;
-
-			GetTextExtentPointA(hdc, "B", 1, &textSize);
-			s.X += textSize.cx;
-
-			GetTextExtentPointA(hdc, "A", 1, &textSize);
+			GetTextExtentPointA(hdc, "Alpha", 5, &textSize);
 			s.X += textSize.cx;
 
 			return s;
@@ -581,7 +588,7 @@ size_t ObjectEditorDialog::_countControls()
 				c += 9; // 1 groupbox + 4 textboxes + 4 labels
 				break;
 			case 8:
-				c += 10; //1 groupbox + 4 textboxes + 4 labels + 1 button
+				c += 5; // 2 labels + 1 button + 1 updown + 1 edit
 			default: break;
 		}
 	}
@@ -628,62 +635,5 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			return true;
 		default:
 			return false;
-	}
-}
-
-bool _isAllowedFloatCharacter(char c)
-{
-	return (c >= '0' && c <= '9') ||
-		c == '-' ||
-		c == '.' ||
-		c == ',' ||
-		c == VK_RETURN || 
-		c == VK_BACK || 
-		c == VK_ESCAPE || 
-		c == VK_DELETE ||
-		c == VK_CONTROL ||
-		c == 0x01 ||
-		c == 0x03 ||
-		c == 0x16 ||
-		c == 0x18;
-}
-
-LRESULT __stdcall NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	switch(msg)
-	{
-		case WM_CHAR:
-		{
-			char chr = (char)wParam;
-
-			if(_isAllowedFloatCharacter(chr))
-			{
-				return _editProc(hwnd, msg, wParam, lParam);
-			}
-			else return MessageBeep(MB_ICONINFORMATION);
-		}
-		case WM_PASTE:
-		{
-			BOOL r = OpenClipboard(hwnd);
-			if(!r) return 0;
-
-			HANDLE clipboardData = GetClipboardData(CF_OEMTEXT);
-			if(clipboardData == nullptr) return 0;
-
-			char* clipboardString = static_cast<char*>(GlobalLock(clipboardData));
-			if(clipboardString == nullptr) return 0;
-
-			for(size_t i = 0; i < strlen(clipboardString); i++)
-			{
-				SendMessage(hwnd, WM_CHAR, clipboardString[i], 0);
-			}
-
-			GlobalUnlock(clipboardData);
-			CloseClipboard();
-
-			return 1;
-		}
-		default:
-			return _editProc(hwnd, msg, wParam, lParam);
 	}
 }

@@ -75,3 +75,16 @@ Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetCameraMatrix() const
 Engine3DRadSpace::Camera::~Camera()
 {
 }
+
+using namespace Engine3DRadSpace;
+__BEGIN_REFLECTOBJECT(Camera)
+	__REFLECTFIELD(Camera, std::string, "Name", Name, "Camera"),
+	__REFLECTFIELD(Camera, bool, "Enabled", Enabled, true),
+	__REFLECTFIELD(Camera, Vector3, "Position", Position, Vector3::Zero()),
+	__REFLECTFIELD(Camera, Quaternion, "Rotation", Rotation, Quaternion()),
+	__REFLECTFIELD(Camera, Vector3, "Normal", Normal, Vector3::UnitY()),
+	__REFLECTFIELD(Camera, float, "Field of view", FOV, 65),
+	__REFLECTFIELD(Camera, float, "Aspect ratio", AspectRatio, 4 / 3),
+	__REFLECTFIELD(Camera, float, "Near plane distance", NearPlaneDistance, 0.001f),
+	__REFLECTFIELD(Camera, float, "Far plane distance", FarPlaneDistance, 500.0f)
+__END_REFLECTOBJECT(Camera)

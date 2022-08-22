@@ -156,7 +156,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
+    <ClInclude Include="ColorBox.hpp" />
     <ClInclude Include="DownloadStatusWindow.hpp" />
+    <ClInclude Include="ISubclassedControl.hpp" />
+    <ClInclude Include="NumericTextbox.hpp" />
     <ClInclude Include="ObjectEditorWindow.hpp" />
     <ClInclude Include="Libs.hpp" />
     <ClInclude Include="MainWindow.hpp" />
@@ -167,9 +170,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
+    <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="DownloadStatusWindow.cpp" />
+    <ClCompile Include="ISubclassedControl.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="NumericTextbox.cpp" />
     <ClCompile Include="ObjectEditorDialog.cpp" />
     <ClCompile Include="UpdateDownloadManager.cpp" />
     <ClCompile Include="GDIFuncs.cpp" />
