@@ -18,7 +18,28 @@ namespace Engine3DRadSpace
 	public:
 		//Main constructor.
 		IObject(Game* game,const std::string &name = "Empty object", bool enabled = false, Vector3 pos = { 0,0,0 }, Quaternion rot = { 0,0,0,1 }, Vector3 cen = { 0,0,0 }, Vector3 scal = { 1,1,1 },const std::string &resource = "") :
-			Name(name), Enabled(enabled), Position(pos), Rotation(rot), Center(cen), Scale(scal), Resource(resource), game(game) {};
+			Name(name),
+			Enabled(enabled),
+			Position(pos),
+			Rotation(rot), 
+			Center(cen),
+			Scale(scal),
+			Resource(resource),
+			game(game) 
+		{
+		};
+
+		IObject() :
+			Name(""),
+			Enabled(false),
+			Position(),
+			Rotation(),
+			Center(),
+			Scale(),
+			Resource(""),
+			game(nullptr)
+		{
+		};
 
 		/// <summary>
 		/// Defines the name of the object. Can be used as a tag or as an identifier.

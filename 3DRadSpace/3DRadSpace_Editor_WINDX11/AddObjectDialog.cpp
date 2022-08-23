@@ -87,7 +87,7 @@ void AddObjectDialog::_createItemForList( __rawstring name, int imageIndex, int 
     item.mask = LVIF_IMAGE | LVIF_TEXT | LVIF_GROUPID;
     item.pszText = name;
 #ifdef UNICODE
-    item.cchTextMax = wcslen(name) + 1;
+    item.cchTextMax = (int)wcslen(name) + 1;
 #else
     item->cchTextMax = strlen(name) + 1;
 #endif
@@ -104,7 +104,7 @@ void AddObjectDialog::_createGroupForList( wchar_t* name, int index)
     group.cbSize = sizeof(LVGROUP);
     group.mask = LVGF_HEADER | LVGF_GROUPID ;
     group.pszHeader = name;
-    group.cchHeader = wcslen(name) + 1;
+    group.cchHeader = (int)wcslen(name) + 1;
     group.iGroupId = index;
 
     ListView_InsertGroup(_listView, index, &group);
@@ -194,7 +194,7 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 
 int AddObjectDialog::ShowDialog(HWND owner)
 {
-    return DialogBoxIndirectParam(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess,(LPARAM)this);
+    return (int)DialogBoxIndirectParam(this->_hInstance, this->lpDialogTemplate, owner, AddObject_DialogProcess,(LPARAM)this);
 }
 
 void AddObjectDialog::CreateDialogForms()

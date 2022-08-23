@@ -4,6 +4,7 @@
 #include "Vector4.hpp"
 #include "Vector2.hpp"
 
+
 #define __BEGIN_REFLECTOBJECT(ObjName) \
 Engine3DRadSpace::Reflection::Reflect ObjName##ReflInst = \
 { \
@@ -159,6 +160,8 @@ namespace Engine3DRadSpace
 
 			const size_t Size() const;
 			const ReflectedFieldBase* operator[](size_t index) const;
+
+
 		};
 	}
 #pragma warning(pop)

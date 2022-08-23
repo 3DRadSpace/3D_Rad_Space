@@ -242,8 +242,8 @@ void EditorWindow::RenderUpdateLoop()
 		context->OMSetBlendState(CommonStates->Opaque(), nullptr, 0xFFFFFFFF);
 		context->OMSetDepthStencilState(CommonStates->DepthDefault(), 0);
 		context->RSSetState(CommonStates->CullCounterClockwise());
-		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X, _3DCursor.Y, _3DCursor.Z));
-		BasicEffect->SetView(View); //the grid is going to be moved along with the selectioned object, this is desired
+		BasicEffect->SetWorld(DirectX::XMMatrixTranslation(_3DCursor.X, _3DCursor.Y, _3DCursor.Z)); //the grid is going to be moved along with the selectioned object, this is desired
+		BasicEffect->SetView(View); 
 		context->IASetInputLayout(colorured_line_inputlayout);
 
 		BasicEffect->Apply(context);

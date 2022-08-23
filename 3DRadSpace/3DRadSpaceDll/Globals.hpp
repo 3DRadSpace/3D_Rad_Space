@@ -27,3 +27,4 @@
 #include <cstdlib>
 #include <functional>
 #include <typeindex>
+#include <ranges>

@@ -2,15 +2,20 @@
 
 using namespace Engine3DRadSpace;
 
+ObjectEditorDialog* ObjectEditorDialog::_globalInstance = nullptr;
+
 ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEditorWindow* objectType, IObject* obj) :
 	_hInstance(hInstance),
 	_window(nullptr),
 	_owner(owner),
 	_objectWndInfo(objectType),
-	_globalInstance(nullptr),
 	_controls(nullptr),
 	numControls(0),
-	_subclassedControls()
+	_subclassedControls(),
+	_okButton(nullptr),
+	_cancelButton(nullptr),
+	_helpButton(nullptr),
+	_resultObject(obj)
 {
 	this->_hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->_hGlobal == nullptr)
@@ -48,6 +53,8 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 
 	this->numControls = this->_countControls();
 	this->_controls = new HWND[this->numControls];
+
+	_globalInstance = this;
 }
 
 int ObjectEditorDialog::ShowDialog()
@@ -63,6 +70,7 @@ void ObjectEditorDialog::_createForms()
 	Point p(10, 10);
 
 	HDC hdc = GetDC(this->_window);
+	int mX = std::numeric_limits<int>::min();
 
 	//create groups
 	for(size_t j = 0; j < this->_objectWndInfo->NumGroups; j++)
@@ -290,7 +298,6 @@ void ObjectEditorDialog::_createForms()
 		{
 			case 1:
 			{
-				
 				GetTextExtentPointA(hdc, visibleName, strlen(visibleName), &textLen);
 
 				_controls[i++] = CreateWindowA("Button",
@@ -307,10 +314,14 @@ void ObjectEditorDialog::_createForms()
 				);
 				
 				p.Y += textLen.cy + 10;
+				_update_mX(mX,p.X + textLen.cx + GetSystemMetrics(SM_CXMENUCHECK) + 10);
+
 				break;
 			}
 			case 2:
 			{
+				int accX = 0;
+
 				_controls[i++] = CreateLabel(
 					this->_window,
 					this->_hInstance,
@@ -320,7 +331,9 @@ void ObjectEditorDialog::_createForms()
 					textLen
 				);
 
+				CreateUpDown(i, p, accX);
 				p.Y += textLen.cy + 10;
+				_update_mX(mX, p.X + accX + 10);
 
 				break;
 			}
@@ -346,18 +359,25 @@ void ObjectEditorDialog::_createForms()
 				);
 
 				p.Y += textLen.cy + 10;
+				_update_mX(mX, p.X + textLen.cx + 20);
 				break;
 			}
 			case 4:
 			{
 				int accX = 0;
 				CreateVector2DControls(i, p,accX);
+
+				_update_mX(mX, p.X + accX + 10);
+				p.Y += textLen.cy;
 				break;
 			}
 			case 5:
 			{
 				int accX = 0;
 				CreateVector3DControls(i, p, accX);
+
+				_update_mX(mX, p.X + accX + 10);
+				p.Y += textLen.cy;
 				break;
 			}
 			case 7: //Vector4
@@ -365,6 +385,9 @@ void ObjectEditorDialog::_createForms()
 			{
 				int accX = 0;
 				CreateVector4DControls(i, p, accX);
+
+				_update_mX(mX, p.X + accX + 10);
+				p.Y += textLen.cy;
 				break;
 			}
 			case 8:
@@ -407,6 +430,9 @@ void ObjectEditorDialog::_createForms()
 
 				CreateUpDown(i, p, accX, 255, 0);
 
+				_update_mX(mX, p.X + accX + 10);
+				p.Y += textLen.cy;
+
 				break;
 			}
 			case 9:
@@ -433,6 +459,8 @@ void ObjectEditorDialog::_createForms()
 					this->_hInstance,
 					nullptr
 				);
+				
+				_update_mX(mX, p.X + textLen.cx + 20);
 				p.Y += textLen.cy + 10;
 
 				break;
@@ -440,10 +468,68 @@ void ObjectEditorDialog::_createForms()
 			default:
 				break;
 		}
+		if(p.Y <= this->_objectWndInfo->WindowSize.Y - 40)
+			p.X = mX;
 	}
+
+	int btnAccX = 0;
+	SIZE textSize;
+
+	GetTextExtentPoint(hdc, TEXT("Help"), 2, &textSize);
+	btnAccX += textSize.cx + 10;
+
+	int btnCY = this->_objectWndInfo->WindowSize.Y - textSize.cy - 2;
+
+	_helpButton = CreateWindow(
+		TEXT("Button"),
+		TEXT("Help"),
+		WS_CHILD | WS_VISIBLE,
+		btnAccX,
+		btnCY,
+		textSize.cx + 5,
+		textSize.cy + 2,
+		this->_window,
+		nullptr,
+		this->_hInstance,
+		nullptr
+	);
+
+	GetTextExtentPoint(hdc, TEXT("Ok"), 2, &textSize);
+	btnAccX = this->_objectWndInfo->WindowSize.X - 10 - textSize.cx;
+
+	_okButton = CreateWindow(
+		TEXT("Button"),
+		TEXT("Ok"),
+		BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE,
+		btnAccX,
+		btnCY,
+		textSize.cx + 5,
+		textSize.cy + 2,
+		this->_window,
+		nullptr,
+		this->_hInstance,
+		nullptr
+	);
+
+	GetTextExtentPoint(hdc, TEXT("Cancel"), 7, &textSize);
+	btnAccX -= textSize.cx - 10;
+
+	_cancelButton = CreateWindow(
+		TEXT("Button"),
+		TEXT("Ok"),
+		WS_CHILD | WS_VISIBLE,
+		btnAccX,
+		btnCY,
+		textSize.cx + 5,
+		textSize.cy + 2,
+		this->_window,
+		nullptr,
+		this->_hInstance,
+		nullptr
+	);
 }
 
-void ObjectEditorDialog::update_rX(int& x, int newVal)
+void _update_mX(int& x, int newVal)
 {
 	if(newVal > x)
 		x = newVal;
@@ -629,6 +715,35 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_MENU + 1)); // for some reason COLOR_MENU is the same color as the static's backround color (I'm doing something wrong?)
 			EndPaint(hwnd, &ps);
 			return false;
+		}
+		case WM_COMMAND:
+		{
+			switch(HIWORD(wParam))
+			{
+				case BN_CLICKED:
+				{
+					ObjectEditorDialog* oed = ObjectEditorDialog::_globalInstance;
+
+					HWND btn = reinterpret_cast<HWND>(lParam);
+					if(btn == oed->_okButton)
+					{
+						if(oed->_resultObject == nullptr)
+						{
+							oed->_resultObject = const_cast<Engine3DRadSpace::IObject*>(oed->_objectWndInfo->CreateEmptyObject());
+							
+							for(size_t i = 0; i < oed->_objectWndInfo->Reflection.Size(); i++)
+							{
+								
+							}
+						}
+						EndDialog(hwnd, IDOK);
+						break;
+					}
+					break;
+				}
+				default:
+					break;
+			}
 		}
 		case WM_CLOSE:
 			EndDialog(hwnd, IDCANCEL);

@@ -47,6 +47,10 @@ namespace Engine3DRadSpace
 		/// <param name="npd">Viewing frustum near plane distance closest to the camera position.</param>
 		/// <param name="fpd">Viewing frustum far plane distance furthest from the camera position.</param>
 		Camera(Game* g, const std::string& name, bool enabled, const Vector3& pos, const Quaternion& rot, const Vector3& normal, float fov, float aspect_ratio, float npd, float fpd);
+		/// <summary>
+		/// Default constructor used to maintain the vtables.
+		/// </summary>
+		Camera();
 
 		/// <summary>
 		/// Gets the 3D world position expressed as a 4x4 matrix.

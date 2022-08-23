@@ -21,6 +21,17 @@ Engine3DRadSpace::Camera::Camera(Game* g,
 {
 };
 
+Engine3DRadSpace::Camera::Camera() :
+	IObject(),
+	Normal(),
+	FOV(),
+	AspectRatio(),
+	NearPlaneDistance(),
+	FarPlaneDistance(),
+	lookat()
+{
+};
+
 Engine3DRadSpace::Matrix Engine3DRadSpace::Camera::GetTranslation()
 {
 	return Engine3DRadSpace::Matrix::CreateTranslation(Position);
