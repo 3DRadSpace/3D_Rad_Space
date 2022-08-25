@@ -731,9 +731,100 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 						{
 							oed->_resultObject = const_cast<Engine3DRadSpace::IObject*>(oed->_objectWndInfo->CreateEmptyObject());
 							
+							int j = 0;
+
+							char* entity_ptr = reinterpret_cast<char*>(oed->_resultObject);
+
 							for(size_t i = 0; i < oed->_objectWndInfo->Reflection.Size(); i++)
 							{
-								
+								switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[oed->_objectWndInfo->Reflection[i]->GetFieldType()])
+								{
+									case 1:
+									{
+										bool value = static_cast<bool>(SendMessage(oed->_controls[j],BM_GETCHECK,0,0));
+										j++;
+
+										const std::type_info& t = oed->_objectWndInfo->Reflection[i]->GetFieldType();
+										oed->_objectWndInfo->Reflection[i]->ForceSetF(
+											entity_ptr,
+											&value,
+											sizeof(bool)
+										);
+										break;
+									}
+									case 2:
+									{
+										std::unordered_map<std::type_index, int> uint_map =
+										{
+											{typeid(uint8_t),1},
+											{typeid(uint16_t),2},
+											{typeid(uint32_t),3},
+											{typeid(uint64_t),4},
+										};
+
+										j += 1;
+
+										size_t textLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+
+										char* upDownValue = new char[textLen + 1];
+										SendMessage(oed->_controls[j], WM_GETTEXT, textLen + 1, reinterpret_cast<LPARAM>(upDownValue));
+
+										switch(uint_map[oed->_objectWndInfo->Reflection[i]->GetFieldType()])
+										{
+											case 1:
+											{
+												uint8_t value = *static_cast<const uint8_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+
+												if(textLen != 0)
+													value = (uint8_t)std::atoi(upDownValue);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr,&value,sizeof(uint8_t));
+												break;
+											}
+											case 2:
+											{
+												uint16_t value = *static_cast<const uint16_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (uint16_t)std::atoi(upDownValue);
+												
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr,&value,sizeof(uint16_t));
+												break;
+											}
+											case 3:
+											{
+												uint32_t value = *static_cast<const uint32_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (uint32_t)std::atoi(upDownValue);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(uint32_t));
+												break;
+											}
+											case 4:
+											{
+												uint64_t value = *static_cast<const uint64_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (uint64_t)std::atoll(upDownValue);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(uint32_t));
+												break;
+											}
+											default:
+												break;
+										}
+
+										delete[] upDownValue;
+										j++;
+										break;
+									}
+									case 3:
+									{
+
+										break;
+									}
+									default:
+										break;
+								}
+
 							}
 						}
 						EndDialog(hwnd, IDOK);

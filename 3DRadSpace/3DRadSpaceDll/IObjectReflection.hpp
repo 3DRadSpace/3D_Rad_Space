@@ -70,7 +70,7 @@ namespace Engine3DRadSpace
 			}
 
 			template<IObjectDerived obj>
-			bool TrySetF(obj* o, const std::type_info& t, void* v, size_t s)
+			bool TrySetF(obj* o, const std::type_info& t, void* v, size_t s) const
 			{
 				if(t == GetFieldType())
 				{
@@ -80,10 +80,14 @@ namespace Engine3DRadSpace
 				return false;
 			}
 			
-			template<IObjectDerived obj>
-			void ForceSetF(obj* o,void* v,size_t size)
+			void ForceSetF(char* o, void* v, size_t size) const
 			{
 				memcpy_s(o + GetFieldPtr(), size, v, size);
+			}
+
+			void ForceGetF(char* o, void* v, size_t size) const
+			{
+				memcpy_s(v, size, o + GetFieldPtr(), size);
 			}
 
 			virtual ~ReflectedFieldBase();
@@ -160,8 +164,6 @@ namespace Engine3DRadSpace
 
 			const size_t Size() const;
 			const ReflectedFieldBase* operator[](size_t index) const;
-
-
 		};
 	}
 #pragma warning(pop)

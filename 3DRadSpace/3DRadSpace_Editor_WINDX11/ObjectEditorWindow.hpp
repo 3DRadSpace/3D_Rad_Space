@@ -9,7 +9,7 @@ struct FieldGroup
 
 struct ObjectEditorWindow
 {
-	Engine3DRadSpace::IObject* (const* CreateEmptyObject)();
+	Engine3DRadSpace::IObject* (* const CreateEmptyObject)();
 
 	const Engine3DRadSpace::Reflection::Reflect& Reflection;
 	const Engine3DRadSpace::Point WindowSize;
