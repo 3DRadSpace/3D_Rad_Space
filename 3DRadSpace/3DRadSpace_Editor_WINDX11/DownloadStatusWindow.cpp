@@ -40,15 +40,83 @@ void DownloadStatusWindow::Register(HINSTANCE hInstance)
 
 void DownloadStatusWindow::Create(HWND parent)
 {
-	window = CreateWindow(TEXT("3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS"), TEXT("Downloading Update..."), WS_OVERLAPPEDWINDOW | WS_VISIBLE, 400, 400, 350, 150, nullptr, nullptr, DownloadStatusWindow::hInstance, nullptr);
-	label1 = CreateWindow(TEXT("STATIC"), TEXT("Downloading update..."), WS_VISIBLE | WS_CHILD, 120, 10, 300, 20, window, nullptr,hInstance, nullptr);
-	label2 = CreateWindow(TEXT("STATIC"), TEXT("Progress:"), WS_VISIBLE | WS_CHILD, 10, 30, 100, 20, window, nullptr, hInstance, nullptr);
+	window = CreateWindowExW(
+		0,
+		L"3DRADSPACE_UPDATE_DOWNLOAD_PROGRESS",
+		L"Downloading Update...",
+		 WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+		400,
+		400,
+		350,
+		150,
+		nullptr,
+		nullptr,
+		DownloadStatusWindow::hInstance,
+		nullptr
+	);
 
-	progressbar = CreateWindowEx(0, PROGRESS_CLASS, nullptr, WS_VISIBLE | WS_CHILD, 80, 30, 200, 20, window, nullptr, hInstance, nullptr);
-	SendMessage(progressbar, PBM_SETSTEP, 1, 0);
-	SendMessage(progressbar, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
+	label1 = CreateWindowExW(
+		0,
+		L"Static",
+		L"Downloading update...",
+		WS_VISIBLE | WS_CHILD,
+		120,
+		10,
+		300,
+		20,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 
-	cancelbutton = CreateWindow(TEXT("BUTTON"), TEXT("Cancel"), WS_VISIBLE | BS_PUSHBUTTON | WS_CHILD , 140, 60, 70, 25, window, nullptr, hInstance, nullptr);
+	label2 = CreateWindowExW(
+		0,
+		L"STATIC",
+		L"Progress:",
+		WS_VISIBLE | WS_CHILD,
+		10,
+		30,
+		100,
+		20,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	progressbar = CreateWindowExW(
+		0,
+		PROGRESS_CLASS,
+		nullptr,
+		WS_VISIBLE | WS_CHILD,
+		80,
+		30,
+		200,
+		20,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+	
+	SendMessageW(progressbar, PBM_SETSTEP, 1, 0);
+	SendMessageW(progressbar, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
+
+	cancelbutton = CreateWindowExW(
+		0,
+		L"Button", 
+		L"Cancel",
+		WS_VISIBLE | WS_CHILD,
+		140,
+		60,
+		70,
+		25,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 
 	ShowWindow(window, SW_NORMAL);
 	ShowWindow(label1, SW_NORMAL);
@@ -58,10 +126,10 @@ void DownloadStatusWindow::Create(HWND parent)
 
 	MSG msg;
 	memset(&msg, 0, sizeof(MSG));
-	while (GetMessage(&msg, window, 0, 0))
+	while (GetMessageW(&msg, window, 0, 0))
 	{
 		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		DispatchMessageW(&msg);
 		if(!Finished) DownloadStatusWindow::SyncProgress();
 		if (Finished) break;
 	}
@@ -96,7 +164,7 @@ void DownloadStatusWindow::SyncProgress()
 	_currentprogress = (int)(pR * 100);
 	while (_shownprogress < _currentprogress)
 	{
-		SendMessage(progressbar, PBM_STEPIT, 0, 0);
+		SendMessageW(progressbar, PBM_STEPIT, 0, 0);
 		_shownprogress++;
 	}
 }
@@ -136,7 +204,7 @@ LRESULT __stdcall DownloadWindowEventHandler(HWND hwnd, UINT msg, WPARAM wParam,
 			{
 				case BN_CLICKED:
 				{
-					if ((HWND)lParam == DownloadStatusWindow::GetCancelButton()) //certified bruh moment, I needed cancelbutton to be accesible - 11/10 OOP koding
+					if ((HWND)lParam == DownloadStatusWindow::GetCancelButton()) // >.<
 					{
 						DownloadStatusWindow::Finished = false;
 						DownloadStatusWindow::Cancelled = true;
@@ -164,6 +232,6 @@ LRESULT __stdcall DownloadWindowEventHandler(HWND hwnd, UINT msg, WPARAM wParam,
 
 void UpdateDownloadManagerDestructorNotificationFunction(unsigned long& p, unsigned long& s)
 {
-	PostMessage(DownloadStatusWindow::GetWindow(), WM_CLOSE, 0, 0);
+	PostMessageW(DownloadStatusWindow::GetWindow(), WM_CLOSE, 0, 0);
 	DownloadStatusWindow::Finished = true;
 }

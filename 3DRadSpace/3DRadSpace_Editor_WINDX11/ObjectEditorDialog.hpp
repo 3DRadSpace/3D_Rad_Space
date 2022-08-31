@@ -36,6 +36,7 @@ public:
 
 	ObjectEditorDialog* GetGlobalInstance();
 	HWND GetWindow();
+	Engine3DRadSpace::IObject* GetResultObject();
 
 	friend INT_PTR CALLBACK ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

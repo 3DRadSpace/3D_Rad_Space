@@ -1,4 +1,5 @@
 #include "ObjectEditorDialog.hpp"
+#include <iostream>
 
 using namespace Engine3DRadSpace;
 
@@ -36,14 +37,14 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 
 	_templateMemIndex = (LPWORD)(this->_dialogTemplate + 1);
 
-	*_templateMemIndex = 0; //No menu
-	*_templateMemIndex = 0; //Default dialog box class
+	*_templateMemIndex++ = 0; //No menu
+	*_templateMemIndex++ = 0; //Default dialog box class
 
 	std::stringstream titleText;
-	titleText << (obj != nullptr ? "Editing" : "Creating") << this->_objectWndInfo->Name << " object";
+	titleText << (obj != nullptr ? "Editing " : "Creating ") << this->_objectWndInfo->Name << " object";
 
 	LPWSTR title = (LPWSTR)_templateMemIndex;
-	int titleLen = MultiByteToWideChar(CP_ACP, 0, titleText.str().c_str(), -1, title, titleText.str().length() + 1);
+	int titleLen = MultiByteToWideChar(CP_ACP, 0, titleText.str().c_str(), -1, title, (int)titleText.str().length());
 	*_templateMemIndex += titleLen;
 	*_templateMemIndex++ = 0; //No elements
 
@@ -59,7 +60,9 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 
 int ObjectEditorDialog::ShowDialog()
 {
-	return (int)DialogBoxIndirectParam(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, reinterpret_cast<LPARAM>(this));
+	int r =  (int)DialogBoxIndirectParamW(this->_hInstance, this->_dialogTemplate, this->_owner, ObjectEditor_DialogProc, reinterpret_cast<LPARAM>(this));
+	DWORD err = GetLastError();
+	return r;
 }
 
 WNDPROC _staticProc = nullptr;
@@ -75,37 +78,42 @@ void ObjectEditorDialog::_createForms()
 	//create groups
 	for(size_t j = 0; j < this->_objectWndInfo->NumGroups; j++)
 	{
-		if(this->_objectWndInfo->Groups[j].Name == std::string(""))
-			continue;
-
 		Point groupSize = _calculateGroupSize(j);
-		_controls[i++] = CreateWindowA(
-			"Button",
-			this->_objectWndInfo->Groups[j].Name,
-			BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
-			p.X,
-			p.Y,
-			groupSize.X,
-			groupSize.Y,
-			this->_window,
-			nullptr,
-			this->_hInstance,
-			nullptr
-		);
-		p += groupSize + Point(20, 20);
+		if(this->_objectWndInfo->Groups[j].Name != std::string(""))
+		{
+			_controls[i++] = CreateWindowA(
+				"Button",
+				this->_objectWndInfo->Groups[j].Name,
+				BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+				p.X,
+				p.Y,
+				groupSize.X,
+				groupSize.Y,
+				this->_window,
+				nullptr,
+				this->_hInstance,
+				nullptr
+			);
+		}
+		p.Y += groupSize.Y;
 	}
-
-	p = { 30,30 };
+	
+	p = { 10,10 };
 	//create controls
 	for(size_t j = 0; j < this->_objectWndInfo->Reflection.Size(); j++)
 	{
 		const char* visibleName = this->_objectWndInfo->Reflection[j]->GetVisibleName();
 
-		const void* defaultValue = this->_objectWndInfo->Reflection[j]->GetDefaultValue();
+		void* defaultValue = const_cast<void*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue());
+		if(this->_resultObject != nullptr)
+		{
+			defaultValue = ::operator new(this->_objectWndInfo->Reflection[j]->GetFieldSize());
+			this->_objectWndInfo->Reflection[j]->ForceGetF(reinterpret_cast<char*>(this->_resultObject), defaultValue);
+		}
 
 		auto CreateLabel = [hdc](HWND owner,HINSTANCE hInstance, int x, int y, const char* text,SIZE &textSize) -> HWND
 		{
-			GetTextExtentPointA(hdc, text,strlen(text), & textSize);
+			GetTextExtentPointA(hdc, text,(int)strlen(text), & textSize);
 			
 			return CreateWindowA(
 				"Static",
@@ -128,37 +136,22 @@ void ObjectEditorDialog::_createForms()
 
 			Vector2 defVal = *static_cast<const Vector2*>(defaultValue);
 
-			//groupbox
-			_controls[i++] = CreateWindowA(
-				"Button",
-				visibleName,
-				BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
-				p.X,
-				p.Y,
-				10,
-				10,
-				this->_window,
-				nullptr,
-				this->_hInstance,
-				nullptr
-			);
-
 			//X label and textbox
 			_controls[i++] = CreateLabel(
 				this->_window,
 				this->_hInstance,
-				p.X,
-				p.Y,
+				p.X + 20,
+				p.Y + 20,
 				"X",
 				textLen
 			);
-			accX += textLen.cx + 10;
+			accX += textLen.cx + 30;
 
 			_controls[i++] = NumericTextbox(
-				this->_owner,
+				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				75,
 				textLen.cy,
 				std::to_string(defVal.X).c_str()
@@ -170,26 +163,22 @@ void ObjectEditorDialog::_createForms()
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				"Y",
 				textLen
 			);
 			accX += textLen.cx + 10;
 
 			_controls[i++] = NumericTextbox(
-				this->_owner,
+				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				75,
 				textLen.cy,
 				std::to_string(defVal.Y).c_str()
 			);
 			accX += 85; // 75 + 10
-
-			SetWindowPos(_controls[i - 4], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
-
-			accX += textLen.cx;
 		};
 
 		auto CreateVector3DControls = [=](size_t& i, Point& p,int &accX)
@@ -204,24 +193,22 @@ void ObjectEditorDialog::_createForms()
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				"Z",
 				textLen
 			);
 			accX += textLen.cx + 10;
 
 			_controls[i++] = NumericTextbox(
-				this->_owner,
+				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				75,
 				textLen.cy,
 				std::to_string(defVal.Z).c_str()
 			);
 			accX += 85; // 75 + 10
-
-			SetWindowPos(_controls[i - 6], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
 		};
 
 		auto CreateVector4DControls = [=](size_t& i, Point& p, int& accX)
@@ -236,24 +223,22 @@ void ObjectEditorDialog::_createForms()
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				"W",
 				textLen
 			);
 			accX += textLen.cx + 10;
 
 			_controls[i++] = NumericTextbox(
-				this->_owner,
+				this->_window,
 				this->_hInstance,
 				p.X + accX,
-				p.Y,
+				p.Y + 20,
 				75,
 				textLen.cy,
 				std::to_string(defVal.W).c_str()
 			);
 			accX += 85; // 75 + 10
-
-			SetWindowPos(_controls[i - 8], HWND_BOTTOM, p.X, p.Y, accX + 20, textLen.cy + 40, SWP_SHOWWINDOW | SWP_NOMOVE);
 		};
 
 		auto CreateUpDown = [=](size_t &i,Point &p, int &accX,int max = 100,int min = 0)
@@ -288,7 +273,7 @@ void ObjectEditorDialog::_createForms()
 			);
 
 			SendMessage(_controls[i - 1], UDM_GETRANGE, max, min);
-			SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
+			//SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
 
 			accX += 75;
 		};
@@ -298,9 +283,9 @@ void ObjectEditorDialog::_createForms()
 		{
 			case 1:
 			{
-				GetTextExtentPointA(hdc, visibleName, strlen(visibleName), &textLen);
+				GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textLen);
 
-				_controls[i++] = CreateWindowA("Button",
+				HWND checkbox = _controls[i++] = CreateWindowA("Button",
 					visibleName,
 					BS_AUTOCHECKBOX | WS_CHILD | WS_VISIBLE,
 					p.X,
@@ -312,6 +297,9 @@ void ObjectEditorDialog::_createForms()
 					this->_hInstance,
 					nullptr
 				);
+
+				bool value = *static_cast<const bool*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue());
+				SendMessage(checkbox, BM_SETCHECK, value ? BST_CHECKED : BST_UNCHECKED , 0);
 				
 				p.Y += textLen.cy + 10;
 				_update_mX(mX,p.X + textLen.cx + GetSystemMetrics(SM_CXMENUCHECK) + 10);
@@ -337,6 +325,7 @@ void ObjectEditorDialog::_createForms()
 
 				break;
 			}
+
 			case 3:
 			{
 				_controls[i++] = CreateLabel(
@@ -348,27 +337,83 @@ void ObjectEditorDialog::_createForms()
 					textLen
 				);
 
+				std::string value("");
+
+				std::unordered_map<std::type_index, int> int_map =
+				{
+					{typeid(int8_t),1},
+					{typeid(int16_t),2},
+					{typeid(int32_t),3},
+					{typeid(int64_t),4},
+					{typeid(float),5},
+					{typeid(double),6},
+					{typeid(long double),7}
+				};
+
+				switch(int_map[this->_objectWndInfo->Reflection[j]->GetFieldType()])
+				{
+					case 1:
+						value = std::to_string(*static_cast<const int8_t*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 2:
+						value = std::to_string(*static_cast<const int16_t*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 3:
+						value = std::to_string(*static_cast<const int32_t*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 4:
+						value = std::to_string(*static_cast<const int64_t*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 5:
+						value = std::to_string(*static_cast<const float*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 6:
+						value = std::to_string(*static_cast<const double*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					case 7:
+						value = std::to_string(*static_cast<const long double*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue()));
+						break;
+					default:
+						break;
+				}
+
 				_controls[i++] = NumericTextbox(
-					this->_owner,
+					this->_window,
 					this->_hInstance,
 					p.X + textLen.cx + 10,
 					p.Y,
 					75,
 					textLen.cy,
-					static_cast<const char*>(defaultValue)
+					value.c_str()
 				);
 
 				p.Y += textLen.cy + 10;
 				_update_mX(mX, p.X + textLen.cx + 20);
 				break;
 			}
+			
 			case 4:
 			{
 				int accX = 0;
 				CreateVector2DControls(i, p,accX);
 
-				_update_mX(mX, p.X + accX + 10);
-				p.Y += textLen.cy;
+				//groupbox
+				_controls[i++] = CreateWindowA(
+					"Button",
+					visibleName,
+					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+					p.X,
+					p.Y,
+					accX + 20,
+					textLen.cy + 40,
+					this->_window,
+					nullptr,
+					this->_hInstance,
+					nullptr
+				);
+
+				_update_mX(mX, p.X + accX + 20);
+				p.Y += textLen.cy + 50;
 				break;
 			}
 			case 5:
@@ -376,18 +421,68 @@ void ObjectEditorDialog::_createForms()
 				int accX = 0;
 				CreateVector3DControls(i, p, accX);
 
-				_update_mX(mX, p.X + accX + 10);
-				p.Y += textLen.cy;
+				_controls[i++] = CreateWindowA(
+					"Button",
+					visibleName,
+					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+					p.X,
+					p.Y,
+					accX + 20,
+					textLen.cy + 40,
+					this->_window,
+					nullptr,
+					this->_hInstance,
+					nullptr
+				);
+
+				_update_mX(mX, p.X + accX + 20);
+				p.Y += textLen.cy + 50;
 				break;
 			}
-			case 7: //Vector4
-			case 6: //Quaternion
+			case 6: //Vector4
 			{
 				int accX = 0;
 				CreateVector4DControls(i, p, accX);
 
+				_controls[i++] = CreateWindowA(
+					"Button",
+					visibleName,
+					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+					p.X,
+					p.Y,
+					accX + 20,
+					textLen.cy + 40,
+					this->_window,
+					nullptr,
+					this->_hInstance,
+					nullptr
+				);
+
 				_update_mX(mX, p.X + accX + 10);
-				p.Y += textLen.cy;
+				p.Y += textLen.cy + 50;
+				break;
+			}
+			case 7:
+			{
+				int accX = 0;
+				CreateVector3DControls(i, p, accX);
+
+				_controls[i++] = CreateWindowA(
+					"Button",
+					visibleName,
+					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
+					p.X,
+					p.Y,
+					accX + 20,
+					textLen.cy + 40,
+					this->_window,
+					nullptr,
+					this->_hInstance,
+					nullptr
+				);
+
+				_update_mX(mX, p.X + accX + 20);
+				p.Y += textLen.cy + 50;
 				break;
 			}
 			case 8:
@@ -417,7 +512,6 @@ void ObjectEditorDialog::_createForms()
 
 				accX += textLen.cx + 10;
 
-
 				_controls[i++] = CreateLabel(
 					this->_owner,
 					this->_hInstance,
@@ -435,6 +529,7 @@ void ObjectEditorDialog::_createForms()
 
 				break;
 			}
+			
 			case 9:
 			{
 				_controls[i++] = CreateLabel(
@@ -448,7 +543,7 @@ void ObjectEditorDialog::_createForms()
 
 				_controls[i++] = CreateWindowA(
 					"Edit",
-					static_cast<const char*>(defaultValue),
+					static_cast<std::string*>(defaultValue)->c_str(),
 					ES_AUTOHSCROLL | WS_VISIBLE | WS_CHILD,
 					p.X + textLen.cx + 10,
 					p.Y,
@@ -468,21 +563,28 @@ void ObjectEditorDialog::_createForms()
 			default:
 				break;
 		}
-		if(p.Y <= this->_objectWndInfo->WindowSize.Y - 40)
+
+		RECT wndRect;
+		GetWindowRect(this->_window, &wndRect);
+
+		if((wndRect.bottom - wndRect.top) <= this->_objectWndInfo->WindowSize.Y - 40)
 			p.X = mX;
+
+		if(this->_resultObject != nullptr)
+			delete defaultValue;
 	}
 
-	int btnAccX = 0;
+	int btnAccX = 10;
 	SIZE textSize;
 
-	GetTextExtentPoint(hdc, TEXT("Help"), 2, &textSize);
-	btnAccX += textSize.cx + 10;
+	GetTextExtentPoint(hdc, TEXT("Help"), 4, &textSize);
 
-	int btnCY = this->_objectWndInfo->WindowSize.Y - textSize.cy - 2;
+	int btnCY = p.Y + 20;
 
-	_helpButton = CreateWindow(
-		TEXT("Button"),
-		TEXT("Help"),
+	_helpButton = CreateWindowExW(
+		0,
+		L"Button",
+		L"Help",
 		WS_CHILD | WS_VISIBLE,
 		btnAccX,
 		btnCY,
@@ -495,7 +597,12 @@ void ObjectEditorDialog::_createForms()
 	);
 
 	GetTextExtentPoint(hdc, TEXT("Ok"), 2, &textSize);
-	btnAccX = this->_objectWndInfo->WindowSize.X - 10 - textSize.cx;
+
+	RECT wndRect;
+	GetClientRect(this->_window, &wndRect);
+	SetWindowPos(this->_window, nullptr, wndRect.left, wndRect.top, p.X + 20, p.Y + 30,SW_NORMAL);
+	btnAccX = wndRect.right - textSize.cx - 20;
+
 
 	_okButton = CreateWindow(
 		TEXT("Button"),
@@ -503,20 +610,21 @@ void ObjectEditorDialog::_createForms()
 		BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE,
 		btnAccX,
 		btnCY,
-		textSize.cx + 5,
-		textSize.cy + 2,
+		textSize.cx + 10,
+		textSize.cy + 4,
 		this->_window,
 		nullptr,
 		this->_hInstance,
 		nullptr
 	);
 
+	
 	GetTextExtentPoint(hdc, TEXT("Cancel"), 7, &textSize);
-	btnAccX -= textSize.cx - 10;
+	btnAccX -= textSize.cx - 30;
 
 	_cancelButton = CreateWindow(
 		TEXT("Button"),
-		TEXT("Ok"),
+		TEXT("Cancel"),
 		WS_CHILD | WS_VISIBLE,
 		btnAccX,
 		btnCY,
@@ -548,7 +656,7 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 	{
 		case 1: //bool
 		{
-			GetTextExtentPointA(hdc, visibleName, strlen(visibleName), &textSize);
+			GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textSize);
 			Point s(textSize.cx, textSize.cy); //the function returns a Engine3DRadSpace::Point and not the "struct POINT" that exists in Win32.
 			s.X += GetSystemMetrics(SM_CXMENUCHECK); //Size of the checkbox in Windows + spacing between the box and the text.
 
@@ -559,7 +667,7 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 		case 9: //std::string
 		case 10: //std::wstring
 		{
-			GetTextExtentPointA(hdc, visibleName, strlen(visibleName), &textSize);
+			GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textSize);
 			Point s(85 + textSize.cx, textSize.cy); // case 2: spacing between label and up down ( 10 ) + UpDown control size (75). 
 			return s;								// case 3: spacing between label and textbox ( 10 ) + textbox control size (75).  
 		}
@@ -691,6 +799,11 @@ HWND ObjectEditorDialog::GetWindow()
 	return this->_window;
 }
 
+Engine3DRadSpace::IObject* ObjectEditorDialog::GetResultObject()
+{
+	return this->_resultObject;
+}
+
 ObjectEditorDialog::~ObjectEditorDialog()
 {
 	delete[] this->_controls;
@@ -730,8 +843,9 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 						if(oed->_resultObject == nullptr)
 						{
 							oed->_resultObject = const_cast<Engine3DRadSpace::IObject*>(oed->_objectWndInfo->CreateEmptyObject());
-							
+
 							int j = 0;
+							int k = 0;
 
 							char* entity_ptr = reinterpret_cast<char*>(oed->_resultObject);
 
@@ -741,7 +855,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 								{
 									case 1:
 									{
-										bool value = static_cast<bool>(SendMessage(oed->_controls[j],BM_GETCHECK,0,0));
+										bool value = static_cast<bool>(SendMessage(oed->_controls[j], BM_GETCHECK, 0, 0));
 										j++;
 
 										const std::type_info& t = oed->_objectWndInfo->Reflection[i]->GetFieldType();
@@ -778,7 +892,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 												if(textLen != 0)
 													value = (uint8_t)std::atoi(upDownValue);
 
-												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr,&value,sizeof(uint8_t));
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(uint8_t));
 												break;
 											}
 											case 2:
@@ -786,8 +900,8 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 												uint16_t value = *static_cast<const uint16_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 												if(textLen != 0)
 													value = (uint16_t)std::atoi(upDownValue);
-												
-												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr,&value,sizeof(uint16_t));
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(uint16_t));
 												break;
 											}
 											case 3:
@@ -818,23 +932,308 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 									}
 									case 3:
 									{
+										std::unordered_map<std::type_index, int> int_map =
+										{
+											{typeid(int8_t),1},
+											{typeid(int16_t),2},
+											{typeid(int32_t),3},
+											{typeid(int64_t),4},
+											{typeid(float),5},
+											{typeid(double),6},
+											{typeid(long double),7}
+										};
 
+										j += 1;
+
+										size_t textLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+
+										char* editText = new char[textLen + 1];
+										memset(editText, 0, textLen + 1);
+
+										switch(int_map[oed->_objectWndInfo->Reflection[i]->GetFieldType()])
+										{
+											case 1:
+											{
+												int8_t value = *static_cast<const int8_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (int8_t)std::atoi(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(int8_t));
+												break;
+											}
+											case 2:
+											{
+												int16_t value = *static_cast<const int16_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (int16_t)std::atoi(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(int16_t));
+												break;
+											}
+											case 3:
+											{
+												int32_t value = *static_cast<const int32_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (int32_t)std::atol(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(int32_t));
+												break;
+											}
+											case 4:
+											{
+												int64_t value = *static_cast<const int64_t*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (int64_t)std::atoll(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(int64_t));
+												break;
+											}
+											case 5:
+											{
+												float value = *static_cast<const float*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = (float)std::atof(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(uint64_t));
+												break;
+											}
+											case 6:
+											#ifdef _MSC_VER // In MSVC, long double = double
+											case 7:
+											#endif
+											{
+												double value = *static_cast<const double*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = std::atof(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(double));
+												break;
+											}
+										#ifndef _MSC_VER //2 Minutes of googling told me that Clang and GCC have sizeof(long double) > sizeof(double)
+											case 7:
+											{
+												long double value = *static_cast<const long double*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+												if(textLen != 0)
+													value = std::atolf(editText);
+
+												oed->_objectWndInfo->Reflection[i]->ForceSetF(entity_ptr, &value, sizeof(long double));
+												break;
+											}
+										#endif
+											default:
+												break;
+										}
+
+										SendMessage(oed->_controls[j], WM_GETTEXT, textLen, reinterpret_cast<LPARAM>(editText));
+
+										delete[] editText;
+										j++;
+										break;
+									}
+									case 4:
+									{
+										Vector2 value = *static_cast<const Vector2*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+
+										j += 1; // skip label
+										size_t xTxtBoxLen = SendMessageA(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* xTxt = new char[xTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, xTxtBoxLen, reinterpret_cast<LPARAM>(xTxt));
+
+										j += 2; //skip first textbox and label
+										size_t yTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* yTxt = new char[yTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, yTxtBoxLen, reinterpret_cast<LPARAM>(yTxt));
+
+										if(xTxtBoxLen != 0 && yTxtBoxLen != 0)
+											value = Vector2((float)std::atof(xTxt), (float)std::atof(yTxt));
+
+										oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, &value, sizeof(Vector2));
+										delete[] xTxt;
+										delete[] yTxt;
+										j++;
+
+										break;
+									}
+									case 5:
+									{
+										Vector3 value = *static_cast<const Vector3*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+
+										j += 1; // skip label
+										//X coord
+										size_t xTxtBoxLen = SendMessageA(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* xTxt = new char[xTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, xTxtBoxLen, reinterpret_cast<LPARAM>(xTxt));
+
+										//Y coordinate
+										j += 2;
+										size_t yTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* yTxt = new char[yTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, yTxtBoxLen, reinterpret_cast<LPARAM>(yTxt));
+
+										// Z coordinate
+										j += 2;
+										size_t zTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* zTxt = new char[zTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, zTxtBoxLen, reinterpret_cast<LPARAM>(zTxt));
+
+										if(xTxtBoxLen != 0 && yTxtBoxLen != 0)
+											value = Vector3(
+												(float)std::atof(xTxt),
+												(float)std::atof(yTxt),
+												(float)std::atof(zTxt)
+											);
+
+										oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, &value, sizeof(Vector3));
+										delete[] xTxt;
+										delete[] yTxt;
+										delete[] zTxt;
+										j++;
+										break;
+									}
+									case 6:
+									{
+										Vector4 value = *static_cast<const Vector4*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+
+										j += 1;
+										//X coord
+										size_t xTxtBoxLen = SendMessageA(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* xTxt = new char[xTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, xTxtBoxLen, reinterpret_cast<LPARAM>(xTxt));
+
+										//Y coordinate
+										j += 2;
+										size_t yTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* yTxt = new char[yTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, yTxtBoxLen, reinterpret_cast<LPARAM>(yTxt));
+
+										// Z coordinate
+										j += 2;
+										size_t zTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* zTxt = new char[zTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, zTxtBoxLen, reinterpret_cast<LPARAM>(zTxt));
+
+										// W coordinate
+										j += 2;
+										size_t wTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* wTxt = new char[wTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, wTxtBoxLen, reinterpret_cast<LPARAM>(wTxt));
+
+										if(xTxtBoxLen != 0 && yTxtBoxLen != 0)
+											value = Vector4(
+												(float)std::atof(xTxt),
+												(float)std::atof(yTxt),
+												(float)std::atof(zTxt),
+												(float)std::atof(wTxt)
+											);
+
+										oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, &value, sizeof(Vector4));
+										delete[] xTxt;
+										delete[] yTxt;
+										delete[] zTxt;
+										delete[] wTxt;
+										j++;
+										break;
+									}
+									case 7:
+									{
+										Quaternion value = *static_cast<const Quaternion*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+
+										j += 1;
+										//X coord
+										size_t xTxtBoxLen = SendMessageA(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* xTxt = new char[xTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, xTxtBoxLen, reinterpret_cast<LPARAM>(xTxt));
+
+										//Y coordinate
+										j += 2;
+										size_t yTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* yTxt = new char[yTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, yTxtBoxLen, reinterpret_cast<LPARAM>(yTxt));
+
+										// Z coordinate
+										j += 2;
+										size_t zTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* zTxt = new char[zTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, zTxtBoxLen, reinterpret_cast<LPARAM>(zTxt));
+
+										if(xTxtBoxLen != 0 && yTxtBoxLen != 0 && zTxtBoxLen != 0)
+											value = Quaternion::CreateFromYawPitchRoll(
+												(float)std::atof(yTxt),
+												(float)std::atof(xTxt),
+												(float)std::atof(zTxt)
+											);
+
+										oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, &value, sizeof(Quaternion));
+										delete[] xTxt;
+										delete[] yTxt;
+										delete[] zTxt;
+										j++;
+										break;
+									}
+									case 8:
+									{
+										ColorShader value = *static_cast<const ColorShader*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
+										j++;
+
+										//color
+										COLORREF colorBox = *static_cast<ColorBox*>(oed->_subclassedControls[k].get());
+										k++;
+
+										// Alpha
+										size_t aTxtBoxLen = SendMessage(oed->_controls[j], WM_GETTEXTLENGTH, 0, 0);
+										char* aTxt = new char[aTxtBoxLen + 1];
+										SendMessageA(oed->_controls[j], WM_GETTEXT, aTxtBoxLen, reinterpret_cast<LPARAM>(aTxt));
+
+										if(aTxtBoxLen != 0)
+											value = ColorShader(
+												GetRValue(colorBox) / 255.f,
+												GetGValue(colorBox) / 255.f,
+												GetBValue(colorBox) / 255.f,
+												(float)std::atof(aTxt)
+											);
+
+										oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, &value, sizeof(ColorShader));
+										delete[] aTxt;
+										j++;
+										break;
+									}
+									case 9:
+									{
+										//Possible memory leak here?
+										std::string* value = new std::string(*static_cast<const std::string*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue())); // cursed
+										j++;
+
+										size_t txtLen = SendMessageA(oed->_controls[j++], WM_GETTEXTLENGTH, 0, 0);
+										char* text = new char[txtLen + 1];
+
+										if(txtLen != 0)
+											oed->_objectWndInfo->Reflection[j]->ForceSetF(entity_ptr, value, sizeof(std::string)); //Avoid 'value' getting destructed.
+
+										delete[] text;
+										j++;
 										break;
 									}
 									default:
 										break;
 								}
-
 							}
+							EndDialog(hwnd, IDOK);
 						}
-						EndDialog(hwnd, IDOK);
-						break;
+					}
+					if(btn == oed->_helpButton)
+					{
+						ShellExecuteA(hwnd, nullptr, oed->_objectWndInfo->HelpURLAddress, nullptr, nullptr, SW_NORMAL);
+					}
+					if(btn == oed->_cancelButton)
+					{
+						EndDialog(hwnd, IDCANCEL);
 					}
 					break;
 				}
 				default:
 					break;
 			}
+			return true;
 		}
 		case WM_CLOSE:
 			EndDialog(hwnd, IDCANCEL);

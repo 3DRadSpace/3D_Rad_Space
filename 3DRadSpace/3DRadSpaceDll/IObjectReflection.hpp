@@ -25,6 +25,8 @@ Engine3DRadSpace::Reflection::Reflect DLLEXPORT &ObjName##GetRefl() \
 	return ObjName##ReflInst; \
 } \
 
+#define __REFLECTOBJECT_FORWARDDECL(ObjName) Engine3DRadSpace::Reflection::Reflect DLLEXPORT &ObjName##GetRefl();
+
 //The things here are used in the Editor's internals for interactive controls - there are not meant for end users!
 
 namespace Engine3DRadSpace
@@ -51,6 +53,7 @@ namespace Engine3DRadSpace
 			virtual const void* GetDefaultValue() const = 0;
 			virtual const char* const GetVisibleName() const = 0;
 			virtual std::ptrdiff_t GetFieldPtr() const = 0;
+			virtual const size_t GetFieldSize() const = 0;
 
 			template<class F,IObjectDerived obj>
 			F* TryGetF(obj* o) const
@@ -90,6 +93,15 @@ namespace Engine3DRadSpace
 				memcpy_s(v, size, o + GetFieldPtr(), size);
 			}
 
+			void ForceSetF(char* o, void* v) const
+			{
+				memcpy_s(o + GetFieldPtr(), GetFieldSize(), v, GetFieldSize());
+			}
+
+			void ForceGetF(char* o, void* v) const
+			{
+				memcpy_s(v, GetFieldSize(), o + GetFieldPtr(),GetFieldSize());
+			}
 			virtual ~ReflectedFieldBase();
 		};
 
@@ -99,10 +111,18 @@ namespace Engine3DRadSpace
 			const std::type_info& FieldType;
 			const T DefaultValue;
 			const char* const VisibleName;
+			const size_t _size;
 		public:
 			std::ptrdiff_t MemIndex; 
 
-			ReflectedField(const char* name, T&& _val) : FieldType(typeid(T)), DefaultValue(_val), VisibleName(name),MemIndex(0) {};
+			ReflectedField(const char* name, T&& _val) : 
+				FieldType(typeid(T)),
+				DefaultValue(_val), 
+				VisibleName(name),
+				MemIndex(0),
+				_size(sizeof(T)) 
+			{
+			};
 
 			const std::type_info& GetFieldType() const override
 			{
@@ -114,13 +134,17 @@ namespace Engine3DRadSpace
 				return &DefaultValue;
 			}
 
-			const char* const GetVisibleName() const
+			const char* const GetVisibleName() const override
 			{
 				return this->VisibleName;
 			}
-			std::ptrdiff_t GetFieldPtr() const
+			std::ptrdiff_t GetFieldPtr() const override
 			{
 				return this->MemIndex;
+			}
+			const size_t GetFieldSize() const override
+			{
+				return this->_size;
 			}
 		};
 
@@ -161,6 +185,35 @@ namespace Engine3DRadSpace
 				{typeid(ColorShader),8},
 				{typeid(std::string),9}
 			};
+
+			inline static std::unordered_map<std::type_index, int> FullTypeDict =
+			{
+				//bool
+				{typeid(bool),1},
+				//signed and unsigned integers
+				{typeid(uint8_t),2},
+				{typeid(uint16_t),3},
+				{typeid(uint32_t),4},
+				{typeid(uint64_t),5},
+
+				{typeid(int8_t),6},
+				{typeid(int16_t),7},
+				{typeid(int32_t),8},
+				{typeid(int64_t),9},
+				//floats
+				{typeid(float),10},
+				{typeid(double),11},
+				{typeid(long double),12},
+
+				{typeid(Vector2),13},
+				{typeid(Vector3),14},
+				{typeid(Vector4),15},
+
+				{typeid(Quaternion),16},
+				{typeid(ColorShader),17},
+				{typeid(std::string),18}
+			};
+
 
 			const size_t Size() const;
 			const ReflectedFieldBase* operator[](size_t index) const;

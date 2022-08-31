@@ -2,6 +2,7 @@
 #include "Libs.hpp"
 #include "resource.h"
 #include "GDIFuncs.hpp"
+#include "ObjectEditorDialog.hpp"
 
 INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
@@ -20,8 +21,8 @@ class AddObjectDialog
 
 	HIMAGELIST _imageList;
 
-	void _createItemForList(__rawstring name,int imageIndex,int groupIndex);
-	void _createGroupForList(wchar_t* name, int index);
+	void _createItemForList(const wchar_t* name,int imageIndex,int groupIndex);
+	void _createGroupForList(const wchar_t* name, int index);
 
 	void _insertImage(HBITMAP icon);
 	void CreateDialogForms();

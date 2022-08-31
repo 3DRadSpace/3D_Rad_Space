@@ -1,6 +1,6 @@
 #include "NumericTextbox.hpp"
 
-WNDPROC NumericTextbox::_editProc;
+WNDPROC NumericTextbox::_editProc = nullptr;
 
 bool _isAllowedFloatCharacter(char c)
 {
@@ -62,7 +62,8 @@ LRESULT __stdcall NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 
 NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, int cx, int cy, const char* defValue)
 {
-	this->_hwnd = CreateWindowA(
+	this->_hwnd = CreateWindowExA(
+		0,
 		"Edit",
 		defValue,
 		WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
@@ -73,7 +74,12 @@ NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, in
 		nullptr
 	);
 	if(this->_hwnd == nullptr) throw std::runtime_error(std::string("Failed to create a numeric textbox with default value: ") + defValue);
-	_editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrA(_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
+
+	if(_editProc == nullptr)
+	{
+		_editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
+		//_editProc = (WNDPROC)SetWindowLongPtrW(_hwnd, GWLP_WNDPROC, (LONG_PTR)NumericTextBoxProc);
+	}
 }
 
 NumericTextbox::operator HWND()

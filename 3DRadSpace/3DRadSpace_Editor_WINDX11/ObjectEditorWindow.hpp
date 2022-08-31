@@ -9,7 +9,18 @@ struct FieldGroup
 
 struct ObjectEditorWindow
 {
-	Engine3DRadSpace::IObject* (* const CreateEmptyObject)();
+	ObjectEditorWindow(
+		std::function<Engine3DRadSpace::IObject* ()> f,
+		Engine3DRadSpace::Reflection::Reflect& refl,
+		Engine3DRadSpace::Point WndSize,
+		const char* helpUrl,
+		const char* helpFile,
+		const char* objName,
+		FieldGroup* groups,
+		size_t numGroups
+	);
+
+	const std::function<Engine3DRadSpace::IObject* ()> CreateEmptyObject;
 
 	const Engine3DRadSpace::Reflection::Reflect& Reflection;
 	const Engine3DRadSpace::Point WindowSize;

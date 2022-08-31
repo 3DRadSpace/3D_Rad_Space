@@ -3,6 +3,8 @@
 #include "Maths.hpp"
 #include "IObjectReflection.hpp"
 
+__REFLECTOBJECT_FORWARDDECL(Camera)
+
 namespace Engine3DRadSpace
 {
 	/// <summary>

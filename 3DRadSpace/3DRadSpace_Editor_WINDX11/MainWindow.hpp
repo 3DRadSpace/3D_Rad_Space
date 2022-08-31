@@ -31,10 +31,10 @@ constexpr int MENU_SWITCH3D2D = 318;
 constexpr int MENU_OPEN_IDE = 319;
 
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
-constexpr const __rawstring __3DRADSPACE_FD_FILTER = TEXT("3DRadSpace Project (*.3drsp)\0*.3drsp");
+constexpr const wchar_t* __3DRADSPACE_FD_FILTER = L"3DRadSpace Project (*.3drsp)\0*.3drsp";
 
-const __rawstring const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
-const __rawstring const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
+const wchar_t* const MainWindowClassName = TEXT("3DRADSPACE_MAIN_WINDOW");
+const wchar_t* const EditorWindowClassName = TEXT("3DRADSPACE_EDITOR_WINDOW");
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -79,7 +79,7 @@ public:
 	HINSTANCE hGlobCurrentInst;
 	static EditorWindow* g_EWindow;
 
-	__stdstring CurrentFile;
+	std::wstring CurrentFile;
 	Vector3 _3DCursor;
 	bool IsSaved, _3DMode;
 
@@ -112,7 +112,7 @@ public:
 	void ResetLoadedProject();
 	bool ShowProjectNotSavedWarning();
 
-	void OpenProject(__rawstring path);
+	void OpenProject(wchar_t* path);
 	void SaveProject();
 	void SaveProjectAs();
 
@@ -120,4 +120,6 @@ public:
 	void ExitWithErrorCode(DWORD err);
 
 	~EditorWindow();
+
+	friend LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

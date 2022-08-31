@@ -8,7 +8,7 @@ LRESULT __stdcall ColorBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 	{
 		case WM_PAINT:
 		{
-			ColorBox cb = *reinterpret_cast<ColorBox*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			ColorBox cb = *reinterpret_cast<ColorBox*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
 
 			PAINTSTRUCT ps;
 			BeginPaint(hwnd, &ps);
@@ -29,10 +29,10 @@ ColorBox::ColorBox(HINSTANCE hInstance, HWND owner, int x, int y, COLORREF defau
 	this->_owner = owner;
 	this->_hinstance = hInstance;
 
-	this->_hwnd = CreateWindowEx(
+	this->_hwnd = CreateWindowExW(
 		WS_EX_CLIENTEDGE | WS_EX_DLGMODALFRAME,
-		TEXT("Static"),
-		TEXT(""),
+		L"Static",
+		L"",
 		SS_NOTIFY | WS_CHILD | WS_VISIBLE,
 		x,
 		y,
@@ -43,7 +43,7 @@ ColorBox::ColorBox(HINSTANCE hInstance, HWND owner, int x, int y, COLORREF defau
 		hInstance,
 		nullptr
 	);
-	ColorBox::StaticProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(this->_hwnd,GWLP_WNDPROC,reinterpret_cast<LONG_PTR>(ColorBoxProc)));
+	ColorBox::StaticProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(this->_hwnd,GWLP_WNDPROC,reinterpret_cast<LONG_PTR>(ColorBoxProc)));
 }
 
 void ColorBox::_setBrush(HBRUSH newColor)

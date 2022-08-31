@@ -1,4 +1,5 @@
 #include "MainWindow.hpp"
+#include <iostream>
 
 
 /// <summary>
@@ -13,11 +14,21 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 
+#if _DEBUG
+	AllocConsole();
+	FILE* new_stdout = nullptr;
+	freopen_s(&new_stdout, "CONOUT$", "w", stdout);
+#endif
+
 	InitializeGDI();
+	std::cout << "Initialized GDI \r\n";
 
 	EditorWindow Editor(hInstance, args);
 	Editor.RenderUpdateLoop();
-
 	DeinitializeGDI();
+
+#if _DEBUG
+	FreeConsole();
+#endif
 	return 0;
 }

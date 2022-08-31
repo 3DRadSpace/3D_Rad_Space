@@ -14,7 +14,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	ShouldExit = false;
 
 	//set current directory
-	__char currPath[MAX_PATH];
+	wchar_t currPath[MAX_PATH];
 	GetModuleFileName(nullptr, currPath, MAX_PATH);
 	PathCchRemoveFileSpec(currPath, MAX_PATH);
 	SetCurrentDirectory(currPath);
@@ -294,18 +294,13 @@ void EditorWindow::RenderUpdateLoop()
 
 LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
+	switch(msg)
 	{
-		case WM_CLOSE:
-		{
-			EditorWindow::g_EWindow->ExitEditor();
-			break;
-		}
 		case WM_PAINT:
 		{
 			PAINTSTRUCT sPaint;
 			HDC h = BeginPaint(EditorWindow::g_EWindow->MainWindow, &sPaint);
-			FillRect(h, &sPaint.rcPaint, CreateSolidBrush(RGB(255,255,255)));
+			FillRect(h, &sPaint.rcPaint, CreateSolidBrush(RGB(255, 255, 255)));
 			EndPaint(EditorWindow::g_EWindow->MainWindow, &sPaint);
 			break;
 		}
@@ -316,7 +311,7 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 		}
 		case WM_COMMAND:
 		{
-			switch (LOWORD(wParam))
+			switch(LOWORD(wParam))
 			{
 				case AID_NEWFILE:
 				case MENU_NEWFILE:
@@ -328,13 +323,13 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case AID_OPENFILE:
 				case MENU_OPENFILE:
 				{
-					if (!EditorWindow::g_EWindow->ShowProjectNotSavedWarning()) break;
-					__char projPath[MAX_PATH];
+					if(!EditorWindow::g_EWindow->ShowProjectNotSavedWarning()) break;
+					wchar_t projPath[MAX_PATH];
 					GetModuleFileName(nullptr, projPath, MAX_PATH);
 					PathCchRemoveFileSpec(projPath, MAX_PATH);
 					lstrcatW(projPath, TEXT("\\Projects\\"));
 
-					__char filePath[MAX_PATH+1];
+					wchar_t filePath[MAX_PATH + 1];
 					memset(filePath, 0, sizeof(filePath));
 
 					OPENFILENAME ofn;
@@ -348,9 +343,9 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					ofn.lpstrFile = filePath;
 					ofn.hInstance = EditorWindow::g_EWindow->hGlobCurrentInst;
 					ofn.nMaxFile = MAX_PATH;
-					if (GetOpenFileName(&ofn))
+					if(GetOpenFileName(&ofn))
 					{
-						filePath[MAX_PATH] = 0; 
+						filePath[MAX_PATH] = 0;
 					}
 					break;
 				}
@@ -412,17 +407,17 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				}
 				case MENU_DOCS:
 				{
-					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com/Documentation/index.html"), nullptr, nullptr, 0);
+					ShellExecute(nullptr, nullptr, TEXT("https://3dradspace.com/Documentation/index.html"), nullptr, nullptr, 0);
 					break;
 				}
 				case MENU_HOMEPAGE:
 				{
-					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com"),nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, TEXT("https://3dradspace.com"), nullptr, nullptr, 0);
 					break;
 				}
 				case MENU_FORUM:
 				{
-					ShellExecute(nullptr, nullptr, TEXT("http://3dradspace.com/Forum"),nullptr,nullptr,0);
+					ShellExecute(nullptr, nullptr, TEXT("https://3dradspace.com/Forum"), nullptr, nullptr, 0);
 					break;
 				}
 				case MENU_GITHUB:
@@ -443,6 +438,16 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				default: break;
 			}
 			break;
+		}
+		case WM_CLOSE:
+		{
+			EditorWindow::g_EWindow->ExitEditor();
+			break;
+		}
+		case WM_QUERYENDSESSION:
+		{
+			EditorWindow::g_EWindow->ExitEditor();
+			return EditorWindow::g_EWindow->ShouldExit ? 1 : 0;
 		}
 		default: break;
 	}
@@ -479,7 +484,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 		case WM_DROPFILES:
 		{
 			HDROP hDrop = (HDROP)wParam;
-			__char file[MAX_PATH];
+			wchar_t file[MAX_PATH];
 			for (size_t i = 0; DragQueryFile(hDrop, i, file, MAX_PATH); i++)
 			{
 				if (EditorWindow::g_EWindow->ShowProjectNotSavedWarning() == true)
@@ -493,7 +498,7 @@ LRESULT __stdcall WindowProcessEditor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 	return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void EditorWindow::OpenProject(__rawstring path)
+void EditorWindow::OpenProject(wchar_t* path)
 {
 	CurrentFile = path;
 	UpdateDiscordRichPresence();
@@ -516,7 +521,7 @@ void EditorWindow::ResizeWindows()
 
 void EditorWindow::CheckUpdate()
 {
-	HRESULT r = URLDownloadToFile(nullptr, TEXT("http://3dradspace.com/UpdateInfo/LastestVersion.txt"), TEXT("version.txt"), BINDF_GETNEWESTVERSION, nullptr);
+	HRESULT r = URLDownloadToFileW(nullptr, L"https://3dradspace.com/UpdateInfo/LastestVersion.txt", L"version.txt", BINDF_GETNEWESTVERSION, nullptr);
 	if (r == INET_E_DOWNLOAD_FAILURE)
 	{
 		int d = MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("Cannot check the lastest version. Check your internet connection."), TEXT("Network error"), MB_RETRYCANCEL | MB_ICONWARNING);
@@ -606,8 +611,7 @@ void EditorWindow::StartDiscordPresence()
 {
 	Discord_Initialize("612682115208708098", nullptr, 1, nullptr);
 
-	DiscordRichPresence drp;
-	memset(&drp, 0, sizeof(DiscordRichPresence));
+	DiscordRichPresence drp{};
 	drp.startTimestamp = time(nullptr);
 	drp.largeImageKey = "mainicon";
 	drp.state = "New project";
@@ -634,7 +638,13 @@ bool EditorWindow::ShowProjectNotSavedWarning()
 {
 	if (!IsSaved)
 	{
-		int m = MessageBox(EditorWindow::g_EWindow->MainWindow, TEXT("This project is not saved. Unsaved progress may be lost. Save project?"), TEXT("Project not saved"), MB_YESNOCANCEL | MB_ICONWARNING);
+		int m = MessageBoxW(
+			EditorWindow::g_EWindow->MainWindow,
+			L"This project is not saved. Unsaved progress may be lost. Save project?",
+			L"Project not saved",
+			MB_YESNOCANCEL | MB_ICONWARNING
+		);
+
 		if (m == IDYES)
 		{
 			SaveProject();
@@ -651,7 +661,7 @@ bool EditorWindow::ShowProjectNotSavedWarning()
 
 void EditorWindow::SaveProject()
 {
-	if (CurrentFile == TEXT("")) SaveProjectAs();
+	if (CurrentFile == L"") SaveProjectAs();
 	else
 	{
 		IsSaved = true;
@@ -660,11 +670,11 @@ void EditorWindow::SaveProject()
 }
 void EditorWindow::SaveProjectAs()
 {
-	if (CurrentFile != TEXT("")) SaveProject();
-	__char filebuffer[MAX_PATH+1];
+	if (CurrentFile != L"") SaveProject();
+	wchar_t filebuffer[MAX_PATH+1];
 	memset(filebuffer, 0, sizeof(filebuffer));
 
-	OPENFILENAME sfn;
+	OPENFILENAMEW sfn;
 	memset(&sfn, 0, sizeof(sfn));
 	sfn.lStructSize = sizeof(sfn);
 	sfn.hwndOwner = MainWindow;
@@ -673,7 +683,7 @@ void EditorWindow::SaveProjectAs()
 	sfn.Flags = OFN_DONTADDTORECENT | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
 	sfn.lpstrFile = filebuffer;
 	sfn.nMaxFile = MAX_PATH;
-	if (GetSaveFileName(&sfn))
+	if (GetSaveFileNameW(&sfn))
 	{
 		filebuffer[MAX_PATH] = 0;
 		CurrentFile = filebuffer;
@@ -750,7 +760,7 @@ Point EditorWindow::GetDisplaySize()
 void __cdecl EditorWindow::LostGDevice()
 {
 	SaveProject();
-	MessageBox(MainWindow, TEXT("Lost the graphics device."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
+	MessageBoxW(MainWindow, L"Lost the graphics device.", L"Fatal error!", MB_OK | MB_ICONERROR);
 	ExitEditor();
 }
 
@@ -762,7 +772,7 @@ void EditorWindow::AddObject(IObject* object)
 	tree_view_item.mask = TVIF_TEXT | TVIF_PARAM;
 	//UNICODE and non-UNICODE compatibility
 #ifdef UNICODE
-	__char objname[255];
+	wchar_t objname[255];
 	size_t num_chr_conv = 0;
 	mbstowcs_s<255>(&num_chr_conv, objname, object->Name.c_str(), 255);
 	tree_view_item.pszText = objname;
