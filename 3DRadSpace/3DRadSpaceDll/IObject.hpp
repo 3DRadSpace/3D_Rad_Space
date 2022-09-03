@@ -17,7 +17,7 @@ namespace Engine3DRadSpace
 	{
 	public:
 		//Main constructor.
-		IObject(Game* game,const std::string &name = "Empty object", bool enabled = false, Vector3 pos = { 0,0,0 }, Quaternion rot = { 0,0,0,1 }, Vector3 cen = { 0,0,0 }, Vector3 scal = { 1,1,1 },const std::string &resource = "") :
+		IObject(const std::string &name = "Empty object", bool enabled = false, Vector3 pos = { 0,0,0 }, Quaternion rot = { 0,0,0,1 }, Vector3 cen = { 0,0,0 }, Vector3 scal = { 1,1,1 },const std::string &resource = "") :
 			Name(name),
 			Enabled(enabled),
 			Position(pos),
@@ -25,19 +25,7 @@ namespace Engine3DRadSpace
 			Center(cen),
 			Scale(scal),
 			Resource(resource),
-			game(game) 
-		{
-		};
-
-		IObject() :
-			Name(""),
-			Enabled(false),
-			Position(),
-			Rotation(),
-			Center(),
-			Scale(),
-			Resource(""),
-			game(nullptr)
+			game(nullptr) 
 		{
 		};
 
@@ -88,6 +76,11 @@ namespace Engine3DRadSpace
 		virtual Matrix GetTranslation() = 0;
 
 		/// <summary>
+		/// Loads textures, models, etc. Called after Validate().
+		/// </summary>
+		virtual void Load() = 0;
+
+		/// <summary>
 		/// Does updating logic like keyboard input and physics.
 		/// </summary>
 		/// <param name="dt">Time passed since the last update call.</param>
@@ -104,7 +97,15 @@ namespace Engine3DRadSpace
 		/// </summary>
 		virtual void Enable() = 0;
 
-		~IObject();
+		/// <summary>
+		/// Validates the object. Checks for errors after the object was constructed.
+		/// </summary>
+		/// <returns></returns>
+		virtual bool Validate() = 0;
+
+		void SetGDHandles(Game* g);
+
+		virtual ~IObject();
 	};
 }
 #pragma warning( pop )

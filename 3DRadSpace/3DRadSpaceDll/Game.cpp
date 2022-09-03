@@ -30,7 +30,38 @@ Engine3DRadSpace::Game::Game(HWND window)
 	swChDesc.Flags = 0;
 	swChDesc.OutputWindow = window;
 
-	HRESULT r = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &swChDesc, &_swapchain, &this->_gdev, nullptr, &this->_gcontext);
+#if _DEBUG
+	HRESULT r = D3D11CreateDeviceAndSwapChain(
+		nullptr,
+		D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE,
+		nullptr,
+		D3D11_CREATE_DEVICE_DEBUG,
+		nullptr,
+		0,
+		D3D11_SDK_VERSION,
+		&swChDesc,
+		&_swapchain,
+		&this->_gdev,
+		nullptr,
+		&this->_gcontext
+	);
+#endif
+#ifndef  _DEBUG
+	HRESULT r = D3D11CreateDeviceAndSwapChain(
+		nullptr, 
+		D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE, 
+		nullptr, 
+		0, 
+		nullptr,
+		0,
+		D3D11_SDK_VERSION,
+		&swChDesc, 
+		&_swapchain,
+		&this->_gdev,
+		nullptr,
+		&this->_gcontext
+	);
+#endif // ! _DEBUG
 
 	if (SUCCEEDED(r)) this->_dc = true;
 	else

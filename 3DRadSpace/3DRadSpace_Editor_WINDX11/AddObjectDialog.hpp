@@ -27,6 +27,8 @@ class AddObjectDialog
 	void _insertImage(HBITMAP icon);
 	void CreateDialogForms();
 
+	Engine3DRadSpace::IObject* _resultObject;
+
 public:
 	static AddObjectDialog* GlobalInstance;
 
@@ -37,6 +39,8 @@ public:
 	HWND GetListView();
 
 	void Resize();
+
+	Engine3DRadSpace::IObject* GetResultObject();
 
 	~AddObjectDialog();
 

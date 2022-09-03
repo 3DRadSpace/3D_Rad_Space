@@ -12,25 +12,33 @@ public:
 	Vector4 Value4;
 	ColorShader Value5;
 
-	TestObject() : IObject(nullptr),Value1(0),Value2(0),Value3(0,0),Value4(0,0,0,0),Value5(0,0,0,1) {};
+	TestObject() : IObject(),Value1(0),Value2(0),Value3(0,0),Value4(0,0,0,0),Value5(0,0,0,1) {};
 
 	Matrix GetTranslation() override
 	{
 		return Matrix::Matrix();
 	}
-	void Update(float dt) override
+
+	void Load() override
 	{
 
+	}
+
+	void Update(float dt) override
+	{
 	}
 
 	virtual void Draw(float dt, Game* g) override
 	{
-
 	}
 
 	void Enable() override
 	{
+	}
 
+	bool Validate() override
+	{
+		return true;
 	}
 };
 

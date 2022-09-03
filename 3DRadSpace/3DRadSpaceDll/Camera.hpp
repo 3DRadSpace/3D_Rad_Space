@@ -48,11 +48,30 @@ namespace Engine3DRadSpace
 		/// <param name="aspect_ratio">The width and height of the screen divided.</param>
 		/// <param name="npd">Viewing frustum near plane distance closest to the camera position.</param>
 		/// <param name="fpd">Viewing frustum far plane distance furthest from the camera position.</param>
-		Camera(Game* g, const std::string& name, bool enabled, const Vector3& pos, const Quaternion& rot, const Vector3& normal, float fov, float aspect_ratio, float npd, float fpd);
+		Camera(
+				const std::string& name = "Camera",
+				bool enabled = true,
+				const Vector3& pos = Vector3::Zero(),
+				const Quaternion& rot = Quaternion(),
+				const Vector3& normal = Vector3::UnitY(),
+				float fov = Engine3DRadSpace::Math::ToRadians(65.0f),
+				float aspect_ratio = 4.f / 3.f,
+				float npd = 0.01f,
+				float fpd = 500):
+			IObject(name,enabled,pos,rot),
+			Normal(normal),
+			FOV(fov),
+			AspectRatio(aspect_ratio),
+			NearPlaneDistance(npd),
+			FarPlaneDistance(fpd),
+			lookat(Vector3::UnitZ() * rot)
+		{
+		
+		}
 		/// <summary>
 		/// Default constructor used to maintain the vtables.
 		/// </summary>
-		Camera();
+		//Camera();
 
 		/// <summary>
 		/// Gets the 3D world position expressed as a 4x4 matrix.
@@ -77,11 +96,15 @@ namespace Engine3DRadSpace
 		void Enable() override;
 
 		/// <summary>
-		/// Writes the camera's data to a file buffer.
+		/// Doesn't load anything.
 		/// </summary>
-		/// <param name="s">The camera data buffer lenght.</param>
+		void Load() override;
+
+		/// <summary>
+		/// Validates the look-at vector.
+		/// </summary>
 		/// <returns></returns>
-		char* WriteToFileBuffer(size_t& s);
+		bool Validate() override;
 
 		/// <summary>
 		/// Sets the look direction using a quaternion.

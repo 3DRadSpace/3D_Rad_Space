@@ -168,9 +168,6 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	StartDiscordPresence();
 
 	ptrMouse->SetWindow(RenderWindow);
-
-	//Camera c(game.get(), "Test camera object", true, Vector3::Zero(), { 0,0,0,1 },Vector3::UnitY(),Math::ToRadians(65),800.0f/600,500,0.1f);
-	//AddObject(&c);
 }
 
 void EditorWindow::RenderUpdateLoop()
@@ -376,7 +373,11 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 				case MENU_ADDOBJ:
 				{
 					AddObjectDialog addobjectd(EditorWindow::g_EWindow->hGlobCurrentInst);
-					addobjectd.ShowDialog(EditorWindow::g_EWindow->MainWindow);
+					int r = addobjectd.ShowDialog(EditorWindow::g_EWindow->MainWindow);
+					if(r == IDOK)
+					{
+						EditorWindow::g_EWindow->AddObject(addobjectd.GetResultObject());
+					}
 					break;
 				}
 				case MENU_ADDPROJECT:
@@ -767,6 +768,8 @@ void __cdecl EditorWindow::LostGDevice()
 //We need an array for the tree view items apparently
 void EditorWindow::AddObject(IObject* object)
 {
+	if(object == nullptr)
+		return;
 	TVITEM tree_view_item;
 	memset(&tree_view_item, 0, sizeof(TVITEM));
 	tree_view_item.mask = TVIF_TEXT | TVIF_PARAM;
@@ -794,7 +797,7 @@ void EditorWindow::AddObject(IObject* object)
 
 	TreeView_InsertItem(ObjectsListBox, &tv_ins);
 
-	//add CurrItem to the list of handles
+	this->SceneObjects.push_back(object);
 }
 
 void EditorWindow::RemoveObject(size_t index)
@@ -805,9 +808,11 @@ void EditorWindow::RemoveObject(size_t index)
 void EditorWindow::RefresObjectList()
 {
 	TreeView_DeleteAllItems(ObjectsListBox);
-	for (size_t i = 0; i < IObjectList.size(); i++)
+	this->SceneObjects.clear();
+
+	for (size_t i = 0; i < SceneObjects.size(); i++)
 	{
-		AddObject(IObjectList[i]);
+		AddObject(SceneObjects[i]);
 	}
 }
 
@@ -839,4 +844,9 @@ EditorWindow::~EditorWindow()
 	delete AxisPrimitive.release();
 	delete BasicEffect.release();
 	delete CommonStates.release();
+
+	for(size_t i = 0; i < this->SceneObjects.size(); i++)
+	{
+		delete SceneObjects[i];
+	}
 }

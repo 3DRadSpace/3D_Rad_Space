@@ -66,8 +66,6 @@ class EditorWindow
 
 	std::unique_ptr<StencilState> stencil;
 
-	std::vector<IObject*> IObjectList;
-
 	Point resolution;
 	Point screenCenter;
 public:
@@ -86,6 +84,8 @@ public:
 	HACCEL AcceleratorTable; //Keyboard shortcuts
 
 	DWORD errorcode;
+
+	std::vector<Engine3DRadSpace::IObject*> SceneObjects;
 
 	void RaiseInitializationError(DWORD err);
 	void RenderUpdateLoop();

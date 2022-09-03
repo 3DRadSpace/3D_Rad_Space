@@ -75,11 +75,7 @@ NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, in
 	);
 	if(this->_hwnd == nullptr) throw std::runtime_error(std::string("Failed to create a numeric textbox with default value: ") + defValue);
 
-	if(_editProc == nullptr)
-	{
-		_editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
-		//_editProc = (WNDPROC)SetWindowLongPtrW(_hwnd, GWLP_WNDPROC, (LONG_PTR)NumericTextBoxProc);
-	}
+	_editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
 }
 
 NumericTextbox::operator HWND()

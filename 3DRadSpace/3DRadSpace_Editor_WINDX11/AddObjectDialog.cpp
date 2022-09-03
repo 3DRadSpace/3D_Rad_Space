@@ -1,4 +1,5 @@
 #include "AddObjectDialog.hpp"
+#include <iostream>
 
 using namespace Engine3DRadSpace;
 
@@ -73,6 +74,7 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
 					
 						if(item->iItem != -1)
 						{
+							int objectsCount = ListView_GetItemCount(listview);
 							int index = 21 - item->iItem;
 							ObjectEditorDialog oed(
 								AddObjectDialog::GlobalInstance->_hInstance,
@@ -81,10 +83,12 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
 								nullptr
 							);
 							int r = oed.ShowDialog();
-							EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), reinterpret_cast<INT_PTR>(oed.GetResultObject()));
-							
+							if(r == IDOK)
+							{
+								AddObjectDialog::GlobalInstance->_resultObject = oed.GetResultObject();
+								EndDialog(AddObjectDialog::GlobalInstance->GetWindow(), IDOK);
+							}
 						}
-
 						return true;
 					}
 					default: break;
@@ -288,6 +292,11 @@ void AddObjectDialog::Resize()
 	int w = r.right - r.left;
 	int h = r.bottom - r.top;
 	SetWindowPos(this->_listView, nullptr, 0, 0, w, h, SWP_SHOWWINDOW);
+}
+
+Engine3DRadSpace::IObject* AddObjectDialog::GetResultObject()
+{
+	return this->_resultObject;
 }
 
 AddObjectDialog::~AddObjectDialog()

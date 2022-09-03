@@ -22,16 +22,16 @@ namespace Engine3DRadSpace
 		/// <param name="c">Skinmesh rotation pivot(center)</param>
 		/// <param name="s">Skinmesh scale</param>
 		/// <param name="path">Path to the skinmesh 3D model</param>
-		Skinmesh(Game* game, const std::string& name, bool enabled, const Vector3& pos, const Quaternion& q, const Vector3& c, const Vector3& s, const std::string& path) :
-			IObject(game, name, enabled, pos, q, c, s, path), model(new Model3D(game, path.c_str())) {};
+		Skinmesh( const std::string& name, bool enabled, const Vector3& pos, const Quaternion& q, const Vector3& c, const Vector3& s, const std::string& path) :
+			IObject( name, enabled, pos, q, c, s, path), model(nullptr) {};
 
 		/// <summary>
 		/// Constructs a skinmesh with default position, scaling, rotation and rotation pivot.
 		/// </summary>
 		/// <param name="game">Handle to the graphics handles</param>
 		/// <param name="path">Path fo the 3D model</param>
-		Skinmesh(Game* game, const std::string& path) :
-			IObject(game, "Skinmesh", true, { 0,0,0 }, { 0,0,0,1 }, { 0,0,0 }, { 1,1,1 }, path), model(new Model3D(game, path.c_str())) {}
+		Skinmesh( const std::string& path) :
+			IObject( "Skinmesh", true, { 0,0,0 }, { 0,0,0,1 }, { 0,0,0 }, { 1,1,1 }, path), model(nullptr) {}
 
 		/// <summary>
 		/// Gets the linear transformation used by this skinmesh object
