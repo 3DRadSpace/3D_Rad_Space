@@ -15,8 +15,7 @@ class ObjectEditorDialog
 	LPWORD _templateMemIndex;
 	ObjectEditorWindow* _objectWndInfo;
 	static ObjectEditorDialog* _globalInstance;
-	HWND* _controls;
-	size_t numControls;
+	std::vector<HWND> _controls;
 	std::vector<std::unique_ptr<ISubclassedControl>> _subclassedControls;
 	HWND _okButton;
 	HWND _cancelButton;
@@ -26,7 +25,6 @@ class ObjectEditorDialog
 	void _createForms();
 	Engine3DRadSpace::Point _calculateControlSize(const size_t index);
 	Engine3DRadSpace::Point _calculateGroupSize(size_t index);
-	size_t _countControls();
 
 public:
 	ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEditorWindow* objectType, Engine3DRadSpace::IObject* obj);

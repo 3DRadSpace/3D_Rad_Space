@@ -123,7 +123,20 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	Create a listbox.
 	*/
 
-	ObjectsListBox = CreateWindowEx(0,TEXT("SysTreeView32"), TEXT("not used"), WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES | TVS_CHECKBOXES, 0, 0, 150, 600, MainWindow, nullptr, hInstance, nullptr);
+	ObjectsListBox = CreateWindowExW(
+		0,
+		L"SysTreeView32",
+		L"not used",
+		WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES | TVS_CHECKBOXES,
+		0, 
+		0,
+		150,
+		600,
+		MainWindow,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 
 	//Show windows
 	ShowWindow(MainWindow, SW_MAXIMIZE);
@@ -168,6 +181,14 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	StartDiscordPresence();
 
 	ptrMouse->SetWindow(RenderWindow);
+}
+
+void EditorWindow::deallocateSceneObjects()
+{
+	for(size_t i = 0; i < this->SceneObjects.size(); i++)
+	{
+		delete SceneObjects[i];
+	}
 }
 
 void EditorWindow::RenderUpdateLoop()
@@ -436,7 +457,59 @@ LRESULT __stdcall WindowProcessMain(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					//Open a dialog asking for the default IDE
 					break;
 				}
+				case POPUP_EDITOBJ:
+				{
+					HWND treeview = EditorWindow::g_EWindow->ObjectsListBox;
+
+					HTREEITEM selectedItem = TreeView_GetSelection(treeview);
+					
+					wchar_t itemName[100];
+					memset(itemName, 0, 100);
+
+					if(selectedItem == nullptr) return 1;
+					TVITEMW item{};
+					item.hItem = selectedItem;
+					item.mask = TVIF_TEXT;
+					item.cchTextMax = 100;
+					item.pszText = itemName;
+
+					if(TreeView_GetItem(treeview,&item))
+					{
+						/*
+						ObjectEditorDialog oed(
+							EditorWindow::g_EWindow->hGlobCurrentInst,
+							EditorWindow::g_EWindow->MainWindow,
+							EditorWindow::g_EWindow->SceneObjects[]
+						);*/
+					}
+
+
+					break;
+				}
 				default: break;
+			}
+			break;
+		}
+		case WM_NOTIFY:
+		{
+			LPNMHDR lpnmh = (LPNMHDR)lParam;
+
+			switch(lpnmh->code)
+			{
+				case NM_RCLICK:
+				{
+					HMENU objPopup = CreatePopupMenu();
+					AppendMenuW(objPopup, MF_BYPOSITION, POPUP_EDITOBJ, L"Edit object");
+					AppendMenuW(objPopup, MF_BYPOSITION, POPUP_EDITOBJ, L"Delete object");
+
+					POINT m;
+					GetCursorPos(&m);
+
+					TrackPopupMenu(objPopup, 0, m.x, m.y, 0, hwnd, nullptr);
+					return 1;
+				}
+				default:
+					break;
 			}
 			break;
 		}
@@ -633,6 +706,8 @@ void EditorWindow::ResetLoadedProject()
 	drp.state = "New project";
 	Discord_UpdatePresence(&drp);
 	IsSaved = true;
+
+	SceneObjects.clear();
 }
 
 bool EditorWindow::ShowProjectNotSavedWarning()
@@ -791,11 +866,13 @@ void EditorWindow::AddObject(IObject* object)
 	tv_ins.hInsertAfter = nullptr; //TODO: variable with the last element. we need a global variable
 	tv_ins.hParent = TVI_ROOT;
 	tv_ins.item = tree_view_item;
+	tv_ins.item.lParam = SceneObjects.size();
 
 	//HTREEITEM CurrItem = (HTREEITEM)SendMessage(ObjectsListBox, TVM_INSERTITEM,
 	//	0, (LPARAM)(LPTVINSERTSTRUCT)&tv_ins);
 
-	TreeView_InsertItem(ObjectsListBox, &tv_ins);
+	//TreeView_InsertItem(ObjectsListBox, &tv_ins);
+	SendMessageW(ObjectsListBox, TVM_INSERTITEMW, 0, reinterpret_cast<LPARAM>(& tv_ins));
 
 	this->SceneObjects.push_back(object);
 }
@@ -803,12 +880,12 @@ void EditorWindow::AddObject(IObject* object)
 void EditorWindow::RemoveObject(size_t index)
 {
 	SendMessage(ObjectsListBox, TVM_DELETEITEM,0x0, index); // TODO CHANGE 420 to an element in the array
+	SceneObjects.erase(SceneObjects.begin() + index);
 }
 
 void EditorWindow::RefresObjectList()
 {
 	TreeView_DeleteAllItems(ObjectsListBox);
-	this->SceneObjects.clear();
 
 	for (size_t i = 0; i < SceneObjects.size(); i++)
 	{
@@ -839,14 +916,9 @@ EditorWindow::~EditorWindow()
 	debugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 	debugDev->Release();
 #endif
-
+	deallocateSceneObjects();
 	colorured_line_inputlayout->Release();
 	delete AxisPrimitive.release();
 	delete BasicEffect.release();
 	delete CommonStates.release();
-
-	for(size_t i = 0; i < this->SceneObjects.size(); i++)
-	{
-		delete SceneObjects[i];
-	}
 }

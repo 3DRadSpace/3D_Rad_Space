@@ -10,8 +10,7 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 	_window(nullptr),
 	_owner(owner),
 	_objectWndInfo(objectType),
-	_controls(nullptr),
-	numControls(0),
+	_controls(),
 	_subclassedControls(),
 	_okButton(nullptr),
 	_cancelButton(nullptr),
@@ -45,7 +44,15 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 
 	LPWSTR title = (LPWSTR)_templateMemIndex;
 
-	int titleLen = MultiByteToWideChar(CP_ACP, 0, titleText.str().c_str(), -1, title, (int)titleText.str().length() + 1);
+	int titleLen = MultiByteToWideChar(
+		CP_ACP,
+		0,
+		titleText.str().c_str(),
+		-1,
+		title,
+		(int)titleText.str().length() + 1
+	);
+
 	DWORD err = GetLastError();
 	_templateMemIndex += titleLen;
 	*_templateMemIndex++ = 0; //No elements
@@ -53,9 +60,6 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 	GlobalUnlock(this->_hGlobal);
 
 	this->_globalInstance = this;
-
-	this->numControls = this->_countControls();
-	this->_controls = new HWND[this->numControls];
 
 	_globalInstance = this;
 }
@@ -83,7 +87,7 @@ void ObjectEditorDialog::_createForms()
 		Point groupSize = _calculateGroupSize(j);
 		if(this->_objectWndInfo->Groups[j].Name != std::string(""))
 		{
-			_controls[i++] = CreateWindowA(
+			_controls.push_back( CreateWindowA(
 				"Button",
 				this->_objectWndInfo->Groups[j].Name,
 				BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
@@ -95,7 +99,7 @@ void ObjectEditorDialog::_createForms()
 				nullptr,
 				this->_hInstance,
 				nullptr
-			);
+			));
 		}
 		p.Y += groupSize.Y;
 	}
@@ -139,17 +143,17 @@ void ObjectEditorDialog::_createForms()
 			Vector2 defVal = *static_cast<const Vector2*>(defaultValue);
 
 			//X label and textbox
-			_controls[i++] = CreateLabel(
+			_controls.push_back(CreateLabel(
 				this->_window,
 				this->_hInstance,
 				p.X + 20,
 				p.Y + 20,
 				"X",
 				textLen
-			);
+			));
 			accX += textLen.cx + 30;
 
-			_controls[i++] = NumericTextbox(
+			_controls.push_back( NumericTextbox(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
@@ -157,21 +161,21 @@ void ObjectEditorDialog::_createForms()
 				75,
 				textLen.cy,
 				std::to_string(defVal.X).c_str()
-			);
+			));
 			accX += 75;
 
 			//Y label and textbox
-			_controls[i++] = CreateLabel(
+			_controls.push_back( CreateLabel(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
 				p.Y + 20,
 				"Y",
 				textLen
-			);
+			));
 			accX += textLen.cx + 10;
 
-			_controls[i++] = NumericTextbox(
+			_controls.push_back( NumericTextbox(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
@@ -179,7 +183,7 @@ void ObjectEditorDialog::_createForms()
 				75,
 				textLen.cy,
 				std::to_string(defVal.Y).c_str()
-			);
+			));
 			accX += 85; // 75 + 10
 		};
 
@@ -191,17 +195,17 @@ void ObjectEditorDialog::_createForms()
 			Vector3 defVal = *static_cast<const Vector3*>(defaultValue);
 
 			//Z label and textbox
-			_controls[i++] = CreateLabel(
+			_controls.push_back(CreateLabel(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
 				p.Y + 20,
 				"Z",
 				textLen
-			);
+			));
 			accX += textLen.cx + 10;
 
-			_controls[i++] = NumericTextbox(
+			_controls.push_back(NumericTextbox(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
@@ -209,7 +213,7 @@ void ObjectEditorDialog::_createForms()
 				75,
 				textLen.cy,
 				std::to_string(defVal.Z).c_str()
-			);
+			));
 			accX += 85; // 75 + 10
 		};
 
@@ -221,17 +225,17 @@ void ObjectEditorDialog::_createForms()
 			Vector4 defVal = *static_cast<const Vector4*>(defaultValue);
 
 			//Z label and textbox
-			_controls[i++] = CreateLabel(
+			_controls.push_back(CreateLabel(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
 				p.Y + 20,
 				"W",
 				textLen
-			);
+			));
 			accX += textLen.cx + 10;
 
-			_controls[i++] = NumericTextbox(
+			_controls.push_back(NumericTextbox(
 				this->_window,
 				this->_hInstance,
 				p.X + accX,
@@ -239,7 +243,7 @@ void ObjectEditorDialog::_createForms()
 				75,
 				textLen.cy,
 				std::to_string(defVal.W).c_str()
-			);
+			));
 			accX += 85; // 75 + 10
 		};
 
@@ -247,7 +251,7 @@ void ObjectEditorDialog::_createForms()
 		{
 			SIZE textLen{};
 
-			_controls[i++] = CreateWindowA(
+			_controls.push_back(CreateWindowA(
 				"EDIT",
 				visibleName,
 				ES_NUMBER | ES_AUTOHSCROLL | WS_CHILD | WS_VISIBLE | WS_BORDER,
@@ -259,11 +263,11 @@ void ObjectEditorDialog::_createForms()
 				nullptr,
 				this->_hInstance,
 				nullptr
-			);
+			));
 
 			accX += textLen.cx + 10;
 
-			_controls[i++] = CreateWindowA(
+			HWND updown = CreateWindowA(
 				UPDOWN_CLASSA,
 				"",
 				UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_ALIGNRIGHT | WS_VISIBLE | WS_CHILD, //The previous edit element is going to be set as the "buddy"
@@ -274,7 +278,8 @@ void ObjectEditorDialog::_createForms()
 				nullptr
 			);
 
-			SendMessage(_controls[i - 1], UDM_GETRANGE, max, min);
+			_controls.push_back(updown);
+			SendMessage(updown, UDM_GETRANGE, max, min);
 			//SendMessage(_controls[i - 1], UDM_SETPOS, 0, std::atoi((char*)defaultValue));
 
 			accX += 75;
@@ -283,11 +288,11 @@ void ObjectEditorDialog::_createForms()
 
 		switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[this->_objectWndInfo->Reflection[j]->GetFieldType()])
 		{
-			case 1:
+			case Engine3DRadSpace::Reflection::FieldID::Bool:
 			{
 				GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textLen);
 
-				HWND checkbox = _controls[i++] = CreateWindowA("Button",
+				HWND checkbox = CreateWindowA("Button",
 					visibleName,
 					BS_AUTOCHECKBOX | WS_CHILD | WS_VISIBLE,
 					p.X,
@@ -299,6 +304,7 @@ void ObjectEditorDialog::_createForms()
 					this->_hInstance,
 					nullptr
 				);
+				_controls.push_back(checkbox);
 
 				bool value = *static_cast<const bool*>(this->_objectWndInfo->Reflection[j]->GetDefaultValue());
 				SendMessage(checkbox, BM_SETCHECK, value ? BST_CHECKED : BST_UNCHECKED , 0);
@@ -308,18 +314,21 @@ void ObjectEditorDialog::_createForms()
 
 				break;
 			}
-			case 2:
+			case Engine3DRadSpace::Reflection::FieldID::U8:
+			case Engine3DRadSpace::Reflection::FieldID::U16:
+			case Engine3DRadSpace::Reflection::FieldID::U32:
+			case Engine3DRadSpace::Reflection::FieldID::U64:
 			{
 				int accX = 0;
 
-				_controls[i++] = CreateLabel(
+				_controls.push_back(CreateLabel(
 					this->_window,
 					this->_hInstance,
 					p.X,
 					p.Y,
 					visibleName,
 					textLen
-				);
+				));
 
 				CreateUpDown(i, p, accX);
 				p.Y += textLen.cy + 10;
@@ -328,16 +337,22 @@ void ObjectEditorDialog::_createForms()
 				break;
 			}
 
-			case 3:
+			case Engine3DRadSpace::Reflection::FieldID::I8:
+			case Engine3DRadSpace::Reflection::FieldID::I16:
+			case Engine3DRadSpace::Reflection::FieldID::I32:
+			case Engine3DRadSpace::Reflection::FieldID::I64:
+			case Engine3DRadSpace::Reflection::FieldID::Float:
+			case Engine3DRadSpace::Reflection::FieldID::Double:
+			case Engine3DRadSpace::Reflection::FieldID::LDouble:
 			{
-				_controls[i++] = CreateLabel(
+				_controls.push_back(CreateLabel(
 					this->_window,
 					this->_hInstance,
 					p.X,
 					p.Y,
 					visibleName,
 					textLen
-				);
+				));
 
 				std::string value("");
 
@@ -379,7 +394,7 @@ void ObjectEditorDialog::_createForms()
 						break;
 				}
 
-				_controls[i++] = NumericTextbox(
+				_controls.push_back(NumericTextbox(
 					this->_window,
 					this->_hInstance,
 					p.X + textLen.cx + 10,
@@ -387,20 +402,20 @@ void ObjectEditorDialog::_createForms()
 					75,
 					textLen.cy,
 					value.c_str()
-				);
+				));
 
 				p.Y += textLen.cy + 10;
 				_update_mX(mX, p.X + textLen.cx + 20);
 				break;
 			}
 			
-			case 4:
+			case Engine3DRadSpace::Reflection::FieldID::Vector2:
 			{
 				int accX = 0;
 				CreateVector2DControls(i, p,accX);
 
 				//groupbox
-				_controls[i++] = CreateWindowA(
+				_controls.push_back(CreateWindowA(
 					"Button",
 					visibleName,
 					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
@@ -412,18 +427,18 @@ void ObjectEditorDialog::_createForms()
 					nullptr,
 					this->_hInstance,
 					nullptr
-				);
+				));
 
 				_update_mX(mX, p.X + accX + 20);
 				p.Y += textLen.cy + 50;
 				break;
 			}
-			case 5:
+			case Engine3DRadSpace::Reflection::FieldID::Vector3:
 			{
 				int accX = 0;
 				CreateVector3DControls(i, p, accX);
 
-				_controls[i++] = CreateWindowA(
+				_controls.push_back(CreateWindowA(
 					"Button",
 					visibleName,
 					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
@@ -435,18 +450,18 @@ void ObjectEditorDialog::_createForms()
 					nullptr,
 					this->_hInstance,
 					nullptr
-				);
+				));
 
 				_update_mX(mX, p.X + accX + 20);
 				p.Y += textLen.cy + 50;
 				break;
 			}
-			case 6: //Vector4
+			case Engine3DRadSpace::Reflection::FieldID::Vector4: //Vector4
 			{
 				int accX = 0;
 				CreateVector4DControls(i, p, accX);
 
-				_controls[i++] = CreateWindowA(
+				_controls.push_back(CreateWindowA(
 					"Button",
 					visibleName,
 					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
@@ -458,18 +473,18 @@ void ObjectEditorDialog::_createForms()
 					nullptr,
 					this->_hInstance,
 					nullptr
-				);
+				));
 
 				_update_mX(mX, p.X + accX + 10);
 				p.Y += textLen.cy + 50;
 				break;
 			}
-			case 7:
+			case Engine3DRadSpace::Reflection::FieldID::Quaternion:
 			{
 				int accX = 0;
 				CreateVector3DControls(i, p, accX);
 
-				_controls[i++] = CreateWindowA(
+				_controls.push_back(CreateWindowA(
 					"Button",
 					visibleName,
 					BS_GROUPBOX | WS_CHILD | WS_VISIBLE,
@@ -481,24 +496,24 @@ void ObjectEditorDialog::_createForms()
 					nullptr,
 					this->_hInstance,
 					nullptr
-				);
+				));
 
 				_update_mX(mX, p.X + accX + 20);
 				p.Y += textLen.cy + 50;
 				break;
 			}
-			case 8:
+			case Engine3DRadSpace::Reflection::FieldID::RGBAColorNorm:
 			{
 				int accX = 0;
 
-				_controls[i++] = CreateLabel(
+				_controls.push_back(CreateLabel(
 					this->_owner,
 					this->_hInstance,
 					p.X,
 					p.Y,
 					"Color",
 					textLen
-				);
+				));
 				accX += textLen.cx + 10;
 
 				this->_subclassedControls.push_back(std::unique_ptr<ISubclassedControl>(static_cast<ISubclassedControl*>(new ColorBox(
@@ -510,18 +525,18 @@ void ObjectEditorDialog::_createForms()
 					textLen.cy,
 					textLen.cy
 				))));
-				_controls[i++] = *this->_subclassedControls[this->_subclassedControls.size() - 1].get();
+				_controls.push_back(*this->_subclassedControls[this->_subclassedControls.size() - 1].get());
 
 				accX += textLen.cx + 10;
 
-				_controls[i++] = CreateLabel(
+				_controls.push_back(CreateLabel(
 					this->_owner,
 					this->_hInstance,
 					p.X + accX,
 					p.Y,
 					"Alpha",
 					textLen
-				);
+				));
 				accX += textLen.cx + 10;
 
 				CreateUpDown(i, p, accX, 255, 0);
@@ -532,18 +547,18 @@ void ObjectEditorDialog::_createForms()
 				break;
 			}
 			
-			case 9:
+			case Engine3DRadSpace::Reflection::FieldID::String:
 			{
-				_controls[i++] = CreateLabel(
+				_controls.push_back(CreateLabel(
 					this->_window,
 					this->_hInstance,
 					p.X,
 					p.Y,
 					visibleName,
 					textLen
-				);
+				));
 
-				_controls[i++] = CreateWindowA(
+				_controls.push_back(CreateWindowA(
 					"Edit",
 					static_cast<std::string*>(defaultValue)->c_str(),
 					ES_AUTOHSCROLL | WS_VISIBLE | WS_CHILD,
@@ -555,7 +570,7 @@ void ObjectEditorDialog::_createForms()
 					nullptr,
 					this->_hInstance,
 					nullptr
-				);
+				));
 				
 				_update_mX(mX, p.X + textLen.cx + 20);
 				p.Y += textLen.cy + 10;
@@ -658,7 +673,7 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 
 	switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[t])
 	{
-		case 1: //bool
+		case Engine3DRadSpace::Reflection::FieldID::Bool: //bool
 		{
 			GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textSize);
 			Point s(textSize.cx, textSize.cy); //the function returns a Engine3DRadSpace::Point and not the "struct POINT" that exists in Win32.
@@ -666,15 +681,21 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 
 			return s;
 		}
-		case 2: //uint8_t,uint16_t,uint32_t,uint64_t
-		case 3: //int8_t,int16_t,int32_t,int64_t, float, double, long double
-		case 9: //std::string
+		case Engine3DRadSpace::Reflection::FieldID::U8:
+		case Engine3DRadSpace::Reflection::FieldID::U16:
+		case Engine3DRadSpace::Reflection::FieldID::U32:
+		case Engine3DRadSpace::Reflection::FieldID::U64:
+		case Engine3DRadSpace::Reflection::FieldID::I8:
+		case Engine3DRadSpace::Reflection::FieldID::I16:
+		case Engine3DRadSpace::Reflection::FieldID::I32:
+		case Engine3DRadSpace::Reflection::FieldID::I64:
+		case Engine3DRadSpace::Reflection::FieldID::String: //std::string
 		{
 			GetTextExtentPointA(hdc, visibleName, (int)strlen(visibleName), &textSize);
 			Point s(85 + textSize.cx, textSize.cy); // case 2: spacing between label and up down ( 10 ) + UpDown control size (75). 
 			return s;								// case 3: spacing between label and textbox ( 10 ) + textbox control size (75).  
 		}
-		case 4: //2D Vectors
+		case Engine3DRadSpace::Reflection::FieldID::Vector2:
 		{
 			GetTextExtentPointA(hdc, "X", 1, &textSize);
 			Point s(170 + textSize.cx, textSize.cy); //170 =  spacing between the labels and textboxes + lenght of textboxes
@@ -684,8 +705,8 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 
 			return s;
 		}
-		case 5: //3D Vectors
-		case 7: //Quaternions (from Euler angles)
+		case Engine3DRadSpace::Reflection::FieldID::Vector3:
+		case Engine3DRadSpace::Reflection::FieldID::Quaternion:
 		{
 			GetTextExtentPointA(hdc, "X", 1, &textSize);
 			Point s(255 + textSize.cx, textSize.cy); //255 = spacing between the labels and textboxes + lenght of textboxes
@@ -698,7 +719,7 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 
 			return s;
 		}
-		case 6: //4D Vectors
+		case Engine3DRadSpace::Reflection::FieldID::Vector4:
 		{
 			GetTextExtentPointA(hdc, "X", 1, &textSize);
 			Point s(340 + textSize.cx, textSize.cy); //340 = spacing between the labels and textboxes + lenght of textboxes
@@ -714,7 +735,7 @@ Engine3DRadSpace::Point ObjectEditorDialog::_calculateControlSize(const size_t i
 
 			return s;
 		}
-		case 8:
+		case Engine3DRadSpace::Reflection::FieldID::RGBAColorNorm:
 		{
 			GetTextExtentPointA(hdc, "Color", 5, &textSize);
 			Point s(20 + textSize.cx, textSize.cy);
@@ -747,51 +768,6 @@ Point ObjectEditorDialog::_calculateGroupSize(size_t index)
 	return s;
 }
 
-size_t ObjectEditorDialog::_countControls()
-{
-	size_t c = 0;
-	for(size_t i = 0; i < this->_objectWndInfo->NumGroups; i++)
-	{
-		if(std::string("") != this->_objectWndInfo->Groups[i].Name)
-			c++;
-	}
-
-	for(size_t i = 0; i < this->_objectWndInfo->Reflection.Size(); i++)
-	{
-		switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[this->_objectWndInfo->Reflection[i]->GetFieldType()])
-		{
-			case 0:
-				break;
-			case 1:
-				c += 1; //checkbox
-				break;
-			case 2:
-				c += 3; //label + edit + updown
-			case 9:
-			case 10:
-				c += 2; // label + textbox
-				break;
-			case 3:
-				c += 2; //label + numeric textbox
-				break;
-			case 4:
-				c += 5; // 1 groupbox + 2 textboxes + 2 labels
-				break;
-			case 5: //Vector3
-			case 7: //Quaternion (we generate rotations from euler angles)
-				c += 7; //1 groupbox + 3 textboxes + 3 labels
-				break;
-			case 6: //Vector4
-				c += 9; // 1 groupbox + 4 textboxes + 4 labels
-				break;
-			case 8:
-				c += 5; // 2 labels + 1 button + 1 updown + 1 edit
-			default: break;
-		}
-	}
-	return c;
-}
-
 ObjectEditorDialog* ObjectEditorDialog::GetGlobalInstance()
 {
 	return this->_globalInstance;
@@ -809,7 +785,6 @@ Engine3DRadSpace::IObject* ObjectEditorDialog::GetResultObject()
 
 ObjectEditorDialog::~ObjectEditorDialog()
 {
-	delete[] this->_controls;
 	GlobalFree(this->_hGlobal);
 }
 
@@ -856,7 +831,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 							{
 								switch(Engine3DRadSpace::Reflection::Reflect::TypeDict[oed->_objectWndInfo->Reflection[i]->GetFieldType()])
 								{
-									case 1:
+									case Engine3DRadSpace::Reflection::FieldID::Bool:
 									{
 										bool value = static_cast<bool>(SendMessage(oed->_controls[j], BM_GETCHECK, 0, 0));
 										j++;
@@ -869,7 +844,10 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										);
 										break;
 									}
-									case 2:
+									case Engine3DRadSpace::Reflection::FieldID::U8:
+									case Engine3DRadSpace::Reflection::FieldID::U16:
+									case Engine3DRadSpace::Reflection::FieldID::U32:
+									case Engine3DRadSpace::Reflection::FieldID::U64:
 									{
 										std::unordered_map<std::type_index, int> uint_map =
 										{
@@ -933,7 +911,10 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j++;
 										break;
 									}
-									case 3:
+									case Engine3DRadSpace::Reflection::FieldID::I8:
+									case Engine3DRadSpace::Reflection::FieldID::I16:
+									case Engine3DRadSpace::Reflection::FieldID::I32:
+									case Engine3DRadSpace::Reflection::FieldID::I64:
 									{
 										std::unordered_map<std::type_index, int> int_map =
 										{
@@ -1034,7 +1015,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j++;
 										break;
 									}
-									case 4:
+									case Engine3DRadSpace::Reflection::FieldID::Vector2:
 									{
 										Vector2 value = *static_cast<const Vector2*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 
@@ -1058,7 +1039,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 
 										break;
 									}
-									case 5:
+									case Engine3DRadSpace::Reflection::FieldID::Vector3:
 									{
 										Vector3 value = *static_cast<const Vector3*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 
@@ -1094,7 +1075,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j += 2;
 										break;
 									}
-									case 6:
+									case Engine3DRadSpace::Reflection::FieldID::Vector4:
 									{
 										Vector4 value = *static_cast<const Vector4*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 
@@ -1138,7 +1119,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j += 2;
 										break;
 									}
-									case 7:
+									case Engine3DRadSpace::Reflection::FieldID::Quaternion:
 									{
 										Quaternion value = *static_cast<const Quaternion*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 
@@ -1174,7 +1155,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j += 2;
 										break;
 									}
-									case 8:
+									case Engine3DRadSpace::Reflection::FieldID::RGBAColorNorm:
 									{
 										ColorShader value = *static_cast<const ColorShader*>(oed->_objectWndInfo->Reflection[i]->GetDefaultValue());
 										j++;
@@ -1201,7 +1182,7 @@ INT_PTR ObjectEditor_DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 										j += 2; //skip textbox and button
 										break;
 									}
-									case 9:
+									case Engine3DRadSpace::Reflection::FieldID::String:
 									{
 										std::string* value = nullptr;
 										j++;

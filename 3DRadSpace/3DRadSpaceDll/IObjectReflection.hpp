@@ -13,7 +13,7 @@ Engine3DRadSpace::Reflection::Reflect ObjName##ReflInst = \
 { \
 	ObjName *o = static_cast<ObjName*>( ::operator new(sizeof(ObjName))); \
 	Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType> *field = new Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType>( FName ,FDefaultValue); \
-	field->MemIndex = (char*)&o->FInternalName - (char*)o; \
+	field->MemIndex = offsetof(ObjName,FInternalName); \
 	::operator delete(o); \
 	return field; \
 } \
@@ -45,6 +45,30 @@ namespace Engine3DRadSpace
 
 		template<typename Object>
 		concept IObjectDerived = std::is_base_of<IObject, Object>::value;
+		
+		enum class FieldID
+		{
+			Unknown = 0,
+			Bool,
+			U8,
+			U16,
+			U32,
+			U64,
+			I8,
+			I16,
+			I32,
+			I64,
+			Float,
+			Double,
+			LDouble,
+			Vector2,
+			Vector3,
+			Vector4,
+			Quaternion,
+			RGBAColorNorm,
+			String
+		};
+
 
 		class DLLEXPORT ReflectedFieldBase
 		{
@@ -158,60 +182,32 @@ namespace Engine3DRadSpace
 			Reflect(const std::initializer_list<std::function<ReflectedFieldBase* ()>> fields);
 			Reflect(Reflect&& r) = delete;
 
-			inline static std::unordered_map<std::type_index, int> TypeDict =
+			inline static std::unordered_map<std::type_index, FieldID> TypeDict =
 			{
 				//bool
-				{typeid(bool),1},
+				{typeid(bool),FieldID::Bool},
 				//signed and unsigned integers
-				{typeid(uint8_t),2},
-				{typeid(uint16_t),2},
-				{typeid(uint32_t),2},
-				{typeid(uint64_t),2},
+				{typeid(uint8_t),FieldID::U8},
+				{typeid(uint16_t),FieldID::U16},
+				{typeid(uint32_t),FieldID::U32},
+				{typeid(uint64_t),FieldID::U64},
 
-				{typeid(int8_t),3},
-				{typeid(int16_t),3},
-				{typeid(int32_t),3},
-				{typeid(int64_t),3},
+				{typeid(int8_t),FieldID::I8},
+				{typeid(int16_t),FieldID::U16},
+				{typeid(int32_t),FieldID::I32},
+				{typeid(int64_t),FieldID::I64},
 				//floats
-				{typeid(float),3},
-				{typeid(double),3},
-				{typeid(long double),3},
+				{typeid(float),FieldID::Float},
+				{typeid(double),FieldID::Double},
+				{typeid(long double),FieldID::LDouble},
 
-				{typeid(Vector2),4},
-				{typeid(Vector3),5},
-				{typeid(Vector4),6},
+				{typeid(Vector2),FieldID::Vector2},
+				{typeid(Vector3),FieldID::Vector3},
+				{typeid(Vector4),FieldID::Vector4},
 
-				{typeid(Quaternion),7},
-				{typeid(ColorShader),8},
-				{typeid(std::string),9}
-			};
-
-			inline static std::unordered_map<std::type_index, int> FullTypeDict =
-			{
-				//bool
-				{typeid(bool),1},
-				//signed and unsigned integers
-				{typeid(uint8_t),2},
-				{typeid(uint16_t),3},
-				{typeid(uint32_t),4},
-				{typeid(uint64_t),5},
-
-				{typeid(int8_t),6},
-				{typeid(int16_t),7},
-				{typeid(int32_t),8},
-				{typeid(int64_t),9},
-				//floats
-				{typeid(float),10},
-				{typeid(double),11},
-				{typeid(long double),12},
-
-				{typeid(Vector2),13},
-				{typeid(Vector3),14},
-				{typeid(Vector4),15},
-
-				{typeid(Quaternion),16},
-				{typeid(ColorShader),17},
-				{typeid(std::string),18}
+				{typeid(Quaternion),FieldID::Quaternion},
+				{typeid(ColorShader),FieldID::RGBAColorNorm},
+				{typeid(std::string),FieldID::String}
 			};
 
 

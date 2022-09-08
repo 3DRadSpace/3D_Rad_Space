@@ -38,6 +38,8 @@ public:
 	HWND GetWindow();
 	HWND GetListView();
 
+	int ShowObjectEditorDialog();
+
 	void Resize();
 
 	Engine3DRadSpace::IObject* GetResultObject();

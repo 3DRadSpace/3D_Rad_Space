@@ -74,8 +74,8 @@ INT_PTR CALLBACK AddObject_DialogProcess(HWND hwnd, UINT msg, WPARAM wparam, LPA
 					
 						if(item->iItem != -1)
 						{
-							int objectsCount = ListView_GetItemCount(listview);
-							int index = 21 - item->iItem;
+							int objectsCount = ListView_GetItemCount(listview) - 1;
+							int index = objectsCount - item->iItem;
 							ObjectEditorDialog oed(
 								AddObjectDialog::GlobalInstance->_hInstance,
 								AddObjectDialog::GlobalInstance->GetWindow(),
@@ -283,6 +283,11 @@ HWND AddObjectDialog::GetWindow()
 HWND AddObjectDialog::GetListView()
 {
 	return this->_listView;
+}
+
+int AddObjectDialog::ShowObjectEditorDialog()
+{
+	return 0;
 }
 
 void AddObjectDialog::Resize()

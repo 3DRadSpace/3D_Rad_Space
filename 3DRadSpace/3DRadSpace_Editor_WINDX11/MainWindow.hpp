@@ -30,6 +30,9 @@ constexpr int MENU_SWITCH3D2D = 318;
 
 constexpr int MENU_OPEN_IDE = 319;
 
+constexpr int POPUP_EDITOBJ = 320;
+constexpr int POPUP_DELETEOBJ = 321;
+
 constexpr const char* __3DRADSPACE_VERSION = "0.1.0";
 constexpr const wchar_t* __3DRADSPACE_FD_FILTER = L"3DRadSpace Project (*.3drsp)\0*.3drsp";
 
@@ -68,6 +71,8 @@ class EditorWindow
 
 	Point resolution;
 	Point screenCenter;
+
+	void deallocateSceneObjects();
 public:
 	EditorWindow(const EditorWindow& w) = delete;
 	EditorWindow(EditorWindow&& w) = delete;
