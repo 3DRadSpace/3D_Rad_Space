@@ -3,6 +3,7 @@
 #include "resource.h"
 #include "AddObjectDialog.hpp"
 #include "DownloadStatusWindow.hpp"
+#include "Model3D.hpp"
 
 constexpr int MENU_NEWFILE = 300;
 constexpr int MENU_OPENFILE = 301;
@@ -73,6 +74,8 @@ class EditorWindow
 	Point screenCenter;
 
 	void deallocateSceneObjects();
+
+	std::unique_ptr<Model3D> CameraModel;
 public:
 	EditorWindow(const EditorWindow& w) = delete;
 	EditorWindow(EditorWindow&& w) = delete;

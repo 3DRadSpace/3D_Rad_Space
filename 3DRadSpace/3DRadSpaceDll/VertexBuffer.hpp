@@ -225,8 +225,7 @@ namespace Engine3DRadSpace
 
 		if (FAILED(r))
 		{
-			const type_info& ti = typeid(ID3D11Device);
-			throw ResourceCreationException("Failed to create a vertex buffer.", ti);
+			throw ResourceCreationException("Failed to create a vertex buffer.");
 		}
 
 		this->_vertexbuffercreated = true;
@@ -315,7 +314,7 @@ namespace Engine3DRadSpace
 		HRESULT r = dev->CreateBuffer(&buffDesc, &buffFiller, &this->_buffer);
 
 		if (FAILED(r))
-			throw ResourceCreationException("Failed to create a vertex buffer.", typeid(ID3D11Device));
+			throw ResourceCreationException("Failed to create a vertex buffer.");
 
 		this->_vertexbuffercreated = true;
 	}

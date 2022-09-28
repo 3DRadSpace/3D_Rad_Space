@@ -181,6 +181,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	StartDiscordPresence();
 
 	ptrMouse->SetWindow(RenderWindow);
+
+	CameraModel = std::make_unique<Model3D>(game.get(), "TestModel\\Camera.dae");
 }
 
 void EditorWindow::deallocateSceneObjects()

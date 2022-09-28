@@ -28,7 +28,7 @@ Engine3DRadSpace::Texture2D::Texture2D(Game *g,int width, int height, DXGI_FORMA
 	r = this->_device->CreateShaderResourceView((ID3D11Resource*)this->_texture, nullptr, &this->_shaderresourceview);
 	if (FAILED(r))
 	{
-		throw ResourceCreationException("Failed to create the shader resource view", typeid(ID3D11ShaderResourceView));
+		throw ResourceCreationException("Failed to create the shader resource view");
 	}
 }
 
@@ -46,7 +46,7 @@ Engine3DRadSpace::Texture2D::Texture2D(Game* game,const std::wstring &path)
 		r = DirectX::CreateDDSTextureFromFile(_device, path.c_str(), (ID3D11Resource**)&_texture, &_shaderresourceview);
 		if (FAILED(r))
 		{
-			throw ResourceCreationException("Failed to create a texture from file!", typeid(ID3D11Texture2D));
+			throw ResourceCreationException("Failed to create a texture from file!");
 		}
 	}
 }
@@ -59,8 +59,8 @@ Engine3DRadSpace::Texture2D::Texture2D(Game* game, const std::string& path)
 	_context = game->GetDeviceContext();
 	_device = game->GetDevice();
 
-	wchar_t filepath[260]; //Windows has a 260 characters limit on the path
-	memset(filepath, 0, 260);
+	wchar_t filepath[MAX_PATH];
+	memset(filepath, 0, MAX_PATH);
 
 	mbstowcs(filepath, path.c_str(), 260); //goddammit M$ WHY
 
@@ -69,9 +69,7 @@ Engine3DRadSpace::Texture2D::Texture2D(Game* game, const std::string& path)
 	{
 		r = DirectX::CreateDDSTextureFromFile(_device, filepath, (ID3D11Resource**)&_texture, &_shaderresourceview);
 		if (FAILED(r))
-		{
-			throw ResourceCreationException("Failed to create a texture from file!", typeid(ID3D11Texture2D));
-		}
+			throw ResourceCreationException("Failed to create a texture from file!");
 	}
 }
 

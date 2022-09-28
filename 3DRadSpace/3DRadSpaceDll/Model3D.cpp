@@ -1,4 +1,5 @@
 #include "Model3D.hpp"
+#include <PathCch.h>
 
 inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
 {
@@ -25,12 +26,12 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 	aiScene* scene = (aiScene*)importer.ReadFile(file, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace | aiProcess_ImproveCacheLocality | aiProcess_RemoveRedundantMaterials | aiProcess_OptimizeMeshes | aiProcess_MakeLeftHanded | aiProcess_OptimizeGraph);
 
 	if (scene == nullptr)
-		throw ResourceCreationException("Failed to load the file!", typeid(Model3D));
+		throw ResourceCreationException("Failed to load the file while attempting to create a model!");
 
 	NumMeshes = scene->mNumMeshes;
 
 	if (NumMeshes == 0 || !scene->HasMeshes())
-		throw ResourceCreationException("Attempted to load a model without any meshes!", typeid(Model3D));
+		throw ResourceCreationException("Attempted to load a model without any meshes!");
 
 	Meshes = new MeshPart<void>*[NumMeshes];
 	MeshFlags = new VertexDeclDeterminantFlag[NumMeshes];
@@ -44,9 +45,7 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 	{
 		aiString loadpath;
 		aiReturn r = scene->mMaterials[i]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &loadpath);
-		if (r != aiReturn::aiReturn_SUCCESS)
-			throw ResourceCreationException("Failed to load a model texture!", typeid(Texture2D));
-		else
+		if (r == aiReturn::aiReturn_SUCCESS)
 			NumTextures += 1;
 	}
 
@@ -56,12 +55,21 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 	{
 		aiString loadpath;
 		aiReturn r = scene->mMaterials[i]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &loadpath);
-		if (r == aiReturn::aiReturn_SUCCESS)
+		
+		if(r == aiReturn::aiReturn_SUCCESS)
 		{
-			Textures[i] = new Texture2D(game, loadpath.C_Str());
+			char texturepath[MAX_PATH]{};
+			strcpy_s(texturepath, strlen(file) + 1, file);
+			for(int j = strlen(texturepath); j >= 0; j--)
+			{
+				if(texturepath[j] == '\\')
+					memset(texturepath + j + 1, 0, strlen(texturepath) - j - 1);
+			}
+			strcat_s(texturepath, loadpath.C_Str());
+
+			Textures[i] = new Texture2D(game, texturepath);
 		}
-		else
-			throw ResourceCreationException("How did we get here?????", typeid(Texture2D));
+		else Textures[i] = nullptr;
 	}
 
 	/*
@@ -89,11 +97,11 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 
 		unsigned NumVColors = scene->mMeshes[i]->GetNumUVChannels();
 		if (NumVColors == 1) MeshFlags[i] |= VertexDeclDeterminantFlag::SingleVertexColor;
-		else if (NumVColors > 1) throw ResourceCreationException("Multiple color channels not supported", typeid(Model3D));//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleVertexColors;
+		else if (NumVColors > 1) throw ResourceCreationException("Multiple color channels not supported");//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleVertexColors;
 
 		unsigned NumUV = scene->mMeshes[i]->GetNumUVChannels();
 		if (NumUV == 1) MeshFlags[i] |= VertexDeclDeterminantFlag::SingleUV;
-		else if (NumUV > 1)  throw ResourceCreationException("Multiple UV channels not supported", typeid(Model3D));//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleUVs;
+		else if (NumUV > 1)  throw ResourceCreationException("Multiple UV channels not supported");//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleUVs;
 
 		bool hasNormals = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::Normal);
 		bool hasVertexColor = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::SingleVertexColor);
@@ -155,7 +163,7 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 
 		unsigned* indexbuffer = new unsigned[indexbuffersize];
 
-		for (unsigned j = 0; j < indexbuffersize; j += 3)
+		for (unsigned j = 0; j < indexbuffersize / 3; j += 3)
 		{
 			memcpy_s(indexbuffer + j, sizeof(unsigned) * 3, scene->mMeshes[i]->mFaces[j].mIndices, sizeof(unsigned) * 3);
 		}

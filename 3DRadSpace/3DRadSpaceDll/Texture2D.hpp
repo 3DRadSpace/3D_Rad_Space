@@ -93,7 +93,7 @@ namespace Engine3DRadSpace
 		{
 			r = DirectX::CreateDDSTextureFromMemory(this->_device, (const uint8_t*)data, sizeof(T), (ID3D11Resource**)&this->_texture, &this->_shaderresourceview);
 			if (FAILED(r))
-				throw ResourceCreationException("Failed to create a texture from memory!", typeid(ID3D11Texture2D));
+				throw ResourceCreationException("Failed to create a texture from memory!");
 		}
 	}
 

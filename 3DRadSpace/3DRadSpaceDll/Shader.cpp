@@ -135,7 +135,7 @@ void Engine3DRadSpace::Shader::SetShaderParametersLayout(ID3D11Device* device, I
 
 	HRESULT r = device->CreateBuffer(&constantBuffer, &constantBufferNullVals, &this->_constantbuffer);
 	if (FAILED(r))
-		throw ResourceCreationException("Failed to create shader arguments", typeid(ID3D11Buffer));
+		throw ResourceCreationException("Failed to create shader arguments");
 
 	this->_constantbuffercreated = true;
 

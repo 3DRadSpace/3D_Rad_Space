@@ -19,11 +19,11 @@ ObjectEditorDialog::ObjectEditorDialog(HINSTANCE hInstance, HWND owner, ObjectEd
 {
 	this->_hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if(this->_hGlobal == nullptr)
-		throw ResourceCreationException("Cannot allocate memory for the object editor dialog!", typeid(ObjectEditorDialog));
+		throw ResourceCreationException("Cannot allocate memory for the object editor dialog!");
 
 	this->_dialogTemplate = (LPDLGTEMPLATE)GlobalLock(this->_hGlobal);
 	if(this->_dialogTemplate == nullptr)
-		throw ResourceCreationException("Failed to lock memory handle!", typeid(ResourceCreationException));
+		throw ResourceCreationException("Failed to lock memory handle!");
 
 	this->_dialogTemplate->cdit = 0;
 	this->_dialogTemplate->x = 0;

@@ -20,8 +20,8 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <param name="message">Custom message</param>
 		/// <param name="type">Type of the faulty object</param>
-		ResourceCreationException(const std::string& message, const std::type_info& type) :
-			_message(message + "Faulty type :" + std::string(type.name())) { };
+		ResourceCreationException(const std::string& message) :
+			_message(message) { };
 
 		const char* what() const override;
 

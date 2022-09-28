@@ -44,7 +44,7 @@ void Engine3DRadSpace::IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 
 	HRESULT r = device->CreateBuffer(&bufferDesc, &bufferFiller, &this->_indexbuffer);
 	if (FAILED(r))
-		throw ResourceCreationException("Failed to create a IndexBuffer", typeid(ID3D11Buffer));
+		throw ResourceCreationException("Failed to create a IndexBuffer");
 	else
 		this->_createdbuffer = true;
 }

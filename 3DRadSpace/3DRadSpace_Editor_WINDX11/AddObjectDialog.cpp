@@ -152,11 +152,11 @@ AddObjectDialog::AddObjectDialog(HINSTANCE hInstance)
 	//Allocate memory
 	this->hGlobal = GlobalAlloc(GMEM_ZEROINIT, 1024);
 	if (this->hGlobal == nullptr)
-		throw ResourceCreationException("Failed to initialize memory", typeid(AddObjectDialog));
+		throw ResourceCreationException("Failed to initialize memory (GlobalAlloc() call inside AddOBjectDialog ctor)");
 
 	this->lpDialogTemplate = (LPDLGTEMPLATE)GlobalLock(this->hGlobal);
 	if (this->lpDialogTemplate == nullptr)
-		throw ResourceCreationException("Failed to lock memory handle",typeid(AddObjectDialog));
+		throw ResourceCreationException("Failed to lock memory handle (AddObjectDialog)");
 
 	//Setup dialog layout
 	this->lpDialogTemplate->cdit = 0;
