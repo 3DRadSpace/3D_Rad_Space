@@ -28,12 +28,13 @@ namespace Engine3DRadSpace
 		/// </summary>
 		/// <param name="initializer">Given index values</param>
 		explicit IndexBuffer(const std::vector<unsigned int>& initializer);
-
 		/// <summary>
 		/// Creates the infex buffer in the GPU
 		/// </summary>
 		/// <param name="device"></param>
 		void CreateIndexBuffer(ID3D11Device* device);
+
+		void SetIndexBuffer(ID3D11DeviceContext* context);
 		/// <summary>
 		/// Returns a handle of the index buffer that can be used by the graphics device handles
 		/// </summary>

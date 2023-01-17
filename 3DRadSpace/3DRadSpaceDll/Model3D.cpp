@@ -1,21 +1,6 @@
 #include "Model3D.hpp"
 #include <PathCch.h>
 
-inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
-{
-	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) | static_cast<int>(b));
-}
-
-inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator|=(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
-{
-	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) | static_cast<int>(b));
-}
-
-inline Engine3DRadSpace::VertexDeclDeterminantFlag Engine3DRadSpace::operator&(VertexDeclDeterminantFlag a, VertexDeclDeterminantFlag b)
-{
-	return static_cast<VertexDeclDeterminantFlag>(static_cast<int>(a) & static_cast<int>(b));
-}
-
 Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 {
 	this->device = game->GetDevice();
@@ -34,14 +19,12 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 		throw ResourceCreationException("Attempted to load a model without any meshes!");
 
 	Meshes = new MeshPart<void>*[NumMeshes];
-	MeshFlags = new VertexDeclDeterminantFlag[NumMeshes];
 
 	//NumTextures = scene->mNumTextures;
 	NumTextures = 0;
 
 	size_t i;
-
-	for (i = 0; i < scene->mNumMaterials; i++)
+	for (i = 0;i < scene->mNumMaterials; i++)
 	{
 		aiString loadpath;
 		aiReturn r = scene->mMaterials[i]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &loadpath);
@@ -49,7 +32,11 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 			NumTextures += 1;
 	}
 
-	Textures = new Texture2D * [NumTextures];
+	if(NumTextures > 0)
+	{
+		Textures = new Texture2D * [NumTextures];
+	}
+	else Textures = nullptr;
 
 	for (i = 0; i < scene->mNumMaterials; i++)
 	{
@@ -90,54 +77,41 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 			continue;
 		}
 
-		//determine the vertex buffer layout
-		MeshFlags[i] = VertexDeclDeterminantFlag::Position;
-		if (scene->mMeshes[i]->HasNormals()) MeshFlags[i] |= VertexDeclDeterminantFlag::Normal;
-		if (scene->mMeshes[i]->HasTangentsAndBitangents()) MeshFlags[i] |= VertexDeclDeterminantFlag::TangentBitangent;
-
-		unsigned NumVColors = scene->mMeshes[i]->GetNumUVChannels();
-		if (NumVColors == 1) MeshFlags[i] |= VertexDeclDeterminantFlag::SingleVertexColor;
-		else if (NumVColors > 1) throw ResourceCreationException("Multiple color channels not supported");//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleVertexColors;
-
-		unsigned NumUV = scene->mMeshes[i]->GetNumUVChannels();
-		if (NumUV == 1) MeshFlags[i] |= VertexDeclDeterminantFlag::SingleUV;
-		else if (NumUV > 1)  throw ResourceCreationException("Multiple UV channels not supported");//MeshFlags[i] |= VertexDeclDeterminantFlag::MultipleUVs;
-
-		bool hasNormals = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::Normal);
-		bool hasVertexColor = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::SingleVertexColor);
-		bool hasTangentBitangent = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::TangentBitangent);
-		bool hasUV = CheckVertexDeclDeterminant(MeshFlags[i], VertexDeclDeterminantFlag::SingleUV);
+		bool hasNormals = scene->mMeshes[i]->HasNormals();
+		bool hasVertexColor = scene->mMeshes[i]->HasVertexColors(0);
+		bool hasTangentBitangent = scene->mMeshes[i]->HasTangentsAndBitangents();
+		bool hasUV = scene->mMeshes[i]->HasTextureCoords(0);
 
 		//determine vertex buffer size
-		size_t vertexbuffersize = scene->mMeshes[i]->mNumVertices;
+		size_t numVerts = scene->mMeshes[i]->mNumVertices;
 
-		size_t vertexdeclsize = sizeof(Vector4);
+		size_t vertexdeclsize = sizeof(Vector3);
 
 		if (hasNormals)
-			vertexdeclsize += sizeof(Vector4);
+			vertexdeclsize += sizeof(Vector3);
 
 		if (hasVertexColor)
 			vertexdeclsize += sizeof(ColorShader);
 
 		if (hasTangentBitangent)
-			vertexdeclsize += 2 * sizeof(Vector4);
+			vertexdeclsize += 2 * sizeof(Vector3);
 
 		if (hasUV)
-			vertexdeclsize += sizeof(Vector4);
+			vertexdeclsize += sizeof(Vector3);
 
 		//create vertex buffer in memory
-		size_t finalvertexbuffersize = (vertexdeclsize * vertexbuffersize) / 4;
+		size_t finalvertexbuffersize = (vertexdeclsize * numVerts);
 		float* vertexbuffer = new float[finalvertexbuffersize];
-		//memset(vertexbuffer, 0, sizeof(float) * finalvertexbuffersize);
+		memset(vertexbuffer, 0, sizeof(float) * finalvertexbuffersize);
 
-		for (unsigned pos = 0, j = 0; pos < finalvertexbuffersize; j++)
+		for (unsigned pos = 0, j = 0; j < numVerts; j++)
 		{
 			memcpy_s(vertexbuffer + pos, sizeof(Vector3), &(scene->mMeshes[i]->mVertices[j]), sizeof(Vector3));
-			pos += 4;
+			pos += 3;
 			if (hasNormals)
 			{
 				memcpy_s(vertexbuffer + pos, sizeof(Vector3), &(scene->mMeshes[i]->mNormals[j]), sizeof(Vector3));
-				pos += 4;
+				pos += 3;
 			}
 			if (hasVertexColor)
 			{
@@ -147,14 +121,14 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 			if (hasTangentBitangent)
 			{
 				memcpy_s(vertexbuffer + pos, sizeof(Vector3), &(scene->mMeshes[i]->mTangents[j]), sizeof(Vector3));
-				pos += 4;
+				pos += 3;
 				memcpy_s(vertexbuffer + pos, sizeof(Vector3), &(scene->mMeshes[i]->mBitangents[j]), sizeof(Vector3));
-				pos += 4;
+				pos += 3;
 			}
 			if (hasUV)
 			{
 				memcpy_s(vertexbuffer + pos, sizeof(Vector3), &(scene->mMeshes[i]->mTextureCoords[0][j]), sizeof(Vector3));
-				pos += 4;
+				pos += 3;
 			}
 		}
 
@@ -168,17 +142,15 @@ Engine3DRadSpace::Model3D::Model3D(Game* game, const char* file)
 			memcpy_s(indexbuffer + j, sizeof(unsigned) * 3, scene->mMeshes[i]->mFaces[j].mIndices, sizeof(unsigned) * 3);
 		}
 
-		VertexBuffer<void>* vertexbuffer_f = new VertexBuffer<void>(vertexbuffer, vertexbuffersize, vertexdeclsize);
+		VertexBuffer<void>* vertexbuffer_f = new VertexBuffer<void>(vertexbuffer, numVerts, vertexdeclsize);
+		vertexbuffer_f->CreateVertexBuffer(device);
+
 		IndexBuffer* indexbuffer_f = new IndexBuffer(indexbuffer, indexbuffersize);
+		indexbuffer_f->CreateIndexBuffer(device);
 
 		this->Meshes[i] = new MeshPart<void>(vertexbuffer_f, indexbuffer_f, Textures[scene->mMeshes[i]->mMaterialIndex]);
-		this->_loaded = true;
 	}
-}
-
-bool Engine3DRadSpace::Model3D::CheckVertexDeclDeterminant(VertexDeclDeterminantFlag flag, VertexDeclDeterminantFlag comp)
-{
-	return (comp == (flag & comp));
+	this->_loaded = true;
 }
 
 void Engine3DRadSpace::Model3D::Draw()
@@ -189,6 +161,19 @@ void Engine3DRadSpace::Model3D::Draw()
 	}
 }
 
+void Engine3DRadSpace::Model3D::SetTransformation(Matrix& m)
+{
+	for(size_t i = 0; i < NumMeshes; i++)
+	{
+		this->Meshes[i]->Transformation = m;
+	}
+}
+
+Engine3DRadSpace::Matrix&& Engine3DRadSpace::Model3D::GetTransformation()
+{
+	return Matrix(this->Meshes[0]->Transformation);
+}
+
 Engine3DRadSpace::Model3D::~Model3D()
 {
 	size_t i;
@@ -197,15 +182,16 @@ Engine3DRadSpace::Model3D::~Model3D()
 		if (this->Meshes[i] != nullptr) delete this->Meshes[i];
 	}
 	delete[] this->Meshes;
-	delete[] this->MeshFlags;
 
-	for (i = 0; i < NumTextures; i++)
+	if(this->Textures != nullptr)
 	{
-		if (this->Textures[i] != nullptr) delete this->Textures[i];
+		for(i = 0; i < NumTextures; i++)
+		{
+			if(this->Textures[i] != nullptr) delete this->Textures[i];
+		}
+		delete[] this->Textures;
 	}
-	delete[] this->Textures;
 
 	this->Meshes = nullptr;
-	this->MeshFlags = nullptr;
 	this->Textures = nullptr;
 }

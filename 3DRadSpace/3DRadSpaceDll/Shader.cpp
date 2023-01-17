@@ -10,7 +10,8 @@ void Engine3DRadSpace::Shader::LoadFromFile(const wchar_t* path, const char* ent
 			HRESULT res = D3DCompileFromFile(path, nullptr, nullptr, entryfunction, "vs_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &_shadercode, &_errorblob);
 			if (FAILED(res))
 			{
-				throw std::runtime_error("Possible compilation failure!");
+				char* err = (char*)_errorblob->GetBufferPointer();
+				throw std::runtime_error(std::string("Possible compilation error(s): ") + err);
 			}
 			break;
 		}
@@ -19,7 +20,8 @@ void Engine3DRadSpace::Shader::LoadFromFile(const wchar_t* path, const char* ent
 			HRESULT res = D3DCompileFromFile(path, nullptr, nullptr, entryfunction, "ps_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &_shadercode, &_errorblob);
 			if (FAILED(res))
 			{
-				throw std::runtime_error("Possible compilation failure!");
+				char* err = (char*)_errorblob->GetBufferPointer();
+				throw std::runtime_error(std::string("Possible compilation error(s):") + err);
 			}
 			break;
 		}
@@ -88,7 +90,7 @@ void Engine3DRadSpace::Shader::CompileShader(ID3D11Device* device)
 
 void Engine3DRadSpace::Shader::SetShader(ID3D11DeviceContext* context)
 {
-	switch (this->_shadertype)
+switch (this->_shadertype)
 	{
 		case ShaderType::Vertex:
 		{
@@ -98,7 +100,7 @@ void Engine3DRadSpace::Shader::SetShader(ID3D11DeviceContext* context)
 		}
 		case ShaderType::Pixel:
 		{
-			if (this->_constantbuffercreated) context->PSGetConstantBuffers(0, 1, &this->_constantbuffer);
+			if (this->_constantbuffercreated) context->PSSetConstantBuffers(0, 1, &this->_constantbuffer);
 			context->PSSetShader((ID3D11PixelShader*)this->_shader, nullptr, 0);
 			break;
 		}
@@ -128,6 +130,8 @@ void Engine3DRadSpace::Shader::SetShaderParametersLayout(ID3D11Device* device, I
 	constantBuffer.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	this->_constantbufferstruct = malloc(size); //initialize unused memory
+	if(this->_constantbufferstruct == nullptr) throw std::bad_alloc();
+	memset(this->_constantbufferstruct, 0, size);
 
 	D3D11_SUBRESOURCE_DATA constantBufferNullVals;
 	memset(&constantBufferNullVals, 0, sizeof(D3D11_SUBRESOURCE_DATA));

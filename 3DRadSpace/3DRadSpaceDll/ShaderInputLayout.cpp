@@ -32,7 +32,7 @@ Engine3DRadSpace::ShaderInputLayout::ShaderInputLayout(const std::vector<InputLa
 			}
 			case InputLayoutElement::TexureCoordinate:
 			{
-				this->_inputelements[i] = { "TEXCOORD",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
+				this->_inputelements[i] = { "TEXCOORD",semantic_index_counter[(uint8_t)elem],DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,0,aglinement,D3D11_INPUT_PER_VERTEX_DATA,0 };
 				semantic_index_counter[(uint8_t)elem]++;
 				aglinement += sizeof(float) * 4;
 				break;
@@ -105,7 +105,8 @@ void Engine3DRadSpace::ShaderInputLayout::CreateInputLayout(ID3D11Device* device
 
 void Engine3DRadSpace::ShaderInputLayout::SetInputLayout(ID3D11DeviceContext* context)
 {
-	context->IASetInputLayout(this->_layout);
+	if(this->_layout != nullptr) 
+		context->IASetInputLayout(this->_layout);
 }
 
 Engine3DRadSpace::ShaderInputLayout::~ShaderInputLayout()

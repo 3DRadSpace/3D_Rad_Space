@@ -49,6 +49,11 @@ void Engine3DRadSpace::IndexBuffer::CreateIndexBuffer(ID3D11Device* device)
 		this->_createdbuffer = true;
 }
 
+void Engine3DRadSpace::IndexBuffer::SetIndexBuffer(ID3D11DeviceContext* context)
+{
+	context->IASetIndexBuffer(this->_indexbuffer, DXGI_FORMAT_R32_UINT, 0);
+}
+
 Engine3DRadSpace::IndexBuffer::~IndexBuffer()
 {
 	if (this->_indexbuffer != nullptr) this->_indexbuffer->Release();

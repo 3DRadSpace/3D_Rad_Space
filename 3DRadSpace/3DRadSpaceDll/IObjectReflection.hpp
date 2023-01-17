@@ -11,10 +11,8 @@ Engine3DRadSpace::Reflection::Reflect ObjName##ReflInst = \
 
 #define __REFLECTFIELD(ObjName,FType,FName,FInternalName,FDefaultValue) []() -> Engine3DRadSpace::Reflection::ReflectedFieldBase* \
 { \
-	ObjName *o = static_cast<ObjName*>( ::operator new(sizeof(ObjName))); \
 	Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType> *field = new Engine3DRadSpace::Reflection::ReflectedField<ObjName,FType>( FName ,FDefaultValue); \
 	field->MemIndex = offsetof(ObjName,FInternalName); \
-	::operator delete(o); \
 	return field; \
 } \
 

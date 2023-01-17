@@ -76,7 +76,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)OptionsMenu, TEXT("Options"));
 	AppendMenuW(MainMenu, MF_POPUP, (UINT_PTR)HelpMenu, TEXT("Help"));
 
-	AcceleratorTable = LoadAccelerators(hInstance,MAKEINTRESOURCE(IDR_ACCELERATOR1));
+	AcceleratorTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
 	resolution = GetDisplaySize();
 	screenCenter = 0.5f * resolution;
@@ -128,7 +128,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 		L"SysTreeView32",
 		L"not used",
 		WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES | TVS_CHECKBOXES,
-		0, 
+		0,
 		0,
 		150,
 		600,
@@ -148,9 +148,9 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	game = std::make_unique<Game>(RenderWindow, resolution);
 	device = game->GetDevice();
 
-	if (device == nullptr)
+	if(device == nullptr)
 	{
-		MessageBox(MainWindow, TEXT("Failed to create the ID3D11GraphicsDevice instance. The program cannot proceed."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
+		MessageBox(MainWindow, TEXT("Failed to create the ID3D11Device instance. The program cannot proceed."), TEXT("Fatal error!"), MB_OK | MB_ICONERROR);
 		RaiseInitializationError(E_FAIL);
 	}
 
@@ -168,7 +168,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 	this->BasicEffect->SetProjection(Projection);
 
 	r = DirectX::CreateInputLayoutFromEffect<DirectX::VertexPositionColor>(device, BasicEffect.get(), &colorured_line_inputlayout);
-	if (FAILED(r))
+	if(FAILED(r))
 	{
 		MessageBox(MainWindow, TEXT("Failed to create a ID3D11InputLayout!"), TEXT("Runtime error"), MB_OK | MB_ICONERROR);
 	}
@@ -182,7 +182,38 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, PWSTR cmdArgs)
 
 	ptrMouse->SetWindow(RenderWindow);
 
+	BasiccolorShader_vs = std::make_unique<Engine3DRadSpace::Shader>(ShaderType::Vertex);
+	try
+	{
+		BasiccolorShader_vs->LoadFromFile(TEXT("Position_Shader.hlsl"), "VS_Main");
+		BasiccolorShader_vs->CompileShader(this->device);
+		BasiccolorShader_vs->CreateInputLayout(device, { InputLayoutElement::Position,InputLayoutElement::Color });
+		BasiccolorShader_vs->SetShaderParametersLayout(device, context, sizeof(Matrix));
+	}
+	catch(std::exception& e)
+	{
+		MessageBoxA(this->MainWindow, e.what(), "Error :(", MB_ICONERROR | MB_OK);
+		std::terminate();
+	}
+
+	BasiccolorShader_ps = std::make_unique<Engine3DRadSpace::Shader>(ShaderType::Pixel);
+	try
+	{
+		BasiccolorShader_ps->LoadFromFile(TEXT("Position_Shader.hlsl"), "PS_Main");
+		BasiccolorShader_ps->CompileShader(device);
+		//BasiccolorShader_ps->CreateInputLayout(device, { InputLayoutElement::Position,InputLayoutElement::TexureCoordinate });
+	}
+	catch(std::exception& e)
+	{
+		MessageBoxA(this->MainWindow, e.what(), "Error :(", MB_ICONERROR | MB_OK);
+		std::terminate();
+	}
+
 	CameraModel = std::make_unique<Model3D>(game.get(), "TestModel\\Camera.dae");
+	CameraModel->Meshes[0]->SetShaders(BasiccolorShader_vs.get(), BasiccolorShader_ps.get());
+	CameraModel->Meshes[1]->SetShaders(BasiccolorShader_vs.get(), BasiccolorShader_ps.get());
+	CameraModel->Meshes[2]->SetShaders(BasiccolorShader_vs.get(), BasiccolorShader_ps.get());
+	//CameraModel->Meshes[3]->SetShaders(BasiccolorShader_vs.get(), BasiccolorShader_ps.get());
 }
 
 void EditorWindow::deallocateSceneObjects()
@@ -303,6 +334,13 @@ void EditorWindow::RenderUpdateLoop()
 		}
 
 		AxisPrimitive->End();
+
+		DirectX::XMMATRIX viewProx = View * Projection;
+
+		Matrix mat( (float*)viewProx.r[0].m128_f32 );
+
+		CameraModel->SetTransformation(mat);
+		CameraModel->Draw();
 
 		game->Present();
 

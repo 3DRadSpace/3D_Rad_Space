@@ -38,12 +38,14 @@ namespace Engine3DRadSpace
 		/// </summary>
 		Shader* PixelShader;
 
+		Matrix Transformation;
+
 		/// <summary>
 		/// Constructs an sub mesh the specified index and vertex buffers.
 		/// </summary>
 		/// <param name="vertexbuffer">Vertex buffer contaning the sub mesh geometry</param>
 		/// <param name="indexbuffer">Index buffer representing the sub mesh order</param>
-		MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer) : Verticies(vertexbuffer), Indexes(indexbuffer) {};
+		MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer) : Verticies(vertexbuffer), Indexes(indexbuffer), Transformation() {};
 		/// <summary>
 		/// Constructs an sub mesh from the specified index, vertex buffer and texture
 		/// </summary>
@@ -51,7 +53,7 @@ namespace Engine3DRadSpace
 		/// <param name="indexbuffer">Index buffer representing the sub mesh order</param>
 		/// <param name="texture">A single color texture.</param>
 		MeshPart(VertexBuffer<T>* vertexbuffer, IndexBuffer* indexbuffer, Texture2D* texture) :
-			Verticies(vertexbuffer), Indexes(indexbuffer), Textures({ texture }), VertexShader(nullptr), PixelShader(nullptr) {};
+			Verticies(vertexbuffer), Indexes(indexbuffer), Textures({ texture }), VertexShader(nullptr), PixelShader(nullptr), Transformation() { };
 		/// <summary>
 		/// Constructs an sub mesh from the specified index, vertex buffer and multiple textures.
 		/// Multiple textures can be used for an PBR shader, or any other specialized non-trivial shader.
@@ -145,8 +147,16 @@ namespace Engine3DRadSpace
 	template<class T>
 	inline void MeshPart<T>::Draw(ID3D11DeviceContext* context)
 	{
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		this->VertexShader->SetInputLayout(context);
+
+		this->VertexShader->SetShaderParameters<Matrix>(context, &Transformation);
+		
 		this->VertexShader->SetShader(context);
 		this->PixelShader->SetShader(context);
+
+		this->Indexes->SetIndexBuffer(context);
 		this->Verticies->Draw(context);
 	}
 }

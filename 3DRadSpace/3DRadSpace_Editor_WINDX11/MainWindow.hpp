@@ -75,7 +75,13 @@ class EditorWindow
 
 	void deallocateSceneObjects();
 
+	//Test code
 	std::unique_ptr<Model3D> CameraModel;
+	std::unique_ptr<Engine3DRadSpace::Shader> BasiccolorShader_vs;
+	std::unique_ptr<Engine3DRadSpace::Shader> BasiccolorShader_ps;
+
+	std::unique_ptr<Engine3DRadSpace::Shader> BasicTexturedShader_vs;
+	std::unique_ptr<Engine3DRadSpace::Shader> BasicTexturedShader_ps;
 public:
 	EditorWindow(const EditorWindow& w) = delete;
 	EditorWindow(EditorWindow&& w) = delete;
