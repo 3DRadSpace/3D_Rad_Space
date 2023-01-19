@@ -10,6 +10,7 @@ void Engine3DRadSpace::Shader::LoadFromFile(const wchar_t* path, const char* ent
 			HRESULT res = D3DCompileFromFile(path, nullptr, nullptr, entryfunction, "vs_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &_shadercode, &_errorblob);
 			if (FAILED(res))
 			{
+				if (_errorblob == nullptr) throw std::runtime_error(std::string("Failed to open file "));
 				char* err = (char*)_errorblob->GetBufferPointer();
 				throw std::runtime_error(std::string("Possible compilation error(s): ") + err);
 			}
