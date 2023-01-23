@@ -168,6 +168,26 @@ Math::Point Engine3DRadSpace::Window::Size()
     return { r.right - r.left, r.bottom - r.top };
 }
 
+Engine3DRadSpace::Math::RectangleF Engine3DRadSpace::Window::RectangleF()
+{
+#ifdef  _WIN32
+    RECT r;
+    GetClientRect(static_cast<HWND>(_window), &r);
+    
+    return { (float)r.left, (float)r.top, (float)(r.right - r.left), (float)(r.bottom - r.top) };
+#endif //  _WIN32
+}
+
+Math::Rectangle Engine3DRadSpace::Window::Rectangle()
+{
+#ifdef  _WIN32
+    RECT r;
+    GetClientRect(static_cast<HWND>(_window), &r);
+
+    return {r.left, r.top, r.right - r.left, r.bottom - r.top };
+#endif //  _WIN32
+}
+
 Engine3DRadSpace::Window::~Window()
 {
 

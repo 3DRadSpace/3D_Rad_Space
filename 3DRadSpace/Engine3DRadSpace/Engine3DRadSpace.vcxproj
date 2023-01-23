@@ -135,6 +135,8 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +150,8 @@
     <ClInclude Include="Libs.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Point.hpp" />
+    <ClInclude Include="Rectangle.hpp" />
+    <ClInclude Include="Viewport.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

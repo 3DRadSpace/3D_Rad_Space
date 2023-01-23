@@ -1,6 +1,7 @@
 #pragma once
 #include "Libs.hpp"
 #include "Color.hpp"
+#include "Viewport.hpp"
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
@@ -29,8 +30,12 @@ namespace Engine3DRadSpace
 		GraphicsDevice(GraphicsDevice&&) = delete;
 		GraphicsDevice& operator=(GraphicsDevice&) = delete;
 
-		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f}) const;
-		void Present() const;
+		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
+
+		void SetViewport(const Viewport& viewport);
+		void SetViewports(const Viewport viewports[], unsigned numViewports);
+
+		void Present();
 
 		bool EnableVSync;
 

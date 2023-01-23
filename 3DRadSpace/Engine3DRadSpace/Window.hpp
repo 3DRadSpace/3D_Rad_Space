@@ -30,6 +30,8 @@ namespace Engine3DRadSpace
 		Engine3DRadSpace::Input::Keyboard& GetKeyboardState();
 
 		Math::Point Size();
+		Math::RectangleF RectangleF();
+		Math::Rectangle Rectangle();
 
 		~Window();
 

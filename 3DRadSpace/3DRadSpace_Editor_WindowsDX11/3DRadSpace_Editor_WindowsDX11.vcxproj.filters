@@ -75,5 +75,8 @@
     <Image Include="Icons\VisualStudio.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Icons\save_as.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

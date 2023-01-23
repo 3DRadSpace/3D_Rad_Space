@@ -1,6 +1,7 @@
 #pragma once
 #include "Libs.hpp"
 #include <format>
+#include <sal.h>
 
 namespace Engine3DRadSpace
 {
@@ -21,8 +22,28 @@ namespace Engine3DRadSpace
 
 		extern Error LastError;
 
-		void RaiseFatalError(const Error& e);
-		void RaiseFatalErrorIfFailed(HRESULT result, const char* details = "",const void* extra = nullptr);
-		void RaiseFatalErrorIfFalse(bool check, const char* details = "",const void* extra = nullptr);
+		inline void RaiseFatalError(const Error& e)
+		{
+			LastError = e;
+			std::exit(e.ErrorCode);
+		}
+
+		inline void RaiseFatalErrorIfFailed(HRESULT result, const char* details, const void* extra = nullptr)
+		{
+			if (FAILED(result)) RaiseFatalError(Error(result, details, extra));
+		}
+
+		inline void RaiseFatalErrorIfFalse(bool check, const char* details, const void* extra = nullptr)
+		{
+			if (!check) RaiseFatalError(Error(-1, details, extra));
+		}
+		inline void RaiseFatalErrorIfNull( _Post_notnull_ const void* ptr, const char* details, const void* extra = nullptr)
+		{
+			if (ptr == nullptr) // RaiseFatalError(Error(-1, details, extra));
+			{
+				LastError = Error(-1, details, extra);
+				std::exit(-1);
+			}
+		}
 	}
 }

@@ -155,6 +155,7 @@
     <Image Include="Icons\newicon.ico" />
     <Image Include="Icons\openicon.ico" />
     <Image Include="Icons\saveicon.ico" />
+    <Image Include="Icons\save_as.ico" />
     <Image Include="Icons\switch2d_icon.ico" />
     <Image Include="Icons\VisualStudio.ico" />
   </ItemGroup>

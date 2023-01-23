@@ -34,7 +34,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	//Create the menu
 	//
 	HMENU recentProjectsMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(recentProjectsMenu != nullptr,"Failed to create File > Recent files menu!");
+	RaiseFatalErrorIfNull(recentProjectsMenu,"Failed to create File > Recent files menu!");
 
 	std::ifstream recent_projects(RecentProjectFile);
 	//Create the file if it doesn't exist or if it is empty
@@ -56,10 +56,10 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 	//Create the rest of the menu.
 	HMENU fileMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(fileMenu != nullptr,"Failed to create the file menu!");
+	RaiseFatalErrorIfNull(fileMenu,"Failed to create the file menu!");
 
 	AppendMenuA(fileMenu, MF_STRING, CMD_NewFile, "New Project (Ctrl+N)");
-	AppendMenuA(fileMenu, MF_STRING, CMD_NewFile, "Open Project (Ctrl+O)");
+	AppendMenuA(fileMenu, MF_STRING, CMD_OpenFile, "Open Project (Ctrl+O)");
 	AppendMenuA(fileMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(recentProjectsMenu), "Recent projects...");
 	AppendMenuA(fileMenu, MF_STRING, CMD_SaveProject, "Save Project (Ctrl+S)");
 	AppendMenuA(fileMenu, MF_STRING, CMD_SaveProjectAs, "Save Project As (Ctrl+Shift+S)");
@@ -68,7 +68,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	AppendMenuA(fileMenu, MF_STRING, CMD_Exit, "Exit (Alt+F4)");
 
 	HMENU editMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(editMenu != nullptr, "Failed to create the edit menu!");
+	RaiseFatalErrorIfNull(editMenu, "Failed to create the edit menu!");
 
 	AppendMenuA(editMenu, MF_STRING, CMD_AddObject, "Add Object (Ctrl+A)");
 	AppendMenuA(editMenu, MF_STRING, CMD_AddAsset, "Add Asset (Ctrl+Shift+N)");
@@ -76,13 +76,13 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	AppendMenuA(editMenu, MF_STRING, CMD_ResetCursor, "Reset the 3D cursor");
 
 	HMENU optionsMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(optionsMenu != nullptr, "Failed to create the options menu!");
+	RaiseFatalErrorIfNull(optionsMenu, "Failed to create the options menu!");
 
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Preferences, "Preferences");
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Update, "Search for updates");
 
 	HMENU helpMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(helpMenu != nullptr, "Failed to create the help menu!");
+	RaiseFatalErrorIfNull(helpMenu, "Failed to create the help menu!");
 
 	AppendMenuA(helpMenu, MF_STRING,CMD_About, "About");
 	AppendMenuA(helpMenu, MF_STRING, CMD_Documentation, "Documentation");
@@ -90,7 +90,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	AppendMenuA(helpMenu, MF_STRING, CMD_Github, "Github");
 
 	HMENU mainMenu = CreateMenu();
-	RaiseFatalErrorIfFalse(mainMenu != nullptr, "Failed to create the main menu!");
+	RaiseFatalErrorIfNull(mainMenu, "Failed to create the main menu!");
 
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(fileMenu), "File");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(editMenu), "Edit");
@@ -101,8 +101,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	_mainWindow = CreateWindowExA(
 		WS_EX_ACCEPTFILES,
 		EditorWindowClassName,
-		"3DRadSpace v0.1.0a",
-		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+		"3DRadSpace v0.1.0a - Editor",
+		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		800,
@@ -112,14 +112,14 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		hInstance,
 		nullptr);
 
-	RaiseFatalErrorIfFalse(_mainWindow != nullptr, "Failed to create the main window!");
+	RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
 
 	//Create controls
 	_toolbar = CreateWindowExA(
 		0,
 		TOOLBARCLASSNAMEA,
 		"",
-		TBSTYLE_FLAT | WS_CHILD | WS_VISIBLE,
+		TBSTYLE_LIST | WS_CHILD,
 		0,
 		0,
 		800,
@@ -129,7 +129,41 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		hInstance,
 		nullptr
 	);
-	RaiseFatalErrorIfFalse(_toolbar != nullptr, "Failed to create the toolbar!");
+	RaiseFatalErrorIfNull(_toolbar, "Failed to create the toolbar!");
+
+	HIMAGELIST toolbarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 8, 1);
+	RaiseFatalErrorIfNull(toolbarImageList, "Failed to create the toolbar image list!");
+
+	
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON2)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON3)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON4)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON5)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON6)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON7)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON8)));
+	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON9)));
+	
+	SendMessageA(_toolbar, TB_SETIMAGELIST, 0, reinterpret_cast<LPARAM>(toolbarImageList));
+	SendMessageA(_toolbar, TB_LOADIMAGES, 0, (LPARAM)hInstance);
+	
+	TBBUTTON tbButtons[8] =
+	{
+		{ 0, CMD_NewFile,  TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"New" },
+		{ 1, CMD_OpenFile, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Open"},
+		{ 2, CMD_SaveProject, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Save"},
+		{ 3, CMD_SaveProjectAs, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Save As"},
+		{ 4, CMD_OpenIDE, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Open IDE"},
+		{ 5, CMD_BuildProject, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Build"},
+		{ 6, CMD_PlayProject, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Play"},
+		{ 7, CMD_Switch2D3D, TBSTATE_ENABLED, BTNS_AUTOSIZE, {0}, 0, (INT_PTR)L"Switch to 2D"},
+	};
+	
+	SendMessageA(_toolbar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+	SendMessageA(_toolbar, TB_ADDBUTTONS, 8, (LPARAM)&tbButtons);
+	
+	SendMessageA(_toolbar, TB_AUTOSIZE, 0, 0);
+	ShowWindow(_toolbar, SW_NORMAL);
 
 	_listBox = CreateWindowExA(
 		0,
@@ -184,8 +218,45 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_NewFile:
 					break;
 				case CMD_OpenFile:
+				{
+					char filebuff[_MAX_PATH]{};
+
+					OPENFILENAMEA ofn{};
+					ofn.lStructSize = sizeof(OPENFILENAMEA);
+					ofn.hwndOwner = gEditorWindow->_mainWindow;
+					ofn.lpstrTitle = "Open a 3DRadSpace project...";
+					ofn.lpstrFile = filebuff;
+					ofn.nMaxFile = _MAX_PATH;
+					ofn.lpstrFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*";
+					ofn.hInstance = gEditorWindow->_hInstance;
+					
+					if (GetOpenFileNameA(&ofn))
+					{
+						//open project file.
+					}
+					if(GetLastError() != 0)
+						MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the open file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
 					break;
+				}
 				case CMD_OpenRecentFile1:
+					break;
+				case CMD_OpenRecentFile1 + 1:
+					break;
+				case CMD_OpenRecentFile1 + 2:
+					break;
+				case CMD_OpenRecentFile1 + 3:
+					break;
+				case CMD_OpenRecentFile1 + 4:
+					break;
+				case CMD_OpenRecentFile1 + 5:
+					break;
+				case CMD_OpenRecentFile1 + 6:
+					break;
+				case CMD_OpenRecentFile1 + 7:
+					break;
+				case CMD_OpenRecentFile1 + 8:
+					break;
+				case CMD_OpenRecentFile1 + 9:
 					break;
 				case CMD_SaveProject:
 					break;
@@ -213,10 +284,13 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_About:
 					break;
 				case CMD_Documentation:
+					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.com/Documentation", nullptr, nullptr, SW_NORMAL);
 					break;
 				case CMD_Homepage:
+					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.com", nullptr, nullptr, SW_NORMAL);
 					break;
 				case CMD_Github:
+					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, SW_NORMAL);
 					break;
 				default: break;
 			}

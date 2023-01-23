@@ -50,7 +50,7 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 }
 
-void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor) const
+void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 {
 	_context->OMSetRenderTargets(1, _mainRenderTarget.GetAddressOf(), nullptr);
 
@@ -58,7 +58,26 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor) const
 	_context->ClearRenderTargetView(_mainRenderTarget.Get(), color);
 }
 
-void Engine3DRadSpace::GraphicsDevice::Present() const
+void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
+{
+	D3D11_VIEWPORT vp;
+	vp.TopLeftX = viewport.ScreenRectangle.X;
+	vp.TopLeftY = viewport.ScreenRectangle.Y;
+	vp.Width = viewport.ScreenRectangle.Width;
+	vp.Height = viewport.ScreenRectangle.Height;
+
+	vp.MinDepth = viewport.MinDepth;
+	vp.MaxDepth = viewport.MaxDepth;
+
+	_context->RSSetViewports(1, &vp);
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetViewports(const Viewport viewports[], unsigned numViewports)
+{
+	_context->RSSetViewports(numViewports, reinterpret_cast<const D3D11_VIEWPORT*>(viewports));
+}
+
+void Engine3DRadSpace::GraphicsDevice::Present()
 {
 	HRESULT r = _swapChain->Present(EnableVSync ? 1 : 0, 0);
 	if (SUCCEEDED(r)) return; //if Present call succeded, skip error reporting.

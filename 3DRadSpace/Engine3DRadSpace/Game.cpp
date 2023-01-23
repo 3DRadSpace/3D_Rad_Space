@@ -43,6 +43,8 @@ void Engine3DRadSpace::Game::RunOneFrame()
 
 	this->Device->Clear();
 	this->Draw(d_dt);
+
+	this->Device->SetViewport(Viewport(this->Window->RectangleF(), 0.0f, 1.0f));
 	this->Device->Present();
 
 	auto ts_d2 = std::chrono::steady_clock::now();

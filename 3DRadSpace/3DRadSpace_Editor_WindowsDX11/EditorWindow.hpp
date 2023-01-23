@@ -30,6 +30,9 @@ constexpr int CMD_Documentation = 524;
 constexpr int CMD_Homepage = 525;
 constexpr int CMD_Github = 526;
 
+constexpr int CMD_OpenIDE = 257;
+constexpr int CMD_Switch2D3D = 258;
+
 class EditorWindow
 {
 	HINSTANCE _hInstance;
