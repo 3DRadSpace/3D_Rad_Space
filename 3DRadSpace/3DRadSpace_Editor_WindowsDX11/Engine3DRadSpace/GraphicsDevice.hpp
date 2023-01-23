@@ -1,5 +1,11 @@
 #pragma once
 #include "Libs.hpp"
+#include "Color.hpp"
+
+#ifdef  _DX11
+#pragma comment(lib,"d3d11.lib")
+#endif //  _DX11
+
 
 namespace Engine3DRadSpace
 {
@@ -12,12 +18,21 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11Device> _device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
+
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _screenTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
 #endif
 	public:
-		explicit GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
+		//GraphicsDevice(unsigned width = 800, unsigned height = 600);
+		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
 		GraphicsDevice(GraphicsDevice&) = delete;
 		GraphicsDevice(GraphicsDevice&&) = delete;
 		GraphicsDevice& operator=(GraphicsDevice&) = delete;
+
+		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f}) const;
+		void Present() const;
+
+		bool EnableVSync;
 
 		~GraphicsDevice();
 	};

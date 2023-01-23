@@ -128,13 +128,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.hpp" />
     <ClInclude Include="Error.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />

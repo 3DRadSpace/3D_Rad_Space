@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
+#include <exception>
+#include <stdexcept>
 
 #ifdef _WIN32
 #ifdef _DX11

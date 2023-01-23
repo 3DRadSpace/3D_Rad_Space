@@ -5,19 +5,17 @@
 #include <CommCtrl.h>
 #include "HelperFunctions.hpp"
 
+using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
-
-#pragma warning(push)
-#pragma warning(disable : 6387) //RaiseFatalErrorIfFalse works just like VERIFY(...) - except errors are reported in a message box.
 
 EditorWindow* gEditorWindow = nullptr;
 
 EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) : 
 	_hInstance(hInstance),
-	mainWindow(nullptr),
-	renderWindow(nullptr),
-	listBox(nullptr),
-	toolbar(nullptr)
+	_mainWindow(nullptr),
+	_listBox(nullptr),
+	_toolbar(nullptr),
+	_running(true)
 {
 	gEditorWindow = this;
 	//
@@ -100,7 +98,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(helpMenu), "Help");
 
 	//Create window
-	mainWindow = CreateWindowExA(
+	_mainWindow = CreateWindowExA(
 		WS_EX_ACCEPTFILES,
 		EditorWindowClassName,
 		"3DRadSpace v0.1.0a",
@@ -114,10 +112,10 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		hInstance,
 		nullptr);
 
-	RaiseFatalErrorIfFalse(mainWindow != nullptr, "Failed to create the main window!");
+	RaiseFatalErrorIfFalse(_mainWindow != nullptr, "Failed to create the main window!");
 
 	//Create controls
-	toolbar = CreateWindowExA(
+	_toolbar = CreateWindowExA(
 		0,
 		TOOLBARCLASSNAMEA,
 		"",
@@ -126,14 +124,14 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		0,
 		800,
 		25,
-		mainWindow,
+		_mainWindow,
 		nullptr,
 		hInstance,
 		nullptr
 	);
-	RaiseFatalErrorIfFalse(toolbar != nullptr, "Failed to create the toolbar!");
+	RaiseFatalErrorIfFalse(_toolbar != nullptr, "Failed to create the toolbar!");
 
-	listBox = CreateWindowExA(
+	_listBox = CreateWindowExA(
 		0,
 		WC_TREEVIEWA,
 		"",
@@ -142,13 +140,26 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		0,
 		150,
 		600,
-		mainWindow,
+		_mainWindow,
 		nullptr,
 		hInstance,
 		nullptr
 	);
 
-	ShowWindow(mainWindow, SW_MAXIMIZE);
+	this->editorWindow = std::make_unique<Window>(hInstance, _mainWindow);
+
+	this->editor = std::make_unique<RenderWindow>(*this->editorWindow.get());
+	_handleRenderWindow = reinterpret_cast<HWND>(this->editor->Window->NativeHandle());
+
+	ShowWindow(_mainWindow, SW_MAXIMIZE);
+}
+
+void EditorWindow::Run()
+{
+	while (_running)
+	{
+		this->editor->RunOneFrame();
+	}
 }
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -219,16 +230,15 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			int wndHeight = rcWnd.bottom - rcWnd.top;
 
 			RECT rcToolbar{};
-			GetWindowRect(gEditorWindow->toolbar, &rcToolbar);
+			GetWindowRect(gEditorWindow->_toolbar, &rcToolbar);
 			int toolbarHeight = rcToolbar.bottom - rcToolbar.top;
 
-			SetWindowPos(gEditorWindow->listBox, nullptr, 0, toolbarHeight + 1, 150, wndHeight - toolbarHeight, 0);
-			SetWindowPos(gEditorWindow->toolbar, nullptr, 0, 0, wndWidth, 25, 0);
+			SetWindowPos(gEditorWindow->_listBox, nullptr, 0, toolbarHeight + 1, 150, wndHeight - toolbarHeight, 0);
+			SetWindowPos(gEditorWindow->_toolbar, nullptr, 0, 0, wndWidth, 25, 0);
+			SetWindowPos(gEditorWindow->_handleRenderWindow, nullptr, 150, toolbarHeight, wndWidth - 150, wndHeight - toolbarHeight, 0);
 			break;
 		}
 		default: break;
 	}
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
 }
-
-#pragma warning(pop)

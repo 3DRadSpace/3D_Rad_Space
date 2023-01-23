@@ -22,14 +22,13 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 	std::atexit(HandleError);
 
-	
 	INITCOMMONCONTROLSEX iccs{};
 	iccs.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	iccs.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&iccs);
 
 	EditorWindow editor(hInstance, cmdArgs);
-	editor.Update();
+	editor.Run();
 
 	return 1;
 }

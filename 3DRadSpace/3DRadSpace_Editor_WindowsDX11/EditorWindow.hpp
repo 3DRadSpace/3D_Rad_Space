@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "RenderWindow.hpp"
 
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";
 constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
@@ -32,12 +33,21 @@ constexpr int CMD_Github = 526;
 class EditorWindow
 {
 	HINSTANCE _hInstance;
-	HWND mainWindow;
-	HWND renderWindow;
-	HWND listBox;
-	HWND toolbar;
+	HWND _mainWindow;
+	HWND _listBox;
+	HWND _toolbar;
+
+	HWND _handleRenderWindow;
+
+	std::unique_ptr<Engine3DRadSpace::Window> editorWindow;
+
+	std::unique_ptr<RenderWindow> editor;
+
+	bool _running;
 public:
-	EditorWindow(HINSTANCE hInstance, char* cmdArgs);;
+	EditorWindow(HINSTANCE hInstance, char* cmdArgs);
+
+	void Run();
 
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

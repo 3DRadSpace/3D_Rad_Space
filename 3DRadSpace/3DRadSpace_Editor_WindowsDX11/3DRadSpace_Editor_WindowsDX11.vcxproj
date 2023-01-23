@@ -131,10 +131,12 @@
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="RenderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorWindow.hpp" />
     <ClInclude Include="HelperFunctions.hpp" />
+    <ClInclude Include="RenderWindow.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
   </ItemGroup>
