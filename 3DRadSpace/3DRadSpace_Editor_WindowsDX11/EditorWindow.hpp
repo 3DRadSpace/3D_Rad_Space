@@ -8,7 +8,10 @@ constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
 constexpr int CMD_NewFile = 500;
 constexpr int CMD_OpenFile = 501;
 
-constexpr int CMD_OpenRecentFile1 = 502;
+constexpr int CMD_OpenRecentFile1 = 502; // 1 -> 10
+// .
+// .
+// .
 //constexpr int CMD_OpenRecentFile10 = 511; 
 
 constexpr int CMD_SaveProject = 512;
@@ -19,19 +22,20 @@ constexpr int CMD_Exit = 516;
 
 constexpr int CMD_AddObject = 517;
 constexpr int CMD_AddAsset = 518;
-constexpr int CMD_AddAddon = 519;
-constexpr int CMD_ResetCursor = 520;
+constexpr int CMD_AddPrefab = 519;
+constexpr int CMD_AddAddon = 520;
+constexpr int CMD_ResetCursor = 521;
 
-constexpr int CMD_Preferences = 521;
-constexpr int CMD_Update = 522;
+constexpr int CMD_Preferences = 522;
+constexpr int CMD_Update = 523;
 
-constexpr int CMD_About = 523;
-constexpr int CMD_Documentation = 524;
-constexpr int CMD_Homepage = 525;
-constexpr int CMD_Github = 526;
+constexpr int CMD_About = 524;
+constexpr int CMD_Documentation = 525;
+constexpr int CMD_Homepage = 526;
+constexpr int CMD_Github = 527;
 
-constexpr int CMD_OpenIDE = 257;
-constexpr int CMD_Switch2D3D = 258;
+constexpr int CMD_OpenIDE = 258;
+constexpr int CMD_Switch2D3D = 259;
 
 class EditorWindow
 {

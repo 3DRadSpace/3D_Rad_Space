@@ -4,6 +4,7 @@ using namespace Engine3DRadSpace;
 
 #ifdef _WIN32
 #include <Windows.h>
+#include <windowsx.h>
 
 LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -36,6 +37,18 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
         case WM_MOUSEWHEEL:
         {
             window->_scrollwheel(HIWORD(wParam));
+            break;
+        }
+        case WM_MOUSEMOVE:
+        {
+            int x = GET_X_LPARAM(lParam);
+            int y = GET_Y_LPARAM(lParam);
+
+            bool lBtn = (bool)(wParam & MK_LBUTTON);
+            bool mBtn = (bool)(wParam & MK_MBUTTON);
+            bool rBtn = (bool)(wParam & MK_RBUTTON);
+
+            window->_handleMouse({ x,y }, lBtn, mBtn, rBtn);
             break;
         }
         default: break;
@@ -86,6 +99,14 @@ void Engine3DRadSpace::Window::_scrollwheel(float dw)
     _mouse._scrollWheel += dw / WHEEL_DELTA;
 }
 
+void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool middle, bool right)
+{
+    _mouse._position = pos;
+    _mouse._leftButton = left;
+    _mouse._middleButton = middle;
+    _mouse._rightButton = right;
+}
+
 Engine3DRadSpace::Window::Window(const char* title, int width, int height)
 {
     //Create a Windows window
@@ -93,7 +114,26 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
     WNDCLASSA wndclass{};
     wndclass.lpszClassName = "3DRSP_GAME";
     wndclass.lpfnWndProc = GameWndProc;
-    wndclass.hInstance = nullptr;
+    wndclass.hInstance = GetModuleHandleA(nullptr); //In x86 and x64, HMODULE = HINSTANCE
+    //wndclass.hIcon = LoadIconA(wndclass.hInstance, MAKEINTRESOURCE(IDI_ICON1));
+    
+    ATOM a = RegisterClassA(&wndclass);
+    if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
+
+    _window = CreateWindowExA(
+        0, 
+        "3DRSP_GAME",
+        title, 
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        width,
+        height,
+        nullptr, 
+        nullptr,
+        wndclass.hInstance, 
+        nullptr
+    );
 #endif
 }
 
@@ -135,17 +175,10 @@ void Engine3DRadSpace::Window::ProcessMessages()
 {
 #ifdef _WIN32
     MSG msg;
-    if(PeekMessage(&msg, nullptr, 0, 0,PM_REMOVE))
+    while(PeekMessage(&msg, nullptr, 0, 0,PM_REMOVE))
     {
         TranslateMessage(&msg);
         DispatchMessageA(&msg);
-    }
-
-    POINT cursorPos;
-    BOOL b = GetCursorPos(&cursorPos);
-    if (b > 0)
-    {
-        this->_mouse._position = Math::Point(cursorPos.x, cursorPos.y);
     }
 #endif
 }

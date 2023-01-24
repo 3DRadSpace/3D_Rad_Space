@@ -28,11 +28,12 @@ void Game::Run()
 
 void Engine3DRadSpace::Game::RunOneFrame()
 {
+	Window->ProcessMessages();
+
 	double u_dt = 0;
 	double d_dt = 0;
 
 	auto ts_u1 = std::chrono::steady_clock::now();
-	Window->ProcessMessages();
 	this->Update(Window->GetKeyboardState(), Window->GetMouseState(), u_dt);
 	auto ts_u2 = std::chrono::steady_clock::now();
 

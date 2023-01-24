@@ -72,7 +72,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 	AppendMenuA(editMenu, MF_STRING, CMD_AddObject, "Add Object (Ctrl+A)");
 	AppendMenuA(editMenu, MF_STRING, CMD_AddAsset, "Add Asset (Ctrl+Shift+N)");
-	AppendMenuA(editMenu, MF_STRING, CMD_AddAddon, "Add Addon (Ctrl+Shift+A)");
+	AppendMenuA(editMenu, MF_STRING, CMD_AddPrefab, "Add Prefab (Ctrl+Shift+A)");
+	AppendMenuA(editMenu, MF_STRING, CMD_AddAddon, "Add Addon");
 	AppendMenuA(editMenu, MF_STRING, CMD_ResetCursor, "Reset the 3D cursor");
 
 	HMENU optionsMenu = CreateMenu();
@@ -134,7 +135,6 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	HIMAGELIST toolbarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 8, 1);
 	RaiseFatalErrorIfNull(toolbarImageList, "Failed to create the toolbar image list!");
 
-	
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON2)));
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON3)));
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON4)));
@@ -145,7 +145,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON9)));
 	
 	SendMessageA(_toolbar, TB_SETIMAGELIST, 0, reinterpret_cast<LPARAM>(toolbarImageList));
-	SendMessageA(_toolbar, TB_LOADIMAGES, 0, (LPARAM)hInstance);
+	SendMessageA(_toolbar, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
 	
 	TBBUTTON tbButtons[8] =
 	{
@@ -185,7 +185,13 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	this->editor = std::make_unique<RenderWindow>(*this->editorWindow.get());
 	_handleRenderWindow = reinterpret_cast<HWND>(this->editor->Window->NativeHandle());
 
+	//Accelerator table
+	HACCEL acceleratorTable = LoadAcceleratorsA(hInstance, IDR_ACCELERATOR1);
+
+
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
+	ShowWindow(_toolbar, SW_NORMAL);
+	ShowWindow(_listBox, SW_NORMAL);
 }
 
 void EditorWindow::Run()

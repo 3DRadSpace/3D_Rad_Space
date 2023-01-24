@@ -24,7 +24,6 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
 #endif
 	public:
-		//GraphicsDevice(unsigned width = 800, unsigned height = 600);
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
 		GraphicsDevice(GraphicsDevice&) = delete;
 		GraphicsDevice(GraphicsDevice&&) = delete;
@@ -33,7 +32,8 @@ namespace Engine3DRadSpace
 		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
 
 		void SetViewport(const Viewport& viewport);
-		void SetViewports(const Viewport viewports[], unsigned numViewports);
+
+		void SetViewports(std::span<Viewport> viewports);
 
 		void Present();
 

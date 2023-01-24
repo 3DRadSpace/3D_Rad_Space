@@ -4,6 +4,7 @@
 #include <memory>
 #include <exception>
 #include <stdexcept>
+#include <span>
 
 #ifdef _WIN32
 #ifdef _DX11

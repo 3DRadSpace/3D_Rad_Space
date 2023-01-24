@@ -46,7 +46,7 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 	r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, _mainRenderTarget.GetAddressOf());
 	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
-	_screenTexture.ReleaseAndGetAddressOf();
+	_screenTexture->Release();
 
 }
 
@@ -72,9 +72,9 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 	_context->RSSetViewports(1, &vp);
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetViewports(const Viewport viewports[], unsigned numViewports)
+void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
-	_context->RSSetViewports(numViewports, reinterpret_cast<const D3D11_VIEWPORT*>(viewports));
+	_context->RSSetViewports((UINT)viewports.size(), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
 }
 
 void Engine3DRadSpace::GraphicsDevice::Present()

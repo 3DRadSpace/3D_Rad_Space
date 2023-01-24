@@ -4,6 +4,7 @@ void Engine3DRadSpace::Input::Keyboard::_addKey(uint8_t k)
 {
     for (int i = 0; i < 10; i++)
     {
+        if (keys[i] == k) return; //Do not duplicate keys.
         if (keys[i] == 0)
         {
             keys[i] = k;
