@@ -4,6 +4,10 @@
 #include <memory>
 #include <exception>
 #include <stdexcept>
+#include <span>
+#include <sal.h>
+#include <array>
+#include <format>
 
 #ifdef _WIN32
 #ifdef _DX11

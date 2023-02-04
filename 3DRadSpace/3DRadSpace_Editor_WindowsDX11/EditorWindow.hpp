@@ -4,6 +4,7 @@
 
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";
 constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
+constexpr const char* FileFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*";
 
 constexpr int CMD_NewFile = 500;
 constexpr int CMD_OpenFile = 501;
@@ -43,14 +44,16 @@ class EditorWindow
 	HWND _mainWindow;
 	HWND _listBox;
 	HWND _toolbar;
-
 	HWND _handleRenderWindow;
+	HACCEL acceleratorTable;
 
 	std::unique_ptr<Engine3DRadSpace::Window> editorWindow;
-
 	std::unique_ptr<RenderWindow> editor;
 
 	bool _running;
+
+	char _currentFile[_MAX_PATH]{};
+	void _saveProject(const char* fileName = nullptr);
 public:
 	EditorWindow(HINSTANCE hInstance, char* cmdArgs);
 

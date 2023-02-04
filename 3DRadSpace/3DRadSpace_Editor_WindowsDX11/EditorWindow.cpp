@@ -10,7 +10,35 @@ using namespace Engine3DRadSpace::Logging;
 
 EditorWindow* gEditorWindow = nullptr;
 
-EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) : 
+void EditorWindow::_saveProject(const char* filename)
+{
+	if (filename == nullptr)
+	{
+		char filebuff[_MAX_PATH]{};
+
+		OPENFILENAMEA ofn{};
+		ofn.lStructSize = sizeof(OPENFILENAMEA);
+		ofn.hwndOwner = gEditorWindow->_mainWindow;
+		ofn.lpstrTitle = "Save a 3DRadSpace project...";
+		ofn.lpstrFile = filebuff;
+		ofn.nMaxFile = _MAX_PATH;
+		ofn.lpstrFilter = FileFilter;
+		ofn.hInstance = gEditorWindow->_hInstance;
+
+		if (GetSaveFileNameA(&ofn))
+		{
+			//save project at filename contained by filebuff
+		}
+		else if (GetLastError() != 0)
+			MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the save file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
+	}
+	else
+	{
+		//save project at filename
+	}
+}
+
+EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	_hInstance(hInstance),
 	_mainWindow(nullptr),
 	_listBox(nullptr),
@@ -186,8 +214,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	_handleRenderWindow = reinterpret_cast<HWND>(this->editor->Window->NativeHandle());
 
 	//Accelerator table
-	HACCEL acceleratorTable = LoadAcceleratorsA(hInstance, IDR_ACCELERATOR1);
-
+	acceleratorTable = LoadAcceleratorsA(hInstance, MAKEINTRESOURCEA(IDR_ACCELERATOR1));
+	RaiseFatalErrorIfNull(acceleratorTable, "Failed to create the accelerator table");
 
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);
@@ -196,9 +224,41 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 void EditorWindow::Run()
 {
+	//Modified code from Window::Run() so accelerators are also translated.
 	while (_running)
 	{
-		this->editor->RunOneFrame();
+		MSG msg;
+		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			if (!TranslateAcceleratorA(_mainWindow, acceleratorTable, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessageA(&msg);
+			}
+		}
+
+		double u_dt = 0;
+		double d_dt = 0;
+
+		auto ts_u1 = std::chrono::steady_clock::now();
+		editor->Update(editor->Window->GetKeyboardState(), editor->Window->GetMouseState(), u_dt);
+		auto ts_u2 = std::chrono::steady_clock::now();
+
+		std::chrono::duration<double> uDiff = ts_u2 - ts_u1;
+		u_dt = uDiff.count();
+
+		auto ts_d1 = std::chrono::steady_clock::now();
+
+		this->editor->Device->Clear();
+		this->editor->Draw(d_dt);
+
+		this->editor->Device->SetViewport(Viewport(this->editor->Window->RectangleF(), 0.0f, 1.0f));
+		this->editor->Device->Present();
+
+		auto ts_d2 = std::chrono::steady_clock::now();
+
+		std::chrono::duration<double> dDiff = ts_d2 - ts_d1;
+		d_dt = dDiff.count();
 	}
 }
 
@@ -215,15 +275,19 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			break;
 		}
 		case WM_CLOSE:
+		{
 			exit(0);
 			break;
+		}
 		case WM_COMMAND:
 		{
-			switch (wParam)
+			switch (LOWORD(wParam))
 			{
 				case CMD_NewFile:
+				case ACC_NEW_PROJECT:
 					break;
 				case CMD_OpenFile:
+				case ACC_OPEN_PROJECT:
 				{
 					char filebuff[_MAX_PATH]{};
 
@@ -233,14 +297,14 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					ofn.lpstrTitle = "Open a 3DRadSpace project...";
 					ofn.lpstrFile = filebuff;
 					ofn.nMaxFile = _MAX_PATH;
-					ofn.lpstrFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*";
+					ofn.lpstrFilter = FileFilter;
 					ofn.hInstance = gEditorWindow->_hInstance;
 					
 					if (GetOpenFileNameA(&ofn))
 					{
 						//open project file.
 					}
-					if(GetLastError() != 0)
+					else if(GetLastError() != 0)
 						MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the open file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
 					break;
 				}
@@ -265,21 +329,30 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_OpenRecentFile1 + 9:
 					break;
 				case CMD_SaveProject:
+				case ACC_SAVE_PROJECT:
+					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
 					break;
 				case CMD_SaveProjectAs:
+				case ACC_SAVE_PROJECT_AS:
+					gEditorWindow->_saveProject(nullptr);
 					break;
 				case CMD_PlayProject:
+				case ACC_PLAY_PROJECT:
 					break;
 				case CMD_BuildProject:
+				case ACC_BUILD_PROJECT:
 					break;
 				case CMD_Exit:
 					exit(0);
 					break;
 				case CMD_AddObject:
+				case ACC_ADD_OBJECT:
 					break;
 				case CMD_AddAsset:
+				case ACC_ADD_ASSET:
 					break;
 				case CMD_AddAddon:
+				case ACC_ADD_PREFAB:
 					break;
 				case CMD_ResetCursor:
 					break;
@@ -316,6 +389,20 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			SetWindowPos(gEditorWindow->_listBox, nullptr, 0, toolbarHeight + 1, 150, wndHeight - toolbarHeight, 0);
 			SetWindowPos(gEditorWindow->_toolbar, nullptr, 0, 0, wndWidth, 25, 0);
 			SetWindowPos(gEditorWindow->_handleRenderWindow, nullptr, 150, toolbarHeight, wndWidth - 150, wndHeight - toolbarHeight, 0);
+			break;
+		}
+		case WM_DROPFILES:
+		{
+			HDROP drop= reinterpret_cast<HDROP>(wParam);
+			char file[_MAX_PATH];
+			int numFilesDropped = DragQueryFileA(drop, 0xFFFFFFFF, nullptr, 0);
+
+			for (int i = 0; i < numFilesDropped; i++)
+			{
+				DragQueryFileA(drop, i, file, _MAX_PATH);
+				//handle dropped file
+				//MessageBoxA(gEditorWindow->_mainWindow, file, "Dropped file", MB_ICONINFORMATION);
+			}
 			break;
 		}
 		default: break;

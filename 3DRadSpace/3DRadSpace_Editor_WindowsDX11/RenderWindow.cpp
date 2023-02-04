@@ -1,6 +1,6 @@
 #include "RenderWindow.hpp"
 
-RenderWindow::RenderWindow(Engine3DRadSpace::Window& w) : Game(w)
+RenderWindow::RenderWindow(Engine3DRadSpace::Window& w) : Game(w), _triangleShader(Device.get())
 {
 
 }

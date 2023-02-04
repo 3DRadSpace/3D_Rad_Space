@@ -3,8 +3,11 @@
 #include "Engine3DRadSpace/Error.hpp"
 #include "EditorWindow.hpp"
 
-#include <commctrl.h>
+#include <PathCch.h>
 #pragma comment(lib,"Comctl32.lib")
+
+#include <commctrl.h>
+#pragma comment(lib,"Pathcch.lib")
 
 //Enable visual styles
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
@@ -31,6 +34,13 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	iccs.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	iccs.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&iccs);
+
+	//Sets working directory to the executable's folder.
+	wchar_t currentDir[_MAX_PATH];
+	GetModuleFileNameW(nullptr, currentDir, _MAX_PATH);
+	PathCchRemoveFileSpec(currentDir, _MAX_PATH);
+
+	SetCurrentDirectoryW(currentDir);
 
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();

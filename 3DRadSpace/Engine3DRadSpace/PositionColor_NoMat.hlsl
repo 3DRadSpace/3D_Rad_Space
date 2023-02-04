@@ -18,7 +18,7 @@ VertexOut VS_Main(VertexIn v)
     return r;
 }
 
-float4 PS_Main(VertexOut v)
+float4 PS_Main(VertexOut v) : SV_TARGET
 {
     return v.Color;
 }

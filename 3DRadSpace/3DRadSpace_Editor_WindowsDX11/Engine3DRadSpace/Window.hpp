@@ -15,11 +15,14 @@ namespace Engine3DRadSpace
 		void _keyUp(uint8_t k);
 		void _keyDown(uint8_t k);
 		void _scrollwheel(float dw);
+		void _handleMouse(Math::Point pos,bool left,bool middle, bool right);
 	public:
 		Window(const char* title, int width = 800, int height = 600);
-		//Used for the Windows frontend.
+		//Used for the Windows editor frontend.
 		Window(void* hInstance, void* parentWindow);
 		void* NativeHandle();
+
+		Window& operator =(Window&) = delete;
 
 		/// <summary>
 		/// Processes one update-draw cycle.

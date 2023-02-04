@@ -1,49 +1,33 @@
 #pragma once
 #include "Libs.hpp"
-#include <format>
-#include <sal.h>
 
-namespace Engine3DRadSpace
+namespace Engine3DRadSpace::Logging
 {
-	namespace Logging
+	/// <summary>
+	/// Represents a complete error report. Used for example in the editor frontend to output exceptions to a message box.
+	/// </summary>
+	struct Error
 	{
-		/// <summary>
-		/// Represents a complete error report. Used for example in the editor frontend to output exceptions to a message box.
-		/// </summary>
-		struct Error
-		{
-			const char* Details;
-			int32_t ErrorCode;
-			const void* Extra;
+		const char *Details;
+		int32_t ErrorCode;
+		const void *Extra;
 
-			Error(int32_t code) : Details(std::move(std::format("Error code : {}", code).c_str())), ErrorCode(code), Extra(nullptr) {};
-			Error(int32_t code, const char* details, const void* extra = nullptr) : Details(details), ErrorCode(code), Extra(extra) {};
-		};
+		explicit Error(int32_t code);
+		Error(int32_t code, const char *details, const void *extra = nullptr);
+	};
 
-		extern Error LastError;
+	extern Error LastError;
 
-		inline void RaiseFatalError(const Error& e)
-		{
-			LastError = e;
-			std::exit(e.ErrorCode);
-		}
+	void RaiseFatalError(const Error &e);
+	void RaiseFatalErrorIfFailed(HRESULT result, const char *details, const void *extra = nullptr);
+	void RaiseFatalErrorIfFalse(bool check, const char *details, const void *extra = nullptr);
 
-		inline void RaiseFatalErrorIfFailed(HRESULT result, const char* details, const void* extra = nullptr)
+	inline void RaiseFatalErrorIfNull(_Post_notnull_ const void *ptr, const char *details, const void *extra = nullptr)
+	{
+		if (ptr == nullptr) // RaiseFatalError(Error(-1, details, extra));
 		{
-			if (FAILED(result)) RaiseFatalError(Error(result, details, extra));
-		}
-
-		inline void RaiseFatalErrorIfFalse(bool check, const char* details, const void* extra = nullptr)
-		{
-			if (!check) RaiseFatalError(Error(-1, details, extra));
-		}
-		inline void RaiseFatalErrorIfNull( _Post_notnull_ const void* ptr, const char* details, const void* extra = nullptr)
-		{
-			if (ptr == nullptr) // RaiseFatalError(Error(-1, details, extra));
-			{
-				LastError = Error(-1, details, extra);
-				std::exit(-1);
-			}
+			LastError = Error(-1, details, extra);
+			std::exit(-1);
 		}
 	}
 }

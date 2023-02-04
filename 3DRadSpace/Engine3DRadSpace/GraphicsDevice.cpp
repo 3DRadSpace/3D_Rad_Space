@@ -1,5 +1,6 @@
 #include "GraphicsDevice.hpp"
 #include "Error.hpp"
+#include "IShader.hpp"
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -60,7 +61,7 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 
 void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 {
-	D3D11_VIEWPORT vp;
+	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = viewport.ScreenRectangle.X;
 	vp.TopLeftY = viewport.ScreenRectangle.Y;
 	vp.Width = viewport.ScreenRectangle.Width;
@@ -108,6 +109,56 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 	}
 	
 	RaiseFatalErrorIfFailed(r, "Unknown error when presenting a frame", this);
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::IShader *shader)
+{
+	ID3D11Buffer * ppConstantBuffers[14] = { nullptr };
+	unsigned i = 0;
+	for (; i < 14; i++)
+	{
+		ID3D11Buffer *constBuffer = shader->_constantBuffers[i].Get();
+		if (constBuffer == nullptr) break;
+
+		ppConstantBuffers[i] = constBuffer;
+	}
+
+	switch (shader->_type)
+	{
+		case Engine3DRadSpace::Graphics::ShaderType::VertexShader:
+		{
+			_context->VSSetConstantBuffers(0, i, ppConstantBuffers);
+			_context->IASetInputLayout(shader->_inputLayout.Get());
+			_context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->_shader), nullptr, 0);
+			break;
+		}
+		case Engine3DRadSpace::Graphics::ShaderType::HullShader:
+		{
+			_context->HSSetConstantBuffers(0, i, ppConstantBuffers);
+			_context->HSSetShader(static_cast<ID3D11HullShader *>(shader->_shader), nullptr, 0);
+			break;
+		}
+		case Engine3DRadSpace::Graphics::ShaderType::DomainShader:
+		{
+			_context->DSSetConstantBuffers(0, i, ppConstantBuffers);
+			_context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->_shader), nullptr, 0);
+			break;
+		}
+		case Engine3DRadSpace::Graphics::ShaderType::GeometryShader:
+		{
+			_context->GSSetConstantBuffers(0, i, ppConstantBuffers);
+			_context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->_shader), nullptr, 0);
+			break;
+		}
+		case Engine3DRadSpace::Graphics::ShaderType::PixelShader:
+		{
+			_context->PSSetConstantBuffers(0, i, ppConstantBuffers);
+			_context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->_shader), nullptr, 0);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
