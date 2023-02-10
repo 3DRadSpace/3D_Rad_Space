@@ -109,7 +109,6 @@ void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool mid
 
 Engine3DRadSpace::Window::Window(const char* title, int width, int height)
 {
-    //Create a Windows window
 #ifdef _WIN32
     WNDCLASSA wndclass{};
     wndclass.lpszClassName = "3DRSP_GAME";

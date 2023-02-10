@@ -62,8 +62,8 @@ void Engine3DRadSpace::Graphics::IShader::_compileShader(const char *source)
 		target,
 		0,
 		0,
-		_shaderBlob.GetAddressOf(),
-		_errorBlob.GetAddressOf()
+		&_shaderBlob,
+		&_errorBlob
 	);
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
 		r,
@@ -92,8 +92,8 @@ void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* pat
 		target,
 		0,
 		0,
-		_shaderBlob.GetAddressOf(),
-		_errorBlob.GetAddressOf()
+		&_shaderBlob,
+		&_errorBlob
 	);
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader compilation failure!", path);
 
@@ -110,7 +110,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 				_shaderBlob->GetBufferPointer(),
 				_shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11VertexShader**>(&this->_shader)
+				reinterpret_cast<ID3D11VertexShader**>(this->_shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::HullShader:
@@ -118,7 +118,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 				_shaderBlob->GetBufferPointer(),
 				_shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11HullShader**>(&this->_shader)
+				reinterpret_cast<ID3D11HullShader**>(this->_shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::DomainShader:
@@ -126,7 +126,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 				_shaderBlob->GetBufferPointer(),
 				_shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11DomainShader**>(&this->_shader)
+				reinterpret_cast<ID3D11DomainShader**>(this->_shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::GeometryShader:
@@ -134,7 +134,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 				_shaderBlob->GetBufferPointer(),
 				_shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11GeometryShader**>(&this->_shader)
+				reinterpret_cast<ID3D11GeometryShader**>(this->_shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::PixelShader:
@@ -142,7 +142,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 				_shaderBlob->GetBufferPointer(),
 				_shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11PixelShader**>(&this->_shader)
+				reinterpret_cast<ID3D11PixelShader**>(this->_shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		default:
@@ -447,7 +447,7 @@ void Engine3DRadSpace::Graphics::IShader::_generateInputLayout(std::span<InputLa
 		static_cast<UINT>(inputLayout.size()),
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
-		_inputLayout.GetAddressOf()
+		&_inputLayout
 	);
 	delete[] elements;
 
@@ -480,8 +480,12 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, ShaderType 
 	_type(type),
 	_entry(entry),
 	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr })
+	_constantBuffers({ nullptr }),
+	_shader(),
+	_errorBlob(),
+	_shaderBlob()
 {
+	UNREFERENCED_PARAMETER(dummy);
 	_compileShaderFromFile(path);
 }
 
@@ -490,8 +494,12 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, std::span<I
 	_type(ShaderType::VertexShader),
 	_entry(vsEntry),
 	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr })
+	_constantBuffers({ nullptr }),
+	_shader(nullptr),
+	_errorBlob(nullptr),
+	_shaderBlob(nullptr)
 {
+	UNREFERENCED_PARAMETER(dummy);
 	_compileShaderFromFile(path);
 	_generateInputLayout(inputLayout);
 }
@@ -574,27 +582,5 @@ std::string Engine3DRadSpace::Graphics::IShader::GetEntryName()
 
 Engine3DRadSpace::Graphics::IShader::~IShader()
 {
-	if (_shader != nullptr)
-	{
-		switch (_type)
-		{
-			case ShaderType::VertexShader:
-				static_cast<ID3D11VertexShader *>(_shader)->Release();
-				break;
-			case ShaderType::HullShader:
-				static_cast<ID3D11HullShader *>(_shader)->Release();
-				break;
-			case ShaderType::DomainShader:
-				static_cast<ID3D11DomainShader *>(_shader)->Release();
-				break;
-			case ShaderType::GeometryShader:
-				static_cast<ID3D11GeometryShader *>(_shader)->Release();
-				break;
-			case ShaderType::PixelShader:
-				static_cast<ID3D11PixelShader *>(_shader)->Release();
-				break;
-			default:
-				break;
-		}
-	}
+
 }

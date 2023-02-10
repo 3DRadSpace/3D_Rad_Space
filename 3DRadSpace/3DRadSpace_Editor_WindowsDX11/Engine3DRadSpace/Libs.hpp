@@ -8,6 +8,7 @@
 #include <sal.h>
 #include <array>
 #include <format>
+#include <span>
 
 #ifdef _WIN32
 #ifdef _DX11

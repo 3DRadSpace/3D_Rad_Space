@@ -20,6 +20,8 @@ namespace Engine3DRadSpace
 		Window(const char* title, int width = 800, int height = 600);
 		//Used for the Windows editor frontend.
 		Window(void* hInstance, void* parentWindow);
+		//Window(Window&) = delete;
+		//Window(Window&&) = delete;
 		void* NativeHandle();
 
 		Window& operator =(Window&) = delete;

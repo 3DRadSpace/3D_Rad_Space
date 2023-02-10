@@ -4,6 +4,8 @@
 #include <fstream>
 #include <CommCtrl.h>
 #include "HelperFunctions.hpp"
+#include <d3d11.h>
+#include <assert.h>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
@@ -53,7 +55,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	wndclass.hInstance = hInstance;
 	wndclass.lpfnWndProc = EditorWindow_WndProc;
 	wndclass.lpszClassName = EditorWindowClassName;
-	wndclass.hIcon = static_cast<HICON>(LoadIconA(hInstance,MAKEINTRESOURCEA(IDI_ICON1)));
+	wndclass.hIcon = LoadIconA(hInstance,MAKEINTRESOURCEA(IDI_ICON1));
 
 	ATOM a = RegisterClassA(&wndclass);
 	RaiseFatalErrorIfFalse(a != 0,"Failed to register class!");
@@ -74,7 +76,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		AppendMenuA(recentProjectsMenu, MF_STRING, 0, "...");
 	}
 	//Loop each line
-	for(int i = 0 ; recent_projects; i++)
+	for(int i = 0; recent_projects; i++)
 	{
 		std::string filename;
 		std::getline(recent_projects, filename);
@@ -208,10 +210,9 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		nullptr
 	);
 
-	this->editorWindow = std::make_unique<Window>(hInstance, _mainWindow);
+	this->editor = std::make_unique<RenderWindow>(new Window(hInstance, _mainWindow));
 
-	this->editor = std::make_unique<RenderWindow>(*this->editorWindow.get());
-	_handleRenderWindow = reinterpret_cast<HWND>(this->editor->Window->NativeHandle());
+	_handleRenderWindow = static_cast<HWND>(this->editor->Window->NativeHandle());
 
 	//Accelerator table
 	acceleratorTable = LoadAcceleratorsA(hInstance, MAKEINTRESOURCEA(IDR_ACCELERATOR1));
@@ -220,6 +221,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);
 	ShowWindow(_listBox, SW_NORMAL);
+
+	assert(_CrtCheckMemory());
 }
 
 void EditorWindow::Run()
@@ -236,6 +239,8 @@ void EditorWindow::Run()
 				DispatchMessageA(&msg);
 			}
 		}
+
+		if(editor.get() == nullptr) continue;
 
 		double u_dt = 0;
 		double d_dt = 0;
@@ -264,7 +269,7 @@ void EditorWindow::Run()
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
+	switch(msg)
 	{
 		case WM_PAINT:
 		{
@@ -276,12 +281,12 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_CLOSE:
 		{
-			exit(0);
+			gEditorWindow->_running = false;
 			break;
 		}
 		case WM_COMMAND:
 		{
-			switch (LOWORD(wParam))
+			switch(LOWORD(wParam))
 			{
 				case CMD_NewFile:
 				case ACC_NEW_PROJECT:
@@ -299,8 +304,8 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					ofn.nMaxFile = _MAX_PATH;
 					ofn.lpstrFilter = FileFilter;
 					ofn.hInstance = gEditorWindow->_hInstance;
-					
-					if (GetOpenFileNameA(&ofn))
+
+					if(GetOpenFileNameA(&ofn))
 					{
 						//open project file.
 					}
@@ -393,11 +398,11 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_DROPFILES:
 		{
-			HDROP drop= reinterpret_cast<HDROP>(wParam);
+			HDROP drop = reinterpret_cast<HDROP>(wParam);
 			char file[_MAX_PATH];
 			int numFilesDropped = DragQueryFileA(drop, 0xFFFFFFFF, nullptr, 0);
 
-			for (int i = 0; i < numFilesDropped; i++)
+			for(int i = 0; i < numFilesDropped; i++)
 			{
 				DragQueryFileA(drop, i, file, _MAX_PATH);
 				//handle dropped file
@@ -405,7 +410,8 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			}
 			break;
 		}
-		default: break;
+		default:
+			break;
 	}
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
 }

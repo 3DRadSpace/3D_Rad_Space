@@ -9,9 +9,5 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		TrivialPixelShader(GraphicsDevice* device);
 
 		virtual std::span<InputLayoutElement> InputLayout();
-
-		virtual ~TrivialPixelShader()
-		{
-		}
 	};
 }

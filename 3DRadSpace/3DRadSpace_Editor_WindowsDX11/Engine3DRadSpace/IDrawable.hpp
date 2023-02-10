@@ -7,8 +7,6 @@ namespace Engine3DRadSpace
 	{
 	public:
 		virtual void Draw(double dt) = 0;
-		inline virtual ~IDrawable()
-		{
-		}
+		inline virtual ~IDrawable() = default;
 	};
 }

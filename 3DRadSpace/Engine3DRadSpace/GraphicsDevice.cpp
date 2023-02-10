@@ -1,6 +1,7 @@
 #include "GraphicsDevice.hpp"
 #include "Error.hpp"
 #include "IShader.hpp"
+#include <cassert>
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -26,29 +27,30 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 	UINT flags = 0;
 #endif
 
-	HRESULT r = D3D11CreateDeviceAndSwapChain(
-		nullptr,
-		D3D_DRIVER_TYPE_HARDWARE,
-		nullptr,
-		flags,
-		nullptr,
-		0,
-		D3D11_SDK_VERSION,
-		&swapChainDesc,
-		this->_swapChain.GetAddressOf(),
-		this->_device.GetAddressOf(),
-		nullptr,
-		this->_context.GetAddressOf());
+		HRESULT r = D3D11CreateDeviceAndSwapChain(
+			nullptr,
+			D3D_DRIVER_TYPE_HARDWARE,
+			nullptr,
+			flags,
+			nullptr,
+			0,
+			D3D11_SDK_VERSION,
+			&swapChainDesc,
+			&this->_swapChain,
+			&this->_device,
+			nullptr,
+			&this->_context
+		);
+		RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
 
-	RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
+		r = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&_screenTexture));
+		RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
 
-	r = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_screenTexture.GetAddressOf()));
-	RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
+		r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, &_mainRenderTarget);
+		RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
+		//_screenTexture->Release();
 
-	r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, _mainRenderTarget.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
-	_screenTexture->Release();
-
+		assert(_CrtCheckMemory());
 }
 
 void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
@@ -75,7 +77,7 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 
 void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
-	_context->RSSetViewports((UINT)viewports.size(), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
+	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
 }
 
 void Engine3DRadSpace::GraphicsDevice::Present()
@@ -129,31 +131,31 @@ void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::ISh
 		{
 			_context->VSSetConstantBuffers(0, i, ppConstantBuffers);
 			_context->IASetInputLayout(shader->_inputLayout.Get());
-			_context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->_shader), nullptr, 0);
+			_context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->_shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::HullShader:
 		{
 			_context->HSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->HSSetShader(static_cast<ID3D11HullShader *>(shader->_shader), nullptr, 0);
+			_context->HSSetShader(static_cast<ID3D11HullShader *>(shader->_shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::DomainShader:
 		{
 			_context->DSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->_shader), nullptr, 0);
+			_context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->_shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::GeometryShader:
 		{
 			_context->GSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->_shader), nullptr, 0);
+			_context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->_shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::PixelShader:
 		{
 			_context->PSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->_shader), nullptr, 0);
+			_context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->_shader.Get()), nullptr, 0);
 			break;
 		}
 		default:
@@ -163,4 +165,5 @@ void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::ISh
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
+
 }

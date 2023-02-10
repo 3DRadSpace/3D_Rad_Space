@@ -47,7 +47,6 @@ class EditorWindow
 	HWND _handleRenderWindow;
 	HACCEL acceleratorTable;
 
-	std::unique_ptr<Engine3DRadSpace::Window> editorWindow;
 	std::unique_ptr<RenderWindow> editor;
 
 	bool _running;

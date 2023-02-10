@@ -31,9 +31,9 @@ namespace Engine3DRadSpace
 #endif
 	public:
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
-		GraphicsDevice(GraphicsDevice&) = delete;
-		GraphicsDevice(GraphicsDevice&&) = delete;
-		GraphicsDevice& operator=(GraphicsDevice&) = delete;
+		//GraphicsDevice(GraphicsDevice&) = delete;
+		//GraphicsDevice(GraphicsDevice&&) = delete;
+		//GraphicsDevice& operator=(GraphicsDevice&) = delete;
 
 		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
 

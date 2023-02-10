@@ -62,7 +62,7 @@ namespace Engine3DRadSpace::Graphics
 		Microsoft::WRL::ComPtr<ID3DBlob> _errorBlob;
 
 		Microsoft::WRL::ComPtr<ID3DBlob> _shaderBlob;
-		void *_shader;
+		Microsoft::WRL::ComPtr<ID3D11DeviceChild> _shader;
 
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
 		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>,14> _constantBuffers;
@@ -80,7 +80,7 @@ namespace Engine3DRadSpace::Graphics
 		IShader(GraphicsDevice* device, ShaderType type, const char* path, const char* entry,int dummy, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 		IShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* path, const char* vsEntry,int dummy, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 
-		IShader(IShader&) = delete;
+		//IShader(IShader&) = delete;
 
 		virtual std::span<InputLayoutElement> InputLayout() = 0;
 

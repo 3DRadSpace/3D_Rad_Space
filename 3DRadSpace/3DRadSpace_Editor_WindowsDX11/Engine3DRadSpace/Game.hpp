@@ -10,7 +10,7 @@ namespace Engine3DRadSpace
 		bool _valid;
 	public:
 		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
-		Game(Window& window);
+		Game(Window* window);
 
 		std::unique_ptr<Window> Window;
 		std::unique_ptr<GraphicsDevice> Device;
@@ -18,6 +18,8 @@ namespace Engine3DRadSpace
 		void Run();
 
 		void RunOneFrame();
+
+		virtual ~Game() = default;
 	};
 }
 
