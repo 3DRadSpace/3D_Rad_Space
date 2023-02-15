@@ -11,12 +11,12 @@ Game::Game(const char* title, int width, int height, bool fullscreen) :
 	_valid = true;
 }
 
-Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window *window) :
-	Window(window)
+Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
+	Window(std::make_unique<Engine3DRadSpace::Window>(window))
 {
-	Math::Point size = window->Size();
+	Math::Point size = Window->Size();
 
-	this->Device = std::make_unique<GraphicsDevice>(window->NativeHandle(), size.X, size.Y);
+	this->Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
 	_valid = true;
 }
 

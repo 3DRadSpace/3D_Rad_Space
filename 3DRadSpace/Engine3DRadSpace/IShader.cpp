@@ -7,7 +7,7 @@ void Engine3DRadSpace::Graphics::IShader::_determineTarget(char* target, size_t 
 	switch (_type)
 	{
 		case ShaderType::VertexShader:
-			strcat_s(target,lenStr, "ps_");
+			strcat_s(target,lenStr, "vs_");
 			break;
 		case ShaderType::HullShader:
 			strcat_s(target,lenStr, "hs_");
@@ -65,11 +65,14 @@ void Engine3DRadSpace::Graphics::IShader::_compileShader(const char *source)
 		&_shaderBlob,
 		&_errorBlob
 	);
-	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
-		r,
-		(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
-		source
-	);
+	if(_errorBlob.Get() != nullptr)
+	{
+		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
+			r,
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
+			source
+		);
+	}
 
 	_createShader();
 #endif
@@ -95,7 +98,15 @@ void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* pat
 		&_shaderBlob,
 		&_errorBlob
 	);
-	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader compilation failure!", path);
+	if(_errorBlob.Get() == nullptr) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader file not found!", path);
+	else
+	{
+		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
+			r,
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
+			path
+		);
+	}
 
 	_createShader();
 #endif

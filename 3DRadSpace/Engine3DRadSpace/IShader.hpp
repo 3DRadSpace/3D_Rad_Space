@@ -80,7 +80,9 @@ namespace Engine3DRadSpace::Graphics
 		IShader(GraphicsDevice* device, ShaderType type, const char* path, const char* entry,int dummy, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 		IShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* path, const char* vsEntry,int dummy, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 
-		//IShader(IShader&) = delete;
+		IShader(IShader&) = delete;
+		IShader(IShader&&) = delete;
+		IShader& operator=(IShader&) = delete;
 
 		virtual std::span<InputLayoutElement> InputLayout() = 0;
 

@@ -66,6 +66,12 @@
     <ClCompile Include="TrivialPixelShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader_PosColor_NoMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderPipeline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs.hpp">
@@ -125,7 +131,10 @@
     <ClInclude Include="Warning.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrivialPixelShader.hpp">
+    <ClInclude Include="Shader_PosColor_NoMat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderPipeline.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

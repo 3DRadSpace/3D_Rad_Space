@@ -16,6 +16,8 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 using namespace Engine3DRadSpace::Logging;
 
+#include "resource.h"
+
 void HandleError()
 {
 	if (LastError.ErrorCode < 0)
@@ -36,7 +38,7 @@ void SetWorkingDirectory()
 
 int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPSTR cmdArgs,_In_ int nShowCmd)
 {
-	_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
+	//_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
 
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.

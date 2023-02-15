@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -71,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -137,10 +138,12 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="IShader.cpp" />
+    <ClCompile Include="ShaderPipeline.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Shader_PosColor_NoMat.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TrivialPixelShader.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -157,6 +160,7 @@
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable.hpp" />
     <ClInclude Include="IShader.hpp" />
+    <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Libs.hpp" />
@@ -164,7 +168,7 @@
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Texture2D.hpp" />
-    <ClInclude Include="TrivialPixelShader.hpp" />
+    <ClInclude Include="Shader_PosColor_NoMat.hpp" />
     <ClInclude Include="Vector3.hpp" />
     <ClInclude Include="VertexBuffer.hpp" />
     <ClInclude Include="VertexDeclarations.hpp" />

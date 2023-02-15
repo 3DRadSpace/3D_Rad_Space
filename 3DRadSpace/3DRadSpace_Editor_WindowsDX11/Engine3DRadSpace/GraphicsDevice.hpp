@@ -31,6 +31,7 @@ namespace Engine3DRadSpace
 #endif
 	public:
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
+		
 		GraphicsDevice(GraphicsDevice&) = delete;
 		GraphicsDevice(GraphicsDevice&&) = delete;
 		GraphicsDevice& operator=(GraphicsDevice&) = delete;

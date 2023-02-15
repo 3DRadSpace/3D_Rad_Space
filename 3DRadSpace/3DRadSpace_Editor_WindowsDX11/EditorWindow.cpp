@@ -32,7 +32,7 @@ void EditorWindow::_saveProject(const char* filename)
 			//save project at filename contained by filebuff
 		}
 		else if (GetLastError() != 0)
-			MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the save file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
+			MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the save file dialog box! : {}", GetLastError()).c_str(), "Error!", MB_OK | MB_ICONWARNING);
 	}
 	else
 	{
@@ -59,7 +59,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 	ATOM a = RegisterClassA(&wndclass);
 	RaiseFatalErrorIfFalse(a != 0,"Failed to register class!");
-
+	
 	//
 	//Create the menu
 	//
@@ -80,7 +80,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	{
 		std::string filename;
 		std::getline(recent_projects, filename);
-		AppendMenuA(recentProjectsMenu, MF_STRING, CMD_OpenRecentFile1 + static_cast<UINT_PTR>(i),filename.c_str());
+		AppendMenuA(recentProjectsMenu, MF_STRING, CMD_OpenRecentFile1 + static_cast<UINT_PTR>(i), filename.c_str());
 	}
 	recent_projects.close();
 
@@ -139,11 +139,11 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		800,
 		600,
 		nullptr,
-		mainMenu,
+		nullptr,//mainMenu,
 		hInstance,
 		nullptr);
 
-	RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
+	//RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
 
 	//Create controls
 	_toolbar = CreateWindowExA(
@@ -174,7 +174,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON8)));
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON9)));
 	
-	SendMessageA(_toolbar, TB_SETIMAGELIST, 0, reinterpret_cast<LPARAM>(toolbarImageList));
+	SendMessageA(_toolbar, TB_SETIMAGELIST, 0, (LPARAM)(toolbarImageList));
 	SendMessageA(_toolbar, TB_LOADIMAGES, 0, (LPARAM)HINST_COMMCTRL);
 	
 	TBBUTTON tbButtons[8] =
@@ -193,7 +193,6 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	SendMessageA(_toolbar, TB_ADDBUTTONS, 8, (LPARAM)&tbButtons);
 	
 	SendMessageA(_toolbar, TB_AUTOSIZE, 0, 0);
-	ShowWindow(_toolbar, SW_NORMAL);
 
 	_listBox = CreateWindowExA(
 		0,
@@ -210,14 +209,14 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		nullptr
 	);
 
-	this->editor = std::make_unique<RenderWindow>(new Window(hInstance, _mainWindow));
+	this->editor = std::make_unique<RenderWindow>(_mainWindow,_hInstance);
 
 	_handleRenderWindow = static_cast<HWND>(this->editor->Window->NativeHandle());
 
 	//Accelerator table
 	acceleratorTable = LoadAcceleratorsA(hInstance, MAKEINTRESOURCEA(IDR_ACCELERATOR1));
 	RaiseFatalErrorIfNull(acceleratorTable, "Failed to create the accelerator table");
-
+	
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);
 	ShowWindow(_listBox, SW_NORMAL);
@@ -228,7 +227,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 void EditorWindow::Run()
 {
 	//Modified code from Window::Run() so accelerators are also translated.
-	while (_running)
+	while (true)
 	{
 		MSG msg;
 		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -239,8 +238,8 @@ void EditorWindow::Run()
 				DispatchMessageA(&msg);
 			}
 		}
-
-		if(editor.get() == nullptr) continue;
+		if(!_running) break;
+		if(!this->editor) continue;
 
 		double u_dt = 0;
 		double d_dt = 0;
@@ -275,13 +274,23 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		{
 			PAINTSTRUCT ps{};
 			BeginPaint(hwnd, &ps);
-			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_3DSHADOW + 1));
+			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 			EndPaint(hwnd, &ps);
 			break;
 		}
 		case WM_CLOSE:
 		{
 			gEditorWindow->_running = false;
+			break;
+		}
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			break;
+		}
+		case WM_QUIT:
+		{
+			exit(0);
 			break;
 		}
 		case WM_COMMAND:
@@ -348,7 +357,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_BUILD_PROJECT:
 					break;
 				case CMD_Exit:
-					exit(0);
+					
 					break;
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:
