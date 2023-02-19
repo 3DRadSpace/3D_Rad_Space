@@ -16,8 +16,6 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 using namespace Engine3DRadSpace::Logging;
 
-#include "resource.h"
-
 void HandleError()
 {
 	if (LastError.ErrorCode < 0)
@@ -36,6 +34,15 @@ void SetWorkingDirectory()
 	SetCurrentDirectoryW(currentDir);
 }
 
+void InitializeCommonControls()
+{
+	// Load controls such as the progress bar, tree views, list views, et cetera...
+	INITCOMMONCONTROLSEX iccs{};
+	iccs.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	iccs.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&iccs);
+}
+
 int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPSTR cmdArgs,_In_ int nShowCmd)
 {
 	//_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
@@ -44,11 +51,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 	std::atexit(HandleError);
 
-	INITCOMMONCONTROLSEX iccs{};
-	iccs.dwSize = sizeof(INITCOMMONCONTROLSEX);
-	iccs.dwICC = ICC_WIN95_CLASSES;
-	InitCommonControlsEx(&iccs);
-
+	InitializeCommonControls();
 	SetWorkingDirectory();
 
 	EditorWindow editor(hInstance, cmdArgs);

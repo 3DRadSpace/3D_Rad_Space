@@ -6,25 +6,31 @@ namespace Engine3DRadSpace::Graphics
 {
 	struct VertexPosition
 	{
-		Vector3 Position;
+		Math::Vector3 Position;
 	};
 
-	struct UnspecifiedVertexDecl : VertexPosition
+	struct UnspecifiedVertexDecl
 	{
+		Math::Vector3 Position;
 		virtual void dummy() = 0;
 	};
 
-	struct VertexPositionColor : VertexPosition
+	struct VertexPositionColor
 	{
+		Math::Vector3 Position;
 		Color Color;
 	};
 
 	struct VertexPositionNormalColor
 	{
-		Vector3 Normal;
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
 		Color Color;
 	};
 
-	template <typename T>
-	concept VertexDecl = std::is_base_of_v<VertexPosition, T>;
+	template <typename V>
+	concept VertexDecl = requires(V v)
+	{
+		v.Position = Math::Vector3::Zero();
+	};
 }

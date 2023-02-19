@@ -1,4 +1,5 @@
 #include "Shader_PosColor_NoMat.hpp"
+#include "Shader_PosColor_NoMat.hpp"
 
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
@@ -28,4 +29,14 @@ std::span<InputLayoutElement> Engine3DRadSpace::Graphics::Shaders::Shader_PosCol
 Engine3DRadSpace::Graphics::Shaders::Shader_PosColor_NoMatrix::Shader_PosColor_NoMatrix(GraphicsDevice* device):
 	ShaderPipeline(device, new TrivialVertexShader(device), new TrivialPixelShader(device))
 {
+}
+
+IShader* Engine3DRadSpace::Graphics::Shaders::Shader_PosColor_NoMatrix::GetPixelShaderRef() const
+{
+	return this->pixel;
+}
+
+IShader* Engine3DRadSpace::Graphics::Shaders::Shader_PosColor_NoMatrix::GetVertexShaderRef() const
+{
+	return this->vertex;
 }

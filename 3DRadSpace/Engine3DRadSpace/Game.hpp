@@ -2,12 +2,15 @@
 #include "Window.hpp"
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
+#include "IInitializable.hpp"
+#include "Point.hpp"
 
 namespace Engine3DRadSpace
 {
-	class Game : public IUpdateable, public IDrawable
+	class Game : public IUpdateable, public IDrawable, public IInitiializable
 	{
-		bool _valid;
+		bool valid;
+		Math::Point resolution;
 	public:
 		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
 		Game(Window&& window);
@@ -22,6 +25,8 @@ namespace Engine3DRadSpace
 		void Run();
 
 		void RunOneFrame();
+
+		Math::Point Resolution();
 
 		virtual ~Game() = default;
 	};

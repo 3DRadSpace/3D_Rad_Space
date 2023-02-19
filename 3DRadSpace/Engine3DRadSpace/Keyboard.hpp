@@ -153,9 +153,9 @@ namespace Engine3DRadSpace
 			uint8_t keys[10];
 
 			/// used inside the Window class
-			void _addKey(uint8_t k);
-			void _removeKey(uint8_t k);
-			void _erase();
+			void addKey(uint8_t k);
+			void removeKey(uint8_t k);
+			void erase();
 		public:
 
 			Keyboard() : keys{ 0 } {};

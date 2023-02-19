@@ -4,7 +4,7 @@
 
 void Engine3DRadSpace::Graphics::IShader::_determineTarget(char* target, size_t lenStr)
 {
-	switch (_type)
+	switch (type)
 	{
 		case ShaderType::VertexShader:
 			strcat_s(target,lenStr, "vs_");
@@ -22,11 +22,11 @@ void Engine3DRadSpace::Graphics::IShader::_determineTarget(char* target, size_t 
 			strcat_s(target, lenStr, "ps_");
 			break;
 		default:
-			Engine3DRadSpace::Logging::RaiseFatalError({ -1,"Unknown shader type!",&_type });
+			Engine3DRadSpace::Logging::RaiseFatalError({ -1,"Unknown shader type!",&type });
 			break;
 	}
 
-	switch (_featureLevel)
+	switch (featureLevel)
 	{
 		case ShaderFeatureLevel::DX_V4:
 			strcat_s(target, lenStr, "4_0");
@@ -52,24 +52,30 @@ void Engine3DRadSpace::Graphics::IShader::_compileShader(const char *source)
 	char target[10] = "";
 	_determineTarget(target, 10);
 
+#ifdef _DEBUG
+	const UINT shaderFlags = D3DCOMPILE_DEBUG;
+#else
+	const UINT shaderFlags = 0;
+#endif
+
 	HRESULT r = D3DCompile(
 		source,
 		strlen(source),
 		nullptr,
 		nullptr,
 		nullptr,
-		_entry.c_str(),
+		entry.c_str(),
 		target,
+		shaderFlags,
 		0,
-		0,
-		&_shaderBlob,
-		&_errorBlob
+		&shaderBlob,
+		&errorBlob
 	);
-	if(_errorBlob.Get() != nullptr)
+	if(errorBlob.Get() != nullptr)
 	{
 		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
 			r,
-			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
 			source
 		);
 	}
@@ -87,23 +93,29 @@ void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* pat
 	wchar_t wpath[_MAX_PATH]{ 0 };
 	MultiByteToWideChar(CP_ACP, 0, path, (int)strlen(path), wpath, _MAX_PATH);
 
+#ifdef _DEBUG
+	const UINT shaderFlags = D3DCOMPILE_DEBUG;
+#else
+	const UINT shaderFlags = 0;
+#endif
+
 	HRESULT r = D3DCompileFromFile(
 		wpath,
 		nullptr,
 		nullptr,
-		_entry.c_str(),
+		entry.c_str(),
 		target,
+		shaderFlags,
 		0,
-		0,
-		&_shaderBlob,
-		&_errorBlob
+		&shaderBlob,
+		&errorBlob
 	);
-	if(_errorBlob.Get() == nullptr) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader file not found!", path);
+	if(errorBlob.Get() == nullptr) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader file not found!", path);
 	else
 	{
 		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
 			r,
-			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
 			path
 		);
 	}
@@ -114,46 +126,46 @@ void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* pat
 
 void Engine3DRadSpace::Graphics::IShader::_createShader()
 {
-	switch (_type)
+	switch (type)
 	{
 		case ShaderType::VertexShader:
-			_device->_device->CreateVertexShader(
-				_shaderBlob->GetBufferPointer(),
-				_shaderBlob->GetBufferSize(),
+			device->device->CreateVertexShader(
+				shaderBlob->GetBufferPointer(),
+				shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11VertexShader**>(this->_shader.ReleaseAndGetAddressOf())
+				reinterpret_cast<ID3D11VertexShader**>(this->shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::HullShader:
-			_device->_device->CreateHullShader(
-				_shaderBlob->GetBufferPointer(),
-				_shaderBlob->GetBufferSize(),
+			device->device->CreateHullShader(
+				shaderBlob->GetBufferPointer(),
+				shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11HullShader**>(this->_shader.ReleaseAndGetAddressOf())
+				reinterpret_cast<ID3D11HullShader**>(this->shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::DomainShader:
-			_device->_device->CreateDomainShader(
-				_shaderBlob->GetBufferPointer(),
-				_shaderBlob->GetBufferSize(),
+			device->device->CreateDomainShader(
+				shaderBlob->GetBufferPointer(),
+				shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11DomainShader**>(this->_shader.ReleaseAndGetAddressOf())
+				reinterpret_cast<ID3D11DomainShader**>(this->shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::GeometryShader:
-			_device->_device->CreateGeometryShader(
-				_shaderBlob->GetBufferPointer(),
-				_shaderBlob->GetBufferSize(),
+			device->device->CreateGeometryShader(
+				shaderBlob->GetBufferPointer(),
+				shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11GeometryShader**>(this->_shader.ReleaseAndGetAddressOf())
+				reinterpret_cast<ID3D11GeometryShader**>(this->shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		case ShaderType::PixelShader:
-			_device->_device->CreatePixelShader(
-				_shaderBlob->GetBufferPointer(),
-				_shaderBlob->GetBufferSize(),
+			device->device->CreatePixelShader(
+				shaderBlob->GetBufferPointer(),
+				shaderBlob->GetBufferSize(),
 				nullptr,
-				reinterpret_cast<ID3D11PixelShader**>(this->_shader.ReleaseAndGetAddressOf())
+				reinterpret_cast<ID3D11PixelShader**>(this->shader.ReleaseAndGetAddressOf())
 			);
 			break;
 		default:
@@ -453,12 +465,12 @@ void Engine3DRadSpace::Graphics::IShader::_generateInputLayout(std::span<InputLa
 {
 	D3D11_INPUT_ELEMENT_DESC *elements = generateInputElementDesc(inputLayout);
 
-	HRESULT r = _device->_device->CreateInputLayout(
+	HRESULT r = device->device->CreateInputLayout(
 		elements,
 		static_cast<UINT>(inputLayout.size()),
-		_shaderBlob->GetBufferPointer(),
-		_shaderBlob->GetBufferSize(),
-		&_inputLayout
+		shaderBlob->GetBufferPointer(),
+		shaderBlob->GetBufferSize(),
+		&this->inputLayout
 	);
 	delete[] elements;
 
@@ -466,49 +478,49 @@ void Engine3DRadSpace::Graphics::IShader::_generateInputLayout(std::span<InputLa
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *device, ShaderType type, const char *shaderSourceCode,const char* entry, ShaderFeatureLevel featureLevel):
-	_device(device),
-	_type(type),
-	_entry(entry),
-	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr })
+	device(device),
+	type(type),
+	entry(entry),
+	featureLevel(featureLevel),
+	constantBuffers({ nullptr })
 {
 	_compileShader(shaderSourceCode);
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel featureLevel):
-	_device(device),
-	_type(ShaderType::VertexShader),
-	_entry(vsEntry),
-	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr })
+	device(device),
+	type(ShaderType::VertexShader),
+	entry(vsEntry),
+	featureLevel(featureLevel),
+	constantBuffers({ nullptr })
 {
 	_compileShader(shaderSourceCode);
 	_generateInputLayout(inputLayout);
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, ShaderType type, const char* path, const char* entry, int dummy, ShaderFeatureLevel featureLevel):
-	_device(device),
-	_type(type),
-	_entry(entry),
-	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr }),
-	_shader(),
-	_errorBlob(),
-	_shaderBlob()
+	device(device),
+	type(type),
+	entry(entry),
+	featureLevel(featureLevel),
+	constantBuffers({ nullptr }),
+	shader(),
+	errorBlob(),
+	shaderBlob()
 {
 	UNREFERENCED_PARAMETER(dummy);
 	_compileShaderFromFile(path);
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* path, const char* vsEntry, int dummy, ShaderFeatureLevel featureLevel):
-	_device(device),
-	_type(ShaderType::VertexShader),
-	_entry(vsEntry),
-	_featureLevel(featureLevel),
-	_constantBuffers({ nullptr }),
-	_shader(nullptr),
-	_errorBlob(nullptr),
-	_shaderBlob(nullptr)
+	device(device),
+	type(ShaderType::VertexShader),
+	entry(vsEntry),
+	featureLevel(featureLevel),
+	constantBuffers({ nullptr }),
+	shader(nullptr),
+	errorBlob(nullptr),
+	shaderBlob(nullptr)
 {
 	UNREFERENCED_PARAMETER(dummy);
 	_compileShaderFromFile(path);
@@ -517,7 +529,7 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, std::span<I
 
 void Engine3DRadSpace::Graphics::IShader::SetData(unsigned index, void *data, unsigned dataSize)
 {
-	if (_constantBuffers[index].Get() == nullptr)
+	if (constantBuffers[index].Get() == nullptr)
 	{
 		D3D11_BUFFER_DESC constantBufferDesc{};
 		constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -528,7 +540,7 @@ void Engine3DRadSpace::Graphics::IShader::SetData(unsigned index, void *data, un
 		D3D11_SUBRESOURCE_DATA res{};
 		res.pSysMem = data;
 
-		HRESULT r = _device->_device->CreateBuffer(&constantBufferDesc, &res, _constantBuffers[index].GetAddressOf());
+		HRESULT r = device->device->CreateBuffer(&constantBufferDesc, &res, constantBuffers[index].GetAddressOf());
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to create a constant buffer for a shader!");
 	}
 	else
@@ -537,38 +549,38 @@ void Engine3DRadSpace::Graphics::IShader::SetData(unsigned index, void *data, un
 		res.pData = data;
 		res.DepthPitch = dataSize;
 
-		HRESULT r = _device->_context->Map(_constantBuffers[index].Get(), 0, D3D11_MAP_WRITE, 0, &res);
+		HRESULT r = device->context->Map(constantBuffers[index].Get(), 0, D3D11_MAP_WRITE, 0, &res);
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to write the shader data!");
 	}
 }
 
 void Engine3DRadSpace::Graphics::IShader::SetTexture(unsigned index, Texture2D *texture)
 {
-	switch (_type)
+	switch (type)
 	{
 		case ShaderType::VertexShader:
 		{
-			_device->_context->VSSetShaderResources(index, 1, nullptr);
+			device->context->VSSetShaderResources(index, 1, nullptr);
 			break;
 		}
 		case ShaderType::HullShader:
 		{
-			_device->_context->HSSetShaderResources(index, 1, nullptr);
+			device->context->HSSetShaderResources(index, 1, nullptr);
 			break;
 		}
 		case ShaderType::DomainShader:
 		{
-			_device->_context->DSSetShaderResources(index, 1, nullptr);
+			device->context->DSSetShaderResources(index, 1, nullptr);
 			break;
 		}
 		case ShaderType::GeometryShader:
 		{
-			_device->_context->GSSetShaderResources(index, 1, nullptr);
+			device->context->GSSetShaderResources(index, 1, nullptr);
 			break;
 		}
 		case ShaderType::PixelShader:
 		{
-			_device->_context->PSSetShaderResources(index, 1, nullptr);
+			device->context->PSSetShaderResources(index, 1, nullptr);
 			break;
 		}
 		default:
@@ -578,17 +590,17 @@ void Engine3DRadSpace::Graphics::IShader::SetTexture(unsigned index, Texture2D *
 
 Engine3DRadSpace::Graphics::ShaderFeatureLevel Engine3DRadSpace::Graphics::IShader::GetFeatureLevel()
 {
-	return _featureLevel;
+	return featureLevel;
 }
 
 Engine3DRadSpace::Graphics::ShaderType Engine3DRadSpace::Graphics::IShader::GetType()
 {
-	return _type;
+	return type;
 }
 
 std::string Engine3DRadSpace::Graphics::IShader::GetEntryName()
 {
-	return std::string(_entry);
+	return std::string(entry);
 }
 
 Engine3DRadSpace::Graphics::IShader::~IShader()

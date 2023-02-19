@@ -54,18 +54,18 @@ namespace Engine3DRadSpace::Graphics
 
 	class IShader
 	{
-		Engine3DRadSpace::GraphicsDevice *_device;
-		ShaderType _type;
-		ShaderFeatureLevel _featureLevel;
-		std::string _entry;
+		Engine3DRadSpace::GraphicsDevice *device;
+		ShaderType type;
+		ShaderFeatureLevel featureLevel;
+		std::string entry;
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3DBlob> _errorBlob;
+		Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
 
-		Microsoft::WRL::ComPtr<ID3DBlob> _shaderBlob;
-		Microsoft::WRL::ComPtr<ID3D11DeviceChild> _shader;
+		Microsoft::WRL::ComPtr<ID3DBlob> shaderBlob;
+		Microsoft::WRL::ComPtr<ID3D11DeviceChild> shader;
 
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
-		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>,14> _constantBuffers;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>,14> constantBuffers;
 #endif
 		void _determineTarget(char* target, size_t lenStr);
 		void _compileShader( const char* source);

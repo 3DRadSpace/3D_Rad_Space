@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,6 +159,7 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable.hpp" />
+    <ClInclude Include="IInitializable.hpp" />
     <ClInclude Include="IShader.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Vector3.hpp" />
     <ClInclude Include="VertexBuffer.hpp" />
     <ClInclude Include="VertexDeclarations.hpp" />
+    <ClInclude Include="VertexTopology.hpp" />
     <ClInclude Include="Viewport.hpp" />
     <ClInclude Include="Warning.hpp" />
     <ClInclude Include="Window.hpp" />

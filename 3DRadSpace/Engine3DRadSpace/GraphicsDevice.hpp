@@ -2,6 +2,7 @@
 #include "Libs.hpp"
 #include "VertexDeclarations.hpp"
 #include "Viewport.hpp"
+#include "VertexTopology.hpp"
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
@@ -22,12 +23,12 @@ namespace Engine3DRadSpace
 	class GraphicsDevice
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11Device> _device;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context;
-		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
+		Microsoft::WRL::ComPtr<ID3D11Device> device;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
 
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _screenTexture;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> screenTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mainRenderTarget;
 #endif
 	public:
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
@@ -42,9 +43,11 @@ namespace Engine3DRadSpace
 		void SetViewports(std::span<Viewport> viewports);
 
 		template<Engine3DRadSpace::Graphics::VertexDecl V>
-		void SetVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V>* vertexBuffer);
+		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V>* vertexBuffer);
 
 		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
+		void SetTopology(Graphics::VertexTopology topology);
+		void DrawAuto();
 
 		void Present();
 
@@ -58,12 +61,14 @@ namespace Engine3DRadSpace
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>
-	inline void GraphicsDevice::SetVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V> *vertexBuffer)
+	inline void GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V> *vertexBuffer)
 	{
 #ifdef _DX11
 		int strides = 0;
 		int offsets = 0;
-		_context->IASetVertexBuffers(0, 1, &vertexBuffer->_buffer, &strides, &offsets);
+		context->IASetVertexBuffers(0, 1, &vertexBuffer->buffer, &strides, &offsets);
+
+		context->Draw(vertexBuffer->NumVerts(), 0);
 #endif
 	}
 }

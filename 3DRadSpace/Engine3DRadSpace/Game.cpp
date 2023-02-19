@@ -1,14 +1,14 @@
 #include "Game.hpp"
-#include <chrono>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
 
 Game::Game(const char* title, int width, int height, bool fullscreen) :
+	resolution(width,height),
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
-	Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
-	_valid = true;
+	this->Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
+	this->valid = true;
 }
 
 Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
@@ -17,11 +17,12 @@ Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
 	Math::Point size = Window->Size();
 
 	this->Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
-	_valid = true;
+	this->valid = true;
 }
 
 void Game::Run()
 {
+	this->Initialize();
 	while (true)
 	{	
 		RunOneFrame();
@@ -44,14 +45,19 @@ void Engine3DRadSpace::Game::RunOneFrame()
 
 	auto ts_d1 = std::chrono::steady_clock::now();
 
+	this->Device->SetViewport(Viewport(this->Window->RectangleF(), 0.0f, 1.0f));
 	this->Device->Clear();
 	this->Draw(d_dt);
 
-	this->Device->SetViewport(Viewport(this->Window->RectangleF(), 0.0f, 1.0f));
 	this->Device->Present();
 
 	auto ts_d2 = std::chrono::steady_clock::now();
 
 	std::chrono::duration<double> dDiff = ts_d2 - ts_d1;
 	d_dt = dDiff.count();
+}
+
+Math::Point Engine3DRadSpace::Game::Resolution()
+{
+	return this->resolution;
 }

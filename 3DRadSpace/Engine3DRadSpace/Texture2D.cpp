@@ -8,17 +8,17 @@
 Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const char *filename)
 {
 #ifdef _WIN32
-	ID3D11Resource *resource = static_cast<ID3D11Resource *>(this->_texture.Get());
+	ID3D11Resource *resource = static_cast<ID3D11Resource *>(this->texture.Get());
 
 	wchar_t path[_MAX_PATH]{};
 	MultiByteToWideChar(CP_ACP, 0, filename,(int) strlen(filename), path, _MAX_PATH);
 
 	HRESULT r = DirectX::CreateWICTextureFromFile(
-		device->_device.Get(),
-		device->_context.Get(),
+		device->device.Get(),
+		device->context.Get(),
 		path,
 		&resource,
-		this->_resourceView.GetAddressOf()
+		this->resourceView.GetAddressOf()
 	);
 
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create texture from file!",filename);
@@ -51,14 +51,14 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, std::sp
 	textureData.pSysMem = new Color[x * y];
 	textureData.SysMemPitch = sizeof(Color) * x;
 
-	HRESULT r = device->_device->CreateTexture2D(&tDesc, nullptr, this->_texture.GetAddressOf());
+	HRESULT r = device->device->CreateTexture2D(&tDesc, nullptr, this->texture.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC resViewDesc{};
 	resViewDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	resViewDesc.ViewDimension = D3D11_SRV_DIMENSION::D3D10_1_SRV_DIMENSION_TEXTURE2D;
 
-	r = device->_device->CreateShaderResourceView(this->_texture.Get(), nullptr, this->_resourceView.GetAddressOf());
+	r = device->device->CreateShaderResourceView(this->texture.Get(), nullptr, this->resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
 }
 

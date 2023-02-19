@@ -9,6 +9,7 @@
 #include <array>
 #include <format>
 #include <span>
+#include <chrono>
 
 #ifdef _WIN32
 #ifdef _DX11

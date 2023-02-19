@@ -9,23 +9,18 @@ namespace Engine3DRadSpace
 	{
 		class Mouse
 		{
-			bool _leftButton;
-			bool _middleButton;
-			bool _rightButton;
+			bool leftButton;
+			bool middleButton;
+			bool rightButton;
 
 			Math::Point _position;
 
 			float _scrollWheel;
-
-			void _setLeftBtn(bool state);
-			void _setRightBtn(bool state);
-			void _setPos(const Math::Point& p);
-			void _setScrollWheel(float wheel);
 		public:
 			Mouse() : 
-				_leftButton(false),
-				_middleButton(false),
-				_rightButton(false),
+				leftButton(false),
+				middleButton(false),
+				rightButton(false),
 				_position(),
 				_scrollWheel(0) {};
 

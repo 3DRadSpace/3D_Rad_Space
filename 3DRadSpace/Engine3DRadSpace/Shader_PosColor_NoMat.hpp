@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class Shader_PosColor_NoMatrix : ShaderPipeline
+	class Shader_PosColor_NoMatrix : public ShaderPipeline
 	{
 		class TrivialPixelShader : public IShader
 		{
@@ -27,5 +27,8 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		Shader_PosColor_NoMatrix(Shader_PosColor_NoMatrix&) = delete;
 		Shader_PosColor_NoMatrix(Shader_PosColor_NoMatrix&&) = delete;
 		Shader_PosColor_NoMatrix& operator=(Shader_PosColor_NoMatrix&) = delete;
+
+		IShader* GetPixelShaderRef() const;
+		IShader* GetVertexShaderRef() const;
 	};
 }

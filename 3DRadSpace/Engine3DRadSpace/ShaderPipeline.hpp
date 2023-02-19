@@ -7,12 +7,12 @@ namespace Engine3DRadSpace::Graphics::Shaders
 	class ShaderPipeline
 	{
 	protected:
-		GraphicsDevice* _device;
-		IShader* _vertex;
-		IShader* _hull;
-		IShader* _domain;
-		IShader* _geometry;
-		IShader* _pixel;
+		GraphicsDevice* device;
+		IShader* vertex;
+		IShader* hull;
+		IShader* domain;
+		IShader* geometry;
+		IShader* pixel;
 	public:
 		ShaderPipeline(GraphicsDevice *device, IShader* vertexShader, IShader* fragmentShader, IShader* hullShader = nullptr, IShader* domainShader = nullptr, IShader* geometryShader = nullptr);
 	

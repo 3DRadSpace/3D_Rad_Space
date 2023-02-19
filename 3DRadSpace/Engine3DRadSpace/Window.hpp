@@ -7,10 +7,10 @@ namespace Engine3DRadSpace
 {
 	class Window
 	{
-		void* _window;
+		void* window;
 
-		Engine3DRadSpace::Input::Mouse _mouse;
-		Engine3DRadSpace::Input::Keyboard _keyboard;
+		Engine3DRadSpace::Input::Mouse mouse;
+		Engine3DRadSpace::Input::Keyboard keyboard;
 
 		void _keyUp(uint8_t k);
 		void _keyDown(uint8_t k);

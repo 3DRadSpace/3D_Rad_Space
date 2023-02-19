@@ -6,8 +6,8 @@ namespace Engine3DRadSpace::Graphics
 	class Texture2D
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _resourceView;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> resourceView;
 #endif
 		Texture2D(GraphicsDevice* device,const char *fileName);
 		Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x, unsigned y);

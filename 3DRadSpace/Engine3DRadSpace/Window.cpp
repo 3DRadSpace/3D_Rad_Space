@@ -63,15 +63,15 @@ void Engine3DRadSpace::Window::_keyUp(uint8_t k)
     switch (k)
     {
         case VK_LBUTTON:
-            _mouse._leftButton = true;
+            mouse.leftButton = true;
             break;
         case VK_RBUTTON:
-            _mouse._rightButton = true;
+            mouse.rightButton = true;
             break;
         case VK_MBUTTON:
-            _mouse._middleButton = true;
+            mouse.middleButton = true;
         default:
-            _keyboard._removeKey(k);
+            keyboard.removeKey(k);
             break;
     }
 }
@@ -81,30 +81,30 @@ void Engine3DRadSpace::Window::_keyDown(uint8_t k)
     switch (k)
     {
         case VK_LBUTTON:
-            _mouse._leftButton = false;
+            mouse.leftButton = false;
             break;
         case VK_RBUTTON:
-            _mouse._rightButton = false;
+            mouse.rightButton = false;
             break;
         case VK_MBUTTON:
-            _mouse._middleButton = false;
+            mouse.middleButton = false;
         default:
-            _keyboard._addKey(k);
+            keyboard.addKey(k);
             break;
     }
 }
 
 void Engine3DRadSpace::Window::_scrollwheel(float dw)
 {
-    _mouse._scrollWheel += dw / WHEEL_DELTA;
+    mouse._scrollWheel += dw / WHEEL_DELTA;
 }
 
 void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool middle, bool right)
 {
-    _mouse._position = pos;
-    _mouse._leftButton = left;
-    _mouse._middleButton = middle;
-    _mouse._rightButton = right;
+    mouse._position = pos;
+    mouse.leftButton = left;
+    mouse.middleButton = middle;
+    mouse.rightButton = right;
 }
 
 Engine3DRadSpace::Window::Window(const char* title, int width, int height)
@@ -119,7 +119,7 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
     ATOM a = RegisterClassA(&wndclass);
     if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
 
-    _window = CreateWindowExA(
+    window = CreateWindowExA(
         0, 
         "3DRSP_GAME",
         title, 
@@ -147,7 +147,7 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
     ATOM a = RegisterClassA(&wndclass);
     if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
 
-    _window = CreateWindowExA(
+    window = CreateWindowExA(
         0,
         "3DRSP_GAME",
         "",
@@ -161,13 +161,13 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
         static_cast<HINSTANCE>(hInstance),
         this
     );
-    if (_window == nullptr) throw std::runtime_error("Failed to create a Windows window instance!");
+    if (window == nullptr) throw std::runtime_error("Failed to create a Windows window instance!");
 #endif
 }
 
 void* Engine3DRadSpace::Window::NativeHandle()
 {
-    return _window;
+    return window;
 }
 
 void Engine3DRadSpace::Window::ProcessMessages()
@@ -184,18 +184,18 @@ void Engine3DRadSpace::Window::ProcessMessages()
 
 Engine3DRadSpace::Input::Mouse& Engine3DRadSpace::Window::GetMouseState()
 {
-    return _mouse;
+    return mouse;
 }
 
 Engine3DRadSpace::Input::Keyboard& Engine3DRadSpace::Window::GetKeyboardState()
 {
-    return _keyboard;
+    return keyboard;
 }
 
 Math::Point Engine3DRadSpace::Window::Size()
 {
     RECT r;
-    GetWindowRect(static_cast<HWND>(_window), &r);
+    GetWindowRect(static_cast<HWND>(window), &r);
 
     return { r.right - r.left, r.bottom - r.top };
 }
@@ -204,7 +204,7 @@ Engine3DRadSpace::Math::RectangleF Engine3DRadSpace::Window::RectangleF()
 {
 #ifdef  _WIN32
     RECT r;
-    GetClientRect(static_cast<HWND>(_window), &r);
+    GetClientRect(static_cast<HWND>(window), &r);
     
     return { (float)r.left, (float)r.top, (float)(r.right - r.left), (float)(r.bottom - r.top) };
 #endif //  _WIN32
@@ -214,7 +214,7 @@ Math::Rectangle Engine3DRadSpace::Window::Rectangle()
 {
 #ifdef  _WIN32
     RECT r;
-    GetClientRect(static_cast<HWND>(_window), &r);
+    GetClientRect(static_cast<HWND>(window), &r);
 
     return {r.left, r.top, r.right - r.left, r.bottom - r.top };
 #endif //  _WIN32

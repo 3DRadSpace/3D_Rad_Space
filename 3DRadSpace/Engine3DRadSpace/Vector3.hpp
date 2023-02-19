@@ -1,14 +1,21 @@
 #pragma once
 #include "Libs.hpp"
 
-struct Vector3
+namespace Engine3DRadSpace::Math
 {
-	float X;
-	float Y;
-	float Z;
+	struct Vector3
+	{
+		float X;
+		float Y;
+		float Z;
 
-	Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
+		Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
 
-	float Length();
-};
+		static Vector3 Zero();
+		static Vector3 UnitX();
+		static Vector3 UnitY();
+		static Vector3 UnitZ();
 
+		float Length();
+	};
+}

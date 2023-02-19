@@ -8,6 +8,7 @@ using namespace Engine3DRadSpace::Logging;
 Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height):
 	EnableVSync(true)
 {
+#ifdef _DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferCount = 2;
 	swapChainDesc.BufferDesc.Width = width;
@@ -36,33 +37,34 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 			0,
 			D3D11_SDK_VERSION,
 			&swapChainDesc,
-			&this->_swapChain,
-			&this->_device,
+			&this->swapChain,
+			&this->device,
 			nullptr,
-			&this->_context
+			&this->context
 		);
 		RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
 
-		r = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&_screenTexture));
+		r = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&screenTexture));
 		RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
 
-		r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, &_mainRenderTarget);
+		r = device->CreateRenderTargetView(screenTexture.Get(), nullptr, &mainRenderTarget);
 		RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
-		//_screenTexture->Release();
-
-		assert(_CrtCheckMemory());
+#endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 {
-	_context->OMSetRenderTargets(1, _mainRenderTarget.GetAddressOf(), nullptr);
+#ifdef _DX11
+	context->OMSetRenderTargets(1, mainRenderTarget.GetAddressOf(), nullptr);
 
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
-	_context->ClearRenderTargetView(_mainRenderTarget.Get(), color);
+	context->ClearRenderTargetView(mainRenderTarget.Get(), color);
+#endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 {
+#ifdef _DX11
 	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = viewport.ScreenRectangle.X;
 	vp.TopLeftY = viewport.ScreenRectangle.Y;
@@ -72,23 +74,27 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 	vp.MinDepth = viewport.MinDepth;
 	vp.MaxDepth = viewport.MaxDepth;
 
-	_context->RSSetViewports(1, &vp);
+	context->RSSetViewports(1, &vp);
+#endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
-	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
+#ifdef _DX11
+	context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
+#endif // _DX11
 }
 
 void Engine3DRadSpace::GraphicsDevice::Present()
 {
-	HRESULT r = _swapChain->Present(EnableVSync ? 1 : 0, 0);
+#ifdef _DX11
+	HRESULT r = swapChain->Present(EnableVSync ? 1 : 0, 0);
 	if (SUCCEEDED(r)) return; //if Present call succeded, skip error reporting.
 
 	if (r == DXGI_ERROR_DEVICE_RESET) RaiseFatalError(Error(r, "Graphics device reset"));
 	if (r == DXGI_ERROR_DEVICE_REMOVED)
 	{
-		HRESULT reason = _device->GetDeviceRemovedReason();
+		HRESULT reason = device->GetDeviceRemovedReason();
 		switch (reason)
 		{
 			case DXGI_ERROR_DEVICE_HUNG:
@@ -111,56 +117,73 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 	}
 	
 	RaiseFatalErrorIfFailed(r, "Unknown error when presenting a frame", this);
+#endif // _DX11
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::IShader *shader)
 {
+#ifdef _DX11
 	ID3D11Buffer * ppConstantBuffers[14] = { nullptr };
 	unsigned i = 0;
 	for (; i < 14; i++)
 	{
-		ID3D11Buffer *constBuffer = shader->_constantBuffers[i].Get();
+		ID3D11Buffer *constBuffer = shader->constantBuffers[i].Get();
 		if (constBuffer == nullptr) break;
 
 		ppConstantBuffers[i] = constBuffer;
 	}
 
-	switch (shader->_type)
+	switch (shader->type)
 	{
 		case Engine3DRadSpace::Graphics::ShaderType::VertexShader:
 		{
-			_context->VSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->IASetInputLayout(shader->_inputLayout.Get());
-			_context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->_shader.Get()), nullptr, 0);
+			context->VSSetConstantBuffers(0, i, ppConstantBuffers);
+			context->IASetInputLayout(shader->inputLayout.Get());
+			context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::HullShader:
 		{
-			_context->HSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->HSSetShader(static_cast<ID3D11HullShader *>(shader->_shader.Get()), nullptr, 0);
+			context->HSSetConstantBuffers(0, i, ppConstantBuffers);
+			context->HSSetShader(static_cast<ID3D11HullShader *>(shader->shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::DomainShader:
 		{
-			_context->DSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->_shader.Get()), nullptr, 0);
+			context->DSSetConstantBuffers(0, i, ppConstantBuffers);
+			context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::GeometryShader:
 		{
-			_context->GSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->_shader.Get()), nullptr, 0);
+			context->GSSetConstantBuffers(0, i, ppConstantBuffers);
+			context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->shader.Get()), nullptr, 0);
 			break;
 		}
 		case Engine3DRadSpace::Graphics::ShaderType::PixelShader:
 		{
-			_context->PSSetConstantBuffers(0, i, ppConstantBuffers);
-			_context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->_shader.Get()), nullptr, 0);
+			context->PSSetConstantBuffers(0, i, ppConstantBuffers);
+			context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->shader.Get()), nullptr, 0);
 			break;
 		}
 		default:
 			break;
 	}
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetTopology(Graphics::VertexTopology topology)
+{
+#ifdef _DX11
+	context->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(topology));
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::DrawAuto()
+{
+#ifdef _DX11
+	this->context->DrawAuto();
+#endif
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()

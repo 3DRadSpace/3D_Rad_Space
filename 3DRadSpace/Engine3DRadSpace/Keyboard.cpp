@@ -1,6 +1,6 @@
 #include "Keyboard.hpp"
 
-void Engine3DRadSpace::Input::Keyboard::_addKey(uint8_t k)
+void Engine3DRadSpace::Input::Keyboard::addKey(uint8_t k)
 {
     for (int i = 0; i < 10; i++)
     {
@@ -13,7 +13,7 @@ void Engine3DRadSpace::Input::Keyboard::_addKey(uint8_t k)
     }
 }
 
-void Engine3DRadSpace::Input::Keyboard::_removeKey(uint8_t k)
+void Engine3DRadSpace::Input::Keyboard::removeKey(uint8_t k)
 {
     for (int i = 0; i < 10; i++)
     {
@@ -21,7 +21,7 @@ void Engine3DRadSpace::Input::Keyboard::_removeKey(uint8_t k)
     }
 }
 
-void Engine3DRadSpace::Input::Keyboard::_erase()
+void Engine3DRadSpace::Input::Keyboard::erase()
 {
     for (int i = 0; i < 10; i++)
     {

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by 3DRadSpace_Editor_WindowsDX11.rc
+// Used by 3DRadSpace_EditorwindowsDX11.rc
 //
 #define IDI_ICON1                       109
 #define IDI_ICON2                       117

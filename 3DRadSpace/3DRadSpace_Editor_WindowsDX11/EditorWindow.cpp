@@ -9,6 +9,7 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
+using namespace Engine3DRadSpace::Math;
 
 EditorWindow* gEditorWindow = nullptr;
 
@@ -139,11 +140,11 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		800,
 		600,
 		nullptr,
-		nullptr,//mainMenu,
+		mainMenu,
 		hInstance,
 		nullptr);
 
-	//RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
+	RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
 
 	//Create controls
 	_toolbar = CreateWindowExA(
@@ -198,7 +199,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		0,
 		WC_TREEVIEWA,
 		"",
-		TVS_CHECKBOXES | WS_CHILD | WS_VISIBLE,
+		TVS_CHECKBOXES | WS_CHILD | WS_VISIBLE | WS_BORDER,
 		0,
 		0,
 		150,
@@ -227,6 +228,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 void EditorWindow::Run()
 {
 	//Modified code from Window::Run() so accelerators are also translated.
+	this->editor->Initialize();
 	while (true)
 	{
 		MSG msg;
@@ -253,10 +255,9 @@ void EditorWindow::Run()
 
 		auto ts_d1 = std::chrono::steady_clock::now();
 
+		this->editor->Device->SetViewport(Viewport(RectangleF(0,0,800,600), 0.0f, 1.0f));
 		this->editor->Device->Clear();
 		this->editor->Draw(d_dt);
-
-		this->editor->Device->SetViewport(Viewport(this->editor->Window->RectangleF(), 0.0f, 1.0f));
 		this->editor->Device->Present();
 
 		auto ts_d2 = std::chrono::steady_clock::now();
@@ -397,10 +398,10 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			int wndHeight = rcWnd.bottom - rcWnd.top;
 
 			RECT rcToolbar{};
-			GetWindowRect(gEditorWindow->_toolbar, &rcToolbar);
+			GetClientRect(gEditorWindow->_toolbar, &rcToolbar);
 			int toolbarHeight = rcToolbar.bottom - rcToolbar.top;
 
-			SetWindowPos(gEditorWindow->_listBox, nullptr, 0, toolbarHeight + 1, 150, wndHeight - toolbarHeight, 0);
+			SetWindowPos(gEditorWindow->_listBox, nullptr, 0, toolbarHeight, 150, wndHeight - toolbarHeight, 0);
 			SetWindowPos(gEditorWindow->_toolbar, nullptr, 0, 0, wndWidth, 25, 0);
 			SetWindowPos(gEditorWindow->_handleRenderWindow, nullptr, 150, toolbarHeight, wndWidth - 150, wndHeight - toolbarHeight, 0);
 			break;
