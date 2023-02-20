@@ -32,6 +32,8 @@ namespace Engine3DRadSpace
 
 			float ScrollWheel();
 
+			void SetPosition(const Math::Point& p);
+
 			friend class Engine3DRadSpace::Window;
 		};
 	}

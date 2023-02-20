@@ -3,7 +3,6 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-
 	class ShaderPipeline
 	{
 	protected:
@@ -13,9 +12,14 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		IShader* domain;
 		IShader* geometry;
 		IShader* pixel;
+
+		void destroy();
 	public:
 		ShaderPipeline(GraphicsDevice *device, IShader* vertexShader, IShader* fragmentShader, IShader* hullShader = nullptr, IShader* domainShader = nullptr, IShader* geometryShader = nullptr);
-	
+		ShaderPipeline(ShaderPipeline& p);
+
+		ShaderPipeline& operator =(ShaderPipeline& p);
+
 		int SetAll();
 		int SetBasic();
 		bool SetVertex();
@@ -23,6 +27,12 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		bool SetDomain();
 		bool SetGeometry();
 		bool SetFragment();
+
+		IShader* GetVertexShader();
+		IShader* GetHullShader();
+		IShader* GetDomainShader();
+		IShader* GetGeometryShader();
+		IShader* GetFragmentShader();
 
 		virtual ~ShaderPipeline();
 	};

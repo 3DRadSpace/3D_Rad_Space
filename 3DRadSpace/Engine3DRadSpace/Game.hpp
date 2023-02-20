@@ -10,7 +10,7 @@ namespace Engine3DRadSpace
 	class Game : public IUpdateable, public IDrawable, public IInitiializable
 	{
 		bool valid;
-		Math::Point resolution;
+		bool running = true;
 	public:
 		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
 		Game(Window&& window);
@@ -22,11 +22,14 @@ namespace Engine3DRadSpace
 		std::unique_ptr<Window> Window;
 		std::unique_ptr<GraphicsDevice> Device;
 
+		Engine3DRadSpace::Math::Matrix View;
+		Engine3DRadSpace::Math::Matrix Projection;
+
 		void Run();
 
 		void RunOneFrame();
 
-		Math::Point Resolution();
+		void Exit();
 
 		virtual ~Game() = default;
 	};

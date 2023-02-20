@@ -1,6 +1,9 @@
 #include "ShaderPipeline.hpp"
 
-Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(GraphicsDevice* device, IShader* vertexShader, IShader* fragmentShader, IShader* hullShader, IShader* domainShader, IShader* geometryShader):
+using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Graphics::Shaders;
+
+ShaderPipeline::ShaderPipeline(GraphicsDevice* device, IShader* vertexShader, IShader* fragmentShader, IShader* hullShader, IShader* domainShader, IShader* geometryShader):
 	device(device),
 	vertex(vertexShader),
 	hull(hullShader),
@@ -10,7 +13,30 @@ Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(GraphicsDevi
 {
 }
 
-int Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetAll()
+Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline& p) : 
+	device(p.device),
+	vertex(p.vertex),
+	hull(p.hull),
+	domain(p.domain),
+	geometry(p.geometry),
+	pixel(p.pixel)
+{
+	this->destroy();
+}
+
+ShaderPipeline& Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::operator=(ShaderPipeline& p)
+{
+	destroy();
+	this->device = p.device;
+	this->vertex = p.vertex;
+	this->hull = p.hull;
+	this->domain = p.domain;
+	this->geometry = p.geometry;
+	this->pixel = p.pixel;
+	return *this;
+}
+
+int ShaderPipeline::SetAll()
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -21,7 +47,7 @@ int Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetAll()
 	return r;
 }
 
-int Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetBasic()
+int ShaderPipeline::SetBasic()
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -29,7 +55,7 @@ int Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetBasic()
 	return r;
 }
 
-bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetVertex()
+bool ShaderPipeline::SetVertex()
 {
 	if(vertex == nullptr) return false;
 
@@ -37,7 +63,7 @@ bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetVertex()
 	return true;
 }
 
-bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetHull()
+bool ShaderPipeline::SetHull()
 {
 	if(hull == nullptr) return false;
 
@@ -45,7 +71,7 @@ bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetHull()
 	return true;
 }
 
-bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetDomain()
+bool ShaderPipeline::SetDomain()
 {
 	if(domain == nullptr) return false;
 
@@ -53,7 +79,7 @@ bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetDomain()
 	return true;
 }
 
-bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetGeometry()
+bool ShaderPipeline::SetGeometry()
 {
 	if(geometry == nullptr) return false;
 
@@ -61,7 +87,7 @@ bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetGeometry()
 	return true;
 }
 
-bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetFragment()
+bool ShaderPipeline::SetFragment()
 {
 	if(pixel == nullptr) return false;
 
@@ -69,29 +95,59 @@ bool Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::SetFragment()
 	return true;
 }
 
-Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::~ShaderPipeline()
+IShader* ShaderPipeline::GetVertexShader()
 {
-	if(this->vertex != nullptr)
+	return this->vertex;
+}
+
+IShader* ShaderPipeline::GetHullShader()
+{
+	return this->hull;
+}
+
+IShader* ShaderPipeline::GetDomainShader()
+{
+	return this->domain;
+}
+
+IShader* ShaderPipeline::GetGeometryShader()
+{
+	return this->geometry;
+}
+
+IShader* ShaderPipeline::GetFragmentShader()
+{
+	return this->pixel;
+}
+
+ShaderPipeline::~ShaderPipeline()
+{
+	destroy();
+}
+
+void ShaderPipeline::destroy()
+{
+	if (this->vertex != nullptr)
 	{
 		delete this->vertex;
 		this->vertex = nullptr;
 	}
-	if(this->hull != nullptr)
+	if (this->hull != nullptr)
 	{
 		delete this->hull;
 		this->hull = nullptr;
 	}
-	if(this->domain != nullptr)
+	if (this->domain != nullptr)
 	{
 		delete this->domain;
 		this->domain = nullptr;
 	}
-	if(this->geometry != nullptr)
+	if (this->geometry != nullptr)
 	{
 		delete this->geometry;
 		this->geometry = nullptr;
 	}
-	if(this->pixel != nullptr)
+	if (this->pixel != nullptr)
 	{
 		delete this->pixel;
 		this->pixel = nullptr;

@@ -6,7 +6,8 @@
 using namespace Engine3DRadSpace::Logging;
 
 Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height):
-	EnableVSync(true)
+	EnableVSync(true),
+	resoultion(width,height)
 {
 #ifdef _DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
@@ -184,6 +185,11 @@ void Engine3DRadSpace::GraphicsDevice::DrawAuto()
 #ifdef _DX11
 	this->context->DrawAuto();
 #endif
+}
+
+Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
+{
+	return this->resoultion;
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()

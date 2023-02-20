@@ -2,35 +2,53 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Input;
 
 RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	Game(Engine3DRadSpace::Window(hInstance, parent)),
-	_triangleShader(Device.get())
+	simpleShader(std::make_unique<BlankShader>(Device.get()))
 {
 
 }
 
 void RenderWindow::Initialize()
 {
-	std::array<VertexPositionColor,3> triangle =
+	std::array<VertexPositionColor,12> dLines =
 	{
-		VertexPositionColor{Vector3(0.0,0.5,0.0), Colors::Red},
-		VertexPositionColor{Vector3(0.5,-0.5,0.0), Colors::Green},
-		VertexPositionColor{Vector3(-0.5,-0.5,0.0), Colors::Blue}
+		//+X
+		VertexPositionColor{Vector3(0,0,0),Colors::Red},
+		VertexPositionColor{Vector3(500,0,0),Colors::Red},
+		//-X
+		VertexPositionColor{Vector3(0,0,0),Colors::White},
+		VertexPositionColor{Vector3(-500,0,0),Colors::White},
+		//+Y
+		VertexPositionColor{Vector3(0,0,0),Colors::Green},
+		VertexPositionColor{Vector3(0,500,0),Colors::Green},
+		//-Y
+		VertexPositionColor{Vector3(0,0,0),Colors::White},
+		VertexPositionColor{Vector3(0,-500,0),Colors::White},
+		//+Z
+		VertexPositionColor{Vector3(0,0,0),Colors::Green},
+		VertexPositionColor{Vector3(0,0,500),Colors::Green},
+		//-Z
+		VertexPositionColor{Vector3(0,0,0),Colors::White},
+		VertexPositionColor{Vector3(0,0,-500),Colors::White},
 	};
 
-	_triangleBuffer = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), triangle, _triangleShader.GetVertexShaderRef());
+	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), lines, simpleShader->GetVertexShader());
 }
 
-void RenderWindow::Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt)
+void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
-
+	if (mouse.RightButton())
+	{
+		mouse.SetPosition(this->Device->Resolution() / 2.0f);
+	}
 }
 
-void RenderWindow::Draw(double dt)
+void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
-	_triangleShader.SetBasic();
-	Device->SetTopology(VertexTopology::TriangleList);
-	_triangleBuffer->SetAndDraw();
+
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Libs.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -10,7 +11,26 @@ namespace Engine3DRadSpace
 
 			int X;
 			int Y;
+
+			Point operator+= (const Point& p);
+			Point operator +(const Point& p);
+
+			Point operator -=(const Point& p);
+			Point operator -(const Point& p);
+			Point operator -();
+
+			Point operator *=(float s);
+			Point operator *(float s);
+
+			Point operator /=(float s);
+			Point operator /(float s);
+
+			auto operator <=>(const Point&) const = default;
 		};
 	}
 }
+
+Engine3DRadSpace::Math::Point operator * (float s, const Engine3DRadSpace::Math::Point& p);
+
+Engine3DRadSpace::Math::Point operator /(float s, const Engine3DRadSpace::Math::Point& p);
 

@@ -4,7 +4,6 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
 
 Game::Game(const char* title, int width, int height, bool fullscreen) :
-	resolution(width,height),
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
 	this->Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
@@ -23,7 +22,7 @@ Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
 void Game::Run()
 {
 	this->Initialize();
-	while (true)
+	while (running)
 	{	
 		RunOneFrame();
 	}
@@ -47,7 +46,7 @@ void Engine3DRadSpace::Game::RunOneFrame()
 
 	this->Device->SetViewport(Viewport(this->Window->RectangleF(), 0.0f, 1.0f));
 	this->Device->Clear();
-	this->Draw(d_dt);
+	this->Draw(View,Projection,d_dt);
 
 	this->Device->Present();
 
@@ -57,7 +56,7 @@ void Engine3DRadSpace::Game::RunOneFrame()
 	d_dt = dDiff.count();
 }
 
-Math::Point Engine3DRadSpace::Game::Resolution()
+void Engine3DRadSpace::Game::Exit()
 {
-	return this->resolution;
+	running = false;
 }

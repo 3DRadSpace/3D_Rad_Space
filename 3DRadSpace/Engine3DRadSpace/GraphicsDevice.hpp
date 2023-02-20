@@ -29,6 +29,8 @@ namespace Engine3DRadSpace
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> screenTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mainRenderTarget;
+
+		Engine3DRadSpace::Math::Point resoultion;
 #endif
 	public:
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
@@ -53,6 +55,8 @@ namespace Engine3DRadSpace
 
 		bool EnableVSync;
 
+		Engine3DRadSpace::Math::Point Resolution();
+
 		~GraphicsDevice();
 
 		template<Graphics::VertexDecl V> friend class Graphics::VertexBuffer;
@@ -64,7 +68,7 @@ namespace Engine3DRadSpace
 	inline void GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V> *vertexBuffer)
 	{
 #ifdef _DX11
-		int strides = 0;
+		int strides = sizeof(V);
 		int offsets = 0;
 		context->IASetVertexBuffers(0, 1, &vertexBuffer->buffer, &strides, &offsets);
 

@@ -81,6 +81,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,6 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,6 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,15 +140,20 @@
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="IObject.cpp" />
     <ClCompile Include="IShader.cpp" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="ShaderPipeline.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />
-    <ClCompile Include="Shader_PosColor_NoMat.cpp" />
+    <ClCompile Include="BlankShader.cpp" />
+    <ClCompile Include="Blank_NoMatrix.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TrivialPixelShader.cpp" />
+    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexDeclarations.cpp" />
@@ -160,7 +168,10 @@
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable.hpp" />
     <ClInclude Include="IInitializable.hpp" />
+    <ClInclude Include="IObject.hpp" />
     <ClInclude Include="IShader.hpp" />
+    <ClInclude Include="Matrix.hpp" />
+    <ClInclude Include="Quaternion.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Keyboard.hpp" />
@@ -168,8 +179,10 @@
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="Rectangle.hpp" />
+    <ClInclude Include="BlankShader.hpp" />
     <ClInclude Include="Texture2D.hpp" />
-    <ClInclude Include="Shader_PosColor_NoMat.hpp" />
+    <ClInclude Include="Blank_NoMatrix.hpp" />
+    <ClInclude Include="Vector2.hpp" />
     <ClInclude Include="Vector3.hpp" />
     <ClInclude Include="VertexBuffer.hpp" />
     <ClInclude Include="VertexDeclarations.hpp" />
