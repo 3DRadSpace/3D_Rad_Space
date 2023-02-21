@@ -64,5 +64,5 @@ Point operator*(float s, const Point& p)
 
 Point operator/(float s, const Point& p)
 {
-    return Point( s / p.X, s / p.Y);
+    return Point(int(s / p.X), int(s / p.Y));
 }

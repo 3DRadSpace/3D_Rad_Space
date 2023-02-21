@@ -267,6 +267,11 @@ void EditorWindow::Run()
 	}
 }
 
+EditorWindow::~EditorWindow()
+{
+	DestroyWindow(this->_mainWindow);
+}
+
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
@@ -358,7 +363,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_BUILD_PROJECT:
 					break;
 				case CMD_Exit:
-					
+					gEditorWindow->_running = false;
 					break;
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:

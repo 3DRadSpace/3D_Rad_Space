@@ -11,6 +11,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
 
 	Engine3DRadSpace::Math::Vector2 cameraPos;
+
+	HWND editorWindow;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 
@@ -21,5 +23,5 @@ public:
 		Engine3DRadSpace::Math::Matrix &projection,
 		double dt) override;
 
-	inline virtual ~RenderWindow() = default;
+	bool IsFocused();
 };

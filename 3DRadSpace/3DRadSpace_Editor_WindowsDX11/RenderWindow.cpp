@@ -8,7 +8,8 @@ using namespace Engine3DRadSpace::Input;
 
 RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	Game(Engine3DRadSpace::Window(hInstance, parent)),
-	simpleShader(std::make_unique<BlankShader>(Device.get()))
+	simpleShader(std::make_unique<BlankShader>(Device.get())),
+	editorWindow(parent)
 {
 
 }
@@ -37,18 +38,23 @@ void RenderWindow::Initialize()
 		VertexPositionColor{Vector3(0,0,-500),Colors::White},
 	};
 
-	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), lines, simpleShader->GetVertexShader());
+	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
-	if (mouse.RightButton())
+	if (mouse.RightButton() && IsFocused())
 	{
-		mouse.SetPosition(this->Device->Resolution() / 2.0f);
+		Window->SetMousePosition(Window->Size() / 2);
 	}
 }
 
 void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
 
+}
+
+bool RenderWindow::IsFocused()
+{
+	return editorWindow == GetForegroundWindow();
 }

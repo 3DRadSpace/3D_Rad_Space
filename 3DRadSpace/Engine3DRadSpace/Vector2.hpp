@@ -28,4 +28,4 @@ namespace Engine3DRadSpace::Math
 	};
 }
 
-Engine3DRadSpace::Math::Vector2 operator*(float s, const Vector2& v);
+Engine3DRadSpace::Math::Vector2 operator*(float s, const Engine3DRadSpace::Math::Vector2& v);

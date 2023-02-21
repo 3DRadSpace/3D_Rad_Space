@@ -20,6 +20,9 @@ namespace Engine3DRadSpace
 		Window(const char* title, int width = 800, int height = 600);
 		//Used for the Windows editor frontend.
 		Window(void* hInstance, void* parentWindow);
+		Window(Window& wnd);
+
+		Window& operator=(Window& wnd) = delete;
 
 		void* NativeHandle();
 
@@ -34,6 +37,9 @@ namespace Engine3DRadSpace
 		Math::Point Size();
 		Math::RectangleF RectangleF();
 		Math::Rectangle Rectangle();
+		bool IsFocused();
+		
+		void SetMousePosition(const Math::Point& p);
 
 		~Window();
 

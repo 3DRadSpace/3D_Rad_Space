@@ -13,16 +13,16 @@ namespace Engine3DRadSpace
 			bool middleButton;
 			bool rightButton;
 
-			Math::Point _position;
+			Math::Point position;
 
-			float _scrollWheel;
+			float scrollWheel;
 		public:
 			Mouse() : 
 				leftButton(false),
 				middleButton(false),
 				rightButton(false),
-				_position(),
-				_scrollWheel(0) {};
+				position(),
+				scrollWheel(0) {};
 
 			bool LeftButton();
 			bool MiddleButton();
@@ -31,8 +31,6 @@ namespace Engine3DRadSpace
 			Math::Point Position();
 
 			float ScrollWheel();
-
-			void SetPosition(const Math::Point& p);
 
 			friend class Engine3DRadSpace::Window;
 		};

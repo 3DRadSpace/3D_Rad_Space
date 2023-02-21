@@ -96,12 +96,12 @@ void Engine3DRadSpace::Window::_keyDown(uint8_t k)
 
 void Engine3DRadSpace::Window::_scrollwheel(float dw)
 {
-    mouse._scrollWheel += dw / WHEEL_DELTA;
+    mouse.scrollWheel += dw / WHEEL_DELTA;
 }
 
 void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool middle, bool right)
 {
-    mouse._position = pos;
+    mouse.position = pos;
     mouse.leftButton = left;
     mouse.middleButton = middle;
     mouse.rightButton = right;
@@ -131,7 +131,7 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
         nullptr, 
         nullptr,
         wndclass.hInstance, 
-        nullptr
+        this
     );
 #endif
 }
@@ -165,16 +165,25 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
 #endif
 }
 
+Engine3DRadSpace::Window::Window(Window& wnd):
+    window(wnd.window)
+{
+    wnd.window = nullptr;
+#ifdef _WIN32
+    SetWindowLongPtrA(static_cast<HWND>(this->window), GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+#endif // 
+}
+
 void* Engine3DRadSpace::Window::NativeHandle()
 {
-    return window;
+    return this->window;
 }
 
 void Engine3DRadSpace::Window::ProcessMessages()
 {
 #ifdef _WIN32
     MSG msg;
-    while(PeekMessage(&msg, nullptr, 0, 0,PM_REMOVE))
+    while(PeekMessageA(&msg, nullptr, 0, 0,PM_REMOVE))
     {
         TranslateMessage(&msg);
         DispatchMessageA(&msg);
@@ -184,12 +193,12 @@ void Engine3DRadSpace::Window::ProcessMessages()
 
 Engine3DRadSpace::Input::Mouse& Engine3DRadSpace::Window::GetMouseState()
 {
-    return mouse;
+    return this->mouse;
 }
 
 Engine3DRadSpace::Input::Keyboard& Engine3DRadSpace::Window::GetKeyboardState()
 {
-    return keyboard;
+    return this->keyboard;
 }
 
 Math::Point Engine3DRadSpace::Window::Size()
@@ -220,7 +229,30 @@ Math::Rectangle Engine3DRadSpace::Window::Rectangle()
 #endif //  _WIN32
 }
 
+bool Engine3DRadSpace::Window::IsFocused()
+{
+    return  GetForegroundWindow() == this->window;
+}
+
+void Engine3DRadSpace::Window::SetMousePosition(const Math::Point& p)
+{
+#ifdef _WIN32
+    RECT rWnd;
+    GetWindowRect(static_cast<HWND>(this->window), &rWnd);
+    BOOL r = SetCursorPos(rWnd.left + p.X, rWnd.top + p.Y);
+    if (!r)
+    {
+        throw std::system_error(
+            std::error_code(GetLastError(), std::system_category()),
+            "Failed to set the mouse position!"
+        );
+    }
+#endif
+}
+
 Engine3DRadSpace::Window::~Window()
 {
-
+#ifdef _WIN32
+    DestroyWindow(static_cast<HWND>(this->window));
+#endif
 }

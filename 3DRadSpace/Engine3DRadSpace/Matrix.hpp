@@ -26,7 +26,7 @@ namespace Engine3DRadSpace::Math
 		static Matrix CreateRotationZ(float theta);
 		static Matrix CreateFromQuaternion(const Quaternion& q);
 
-		static Matrix CreateView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir);
+		static Matrix CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir);
 
 		static Matrix CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd);
 		static Matrix CreateOrthographicProjection(const Point &screenSize, float npd, float fpd);

@@ -58,6 +58,8 @@ public:
 
 	void Run();
 
+	~EditorWindow();
+
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

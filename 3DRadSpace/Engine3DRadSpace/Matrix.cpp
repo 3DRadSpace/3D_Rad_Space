@@ -94,7 +94,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateFromQuaternion(const Quaternion& q)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
+Matrix Engine3DRadSpace::Math::Matrix::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
 {
 	return Matrix();
 }

@@ -124,9 +124,11 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::IShader *shader)
 {
 #ifdef _DX11
-	ID3D11Buffer * ppConstantBuffers[14] = { nullptr };
+	const unsigned maxConstBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
+
+	ID3D11Buffer * ppConstantBuffers[maxConstBuffers] = { nullptr };
 	unsigned i = 0;
-	for (; i < 14; i++)
+	for (; i < maxConstBuffers; i++)
 	{
 		ID3D11Buffer *constBuffer = shader->constantBuffers[i].Get();
 		if (constBuffer == nullptr) break;
