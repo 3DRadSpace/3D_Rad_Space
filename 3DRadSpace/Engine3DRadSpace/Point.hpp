@@ -32,5 +32,3 @@ namespace Engine3DRadSpace
 
 Engine3DRadSpace::Math::Point operator * (float s, const Engine3DRadSpace::Math::Point& p);
 
-Engine3DRadSpace::Math::Point operator /(float s, const Engine3DRadSpace::Math::Point& p);
-

@@ -4,6 +4,7 @@
 #include <Engine3DRadSpace/BlankShader.hpp>
 #include <Engine3DRadSpace/Matrix.hpp>
 #include <Engine3DRadSpace/Vector2.hpp>
+#include <Engine3DRadSpace/Camera.hpp>
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
@@ -13,6 +14,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 	Engine3DRadSpace::Math::Vector2 cameraPos;
 
 	HWND editorWindow;
+
+	Engine3DRadSpace::Objects::Camera Camera;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

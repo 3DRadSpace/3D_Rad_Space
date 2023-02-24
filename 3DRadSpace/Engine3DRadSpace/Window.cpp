@@ -231,7 +231,7 @@ Math::Rectangle Engine3DRadSpace::Window::Rectangle()
 
 bool Engine3DRadSpace::Window::IsFocused()
 {
-    return  GetForegroundWindow() == this->window;
+    return GetForegroundWindow() == this->window;
 }
 
 void Engine3DRadSpace::Window::SetMousePosition(const Math::Point& p)

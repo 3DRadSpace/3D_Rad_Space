@@ -4,6 +4,7 @@
 #include "IDrawable.hpp"
 #include "IInitializable.hpp"
 #include "Point.hpp"
+#include "IObject.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -24,6 +25,8 @@ namespace Engine3DRadSpace
 
 		Engine3DRadSpace::Math::Matrix View;
 		Engine3DRadSpace::Math::Matrix Projection;
+
+		std::vector<std::unique_ptr<Engine3DRadSpace::IObject>> Objects;
 
 		void Run();
 

@@ -42,7 +42,7 @@ Point Point::operator*=(float s)
 
 Point Point::operator*(float s)
 {
-    return Point(this->X * s, this->Y * s);
+    return Point(int(this->X * s ),int(this->Y * s));
 }
 
 Point Point::operator/=(float s)
@@ -54,12 +54,12 @@ Point Point::operator/=(float s)
 
 Point Point::operator/(float s)
 {
-    return Point(this->X / s, this->Y / s);
+    return Point(int(this->X / s), int(this->Y / s));
 }
 
 Point operator*(float s, const Point& p)
 {
-    return Point(s * p.X, s * p.Y);
+    return Point(int(s * p.X), int(s * p.Y));
 }
 
 Point operator/(float s, const Point& p)

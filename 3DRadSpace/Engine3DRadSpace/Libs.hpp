@@ -10,6 +10,7 @@
 #include <format>
 #include <span>
 #include <chrono>
+#include <numbers>
 
 #ifdef _WIN32
 #ifdef _DX11

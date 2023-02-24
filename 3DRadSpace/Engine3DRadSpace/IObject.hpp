@@ -27,7 +27,9 @@ namespace Engine3DRadSpace
 
 		Engine3DRadSpace::Math::Vector3 Scale;
 
-		virtual void EditorDraw(double dt) = 0;
+		virtual Engine3DRadSpace::Math::Matrix GetModelMartix();
+
+		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection,double dt) = 0;
 	};
 }
 

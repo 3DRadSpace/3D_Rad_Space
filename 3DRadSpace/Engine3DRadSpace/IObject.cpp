@@ -16,3 +16,8 @@ IObject::IObject(std::string name, std::string tag, std::string resource, bool e
 	Scale(scale)
 {
 }
+
+Engine3DRadSpace::Math::Matrix Engine3DRadSpace::IObject::GetModelMartix()
+{
+	return Matrix::CreateScale(Scale) * Matrix::CreateTranslation(-RotationCenter) * Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
+}

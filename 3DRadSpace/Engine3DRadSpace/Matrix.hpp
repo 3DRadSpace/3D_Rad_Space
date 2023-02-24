@@ -4,6 +4,7 @@
 
 namespace Engine3DRadSpace::Math
 {
+	struct Vector3;
 	struct Matrix
 	{
 		float M11, M12, M13, M14;
@@ -30,5 +31,12 @@ namespace Engine3DRadSpace::Math
 
 		static Matrix CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd);
 		static Matrix CreateOrthographicProjection(const Point &screenSize, float npd, float fpd);
+
+		Matrix operator *(const Matrix& m) const;
+		Matrix& operator *=(const Matrix& m);
+
+		auto operator <=>(const Matrix& m) const = default;
+
+		float& operator[](unsigned index);
 	};
 }
