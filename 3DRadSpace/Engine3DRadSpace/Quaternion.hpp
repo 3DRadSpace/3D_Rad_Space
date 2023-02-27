@@ -11,8 +11,8 @@ namespace Engine3DRadSpace::Math
 
 		Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) : X(x), Y(y), Z(z), W(w) {};
 
-		constexpr static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
-		constexpr static Quaternion FromAxisAngle(const Vector3& axis, float angle);
+		static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
+		static Quaternion FromAxisAngle(const Vector3& axis, float angle);
 
 		float Length() const;
 		Quaternion Normalize();
@@ -21,6 +21,7 @@ namespace Engine3DRadSpace::Math
 		
 		Vector3 ToYawPitchRoll();
 
+		Quaternion operator *(const Quaternion& q);
 		Quaternion operator /(float s);
 	};
 }

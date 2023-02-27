@@ -16,11 +16,11 @@ namespace Engine3DRadSpace::Math
 
 		Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
 
-		constexpr static Vector3 Zero();
-		constexpr static Vector3 UnitX();
-		constexpr static Vector3 UnitY();
-		constexpr static Vector3 UnitZ();
-		constexpr static Vector3 One();
+		static Vector3 Zero();
+		static Vector3 UnitX();
+		static Vector3 UnitY();
+		static Vector3 UnitZ();
+		static Vector3 One();
 
 		float Length();
 		Vector3 Normalize();
@@ -37,8 +37,8 @@ namespace Engine3DRadSpace::Math
 		static Vector3 Cross(const Vector3& v1, const Vector3 &v2);
 		float Dot(const Vector3& v);
 
-		Vector3 Transform(const Quaternion& q);
-		Vector3 Transform(const Matrix& m);
+		Vector3& Transform(const Quaternion& q);
+		Vector3& Transform(const Matrix& m);
 
 		auto operator <=>(const Vector3& v) const = default;
 	};

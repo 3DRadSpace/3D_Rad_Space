@@ -2,6 +2,26 @@
 
 using namespace Engine3DRadSpace::Math;
 
+Vector2 Engine3DRadSpace::Math::Vector2::Zero()
+{
+    return Vector2(0,0);
+}
+
+Vector2 Engine3DRadSpace::Math::Vector2::UnitX()
+{
+    return Vector2(1,0);
+}
+
+Vector2 Engine3DRadSpace::Math::Vector2::UnitY()
+{
+    return Vector2(0,1);
+}
+
+Vector2 Engine3DRadSpace::Math::Vector2::One()
+{
+    return Vector2(1,1);
+}
+
 float Vector2::Length() const
 {
     return sqrtf(X*X + Y*Y);

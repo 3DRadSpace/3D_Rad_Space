@@ -143,8 +143,10 @@
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="IObject.cpp" />
     <ClCompile Include="IShader.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="RasterizerState.cpp" />
     <ClCompile Include="ShaderPipeline.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -171,8 +173,10 @@
     <ClInclude Include="IInitializable.hpp" />
     <ClInclude Include="IObject.hpp" />
     <ClInclude Include="IShader.hpp" />
+    <ClInclude Include="Math.hpp" />
     <ClInclude Include="Matrix.hpp" />
     <ClInclude Include="Quaternion.hpp" />
+    <ClInclude Include="RasterizerState.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Keyboard.hpp" />

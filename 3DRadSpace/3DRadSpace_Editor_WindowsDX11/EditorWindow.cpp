@@ -221,14 +221,15 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);
 	ShowWindow(_listBox, SW_NORMAL);
-
-	assert(_CrtCheckMemory());
 }
 
 void EditorWindow::Run()
 {
 	//Modified code from Window::Run() so accelerators are also translated.
 	this->editor->Initialize();
+
+	double u_dt = 0;
+	double d_dt = 0;
 	while (true)
 	{
 		MSG msg;
@@ -242,9 +243,6 @@ void EditorWindow::Run()
 		}
 		if(!_running) break;
 		if(!this->editor) continue;
-
-		double u_dt = 0;
-		double d_dt = 0;
 
 		auto ts_u1 = std::chrono::steady_clock::now();
 		editor->Update(editor->Window->GetKeyboardState(), editor->Window->GetMouseState(), u_dt);

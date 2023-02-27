@@ -4,7 +4,9 @@ using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
 Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vector3 pos, Vector3 look_at, Vector3 up,float aspectRatio, float fov, float npd, float fpd):
-	IObject(name,"...","[NO_RESOURCE]", visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
+	IObject(name,tag,"nothing", visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
+	UpwardsDir(up),
+	AspectRatio(aspectRatio),
 	FieldOfView(fov),
 	FarPlaneDistance(fpd),
 	NearPlaneDistance(npd)
@@ -20,13 +22,13 @@ void Camera::SetLookAt(const Vector3& lookAt)
 
 void Engine3DRadSpace::Objects::Camera::Initialize() 
 {
-
+	
 }
 
 void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
 {
 	view = Matrix::CreateLookAtView(Position, Vector3::UnitZ().Transform(Rotation), UpwardsDir);
-	projection = Matrix::CreatePerspectiveProjection(0, FieldOfView, NearPlaneDistance, FarPlaneDistance);
+	projection = Matrix::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
 }
 
 void Engine3DRadSpace::Objects::Camera::Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) { } //Do nothing

@@ -2,7 +2,10 @@
 #include "Error.hpp"
 #include "Warning.hpp"
 
-void Engine3DRadSpace::Graphics::IShader::_determineTarget(char* target, size_t lenStr)
+using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Logging;
+
+void IShader::determineTarget(char* target, size_t lenStr)
 {
 	switch (type)
 	{
@@ -46,11 +49,11 @@ void Engine3DRadSpace::Graphics::IShader::_determineTarget(char* target, size_t 
 	}
 }
 
-void Engine3DRadSpace::Graphics::IShader::_compileShader(const char *source)
+void IShader::compileShader(const char *source)
 {
 #ifdef _WIN32
 	char target[10] = "";
-	_determineTarget(target, 10);
+	determineTarget(target, 10);
 
 #ifdef _DEBUG
 	const UINT shaderFlags = D3DCOMPILE_DEBUG;
@@ -71,24 +74,25 @@ void Engine3DRadSpace::Graphics::IShader::_compileShader(const char *source)
 		&shaderBlob,
 		&errorBlob
 	);
-	if(errorBlob.Get() != nullptr)
+	if (errorBlob.Get() != nullptr)
 	{
-		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
+		RaiseFatalErrorIfFailed(
 			r,
 			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
 			source
 		);
 	}
+	else SetLastWarning(Warning(r, (char*)errorBlob->GetBufferPointer(), 2, nullptr));
 
-	_createShader();
+	createShader();
 #endif
 }
 
-void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* path)
+void IShader::compileShaderFromFile(const char* path)
 {
 #ifdef _WIN32
 	char target[10] = "";
-	_determineTarget(target, 10);
+	determineTarget(target, 10);
 
 	wchar_t wpath[_MAX_PATH]{ 0 };
 	MultiByteToWideChar(CP_ACP, 0, path, (int)strlen(path), wpath, _MAX_PATH);
@@ -118,13 +122,15 @@ void Engine3DRadSpace::Graphics::IShader::_compileShaderFromFile(const char* pat
 			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
 			path
 		);
+		
+		SetLastWarning(Warning(r, (char*)errorBlob->GetBufferPointer(), 2, nullptr));
 	}
 
-	_createShader();
+	createShader();
 #endif
 }
 
-void Engine3DRadSpace::Graphics::IShader::_createShader()
+void IShader::createShader()
 {
 	switch (type)
 	{
@@ -173,7 +179,7 @@ void Engine3DRadSpace::Graphics::IShader::_createShader()
 	}
 }
 
-D3D11_INPUT_ELEMENT_DESC *Engine3DRadSpace::Graphics::IShader::generateInputElementDesc(std::span<InputLayoutElement> inputLayout)
+D3D11_INPUT_ELEMENT_DESC *IShader::generateInputElementDesc(std::span<InputLayoutElement> inputLayout)
 {
 	size_t numLayoutEntries = inputLayout.size();
 
@@ -461,7 +467,7 @@ D3D11_INPUT_ELEMENT_DESC *Engine3DRadSpace::Graphics::IShader::generateInputElem
 	return elem;
 }
 
-void Engine3DRadSpace::Graphics::IShader::_generateInputLayout(std::span<InputLayoutElement> inputLayout)
+void IShader::generateInputLayout(std::span<InputLayoutElement> inputLayout)
 {
 	D3D11_INPUT_ELEMENT_DESC *elements = generateInputElementDesc(inputLayout);
 
@@ -477,28 +483,28 @@ void Engine3DRadSpace::Graphics::IShader::_generateInputLayout(std::span<InputLa
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create the input layout!");
 }
 
-Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *device, ShaderType type, const char *shaderSourceCode,const char* entry, ShaderFeatureLevel featureLevel):
+IShader::IShader(GraphicsDevice *device, ShaderType type, const char *shaderSourceCode,const char* entry, ShaderFeatureLevel featureLevel):
 	device(device),
 	type(type),
 	entry(entry),
 	featureLevel(featureLevel),
 	constantBuffers({ nullptr })
 {
-	_compileShader(shaderSourceCode);
+	compileShader(shaderSourceCode);
 }
 
-Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel featureLevel):
+IShader::IShader(GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel featureLevel):
 	device(device),
 	type(ShaderType::VertexShader),
 	entry(vsEntry),
 	featureLevel(featureLevel),
 	constantBuffers({ nullptr })
 {
-	_compileShader(shaderSourceCode);
-	_generateInputLayout(inputLayout);
+	compileShader(shaderSourceCode);
+	generateInputLayout(inputLayout);
 }
 
-Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, ShaderType type, const char* path, const char* entry, int dummy, ShaderFeatureLevel featureLevel):
+IShader::IShader(GraphicsDevice* device, ShaderType type, const char* path, const char* entry, int dummy, ShaderFeatureLevel featureLevel):
 	device(device),
 	type(type),
 	entry(entry),
@@ -509,10 +515,10 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, ShaderType 
 	shaderBlob()
 {
 	UNREFERENCED_PARAMETER(dummy);
-	_compileShaderFromFile(path);
+	compileShaderFromFile(path);
 }
 
-Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* path, const char* vsEntry, int dummy, ShaderFeatureLevel featureLevel):
+IShader::IShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* path, const char* vsEntry, int dummy, ShaderFeatureLevel featureLevel):
 	device(device),
 	type(ShaderType::VertexShader),
 	entry(vsEntry),
@@ -523,11 +529,11 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice* device, std::span<I
 	shaderBlob(nullptr)
 {
 	UNREFERENCED_PARAMETER(dummy);
-	_compileShaderFromFile(path);
-	_generateInputLayout(inputLayout);
+	compileShaderFromFile(path);
+	generateInputLayout(inputLayout);
 }
 
-void Engine3DRadSpace::Graphics::IShader::SetData(unsigned index, void *data, unsigned dataSize)
+void IShader::SetData(unsigned index, void *data, unsigned dataSize)
 {
 	if (constantBuffers[index].Get() == nullptr)
 	{
@@ -540,21 +546,20 @@ void Engine3DRadSpace::Graphics::IShader::SetData(unsigned index, void *data, un
 		D3D11_SUBRESOURCE_DATA res{};
 		res.pSysMem = data;
 
-		HRESULT r = device->device->CreateBuffer(&constantBufferDesc, &res, constantBuffers[index].GetAddressOf());
+		HRESULT r = device->device->CreateBuffer(&constantBufferDesc, &res, constantBuffers[index].ReleaseAndGetAddressOf());
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to create a constant buffer for a shader!");
 	}
 	else
 	{
-		D3D11_MAPPED_SUBRESOURCE res{};
-		res.pData = data;
-		res.DepthPitch = dataSize;
-
-		HRESULT r = device->context->Map(constantBuffers[index].Get(), 0, D3D11_MAP_WRITE, 0, &res);
+		D3D11_MAPPED_SUBRESOURCE res;
+		HRESULT r = device->context->Map(constantBuffers[index].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &res);
+		memcpy(res.pData, data, dataSize);
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to write the shader data!");
+		device->context->Unmap(constantBuffers[index].Get(), 0);
 	}
 }
 
-void Engine3DRadSpace::Graphics::IShader::SetTexture(unsigned index, Texture2D *texture)
+void IShader::SetTexture(unsigned index, Texture2D *texture)
 {
 	switch (type)
 	{
@@ -588,22 +593,28 @@ void Engine3DRadSpace::Graphics::IShader::SetTexture(unsigned index, Texture2D *
 	}
 }
 
-Engine3DRadSpace::Graphics::ShaderFeatureLevel Engine3DRadSpace::Graphics::IShader::GetFeatureLevel()
+ShaderFeatureLevel IShader::GetFeatureLevel()
 {
 	return featureLevel;
 }
 
-Engine3DRadSpace::Graphics::ShaderType Engine3DRadSpace::Graphics::IShader::GetType()
+ShaderType IShader::GetType()
 {
 	return type;
 }
 
-std::string Engine3DRadSpace::Graphics::IShader::GetEntryName()
+std::string IShader::GetEntryName()
 {
 	return std::string(entry);
 }
 
-Engine3DRadSpace::Graphics::IShader::~IShader()
+const char* IShader::GetCompilationErrorsAndWarnings()
+{
+	if(this->errorBlob == nullptr) return nullptr;
+	return static_cast<const char*>(this->errorBlob->GetBufferPointer());
+}
+
+IShader::~IShader()
 {
 
 }

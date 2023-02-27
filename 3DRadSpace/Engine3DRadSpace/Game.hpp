@@ -12,6 +12,9 @@ namespace Engine3DRadSpace
 	{
 		bool valid;
 		bool running = true;
+
+		double u_dt = 0;
+		double d_dt = 0;
 	public:
 		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
 		Game(Window&& window);

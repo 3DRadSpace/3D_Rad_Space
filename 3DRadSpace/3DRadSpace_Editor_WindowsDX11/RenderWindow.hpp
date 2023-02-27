@@ -11,11 +11,18 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
 	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
 
-	Engine3DRadSpace::Math::Vector2 cameraPos;
+	Engine3DRadSpace::Math::Vector2 cameraPos = Engine3DRadSpace::Math::Vector2::Zero();
+	Engine3DRadSpace::Math::Vector3 cursor3D = Engine3DRadSpace::Math::Vector3::Zero();
 
 	HWND editorWindow;
 
 	Engine3DRadSpace::Objects::Camera Camera;
+
+	std::unique_ptr<Engine3DRadSpace::RasterizerState> lineRasterizer;
+
+	float zoom = 5.0f;
+
+	float timer = 0;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 
@@ -27,4 +34,5 @@ public:
 		double dt) override;
 
 	bool IsFocused();
+	void Reset3DCursor();
 };

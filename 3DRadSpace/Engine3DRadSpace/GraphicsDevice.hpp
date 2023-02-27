@@ -3,6 +3,7 @@
 #include "VertexDeclarations.hpp"
 #include "Viewport.hpp"
 #include "VertexTopology.hpp"
+#include "RasterizerState.hpp"
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
@@ -50,7 +51,7 @@ namespace Engine3DRadSpace
 		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
 		void SetTopology(Graphics::VertexTopology topology);
 		void DrawAuto();
-
+		void SetRasterizerState(const RasterizerState *state);
 		void Present();
 
 		bool EnableVSync;
@@ -62,6 +63,7 @@ namespace Engine3DRadSpace
 		template<Graphics::VertexDecl V> friend class Graphics::VertexBuffer;
 		friend class Graphics::IShader;
 		friend class Graphics::Texture2D;
+		friend class RasterizerState;
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>

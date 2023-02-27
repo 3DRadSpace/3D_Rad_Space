@@ -67,12 +67,12 @@ namespace Engine3DRadSpace::Graphics
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
 		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>,14> constantBuffers;
 #endif
-		void _determineTarget(char* target, size_t lenStr);
-		void _compileShader( const char* source);
-		void _compileShaderFromFile(  const char* path);
-		void _createShader();
+		void determineTarget(char* target, size_t lenStr);
+		void compileShader( const char* source);
+		void compileShaderFromFile(  const char* path);
+		void createShader();
 		[[nodiscard]] D3D11_INPUT_ELEMENT_DESC *generateInputElementDesc(std::span<InputLayoutElement> inputLayout);
-		void _generateInputLayout(std::span<InputLayoutElement> inputLayout);
+		void generateInputLayout(std::span<InputLayoutElement> inputLayout);
 	public:
 		IShader(GraphicsDevice *device, ShaderType type, const char *shaderSourceCode,const char* entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 		IShader(GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
@@ -86,12 +86,14 @@ namespace Engine3DRadSpace::Graphics
 
 		virtual std::span<InputLayoutElement> InputLayout() = 0;
 
-		void SetData(unsigned index, void *data, unsigned dataSize);
+		void SetData(unsigned index,void *data, unsigned dataSize);
 		void SetTexture(unsigned index, Texture2D *texture);
 
 		ShaderFeatureLevel GetFeatureLevel();
 		ShaderType GetType();
 		std::string GetEntryName();
+
+		const char* GetCompilationErrorsAndWarnings();
 
 		virtual ~IShader();
 

@@ -8,6 +8,11 @@ namespace Engine3DRadSpace::Math
 		float X, Y;
 		Vector2(float x = 0.0f, float y = 0.0f) :X(x), Y(y) {};
 
+		static Vector2 Zero();
+		static Vector2 UnitX();
+		static Vector2 UnitY();
+		static Vector2 One();
+
 		float Length() const;
 		float Angle() const;
 		

@@ -189,6 +189,13 @@ void Engine3DRadSpace::GraphicsDevice::DrawAuto()
 #endif
 }
 
+void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState *state)
+{
+#ifdef _DX11
+	context->RSSetState(state->rasterizerState.Get());
+#endif
+}
+
 Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 {
 	return this->resoultion;

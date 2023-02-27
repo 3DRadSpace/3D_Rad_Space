@@ -1,14 +1,17 @@
 #pragma once
 #include "IObject.hpp"
+#include "Math.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
 	class Camera : public IObject
 	{
 	public:
-		Camera(const std::string& name = "Camera", const std::string& tag = "...", bool visible = true, Engine3DRadSpace::Math::Vector3 pos = Vector3::Zero(),
-			Engine3DRadSpace::Math::Vector3 look_at = Vector3::UnitZ(),
-			Engine3DRadSpace::Math::Vector3 up =  Vector3::UnitY(), float aspectRatio = 4.0f / 3.0f, float fov = 0.0f, float npd = 0.01f, float fpd = 500.0f);
+		Camera(const std::string& name = "Camera", const std::string& tag = "...", bool visible = true, 
+			Engine3DRadSpace::Math::Vector3 pos = Engine3DRadSpace::Math::Vector3::Zero(),
+			Engine3DRadSpace::Math::Vector3 look_at = Engine3DRadSpace::Math::Vector3::UnitZ(),
+			Engine3DRadSpace::Math::Vector3 up = Engine3DRadSpace::Math::Vector3::UnitY(),
+			float aspectRatio = 4.0f / 3.0f, float fov = Math::ToRadians(65.0f), float npd = 0.01f, float fpd = 500.0f);
 
 		Engine3DRadSpace::Math::Vector3 UpwardsDir;
 
