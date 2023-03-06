@@ -1,10 +1,12 @@
 #pragma once
 #include "Libs.hpp"
+#include "Vector2.hpp"
 
 namespace Engine3DRadSpace
 {
 	namespace Math
 	{
+		struct Vector2;
 		struct Point
 		{
 			Point(int x = 0, int y = 0) : X(x), Y(y) {};
@@ -26,6 +28,8 @@ namespace Engine3DRadSpace
 			Point operator /(float s);
 
 			auto operator <=>(const Point&) const = default;
+
+			operator Engine3DRadSpace::Math::Vector2();
 		};
 	}
 }

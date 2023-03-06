@@ -23,7 +23,7 @@ Point Point::operator-=(const Point& p)
 
 Point Point::operator-(const Point& p)
 {
-    return Point(this->X + p.X, this->Y + p.Y);
+    return Point(this->X - p.X, this->Y - p.Y);
 }
 
 Point Point::operator-()
@@ -65,4 +65,9 @@ Point operator*(float s, const Point& p)
 Point operator/(float s, const Point& p)
 {
     return Point(int(s / p.X), int(s / p.Y));
+}
+
+Engine3DRadSpace::Math::Point::operator Engine3DRadSpace::Math::Vector2()
+{
+    return Vector2(float(X), float(Y));
 }

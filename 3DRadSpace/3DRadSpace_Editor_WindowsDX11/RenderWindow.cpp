@@ -41,11 +41,14 @@ void RenderWindow::Initialize()
 		VertexPositionColor{Vector3(0,0,-500),Colors::White},
 	};
 
-	for (int i = -10; i < 10; i++)
+	for (int i = -10; i <= 10; i++)
 	{
 		if (i == 0) continue;
 		dLines.push_back(VertexPositionColor{ Vector3(i,0,10),Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(-i,0,-10),Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(i,0,-10),Colors::Gray });
+
+		dLines.push_back(VertexPositionColor{ Vector3(10, 0, i), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, i), Colors::Gray });
 	}
 
 	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
@@ -58,6 +61,7 @@ void RenderWindow::Initialize()
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
 	zoom = mouse.ScrollWheel();
+	if (zoom < -4.0f) zoom = -4.0f;
 
 	if (mouse.RightButton() && IsFocused())
 	{
@@ -65,16 +69,31 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 		Point mousePos = mouse.Position();
 		Window->SetMousePosition(screenCenter);
 
-		Vector2 mouseDelta = (Vector2(screenCenter.X, screenCenter.Y) - Vector2(mousePos.X, mousePos.Y)) * dt;
-		cameraPos -= mouseDelta * 0.1f;
+		Vector2 mouseDelta = (Vector2)(screenCenter - mousePos) * dt;
+		cameraPos -= mouseDelta * 10.0f;
 
-		//cameraPos.Y = std::clamp<float>(cameraPos.Y, -std::numbers::pi / 2.f + 0.001f, std::numbers::pi / 2.f - 0.001f);
+		cameraPos.Y = std::clamp<float>(
+			cameraPos.Y,
+			-std::numbers::pi / 2.f + std::numeric_limits<float>::epsilon(),
+			std::numbers::pi / 2.f - std::numeric_limits<float>::epsilon()
+		);
+
+		if (keyboard.IsKeyDown(Engine3DRadSpace::Input::Key::F9))
+		{
+			OutputDebugStringA("pressed F9 \r\n");
+		}
 	}
 
-	Quaternion q = Quaternion::FromYawPitchRoll(cameraPos.X, 0, 0) * Quaternion::FromYawPitchRoll(0, cameraPos.Y, 0);
+	//Quaternion q = Quaternion::FromYawPitchRoll(cameraPos.X, 0, 0)  * Quaternion::FromYawPitchRoll(0, cameraPos.Y, 0);
 
-	Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
-	timer += dt;
+	//Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
+	//timer += dt;
+
+	auto rtransform = DirectX::XMQuaternionRotationRollPitchYawFromVector({ -cameraPos.Y, -cameraPos.X,0.0f,0.0f });
+	auto vec = DirectX::XMVector3Rotate({ 0.0f,0.0f,1.0f,0.0f }, rtransform);
+
+	Camera.Position = { vec.m128_f32[0] * ( 5 + zoom), vec.m128_f32[1] * ( 5 + zoom) , vec.m128_f32[2] * ( 5 + zoom) };
+	//Camera.Position = { cosf(timer) * (5 + zoom), 2.0f, sinf(timer) * (5 + zoom)};
 	Camera.SetLookAt(cursor3D);
 }
 
@@ -82,13 +101,14 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
 
-	//auto XMlookAt = DirectX::XMMatrixLookAtRH({ Camera.Position.X, Camera.Position.Y, Camera.Position.Z }, { 0,0,0 }, { 0,1,0 });
-	//auto XMproj = DirectX::XMMatrixPerspectiveFovRH(Math::ToRadians(65.0f), 4.f / 3.f, 0.01f, 500.f);
+	auto XMlookAt = DirectX::XMMatrixLookAtRH({ Camera.Position.X, Camera.Position.Y, Camera.Position.Z }, { 0.0f,0.0f,0.0f,0.0f }, { 0.0f,1.0f,0.0f,0.0f });
+	auto XMproj = DirectX::XMMatrixPerspectiveFovRH(Math::ToRadians(65.0f), 4.f / 3.f, 0.01f, 500.f);
 
-	//auto mvp = XMlookAt * XMproj;
+	auto mvp = DirectX::XMMatrixMultiply(XMlookAt, XMproj);
 
-	Matrix viewProj = view * projection;
-	//memcpy(&viewProj, &mvp, sizeof(Matrix));
+	Matrix viewProj;
+	//Matrix viewProj = view * projection;
+	memcpy(&viewProj, &mvp, sizeof(Matrix));
 
 	simpleShader->SetBasic();
 	Device->SetRasterizerState(lineRasterizer.get());

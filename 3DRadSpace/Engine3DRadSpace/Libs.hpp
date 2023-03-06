@@ -11,6 +11,7 @@
 #include <span>
 #include <chrono>
 #include <numbers>
+#include <limits>
 
 #ifdef _WIN32
 #ifdef _DX11

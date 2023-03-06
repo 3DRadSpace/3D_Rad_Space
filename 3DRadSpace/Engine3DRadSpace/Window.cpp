@@ -1,6 +1,7 @@
 #include "Window.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Math;
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -20,19 +21,32 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
 
     switch (msg)
     {
+        /*
+        case WM_ACTIVATE:
+        case WM_ACTIVATEAPP:
+        {
+            if (wParam != WA_INACTIVE)
+            {
+                HWND renderWindow = static_cast<HWND>(window->window);
+                SetForegroundWindow(renderWindow);
+                SetFocus(renderWindow);
+            }
+            break;
+        }*/
         case WM_SYSKEYDOWN:
         case WM_IME_KEYDOWN:
         case WM_KEYDOWN:
+        case WM_CHAR:
         {
             window->_keyDown(static_cast<uint8_t>(wParam));
-            break;
+            return 0;
         }
         case WM_KEYUP:
         case WM_SYSKEYUP:
         case WM_IME_KEYUP:
         {
             window->_keyUp(static_cast<uint8_t>(wParam));
-            break;
+            return 0;
         }
         case WM_MOUSEWHEEL:
         {
@@ -101,7 +115,9 @@ void Engine3DRadSpace::Window::_scrollwheel(float dw)
 
 void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool middle, bool right)
 {
-    mouse.position = pos;
+    auto rectangle = this->Rectangle();
+
+    mouse.position = pos - Point(rectangle.X, rectangle.Y); //substract top-left point to make mouse coordinates screen relative.
     mouse.leftButton = left;
     mouse.middleButton = middle;
     mouse.rightButton = right;
@@ -162,6 +178,10 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
         this
     );
     if (window == nullptr) throw std::runtime_error("Failed to create a Windows window instance!");
+
+    ShowWindow(static_cast<HWND>(window),SW_NORMAL);
+    SetForegroundWindow(static_cast<HWND>(window));
+    SetFocus(static_cast<HWND>(window));
 #endif
 }
 
@@ -239,7 +259,9 @@ void Engine3DRadSpace::Window::SetMousePosition(const Math::Point& p)
 #ifdef _WIN32
     RECT rWnd;
     GetWindowRect(static_cast<HWND>(this->window), &rWnd);
-    BOOL r = SetCursorPos(rWnd.left + p.X, rWnd.top + p.Y);
+
+    this->mouse.position = Point(rWnd.left + p.X, rWnd.top + p.Y);
+    BOOL r = SetCursorPos(this->mouse.position.X, this->mouse.position.Y);
     if (!r)
     {
         throw std::system_error(
