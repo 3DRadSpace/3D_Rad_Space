@@ -1,5 +1,4 @@
 #include "RenderWindow.hpp"
-#include <DirectXMath.h>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -84,31 +83,15 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 		}
 	}
 
-	//Quaternion q = Quaternion::FromYawPitchRoll(cameraPos.X, 0, 0)  * Quaternion::FromYawPitchRoll(0, cameraPos.Y, 0);
-
-	//Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
-	//timer += dt;
-
-	auto rtransform = DirectX::XMQuaternionRotationRollPitchYawFromVector({ -cameraPos.Y, -cameraPos.X,0.0f,0.0f });
-	auto vec = DirectX::XMVector3Rotate({ 0.0f,0.0f,1.0f,0.0f }, rtransform);
-
-	Camera.Position = { vec.m128_f32[0] * ( 5 + zoom), vec.m128_f32[1] * ( 5 + zoom) , vec.m128_f32[2] * ( 5 + zoom) };
-	//Camera.Position = { cosf(timer) * (5 + zoom), 2.0f, sinf(timer) * (5 + zoom)};
+	Quaternion q = Quaternion::FromYawPitchRoll(-cameraPos.Y, 0, 0) * Quaternion::FromYawPitchRoll(0, -cameraPos.X, 0);
+	Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
 	Camera.SetLookAt(cursor3D);
 }
 
 void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
-
-	auto XMlookAt = DirectX::XMMatrixLookAtRH({ Camera.Position.X, Camera.Position.Y, Camera.Position.Z }, { 0.0f,0.0f,0.0f,0.0f }, { 0.0f,1.0f,0.0f,0.0f });
-	auto XMproj = DirectX::XMMatrixPerspectiveFovRH(Math::ToRadians(65.0f), 4.f / 3.f, 0.01f, 500.f);
-
-	auto mvp = DirectX::XMMatrixMultiply(XMlookAt, XMproj);
-
-	Matrix viewProj;
-	//Matrix viewProj = view * projection;
-	memcpy(&viewProj, &mvp, sizeof(Matrix));
+	Matrix viewProj = view * projection;
 
 	simpleShader->SetBasic();
 	Device->SetRasterizerState(lineRasterizer.get());

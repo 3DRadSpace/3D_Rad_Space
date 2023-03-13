@@ -16,8 +16,14 @@ Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vec
 
 void Camera::SetLookAt(const Vector3& lookAt)
 {
-	Vector3 nlk = (Position - lookAt).Normalize();
-	this->Rotation = Quaternion::FromAxisAngle(nlk, 0);
+	Vector3 nlk = (lookAt -	Position).Normalize();
+	this->Rotation = Quaternion::FromAxisAngle(nlk,0);
+}
+
+Vector3 Engine3DRadSpace::Objects::Camera::LookAt() const
+{
+	Vector3 a = Vector3::UnitZ().Transform(Rotation);
+	return Position + a;
 }
 
 void Engine3DRadSpace::Objects::Camera::Initialize() 
@@ -27,7 +33,7 @@ void Engine3DRadSpace::Objects::Camera::Initialize()
 
 void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
 {
-	view = Matrix::CreateLookAtView(Position, Vector3::UnitZ().Transform(Rotation), UpwardsDir);
+	view = Matrix::CreateLookAtView(Position,LookAt(), UpwardsDir);
 	projection = Matrix::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
 }
 

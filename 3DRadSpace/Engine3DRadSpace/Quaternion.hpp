@@ -4,6 +4,7 @@
 namespace Engine3DRadSpace::Math
 {
 	struct Vector3;
+	struct Matrix;
 
 	struct Quaternion
 	{

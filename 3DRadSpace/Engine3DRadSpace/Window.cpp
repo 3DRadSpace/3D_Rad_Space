@@ -21,18 +21,13 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
 
     switch (msg)
     {
-        /*
-        case WM_ACTIVATE:
-        case WM_ACTIVATEAPP:
+        case WM_MOUSEACTIVATE:
         {
-            if (wParam != WA_INACTIVE)
-            {
-                HWND renderWindow = static_cast<HWND>(window->window);
-                SetForegroundWindow(renderWindow);
-                SetFocus(renderWindow);
-            }
+            HWND renderWindow = static_cast<HWND>(window->window);
+            SetForegroundWindow(renderWindow);
+            SetFocus(renderWindow);
             break;
-        }*/
+        }
         case WM_SYSKEYDOWN:
         case WM_IME_KEYDOWN:
         case WM_KEYDOWN:
@@ -50,7 +45,7 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
         }
         case WM_MOUSEWHEEL:
         {
-            window->_scrollwheel(HIWORD(wParam));
+            window->_scrollwheel(GET_WHEEL_DELTA_WPARAM(wParam));
             break;
         }
         case WM_MOUSEMOVE:

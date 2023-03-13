@@ -1,4 +1,5 @@
 #include "Vector3.hpp"
+#include <DirectXMath.h>
 
 using namespace Engine3DRadSpace::Math;
 
@@ -35,7 +36,6 @@ float Vector3::Length()
 Vector3 Engine3DRadSpace::Math::Vector3::Normalize()
 {
     float l = this->Length();
-    if (l == 0.0f) return *this;
 
     this->X /= l;
     this->Y /= l;
@@ -94,9 +94,9 @@ Vector3 Engine3DRadSpace::Math::Vector3::operator*(float s) const
 Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v1, const Vector3& v2)
 {
     return Vector3(
-        v1.Y * v2.Z - v2.Y * v1.Z,
+        v1.Y * v2.Z - v1.Z * v2.Y,
         v1.Z * v2.X - v1.X * v2.Z,
-        v1.X * v2.X - v2.Y * v1.X
+        v1.X * v2.Y - v1.Y * v2.X
     );
 }
 
@@ -107,13 +107,13 @@ float Engine3DRadSpace::Math::Vector3::Dot(const Vector3& v)
 
 Vector3& Engine3DRadSpace::Math::Vector3::Transform(const Quaternion& q)
 {
-    float x = 2 * (q.Y * this->Z - q.Z * this->Y);
-    float y = 2 * (q.Z * this->X - q.X * this->Z);
-    float z = 2 * (q.X * this->Y - q.Y * this->X);
+    float x = 2 * (q.Y * Z - q.Z * Y);
+    float y = 2 * (q.Z * X - q.X * Z);
+    float z = 2 * (q.X * Y - q.Y * X);
 
-    this->X = this->X + x * q.W + (q.Y * z - q.Z * y);
-    this->Y = this->Y + y * q.W + (q.Z * x - q.X * z);
-    this->Z = this->Z + z * q.W + (q.X * y - q.Y * x);
+    this->X = X + x * q.W + (q.Y * z - q.Z * y);
+    this->Y = Y + y * q.W + (q.Z * x - q.X * z);
+    this->Z = Z + z * q.W + (q.X * y - q.Y * x);
 
     return *this;
 }

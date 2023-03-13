@@ -1,4 +1,5 @@
 #include "Matrix.hpp"
+#include <DirectXMath.h>
 
 using namespace Engine3DRadSpace::Math;
 
@@ -97,7 +98,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateFromQuaternion(const Quaternion& q)
 
 	Matrix r;
 
-	r.M11 = (sqx - sqy - sqz + sqw); // since sqw + sqx + sqy + sqz =1/invs*invs
+	r.M11 = (sqx - sqy - sqz + sqw);
 	r.M22 = (-sqx + sqy - sqz + sqw);
 	r.M33 = (-sqx - sqy + sqz + sqw);
 
@@ -136,13 +137,13 @@ Matrix Engine3DRadSpace::Math::Matrix::CreatePerspectiveProjection(float aspectR
 {
 	float h = 1.0f / tan(FOV * 0.5f);
 	float w = h / aspectRatio;
-	float a = fpd / (fpd - npd);
-	float b = (-npd * fpd) / (fpd - npd);
+	float a = fpd / (npd - fpd);
+	float b = (npd * fpd) / (npd - fpd);
 
 	return Matrix(
 		w, 0, 0, 0,
 		0, h, 0, 0,
-		0, 0, a, 1,
+		0, 0, a, -1,
 		0, 0, b, 0
 	);
 }
@@ -211,6 +212,29 @@ Matrix& Engine3DRadSpace::Math::Matrix::operator*=(const Matrix& m)
 	return *this;
 }
 
+Matrix Engine3DRadSpace::Math::Matrix::Transpose()
+{
+	Matrix copy = *this;
+	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
+	M12 = copy.M21;
+	M13 = copy.M31;
+	M14 = copy.M41;
+
+	M21 = copy.M12;
+	M23 = copy.M32;
+	M24 = copy.M42;
+
+	M31 = copy.M13;
+	M32 = copy.M23;
+	M34 = copy.M43;
+
+	M41 = copy.M14;
+	M42 = copy.M24;
+	M43 = copy.M34;
+
+	return *this;
+}
+
 float& Engine3DRadSpace::Math::Matrix::operator[](unsigned index)
 {
 	switch (index)
@@ -234,4 +258,9 @@ float& Engine3DRadSpace::Math::Matrix::operator[](unsigned index)
 		default:
 			throw std::out_of_range("Out of matrix range! [0-15]");
 	}
+}
+
+float Engine3DRadSpace::Math::Matrix::Trace() const
+{
+	return M11 * M22 * M33;
 }

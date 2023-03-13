@@ -11,7 +11,11 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
 	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
 
-	Engine3DRadSpace::Math::Vector2 cameraPos = Engine3DRadSpace::Math::Vector2::Zero();
+	Engine3DRadSpace::Math::Vector2 cameraPos = 
+		{ 
+			cosf(std::numbers::pi_v<float> / 6), //~30 degrees
+			sinf(std::numbers::pi_v<float> / 6)
+		};
 	Engine3DRadSpace::Math::Vector3 cursor3D = Engine3DRadSpace::Math::Vector3::Zero();
 
 	HWND editorWindow;

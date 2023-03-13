@@ -37,8 +37,12 @@ namespace Engine3DRadSpace::Math
 		Matrix operator *(const Matrix& m) const;
 		Matrix& operator *=(const Matrix& m);
 
+		Matrix Transpose();
+
 		auto operator <=>(const Matrix& m) const = default;
 
 		float& operator[](unsigned index);
+
+		float Trace() const;
 	};
 }

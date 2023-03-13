@@ -56,7 +56,7 @@ Vector3 Engine3DRadSpace::Math::Quaternion::ToYawPitchRoll()
     // pitch (y-axis rotation)
     float sinp = std::sqrtf(1 + 2 * (W * Y - X * Z));
     float cosp = std::sqrtf(1 - 2 * (W * Y - X * Z));
-    r.Y = 2.0f * std::atan2f(sinp, cosp) - std::numbers::pi / 2.0f;
+    r.Y = 2.0f * std::atan2f(sinp, cosp) - std::numbers::pi_v<float> / 2.0f;
 
     // yaw (z-axis rotation)
     float siny_cosp = 2 * (W * Z + X * Y);
@@ -68,31 +68,12 @@ Vector3 Engine3DRadSpace::Math::Quaternion::ToYawPitchRoll()
 
 Quaternion Engine3DRadSpace::Math::Quaternion::operator*(const Quaternion& q)
 {
+    //https://stackoverflow.com/questions/19956555/how-to-multiply-two-quaternions
     Quaternion r;
-    /*
-    		    float x = quaternion1.X;
-		    float y = quaternion1.Y;
-		    float z = quaternion1.Z;
-		    float w = quaternion1.W;
-		    float num4 = quaternion2.X;
-		    float num3 = quaternion2.Y;
-		    float num2 = quaternion2.Z;
-		    float num = quaternion2.W;
-		    float num12 = (y * num2) - (z * num3);
-		    float num11 = (z * num4) - (x * num2);
-		    float num10 = (x * num3) - (y * num4);
-		    float num9 = ((x * num4) + (y * num3)) + (z * num2);
-		    quaternion.X = ((x * num) + (num4 * w)) + num12;
-		    quaternion.Y = ((y * num) + (num3 * w)) + num11;
-		    quaternion.Z = ((z * num) + (num2 * w)) + num10;
-		    quaternion.W = (w * num) - num9;
-		    return quaternion;
-    */
-
-    r.X = X * q.W + q.X * W + (Y * q.Z - Z * q.Y);
-    r.Y = Y * q.W + q.Y * W + (Z * q.X - X * q.Z);
-    r.Z = Z * q.W + q.Z * W + (X * q.Y - Y * q.X);
-    r.W = W * q.W - (X * q.X + Y * q.Y + Z * q.Z);
+    r.X = W* q.W - X * q.X - Y * q.Y - Z * q.Z;
+    r.Y = W* q.X + X * q.W + Y * q.Z - Z * q.Y;
+    r.Z = W* q.Y - X * q.Z + Y * q.W + Z * q.X;
+    r.W = W* q.Z + X * q.Y - Y * q.Z + Z * q.W;
 
     return r;
 }

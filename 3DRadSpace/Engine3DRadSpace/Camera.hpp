@@ -21,6 +21,7 @@ namespace Engine3DRadSpace::Objects
 		float FarPlaneDistance;
 
 		void SetLookAt(const Engine3DRadSpace::Math::Vector3& lookAt);
+		Engine3DRadSpace::Math::Vector3 LookAt() const;
 
 		void Initialize() override;
 
