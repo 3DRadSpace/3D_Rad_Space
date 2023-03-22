@@ -11,7 +11,6 @@ RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	simpleShader(std::make_unique<BlankShader>(Device.get())),
 	editorWindow(parent)
 {
-
 }
 
 void RenderWindow::Initialize()
@@ -51,7 +50,7 @@ void RenderWindow::Initialize()
 	}
 
 	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
-	Camera.Position.Z = 1;
+	Camera.LookMode = Camera.UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get());
 	lineRasterizer->CullMode = RasterizerCullMode::None;
@@ -86,7 +85,6 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 	Quaternion q = Quaternion::FromYawPitchRoll(-cameraPos.Y, 0, 0) * Quaternion::FromYawPitchRoll(0, -cameraPos.X, 0);
 	Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
 	Camera.LookAt = cursor3D;
-	Camera.LookMode = Camera.UseLookAtCoordinates;
 }
 
 void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)

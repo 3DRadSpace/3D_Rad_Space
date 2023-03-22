@@ -4,6 +4,7 @@
 #include "Viewport.hpp"
 #include "VertexTopology.hpp"
 #include "RasterizerState.hpp"
+#include "DepthStencilState.hpp"
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
@@ -14,6 +15,7 @@ namespace Engine3DRadSpace::Graphics
 	template<VertexDecl V> class VertexBuffer;
 	class IShader;
 	class Texture2D;
+	class DepthStencilBuffer;
 }
 
 namespace Engine3DRadSpace
@@ -32,6 +34,14 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mainRenderTarget;
 
 		Engine3DRadSpace::Math::Point resoultion;
+
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> depthTexture;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthState;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthView;
+
+		void createDepthStencil();
+		void createDepthTexture();
+		void createDepthView();
 #endif
 	public:
 		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
@@ -44,6 +54,8 @@ namespace Engine3DRadSpace
 
 		void SetViewport(const Viewport& viewport);
 		void SetViewports(std::span<Viewport> viewports);
+
+		void SetNewDepthStencil(const DepthStencilState& state);
 
 		template<Engine3DRadSpace::Graphics::VertexDecl V>
 		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V>* vertexBuffer);
@@ -64,6 +76,7 @@ namespace Engine3DRadSpace
 		friend class Graphics::IShader;
 		friend class Graphics::Texture2D;
 		friend class RasterizerState;
+		friend class DepthStencilBuffer;
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>

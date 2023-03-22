@@ -188,6 +188,9 @@
     <ClInclude Include="RasterizerState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DepthStencilState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

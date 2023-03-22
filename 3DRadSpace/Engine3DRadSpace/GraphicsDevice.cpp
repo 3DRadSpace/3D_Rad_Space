@@ -5,9 +5,9 @@
 
 using namespace Engine3DRadSpace::Logging;
 
-Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height):
+Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
 	EnableVSync(true),
-	resoultion(width,height)
+	resoultion(width, height)
 {
 #ifdef _DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
@@ -29,34 +29,99 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 	UINT flags = 0;
 #endif
 
-		HRESULT r = D3D11CreateDeviceAndSwapChain(
-			nullptr,
-			D3D_DRIVER_TYPE_HARDWARE,
-			nullptr,
-			flags,
-			nullptr,
-			0,
-			D3D11_SDK_VERSION,
-			&swapChainDesc,
-			&this->swapChain,
-			&this->device,
-			nullptr,
-			&this->context
-		);
-		RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
+	HRESULT r = D3D11CreateDeviceAndSwapChain(
+		nullptr,
+		D3D_DRIVER_TYPE_HARDWARE,
+		nullptr,
+		flags,
+		nullptr,
+		0,
+		D3D11_SDK_VERSION,
+		&swapChainDesc,
+		&this->swapChain,
+		&this->device,
+		nullptr,
+		&this->context
+	);
+	RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
 
-		r = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&screenTexture));
-		RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
+	r = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&screenTexture));
+	RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
 
-		r = device->CreateRenderTargetView(screenTexture.Get(), nullptr, &mainRenderTarget);
-		RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
+	r = device->CreateRenderTargetView(screenTexture.Get(), nullptr, &mainRenderTarget);
+	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
+
+	createDepthStencil();
+	context->OMSetDepthStencilState(this->depthState.Get(), 1);
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::createDepthStencil()
+{
+#ifdef WIN32
+	createDepthTexture();
+
+	D3D11_DEPTH_STENCIL_DESC dsDesc;
+
+	dsDesc.DepthEnable = true;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	dsDesc.StencilEnable = true;
+	dsDesc.StencilReadMask = 0xFF;
+	dsDesc.StencilWriteMask = 0xFF;
+
+	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	HRESULT r = device->CreateDepthStencilState(&dsDesc, &depthState);
+	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state with default settings");
+
+	createDepthView();
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::createDepthTexture()
+{
+#ifdef WIN32
+	D3D11_TEXTURE2D_DESC desc{};
+	desc.Format = DXGI_FORMAT_R32_TYPELESS;
+	desc.ArraySize = 1;
+	desc.Width = resoultion.X;
+	desc.Height = resoultion.Y;
+	desc.MipLevels = 1;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+
+	HRESULT r = device->CreateTexture2D(&desc, nullptr, &depthTexture);
+	RaiseFatalErrorIfFailed(r, "Failed to create the depth stencil texture!");
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::createDepthView()
+{
+#ifdef WIN32
+	D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc{};
+	viewDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+	HRESULT r = device->CreateDepthStencilView(this->depthTexture.Get(), &viewDesc, &this->depthView); //the & operator release the previous stencil view object
+	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil view!");
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 {
 #ifdef _DX11
-	context->OMSetRenderTargets(1, mainRenderTarget.GetAddressOf(), nullptr);
+	context->OMSetRenderTargets(1, mainRenderTarget.GetAddressOf(), this->depthView.Get());
 
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
 	context->ClearRenderTargetView(mainRenderTarget.Get(), color);
@@ -84,6 +149,36 @@ void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewport
 #ifdef _DX11
 	context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
 #endif // _DX11
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilState& state)
+{
+	//create a description matching the state parameter.
+	D3D11_DEPTH_STENCIL_DESC dsDesc;
+
+	dsDesc.DepthEnable = state.EnableDepthCheck;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK(state.WriteMask); //REFACTORING-NOTE: don't use initialization, may prefer a switch-case.
+	dsDesc.DepthFunc = D3D11_COMPARISON_FUNC(state.Function);
+
+	dsDesc.StencilEnable = state.EnableStencilCheck;
+	dsDesc.StencilReadMask = state.ReadMask;
+	dsDesc.StencilWriteMask = state.WriteMask;
+
+	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP(state.FrontFace.StencilFail);
+	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP(state.FrontFace.DepthFail);
+	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP(state.FrontFace.PassOp);
+	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_FUNC(state.FrontFace.Function);
+
+	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP(state.BackFace.StencilFail);
+	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP(state.BackFace.DepthFail);
+	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP(state.BackFace.PassOp);
+	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_FUNC(state.BackFace.Function);
+
+	HRESULT r = device->CreateDepthStencilState(&dsDesc, &depthState);
+	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state");
+
+	//recreate depth view resource.
+	createDepthView();
 }
 
 void Engine3DRadSpace::GraphicsDevice::Present()
