@@ -14,9 +14,13 @@ namespace Engine3DRadSpace::Math
 
 		static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
 		static Quaternion FromAxisAngle(const Vector3& axis, float angle);
+		static Quaternion FromMatrix(const Matrix& m);	
+		static Quaternion FromVectorToVector(const Vector3& a, const Vector3& b);
 
 		float Length() const;
 		Quaternion Normalize();
+		Quaternion Conjugate();
+		Quaternion Inverse();
 
 		Vector3 Im() const;
 		

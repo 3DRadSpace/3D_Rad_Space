@@ -22,7 +22,9 @@ namespace Engine3DRadSpace::Math
 		static Vector3 UnitZ();
 		static Vector3 One();
 
-		float Length();
+		float Length() const;
+		float LengthSquared() const;
+
 		Vector3 Normalize();
 
 		Vector3& operator +=(const Vector3& v);
@@ -35,7 +37,9 @@ namespace Engine3DRadSpace::Math
 		Vector3 operator*(float s) const;
 
 		static Vector3 Cross(const Vector3& v1, const Vector3 &v2);
+		
 		float Dot(const Vector3& v);
+		static float Dot(const Vector3& a, const Vector3& b);
 
 		Vector3& Transform(const Quaternion& q);
 		Vector3& Transform(const Matrix& m);

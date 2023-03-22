@@ -28,9 +28,14 @@ Vector3 Engine3DRadSpace::Math::Vector3::One()
     return Vector3(1,1,1);
 }
 
-float Vector3::Length()
+float Vector3::Length() const
 {
-    return sqrtf(X * X + Y * Y + Z * Z);
+    return sqrtf((X * X) + (Y * Y) + (Z * Z));
+}
+
+float Vector3::LengthSquared() const
+{
+    return (X * X) + (Y * Y) + (Z * Z);
 }
 
 Vector3 Engine3DRadSpace::Math::Vector3::Normalize()
@@ -102,7 +107,12 @@ Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v1, const Vector3&
 
 float Engine3DRadSpace::Math::Vector3::Dot(const Vector3& v)
 {
-    return this->X * v.X + this->Y * v.Y + this->Z * v.Z;
+    return (this->X * v.X) + (this->Y * v.Y) + (this->Z * v.Z);
+}
+
+float Engine3DRadSpace::Math::Vector3::Dot(const Vector3& a, const Vector3& b)
+{
+    return (a.X * b.X) + (a.Y + b.Y) + (a.Z * b.Z);
 }
 
 Vector3& Engine3DRadSpace::Math::Vector3::Transform(const Quaternion& q)

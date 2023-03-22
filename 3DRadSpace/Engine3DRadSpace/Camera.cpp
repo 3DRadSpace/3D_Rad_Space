@@ -9,21 +9,9 @@ Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vec
 	AspectRatio(aspectRatio),
 	FieldOfView(fov),
 	FarPlaneDistance(fpd),
-	NearPlaneDistance(npd)
+	NearPlaneDistance(npd),
+	LookAt(0,0,0)
 {
-	SetLookAt(look_at);
-}
-
-void Camera::SetLookAt(const Vector3& lookAt)
-{
-	Vector3 nlk = (lookAt -	Position).Normalize();
-	this->Rotation = Quaternion::FromAxisAngle(nlk,0);
-}
-
-Vector3 Engine3DRadSpace::Objects::Camera::LookAt() const
-{
-	Vector3 a = Vector3::UnitZ().Transform(Rotation);
-	return Position + a;
 }
 
 void Engine3DRadSpace::Objects::Camera::Initialize() 
@@ -33,7 +21,20 @@ void Engine3DRadSpace::Objects::Camera::Initialize()
 
 void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
 {
-	view = Matrix::CreateLookAtView(Position,LookAt(), UpwardsDir);
+	Vector3 focus(0, 0, 0);
+	switch (this->LookMode)
+	{
+	case CameraMode::UseLookAtCoordinates:
+		focus = this->LookAt;
+		break;
+	case CameraMode::UseRotation:
+		focus = Position + Vector3::UnitZ().Transform(Rotation);
+		break;
+	default: //Normally we wouldn't get here. Do not set the focus vector.
+		break;
+	}
+	
+	view = Matrix::CreateLookAtView(Position, focus, UpwardsDir);
 	projection = Matrix::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
 }
 

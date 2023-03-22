@@ -20,8 +20,13 @@ namespace Engine3DRadSpace::Objects
 		float NearPlaneDistance;
 		float FarPlaneDistance;
 
-		void SetLookAt(const Engine3DRadSpace::Math::Vector3& lookAt);
-		Engine3DRadSpace::Math::Vector3 LookAt() const;
+		enum CameraMode
+		{
+			UseRotation,
+			UseLookAtCoordinates
+		} LookMode;
+
+		Engine3DRadSpace::Math::Vector3 LookAt;
 
 		void Initialize() override;
 

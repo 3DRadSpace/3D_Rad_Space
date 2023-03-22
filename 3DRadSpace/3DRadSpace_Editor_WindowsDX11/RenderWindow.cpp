@@ -43,11 +43,11 @@ void RenderWindow::Initialize()
 	for (int i = -10; i <= 10; i++)
 	{
 		if (i == 0) continue;
-		dLines.push_back(VertexPositionColor{ Vector3(i,0,10),Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(i,0,-10),Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,10),Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,-10),Colors::Gray });
 
-		dLines.push_back(VertexPositionColor{ Vector3(10, 0, i), Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, i), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(10, 0, float(i)), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
 	}
 
 	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
@@ -68,13 +68,13 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 		Point mousePos = mouse.Position();
 		Window->SetMousePosition(screenCenter);
 
-		Vector2 mouseDelta = (Vector2)(screenCenter - mousePos) * dt;
+		Vector2 mouseDelta = (Vector2)(screenCenter - mousePos) * float(dt);
 		cameraPos -= mouseDelta * 10.0f;
 
 		cameraPos.Y = std::clamp<float>(
 			cameraPos.Y,
-			-std::numbers::pi / 2.f + std::numeric_limits<float>::epsilon(),
-			std::numbers::pi / 2.f - std::numeric_limits<float>::epsilon()
+			-std::numbers::pi_v<float> / 2.f + std::numeric_limits<float>::epsilon(),
+			std::numbers::pi_v<float> / 2.f - std::numeric_limits<float>::epsilon()
 		);
 
 		if (keyboard.IsKeyDown(Engine3DRadSpace::Input::Key::F9))
@@ -85,7 +85,8 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 
 	Quaternion q = Quaternion::FromYawPitchRoll(-cameraPos.Y, 0, 0) * Quaternion::FromYawPitchRoll(0, -cameraPos.X, 0);
 	Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
-	Camera.SetLookAt(cursor3D);
+	Camera.LookAt = cursor3D;
+	Camera.LookMode = Camera.UseLookAtCoordinates;
 }
 
 void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)

@@ -30,14 +30,87 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromAxisAngle(const Vector3& axis
     return Quaternion(x, y, z, w);
 }
 
+Quaternion Engine3DRadSpace::Math::Quaternion::FromMatrix(const Matrix& m)
+{
+    Quaternion q;
+
+    float tr = m.Trace();
+
+    float m00 = m.M11, m01 = m.M12, m02 = m.M13;
+    float m10 = m.M21, m11 = m.M22, m12 = m.M23;
+    float m20 = m.M31, m21 = m.M32, m22 = m.M33;
+
+    if (tr > 0) {
+        float S = sqrt(tr + 1.0) * 2; // S=4*qw 
+        q.W = 0.25 * S;
+        q.X = (m21 - m12) / S;
+        q.Y = (m02 - m20) / S;
+        q.Z = (m10 - m01) / S;
+    }
+    else if ((m00 > m11) && (m00 > m22)) {
+        float S = sqrt(1.0 + m00 - m11 - m22) * 2; // S=4*qx 
+        q.W = (m21 - m12) / S;
+        q.X = 0.25 * S;
+        q.Y = (m01 + m10) / S;
+        q.Z = (m02 + m20) / S;
+    }
+    else if (m11 > m22) {
+        float S = sqrt(1.0 + m11 - m00 - m22) * 2; // S=4*qy
+        q.W = (m02 - m20) / S;
+        q.X = (m01 + m10) / S;
+        q.Y = 0.25 * S;
+        q.Z = (m12 + m21) / S;
+    }
+    else {
+        float S = sqrt(1.0 + m22 - m00 - m11) * 2; // S=4*qz
+        q.W = (m10 - m01) / S;
+        q.X = (m02 + m20) / S;
+        q.Y = (m12 + m21) / S;
+        q.Z = 0.25 * S;
+    }
+    return q;
+}
+
+Quaternion Engine3DRadSpace::Math::Quaternion::FromVectorToVector(const Vector3& a, const Vector3& b)
+{
+    Quaternion q;
+    Vector3 c = Vector3::Cross(a, b);
+
+    q.X = c.X;
+    q.Y = c.Y;
+    q.Z = c.Z;
+    q.W = 1 + Vector3::Dot(a, b);
+
+    return q.Normalize();
+}
+
 float Engine3DRadSpace::Math::Quaternion::Length() const
 {
-    return sqrt(X * X + Y * Y + Z * Z + W * W);
+    return sqrtf((X * X) + (Y * Y) + (Z * Z) + (W * W));
 }
 
 Quaternion Engine3DRadSpace::Math::Quaternion::Normalize()
 {
     return *this / Length();
+}
+
+Quaternion Engine3DRadSpace::Math::Quaternion::Conjugate()
+{
+    this->X *= -1;
+    this->Y *= -1;
+    this->Z *= -1;
+    return *this;
+}
+
+Quaternion Engine3DRadSpace::Math::Quaternion::Inverse()
+{
+    float num2 = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
+    float num = 1.0f / num2;
+    X = -X * num;
+    Y = -Y * num;
+    Z = -Z * num;
+    W = W * num;
+    return *this;
 }
 
 Vector3 Quaternion::Im() const
