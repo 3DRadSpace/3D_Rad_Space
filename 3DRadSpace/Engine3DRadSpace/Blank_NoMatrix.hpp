@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		class TrivialPixelShader : public IShader
 		{
 		public:
-			TrivialPixelShader(GraphicsDevice* device);
+			explicit TrivialPixelShader(GraphicsDevice* device);
 
 			virtual std::span<InputLayoutElement> InputLayout();
 		};
@@ -16,12 +16,12 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		class TrivialVertexShader : public IShader
 		{
 		public:
-			TrivialVertexShader(GraphicsDevice* device);
+			explicit TrivialVertexShader(GraphicsDevice* device);
 
 			virtual std::span<InputLayoutElement> InputLayout();
 		};
 
 	public:
-		Blank_NoMatrix(GraphicsDevice* device);
+		explicit Blank_NoMatrix(GraphicsDevice* device);
 	};
 }

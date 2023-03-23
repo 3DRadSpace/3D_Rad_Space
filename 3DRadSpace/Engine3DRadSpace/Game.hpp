@@ -3,7 +3,6 @@
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
 #include "IInitializable.hpp"
-#include "Point.hpp"
 #include "IObject.hpp"
 
 namespace Engine3DRadSpace

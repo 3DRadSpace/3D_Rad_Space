@@ -9,7 +9,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		class VertexShader : public IShader
 		{
 		public:
-			VertexShader(GraphicsDevice* device);
+			explicit VertexShader(GraphicsDevice* device);
 
 			std::span<InputLayoutElement> InputLayout() override;
 		};
@@ -17,13 +17,13 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		class PixelShader : public IShader
 		{
 		public:
-			PixelShader(GraphicsDevice* device);
+			explicit PixelShader(GraphicsDevice* device);
 
 			std::span<InputLayoutElement> InputLayout() override;
 		};
 
 	public:
-		BlankShader(GraphicsDevice* device);
+		explicit BlankShader(GraphicsDevice* device);
 
 		/// <summary>
 		/// Sets the linear transformation used to render the primitives.

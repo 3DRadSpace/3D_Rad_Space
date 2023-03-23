@@ -23,12 +23,13 @@ namespace Engine3DRadSpace::Objects
 		enum CameraMode
 		{
 			UseRotation,
-			UseLookAtCoordinates
+			UseLookAtCoordinates,
 		} LookMode;
 
 		Engine3DRadSpace::Math::Vector3 LookAt;
 
 		void Initialize() override;
+		void EditorInitialize() override;
 
 		/// <summary>
 		/// Sets the view and projection matrices.
@@ -53,6 +54,6 @@ namespace Engine3DRadSpace::Objects
 			const Engine3DRadSpace::Math::Matrix& view,
 			const Engine3DRadSpace::Math::Matrix& projection,
 			double dt
-		);
+		) override;
 	};
 }

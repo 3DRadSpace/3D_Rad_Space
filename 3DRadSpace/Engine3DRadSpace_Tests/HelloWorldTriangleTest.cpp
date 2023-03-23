@@ -11,7 +11,7 @@ using namespace Engine3DRadSpace::Math;
 class TriangleTest : public Game
 {
 	Engine3DRadSpace::Graphics::Shaders::Blank_NoMatrix _triangleShader;
-	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer<Engine3DRadSpace::Graphics::VertexPositionColor>> _triangleBuffer;
+	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> _triangleBuffer;
 public:
 	TriangleTest();
 
@@ -36,7 +36,7 @@ void TriangleTest::Initialize()
 		VertexPositionColor{Vector3(-0.5,-0.5,0.0), Colors::Blue}
 	};
 
-	_triangleBuffer = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), triangle, _triangleShader.GetVertexShader());
+	_triangleBuffer = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), triangle, _triangleShader.GetVertexShader());
 }
 
 void TriangleTest::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -47,7 +47,7 @@ void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
 {
 	_triangleShader.SetBasic();
 	Device->SetTopology(VertexTopology::TriangleList);
-	_triangleBuffer->SetAndDraw();
+	_triangleBuffer->Draw();
 
 	//TODO: save into a file.
 

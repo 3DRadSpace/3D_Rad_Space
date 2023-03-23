@@ -96,6 +96,12 @@
     <ClCompile Include="RasterizerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelMeshPart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs.hpp">
@@ -191,11 +197,17 @@
     <ClInclude Include="DepthStencilState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IndexBuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMeshPart.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Camera.hpp">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

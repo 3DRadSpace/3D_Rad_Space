@@ -2,6 +2,8 @@
 #include "Error.hpp"
 #include "IShader.hpp"
 #include <cassert>
+#include "VertexBuffer.hpp"
+#include "IndexBuffer.hpp"
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -182,6 +184,25 @@ void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilStat
 	createDepthView();
 }
 
+void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot)
+{
+#ifdef _DX11
+	UINT strides = 0;
+	UINT offsets = 0;
+	context->IASetVertexBuffers(startSlot, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
+	context->Draw(UINT(vertexBuffer->numVerts), UINT(startSlot));
+#endif
+}
+void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithIndicies(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
+{
+#ifdef _DX11
+	UINT strides = 0;
+	UINT offsets = 0;
+	context->IASetIndexBuffer(indexBuffer->indexBuffer.Get(), DXGI_FORMAT_R32_FLOAT, 0);
+	context->IASetVertexBuffers(0, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
+	context->Draw(UINT(vertexBuffer->numVerts), 0u);
+#endif
+}
 void Engine3DRadSpace::GraphicsDevice::Present()
 {
 #ifdef _DX11

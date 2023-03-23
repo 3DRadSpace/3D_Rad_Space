@@ -49,11 +49,13 @@ void RenderWindow::Initialize()
 		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
 	}
 
-	this->lines = std::make_unique<VertexBuffer<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
+	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
 	Camera.LookMode = Camera.UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get());
 	lineRasterizer->CullMode = RasterizerCullMode::None;
+
+	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -76,7 +78,7 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 			std::numbers::pi_v<float> / 2.f - std::numeric_limits<float>::epsilon()
 		);
 
-		if (keyboard.IsKeyDown(Engine3DRadSpace::Input::Key::F9))
+		if (keyboard.IsKeyDown(Key::F9))
 		{
 			OutputDebugStringA("pressed F9 \r\n");
 		}
@@ -92,11 +94,18 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	Camera.Draw(view, projection, dt);
 	Matrix viewProj = view * projection;
 
+	//Draw the lines.
 	simpleShader->SetBasic();
 	Device->SetRasterizerState(lineRasterizer.get());
 	simpleShader->SetTransformation(viewProj);
 	Device->SetTopology(VertexTopology::LineList);
-	lines->SetAndDraw(0);
+	lines->Draw(0);
+
+	//Draw any other objects
+	for (auto& obj : Objects)
+	{
+		obj->EditorDraw(view, projection, dt);
+	}
 }
 
 bool RenderWindow::IsFocused()

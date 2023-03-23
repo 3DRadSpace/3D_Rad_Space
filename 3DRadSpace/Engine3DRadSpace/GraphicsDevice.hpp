@@ -12,7 +12,10 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	template<VertexDecl V> class VertexBuffer;
+	template<VertexDecl V> class VertexBufferV;
+	class VertexBuffer;
+	class IndexBuffer;
+
 	class IShader;
 	class Texture2D;
 	class DepthStencilBuffer;
@@ -21,7 +24,7 @@ namespace Engine3DRadSpace::Graphics
 namespace Engine3DRadSpace
 {
 	/// <summary>
-	/// Graphics device represents a wrapped for GAPI(DirectX or Vulkan) handles. GPU commands can be sent from here.
+	/// Graphics device represents a wrapped for GAPI(DirectX11) handles. GPU commands can be sent from here.
 	/// </summary>
 	class GraphicsDevice
 	{
@@ -57,8 +60,8 @@ namespace Engine3DRadSpace
 
 		void SetNewDepthStencil(const DepthStencilState& state);
 
-		template<Engine3DRadSpace::Graphics::VertexDecl V>
-		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V>* vertexBuffer);
+		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot = 0);
+		void DrawVertexBufferWithIndicies(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer);
 
 		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
 		void SetTopology(Graphics::VertexTopology topology);
@@ -72,22 +75,12 @@ namespace Engine3DRadSpace
 
 		~GraphicsDevice();
 
-		template<Graphics::VertexDecl V> friend class Graphics::VertexBuffer;
+		template<Graphics::VertexDecl V> friend class Graphics::VertexBufferV;
+		friend class Graphics::VertexBuffer;
+		friend class Graphics::IndexBuffer;
 		friend class Graphics::IShader;
 		friend class Graphics::Texture2D;
 		friend class RasterizerState;
 		friend class DepthStencilBuffer;
 	};
-
-	template<Engine3DRadSpace::Graphics::VertexDecl V>
-	inline void GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer<V> *vertexBuffer)
-	{
-#ifdef _DX11
-		int strides = sizeof(V);
-		int offsets = 0;
-		context->IASetVertexBuffers(0, 1, &vertexBuffer->buffer, &strides, &offsets);
-
-		context->Draw(vertexBuffer->NumVerts(), 0);
-#endif
-	}
 }

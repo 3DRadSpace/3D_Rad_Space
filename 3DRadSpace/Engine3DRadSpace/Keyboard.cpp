@@ -35,7 +35,6 @@ bool Engine3DRadSpace::Input::Keyboard::IsKeyDown(Key k)
     {
         if (static_cast<uint8_t>(k) == keys[i])
         {
-            keys[i] = 0; //remove key fron the list
             return true;
         }
     }

@@ -9,13 +9,14 @@
 class RenderWindow : public Engine3DRadSpace::Game
 {
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
-	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
+	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
 
 	Engine3DRadSpace::Math::Vector2 cameraPos = 
 		{ 
 			cosf(std::numbers::pi_v<float> / 6), //30 degrees = pi/6 radians
 			sinf(std::numbers::pi_v<float> / 6)
 		};
+
 	Engine3DRadSpace::Math::Vector3 cursor3D = Engine3DRadSpace::Math::Vector3::Zero();
 
 	HWND editorWindow;
@@ -23,9 +24,9 @@ class RenderWindow : public Engine3DRadSpace::Game
 	Engine3DRadSpace::Objects::Camera Camera;
 
 	std::unique_ptr<Engine3DRadSpace::RasterizerState> lineRasterizer;
+	std::unique_ptr<Engine3DRadSpace::RasterizerState> defaultRasterizer;
 
 	float zoom = 5.0f;
-
 	float timer = 0;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);

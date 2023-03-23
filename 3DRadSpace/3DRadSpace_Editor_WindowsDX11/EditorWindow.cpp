@@ -295,7 +295,6 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		case WM_QUIT:
 		{
 			exit(0);
-			break;
 		}
 		case WM_COMMAND:
 		{

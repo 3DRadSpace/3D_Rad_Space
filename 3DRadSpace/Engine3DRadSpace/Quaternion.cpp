@@ -41,28 +41,28 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromMatrix(const Matrix& m)
     float m20 = m.M31, m21 = m.M32, m22 = m.M33;
 
     if (tr > 0) {
-        float S = sqrt(tr + 1.0) * 2; // S=4*qw 
+        float S = sqrtf(tr + 1.0) * 2; // S=4*qw 
         q.W = 0.25 * S;
         q.X = (m21 - m12) / S;
         q.Y = (m02 - m20) / S;
         q.Z = (m10 - m01) / S;
     }
     else if ((m00 > m11) && (m00 > m22)) {
-        float S = sqrt(1.0 + m00 - m11 - m22) * 2; // S=4*qx 
+        float S = sqrtf(1.0 + m00 - m11 - m22) * 2; // S=4*qx 
         q.W = (m21 - m12) / S;
         q.X = 0.25 * S;
         q.Y = (m01 + m10) / S;
         q.Z = (m02 + m20) / S;
     }
     else if (m11 > m22) {
-        float S = sqrt(1.0 + m11 - m00 - m22) * 2; // S=4*qy
+        float S = sqrtf(1.0 + m11 - m00 - m22) * 2; // S=4*qy
         q.W = (m02 - m20) / S;
         q.X = (m01 + m10) / S;
         q.Y = 0.25 * S;
         q.Z = (m12 + m21) / S;
     }
     else {
-        float S = sqrt(1.0 + m22 - m00 - m11) * 2; // S=4*qz
+        float S = sqrtf(1.0 + m22 - m00 - m11) * 2; // S=4*qz
         q.W = (m10 - m01) / S;
         q.X = (m02 + m20) / S;
         q.Y = (m12 + m21) / S;
@@ -134,7 +134,7 @@ Vector3 Engine3DRadSpace::Math::Quaternion::ToYawPitchRoll()
     // yaw (z-axis rotation)
     float siny_cosp = 2 * (W * Z + X * Y);
     float cosy_cosp = 1 - 2 * (Y * Y + Z * Z);
-    r.Y = std::atan2f(siny_cosp, cosy_cosp);
+    r.Z = std::atan2f(siny_cosp, cosy_cosp);
 
     return r;
 }

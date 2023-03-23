@@ -19,6 +19,11 @@ void Engine3DRadSpace::Objects::Camera::Initialize()
 	
 }
 
+void Engine3DRadSpace::Objects::Camera::EditorInitialize()
+{
+	//TODO: Load 3D Camera model.
+}
+
 void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
 {
 	Vector3 focus(0, 0, 0);
