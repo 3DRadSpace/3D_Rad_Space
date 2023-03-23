@@ -125,6 +125,7 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
 	context->ClearRenderTargetView(mainRenderTarget.Get(), color);
+	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
 #endif
 }
 
