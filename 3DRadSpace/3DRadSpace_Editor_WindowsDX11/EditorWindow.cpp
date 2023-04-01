@@ -7,6 +7,8 @@
 #include <d3d11.h>
 #include <assert.h>
 
+#include "AddObjectDialog.hpp"
+
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Math;
@@ -364,7 +366,11 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					break;
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:
+				{
+					AddObjectDialog dialog(hwnd, gEditorWindow->_hInstance);
+					dialog.ShowDialog();
 					break;
+				}
 				case CMD_AddAsset:
 				case ACC_ADD_ASSET:
 					break;

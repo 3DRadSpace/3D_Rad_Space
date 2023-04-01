@@ -3,7 +3,7 @@
 
 using namespace Engine3DRadSpace::Math;
 
-TEST(VectorTests, Vector3Tests)
+TEST(LinearAlgebraTests,Vector)
 {
 	//Basic cross product test:
 	Vector3 a = Vector3::UnitX(), b = Vector3::UnitY();

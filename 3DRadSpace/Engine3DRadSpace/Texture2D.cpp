@@ -1,13 +1,14 @@
 #include "Texture2D.hpp"
-#ifdef _WIN32
+#ifdef _DX11
 #include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 #include <Windows.h>
-#endif // _WIN32
+#endif // _DX11
 #include "Error.hpp"
 
 Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const char *filename)
 {
-#ifdef _WIN32
+#ifdef _DX11
 	ID3D11Resource *resource = static_cast<ID3D11Resource *>(this->texture.Get());
 
 	wchar_t path[_MAX_PATH]{};
@@ -20,6 +21,16 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const c
 		&resource,
 		this->resourceView.GetAddressOf()
 	);
+	if (FAILED(r))
+	{
+		r = DirectX::CreateDDSTextureFromFile(
+			device->device.Get(),
+			device->context.Get(),
+			path,
+			&resource,
+			this->resourceView.GetAddressOf()
+			);
+	}
 
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create texture from file!",filename);
 #endif
@@ -27,6 +38,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const c
 
 Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x, unsigned y)
 {
+#ifdef _DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	tDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -60,6 +72,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, std::sp
 
 	r = device->device->CreateShaderResourceView(this->texture.Get(), nullptr, this->resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+#endif
 }
 
 void Engine3DRadSpace::Graphics::Texture2D::SetColors(Color **colors, unsigned x, unsigned y)

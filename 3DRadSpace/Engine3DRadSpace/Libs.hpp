@@ -12,8 +12,11 @@
 #include <chrono>
 #include <numbers>
 #include <limits>
+#include <algorithm>
+#include <unordered_map>
 
 #ifdef _WIN32
+#define NOMINMAX
 #ifdef _DX11
 #include <d3d11.h>
 #include <d3dcompiler.h>

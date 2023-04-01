@@ -4,13 +4,13 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
 VertexBuffer::VertexBuffer(
-	_In_ GraphicsDevice* device,
+	_In_ GraphicsDevice* Device,
 	_In_ const void* data, 
 	size_t p_structSize,
 	size_t numVerticies,
 	BufferUsage usage
 ):
-	device(device),
+	device(Device),
 	numVerts(numVerticies),
 	structSize(p_structSize)
 {
@@ -18,7 +18,7 @@ VertexBuffer::VertexBuffer(
 	D3D11_BUFFER_DESC vertexBuffDesc{};
 	vertexBuffDesc.ByteWidth = UINT(structSize * numVerticies);
 	vertexBuffDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBuffDesc.BindFlags = UINT(usage);
+	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBuffDesc.StructureByteStride = UINT(structSize);
 
 	D3D11_SUBRESOURCE_DATA resource{};

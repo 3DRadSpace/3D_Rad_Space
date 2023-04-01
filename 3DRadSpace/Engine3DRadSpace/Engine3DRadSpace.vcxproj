@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -144,11 +144,14 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="IObject.cpp" />
     <ClCompile Include="IShader.cpp" />
+    <ClCompile Include="LevenshteinDistance.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="ModelMeshPart.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RasterizerState.cpp" />
+    <ClCompile Include="Reflection.cpp" />
     <ClCompile Include="ShaderPipeline.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -160,6 +163,7 @@
     <ClCompile Include="TrivialPixelShader.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexDeclarations.cpp" />
     <ClCompile Include="Viewport.cpp" />
@@ -177,11 +181,14 @@
     <ClInclude Include="IndexBuffer.hpp" />
     <ClInclude Include="IObject.hpp" />
     <ClInclude Include="IShader.hpp" />
+    <ClInclude Include="LevenshteinDistance.hpp" />
     <ClInclude Include="Math.hpp" />
     <ClInclude Include="Matrix.hpp" />
+    <ClInclude Include="Model3D.hpp" />
     <ClInclude Include="ModelMeshPart.hpp" />
     <ClInclude Include="Quaternion.hpp" />
     <ClInclude Include="RasterizerState.hpp" />
+    <ClInclude Include="Reflection.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Keyboard.hpp" />
@@ -194,6 +201,7 @@
     <ClInclude Include="Blank_NoMatrix.hpp" />
     <ClInclude Include="Vector2.hpp" />
     <ClInclude Include="Vector3.hpp" />
+    <ClInclude Include="Vector4.hpp" />
     <ClInclude Include="VertexBuffer.hpp" />
     <ClInclude Include="VertexDeclarations.hpp" />
     <ClInclude Include="VertexTopology.hpp" />

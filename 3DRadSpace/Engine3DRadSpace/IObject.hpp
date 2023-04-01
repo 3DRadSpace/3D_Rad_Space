@@ -3,6 +3,7 @@
 #include "IInitializable.hpp"
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
+#include "Reflection.hpp"
 
 namespace Engine3DRadSpace
 {

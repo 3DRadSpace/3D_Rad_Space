@@ -57,3 +57,5 @@ namespace Engine3DRadSpace::Objects
 		) override;
 	};
 }
+
+__REFL_DEF(Camera)

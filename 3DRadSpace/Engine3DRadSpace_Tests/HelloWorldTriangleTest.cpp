@@ -18,6 +18,8 @@ public:
 	void Initialize() override;
 	void Update(Keyboard& keyboard, Mouse& mouse, double dt) override;
 	void Draw(Matrix& view, Matrix &projection, double dt) override;
+
+	int frameCount = 0;
 };
 
 TriangleTest::TriangleTest():
@@ -48,13 +50,13 @@ void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
 	_triangleShader.SetBasic();
 	Device->SetTopology(VertexTopology::TriangleList);
 	_triangleBuffer->Draw();
+	//TODO: save backbuffer into a file.
 
-	//TODO: save into a file.
-
-	Exit();
+	if(frameCount == 1) Exit();
+	frameCount++;
 }
 
-TEST(EngineCore, HelloTriangleTest)
+TEST(EngineCoreTests, HelloTriangle)
 {
 	//TriangleTest t;
 	//t.Run();

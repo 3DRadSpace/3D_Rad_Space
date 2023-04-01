@@ -1,5 +1,8 @@
 #pragma once
-#include <Windows.h>
+#include "GDIFuncs.hpp"
+#include <string>
 
 int GetTitleBarHeight();
 int GetMenuBarHeight();
+
+std::wstring ConvertToWideString(const std::string& str);

@@ -147,17 +147,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
+    <ClCompile Include="GDIFuncs.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddObjectDialog.hpp" />
     <ClInclude Include="EditorWindow.hpp" />
+    <ClInclude Include="GDIFuncs.hpp" />
     <ClInclude Include="HelperFunctions.hpp" />
     <ClInclude Include="RenderWindow.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DRadSpace_Editor_WindowsDX11.rc" />
@@ -177,6 +180,30 @@
     <Image Include="Icons\save_as.ico" />
     <Image Include="Icons\switch2d_icon.ico" />
     <Image Include="Icons\VisualStudio.ico" />
+    <Image Include="Images\OBJ_Camera.png" />
+    <Image Include="Images\OBJ_Counter.png" />
+    <Image Include="Images\OBJ_Empty.png" />
+    <Image Include="Images\OBJ_EOK.png" />
+    <Image Include="Images\OBJ_EOL.png" />
+    <Image Include="Images\OBJ_ExitFade.png" />
+    <Image Include="Images\OBJ_Fog.png" />
+    <Image Include="Images\OBJ_Force.png" />
+    <Image Include="Images\OBJ_FPVCamera.png" />
+    <Image Include="Images\OBJ_GameSettings.png" />
+    <Image Include="Images\OBJ_GForce.png" />
+    <Image Include="Images\OBJ_Group.png" />
+    <Image Include="Images\OBJ_NetworkChat.png" />
+    <Image Include="Images\OBJ_Rigidbody.png" />
+    <Image Include="Images\OBJ_Script.png" />
+    <Image Include="Images\OBJ_Skinmesh.png" />
+    <Image Include="Images\OBJ_SkyBox.png" />
+    <Image Include="Images\OBJ_SkyColor.png" />
+    <Image Include="Images\OBJ_Sound.png" />
+    <Image Include="Images\OBJ_SoundSource.png" />
+    <Image Include="Images\OBJ_SourceCode.png" />
+    <Image Include="Images\OBJ_Sprite.png" />
+    <Image Include="Images\OBJ_TextPrint.png" />
+    <Image Include="Images\OBJ_Timer.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

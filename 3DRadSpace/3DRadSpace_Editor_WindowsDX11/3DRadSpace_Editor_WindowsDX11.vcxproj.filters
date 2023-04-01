@@ -27,6 +27,12 @@
     <ClCompile Include="RenderWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddObjectDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GDIFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -35,13 +41,16 @@
     <ClInclude Include="EditorWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HelperFunctions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddObjectDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIFuncs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -76,6 +85,78 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Icons\save_as.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Camera.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Counter.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Empty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_EOK.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_EOL.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_ExitFade.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Fog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Force.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_FPVCamera.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_GameSettings.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_GForce.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Group.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_NetworkChat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Rigidbody.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Script.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Skinmesh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_SkyBox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_SkyColor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Sound.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_SoundSource.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_SourceCode.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Sprite.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_TextPrint.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\OBJ_Timer.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

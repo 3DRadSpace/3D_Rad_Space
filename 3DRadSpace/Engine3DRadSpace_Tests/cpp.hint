@@ -1,0 +1,7 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define __REFL_END
+#define __REFL_FIELD(FieldType, ObjectName, FieldName, DefaultValue, Description, FieldVisibleName)
+#define TEST(test_case_name, test_name) GTEST_TEST(test_case_name, test_name)
+#define __REFL_BEGIN(Object)
