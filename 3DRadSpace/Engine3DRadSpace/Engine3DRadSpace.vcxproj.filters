@@ -111,6 +111,12 @@
     <ClCompile Include="Vector4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevenshteinDistance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs.hpp">
@@ -222,6 +228,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevenshteinDistance.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

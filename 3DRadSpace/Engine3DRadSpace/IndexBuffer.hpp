@@ -12,10 +12,11 @@ namespace Engine3DRadSpace
 			GraphicsDevice* device;
 
 		public:
-			IndexBuffer(GraphicsDevice* device, std::span<unsigned> indicies);
-			IndexBuffer(GraphicsDevice* device, unsigned* indicies, size_t numIndicies);
+			IndexBuffer(GraphicsDevice* device, std::span<unsigned> indices);
+			IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices);
 
-			void Set(std::span<unsigned> newIndicies);
+			void Set(unsigned index = 0);
+			void SetData(std::span<unsigned> newindices);
 
 			friend class GraphicsDevice;
 		};

@@ -553,8 +553,8 @@ void IShader::SetData(unsigned index, void *data, unsigned dataSize)
 	{
 		D3D11_MAPPED_SUBRESOURCE res;
 		HRESULT r = device->context->Map(constantBuffers[index].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &res);
-		memcpy(res.pData, data, dataSize);
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to write the shader data!");
+		memcpy(res.pData, data, dataSize);
 		device->context->Unmap(constantBuffers[index].Get(), 0);
 	}
 }

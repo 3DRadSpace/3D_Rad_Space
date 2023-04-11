@@ -27,7 +27,7 @@ namespace Engine3DRadSpace
 			size_t structSize;
 #endif //  _DX11
 		public:
-			VertexBuffer(_In_ GraphicsDevice* Device, _In_ const void* data, size_t p_structSize, size_t numVerticies, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
+			VertexBuffer(_In_ GraphicsDevice* Device, _In_ const void* data, size_t p_structSize, size_t numVertices, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
 
 			void SetData(void* data, size_t dataSize);
 			void Set();
@@ -35,7 +35,7 @@ namespace Engine3DRadSpace
 
 			size_t TotalSize();
 			size_t StructSize();
-			size_t NumVerticies();
+			size_t NumVertices();
 
 			virtual ~VertexBuffer() = default;
 
@@ -47,14 +47,14 @@ namespace Engine3DRadSpace
 		class VertexBufferV : public VertexBuffer
 		{
 		public:
-			VertexBufferV( _In_ GraphicsDevice* device, _In_ std::span<V> data, IShader* shader = nullptr, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
+			VertexBufferV( _In_ GraphicsDevice* device, _In_ std::span<V> data, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
 			void SetData(std::span<V> data);
 
 			friend class ::Engine3DRadSpace::GraphicsDevice;
 		};
 
 		template<VertexDecl V>
-		VertexBufferV<V>::VertexBufferV(_In_ GraphicsDevice* device, _In_ std::span<V> data, IShader* shader, BufferUsage usage):
+		VertexBufferV<V>::VertexBufferV(_In_ GraphicsDevice* device, _In_ std::span<V> data, BufferUsage usage):
 			VertexBuffer(device, &data[0], sizeof(V), data.size(), usage)
 		{
 		}

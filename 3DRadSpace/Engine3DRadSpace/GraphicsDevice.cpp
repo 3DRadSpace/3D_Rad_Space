@@ -193,12 +193,12 @@ void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphi
 	context->Draw(UINT(vertexBuffer->numVerts), UINT(startSlot));
 #endif
 }
-void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithIndicies(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
+void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
 {
 #ifdef _DX11
 	UINT strides = 0;
 	UINT offsets = 0;
-	context->IASetIndexBuffer(indexBuffer->indexBuffer.Get(), DXGI_FORMAT_R32_FLOAT, 0);
+	context->IASetIndexBuffer(indexBuffer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	context->IASetVertexBuffers(0, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
 	context->Draw(UINT(vertexBuffer->numVerts), 0u);
 #endif

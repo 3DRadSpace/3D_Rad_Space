@@ -38,7 +38,7 @@ void TriangleTest::Initialize()
 		VertexPositionColor{Vector3(-0.5,-0.5,0.0), Colors::Blue}
 	};
 
-	_triangleBuffer = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), triangle, _triangleShader.GetVertexShader());
+	_triangleBuffer = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), triangle);
 }
 
 void TriangleTest::Update(Keyboard& keyboard, Mouse& mouse, double dt)

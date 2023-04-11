@@ -5,11 +5,13 @@
 #include <Engine3DRadSpace/Matrix.hpp>
 #include <Engine3DRadSpace/Vector2.hpp>
 #include <Engine3DRadSpace/Camera.hpp>
+#include <Engine3DRadSpace/Model3D.hpp>
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
 	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Model3D> cameraModel;
 
 	Engine3DRadSpace::Math::Vector2 cameraPos = 
 		{ 

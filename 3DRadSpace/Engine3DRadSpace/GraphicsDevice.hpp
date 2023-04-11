@@ -61,7 +61,7 @@ namespace Engine3DRadSpace
 		void SetNewDepthStencil(const DepthStencilState& state);
 
 		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot = 0);
-		void DrawVertexBufferWithIndicies(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer);
+		void DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer);
 
 		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
 		void SetTopology(Graphics::VertexTopology topology);

@@ -49,13 +49,15 @@ void RenderWindow::Initialize()
 		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
 	}
 
-	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines, simpleShader->GetVertexShader());
+	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines);
 	Camera.LookMode = Camera.UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get());
 	lineRasterizer->CullMode = RasterizerCullMode::None;
 
 	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
+
+	cameraModel = std::make_unique<Model3D>(Device.get(), "Data\\Models\\Camera.x");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -100,6 +102,9 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	simpleShader->SetTransformation(viewProj);
 	Device->SetTopology(VertexTopology::LineList);
 	lines->Draw(0);
+
+	Device->SetTopology(VertexTopology::TriangleList);
+	cameraModel->Draw();
 
 	//Draw any other objects
 	for (auto& obj : Objects)

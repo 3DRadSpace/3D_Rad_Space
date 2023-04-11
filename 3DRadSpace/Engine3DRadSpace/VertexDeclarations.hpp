@@ -9,16 +9,16 @@ namespace Engine3DRadSpace::Graphics
 		Math::Vector3 Position;
 	};
 
-	struct UnspecifiedVertexDecl
-	{
-		Math::Vector3 Position;
-		virtual void dummy() = 0;
-	};
-
 	struct VertexPositionColor
 	{
 		Math::Vector3 Position;
 		Color Color;
+	};
+
+	struct VertexPositionUV
+	{
+		Math::Vector3 Position;
+		Math::Vector2 UV;
 	};
 
 	struct VertexPositionNormalColor
@@ -26,6 +26,57 @@ namespace Engine3DRadSpace::Graphics
 		Math::Vector3 Position;
 		Math::Vector3 Normal;
 		Color Color;
+	};
+
+	struct VertexPositionNormalUV
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector2 UV;
+	};
+
+	struct VertexPositionNormalUVColor
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector2 UV;
+		Color Color;
+	};
+
+	struct VertexPositionNormalBitangent
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector3 Tangent;
+		Math::Vector3 Bitangent;
+	};
+
+	struct VertexPositionNormalBitangentColor
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector3 Tangent;
+		Math::Vector3 Bitangent;
+		Color Color;
+	};
+
+	struct VertexPositionNormalBitangentUVColor
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector3 Tangent;
+		Math::Vector3 Bitangent;
+		Math::Vector2 UV;
+		Color Color;
+	};
+
+	struct VertexPositionNormalBitangentUV
+	{
+		Math::Vector3 Position;
+		Math::Vector3 Normal;
+		Math::Vector3 Tangent;
+		Math::Vector3 Bitangent;
+		Math::Vector2 UV;
 	};
 
 	template <typename V>

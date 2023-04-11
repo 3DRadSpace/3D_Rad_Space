@@ -7,16 +7,16 @@ VertexBuffer::VertexBuffer(
 	_In_ GraphicsDevice* Device,
 	_In_ const void* data, 
 	size_t p_structSize,
-	size_t numVerticies,
+	size_t numVertices,
 	BufferUsage usage
 ):
 	device(Device),
-	numVerts(numVerticies),
+	numVerts(numVertices),
 	structSize(p_structSize)
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC vertexBuffDesc{};
-	vertexBuffDesc.ByteWidth = UINT(structSize * numVerticies);
+	vertexBuffDesc.ByteWidth = UINT(structSize * numVertices);
 	vertexBuffDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBuffDesc.StructureByteStride = UINT(structSize);
@@ -68,7 +68,7 @@ size_t VertexBuffer::StructSize()
 {
 	return this->structSize;
 }
-size_t VertexBuffer::NumVerticies()
+size_t VertexBuffer::NumVertices()
 {
 	return this->numVerts;
 }
