@@ -21,6 +21,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 
 			std::span<InputLayoutElement> InputLayout() override;
 		};
+		static inline InputLayoutElement elements[2] = { InputLayoutElement::Position_Vec3, InputLayoutElement::Color };
 
 	public:
 		explicit BlankShader(GraphicsDevice* device);

@@ -36,16 +36,6 @@ namespace Engine3DRadSpace
 	{
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerState;
 	public:
-		RasterizerFillMode FillMode;
-		RasterizerCullMode CullMode;
-		bool FrontCounterClockwise;
-		int DepthBias;
-		float DepthBiasClamp;
-		float SlopeScaledDepthBias;
-		bool DepthClip;
-		bool Scissors;
-		bool Multisample;
-		bool AntialiasedLines;
 
 		RasterizerState(
 			GraphicsDevice* device,

@@ -344,7 +344,7 @@ D3D11_INPUT_ELEMENT_DESC *IShader::generateInputElementDesc(std::span<InputLayou
 			{
 				elem[i] =
 				{
-					"BINORMAL", //SemanticName
+					"BITANGENT", //SemanticName
 					bitangentIndex, //SemanticIndex
 					DXGI_FORMAT_R32G32B32_FLOAT, //Format
 					0, //InputSlot
@@ -359,7 +359,7 @@ D3D11_INPUT_ELEMENT_DESC *IShader::generateInputElementDesc(std::span<InputLayou
 			{
 				elem[i] =
 				{
-					"BINORMAL", //SemanticName
+					"BITANGENT", //SemanticName
 					bitangentIndex, //SemanticIndex
 					DXGI_FORMAT_R32G32B32A32_FLOAT, //Format
 					0, //InputSlot
@@ -565,31 +565,39 @@ void IShader::SetTexture(unsigned index, Texture2D *texture)
 	{
 		case ShaderType::VertexShader:
 		{
-			device->context->VSSetShaderResources(index, 1, nullptr);
+			device->context->VSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
 			break;
 		}
 		case ShaderType::HullShader:
 		{
-			device->context->HSSetShaderResources(index, 1, nullptr);
+			device->context->HSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
 			break;
 		}
 		case ShaderType::DomainShader:
 		{
-			device->context->DSSetShaderResources(index, 1, nullptr);
+			device->context->DSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
 			break;
 		}
 		case ShaderType::GeometryShader:
 		{
-			device->context->GSSetShaderResources(index, 1, nullptr);
+			device->context->GSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
 			break;
 		}
 		case ShaderType::PixelShader:
 		{
-			device->context->PSSetShaderResources(index, 1, nullptr);
+			device->context->PSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
 			break;
 		}
 		default:
 			break;
+	}
+}
+
+void Engine3DRadSpace::Graphics::IShader::SetSampler(unsigned index, SamplerState* samplerState)
+{
+	if (type == ShaderType::PixelShader)
+	{
+		device->context->PSSetSamplers(index, 1, samplerState->samplerState.GetAddressOf());
 	}
 }
 

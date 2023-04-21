@@ -82,5 +82,6 @@ namespace Engine3DRadSpace
 		friend class Graphics::Texture2D;
 		friend class RasterizerState;
 		friend class DepthStencilBuffer;
+		friend class SamplerState;
 	};
 }

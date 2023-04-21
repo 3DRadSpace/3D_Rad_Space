@@ -1,5 +1,6 @@
 #pragma once
 #include "Texture2D.hpp"
+#include "SamplerState.hpp"
 
 #ifdef _DX11
 #pragma comment(lib,"d3dcompiler.lib")
@@ -69,7 +70,7 @@ namespace Engine3DRadSpace::Graphics
 #endif
 		void determineTarget(char* target, size_t lenStr);
 		void compileShader( const char* source);
-		void compileShaderFromFile(  const char* path);
+		void compileShaderFromFile( const char* path);
 		void createShader();
 		[[nodiscard]] D3D11_INPUT_ELEMENT_DESC *generateInputElementDesc(std::span<InputLayoutElement> inputLayout);
 		void generateInputLayout(std::span<InputLayoutElement> inputLayout);
@@ -88,6 +89,7 @@ namespace Engine3DRadSpace::Graphics
 
 		void SetData(unsigned index,void *data, unsigned dataSize);
 		void SetTexture(unsigned index, Texture2D *texture);
+		void SetSampler(unsigned index, SamplerState* samplerState);
 
 		ShaderFeatureLevel GetFeatureLevel();
 		ShaderType GetType();

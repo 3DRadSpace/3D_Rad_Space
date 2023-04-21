@@ -20,6 +20,7 @@ namespace Engine3DRadSpace::Graphics
 		void SetColors(Color** colors, unsigned x, unsigned y);
 
 		friend class GraphicsDevice;
+		friend class IShader;
 	};
 }
 

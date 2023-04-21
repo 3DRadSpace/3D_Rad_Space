@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace::Graphics;
 
 VertexBuffer::VertexBuffer(
 	_In_ GraphicsDevice* Device,
-	_In_ const void* data, 
+	_In_reads_bytes_(p_structSize * numVertices) const void* data,
 	size_t p_structSize,
 	size_t numVertices,
 	BufferUsage usage

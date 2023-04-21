@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicTextured_NBT.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Error.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RasterizerState.cpp" />
     <ClCompile Include="Reflection.cpp" />
+    <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="ShaderPipeline.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicTextured_NBT.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="DepthStencilState.hpp" />
     <ClInclude Include="Error.hpp" />
@@ -191,6 +194,7 @@
     <ClInclude Include="Quaternion.hpp" />
     <ClInclude Include="RasterizerState.hpp" />
     <ClInclude Include="Reflection.hpp" />
+    <ClInclude Include="SamplerState.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Keyboard.hpp" />

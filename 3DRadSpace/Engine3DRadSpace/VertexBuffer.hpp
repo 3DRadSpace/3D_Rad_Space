@@ -27,7 +27,13 @@ namespace Engine3DRadSpace
 			size_t structSize;
 #endif //  _DX11
 		public:
-			VertexBuffer(_In_ GraphicsDevice* Device, _In_ const void* data, size_t p_structSize, size_t numVertices, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
+			VertexBuffer(
+				_In_ GraphicsDevice* Device, 
+				_In_reads_bytes_(p_structSize* numVertices) const void* data, 
+				size_t p_structSize,
+				size_t numVertices, 
+				BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU
+			);
 
 			void SetData(void* data, size_t dataSize);
 			void Set();

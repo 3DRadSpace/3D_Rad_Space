@@ -6,6 +6,7 @@
 #include <Engine3DRadSpace/Vector2.hpp>
 #include <Engine3DRadSpace/Camera.hpp>
 #include <Engine3DRadSpace/Model3D.hpp>
+#include <Engine3DRadSpace/BasicTextured_NBT.hpp>
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
@@ -30,6 +31,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	float zoom = 5.0f;
 	float timer = 0;
+
+	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT> texturedShader;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

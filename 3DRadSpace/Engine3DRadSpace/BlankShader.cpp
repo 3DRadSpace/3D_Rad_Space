@@ -4,8 +4,6 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-inline InputLayoutElement elements[] = { InputLayoutElement::Position_Vec3, InputLayoutElement::Color };
-
 BlankShader::VertexShader::VertexShader(GraphicsDevice* device):
 	IShader(device, elements, "Data\\Shaders\\PositionColor.hlsl", "VS_Main", 0)
 {

@@ -150,7 +150,7 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
 #ifdef _DX11
-	context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(viewports.begin()._Myptr));
+	context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
 #endif // _DX11
 }
 

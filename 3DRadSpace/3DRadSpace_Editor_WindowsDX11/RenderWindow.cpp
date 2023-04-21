@@ -53,10 +53,11 @@ void RenderWindow::Initialize()
 	Camera.LookMode = Camera.UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get());
-	lineRasterizer->CullMode = RasterizerCullMode::None;
+	//lineRasterizer->CullMode = RasterizerCullMode::None;
 
 	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
 
+	texturedShader = std::make_unique<BasicTextured_NBT>(Device.get());
 	cameraModel = std::make_unique<Model3D>(Device.get(), "Data\\Models\\Camera.x");
 }
 
@@ -103,6 +104,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	Device->SetTopology(VertexTopology::LineList);
 	lines->Draw(0);
 
+	texturedShader->SetAll();
 	Device->SetTopology(VertexTopology::TriangleList);
 	cameraModel->Draw();
 
