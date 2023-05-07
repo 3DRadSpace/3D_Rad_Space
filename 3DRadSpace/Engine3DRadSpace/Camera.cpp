@@ -51,11 +51,11 @@ void Engine3DRadSpace::Objects::Camera::EditorDraw(const Engine3DRadSpace::Math:
 }
 
 __REFL_BEGIN(Camera,"Camera","Camera objects","Perspective camera")
-__REFL_FIELD(Camera, std::string, Name, "Name", "Camera","Camera's name")
+__REFL_FIELD(Camera, std::string, Name, "Name", "Camera", "Camera's name")
 __REFL_FIELD(Camera, bool, Enabled, "Enabled", true, "Does the camera render the scene?")
 __REFL_FIELD(Camera, Vector3, Position, "Position", Vector3::Zero(), "Camera position")
 __REFL_FIELD(Camera, Quaternion, Rotation, "Rotation", Quaternion(), "Camera rotation")
-__REFL_FIELD(Camera, Vector3, UpwardsDir, "Upwards direction", Vector3::One(), "Camera surface nroaml vector")
+__REFL_FIELD(Camera, Vector3, UpwardsDir, "Upwards direction", Vector3::One(), "Camera surface normal vector")
 __REFL_FIELD(Camera, float, AspectRatio, "Aspect ratio", 4.f / 3.f, "Camera aspect ratio")
 __REFL_FIELD(Camera, float, FieldOfView, "Field of view", 65.f, "Camera's field of view")
 __REFL_FIELD(Camera, float, NearPlaneDistance, "Near plane distance", 0.01f, "Minimum drawing distance")

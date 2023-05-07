@@ -20,15 +20,15 @@ namespace Engine3DRadSpace
 		/// <summary>
 		/// Always draw all triangles.
 		/// </summary>
-		None = 0,
+		None = 1,
 		/// <summary>
 		/// Do not draw font-facing trangles.
 		/// </summary>
-		CullFront = 1,
+		CullFront = 2,
 		/// <summary>
 		/// Do not draw backfaces.
 		/// </summary>
-		CullBack = 2,
+		CullBack = 3,
 	};
 
 	class GraphicsDevice;

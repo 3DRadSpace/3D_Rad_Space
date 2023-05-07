@@ -148,17 +148,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
+    <ClCompile Include="ColorBox.cpp" />
+    <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="EditObjectDialog.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="GDIFuncs.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
+    <ClCompile Include="IControl.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NumericTextbox.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
+    <ClInclude Include="ColorBox.hpp" />
+    <ClInclude Include="Dialog.hpp" />
+    <ClInclude Include="EditObjectDialog.hpp" />
     <ClInclude Include="EditorWindow.hpp" />
     <ClInclude Include="GDIFuncs.hpp" />
     <ClInclude Include="HelperFunctions.hpp" />
+    <ClInclude Include="IControl.hpp" />
+    <ClInclude Include="NumericTextbox.hpp" />
     <ClInclude Include="RenderWindow.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

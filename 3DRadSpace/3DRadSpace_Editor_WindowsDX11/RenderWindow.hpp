@@ -33,6 +33,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 	float timer = 0;
 
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT> texturedShader;
+
+	std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D> blankTexture;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

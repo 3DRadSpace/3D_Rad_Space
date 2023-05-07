@@ -32,16 +32,16 @@ namespace Engine3DRadSpace::Reflection
 		Custom,
 	};
 
-	using FieldRepresentation = std::initializer_list<FieldRepresentationType>;
+	using FieldRepresentation = std::initializer_list<std::pair<FieldRepresentationType, const std::string&>>;
 
 	template<typename T> FieldRepresentation GetFieldRepresentation() = delete; //Only allow GetFieldRepresentation() specializations.
 
 	//GetFieldRepresentation() specializations, as defined in FieldRepresentationType
 	template<> FieldRepresentation GetFieldRepresentation<void>();
 	template<> FieldRepresentation GetFieldRepresentation<bool>();
-	template<signed_integer T> FieldRepresentation GetFieldRepresentation() { return { FieldRepresentationType::Integer }; }
-	template<unsigned_integer T> FieldRepresentation GetFieldRepresentation() { return { FieldRepresentationType::Unsigned }; }
-	template<std::floating_point T> FieldRepresentation GetFieldRepresentation() { return { FieldRepresentationType::Float }; }
+	template<signed_integer T> FieldRepresentation GetFieldRepresentation() { return { {FieldRepresentationType::Integer,""} }; }
+	template<unsigned_integer T> FieldRepresentation GetFieldRepresentation() { return { {FieldRepresentationType::Unsigned,""} }; }
+	template<std::floating_point T> FieldRepresentation GetFieldRepresentation() { return { { FieldRepresentationType::Float,""} }; }
 	template<> FieldRepresentation GetFieldRepresentation<std::string>();
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Graphics::Texture2D>();
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Graphics::Model3D>();
@@ -76,6 +76,8 @@ namespace Engine3DRadSpace::Reflection
 		virtual void Set(void* objPtr, void* value) const = 0;
 
 		virtual const void* DefaultValue() const = 0;
+
+		virtual FieldRepresentation Representation() const = 0;
 
 		virtual ~IReflectedField() = default;
 	};
@@ -139,6 +141,11 @@ namespace Engine3DRadSpace::Reflection
 
 			*lhs = *rhs;
 		}
+
+		FieldRepresentation Representation() const override
+		{
+			return GetFieldRepresentation<T>();
+		}
 	};
 
 	/// Null specialization.
@@ -181,6 +188,10 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return nullptr;
 		}
+		FieldRepresentation Representation() const override
+		{
+			return GetFieldRepresentation<void>();
+		}
 	};
 
 	template<typename O>
@@ -196,7 +207,7 @@ namespace Engine3DRadSpace::Reflection
 		const std::string Category;
 		const std::string Description;
 
-		const size_t NumObjects();
+		const size_t NumFields();
 		const IReflectedField* operator[](unsigned i);
 		const IReflectedField* operator[](const std::string& name);
 

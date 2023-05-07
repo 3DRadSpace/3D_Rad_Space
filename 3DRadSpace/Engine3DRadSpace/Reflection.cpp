@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Input;
 
-const size_t ReflectedObject::NumObjects()
+const size_t ReflectedObject::NumFields()
 {
     return fields.size();
 }
@@ -19,15 +19,15 @@ const IReflectedField* ReflectedObject::operator[](unsigned i)
 
 const IReflectedField* ReflectedObject::operator[](const std::string& name)
 {
-	//First find attempt: check if field name and name exactly match.
+	//First find attempt: check if field name and name exactly match. O(#fields)
 	for (auto& field : fields)
 	{
 		if (field->FieldName() == name) return field;
 	}
 
-	//Second find attempt : use edit distance
+	//Second find attempt : use edit distance. O(n*m)
 	std::vector<std::pair<int, int>> v;
-	for (int i = 0; i < NumObjects(); i++)
+	for (int i = 0; i < NumFields(); i++)
 	{
 		v.push_back(std::make_pair(
 			Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(fields[i]->FieldName(), name),
@@ -64,40 +64,40 @@ std::vector<IReflectedField*>::iterator ReflectedObject::end()
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<void>()
 {
-	return { FieldRepresentationType::Unknown };
+	return { { FieldRepresentationType::Unknown, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<bool>()
 {
-	return { FieldRepresentationType::Boolean };
+	return { { FieldRepresentationType::Boolean, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<std::string>()
 {
-	return { FieldRepresentationType::String };
+	return {{ FieldRepresentationType::String, ""}};
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Texture2D>()
 {
-	return { FieldRepresentationType::Image };
+	return { {FieldRepresentationType::Image, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Model3D>()
 {
-	return { FieldRepresentationType::Model };
+	return { {FieldRepresentationType::Model, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Key>()
 {
-	return { FieldRepresentationType::Key };
+	return { {FieldRepresentationType::Key, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Vector2>()
 {
 	return
 	{
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float
+		{ FieldRepresentationType::Float, "X"},
+		{ FieldRepresentationType::Float, "Y" }
 	};
 }
 
@@ -105,8 +105,8 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Integer,
-		FieldRepresentationType::Integer
+		{ FieldRepresentationType::Integer, "X"},
+		{ FieldRepresentationType::Integer, "Y" }
 	};
 }
 
@@ -114,9 +114,9 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float
+		{ FieldRepresentationType::Float, "X"},
+		{ FieldRepresentationType::Float, "Y"},
+		{ FieldRepresentationType::Float, "Z"}
 	};
 }
 
@@ -124,10 +124,10 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float
+		{ FieldRepresentationType::Float, "X"},
+		{ FieldRepresentationType::Float, "Y"},
+		{ FieldRepresentationType::Float, "Z"},
+		{ FieldRepresentationType::Float, "W"}
 	};
 }
 
@@ -135,9 +135,9 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float
+		{ FieldRepresentationType::Float, "X"},
+		{ FieldRepresentationType::Float, "Y"},
+		{ FieldRepresentationType::Float, "Z"}
 	};
 }
 
@@ -145,7 +145,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Color
+		{ FieldRepresentationType::Color, ""}
 	};
 }
 
@@ -153,10 +153,10 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Integer,
-		FieldRepresentationType::Integer,
-		FieldRepresentationType::Integer,
-		FieldRepresentationType::Integer
+		{ FieldRepresentationType::Integer, "X"},
+		{ FieldRepresentationType::Integer, "Y"},
+		{ FieldRepresentationType::Integer, "Width"},
+		{ FieldRepresentationType::Integer, "Height"}
 	};
 }
 
@@ -164,10 +164,10 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 {
 	return
 	{
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float,
-		FieldRepresentationType::Float
+		{ FieldRepresentationType::Float, "X"},
+		{ FieldRepresentationType::Float, "Y"},
+		{ FieldRepresentationType::Float, "Width"},
+		{ FieldRepresentationType::Float, "Height"}
 	};
 }
 

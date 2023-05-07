@@ -1,31 +1,27 @@
 #pragma once
 
 #include <Engine3DRadSpace/IObject.hpp>
-#include <CommCtrl.h>
-#include "HelperFunctions.hpp"
+#include "Dialog.hpp"
 
-class AddObjectDialog
+class AddObjectDialog : public Dialog
 {
-	HGLOBAL hGlobal;
-	HWND window;
-	HWND owner;
-	HINSTANCE hInstance;
-	LPDLGTEMPLATE dialogTemplate;
-
 	HWND listView;
 	HIMAGELIST imageList;
 	int itemIndex = 0;
 
 	void addCategory(const std::string& category, int index);
 	void addObject(const std::string& objectName, int imageIndex, int index);
+
+	void createForms();
+	void resize();
+
+	std::vector<Engine3DRadSpace::Reflection::ReflectedObject *> objectData;
 public:
 	AddObjectDialog(HWND owner, HINSTANCE hInstance);
 
 	Engine3DRadSpace::IObject* ShowDialog();
-	void CreateForms();
-	void Resize();
-
-	~AddObjectDialog();
 
 	friend INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+	~AddObjectDialog();
 };

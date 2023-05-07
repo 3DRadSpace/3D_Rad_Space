@@ -35,6 +35,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 
 		void SetTransformation(Engine3DRadSpace::Math::Matrix& m);
 		void SetTexture(Engine3DRadSpace::Graphics::Texture2D* texture);
+		void SetSampler(Engine3DRadSpace::SamplerState* state);
 	};
 }
 

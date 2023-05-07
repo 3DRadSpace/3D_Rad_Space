@@ -113,9 +113,14 @@ Texture2D::Texture2D(GraphicsDevice* device, void* colors, unsigned x, unsigned 
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Width = x;
 	desc.Height = y;
+	desc.ArraySize = 1;
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	desc.Usage = D3D11_USAGE_DYNAMIC;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.MipLevels = 1;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 
 	D3D11_SUBRESOURCE_DATA data{};
 	data.pSysMem = colors;

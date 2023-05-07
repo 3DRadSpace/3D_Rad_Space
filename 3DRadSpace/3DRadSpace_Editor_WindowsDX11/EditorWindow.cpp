@@ -203,7 +203,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 		"",
 		TVS_CHECKBOXES | WS_CHILD | WS_VISIBLE | WS_BORDER,
 		0,
-		0,
+		0, 
 		150,
 		600,
 		_mainWindow,
@@ -243,8 +243,8 @@ void EditorWindow::Run()
 				DispatchMessageA(&msg);
 			}
 		}
-		if(!_running) break;
-		if(!this->editor) continue;
+		if (!_running) break;
+		if (!this->editor) continue;
 
 		auto ts_u1 = std::chrono::steady_clock::now();
 		editor->Update(editor->Window->GetKeyboardState(), editor->Window->GetMouseState(), u_dt);
@@ -255,8 +255,8 @@ void EditorWindow::Run()
 
 		auto ts_d1 = std::chrono::steady_clock::now();
 
-		this->editor->Device->SetViewport(Viewport(RectangleF(0,0,800,600), 0.0f, 1.0f));
-		this->editor->Device->Clear();
+		this->editor->Device->SetViewport(Viewport(RectangleF(0, 0, 800, 600), 0.0f, 1.0f));
+		this->editor->Device->Clear({0, 0, 0, 1});
 		this->editor->Draw(this->editor->View, this->editor->Projection, d_dt);
 		this->editor->Device->Present();
 

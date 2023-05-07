@@ -16,6 +16,8 @@ namespace Engine3DRadSpace
 		static Color FromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
 		auto operator <=>(const Color& c) const = default;
+
+		float operator[](int i);
 	};
 	namespace Colors
 	{

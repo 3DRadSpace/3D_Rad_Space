@@ -37,3 +37,8 @@ void Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT::SetTexture(Engine3D
 {
 	vertex->SetTexture(0, texture);
 }
+
+void Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT::SetSampler(Engine3DRadSpace::SamplerState* state)
+{
+	pixel->SetSampler(0, state);
+}

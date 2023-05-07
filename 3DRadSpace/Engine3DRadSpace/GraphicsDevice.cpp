@@ -156,6 +156,7 @@ void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewport
 
 void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilState& state)
 {
+#ifdef _DX11
 	//create a description matching the state parameter.
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 
@@ -182,6 +183,7 @@ void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilStat
 
 	//recreate depth view resource.
 	createDepthView();
+#endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot)

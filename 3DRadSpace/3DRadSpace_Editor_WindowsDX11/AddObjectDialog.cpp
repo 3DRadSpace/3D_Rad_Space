@@ -2,8 +2,8 @@
 #include <Engine3DRadSpace/Error.hpp>
 #include "resource.h"
 #include <CommCtrl.h>
+#include "EditObjectDialog.hpp"
 
-#include <Engine3DRadSpace/Reflection.hpp>
 
 //Forward declarations of object reflection data
 __REFL_DEF(Camera)
@@ -17,7 +17,7 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		{
 			aod = reinterpret_cast<AddObjectDialog*>(lParam);
 			aod->window = hwnd;
-			aod->CreateForms();
+			aod->createForms();
 			return 1;
 		}
 		case WM_PAINT:
@@ -35,11 +35,29 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_SIZE:
 		{
-			aod->Resize();
+			aod->resize();
 			return 1;
 		}
 		case WM_COMMAND:
 		{
+			return 1;
+		}
+		case WM_NOTIFY:
+		{
+			switch((reinterpret_cast<LPNMHDR>(lParam))->code)
+			{
+				case NM_DBLCLK:
+				{
+					LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
+					int nItems = (int)SendMessageA(aod->listView, LVM_GETITEMCOUNT, 0, 0);
+
+					EditObjectDialog dialog(hwnd, aod->hInstance, &CameraReflInstance, nullptr);
+					dialog.ShowDialog();
+					break;
+				}
+				default:
+					break;
+			}
 			return 1;
 		}
 		default:
@@ -78,48 +96,15 @@ void AddObjectDialog::addObject(const std::string& objectName, int imageIndex, i
 }
 
 AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance):
-	hInstance(instance),
-	owner(owner_window),
+	Dialog(owner_window, instance, AddObjectDialog_DlgProc, "Add a object..."),
 	imageList(nullptr),
-	listView(nullptr),
-	window(nullptr)
+	listView(nullptr)
 {
-	//Allocate memory for the dialog box
-	hGlobal = GlobalAlloc(GMEM_ZEROINIT, 512);
-	if (hGlobal == nullptr) throw std::bad_alloc();
-
-	//Fill the dialog template data.
-	dialogTemplate = static_cast<LPDLGTEMPLATE>(GlobalLock(hGlobal));
-	if (dialogTemplate == nullptr) throw std::bad_alloc();
-
-	dialogTemplate->style = WS_POPUP | WS_CAPTION | WS_THICKFRAME | WS_SIZEBOX | DS_MODALFRAME | WS_SYSMENU | DS_CENTER;
-	dialogTemplate->dwExtendedStyle = 0;
-	dialogTemplate->cdit = 0;
-	
-	dialogTemplate->x = 0;
-	dialogTemplate->y = 0;
-
-	dialogTemplate->cx = 400;
-	dialogTemplate->cy = 300;
-
-	//After the dialog template, a title is expected.
-	LPWORD pWord = reinterpret_cast<LPWORD>(dialogTemplate + 1);
-	*pWord++ = 0; // No menu
-	*pWord++ = 0; // Predefined dialog box class (by default)
-
-	LPWSTR title = reinterpret_cast<LPWSTR>(pWord);
-	int numChars = 1 + MultiByteToWideChar(CP_ACP, 0, "Add a object...", -1, title, 50);
-	
-	pWord += numChars;
-
-	*pWord++ = 0; //No more creation data. Only a window is created. Controls are manually created using CreateWindowA/W.
-
-	GlobalUnlock(hGlobal);
 }
 
 Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
 {
-	INT_PTR r = DialogBoxIndirectParamW(hInstance, dialogTemplate, owner, AddObjectDialog_DlgProc, reinterpret_cast<LPARAM>(this));
+	INT_PTR r = Dialog::ShowDialog(static_cast<void*>(this));
 	if (r == IDOK)
 	{
 		return nullptr; //TODO: Create valid object.
@@ -127,7 +112,7 @@ Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
 	else return nullptr;
 }
 
-void AddObjectDialog::CreateForms()
+void AddObjectDialog::createForms()
 {
 	//Create the list view control
 	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 600, 600, window, nullptr, hInstance, nullptr);
@@ -146,11 +131,11 @@ void AddObjectDialog::CreateForms()
 	std::unordered_map<std::string, int> categories; //Category - category ID map.
 
 	//hardcoded list of already implemented objects.
-	std::array<std::string, 25> objectNames =
+	std::vector<std::string> objectNames =
 	{
 		CameraReflInstance.Name
 	};
-	std::vector<Engine3DRadSpace::Reflection::ReflectedObject*> objectData =
+	objectData =
 	{
 		&CameraReflInstance
 	};
@@ -185,10 +170,10 @@ void AddObjectDialog::CreateForms()
 		addObject(o.first, imgIndex, categories[o.first]);
 	}
 
-	Resize();
+	resize();
 }
 
-void AddObjectDialog::Resize()
+void AddObjectDialog::resize()
 {
 	RECT r;
 	GetClientRect(window, &r);
@@ -199,9 +184,9 @@ void AddObjectDialog::Resize()
 
 AddObjectDialog::~AddObjectDialog()
 {
-	if (hGlobal != nullptr) GlobalFree(hGlobal);
-	hGlobal = nullptr;
-	
-	if (window != nullptr) DestroyWindow(window);
-	window = nullptr;
+	if (imageList != nullptr)
+	{
+		ImageList_Destroy(imageList);
+		imageList = nullptr;
+	}
 }

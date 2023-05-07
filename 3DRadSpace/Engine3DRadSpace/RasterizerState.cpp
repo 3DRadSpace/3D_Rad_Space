@@ -19,7 +19,7 @@ Engine3DRadSpace::RasterizerState::RasterizerState(
 {
 #ifdef _DX11
 	D3D11_RASTERIZER_DESC desc{};
-	desc.FillMode = static_cast<D3D11_FILL_MODE>(filling);
+	desc.FillMode = static_cast<D3D11_FILL_MODE>(filling); //TODO: prefer using a switch case
 	desc.CullMode = static_cast<D3D11_CULL_MODE>(culling);
 	desc.FrontCounterClockwise = switchFrontBack;
 	desc.DepthBias = depthBias;

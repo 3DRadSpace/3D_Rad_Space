@@ -78,7 +78,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		bool hasBitangents = scene->mMeshes[i]->HasTangentsAndBitangents();
 		int numUVMaps = scene->mMeshes[i]->GetNumUVChannels();
 
-		size_t structSize = sizeof(Vector3) * 12; // 3 (position) + 3 (normals) + 3 (binormals) + 3 (bitangents)
+		size_t structSize = sizeof(Vector3) * 12; // 3 (position) + 3 (normals) + 3 (tangents) + 3 (bitangents)
 		if (numUVMaps == 1) structSize += sizeof(Vector2);
 		if (numVertexColors == 1) structSize += sizeof(Color);
 
@@ -90,8 +90,6 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		{
 			for (unsigned j = 0; j < numVerts; j++) //Copy vertices
 			{
-				VertexPositionNormalBitangentUVColor v;
-
 				auto position = scene->mMeshes[i]->mVertices[j];
 				vertices.insert(vertices.end(), {position.x, position.y, position.z});
 
@@ -102,7 +100,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 				vertices.insert(vertices.end(), { tangent.x, tangent.y, tangent.z });
 
 				auto bitangent = scene->mMeshes[i]->mBitangents[j];
-				vertices.insert(vertices.end(), { tangent.x, tangent.y, tangent.z });
+				vertices.insert(vertices.end(), { bitangent.x, bitangent.y, bitangent.z });
 
 				if (numUVMaps == 1)
 				{

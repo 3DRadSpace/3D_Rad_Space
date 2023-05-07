@@ -52,13 +52,15 @@ void RenderWindow::Initialize()
 	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines);
 	Camera.LookMode = Camera.UseLookAtCoordinates;
 
-	lineRasterizer = std::make_unique<RasterizerState>(Device.get());
-	//lineRasterizer->CullMode = RasterizerCullMode::None;
+	lineRasterizer = std::make_unique<RasterizerState>(Device.get(),RasterizerFillMode::Solid, RasterizerCullMode::None);
 
 	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
 
 	texturedShader = std::make_unique<BasicTextured_NBT>(Device.get());
 	cameraModel = std::make_unique<Model3D>(Device.get(), "Data\\Models\\Camera.x");
+
+	Color colors[4] = { Colors::White };
+	blankTexture = std::make_unique<Texture2D>(Device.get(), colors, 2, 2);
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -106,6 +108,8 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 
 	texturedShader->SetAll();
 	Device->SetTopology(VertexTopology::TriangleList);
+	texturedShader->SetTransformation(viewProj);
+	texturedShader->SetTexture(blankTexture.get());
 	cameraModel->Draw();
 
 	//Draw any other objects
