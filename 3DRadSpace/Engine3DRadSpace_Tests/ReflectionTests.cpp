@@ -77,181 +77,29 @@ TEST(ReflectionTests, SizeTests)
 	EXPECT_EQ(TestObjectReflInstance["Test float"]->FieldOffset(), offsetof(TestObject, Float)); //test the offset.
 }
 
-TEST(ReflectionTests, NameRW) //ReflectionTests : Name read-write
-{
-	TestObject test;
-
-	std::string n2 = "test name string"; //Create a temporary string used to assign the test instance.
-	TestObjectReflInstance[0]->Set(&test, &n2); //test.Name = n2 (by using the reflection methods
-	
-	EXPECT_EQ(n2, test.Name); //Check if name was successfully set.
-	EXPECT_EQ(*static_cast<std::string*>(TestObjectReflInstance[0]->Get(&test)), n2); //Check if the name can be read using the reflection interface.
-	//Same goes on for the next tests.
+#define TestFieldRW(id, fieldName, type, value) \
+TEST(ReflectionTests, fieldName##RW ) \
+{ \
+	TestObject test; \
+	type temp = value; \
+	TestObjectReflInstance[id]->Set(&test, &temp); \
+	EXPECT_EQ(temp, test. fieldName); \
+	EXPECT_EQ(*static_cast<type *>(TestObjectReflInstance[1]->Get(&test)), temp); \
 }
 
-TEST(ReflectionTests, TagRW)
-{
-	TestObject test;
-
-	std::string ntag = "test tag";
-	TestObjectReflInstance[1]->Set(&test, &ntag);
-
-	EXPECT_EQ(ntag, test.Tag);
-	EXPECT_EQ(*static_cast<std::string*>(TestObjectReflInstance[1]->Get(&test)),ntag);
-}
-
-TEST(ReflectionTests, ResourceRW)
-{
-	TestObject test;
-
-	std::string nresource = "pic.png";
-	TestObjectReflInstance[2]->Set(&test, &nresource);
-
-	EXPECT_EQ(nresource, test.Resource);
-	EXPECT_EQ(*static_cast<std::string*>(TestObjectReflInstance[2]->Get(&test)), nresource);
-}
-
-TEST(ReflectionTests, EnabledRW)
-{
-	TestObject test;
-	test.Enabled = true;
-
-	bool e = false;
-	TestObjectReflInstance[3]->Set(&test, &e);
-
-	EXPECT_EQ(e, test.Enabled);
-	EXPECT_EQ(*static_cast<bool*>(TestObjectReflInstance[3]->Get(&test)), e);
-}
-
-TEST(ReflectionTests, VisibleRW)
-{
-	TestObject test;
-	test.Visible = true;
-
-	bool v = false;
-	TestObjectReflInstance[4]->Set(&test, &v);
-
-	EXPECT_EQ(v, test.Visible);
-	EXPECT_EQ(*static_cast<bool*>(TestObjectReflInstance[4]->Get(&test)), v);
-}
-
-TEST(ReflectionTests, PositionRW)
-{
-	TestObject test;
-	
-	Vector3 p(2, 3, 4);
-	TestObjectReflInstance[5]->Set(&test, &p);
-
-	EXPECT_EQ(p, test.Position);
-	EXPECT_EQ(*static_cast<Vector3*>(TestObjectReflInstance[5]->Get(&test)), p);
-}
-
-TEST(ReflectionTests, RotationCenter)
-{
-	TestObject test;
-
-	Vector3 pivot(5, 5, 5);
-	TestObjectReflInstance[6]->Set(&test, &pivot);
-
-	EXPECT_EQ(pivot, test.RotationCenter);
-	EXPECT_EQ(*static_cast<Vector3*>(TestObjectReflInstance[6]->Get(&test)), pivot);
-}
-
-TEST(ReflectionTests, RotationRW)
-{
-	TestObject test;
-
-	Quaternion q(1, 2, 3, 4);
-	TestObjectReflInstance[7]->Set(&test, &q);
-
-	EXPECT_EQ(q, test.Rotation);
-	EXPECT_EQ(*static_cast<Quaternion*>(TestObjectReflInstance[7]->Get(&test)), q);
-}
-
-TEST(ReflectionTests, ScaleRW)
-{
-	TestObject test;
-
-	Vector3 scale(3, 3, 3);
-	TestObjectReflInstance[8]->Set(&test, &scale);
-
-	EXPECT_EQ(scale, test.Scale);
-	EXPECT_EQ(*static_cast<Vector3*>(TestObjectReflInstance[8]->Get(&test)), scale);
-}
-
-TEST(ReflectionTests, IntegerRW)
-{
-	TestObject test;
-
-	int i = 67;
-	TestObjectReflInstance[9]->Set(&test, &i);
-
-	EXPECT_EQ(i, test.Integer);
-	EXPECT_EQ(*static_cast<int*>(TestObjectReflInstance[9]->Get(&test)), i);
-}
-
-TEST(ReflectionTests, FloatRW)
-{
-	TestObject test;
-
-	float f = 3.141f;
-	TestObjectReflInstance[10]->Set(&test, &f);
-
-	EXPECT_EQ(f, test.Float);
-	EXPECT_EQ(*static_cast<float*>(TestObjectReflInstance[10]->Get(&test)), f);
-}
-
-TEST(ReflectionTests, ColorRW)
-{
-	TestObject test;
-
-	Color c = Colors::Red;
-	TestObjectReflInstance[11]->Set(&test, &c);
-
-	EXPECT_EQ(c, test.Colour);
-	EXPECT_EQ(*static_cast<Color*>(TestObjectReflInstance[11]->Get(&test)), c);
-}
-
-TEST(ReflectionTests, RectangleRW)
-{
-	TestObject test;
-
-	Math::Rectangle r(10, 20, 30, 40);
-	TestObjectReflInstance[12]->Set(&test, &r);
-
-	EXPECT_EQ(r, test.Rectangle1);
-	EXPECT_EQ(*static_cast<Math::Rectangle*>(TestObjectReflInstance[12]->Get(&test)), r);
-}
-
-TEST(ReflectionTests, RectangleFRW)
-{
-	TestObject test;
-
-	RectangleF r(4, 5, 3, 8);
-	TestObjectReflInstance[13]->Set(&test, &r);
-
-	EXPECT_EQ(r, test.Rectangle2);
-	EXPECT_EQ(*static_cast<RectangleF*>(TestObjectReflInstance[13]->Get(&test)), r);
-}
-
-TEST(ReflectionTests, Vector4RW)
-{
-	TestObject test;
-
-	Vector4 v(4, 3, 2, 1);
-	TestObjectReflInstance[14]->Set(&test, &v);
-	
-	EXPECT_EQ(v, test.Vector);
-	EXPECT_EQ(*static_cast<Vector4*>(TestObjectReflInstance[14]->Get(&test)), v);
-}
-
-TEST(ReflectionTests, KeyRW)
-{
-	TestObject test;
-
-	Key k = Key::Enter;
-	TestObjectReflInstance[15]->Set(&test, &k);
-
-	EXPECT_EQ(k, test.TestKey);
-	EXPECT_EQ(*static_cast<Key*>(TestObjectReflInstance[15]->Get(&test)), k);
-}
+TestFieldRW(0, Name, std::string, "Test name")
+TestFieldRW(1, Tag, std::string, "Test tag")
+TestFieldRW(2, Resource, std::string, "pic.png")
+TestFieldRW(3, Enabled, bool, true)
+TestFieldRW(4, Visible, bool, true)
+TestFieldRW(5, Position, Vector3, Vector3(1,2,3))
+TestFieldRW(6, RotationCenter, Vector3, Vector3(5,5,5))
+TestFieldRW(7, Rotation, Quaternion, Quaternion(1,2,3,4))
+TestFieldRW(8, Scale, Vector3, Vector3(3,3,3))
+TestFieldRW(9, Integer, int, 34)
+TestFieldRW(10, Float, float, 3.141f)
+TestFieldRW(11, Colour, Color, Colors::Red)
+TestFieldRW(12, Rectangle1, Math::Rectangle, Math::Rectangle(1,2,3,4))
+TestFieldRW(13, Rectangle2, Math::RectangleF, Math::RectangleF(1.1f ,2.2f ,3.3f ,4.4f))
+TestFieldRW(14, Vector, Vector4, Vector4(4,3,2,1))
+TestFieldRW(15, TestKey, Key, Key::Enter)

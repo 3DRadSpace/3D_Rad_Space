@@ -25,7 +25,7 @@ const IReflectedField* ReflectedObject::operator[](const std::string& name)
 		if (field->FieldName() == name) return field;
 	}
 
-	//Second find attempt : use edit distance. O(n*m)
+	//Second find attempt : use edit distance. O(n*m*fields)
 	std::vector<std::pair<int, int>> v;
 	for (int i = 0; i < NumFields(); i++)
 	{

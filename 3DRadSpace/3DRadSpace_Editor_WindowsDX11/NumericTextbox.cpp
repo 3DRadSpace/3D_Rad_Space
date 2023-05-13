@@ -78,5 +78,5 @@ NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, in
 	);
 	if (window == nullptr) throw std::exception("Failed to create a edit/textbox control for a NumericTextbox!");
 
-	//editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrA(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
+	editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
 }

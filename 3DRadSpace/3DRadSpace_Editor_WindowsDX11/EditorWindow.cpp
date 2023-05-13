@@ -386,10 +386,10 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_About:
 					break;
 				case CMD_Documentation:
-					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.com/Documentation", nullptr, nullptr, SW_NORMAL);
+					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.org/Documentation", nullptr, nullptr, SW_NORMAL);
 					break;
 				case CMD_Homepage:
-					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.com", nullptr, nullptr, SW_NORMAL);
+					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://3dradspace.org", nullptr, nullptr, SW_NORMAL);
 					break;
 				case CMD_Github:
 					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, SW_NORMAL);
