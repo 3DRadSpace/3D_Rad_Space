@@ -57,8 +57,6 @@ void EditObjectDialog::createForms()
 	int x = 5;
 	int y = 5;
 
-	int mx = 0;
-
 	int k = 0;
 	for (auto field : (*objRefl))
 	{
@@ -69,15 +67,19 @@ void EditObjectDialog::createForms()
 
 		int px = x;
 		int py = y;
-		for (auto repr : field->Representation())
+
+		auto representations = field->Representation();
+		for (int j = 0, fOffset = 0; j < representations.size(); j++)
 		{
+			auto repr = *(representations.begin() + j);
+
 			bool createGroup = field->Representation().size() > 1;
-			const char* fieldName = field->FieldName().c_str();
+			const char *fieldName = repr.second.c_str();
 
 			//Measure the length of fieldName, in pixels. DPI isn't considered.
 			HDC hdc = GetDC(window);
 			SIZE fieldNameSize;
-			int fieldLength = GetTextExtentPointA(hdc, fieldName, int(field->FieldName().length()), &fieldNameSize);
+			GetTextExtentPointA(hdc, fieldName, int(field->FieldName().length()), &fieldNameSize);
 
 			//creates a Static control (aka Label)
 			auto createLabel = [=](const char* text, int &size_x) -> HWND
@@ -175,7 +177,7 @@ void EditObjectDialog::createForms()
 					BS_AUTOCHECKBOX | WS_VISIBLE | WS_CHILD,
 					px,
 					py,
-					fieldLength + 25,
+					fieldNameSize.cx + 25,
 					25,
 					window,
 					nullptr,
@@ -190,7 +192,7 @@ void EditObjectDialog::createForms()
 
 				//update coordinates
 				setMax(py, 30);
-				px += fieldLength + checkBoxLen + 5;
+				px += fieldNameSize.cx + checkBoxLen + 5;
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Integer:
@@ -205,16 +207,20 @@ void EditObjectDialog::createForms()
 				switch (field->TypeSize() / field->Representation().size())
 				{
 					case sizeof(int8_t) :
-						value = *static_cast<const int8_t*>(valuePtr);
+						value = *reinterpret_cast<const int8_t*>(reinterpret_cast<const char*>(valuePtr) + fOffset );
+						fOffset += sizeof(int8_t);
 						break;
 					case sizeof(int16_t) :
-						value = *static_cast<const int16_t*>(valuePtr);
+						value = *reinterpret_cast<const int16_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(int16_t);
 						break;
 					case sizeof(int32_t) :
-						value = *static_cast<const int32_t*>(valuePtr);
+						value = *reinterpret_cast<const int32_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(int32_t);
 						break;
 					case sizeof(int64_t) :
-						value = *static_cast<const int64_t*>(valuePtr);
+						value = *reinterpret_cast<const int64_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(int64_t);
 						break;
 					default:
 						throw std::logic_error("Unknown signed type");
@@ -237,16 +243,20 @@ void EditObjectDialog::createForms()
 				switch (field->TypeSize() / field->Representation().size())
 				{
 					case sizeof(uint8_t) :
-						value = *static_cast<const int8_t*>(valuePtr);
+						value = *reinterpret_cast<const uint8_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(uint8_t);
 						break;
 					case sizeof(uint16_t) :
-						value = *static_cast<const int16_t*>(valuePtr);
+						value = *reinterpret_cast<const uint16_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(uint16_t);
 						break;
 					case sizeof(uint32_t) :
-						value = *static_cast<const int32_t*>(valuePtr);
+						value = *reinterpret_cast<const uint32_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(uint32_t);
 						break;
 					case sizeof(uint64_t) :
-						value = *static_cast<const int64_t*>(valuePtr);
+						value = *reinterpret_cast<const uint64_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(uint64_t);
 						break;
 					default:
 						throw std::logic_error("Unknown unsigned type!");
@@ -269,10 +279,12 @@ void EditObjectDialog::createForms()
 				{
 					case sizeof(float) :
 					case 5: //we're propably dealing with a quaternion.
-						value = *static_cast<const float*>(valuePtr);
+						value = *reinterpret_cast<const float *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(float);
 						break;
 					case sizeof(double) :
-						value = *static_cast<const double*>(valuePtr);
+						value = *reinterpret_cast<const double *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						fOffset += sizeof(float);
 						break;
 
 					default:
@@ -307,8 +319,8 @@ void EditObjectDialog::createForms()
 					"Static",
 					"",
 					WS_VISIBLE | WS_CHILD | SS_BITMAP,
-					x,
-					y,
+					px,
+					py,
 					50,
 					50,
 					window,
@@ -329,7 +341,7 @@ void EditObjectDialog::createForms()
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
 			{
 				const std::string value = *static_cast<const std::string*>(valuePtr);
-				createFileControls(x, y, value.c_str());
+				createFileControls(px, py, value.c_str());
 				//create preview button
 
 				windows.push_back(
@@ -364,8 +376,8 @@ void EditObjectDialog::createForms()
 					HOTKEY_CLASSA,
 					"",
 					WS_CHILD | WS_VISIBLE,
-					x,
-					y,
+					px,
+					py,
 					75,
 					25,
 					window,
@@ -434,9 +446,9 @@ void EditObjectDialog::createForms()
 					nullptr
 				);
 			}
+			px = x;
 		}
-
-		if(py < 800) px = x;
+		y = py;
 	}
 
 	SetWindowPos(window, nullptr, 0, 0, 400, 400, SWP_NOMOVE);

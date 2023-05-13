@@ -9,7 +9,7 @@ using namespace Engine3DRadSpace::Input;
 
 const size_t ReflectedObject::NumFields()
 {
-    return fields.size();
+    return fields.size()  - 1;
 }
 
 const IReflectedField* ReflectedObject::operator[](unsigned i)

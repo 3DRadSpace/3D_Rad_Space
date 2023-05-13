@@ -32,7 +32,7 @@ namespace Engine3DRadSpace::Reflection
 		Custom,
 	};
 
-	using FieldRepresentation = std::initializer_list<std::pair<FieldRepresentationType, const std::string&>>;
+	using FieldRepresentation = std::vector<std::pair<FieldRepresentationType, const std::string>>;
 
 	template<typename T> FieldRepresentation GetFieldRepresentation() = delete; //Only allow GetFieldRepresentation() specializations.
 
@@ -67,8 +67,8 @@ namespace Engine3DRadSpace::Reflection
 	{
 	public:
 		virtual const size_t TypeHash() const = 0;
-		virtual const std::string& FieldName() const = 0;
-		virtual const std::string& FieldDesc() const = 0;
+		virtual const std::string FieldName() const = 0;
+		virtual const std::string FieldDesc() const = 0;
 		virtual const size_t TypeSize() const = 0;
 		virtual const ptrdiff_t FieldOffset() const = 0;
 
@@ -90,7 +90,7 @@ namespace Engine3DRadSpace::Reflection
 		const std::string desc;
 		const T defaultVal;
 	public:
-		ReflectedField(const size_t offset_obj_field,const std::string& visibleName, const std::string& description, T defaultValue) : 
+		ReflectedField(const size_t offset_obj_field,std::string visibleName, std::string description, T defaultValue) : 
 			offset(offset_obj_field), 
 			name(visibleName),
 			desc(description),
@@ -102,11 +102,11 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return typeid(T).hash_code();
 		}
-		const std::string& FieldName() const override
+		const std::string FieldName() const override
 		{
 			return name;
 		}
-		const std::string& FieldDesc() const override
+		const std::string FieldDesc() const override
 		{
 			return desc;
 		}
@@ -152,7 +152,6 @@ namespace Engine3DRadSpace::Reflection
 	template<>
 	class ReflectedField<void> : public IReflectedField
 	{
-		inline static std::string empty = "";
 	public:
 		ReflectedField()
 		{
@@ -161,13 +160,13 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return 0; 
 		}
-		const std::string& FieldName() const override 
+		const std::string FieldName() const override 
 		{
-			return empty;
+			return std::string("");
 		}
-		const std::string& FieldDesc() const override
+		const std::string FieldDesc() const override
 		{
-			return empty;
+			return std::string("");
 		}
 		const size_t TypeSize() const override
 		{

@@ -62,8 +62,8 @@ __REFL_END
 
 TEST(ReflectionTests, VisibleStrings)
 {
-	EXPECT_EQ(TestObjectReflInstance[0]->FieldName(), "Name"); //visible name
-	EXPECT_EQ(TestObjectReflInstance[0]->FieldDesc(), "Name of the object"); //description
+	EXPECT_EQ(TestObjectReflInstance[0]->FieldName(), std::string("Name")); //visible name
+	EXPECT_EQ(TestObjectReflInstance[0]->FieldDesc(), std::string("Name of the object")); //description
 	
 	//default value
 	std::string v = *static_cast<const std::string*>(TestObjectReflInstance[0]->DefaultValue());
