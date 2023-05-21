@@ -367,7 +367,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:
 				{
-					AddObjectDialog dialog(hwnd, gEditorWindow->_hInstance);
+					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
 					dialog.ShowDialog();
 					break;
 				}

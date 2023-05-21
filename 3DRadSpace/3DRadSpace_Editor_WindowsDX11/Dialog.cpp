@@ -12,7 +12,8 @@ Dialog::Dialog(HWND owner, HINSTANCE instance, DLGPROC dlgproc, const std::strin
 	dialogTemplate = static_cast<LPDLGTEMPLATE>(GlobalLock(hGlobal));
 	if (dialogTemplate == nullptr) throw std::bad_alloc();
 
-	dialogTemplate->style = WS_POPUP | WS_CAPTION | WS_THICKFRAME | WS_SIZEBOX | DS_MODALFRAME | WS_SYSMENU | DS_CENTER;
+	//dialogTemplate->style = WS_POPUP | WS_CAPTION | WS_THICKFRAME | DS_MODALFRAME | WS_SYSMENU | DS_CENTER;
+	dialogTemplate->style = WS_POPUP | WS_SYSMENU | WS_CAPTION | DS_MODALFRAME | DS_CENTER;
 	dialogTemplate->dwExtendedStyle = 0;
 	dialogTemplate->cdit = 0;
 
@@ -32,7 +33,7 @@ Dialog::Dialog(HWND owner, HINSTANCE instance, DLGPROC dlgproc, const std::strin
 
 	pWord += numChars;
 
-	*pWord++ = 0; //No more creation data. Only a window is created. Controls are manually created using CreateWindowA/W.
+	*pWord++ = 0; //No more creation data. Only a window is created. Controls are manually created in WM_INITDIALOG.
 
 	GlobalUnlock(hGlobal);
 }

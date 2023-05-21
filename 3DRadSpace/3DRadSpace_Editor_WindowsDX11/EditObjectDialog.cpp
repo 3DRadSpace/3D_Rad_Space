@@ -21,7 +21,7 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 	{
 		PAINTSTRUCT ps;
 		BeginPaint(hwnd, &ps);
-		FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+		FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW ));
 		EndPaint(hwnd, &ps);
 		return 1;
 	}
@@ -55,9 +55,11 @@ EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObj
 void EditObjectDialog::createForms()
 {
 	int x = 5;
-	int y = 5;
+	int y = 10;
 
-	int k = 0;
+	HDC hdc = GetDC(window);
+	int windowWidth = x;
+
 	for (auto field : (*objRefl))
 	{
 		auto setMax = [](int& v, int newValue)
@@ -66,35 +68,58 @@ void EditObjectDialog::createForms()
 		};
 
 		int px = x;
-		int py = y;
+		int inc_y = 0;
+
+		bool createGroup = field->Representation().size() > 1;
+
+		//Measure the length of fieldName, in pixels. DPI isn't considered.
+		SIZE fieldNameSize;
+		GetTextExtentPointA(hdc, field->FieldName().c_str(), int(field->FieldName().length()), &fieldNameSize);
+		int textboxHeight = fieldNameSize.cy + 2;
+
+		//Createa a group if necessary
+		HWND currentGroup = nullptr;
+		if(createGroup)
+		{
+			currentGroup = CreateWindowExA(
+				0,
+				"Button",
+				field->FieldName().c_str(),
+				BS_GROUPBOX | WS_VISIBLE | WS_CHILD,
+				x,
+				y,
+				10,
+				10,
+				window,
+				nullptr,
+				hInstance,
+				nullptr
+			);
+
+			px += 10;
+			y += textboxHeight;
+		}
 
 		auto representations = field->Representation();
 		for (int j = 0, fOffset = 0; j < representations.size(); j++)
 		{
-			auto repr = *(representations.begin() + j);
-
-			bool createGroup = field->Representation().size() > 1;
-			const char *fieldName = repr.second.c_str();
-
-			//Measure the length of fieldName, in pixels. DPI isn't considered.
-			HDC hdc = GetDC(window);
-			SIZE fieldNameSize;
-			GetTextExtentPointA(hdc, fieldName, int(field->FieldName().length()), &fieldNameSize);
+			auto& repr = *(representations.begin() + j);
+			std::string fieldName = repr.second.empty() ? field->FieldName() : repr.second;
 
 			//creates a Static control (aka Label)
-			auto createLabel = [=](const char* text, int &size_x) -> HWND
+			auto createLabel = [&](const char* text, int &size_x) -> HWND
 			{
 				SIZE size;
-				GetTextExtentPointA(hdc, text, int(field->FieldName().length()), &size);
+				GetTextExtentPointA(hdc, text, int(strlen(text)), &size);
+				
 				size_x = size.cx;
-
 				return CreateWindowExA(
 					0,
 					"Static",
 					text,
 					WS_VISIBLE | WS_CHILD,
 					px,
-					py,
+					y,
 					size.cx + 10,
 					25,
 					window,
@@ -105,17 +130,17 @@ void EditObjectDialog::createForms()
 			};
 
 			//creates a Edit control (aka TextBox)
-			auto createTextbox = [=](const char* defValue) -> HWND
+			auto createTextbox = [&](const char* defValue) -> HWND
 			{
 				return CreateWindowExA(
 					0,
 					"Edit",
 					defValue,
-					WS_VISIBLE | WS_CHILD,
+					WS_VISIBLE | WS_CHILD | ES_AUTOHSCROLL,
 					px,
-					py,
+					y,
 					75,
-					25,
+					textboxHeight,
 					window,
 					nullptr,
 					hInstance,
@@ -124,9 +149,9 @@ void EditObjectDialog::createForms()
 			};
 
 			//creates a edit control that only allows numbers
-			auto createNumericTextbox = [=](const char* defValue) -> HWND
+			auto createNumericTextbox = [&](const char* defValue) -> HWND
 			{
-				return NumericTextbox(window, hInstance, px, py, 75, 25, defValue);
+				return NumericTextbox(window, hInstance, px, y, 75, textboxHeight, defValue);
 			};
 
 			//creates a browse button, a label and a path textbox.
@@ -135,7 +160,7 @@ void EditObjectDialog::createForms()
 				int sx;
 				std::array<HWND, 3> v;
 
-				v[0] = createLabel(fieldName,sx);
+				v[0] = createLabel(fieldName.c_str(), sx);
 				px += sx + 5;
 
 				v[1] = createTextbox(defPath);
@@ -147,7 +172,7 @@ void EditObjectDialog::createForms()
 					"Browse...",
 					WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
 					px,
-					py,
+					y,
 					50,
 					25,
 					window,
@@ -173,10 +198,10 @@ void EditObjectDialog::createForms()
 				HWND checkBox = CreateWindowExA(
 					0,
 					"Button",
-					fieldName,
+					fieldName.c_str(),
 					BS_AUTOCHECKBOX | WS_VISIBLE | WS_CHILD,
 					px,
-					py,
+					y,
 					fieldNameSize.cx + 25,
 					25,
 					window,
@@ -191,7 +216,7 @@ void EditObjectDialog::createForms()
 				SendMessageA(checkBox, BM_SETCHECK, value ? BST_CHECKED : BST_UNCHECKED, 0);
 
 				//update coordinates
-				setMax(py, 30);
+				setMax(inc_y, 30);
 				px += fieldNameSize.cx + checkBoxLen + 5;
 				break;
 			}
@@ -199,7 +224,7 @@ void EditObjectDialog::createForms()
 			{
 				int sx;
 
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
 
 				//Get signed numeric value.
@@ -229,13 +254,13 @@ void EditObjectDialog::createForms()
 				windows.push_back(createNumericTextbox(nstr.c_str())); //create numeric textbox
 
 				px += 80;
-				setMax(py, 30);
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Unsigned:
 			{
 				int sx;
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
 
 				//Get unsigned value.
@@ -265,13 +290,13 @@ void EditObjectDialog::createForms()
 				windows.push_back(createNumericTextbox(nstr.c_str()));
 
 				px += 80;
-				setMax(py, 30);
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Float:
 			{
 				int sx;
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
 
 				double value = 0;
@@ -294,20 +319,20 @@ void EditObjectDialog::createForms()
 				windows.push_back(createNumericTextbox(nstr.c_str()));
 
 				px += 80;
-				setMax(py, 30);
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::String:
 			{
 				int sx;
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
 
 				const std::string value = *static_cast<const std::string*>(field->DefaultValue());
 				windows.push_back(createTextbox(value.c_str()));
 
 				px += sx + 5;
-				y += 30;
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Image:
@@ -320,7 +345,7 @@ void EditObjectDialog::createForms()
 					"",
 					WS_VISIBLE | WS_CHILD | SS_BITMAP,
 					px,
-					py,
+					y,
 					50,
 					50,
 					window,
@@ -333,15 +358,15 @@ void EditObjectDialog::createForms()
 				HBITMAP image = LoadBitmapA(nullptr, value.c_str());
 				SendMessageA(pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(image));
 
-				createFileControls(x, y, value.c_str());
+				createFileControls(x, y + 200, value.c_str());
 
-				setMax(py, 200);
+				setMax(inc_y, 205 + textboxHeight);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
 			{
 				const std::string value = *static_cast<const std::string*>(valuePtr);
-				createFileControls(px, py, value.c_str());
+				createFileControls(px, y, value.c_str());
 				//create preview button
 
 				windows.push_back(
@@ -361,14 +386,14 @@ void EditObjectDialog::createForms()
 					)
 				);
 
-				px = x + 200;
-				setMax(py, 30);
+				px = x + 30;
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Key:
 			{
 				int sx;
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
 
 				HWND hotkey = CreateWindowExA(
@@ -377,7 +402,7 @@ void EditObjectDialog::createForms()
 					"",
 					WS_CHILD | WS_VISIBLE,
 					px,
-					py,
+					y,
 					75,
 					25,
 					window,
@@ -385,23 +410,24 @@ void EditObjectDialog::createForms()
 					hInstance,
 					nullptr
 				);
+				px += 80;
 
 				windows.push_back(hotkey);
 
 				auto key = static_cast<const Engine3DRadSpace::Input::Key*>(valuePtr);
 				SendMessageA(hotkey, HKM_SETHOTKEY, static_cast<WPARAM>(LOBYTE(key)), 0);
 
-				setMax(py, 30);
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Enum:
 			{
 				int sx;
-				windows.push_back(createLabel(fieldName, sx));
+				windows.push_back(createLabel(fieldName.c_str(), sx));
 				px += sx + 5;
-
 				//TODO: Create a combo box with all enum types
 
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Color:
@@ -416,9 +442,9 @@ void EditObjectDialog::createForms()
 				windows.push_back(createTextbox(alphaStr.c_str()));
 				px += 80;
 
-				windows.push_back(ColorBox(window, hInstance,px,py,25,25, color));
+				windows.push_back(ColorBox(window, hInstance,px,y,25,25, color));
 				px += 30;
-				setMax(py, 30);
+				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Custom:
@@ -428,30 +454,75 @@ void EditObjectDialog::createForms()
 			default:
 				break;
 			}
-
-			if (createGroup)
-			{
-				CreateWindowExA(
-					0,
-					"Button",
-					field->FieldName().c_str(),
-					BS_GROUPBOX | WS_VISIBLE | WS_CHILD,
-					x,
-					y,
-					px - x + 10,
-					py - y + 10,
-					window,
-					nullptr,
-					hInstance,
-					nullptr
-				);
-			}
-			px = x;
 		}
-		y = py;
+
+		if(currentGroup != nullptr)
+		{
+			SetWindowPos(currentGroup, nullptr, 0, 0, px - x, inc_y + textboxHeight + 5, SWP_NOMOVE);
+			y += textboxHeight;
+		}
+
+		setMax(windowWidth, px + 20);
+		px = x;
+		y += inc_y;
 	}
 
-	SetWindowPos(window, nullptr, 0, 0, 400, 400, SWP_NOMOVE);
+	int titleBarHeight = GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CXPADDEDBORDER);
+	int height = y + 3 * titleBarHeight;
+	SetWindowPos(window, nullptr, 0, 0, windowWidth, height, SWP_NOMOVE);
+
+	SIZE size;
+	GetTextExtentPoint32A(hdc, "Help", 4, &size);
+
+	int buttonHeight = y + 10;
+
+	helpButton = CreateWindowExA(
+		0,
+		"Button",
+		"Help",
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+		10,
+		buttonHeight,
+		size.cx + 10,
+		size.cy + 7,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	GetTextExtentPoint32A(hdc, "Cancel", 6, &size);
+	
+	int okButtonX = windowWidth - size.cx - 30;
+	okButton = CreateWindowExA(
+		0,
+		"Button",
+		"OK",
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+		okButtonX,
+		buttonHeight,
+		size.cx + 10,
+		size.cy + 7,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	cancelButton = CreateWindowExA(
+		0,
+		"Button",
+		"Cancel",
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+		okButtonX - size.cx - 10,
+		buttonHeight,
+		size.cx + 10,
+		size.cy + 7,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 }
 
 Engine3DRadSpace::IObject* EditObjectDialog::ShowDialog()

@@ -34,7 +34,7 @@ namespace Engine3DRadSpace::Reflection
 
 	using FieldRepresentation = std::vector<std::pair<FieldRepresentationType, const std::string>>;
 
-	template<typename T> FieldRepresentation GetFieldRepresentation() = delete; //Only allow GetFieldRepresentation() specializations.
+	template<typename T> FieldRepresentation GetFieldRepresentation() = delete; //Only default and useer-written allow GetFieldRepresentation() specializations.
 
 	//GetFieldRepresentation() specializations, as defined in FieldRepresentationType
 	template<> FieldRepresentation GetFieldRepresentation<void>();
@@ -148,7 +148,7 @@ namespace Engine3DRadSpace::Reflection
 		}
 	};
 
-	/// Null specialization.
+	/// Null specialization. Sentinel value.
 	template<>
 	class ReflectedField<void> : public IReflectedField
 	{

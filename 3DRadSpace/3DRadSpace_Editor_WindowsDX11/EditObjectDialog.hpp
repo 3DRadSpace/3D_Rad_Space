@@ -12,6 +12,10 @@ class EditObjectDialog : public Dialog
 	std::vector<HBITMAP> images;
 	Engine3DRadSpace::IObject* object;
 
+	HWND helpButton;
+	HWND okButton;
+	HWND cancelButton;
+
 	void createForms();
 	void resize();
 public:
