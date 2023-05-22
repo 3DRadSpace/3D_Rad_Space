@@ -33,6 +33,8 @@ Point Point::operator-()
     return *this;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4244)
 Point Point::operator*=(float s)
 {
     this->X *= s;
@@ -51,6 +53,7 @@ Point Point::operator/=(float s)
     this->Y /= s;
     return *this;
 }
+#pragma warning(pop)
 
 Point Point::operator/(float s)
 {

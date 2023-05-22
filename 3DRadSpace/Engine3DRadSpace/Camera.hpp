@@ -55,6 +55,8 @@ namespace Engine3DRadSpace::Objects
 			const Engine3DRadSpace::Math::Matrix& projection,
 			double dt
 		) override;
+
+		Reflection::UUID GetUUID() override;
 	};
 }
 

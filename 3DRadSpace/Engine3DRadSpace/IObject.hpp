@@ -32,6 +32,8 @@ namespace Engine3DRadSpace
 
 		virtual void EditorInitialize() = 0;
 		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection,double dt) = 0;
+		virtual Reflection::UUID GetUUID() = 0;
 	};
 }
+
 

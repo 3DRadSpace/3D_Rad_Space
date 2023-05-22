@@ -170,12 +170,3 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 		{ FieldRepresentationType::Float, "Height"}
 	};
 }
-
-ReflectedObject::ReflectedObject(const std::string& name, const std::string& category, const std::string& desc, std::initializer_list<IReflectedField*> obj_fields) :
-	Name(name),
-	fields(obj_fields),
-	Category(category),
-	Description(desc)
-{
-
-}

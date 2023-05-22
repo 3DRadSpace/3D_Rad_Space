@@ -72,9 +72,12 @@ void ColorBox::SetColor(Engine3DRadSpace::Color color)
 
 	if(brush) DeleteObject(brush);
 
+#pragma warning(push)
+#pragma warning(disable: 4244)
 	uint8_t r(255 * color.R);
 	uint8_t g(255 * color.G);
 	uint8_t b(255 * color.B);
+#pragma warning(pop)
 
 	brush = CreateSolidBrush(RGB(r, g, b));
 	if (brush == nullptr) throw std::bad_alloc();

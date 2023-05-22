@@ -27,7 +27,23 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 	}
 	case WM_COMMAND:
 	{
-		return 1;
+		switch(HIWORD(wParam))
+		{
+			case BN_CLICKED:
+			{
+				if(lParam == reinterpret_cast<LPARAM>(eod->okButton))
+				{
+					
+				}
+				if(lParam == reinterpret_cast<LPARAM>(eod->cancelButton))
+				{
+					EndDialog(hwnd, IDCANCEL);
+				}
+				return 1;
+			}
+			default:
+				return 0;
+		}
 	}
 	case WM_CLOSE:
 	{

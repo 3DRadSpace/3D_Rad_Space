@@ -10,7 +10,7 @@ using namespace Engine3DRadSpace::Input;
 class TestObject : public IObject
 {
 public:
-	TestObject() : IObject("Test object"), Integer(5), Float(1.0f)
+	TestObject() : IObject("Test object"), Integer(5), Float(1.0f), TestKey(Key::Space)
 	{
 	}
 
@@ -29,6 +29,12 @@ public:
 	}
 	virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection, double dt) override
 	{
+	}
+	
+	virtual Engine3DRadSpace::Reflection::UUID GetUUID()
+	{
+		// {017161C9-9EB7-4C10-AEEE-24347466586D}
+		return {0x17161c9, 0x9eb7, 0x4c10, { 0xae, 0xee, 0x24, 0x34, 0x74, 0x66, 0x58, 0x6d }};
 	}
 
 	int Integer;
@@ -84,7 +90,7 @@ TEST(ReflectionTests, fieldName##RW ) \
 	type temp = value; \
 	TestObjectReflInstance[id]->Set(&test, &temp); \
 	EXPECT_EQ(temp, test. fieldName); \
-	EXPECT_EQ(*static_cast<type *>(TestObjectReflInstance[1]->Get(&test)), temp); \
+	EXPECT_EQ(*static_cast<type *>(TestObjectReflInstance[id]->Get(&test)), temp); \
 }
 
 TestFieldRW(0, Name, std::string, "Test name")
@@ -103,3 +109,9 @@ TestFieldRW(12, Rectangle1, Math::Rectangle, Math::Rectangle(1,2,3,4))
 TestFieldRW(13, Rectangle2, Math::RectangleF, Math::RectangleF(1.1f ,2.2f ,3.3f ,4.4f))
 TestFieldRW(14, Vector, Vector4, Vector4(4,3,2,1))
 TestFieldRW(15, TestKey, Key, Key::Enter)
+
+TEST(ReflectionTests, UUIDTest)
+{
+	TestObject o;
+	TestObjectReflInstance.ObjectUUID == o.GetUUID();
+}

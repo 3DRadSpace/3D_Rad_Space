@@ -206,6 +206,7 @@
     <ClInclude Include="BlankShader.hpp" />
     <ClInclude Include="Texture2D.hpp" />
     <ClInclude Include="Blank_NoMatrix.hpp" />
+    <ClInclude Include="UUID.hpp" />
     <ClInclude Include="Vector2.hpp" />
     <ClInclude Include="Vector3.hpp" />
     <ClInclude Include="Vector4.hpp" />
