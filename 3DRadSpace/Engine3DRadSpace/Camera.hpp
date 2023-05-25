@@ -1,6 +1,7 @@
 #pragma once
 #include "IObject.hpp"
 #include "Math.hpp"
+#include "Reflection.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
@@ -20,7 +21,7 @@ namespace Engine3DRadSpace::Objects
 		float NearPlaneDistance;
 		float FarPlaneDistance;
 
-		enum CameraMode
+		enum class CameraMode
 		{
 			UseRotation,
 			UseLookAtCoordinates,

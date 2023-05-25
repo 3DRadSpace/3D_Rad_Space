@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Engine3DRadSpace/IObject.hpp>
+#include <Engine3DRadSpace/Reflection.hpp>
 #include "Dialog.hpp"
 
 class AddObjectDialog : public Dialog
@@ -19,7 +19,7 @@ class AddObjectDialog : public Dialog
 public:
 	AddObjectDialog(HWND owner, HINSTANCE hInstance);
 
-	Engine3DRadSpace::IObject* ShowDialog();
+	[[nodiscard]] Engine3DRadSpace::IObject* ShowDialog();
 
 	friend INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

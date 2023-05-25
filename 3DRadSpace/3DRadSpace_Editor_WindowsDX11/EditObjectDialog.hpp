@@ -17,11 +17,11 @@ class EditObjectDialog : public Dialog
 	HWND cancelButton;
 
 	void createForms();
-	void resize();
+	bool setObject();
 public:
 	EditObjectDialog(HWND owner, HINSTANCE hInstance, Engine3DRadSpace::Reflection::ReflectedObject *data, Engine3DRadSpace::IObject *object = nullptr);
 
-	Engine3DRadSpace::IObject* ShowDialog();
+	[[nodiscard]] Engine3DRadSpace::IObject* ShowDialog();
 
 	~EditObjectDialog();
 

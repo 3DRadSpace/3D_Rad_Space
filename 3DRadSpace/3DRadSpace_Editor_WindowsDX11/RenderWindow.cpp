@@ -5,6 +5,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Input;
+using namespace Engine3DRadSpace::Objects;
 
 RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	Game(Engine3DRadSpace::Window(hInstance, parent)),
@@ -50,7 +51,7 @@ void RenderWindow::Initialize()
 	}
 
 	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines);
-	Camera.LookMode = Camera.UseLookAtCoordinates;
+	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get(),RasterizerFillMode::Solid, RasterizerCullMode::None);
 

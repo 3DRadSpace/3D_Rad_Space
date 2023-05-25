@@ -6,9 +6,6 @@ namespace Engine3DRadSpace
 	{
 	public:
 		virtual void Initialize() = 0;
-		inline virtual ~IInitiializable()
-		{
-
-		}
+		inline virtual ~IInitiializable() = default;
 	};
 }

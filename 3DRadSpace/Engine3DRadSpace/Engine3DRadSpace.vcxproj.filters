@@ -123,6 +123,9 @@
     <ClCompile Include="SamplerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs.hpp">
@@ -246,6 +249,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UUID.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceLoadingError.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

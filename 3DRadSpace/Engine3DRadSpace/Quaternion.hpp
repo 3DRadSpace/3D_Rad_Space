@@ -29,7 +29,8 @@ namespace Engine3DRadSpace::Math
 		Quaternion operator *(const Quaternion& q);
 		Quaternion operator /(float s);
 
-		auto operator <=>(const Quaternion& q) const = default;
+		bool operator ==(const Quaternion& q) const = default;
+		bool operator !=(const Quaternion &q) const = default;
 	};
 }
 

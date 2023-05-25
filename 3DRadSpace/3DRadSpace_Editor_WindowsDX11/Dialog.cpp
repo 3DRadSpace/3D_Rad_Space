@@ -1,8 +1,10 @@
 #include "Dialog.hpp"
 
-Dialog::Dialog(HWND owner, HINSTANCE instance, DLGPROC dlgproc, const std::string &windowTitle):
+Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::string &windowTitle):
 	hInstance(instance),
-	dialogProc(dlgproc)
+	dialogProc(dlgproc),
+	owner(hwndOwner),
+	window(nullptr)
 {
 	//Allocate memory for the dialog box
 	hGlobal = GlobalAlloc(GMEM_ZEROINIT, 512);

@@ -3,7 +3,7 @@
 #include "IInitializable.hpp"
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
-#include "Reflection.hpp"
+#include "UUID.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -12,13 +12,16 @@ namespace Engine3DRadSpace
 	protected:
 		GraphicsDevice* device = nullptr;
 	public:
-		IObject(const std::string &name = "Empty",const std::string &tag = "...",const std::string &resource = "", bool enabled = false, bool visible = false,
+		IObject(GraphicsDevice* gdev, const std::string &name = "Empty", const std::string &tag = "...", bool enabled = false, bool visible = false,
+			Engine3DRadSpace::Math::Vector3 pos = {0,0,0}, Engine3DRadSpace::Math::Vector3 rotCenter = {0,0,0}, Engine3DRadSpace::Math::Quaternion rot = {0,0,0,1},
+			Engine3DRadSpace::Math::Vector3 scale = {1,1,1});
+
+		IObject(const std::string &name = "Empty",const std::string &tag = "...", bool enabled = false, bool visible = false,
 				Engine3DRadSpace::Math::Vector3 pos = {0,0,0}, Engine3DRadSpace::Math::Vector3 rotCenter = {0,0,0}, Engine3DRadSpace::Math::Quaternion rot = {0,0,0,1},
 				Engine3DRadSpace::Math::Vector3 scale = {1,1,1});
 
 		std::string Name;
 		std::string Tag;
-		std::string Resource;
 		bool Enabled;
 		bool Visible;
 		Engine3DRadSpace::Math::Vector3 Position;
@@ -33,6 +36,8 @@ namespace Engine3DRadSpace
 		virtual void EditorInitialize() = 0;
 		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection,double dt) = 0;
 		virtual Reflection::UUID GetUUID() = 0;
+
+		GraphicsDevice *GetGraphicsDeviceHandle();
 	};
 }
 

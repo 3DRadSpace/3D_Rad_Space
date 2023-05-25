@@ -272,6 +272,11 @@ EditorWindow::~EditorWindow()
 	DestroyWindow(this->_mainWindow);
 }
 
+Engine3DRadSpace::GraphicsDevice *EditorWindow::GetGraphicsDevice()
+{
+	return this->editor->Device.get();
+}
+
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
@@ -368,7 +373,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_ADD_OBJECT:
 				{
 					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
-					dialog.ShowDialog();
+					auto obj = dialog.ShowDialog();
 					break;
 				}
 				case CMD_AddAsset:

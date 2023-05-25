@@ -4,13 +4,14 @@ using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
 Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vector3 pos, Vector3 look_at, Vector3 up,float aspectRatio, float fov, float npd, float fpd):
-	IObject(name,tag,"nothing", visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
+	IObject(name,tag, visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
 	UpwardsDir(up),
 	AspectRatio(aspectRatio),
 	FieldOfView(fov),
 	FarPlaneDistance(fpd),
 	NearPlaneDistance(npd),
-	LookAt(0,0,0)
+	LookAt(0,0,0),
+	LookMode(CameraMode::UseRotation)
 {
 }
 
@@ -28,11 +29,11 @@ void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& vie
 	Vector3 focus(0, 0, 0);
 	switch (this->LookMode)
 	{
-	case CameraMode::UseLookAtCoordinates:
-		focus = this->LookAt;
-		break;
 	case CameraMode::UseRotation:
 		focus = Position + Vector3::UnitZ().Transform(Rotation);
+		break;
+	case CameraMode::UseLookAtCoordinates:
+		focus = this->LookAt;
 		break;
 	default: //Normally we wouldn't get here. Do not set the focus vector.
 		break;

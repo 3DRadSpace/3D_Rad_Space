@@ -52,7 +52,8 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					int nItems = (int)SendMessageA(aod->listView, LVM_GETITEMCOUNT, 0, 0);
 
 					EditObjectDialog dialog(hwnd, aod->hInstance, &CameraReflInstance, nullptr);
-					dialog.ShowDialog();
+					EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
+					
 					break;
 				}
 				default:
@@ -104,12 +105,7 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance):
 
 Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
 {
-	INT_PTR r = Dialog::ShowDialog(static_cast<void*>(this));
-	if (r == IDOK)
-	{
-		return nullptr; //TODO: Create valid object.
-	}
-	else return nullptr;
+	return reinterpret_cast<Engine3DRadSpace::IObject *>(Dialog::ShowDialog(static_cast<void *>(this)));
 }
 
 void AddObjectDialog::createForms()

@@ -14,7 +14,7 @@ protected:
 	LPDLGTEMPLATE dialogTemplate;
 	DLGPROC dialogProc;
 
-	Dialog(HWND owner, HINSTANCE instance, DLGPROC dlgproc, const std::string& windowTitle);
+	Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::string& windowTitle);
 	INT_PTR ShowDialog(void* data);
 public:
 	Dialog(Dialog&) = delete;

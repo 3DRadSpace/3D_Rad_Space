@@ -60,7 +60,11 @@ public:
 
 	~EditorWindow();
 
+	Engine3DRadSpace::GraphicsDevice *GetGraphicsDevice();
+
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+extern EditorWindow *gEditorWindow;

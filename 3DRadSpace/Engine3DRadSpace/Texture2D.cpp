@@ -5,6 +5,7 @@
 #include <Windows.h>
 #endif // _DX11
 #include "Error.hpp"
+#include "ResourceLoadingError.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -36,7 +37,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const char *filename)
 			);
 	}
 
-	RaiseFatalErrorIfFailed(r, "Failed to create texture from file!",filename);
+	throw ResourceLoadingError(Tag<Texture2D>{}, filename, "");
 #endif
 }
 
@@ -120,7 +121,7 @@ Texture2D::Texture2D(GraphicsDevice* device, void* colors, unsigned x, unsigned 
 	desc.MipLevels = 1;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
 	D3D11_SUBRESOURCE_DATA data{};
 	data.pSysMem = colors;

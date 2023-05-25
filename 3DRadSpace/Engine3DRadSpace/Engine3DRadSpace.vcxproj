@@ -141,6 +141,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Error.cpp" />
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="DepthStencilState.hpp" />
     <ClInclude Include="Error.hpp" />
+    <ClInclude Include="Exception.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable.hpp" />
@@ -195,6 +197,7 @@
     <ClInclude Include="Quaternion.hpp" />
     <ClInclude Include="RasterizerState.hpp" />
     <ClInclude Include="Reflection.hpp" />
+    <ClInclude Include="ResourceLoadingError.hpp" />
     <ClInclude Include="SamplerState.hpp" />
     <ClInclude Include="ShaderPipeline.hpp" />
     <ClInclude Include="IUpdateable.hpp" />

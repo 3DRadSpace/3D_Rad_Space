@@ -133,12 +133,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Quaternion>() //Quaternions will be constructed from Euler angles.
 {
-	return
-	{
-		{ FieldRepresentationType::Float, "X"},
-		{ FieldRepresentationType::Float, "Y"},
-		{ FieldRepresentationType::Float, "Z"}
-	};
+	return { { FieldRepresentationType::Quaternion, ""} };
 }
 
 template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Color>()

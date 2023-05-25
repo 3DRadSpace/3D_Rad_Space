@@ -1,7 +1,5 @@
-#include <string>
-
-
 #pragma once
+#include <string>
 #include "Libs.hpp"
 
 namespace Engine3DRadSpace::Algorithms
