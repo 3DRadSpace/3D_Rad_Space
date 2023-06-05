@@ -60,8 +60,8 @@ void RenderWindow::Initialize()
 	texturedShader = std::make_unique<BasicTextured_NBT>(Device.get());
 	cameraModel = std::make_unique<Model3D>(Device.get(), "Data\\Models\\Camera.x");
 
-	Color colors[4] = { Colors::White };
-	blankTexture = std::make_unique<Texture2D>(Device.get(), colors, 2, 2);
+	testTexture = std::make_unique<Texture2D>(Device.get(), L"holding.png");
+	spriteBatch = std::make_unique<SpriteBatch>(Device.get());
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -105,13 +105,11 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	Device->SetRasterizerState(lineRasterizer.get());
 	simpleShader->SetTransformation(viewProj);
 	Device->SetTopology(VertexTopology::LineList);
-	lines->Draw(0);
+	lines->Draw();
 
-	texturedShader->SetAll();
-	Device->SetTopology(VertexTopology::TriangleList);
-	texturedShader->SetTransformation(viewProj);
-	texturedShader->SetTexture(blankTexture.get());
-	cameraModel->Draw();
+	spriteBatch->Begin(SpriteBatchSortMode::Immediate);
+	//spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+	spriteBatch->End();
 
 	//Draw any other objects
 	for (auto& obj : Objects)

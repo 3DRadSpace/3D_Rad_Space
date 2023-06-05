@@ -7,7 +7,7 @@ Engine3DRadSpace::GameWindow::GameWindow(const char* title, unsigned width, unsi
 {
 #ifdef _WIN32
 	WNDCLASSA wndclass{};
-	
+	wndclass.lpszClassName = "3DRSP_GAME";
 #endif // _WIN32
 
 }

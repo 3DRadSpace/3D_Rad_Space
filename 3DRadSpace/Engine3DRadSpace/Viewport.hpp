@@ -1,6 +1,6 @@
 #pragma once
 #include "Libs.hpp"
-#include "Rectangle.hpp"
+#include "Math/Rectangle.hpp"
 
 namespace Engine3DRadSpace
 {

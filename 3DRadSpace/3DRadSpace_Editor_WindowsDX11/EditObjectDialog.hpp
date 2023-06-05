@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Engine3DRadSpace/Reflection.hpp>
+#include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include "Dialog.hpp"
 #include <variant>
 #include "IControl.hpp"

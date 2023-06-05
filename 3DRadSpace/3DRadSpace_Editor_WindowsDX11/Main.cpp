@@ -1,6 +1,6 @@
 #define NOMINMAX
 #include <cstdlib>
-#include "Engine3DRadSpace/Error.hpp"
+#include "Engine3DRadSpace/Logging/Error.hpp"
 #include "EditorWindow.hpp"
 
 #include <PathCch.h>

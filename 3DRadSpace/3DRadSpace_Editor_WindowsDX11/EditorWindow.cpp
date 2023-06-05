@@ -1,6 +1,6 @@
 #include "EditorWindow.hpp"
 #include "resource.h"
-#include "Engine3DRadSpace/Error.hpp"
+#include "Engine3DRadSpace/Logging/Error.hpp"
 #include <fstream>
 #include <CommCtrl.h>
 #include "HelperFunctions.hpp"
@@ -302,6 +302,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		case WM_QUIT:
 		{
 			exit(0);
+			break;
 		}
 		case WM_COMMAND:
 		{

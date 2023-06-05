@@ -1,6 +1,5 @@
 #pragma once
-#include <cstdint>
-#include <compare>
+#include "Libs.hpp"
 
 namespace Engine3DRadSpace
 {

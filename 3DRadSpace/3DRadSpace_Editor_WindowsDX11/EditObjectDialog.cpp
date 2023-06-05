@@ -2,7 +2,7 @@
 #include "NumericTextbox.hpp"
 #include "ColorBox.hpp"
 #include <Engine3DRadSpace/IObject.hpp>
-#include <Engine3DRadSpace/ResourceLoadingError.hpp>
+#include <Engine3DRadSpace/Logging/ResourceLoadingError.hpp>
 #include "EditorWindow.hpp"
 
 using namespace Engine3DRadSpace;

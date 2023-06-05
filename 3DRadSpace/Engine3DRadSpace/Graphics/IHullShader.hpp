@@ -1,0 +1,27 @@
+#pragma once
+#include "IShader.hpp"
+
+namespace Engine3DRadSpace::Graphics
+{
+	class IHullShader : public Engine3DRadSpace::Graphics::IShader
+	{
+#ifdef _DX11
+		Microsoft::WRL::ComPtr<ID3D11HullShader> shader;
+
+		void createShader();
+#endif
+		const char *determineTarget();
+	public:
+		IHullShader(GraphicsDevice *device, const char *shaderSource, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
+		IHullShader(GraphicsDevice *device, const std::filesystem::path &path, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
+
+		IHullShader(IHullShader &) = delete;
+		IHullShader(IHullShader &&) = delete;
+		IHullShader &operator=(IHullShader &) = delete;
+
+		void SetTexture(unsigned index, Texture2D *texture) override;
+		void SetSampler(unsigned index, SamplerState *samplerState) override;
+		void SetShader() override;
+	};
+}
+

@@ -1,7 +1,7 @@
 #pragma once
 #include "Libs.hpp"
-#include "Keyboard.hpp"
-#include "Mouse.hpp"
+#include "Input/Keyboard.hpp"
+#include "Input/Mouse.hpp"
 
 namespace Engine3DRadSpace
 {

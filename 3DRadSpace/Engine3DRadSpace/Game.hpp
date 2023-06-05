@@ -4,6 +4,7 @@
 #include "IDrawable.hpp"
 #include "IInitializable.hpp"
 #include "IObject.hpp"
+#include "Math/Matrix.hpp"
 
 namespace Engine3DRadSpace
 {

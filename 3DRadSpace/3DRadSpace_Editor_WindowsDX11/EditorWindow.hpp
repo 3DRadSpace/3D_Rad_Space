@@ -4,7 +4,7 @@
 
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";
 constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
-constexpr const char* FileFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*";
+constexpr const char* FileFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*\0\0";
 
 constexpr int CMD_NewFile = 500;
 constexpr int CMD_OpenFile = 501;

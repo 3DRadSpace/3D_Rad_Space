@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <Engine3DRadSpace\LevenshteinDistance.hpp>
+#include <Engine3DRadSpace\Algorithms\LevenshteinDistance.hpp>
 
 using namespace Engine3DRadSpace::Algorithms;
 

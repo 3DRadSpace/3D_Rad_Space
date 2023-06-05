@@ -1,5 +1,4 @@
 #include "Color.hpp"
-#include <stdexcept>
 
 using namespace Engine3DRadSpace;
 

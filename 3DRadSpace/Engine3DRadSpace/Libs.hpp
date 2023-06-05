@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <functional>
+#include <filesystem>
 
 #ifdef _WIN32
 #define NOMINMAX

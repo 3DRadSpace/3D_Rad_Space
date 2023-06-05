@@ -1,12 +1,14 @@
 #pragma once
 #include "Engine3DRadSpace/Game.hpp"
-#include "Engine3DRadSpace/VertexBuffer.hpp"
-#include <Engine3DRadSpace/BlankShader.hpp>
-#include <Engine3DRadSpace/Matrix.hpp>
-#include <Engine3DRadSpace/Vector2.hpp>
-#include <Engine3DRadSpace/Camera.hpp>
-#include <Engine3DRadSpace/Model3D.hpp>
-#include <Engine3DRadSpace/BasicTextured_NBT.hpp>
+#include "Engine3DRadSpace/Graphics/VertexBuffer.hpp"
+#include <Engine3DRadSpace/Graphics/Shaders/BlankShader.hpp>
+#include <Engine3DRadSpace/Math/Matrix.hpp>
+#include <Engine3DRadSpace/Math/Vector2.hpp>
+#include <Engine3DRadSpace/Objects/Camera.hpp>
+#include <Engine3DRadSpace/Graphics/Model3D.hpp>
+#include <Engine3DRadSpace/Graphics/Shaders/BasicTextured_NBT.hpp>
+#include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
+#include <CommonStates.h>
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
@@ -14,11 +16,11 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
 	std::unique_ptr<Engine3DRadSpace::Graphics::Model3D> cameraModel;
 
-	Engine3DRadSpace::Math::Vector2 cameraPos = 
-		{ 
-			cosf(std::numbers::pi_v<float> / 6), //30 degrees = pi/6 radians
-			sinf(std::numbers::pi_v<float> / 6)
-		};
+	Engine3DRadSpace::Math::Vector2 cameraPos =
+	{
+		cosf(std::numbers::pi_v<float> / 6), //30 degrees = pi/6 radians
+		sinf(std::numbers::pi_v<float> / 6)
+	};
 
 	Engine3DRadSpace::Math::Vector3 cursor3D = Engine3DRadSpace::Math::Vector3::Zero();
 
@@ -26,15 +28,18 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	Engine3DRadSpace::Objects::Camera Camera;
 
-	std::unique_ptr<Engine3DRadSpace::RasterizerState> lineRasterizer;
-	std::unique_ptr<Engine3DRadSpace::RasterizerState> defaultRasterizer;
+	std::unique_ptr < Engine3DRadSpace::Graphics::RasterizerState > lineRasterizer;
+	std::unique_ptr<Engine3DRadSpace::Graphics::RasterizerState> defaultRasterizer;
 
 	float zoom = 5.0f;
 	float timer = 0;
 
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT> texturedShader;
+	std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState> samplerState;
 
-	std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D> blankTexture;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D> testTexture;
+	std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> spriteBatch;
+
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include <Engine3DRadSpace/Vector3.hpp>
+#include <Engine3DRadSpace/Math/Vector3.hpp>
 
 using namespace Engine3DRadSpace::Math;
 

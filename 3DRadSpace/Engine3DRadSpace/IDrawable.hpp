@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphicsDevice.hpp"
-#include "Matrix.hpp"
+#include "Math/Matrix.hpp"
 
 namespace Engine3DRadSpace
 {

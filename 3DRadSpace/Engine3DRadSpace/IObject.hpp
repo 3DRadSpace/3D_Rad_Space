@@ -1,9 +1,9 @@
 #pragma once
-#include "Matrix.hpp"
+#include "Math/Matrix.hpp"
 #include "IInitializable.hpp"
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
-#include "UUID.hpp"
+#include "Reflection/UUID.hpp"
 
 namespace Engine3DRadSpace
 {

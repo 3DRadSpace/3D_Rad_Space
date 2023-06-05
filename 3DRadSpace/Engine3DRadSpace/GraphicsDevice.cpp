@@ -1,15 +1,22 @@
 #include "GraphicsDevice.hpp"
-#include "Error.hpp"
-#include "IShader.hpp"
-#include <cassert>
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
+#include "Logging/Error.hpp"
+//include shader types
 
+#include <cassert>
+#include "Graphics/VertexBuffer.hpp"
+#include "Graphics/IndexBuffer.hpp"
+
+#ifdef  _DX11
+#pragma comment(lib,"d3d11.lib")
+#endif //  _DX11
+
+using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
 Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
 	EnableVSync(true),
-	resoultion(width, height)
+	resolution(width, height)
 {
 #ifdef _DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
@@ -55,6 +62,28 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 	createDepthStencil();
 	context->OMSetDepthStencilState(this->depthState.Get(), 1);
+
+	D3D11_BLEND_DESC blendDesc;
+	blendDesc.AlphaToCoverageEnable = true;
+	blendDesc.IndependentBlendEnable = true;
+
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+
+	for(int i = 1; i < 8; i++)
+		blendDesc.RenderTarget[i] = blendDesc.RenderTarget[0];
+
+	r = device->CreateBlendState(&blendDesc, blendState.GetAddressOf());
+	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+
+	r = CoInitializeEx(nullptr, COINIT::COINIT_APARTMENTTHREADED);
+	RaiseFatalErrorIfFailed(r, "Failed to initialize COM!");
 #endif
 }
 
@@ -96,8 +125,8 @@ void Engine3DRadSpace::GraphicsDevice::createDepthTexture()
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Format = DXGI_FORMAT_R32_TYPELESS;
 	desc.ArraySize = 1;
-	desc.Width = resoultion.X;
-	desc.Height = resoultion.Y;
+	desc.Width = resolution.X;
+	desc.Height = resolution.Y;
 	desc.MipLevels = 1;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
@@ -128,6 +157,9 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
 	context->ClearRenderTargetView(mainRenderTarget.Get(), color);
 	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
+
+	float blendFactor[4] = {1,1,1,1};
+	context->OMSetBlendState(blendState.Get(), blendFactor, 0xFF);
 #endif
 }
 
@@ -154,7 +186,7 @@ void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewport
 #endif // _DX11
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilState& state)
+void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const Graphics::DepthStencilState& state)
 {
 #ifdef _DX11
 	//create a description matching the state parameter.
@@ -189,16 +221,17 @@ void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const DepthStencilStat
 void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot)
 {
 #ifdef _DX11
-	UINT strides = 0;
+	UINT strides = UINT(vertexBuffer->structSize);
 	UINT offsets = 0;
 	context->IASetVertexBuffers(startSlot, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
+	context->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
 	context->Draw(UINT(vertexBuffer->numVerts), UINT(startSlot));
 #endif
 }
 void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
 {
 #ifdef _DX11
-	UINT strides = 0;
+	UINT strides = UINT(vertexBuffer->structSize);
 	UINT offsets = 0;
 	context->IASetIndexBuffer(indexBuffer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	context->IASetVertexBuffers(0, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
@@ -242,56 +275,7 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 
 void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::IShader *shader)
 {
-#ifdef _DX11
-	const unsigned maxConstBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
-
-	ID3D11Buffer * ppConstantBuffers[maxConstBuffers] = { nullptr };
-	unsigned i = 0;
-	for (; i < maxConstBuffers; i++)
-	{
-		ID3D11Buffer *constBuffer = shader->constantBuffers[i].Get();
-		if (constBuffer == nullptr) break;
-
-		ppConstantBuffers[i] = constBuffer;
-	}
-
-	switch (shader->type)
-	{
-		case Engine3DRadSpace::Graphics::ShaderType::VertexShader:
-		{
-			context->VSSetConstantBuffers(0, i, ppConstantBuffers);
-			context->IASetInputLayout(shader->inputLayout.Get());
-			context->VSSetShader(static_cast<ID3D11VertexShader *>(shader->shader.Get()), nullptr, 0);
-			break;
-		}
-		case Engine3DRadSpace::Graphics::ShaderType::HullShader:
-		{
-			context->HSSetConstantBuffers(0, i, ppConstantBuffers);
-			context->HSSetShader(static_cast<ID3D11HullShader *>(shader->shader.Get()), nullptr, 0);
-			break;
-		}
-		case Engine3DRadSpace::Graphics::ShaderType::DomainShader:
-		{
-			context->DSSetConstantBuffers(0, i, ppConstantBuffers);
-			context->DSSetShader(static_cast<ID3D11DomainShader *>(shader->shader.Get()), nullptr, 0);
-			break;
-		}
-		case Engine3DRadSpace::Graphics::ShaderType::GeometryShader:
-		{
-			context->GSSetConstantBuffers(0, i, ppConstantBuffers);
-			context->GSSetShader(static_cast<ID3D11GeometryShader *>(shader->shader.Get()), nullptr, 0);
-			break;
-		}
-		case Engine3DRadSpace::Graphics::ShaderType::PixelShader:
-		{
-			context->PSSetConstantBuffers(0, i, ppConstantBuffers);
-			context->PSSetShader(static_cast<ID3D11PixelShader *>(shader->shader.Get()), nullptr, 0);
-			break;
-		}
-		default:
-			break;
-	}
-#endif
+	shader->SetShader();
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetTopology(Graphics::VertexTopology topology)
@@ -317,10 +301,10 @@ void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState 
 
 Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 {
-	return this->resoultion;
+	return this->resolution;
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
-
+	CoUninitialize();
 }

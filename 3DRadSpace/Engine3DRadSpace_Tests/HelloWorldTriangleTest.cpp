@@ -1,7 +1,7 @@
 #include "pch.h"
 #include <Engine3DRadSpace/Game.hpp>
-#include <Engine3DRadSpace/VertexBuffer.hpp>
-#include <Engine3DRadSpace/Blank_NoMatrix.hpp>
+#include <Engine3DRadSpace/Graphics/VertexBuffer.hpp>
+#include <Engine3DRadSpace/Graphics/Shaders/Blank_NoMatrix.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -58,8 +58,8 @@ void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
 
 TEST(EngineCoreTests, HelloTriangle)
 {
-	//TriangleTest t;
-	//t.Run();
+	TriangleTest t;
+	t.Run();
 	EXPECT_TRUE(true);
 	//TODO: Save into a file and compare the image.
 }
