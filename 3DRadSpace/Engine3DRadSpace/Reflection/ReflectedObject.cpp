@@ -9,18 +9,18 @@ using namespace Engine3DRadSpace::Input;
 
 const size_t ReflectedObject::NumFields()
 {
-    return fields.size()  - 1;
+    return _fields.size()  - 1;
 }
 
 const IReflectedField* ReflectedObject::operator[](unsigned i)
 {
-    return fields[i];
+    return _fields[i];
 }
 
 const IReflectedField* ReflectedObject::operator[](const std::string& name)
 {
 	//First find attempt: check if field name and name exactly match. O(#fields)
-	for (auto& field : fields)
+	for (auto& field : _fields)
 	{
 		if (field->FieldName() == name) return field;
 	}
@@ -30,7 +30,7 @@ const IReflectedField* ReflectedObject::operator[](const std::string& name)
 	for (int i = 0; i < NumFields(); i++)
 	{
 		v.push_back(std::make_pair(
-			Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(fields[i]->FieldName(), name),
+			Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(_fields[i]->FieldName(), name),
 			i
 		));
 	}
@@ -41,17 +41,17 @@ const IReflectedField* ReflectedObject::operator[](const std::string& name)
 		}
 	);
 
-	return fields[v[0].second];
+	return _fields[v[0].second];
 }
 
 std::vector<IReflectedField *>::iterator ReflectedObject::begin()
 {
-	return fields.begin();
+	return _fields.begin();
 }
 
 std::vector<IReflectedField *>::iterator ReflectedObject::end()
 {
-	return std::prev(fields.end()); //do not return the last element, it is a ReflectedField<void>.
+	return std::prev(_fields.end()); //do not return the last element, it is a ReflectedField<void>.
 }
 
 ReflectedObject::~ReflectedObject()

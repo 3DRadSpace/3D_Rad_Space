@@ -28,12 +28,15 @@ namespace Engine3DRadSpace::Graphics
 	class SamplerState
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerState;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _samplerState;
 #endif
 	public:
 		SamplerState(GraphicsDevice *device);
 		SamplerState(GraphicsDevice* device, TextureFilter Filter, TextureAddressMode AddressU, TextureAddressMode AddressV, TextureAddressMode AddressW,
 			float MipLODBias, unsigned MaxAnisotropy, ComparisonFunction ComparisionFunction, Color BorderColor, float MinLOD, float MaxLOD);
+
+		SamplerState(SamplerState &) = delete;
+		SamplerState(SamplerState &&samplerState) noexcept;
 
 		static SamplerState LinearClamp(GraphicsDevice *device);
 		static SamplerState LinearWrap(GraphicsDevice *device);

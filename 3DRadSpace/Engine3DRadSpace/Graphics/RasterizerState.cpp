@@ -31,7 +31,7 @@ RasterizerState::RasterizerState(
 	desc.MultisampleEnable = multisample;
 	desc.AntialiasedLineEnable = aaLine;
 
-	HRESULT r = device->device->CreateRasterizerState(&desc, this->rasterizerState.ReleaseAndGetAddressOf());
+	HRESULT r = device->_device->CreateRasterizerState(&desc, _rasterizerState.ReleaseAndGetAddressOf());
 	if (FAILED(r)) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a rasterizer state object");
 #endif
 }

@@ -25,7 +25,7 @@ SamplerState::SamplerState(GraphicsDevice* device)
 	desc.MinLOD = std::numeric_limits<float>::min();
 	desc.MaxLOD = std::numeric_limits<float>::max();
 
-	HRESULT r = device->device->CreateSamplerState(&desc, samplerState.GetAddressOf());
+	HRESULT r = device->_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a sampler state with default values!");
 #endif
 }
@@ -129,9 +129,15 @@ SamplerState::SamplerState(GraphicsDevice *device, TextureFilter Filter, Texture
 	desc.MinLOD = MinLOD;
 	desc.MaxLOD = MaxLOD;
 
-	HRESULT r = device->device->CreateSamplerState(&desc, samplerState.GetAddressOf());
+	HRESULT r = device->_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a sampler state with default values!");
 #endif
+}
+
+Engine3DRadSpace::Graphics::SamplerState::SamplerState(SamplerState &&samplerState) noexcept:
+	_samplerState(samplerState._samplerState)
+{
+	samplerState._samplerState.Reset();
 }
 
 SamplerState SamplerState::LinearClamp(GraphicsDevice* device)

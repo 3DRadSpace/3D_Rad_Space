@@ -34,16 +34,16 @@ namespace Engine3DRadSpace::Graphics
 	class IVertexShader : public IShader
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader> _shader;
 
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
 #endif
-		void createShader();
+		void _createShader();
 #ifdef _DX11
-		const char *determineTarget();
-		[[nodiscard]] D3D11_INPUT_ELEMENT_DESC *generateInputElementDesc(std::span<InputLayoutElement> inputLayout);
+		const char *_determineTarget();
+		[[nodiscard]] D3D11_INPUT_ELEMENT_DESC *_generateInputElementDesc(std::span<InputLayoutElement> inputLayout);
 #endif
-		void generateInputLayout(std::span<InputLayoutElement> inputLayout);
+		void _generateInputLayout(std::span<InputLayoutElement> inputLayout);
 	public:
 		IVertexShader(Engine3DRadSpace::GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 		IVertexShader(Engine3DRadSpace::GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path& path, const char *vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);

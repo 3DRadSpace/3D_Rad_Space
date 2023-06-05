@@ -12,20 +12,19 @@ namespace Engine3DRadSpace::Graphics
 	class IShader
 	{
 	protected:
-		Engine3DRadSpace::GraphicsDevice *device;
-		ShaderFeatureLevel featureLevel;
-		const char* entry;
+		Engine3DRadSpace::GraphicsDevice *_device;
+		ShaderFeatureLevel _featureLevel;
+		const char* _entry;
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
+		Microsoft::WRL::ComPtr<ID3DBlob> _shaderBlob;
+		Microsoft::WRL::ComPtr<ID3DBlob> _errorBlob;
 
-		Microsoft::WRL::ComPtr<ID3DBlob> shaderBlob;
+		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT> _constantBuffers;
 
-		std::array<Microsoft::WRL::ComPtr<ID3D11Buffer>, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT> constantBuffers;
-
-		Array_ValidConstantBuffers validConstantBuffers(unsigned &numConstantBuffers);
+		Array_ValidConstantBuffers _validConstantBuffers(unsigned &numConstantBuffers);
 #endif
-		void compileShader( const char* source, const char* target);
-		void compileShaderFromFile( const char* path, const char* target);
+		void _compileShader( const char* source, const char* target);
+		void _compileShaderFromFile( const char* path, const char* target);
 	public:
 		IShader(GraphicsDevice *device, const char *shaderSourceCode, const char *entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 		IShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);

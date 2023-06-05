@@ -8,8 +8,10 @@ namespace Engine3DRadSpace
 	{
 		class IndexBuffer
 		{
-			Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
-			GraphicsDevice* device;
+#ifdef _DX11
+			Microsoft::WRL::ComPtr<ID3D11Buffer> _indexBuffer;
+#endif
+			GraphicsDevice* _device;
 
 		public:
 			IndexBuffer(GraphicsDevice* device, std::span<unsigned> indices);

@@ -20,15 +20,15 @@ namespace Engine3DRadSpace
 		class VertexBuffer
 		{
 #ifdef  _DX11
-			Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-			GraphicsDevice* device;
+			Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
+			GraphicsDevice* _device;
 
-			size_t numVerts;
-			size_t structSize;
+			size_t _numVerts;
+			size_t _structSize;
 #endif //  _DX11
 		public:
 			VertexBuffer(
-				_In_ GraphicsDevice* Device, 
+				_In_ GraphicsDevice* device, 
 				_In_reads_bytes_(p_structSize* numVertices) const void* data, 
 				size_t p_structSize,
 				size_t numVertices, 
@@ -70,12 +70,12 @@ namespace Engine3DRadSpace
 		{
 #ifdef _DX11
 			D3D11_MAPPED_SUBRESOURCE resource{};
-			HRESULT r = device->context->Map(buffer, 0, D3D11_MAP_WRITE, 0, &resource);
+			HRESULT r = _device->_context->Map(_buffer, 0, D3D11_MAP_WRITE, 0, &resource);
 			Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to map a vertex buffer that cannot be written by the CPU.");
 			
 			memcpy_s(resource.pData, data.size_bytes(), &data[0], data.size_bytes());
 
-			device->context->Unmap(buffer, 0);
+			_device->_context->Unmap(_buffer, 0);
 			Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to unmap a vertex buffer object when writing data.");
 #endif
 		}

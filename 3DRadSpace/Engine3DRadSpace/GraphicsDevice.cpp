@@ -5,10 +5,14 @@
 #include <cassert>
 #include "Graphics/VertexBuffer.hpp"
 #include "Graphics/IndexBuffer.hpp"
+#include "Graphics/RenderTarget.hpp"
+#include "Graphics/DepthStencilBuffer.hpp"
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
 #endif //  _DX11
+#include <ScreenGrab.h>
+#include <wincodec.h>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -16,7 +20,7 @@ using namespace Engine3DRadSpace::Logging;
 
 Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
 	EnableVSync(true),
-	resolution(width, height)
+	_resolution(width, height)
 {
 #ifdef _DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
@@ -47,119 +51,40 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 		0,
 		D3D11_SDK_VERSION,
 		&swapChainDesc,
-		&this->swapChain,
-		&this->device,
+		&_swapChain,
+		&_device,
 		nullptr,
-		&this->context
+		&_context
 	);
 	RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
 
-	r = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&screenTexture));
+	r = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&_screenTexture));
 	RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
 
-	r = device->CreateRenderTargetView(screenTexture.Get(), nullptr, &mainRenderTarget);
+	r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, &_mainRenderTarget);
 	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
 
-	createDepthStencil();
-	context->OMSetDepthStencilState(this->depthState.Get(), 1);
+	_stencilBuffer = std::make_unique<DepthStencilBuffer>(this);
+	_context->OMSetDepthStencilState(_stencilBuffer->_stencilState.Get(), 1);
 
-	D3D11_BLEND_DESC blendDesc;
-	blendDesc.AlphaToCoverageEnable = true;
-	blendDesc.IndependentBlendEnable = true;
 
-	blendDesc.RenderTarget[0].BlendEnable = true;
-	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 
-	for(int i = 1; i < 8; i++)
-		blendDesc.RenderTarget[i] = blendDesc.RenderTarget[0];
-
-	r = device->CreateBlendState(&blendDesc, blendState.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
-
-	r = CoInitializeEx(nullptr, COINIT::COINIT_APARTMENTTHREADED);
+	r = CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED);
 	RaiseFatalErrorIfFailed(r, "Failed to initialize COM!");
-#endif
-}
-
-void Engine3DRadSpace::GraphicsDevice::createDepthStencil()
-{
-#ifdef WIN32
-	createDepthTexture();
-
-	D3D11_DEPTH_STENCIL_DESC dsDesc;
-
-	dsDesc.DepthEnable = true;
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-	dsDesc.StencilEnable = true;
-	dsDesc.StencilReadMask = 0xFF;
-	dsDesc.StencilWriteMask = 0xFF;
-
-	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	HRESULT r = device->CreateDepthStencilState(&dsDesc, &depthState);
-	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state with default settings");
-
-	createDepthView();
-#endif
-}
-
-void Engine3DRadSpace::GraphicsDevice::createDepthTexture()
-{
-#ifdef WIN32
-	D3D11_TEXTURE2D_DESC desc{};
-	desc.Format = DXGI_FORMAT_R32_TYPELESS;
-	desc.ArraySize = 1;
-	desc.Width = resolution.X;
-	desc.Height = resolution.Y;
-	desc.MipLevels = 1;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-
-	HRESULT r = device->CreateTexture2D(&desc, nullptr, &depthTexture);
-	RaiseFatalErrorIfFailed(r, "Failed to create the depth stencil texture!");
-#endif
-}
-
-void Engine3DRadSpace::GraphicsDevice::createDepthView()
-{
-#ifdef WIN32
-	D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc{};
-	viewDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-
-	HRESULT r = device->CreateDepthStencilView(this->depthTexture.Get(), &viewDesc, &this->depthView); //the & operator release the previous stencil view object
-	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil view!");
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 {
 #ifdef _DX11
-	context->OMSetRenderTargets(1, mainRenderTarget.GetAddressOf(), this->depthView.Get());
+	_context->OMSetRenderTargets(1, _mainRenderTarget.GetAddressOf(), _stencilBuffer->_depthView.Get());
 
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
-	context->ClearRenderTargetView(mainRenderTarget.Get(), color);
-	context->ClearDepthStencilView(depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
+	_context->ClearRenderTargetView(_mainRenderTarget.Get(), color);
+	_context->ClearDepthStencilView(_stencilBuffer->_depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
 
 	float blendFactor[4] = {1,1,1,1};
-	context->OMSetBlendState(blendState.Get(), blendFactor, 0xFF);
+	//context->OMSetBlendState(blendState.Get(), blendFactor, 0xFF);
 #endif
 }
 
@@ -175,14 +100,14 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 	vp.MinDepth = viewport.MinDepth;
 	vp.MaxDepth = viewport.MaxDepth;
 
-	context->RSSetViewports(1, &vp);
+	_context->RSSetViewports(1, &vp);
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
 #ifdef _DX11
-	context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
+	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
 #endif // _DX11
 }
 
@@ -210,44 +135,61 @@ void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const Graphics::DepthS
 	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP(state.BackFace.PassOp);
 	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_FUNC(state.BackFace.Function);
 
-	HRESULT r = device->CreateDepthStencilState(&dsDesc, &depthState);
+	HRESULT r = _device->CreateDepthStencilState(&dsDesc, _stencilBuffer->_stencilState.GetAddressOf());
 	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state");
 
 	//recreate depth view resource.
-	createDepthView();
+	_stencilBuffer = std::make_unique<DepthStencilBuffer>(this);
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
+{
+#ifdef _DX11
+	auto rt = renderTarget != nullptr ? renderTarget->_renderTarget.GetAddressOf() : _mainRenderTarget.GetAddressOf();
+	_context->OMSetRenderTargets(1, rt, _stencilBuffer->_depthView.Get());
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetRenderTargetAndDepth(Graphics::RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer)
+{
+#ifdef _DX11
+	auto depthviewBuffer = depthBuffer != nullptr ? depthBuffer->_depthView.Get() : _stencilBuffer->_depthView.Get();
+	auto renderTargetView = renderTarget != nullptr ? renderTarget->_renderTarget.GetAddressOf() : _mainRenderTarget.GetAddressOf();
+	_context->OMSetRenderTargets(1, renderTargetView, depthviewBuffer);
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot)
 {
 #ifdef _DX11
-	UINT strides = UINT(vertexBuffer->structSize);
+	UINT strides = UINT(vertexBuffer->_structSize);
 	UINT offsets = 0;
-	context->IASetVertexBuffers(startSlot, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
-	context->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
-	context->Draw(UINT(vertexBuffer->numVerts), UINT(startSlot));
+	_context->IASetVertexBuffers(startSlot, 1, vertexBuffer->_buffer.GetAddressOf(), &strides, &offsets);
+	_context->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+	_context->Draw(UINT(vertexBuffer->_numVerts), UINT(startSlot));
 #endif
 }
 void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
 {
 #ifdef _DX11
-	UINT strides = UINT(vertexBuffer->structSize);
+	UINT strides = UINT(vertexBuffer->_structSize);
 	UINT offsets = 0;
-	context->IASetIndexBuffer(indexBuffer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	context->IASetVertexBuffers(0, 1, vertexBuffer->buffer.GetAddressOf(), &strides, &offsets);
-	context->Draw(UINT(vertexBuffer->numVerts), 0u);
+	_context->IASetIndexBuffer(indexBuffer->_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	_context->IASetVertexBuffers(0, 1, vertexBuffer->_buffer.GetAddressOf(), &strides, &offsets);
+	_context->Draw(UINT(vertexBuffer->_numVerts), 0u);
 #endif
 }
 void Engine3DRadSpace::GraphicsDevice::Present()
 {
 #ifdef _DX11
-	HRESULT r = swapChain->Present(EnableVSync ? 1 : 0, 0);
+	HRESULT r = _swapChain->Present(EnableVSync ? 1 : 0, 0);
 	if (SUCCEEDED(r)) return; //if Present call succeded, skip error reporting.
 
 	if (r == DXGI_ERROR_DEVICE_RESET) RaiseFatalError(Error(r, "Graphics device reset"));
 	if (r == DXGI_ERROR_DEVICE_REMOVED)
 	{
-		HRESULT reason = device->GetDeviceRemovedReason();
+		HRESULT reason = _device->GetDeviceRemovedReason();
 		switch (reason)
 		{
 			case DXGI_ERROR_DEVICE_HUNG:
@@ -273,6 +215,25 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 #endif // _DX11
 }
 
+void Engine3DRadSpace::GraphicsDevice::SaveBackBufferToFile(const std::string &path)
+{
+#ifdef _DX11
+	wchar_t wpath[_MAX_PATH]{};
+	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, wpath, _MAX_PATH);
+
+	HRESULT r = DirectX::SaveWICTextureToFile(_context.Get(), _screenTexture.Get(), GUID_ContainerFormatPng, wpath, nullptr, nullptr, true);
+	if(FAILED(r)) throw std::exception("Failed to save file!");
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SaveBackBufferToFile(const std::wstring &path)
+{
+#ifdef _DX11
+	HRESULT r = DirectX::SaveWICTextureToFile(_context.Get(), _screenTexture.Get(), GUID_ContainerFormatPng, path.c_str(), nullptr, nullptr, true);
+	if(FAILED(r)) throw std::exception("Failed to save file!");
+#endif
+}
+
 void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::IShader *shader)
 {
 	shader->SetShader();
@@ -281,30 +242,74 @@ void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::ISh
 void Engine3DRadSpace::GraphicsDevice::SetTopology(Graphics::VertexTopology topology)
 {
 #ifdef _DX11
-	context->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(topology));
+	D3D11_PRIMITIVE_TOPOLOGY t = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
+	switch(topology)
+	{
+		case VertexTopology::PointList:
+			t = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+			break;
+		case VertexTopology::LineList:
+			t = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+			break;
+		case VertexTopology::LineStrip:
+			t = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
+			break;
+		case VertexTopology::TriangleList:
+			t = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			break;
+		case VertexTopology::LineList_Adj:
+			t = D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ;
+			break;
+		case VertexTopology::LineStrip_Adj:
+			t = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ;
+			break;
+		case VertexTopology::TriangleList_Adj:
+			t = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ;
+			break;
+		case VertexTopology::TriangleStrip_Adj:
+			t = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ;
+			break;
+		default:
+			break;
+	}
+
+	_context->IASetPrimitiveTopology(t);
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::DrawAuto()
 {
 #ifdef _DX11
-	this->context->DrawAuto();
+	this->_context->DrawAuto();
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState *state)
 {
 #ifdef _DX11
-	context->RSSetState(state->rasterizerState.Get());
+	_context->RSSetState(state->_rasterizerState.Get());
 #endif
 }
 
 Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 {
-	return this->resolution;
+	return this->_resolution;
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
+#ifdef _DX11
+//
+//		UNCOMMENT THE COMMENT BLOCK BELOW IF THERE ARE DIRECTX OBJECTS LEAKING! 
+//
+
+/*
+#if _DEBUG
+	Microsoft::WRL::ComPtr<ID3D11Debug> debug;
+	device->QueryInterface<ID3D11Debug>(&debug);
+	debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+#endif
+*/
 	CoUninitialize();
+#endif
 }

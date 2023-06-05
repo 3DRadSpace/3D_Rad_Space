@@ -61,4 +61,10 @@ namespace Engine3DRadSpace::Reflection
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Color>();
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Rectangle>();
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::RectangleF>();
+
+	template<typename T>
+	concept ReflectableType = requires
+	{
+		GetFieldRepresentation<T>();
+	};
 }

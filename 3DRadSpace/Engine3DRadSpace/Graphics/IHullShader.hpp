@@ -6,11 +6,11 @@ namespace Engine3DRadSpace::Graphics
 	class IHullShader : public Engine3DRadSpace::Graphics::IShader
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11HullShader> shader;
+		Microsoft::WRL::ComPtr<ID3D11HullShader> _shader;
 
-		void createShader();
+		void _createShader();
 #endif
-		const char *determineTarget();
+		const char *_determineTarget();
 	public:
 		IHullShader(GraphicsDevice *device, const char *shaderSource, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
 		IHullShader(GraphicsDevice *device, const std::filesystem::path &path, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);

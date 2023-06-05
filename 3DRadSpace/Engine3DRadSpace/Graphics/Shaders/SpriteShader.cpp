@@ -26,18 +26,18 @@ SpriteShader::SpriteShader(GraphicsDevice *device) :
 
 void Engine3DRadSpace::Graphics::Shaders::SpriteShader::SetData(Data &d)
 {
-	vertex->SetData(0, &d, sizeof(Data));
-	pixel->SetData(0, &d, sizeof(Data));
+	_vertex->SetData(0, &d, sizeof(Data));
+	_pixel->SetData(0, &d, sizeof(Data));
 }
 
 void Engine3DRadSpace::Graphics::Shaders::SpriteShader::SetTexture(Engine3DRadSpace::Graphics::Texture2D *texture)
 {
-	vertex->SetTexture(0, texture);
-	pixel->SetTexture(0, texture);
+	_vertex->SetTexture(0, texture);
+	_pixel->SetTexture(0, texture);
 }
 
 void Engine3DRadSpace::Graphics::Shaders::SpriteShader::SetSamplerState(Engine3DRadSpace::Graphics::SamplerState *sampler)
 {
-	vertex->SetSampler(0, sampler);
-	pixel->SetSampler(0, sampler);
+	_vertex->SetSampler(0, sampler);
+	_pixel->SetSampler(0, sampler);
 }

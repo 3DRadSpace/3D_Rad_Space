@@ -10,7 +10,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
-Array_ValidConstantBuffers IShader::validConstantBuffers(unsigned &numConstantBuffers)
+Array_ValidConstantBuffers IShader::_validConstantBuffers(unsigned &numConstantBuffers)
 {
 	const unsigned maxConstBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
 	Array_ValidConstantBuffers ppConstantBuffers = {nullptr};
@@ -18,7 +18,7 @@ Array_ValidConstantBuffers IShader::validConstantBuffers(unsigned &numConstantBu
 	unsigned &i = numConstantBuffers;
 	for(i = 0; i < maxConstBuffers; i++)
 	{
-		ID3D11Buffer *constBuffer = constantBuffers[i].Get();
+		ID3D11Buffer *constBuffer = _constantBuffers[i].Get();
 		if(constBuffer == nullptr) break;
 
 		ppConstantBuffers[i] = constBuffer;
@@ -27,7 +27,7 @@ Array_ValidConstantBuffers IShader::validConstantBuffers(unsigned &numConstantBu
 	return ppConstantBuffers;
 }
 
-void IShader::compileShader(const char *source, const char* target)
+void IShader::_compileShader(const char *source, const char* target)
 {
 #ifdef _WIN32
 #ifdef _DEBUG
@@ -42,26 +42,26 @@ void IShader::compileShader(const char *source, const char* target)
 		nullptr,
 		nullptr,
 		nullptr,
-		entry,
+		_entry,
 		target,
 		shaderFlags,
 		0,
-		&shaderBlob,
-		&errorBlob
+		&_shaderBlob,
+		&_errorBlob
 	);
-	if (errorBlob.Get() != nullptr)
+	if (_errorBlob.Get() != nullptr)
 	{
 		RaiseFatalErrorIfFailed(
 			r,
-			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
 			source
 		);
 	}
-	else SetLastWarning(Warning(r, (char*)errorBlob->GetBufferPointer(), 2, nullptr));
+	else SetLastWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
 #endif
 }
 
-void IShader::compileShaderFromFile(const char* path, const char* target)
+void IShader::_compileShaderFromFile(const char* path, const char* target)
 {
 #ifdef _WIN32
 	wchar_t wpath[_MAX_PATH]{ 0 };
@@ -77,50 +77,50 @@ void IShader::compileShaderFromFile(const char* path, const char* target)
 		wpath,
 		nullptr,
 		nullptr,
-		entry,
+		_entry,
 		target,
 		shaderFlags,
 		0,
-		&shaderBlob,
-		&errorBlob
+		&_shaderBlob,
+		&_errorBlob
 	);
-	if(errorBlob.Get() == nullptr) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader file not found!", path);
+	if(_errorBlob.Get() == nullptr) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Shader file not found!", path);
 	else
 	{
 		Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(
 			r,
-			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(errorBlob->GetBufferPointer())).c_str(),
+			(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer())).c_str(),
 			path
 		);
 		
-		SetLastWarning(Warning(r, (char*)errorBlob->GetBufferPointer(), 2, nullptr));
+		SetLastWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
 	}
 #endif
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *Device, const char *shaderSourceCode, const char *entry_function, ShaderFeatureLevel fl):
-	device(Device),
-	entry(entry_function),
-	featureLevel(fl),
-	constantBuffers({nullptr}),
-	shaderBlob(nullptr),
-	errorBlob(nullptr)
+	_device(Device),
+	_entry(entry_function),
+	_featureLevel(fl),
+	_constantBuffers({nullptr}),
+	_shaderBlob(nullptr),
+	_errorBlob(nullptr)
 {
 }
 
 Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *Device, const std::filesystem::path &path, const char *entry_function, ShaderFeatureLevel fl) :
-	device(Device),
-	entry(entry_function),
-	featureLevel(fl),
-	constantBuffers({nullptr}),
-	shaderBlob(nullptr),
-	errorBlob(nullptr)
+	_device(Device),
+	_entry(entry_function),
+	_featureLevel(fl),
+	_constantBuffers({nullptr}),
+	_shaderBlob(nullptr),
+	_errorBlob(nullptr)
 {
 }
 
 void IShader::SetData(unsigned index, void *data, unsigned dataSize)
 {
-	if (constantBuffers[index].Get() == nullptr)
+	if (_constantBuffers[index].Get() == nullptr)
 	{
 		D3D11_BUFFER_DESC constantBufferDesc{};
 		constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -131,32 +131,32 @@ void IShader::SetData(unsigned index, void *data, unsigned dataSize)
 		D3D11_SUBRESOURCE_DATA res{};
 		res.pSysMem = data;
 
-		HRESULT r = device->device->CreateBuffer(&constantBufferDesc, &res, constantBuffers[index].ReleaseAndGetAddressOf());
+		HRESULT r = _device->_device->CreateBuffer(&constantBufferDesc, &res, _constantBuffers[index].ReleaseAndGetAddressOf());
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to create a constant buffer for a shader!");
 	}
 	else
 	{
 		D3D11_MAPPED_SUBRESOURCE res;
-		HRESULT r = device->context->Map(constantBuffers[index].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &res);
+		HRESULT r = _device->_context->Map(_constantBuffers[index].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &res);
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to write the shader data!");
 		memcpy(res.pData, data, dataSize);
-		device->context->Unmap(constantBuffers[index].Get(), 0);
+		_device->_context->Unmap(_constantBuffers[index].Get(), 0);
 	}
 }
 
 
 ShaderFeatureLevel IShader::GetFeatureLevel()
 {
-	return featureLevel;
+	return _featureLevel;
 }
 
 std::string IShader::GetEntryName()
 {
-	return std::string(entry);
+	return std::string(_entry);
 }
 
 const char* IShader::GetCompilationErrorsAndWarnings()
 {
-	if(this->errorBlob == nullptr) return nullptr;
-	return static_cast<const char*>(this->errorBlob->GetBufferPointer());
+	if(this->_errorBlob == nullptr) return nullptr;
+	return static_cast<const char*>(this->_errorBlob->GetBufferPointer());
 }

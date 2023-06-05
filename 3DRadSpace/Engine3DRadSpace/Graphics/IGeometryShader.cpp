@@ -4,9 +4,9 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
-const char *IGeometryShader::determineTarget()
+const char *IGeometryShader::_determineTarget()
 {
-	switch(featureLevel)
+	switch(_featureLevel)
 	{
 		case ShaderFeatureLevel::DX_V4:
 			return "gs_4_0";
@@ -22,12 +22,12 @@ const char *IGeometryShader::determineTarget()
 	}
 }
 
-void IGeometryShader::createShader()
+void IGeometryShader::_createShader()
 {
 #ifdef _DX11
-	HRESULT r = device->device->CreateDomainShader(
-		shaderBlob->GetBufferPointer(),
-		shaderBlob->GetBufferSize(),
+	HRESULT r = _device->_device->CreateDomainShader(
+		_shaderBlob->GetBufferPointer(),
+		_shaderBlob->GetBufferSize(),
 		nullptr,
 		nullptr
 	);
@@ -39,28 +39,28 @@ void IGeometryShader::createShader()
 IGeometryShader::IGeometryShader(GraphicsDevice *device, const char *source, const char *fnEntry, ShaderFeatureLevel fs) :
 	IShader(device, source, fnEntry, fs)
 {
-	compileShader(source, determineTarget());
-	createShader();
+	_compileShader(source, _determineTarget());
+	_createShader();
 }
 
 IGeometryShader::IGeometryShader(GraphicsDevice *device, const std::filesystem::path &path, const char *fnEntry, ShaderFeatureLevel fs) :
 	IShader(device, path, fnEntry, fs)
 {
-	compileShaderFromFile(path.string().c_str(), determineTarget());
-	createShader();
+	_compileShaderFromFile(path.string().c_str(), _determineTarget());
+	_createShader();
 }
 
 void IGeometryShader::SetTexture(unsigned index, Texture2D *texture)
 {
 #ifdef _DX11
-	device->context->GSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
+	_device->_context->GSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IGeometryShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
 #ifdef _DX11
-	device->context->GSSetSamplers(index, 1, samplerState->samplerState.GetAddressOf());
+	_device->_context->GSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
@@ -68,10 +68,10 @@ void Engine3DRadSpace::Graphics::IGeometryShader::SetShader()
 {
 #ifdef _DX11
 	unsigned i;
-	auto validConstantBuffers = this->validConstantBuffers(i);
-	device->context->GSSetConstantBuffers(0, i, validConstantBuffers.data());
+	auto validConstantBuffers = this->_validConstantBuffers(i);
+	_device->_context->GSSetConstantBuffers(0, i, validConstantBuffers.data());
 
-	device->context->GSSetShader(shader.Get(), nullptr, 0);
+	_device->_context->GSSetShader(_shader.Get(), nullptr, 0);
 #endif // _DX11
 }
 

@@ -6,7 +6,7 @@
 
 
 //Forward declarations of object reflection data
-__REFL_DEF(Camera)
+REFL_DEF(Camera)
 
 INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {

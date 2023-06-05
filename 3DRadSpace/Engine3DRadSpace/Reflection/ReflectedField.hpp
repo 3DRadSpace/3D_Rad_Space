@@ -3,12 +3,6 @@
 
 namespace Engine3DRadSpace::Reflection
 {
-	template<typename T>
-	concept ReflectableType = requires
-	{
-		GetFieldRepresentation<T>();
-	};
-
 	class IReflectedField
 	{
 	public:
@@ -31,16 +25,16 @@ namespace Engine3DRadSpace::Reflection
 	template<ReflectableType T>
 	class ReflectedField : public IReflectedField
 	{
-		const size_t offset;
-		const std::string name;
-		const std::string desc;
-		const T defaultVal;
+		const size_t _offset;
+		const std::string _name;
+		const std::string _desc;
+		const T _defaultVal;
 	public:
 		ReflectedField(const size_t offset_obj_field, std::string visibleName, std::string description, T defaultValue) :
-			offset(offset_obj_field),
-			name(visibleName),
-			desc(description),
-			defaultVal(defaultValue)
+			_offset(offset_obj_field),
+			_name(visibleName),
+			_desc(description),
+			_defaultVal(defaultValue)
 		{
 		}
 
@@ -50,11 +44,11 @@ namespace Engine3DRadSpace::Reflection
 		}
 		const std::string FieldName() const override
 		{
-			return name;
+			return _name;
 		}
 		const std::string FieldDesc() const override
 		{
-			return desc;
+			return _desc;
 		}
 		const size_t TypeSize() const override
 		{
@@ -62,19 +56,19 @@ namespace Engine3DRadSpace::Reflection
 		}
 		const ptrdiff_t FieldOffset() const override
 		{
-			return offset;
+			return _offset;
 		}
 
 		const void *DefaultValue() const override
 		{
-			return reinterpret_cast<const void *>(&defaultVal);
+			return reinterpret_cast<const void *>(&_defaultVal);
 		}
 
 		void *Get(void *objPtr) const override
 		{
 			if(objPtr == nullptr) throw std::invalid_argument("Get(): objPtr = nullptr");
 
-			return reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + offset);
+			return reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + _offset);
 		}
 
 		void Set(void *objPtr, void *value) const override
@@ -82,7 +76,7 @@ namespace Engine3DRadSpace::Reflection
 			if(objPtr == nullptr) throw std::invalid_argument("Set(): objPtr = nullptr");
 			if(value == nullptr) throw std::invalid_argument("Set(): value = nullptr");
 
-			T *lhs = reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + offset);
+			T *lhs = reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + _offset);
 			T *rhs = reinterpret_cast<T *>(value);
 
 			*lhs = *rhs;

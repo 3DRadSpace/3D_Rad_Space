@@ -8,6 +8,27 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{4fcb0b5b-3d67-467b-9516-eaa64449f822}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithms">
+      <UniqueIdentifier>{a1e4e2ca-c3fd-4021-8b79-0196a753886c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{ad7a068e-cf11-453d-b8c9-49084e506fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection">
+      <UniqueIdentifier>{bbec4381-8e20-4079-9181-e161039a4be6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Shaders">
+      <UniqueIdentifier>{4eba2743-fca9-4ee9-8f8b-ed28e6fa623b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{98ba1bb6-574d-4ca8-9ea0-0bb9df2312cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{d2c448bb-bd16-43f9-a299-5fe1925836bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{aa268d4d-1dc2-470d-8320-74d7083524ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -21,99 +42,275 @@
     <ClInclude Include="IInitializable.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable.hpp" />
-    <ClInclude Include="GameWindow.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Color.hpp" />
-    <ClInclude Include="Reflection\UUID.hpp" />
-    <ClInclude Include="Reflection\Reflection.hpp" />
-    <ClInclude Include="Reflection\ReflectedObject.hpp" />
-    <ClInclude Include="Reflection\ReflectedField.hpp" />
-    <ClInclude Include="Reflection\FieldRepresentation.hpp" />
-    <ClInclude Include="Objects\Camera.hpp" />
-    <ClInclude Include="Math\Math.hpp" />
-    <ClInclude Include="Math\Matrix.hpp" />
-    <ClInclude Include="Math\Point.hpp" />
-    <ClInclude Include="Math\Quaternion.hpp" />
-    <ClInclude Include="Math\Rectangle.hpp" />
-    <ClInclude Include="Math\Vector2.hpp" />
-    <ClInclude Include="Math\Vector3.hpp" />
-    <ClInclude Include="Math\Vector4.hpp" />
-    <ClInclude Include="Logging\Error.hpp" />
-    <ClInclude Include="Logging\Exception.hpp" />
-    <ClInclude Include="Logging\ResourceLoadingError.hpp" />
-    <ClInclude Include="Logging\Warning.hpp" />
-    <ClInclude Include="Input\Keyboard.hpp" />
-    <ClInclude Include="Input\Mouse.hpp" />
-    <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
-    <ClInclude Include="Graphics\VertexTopology.hpp" />
-    <ClInclude Include="Graphics\VertexDeclarations.hpp" />
-    <ClInclude Include="Graphics\VertexBuffer.hpp" />
-    <ClInclude Include="Graphics\Texture2D.hpp" />
-    <ClInclude Include="Graphics\SpriteBatch.hpp" />
-    <ClInclude Include="Graphics\ShaderPipeline.hpp" />
-    <ClInclude Include="Graphics\ShaderFeatureLevel.hpp" />
-    <ClInclude Include="Graphics\SamplerState.hpp" />
-    <ClInclude Include="Graphics\RasterizerState.hpp" />
-    <ClInclude Include="Graphics\ModelMeshPart.hpp" />
-    <ClInclude Include="Graphics\ModelMesh.hpp" />
-    <ClInclude Include="Graphics\Model3D.hpp" />
-    <ClInclude Include="Graphics\DepthStencilState.hpp" />
-    <ClInclude Include="Graphics\IndexBuffer.hpp" />
-    <ClInclude Include="Graphics\IVertexShader.hpp" />
-    <ClInclude Include="Graphics\IShader.hpp" />
-    <ClInclude Include="Graphics\IPixelShader.hpp" />
-    <ClInclude Include="Graphics\ShaderCompilationError.hpp" />
-    <ClInclude Include="Graphics\IHullShader.hpp" />
-    <ClInclude Include="Graphics\IDomainShader.hpp" />
-    <ClInclude Include="Graphics\IGeometryShader.hpp" />
-    <ClInclude Include="Graphics\Shaders\BasicTextured_NBT.hpp" />
-    <ClInclude Include="Graphics\Shaders\Blank_NoMatrix.hpp" />
-    <ClInclude Include="Graphics\Shaders\BlankShader.hpp" />
-    <ClInclude Include="Graphics\Shaders\SpriteShader.hpp" />
+    <ClInclude Include="Reflection\UUID.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectedObject.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectedField.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Point.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Rectangle.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector4.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\ResourceLoadingError.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Warning.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\VertexTopology.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\VertexDeclarations.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\VertexBuffer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture2D.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\SpriteBatch.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ShaderPipeline.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ShaderFeatureLevel.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\SamplerState.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\RasterizerState.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ModelMeshPart.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ModelMesh.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model3D.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IVertexShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IPixelShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ShaderCompilationError.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IHullShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IDomainShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IGeometryShader.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Shaders\SpriteShader.hpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\LevenshteinDistance.hpp">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Shaders\BasicTextured_NBT.hpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Shaders\Blank_NoMatrix.hpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Shaders\BlankShader.hpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IndexBuffer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\Reflection.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Mouse.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Keyboard.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Camera.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DepthStencilState.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Error.hpp">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Exception.hpp">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\FieldRepresentation.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\RenderTarget.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DepthStencilBuffer.hpp" />
+    <ClInclude Include="Graphics\BlendState.hpp" />
+    <ClInclude Include="Reflection\ReflectedFunction.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="IObject.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
-    <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Reflection\ReflectedObject.cpp" />
-    <ClCompile Include="Reflection\FieldRepresentation.cpp" />
-    <ClCompile Include="Objects\Camera.cpp" />
-    <ClCompile Include="Math\Math.cpp" />
-    <ClCompile Include="Math\Matrix.cpp" />
-    <ClCompile Include="Math\Point.cpp" />
-    <ClCompile Include="Math\Quaternion.cpp" />
-    <ClCompile Include="Math\Rectangle.cpp" />
-    <ClCompile Include="Math\Vector2.cpp" />
-    <ClCompile Include="Math\Vector3.cpp" />
-    <ClCompile Include="Math\Vector4.cpp" />
-    <ClCompile Include="Logging\Error.cpp" />
-    <ClCompile Include="Logging\Exception.cpp" />
-    <ClCompile Include="Logging\Warning.cpp" />
-    <ClCompile Include="Input\Keyboard.cpp" />
-    <ClCompile Include="Input\Mouse.cpp" />
-    <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
-    <ClCompile Include="Graphics\VertexBuffer.cpp" />
-    <ClCompile Include="Graphics\Texture2D.cpp" />
-    <ClCompile Include="Graphics\SpriteBatch.cpp" />
-    <ClCompile Include="Graphics\ShaderPipeline.cpp" />
-    <ClCompile Include="Graphics\SamplerState.cpp" />
-    <ClCompile Include="Graphics\RasterizerState.cpp" />
-    <ClCompile Include="Graphics\ModelMeshPart.cpp" />
-    <ClCompile Include="Graphics\ModelMesh.cpp" />
-    <ClCompile Include="Graphics\Model3D.cpp" />
-    <ClCompile Include="Graphics\IndexBuffer.cpp" />
-    <ClCompile Include="Graphics\IShader.cpp" />
-    <ClCompile Include="Graphics\IVertexShader.cpp" />
-    <ClCompile Include="Graphics\IPixelShader.cpp" />
-    <ClCompile Include="Graphics\IHullShader.cpp" />
-    <ClCompile Include="Graphics\IDomainShader.cpp" />
-    <ClCompile Include="Graphics\IGeometryShader.cpp" />
-    <ClCompile Include="Graphics\Shaders\BasicTextured_NBT.cpp" />
-    <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp" />
-    <ClCompile Include="Graphics\Shaders\BlankShader.cpp" />
-    <ClCompile Include="Graphics\Shaders\SpriteShader.cpp" />
+    <ClCompile Include="Reflection\ReflectedObject.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Point.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Rectangle.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Warning.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\VertexBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture2D.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\SpriteBatch.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ShaderPipeline.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\SamplerState.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\RasterizerState.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ModelMeshPart.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ModelMesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Model3D.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IVertexShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IPixelShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IHullShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IDomainShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IGeometryShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Shaders\SpriteShader.cpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Algorithms\LevenshteinDistance.cpp">
+      <Filter>Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Shaders\BasicTextured_NBT.cpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Shaders\BlankShader.cpp">
+      <Filter>Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IndexBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Mouse.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Keyboard.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Camera.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Error.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Exception.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Reflection\FieldRepresentation.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\RenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DepthStencilBuffer.cpp" />
+    <ClCompile Include="Graphics\BlendState.cpp" />
+    <ClCompile Include="Reflection\ReflectedFunction.cpp" />
   </ItemGroup>
 </Project>

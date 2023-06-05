@@ -5,7 +5,7 @@ namespace Engine3DRadSpace::Graphics
 {
 	class ModelMesh
 	{
-		std::vector<std::unique_ptr<ModelMeshPart>> meshParts;
+		std::vector<std::unique_ptr<ModelMeshPart>> _meshParts;
 	public:
 		ModelMesh(std::span<std::unique_ptr<ModelMeshPart>> parts);
 		ModelMesh(ModelMeshPart* parts, size_t numParts);

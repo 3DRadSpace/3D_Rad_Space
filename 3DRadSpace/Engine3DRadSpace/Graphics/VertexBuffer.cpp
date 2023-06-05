@@ -4,27 +4,27 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
 VertexBuffer::VertexBuffer(
-	_In_ GraphicsDevice* Device,
+	_In_ GraphicsDevice* device,
 	_In_reads_bytes_(p_structSize * numVertices) const void* data,
 	size_t p_structSize,
 	size_t numVertices,
 	BufferUsage usage
 ):
-	device(Device),
-	numVerts(numVertices),
-	structSize(p_structSize)
+	_device(device),
+	_numVerts(numVertices),
+	_structSize(p_structSize)
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC vertexBuffDesc{};
-	vertexBuffDesc.ByteWidth = UINT(structSize * numVertices);
+	vertexBuffDesc.ByteWidth = UINT(_structSize * numVertices);
 	vertexBuffDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBuffDesc.StructureByteStride = UINT(structSize);
+	vertexBuffDesc.StructureByteStride = UINT(_structSize);
 
 	D3D11_SUBRESOURCE_DATA resource{};
 	resource.pSysMem = data;
 
-	HRESULT r = device->device->CreateBuffer(&vertexBuffDesc, &resource, buffer.GetAddressOf());
+	HRESULT r = device->_device->CreateBuffer(&vertexBuffDesc, &resource, _buffer.GetAddressOf());
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a vertex buffer!");
 #endif
 }
@@ -36,19 +36,19 @@ void VertexBuffer::SetData(void *data, size_t size)
 	res.pData = data;
 	res.DepthPitch = (UINT)(size);
 
-	HRESULT r = device->context->Map(buffer.Get(), 0, D3D11_MAP_READ_WRITE, 0, &res);
+	HRESULT r = _device->_context->Map(_buffer.Get(), 0, D3D11_MAP_READ_WRITE, 0, &res);
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to write a vertex buffer!");
 	
-	device->context->Unmap(buffer.Get(), 0);
+	_device->_context->Unmap(_buffer.Get(), 0);
 #endif
 }
 
 void VertexBuffer::Set()
 {
 #ifdef _DX11
-	unsigned strides = (UINT)this->structSize;
+	unsigned strides = (UINT)this->_structSize;
 	unsigned offsets = 0;
-	this->device->context->IASetVertexBuffers(0, 1, this->buffer.GetAddressOf(), &strides, &offsets);
+	this->_device->_context->IASetVertexBuffers(0, 1, _buffer.GetAddressOf(), &strides, &offsets);
 #endif // _DX11
 }
 
@@ -56,19 +56,19 @@ void VertexBuffer::Draw(unsigned startIndex)
 {
 	Set();
 #if _DX11
-	device->context->Draw(UINT(numVerts), UINT(startIndex));
+	_device->_context->Draw(UINT(_numVerts), UINT(startIndex));
 #endif
 }
 
 size_t VertexBuffer::TotalSize()
 {
-	return this->numVerts * this->structSize;
+	return _numVerts * _structSize;
 }
 size_t VertexBuffer::StructSize()
 {
-	return this->structSize;
+	return _structSize;
 }
 size_t VertexBuffer::NumVertices()
 {
-	return this->numVerts;
+	return _numVerts;
 }

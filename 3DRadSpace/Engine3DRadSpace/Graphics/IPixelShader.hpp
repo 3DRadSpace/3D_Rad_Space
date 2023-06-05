@@ -6,11 +6,11 @@ namespace Engine3DRadSpace::Graphics
 	class IPixelShader : public IShader
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader> _shader;
 
-		void createShader();
+		void _createShader();
 #endif
-		const char *determineTarget();
+		const char *_determineTarget();
 	public:
 		
 		IPixelShader(GraphicsDevice *device, const char *shaderSource, const char *entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);

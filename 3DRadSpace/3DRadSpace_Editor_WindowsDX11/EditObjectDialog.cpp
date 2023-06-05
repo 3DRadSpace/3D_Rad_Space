@@ -785,7 +785,7 @@ bool EditObjectDialog::setObject()
 				case FieldRepresentationType::Key:
 				{
 					HWND hotkey = std::get<HWND>(windows[i++]);
-					int r = SendMessageA(hotkey, HKM_GETHOTKEY, 0, 0);
+					int r = (int)SendMessageA(hotkey, HKM_GETHOTKEY, 0, 0);
 					Input::Key k = static_cast<Input::Key>(LOBYTE(LOWORD(r)));
 					if(k == Input::Key::None)
 					{

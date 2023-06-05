@@ -7,10 +7,10 @@ namespace Engine3DRadSpace
 {
 	class Window
 	{
-		void* window;
+		void* _window;
 
-		Engine3DRadSpace::Input::Mouse mouse;
-		Engine3DRadSpace::Input::Keyboard keyboard;
+		Engine3DRadSpace::Input::Mouse _mouse;
+		Engine3DRadSpace::Input::Keyboard _keyboard;
 
 		void _keyUp(uint8_t k);
 		void _keyDown(uint8_t k);
@@ -20,7 +20,9 @@ namespace Engine3DRadSpace
 		Window(const char* title, int width = 800, int height = 600);
 		//Used for the Windows editor frontend.
 		Window(void* hInstance, void* parentWindow);
-		Window(Window& wnd);
+
+		Window(Window &) = delete;
+		Window(Window&& wnd);
 
 		Window& operator=(Window& wnd) = delete;
 

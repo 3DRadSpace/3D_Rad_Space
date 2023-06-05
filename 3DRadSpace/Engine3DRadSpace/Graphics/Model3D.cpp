@@ -19,7 +19,7 @@ Assimp::Importer importer;
 std::unique_ptr<Shaders::BasicTextured_NBT> basicTexturedNBT;
 
 Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
-	device(Device)
+	_device(Device)
 {
 	if(basicTexturedNBT == nullptr)
 	{
@@ -54,7 +54,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 			p.remove_filename();
 			p += texturePath.C_Str();
 
-			textures.push_back(std::make_unique<Texture2D>(Device, p.c_str()));
+			_textures.push_back(std::make_unique<Texture2D>(Device, p.c_str()));
 		}
 	}
 	
@@ -132,15 +132,15 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 
 	//generate node structure
 	unsigned numChildren = scene->mRootNode->mNumChildren;
-	meshes.reserve(numChildren);
+	_meshes.reserve(numChildren);
 
 	for (unsigned i = 0; i < numChildren; i++)
 	{
-		processNode(meshParts,scene->mRootNode->mChildren[i]);
+		_processNode(meshParts,scene->mRootNode->mChildren[i]);
 	}
 }
 
-void Model3D::processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, void* currentNode)
+void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, void* currentNode)
 {
 	if (currentNode == nullptr) return;
 	auto node = static_cast<aiNode*>(currentNode);
@@ -153,17 +153,17 @@ void Model3D::processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, vo
 		lparts.push_back(std::move(parts[node->mMeshes[i]]));
 		lparts[i]->Transform = Matrix(reinterpret_cast<float*>(&node->mTransformation));
 	}
-	meshes.push_back(std::make_unique<ModelMesh>(lparts));
+	_meshes.push_back(std::make_unique<ModelMesh>(lparts));
 
 	for (unsigned i = 0; i < node->mNumChildren; i++)
 	{
-		processNode(parts,node->mChildren[i]);
+		_processNode(parts,node->mChildren[i]);
 	}
 }
 
 void Model3D::Draw()
 {
-	for (auto& mesh : meshes)
+	for (auto& mesh :_meshes)
 	{
 		mesh->Draw();
 	}
@@ -171,15 +171,15 @@ void Model3D::Draw()
 
 Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::begin()
 {
-	return meshes.begin();
+	return _meshes.begin();
 }
 
 Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::end()
 {
-	return meshes.end();
+	return _meshes.end();
 }
 
 ModelMesh *Engine3DRadSpace::Graphics::Model3D::operator[](unsigned i)
 {
-	return meshes.at(i).get();
+	return _meshes.at(i).get();
 }

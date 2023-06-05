@@ -16,6 +16,8 @@
 #include <unordered_map>
 #include <functional>
 #include <filesystem>
+#include <set>
+#include <variant>
 
 #ifdef _WIN32
 #define NOMINMAX

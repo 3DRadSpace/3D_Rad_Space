@@ -6,10 +6,10 @@ namespace Engine3DRadSpace::Graphics
 	class IDomainShader : public IShader
 	{
 #ifdef _DX11
-		Microsoft::WRL::ComPtr<ID3D11DomainShader> shader;
-		const char *determineTarget();
+		Microsoft::WRL::ComPtr<ID3D11DomainShader> _shader;
+		const char *_determineTarget();
 #endif
-		void createShader();
+		void _createShader();
 	public:
 		IDomainShader(GraphicsDevice *device, const char *source, const char *fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
 		IDomainShader(GraphicsDevice *device, const std::filesystem::path &path, const char *fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);

@@ -47,23 +47,23 @@ public:
 	Key TestKey;
 };
 
-__REFL_BEGIN(TestObject, "Test Object", "Tests", "Dummy test object")
-__REFL_FIELD(TestObject, std::string, Name, "Name", "Test object", "Name of the object")
-__REFL_FIELD(TestObject, std::string, Tag, "Tag", "", "Object tag")
-__REFL_FIELD(TestObject, bool, Enabled, "Enabled", true, "Is the object enabled?")
-__REFL_FIELD(TestObject, bool, Visible, "Visible", true, "Is the object visible?")
-__REFL_FIELD(TestObject, Vector3, Position, "Position", Vector3::Zero(), "Object position in world")
-__REFL_FIELD(TestObject, Vector3, RotationCenter, "Rotation center", Vector3::Zero(), "Rotation pivot point")
-__REFL_FIELD(TestObject, Quaternion, Rotation, "Rotation", Quaternion(), "Rotation")
-__REFL_FIELD(TestObject, Vector3, Scale, "Scale", Vector3::One(), "Object scale")
-__REFL_FIELD(TestObject, int, Integer, "Test Integer", 5, "int32_t value used for testing")
-__REFL_FIELD(TestObject, float, Float, "Test float", 1.0f, "test float value")
-__REFL_FIELD(TestObject, Color, Colour, "Test color", Colors::White, "test color")
-__REFL_FIELD(TestObject, Math::Rectangle, Rectangle1, "Test rectangle 1", Math::Rectangle(1, 2, 3, 4), "integer rectangle")
-__REFL_FIELD(TestObject, RectangleF, Rectangle2, "Test rectangle 2", RectangleF(5, 4, 3, 2), "float rectangle")
-__REFL_FIELD(TestObject, Vector4, Vector, "Vector4", Vector4(0, 0, 0, 1), "Test vector4")
-__REFL_FIELD(TestObject, Key, TestKey, "Test key", Key::ESC, "Dummy test key")
-__REFL_END
+REFL_BEGIN(TestObject, "Test Object", "Tests", "Dummy test object")
+	REFL_FIELD(TestObject, std::string, Name, "Name", "Test object", "Name of the object")
+	REFL_FIELD(TestObject, std::string, Tag, "Tag", "", "Object tag")
+	REFL_FIELD(TestObject, bool, Enabled, "Enabled", true, "Is the object enabled?")
+	REFL_FIELD(TestObject, bool, Visible, "Visible", true, "Is the object visible?")
+	REFL_FIELD(TestObject, Vector3, Position, "Position", Vector3::Zero(), "Object position in world")
+	REFL_FIELD(TestObject, Vector3, RotationCenter, "Rotation center", Vector3::Zero(), "Rotation pivot point")
+	REFL_FIELD(TestObject, Quaternion, Rotation, "Rotation", Quaternion(), "Rotation")
+	REFL_FIELD(TestObject, Vector3, Scale, "Scale", Vector3::One(), "Object scale")
+	REFL_FIELD(TestObject, int, Integer, "Test Integer", 5, "int32_t value used for testing")
+	REFL_FIELD(TestObject, float, Float, "Test float", 1.0f, "test float value")
+	REFL_FIELD(TestObject, Color, Colour, "Test color", Colors::White, "test color")
+	REFL_FIELD(TestObject, Math::Rectangle, Rectangle1, "Test rectangle 1", Math::Rectangle(1, 2, 3, 4), "integer rectangle")
+	REFL_FIELD(TestObject, RectangleF, Rectangle2, "Test rectangle 2", RectangleF(5, 4, 3, 2), "float rectangle")
+	REFL_FIELD(TestObject, Vector4, Vector, "Vector4", Vector4(0, 0, 0, 1), "Test vector4")
+	REFL_FIELD(TestObject, Key, TestKey, "Test key", Key::ESC, "Dummy test key")
+REFL_END
 
 TEST(ReflectionTests, VisibleStrings)
 {

@@ -4,9 +4,9 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
-const char *IDomainShader::determineTarget()
+const char *IDomainShader::_determineTarget()
 {
-	switch(featureLevel)
+	switch(_featureLevel)
 	{
 		case ShaderFeatureLevel::DX_V4:
 			return "ds_4_0";
@@ -22,12 +22,12 @@ const char *IDomainShader::determineTarget()
 	}
 }
 
-void IDomainShader::createShader()
+void IDomainShader::_createShader()
 {
 #ifdef _DX11
-	HRESULT r = device->device->CreateDomainShader(
-		shaderBlob->GetBufferPointer(),
-		shaderBlob->GetBufferSize(),
+	HRESULT r = _device->_device->CreateDomainShader(
+		_shaderBlob->GetBufferPointer(),
+		_shaderBlob->GetBufferSize(),
 		nullptr,
 		nullptr
 	);
@@ -39,28 +39,28 @@ void IDomainShader::createShader()
 IDomainShader::IDomainShader(GraphicsDevice *device, const char *source, const char *fnEntry, ShaderFeatureLevel fs) :
 	IShader(device, source, fnEntry, fs)
 {
-	compileShader(source, determineTarget());
-	createShader();
+	_compileShader(source, _determineTarget());
+	_createShader();
 }
 
 IDomainShader::IDomainShader(GraphicsDevice *device, const std::filesystem::path &path, const char *fnEntry, ShaderFeatureLevel fs):
 	IShader(device, path, fnEntry, fs)
 {
-	compileShaderFromFile(path.string().c_str(), determineTarget());
-	createShader();
+	_compileShaderFromFile(path.string().c_str(), _determineTarget());
+	_createShader();
 }
 
 void IDomainShader::SetTexture(unsigned index, Texture2D *texture)
 {
 #ifdef _DX11
-	device->context->DSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
+	_device->_context->DSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IDomainShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
 #ifdef _DX11
-	device->context->DSSetSamplers(index, 1, samplerState->samplerState.GetAddressOf());
+	_device->_context->DSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
 #endif // _DX11
 }
 
@@ -68,10 +68,10 @@ void Engine3DRadSpace::Graphics::IDomainShader::SetShader()
 {
 #ifdef _DX11
 	unsigned i;
-	auto validConstantBuffers = this->validConstantBuffers(i);
-	device->context->DSSetConstantBuffers(0, i, validConstantBuffers.data());
+	auto validConstantBuffers = this->_validConstantBuffers(i);
+	_device->_context->DSSetConstantBuffers(0, i, validConstantBuffers.data());
 
-	device->context->DSSetShader(shader.Get(), nullptr, 0);
+	_device->_context->DSSetShader(_shader.Get(), nullptr, 0);
 #endif // _DX11
 }
 

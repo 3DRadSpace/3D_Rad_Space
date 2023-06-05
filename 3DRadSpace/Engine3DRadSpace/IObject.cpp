@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
 
 Engine3DRadSpace::IObject::IObject(GraphicsDevice *gdev, const std::string &name, const std::string &tag, bool enabled, bool visible, Vector3 pos, Vector3 rotCenter, Quaternion rot, Vector3 scale):
-	device(gdev),
+	_device(gdev),
 	Name(name),
 	Tag(tag),
 	Enabled(enabled),
@@ -36,5 +36,5 @@ Engine3DRadSpace::Math::Matrix Engine3DRadSpace::IObject::GetModelMartix()
 
 Engine3DRadSpace::GraphicsDevice *Engine3DRadSpace::IObject::GetGraphicsDeviceHandle()
 {
-	return this->device;
+	return _device;
 }

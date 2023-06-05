@@ -50,7 +50,8 @@ void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
 	_triangleShader.SetBasic();
 	Device->SetTopology(VertexTopology::TriangleList);
 	_triangleBuffer->Draw();
-	//TODO: save backbuffer into a file.
+	Device->SaveBackBufferToFile("Triangle.png");
+	//TODO: Check if the saved image is matching with a expected image.
 
 	if(frameCount == 1) Exit();
 	frameCount++;

@@ -28,17 +28,18 @@ namespace Engine3DRadSpace::Graphics
 
 	class SpriteBatch
 	{
-		GraphicsDevice *gdevice;
-		SpriteBatchSortMode sortingMode;
+		GraphicsDevice *_device;
+		SpriteBatchSortMode _sortingMode;
 		enum SpriteBatchState
 		{
 			Immediate,
 			Ready,
 			BeginCalled,
 			EndCalled
-		} state;
+		} _state;
 
-		std::unique_ptr<Shaders::SpriteShader> spriteShader;
+		std::unique_ptr<Shaders::SpriteShader> _spriteShader;
+
 		struct spriteBatchEntry
 		{
 			const unsigned textureID;
@@ -46,16 +47,32 @@ namespace Engine3DRadSpace::Graphics
 			const Color tintColor;
 			const bool flipU;
 			const bool flipV;
+			const float depth;
+			const SpriteBatchSortMode sortingMode;
+
+			bool operator >(const spriteBatchEntry &b) const;
+			bool operator <(const spriteBatchEntry &b) const;
+			bool operator ==(const spriteBatchEntry &b) const;
 		};
-		std::vector<spriteBatchEntry> entries;
-		std::unordered_map<unsigned, Texture2D *> textures;
 
-		void drawEntry(const spriteBatchEntry& entry);
+		std::multiset<spriteBatchEntry> _entries;
 
-		ID3D11RasterizerState *oldRasterizerState;
+		std::unordered_map<unsigned, Texture2D *> _textures;
 
-		std::unique_ptr<RasterizerState> rasterizerState;
-		std::unique_ptr<SamplerState> samplerState;
+		std::array<VertexPointUV,6> _createQuad(const Engine3DRadSpace::Math::RectangleF &r);
+		void _setEntry(const spriteBatchEntry &entry);
+		void _prepareGraphicsDevice();
+
+		void _drawEntry(const spriteBatchEntry& entry);
+		void _drawAllEntries_SortByTexture();
+		void _restoreGraphicsDevice();
+
+		unsigned _lastID;
+
+		ID3D11RasterizerState *_oldRasterizerState;
+
+		std::unique_ptr<RasterizerState> _rasterizerState;
+		std::unique_ptr<SamplerState> _samplerState;
 	public:
 		SpriteBatch(GraphicsDevice *device);
 
@@ -63,7 +80,9 @@ namespace Engine3DRadSpace::Graphics
 		SpriteBatch(SpriteBatch &&) = delete;
 
 		void Begin(SpriteBatchSortMode sortingMode);
-		void Draw(Texture2D* texture,const Math::Vector2 &pos,const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV);
+		void Begin(SpriteBatchSortMode sortingMode,SamplerState&& samplerState);
+
+		void Draw(Texture2D* texture,const Math::Vector2 &pos,const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
 		void End();
 
 		~SpriteBatch() = default;

@@ -10,18 +10,20 @@ namespace Engine3DRadSpace::Graphics::Shaders
 	class ShaderPipeline
 	{
 	protected:
-		GraphicsDevice* device;
-		IVertexShader* vertex;
-		IHullShader* hull;
-		IDomainShader* domain;
-		IGeometryShader* geometry;
-		IPixelShader* pixel;
+		GraphicsDevice* _device;
+		IVertexShader* _vertex;
+		IHullShader* _hull;
+		IDomainShader* _domain;
+		IGeometryShader* _geometry;
+		IPixelShader* _pixel;
 
-		void destroy();
+		void _destroy();
 	public:
 		ShaderPipeline(GraphicsDevice *device, IVertexShader* vertexShader, IPixelShader* fragmentShader, IHullShader* hullShader = nullptr,
 			IDomainShader* domainShader = nullptr, IGeometryShader* geometryShader = nullptr);
+
 		ShaderPipeline(ShaderPipeline& p);
+		ShaderPipeline(ShaderPipeline &&p) noexcept;
 
 		ShaderPipeline& operator =(ShaderPipeline& p);
 				int SetAll();
@@ -36,7 +38,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		IShader* GetHullShader();
 		IShader* GetDomainShader();
 		IShader* GetGeometryShader();
-		IShader* GetFragmentShader();
+		IShader* GetPixelShader();
 
 		virtual ~ShaderPipeline();
 	};

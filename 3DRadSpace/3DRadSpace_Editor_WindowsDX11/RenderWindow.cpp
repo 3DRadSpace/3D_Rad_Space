@@ -108,7 +108,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	lines->Draw();
 
 	spriteBatch->Begin(SpriteBatchSortMode::Immediate);
-	//spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+	spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
 	spriteBatch->End();
 
 	//Draw any other objects

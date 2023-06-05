@@ -5,35 +5,52 @@ using namespace Engine3DRadSpace::Graphics::Shaders;
 
 ShaderPipeline::ShaderPipeline(GraphicsDevice *device, IVertexShader *vertexShader, IPixelShader *fragmentShader, IHullShader *hullShader,
 	IDomainShader *domainShader, IGeometryShader *geometryShader ):
-	device(device),
-	vertex(vertexShader),
-	hull(hullShader),
-	domain(domainShader),
-	geometry(geometryShader),
-	pixel(fragmentShader)
+	_device(device),
+	_vertex(vertexShader),
+	_hull(hullShader),
+	_domain(domainShader),
+	_geometry(geometryShader),
+	_pixel(fragmentShader)
 {
 }
 
 Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline& p) : 
-	device(p.device),
-	vertex(p.vertex),
-	hull(p.hull),
-	domain(p.domain),
-	geometry(p.geometry),
-	pixel(p.pixel)
+	_device(p._device),
+	_vertex(p._vertex),
+	_hull(p._hull),
+	_domain(p._domain),
+	_geometry(p._geometry),
+	_pixel(p._pixel)
 {
-	this->destroy();
+	this->_destroy();
+}
+
+Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline &&p) noexcept:
+	_device(p._device),
+	_vertex(p._vertex),
+	_hull(p._hull),
+	_domain(p._domain),
+	_geometry(p._geometry),
+	_pixel(p._pixel)
+{
+	p._vertex = nullptr;
+	p._domain = nullptr;
+	p._geometry = nullptr;
+	p._hull = nullptr;
+	p._pixel = nullptr;
+	p._vertex = nullptr;
+	p._geometry = nullptr;
 }
 
 ShaderPipeline& Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::operator=(ShaderPipeline& p)
 {
-	destroy();
-	this->device = p.device;
-	this->vertex = p.vertex;
-	this->hull = p.hull;
-	this->domain = p.domain;
-	this->geometry = p.geometry;
-	this->pixel = p.pixel;
+	_destroy();
+	_device = p._device;
+	_vertex = p._vertex;
+	_hull = p._hull;
+	_domain = p._domain;
+	_geometry = p._geometry;
+	_pixel = p._pixel;
 	return *this;
 }
 
@@ -58,99 +75,99 @@ int ShaderPipeline::SetBasic()
 
 bool ShaderPipeline::SetVertex()
 {
-	if(vertex == nullptr) return false;
+	if(_vertex == nullptr) return false;
 
-	device->SetShader(vertex);
+	_device->SetShader(_vertex);
 	return true;
 }
 
 bool ShaderPipeline::SetHull()
 {
-	if(hull == nullptr) return false;
+	if(_hull == nullptr) return false;
 
-	device->SetShader(hull);
+	_device->SetShader(_hull);
 	return true;
 }
 
 bool ShaderPipeline::SetDomain()
 {
-	if(domain == nullptr) return false;
+	if(_domain == nullptr) return false;
 
-	device->SetShader(domain);
+	_device->SetShader(_domain);
 	return true;
 }
 
 bool ShaderPipeline::SetGeometry()
 {
-	if(geometry == nullptr) return false;
+	if(_geometry == nullptr) return false;
 
-	device->SetShader(geometry);
+	_device->SetShader(_geometry);
 	return true;
 }
 
 bool ShaderPipeline::SetFragment()
 {
-	if(pixel == nullptr) return false;
+	if(_pixel == nullptr) return false;
 
-	device->SetShader(pixel);
+	_device->SetShader(_pixel);
 	return true;
 }
 
 IShader* ShaderPipeline::GetVertexShader()
 {
-	return this->vertex;
+	return _vertex;
 }
 
 IShader* ShaderPipeline::GetHullShader()
 {
-	return this->hull;
+	return _hull;
 }
 
 IShader* ShaderPipeline::GetDomainShader()
 {
-	return this->domain;
+	return _domain;
 }
 
 IShader* ShaderPipeline::GetGeometryShader()
 {
-	return this->geometry;
+	return _geometry;
 }
 
-IShader* ShaderPipeline::GetFragmentShader()
+IShader* ShaderPipeline::GetPixelShader()
 {
-	return this->pixel;
+	return _pixel;
 }
 
 ShaderPipeline::~ShaderPipeline()
 {
-	destroy();
+	_destroy();
 }
 
-void ShaderPipeline::destroy()
+void ShaderPipeline::_destroy()
 {
-	if (this->vertex != nullptr)
+	if (_vertex != nullptr)
 	{
-		delete this->vertex;
-		this->vertex = nullptr;
+		delete _vertex;
+		_vertex = nullptr;
 	}
-	if (this->hull != nullptr)
+	if (_hull != nullptr)
 	{
-		delete this->hull;
-		this->hull = nullptr;
+		delete _hull;
+		_hull = nullptr;
 	}
-	if (this->domain != nullptr)
+	if (_domain != nullptr)
 	{
-		delete this->domain;
-		this->domain = nullptr;
+		delete _domain;
+		_domain = nullptr;
 	}
-	if (this->geometry != nullptr)
+	if (_geometry != nullptr)
 	{
-		delete this->geometry;
-		this->geometry = nullptr;
+		delete _geometry;
+		_geometry = nullptr;
 	}
-	if (this->pixel != nullptr)
+	if (_pixel != nullptr)
 	{
-		delete this->pixel;
-		this->pixel = nullptr;
+		delete _pixel;
+		_pixel = nullptr;
 	}
 }

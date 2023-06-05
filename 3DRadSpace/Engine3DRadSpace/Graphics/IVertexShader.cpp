@@ -6,9 +6,9 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 
-const char* IVertexShader::determineTarget()
+const char* IVertexShader::_determineTarget()
 {
-	switch(featureLevel)
+	switch(_featureLevel)
 	{
 		case ShaderFeatureLevel::DX_V4:
 			return "vs_4_0";
@@ -24,21 +24,21 @@ const char* IVertexShader::determineTarget()
 	}
 }
 
-void IVertexShader::createShader()
+void IVertexShader::_createShader()
 {
 #ifdef _DX11
-	HRESULT r = device->device->CreateVertexShader(
-		shaderBlob->GetBufferPointer(),
-		shaderBlob->GetBufferSize(),
+	HRESULT r = _device->_device->CreateVertexShader(
+		_shaderBlob->GetBufferPointer(),
+		_shaderBlob->GetBufferSize(),
 		nullptr,
-		shader.ReleaseAndGetAddressOf()
+		_shader.ReleaseAndGetAddressOf()
 	);
 
 	if(FAILED(r)) throw std::exception("Failed to compile the shader!");
 #endif // _DX11
 }
 
-D3D11_INPUT_ELEMENT_DESC *IVertexShader::generateInputElementDesc(std::span<InputLayoutElement> inputLayout)
+D3D11_INPUT_ELEMENT_DESC *IVertexShader::_generateInputElementDesc(std::span<InputLayoutElement> inputLayout)
 {
 #ifdef _DX11
 	size_t numLayoutEntries = inputLayout.size();
@@ -343,17 +343,17 @@ D3D11_INPUT_ELEMENT_DESC *IVertexShader::generateInputElementDesc(std::span<Inpu
 #endif
 }
 
-void IVertexShader::generateInputLayout(std::span<InputLayoutElement> inputLayout)
+void IVertexShader::_generateInputLayout(std::span<InputLayoutElement> inputLayout)
 {
 #ifdef _DX11
-	D3D11_INPUT_ELEMENT_DESC *elements = generateInputElementDesc(inputLayout);
+	D3D11_INPUT_ELEMENT_DESC *elements = _generateInputElementDesc(inputLayout);
 
-	HRESULT r = device->device->CreateInputLayout(
+	HRESULT r = _device->_device->CreateInputLayout(
 		elements,
 		static_cast<UINT>(inputLayout.size()),
-		shaderBlob->GetBufferPointer(),
-		shaderBlob->GetBufferSize(),
-		&this->inputLayout
+		_shaderBlob->GetBufferPointer(),
+		_shaderBlob->GetBufferSize(),
+		&this->_inputLayout
 	);
 	delete[] elements;
 
@@ -364,30 +364,30 @@ void IVertexShader::generateInputLayout(std::span<InputLayoutElement> inputLayou
 IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel fl):
 	IShader(Device, shaderSourceCode, vsEntry, fl)
 {
-	compileShader(shaderSourceCode, determineTarget());
-	createShader();
-	generateInputLayout(inputLayout);
+	_compileShader(shaderSourceCode, _determineTarget());
+	_createShader();
+	_generateInputLayout(inputLayout);
 }
 
 IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path &path, const char *vsEntry, ShaderFeatureLevel fl):
 	IShader(Device, path, vsEntry, fl)
 {
-	compileShaderFromFile(path.string().c_str(), determineTarget());
-	createShader();
-	generateInputLayout(inputLayout);
+	_compileShaderFromFile(path.string().c_str(), _determineTarget());
+	_createShader();
+	_generateInputLayout(inputLayout);
 }
 
 void IVertexShader::SetTexture(unsigned index, Texture2D *texture)
 {
 #ifdef _DX11
-	device->context->VSSetShaderResources(index, 1, texture->resourceView.GetAddressOf());
+	_device->_context->VSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IVertexShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
 #ifdef _DX11
-	device->context->VSSetSamplers(index, 1, samplerState->samplerState.GetAddressOf());
+	_device->_context->VSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
@@ -395,11 +395,11 @@ void IVertexShader::SetShader()
 {
 #ifdef  _DX11
 	unsigned i;
-	auto validConstantBuffers = this->validConstantBuffers(i);
-	device->context->VSSetConstantBuffers(0, i, validConstantBuffers.data());
+	auto validConstantBuffers = this->_validConstantBuffers(i);
+	_device->_context->VSSetConstantBuffers(0, i, validConstantBuffers.data());
 
-	device->context->IASetInputLayout(inputLayout.Get());
-	device->context->VSSetShader(shader.Get(), nullptr, 0);
+	_device->_context->IASetInputLayout(_inputLayout.Get());
+	_device->_context->VSSetShader(_shader.Get(), nullptr, 0);
 #endif //  _DX11
 
 }

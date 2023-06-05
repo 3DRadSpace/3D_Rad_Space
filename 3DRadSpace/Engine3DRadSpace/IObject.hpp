@@ -10,7 +10,7 @@ namespace Engine3DRadSpace
 	class IObject : public IInitiializable, public IUpdateable, public IDrawable
 	{
 	protected:
-		GraphicsDevice* device = nullptr;
+		GraphicsDevice* _device = nullptr;
 	public:
 		IObject(GraphicsDevice* gdev, const std::string &name = "Empty", const std::string &tag = "...", bool enabled = false, bool visible = false,
 			Engine3DRadSpace::Math::Vector3 pos = {0,0,0}, Engine3DRadSpace::Math::Vector3 rotCenter = {0,0,0}, Engine3DRadSpace::Math::Quaternion rot = {0,0,0,1},

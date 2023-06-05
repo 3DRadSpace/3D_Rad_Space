@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
-	device(device)
+	_device(device)
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
@@ -19,13 +19,13 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	D3D11_SUBRESOURCE_DATA data{};
 	data.pSysMem = &indices[0];
 
-	HRESULT r = device->device->CreateBuffer(&desc, &data, &indexBuffer);
+	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
 	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
 #endif
 }
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices):
-	device(device)
+	_device(device)
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
@@ -37,7 +37,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numin
 	D3D11_SUBRESOURCE_DATA data{};
 	data.pSysMem = indices;
 
-	HRESULT r = device->device->CreateBuffer(&desc, &data, &indexBuffer);
+	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
 	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
 #endif
 }
@@ -46,16 +46,16 @@ void Engine3DRadSpace::Graphics::IndexBuffer::SetData(std::span<unsigned> newind
 {
 #ifdef _DX11
 	D3D11_MAPPED_SUBRESOURCE mappedBuff{};
-	HRESULT r = device->context->Map(indexBuffer.Get(), 0, D3D11_MAP_WRITE, 0, &mappedBuff);
+	HRESULT r = _device->_context->Map(_indexBuffer.Get(), 0, D3D11_MAP_WRITE, 0, &mappedBuff);
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to map a index buffer!");
 	memcpy(mappedBuff.pData, &newindices[0], newindices.size_bytes());
-	device->context->Unmap(indexBuffer.Get(), 0);
+	_device->_context->Unmap(_indexBuffer.Get(), 0);
 #endif
 }
 
 void Engine3DRadSpace::Graphics::IndexBuffer::Set(unsigned offset)
 {
 #ifdef _DX11
-	device->context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, offset);
+	_device->_context->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, offset);
 #endif
 }

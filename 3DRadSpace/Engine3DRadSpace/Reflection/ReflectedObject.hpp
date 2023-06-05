@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Reflection
 
 	class ReflectedObject
 	{
-		std::vector<IReflectedField *> fields;
+		std::vector<IReflectedField*> _fields;
 
 		template<ReflectableObject O>
 		Reflection::UUID determineUUID(ObjectTag<O> tag)
@@ -24,7 +24,7 @@ namespace Engine3DRadSpace::Reflection
 		template<ReflectableObject O>
 		ReflectedObject(ObjectTag<O> tag, const std::string &name, const std::string &category, const std::string &desc, std::initializer_list<IReflectedField *> obj_fields) :
 			Name(name),
-			fields(obj_fields),
+			_fields(obj_fields),
 			Category(category),
 			Description(desc),
 			ObjectUUID(determineUUID<O>(tag))

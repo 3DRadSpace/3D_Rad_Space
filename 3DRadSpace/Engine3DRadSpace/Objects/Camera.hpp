@@ -61,4 +61,4 @@ namespace Engine3DRadSpace::Objects
 	};
 }
 
-__REFL_DEF(Camera)
+REFL_DEF(Camera)

@@ -7,22 +7,22 @@ Game::Game(const char* title, int width, int height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
 	this->Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
-	this->valid = true;
+	this->_valid = true;
 }
 
 Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
-	Window(std::make_unique<Engine3DRadSpace::Window>(window))
+	Window(std::make_unique<Engine3DRadSpace::Window>(std::move(window)))
 {
 	Math::Point size = Window->Size();
 
 	this->Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
-	this->valid = true;
+	this->_valid = true;
 }
 
 void Game::Run()
 {
 	this->Initialize();
-	while (running)
+	while (_running)
 	{	
 		RunOneFrame();
 	}
@@ -55,5 +55,5 @@ void Engine3DRadSpace::Game::RunOneFrame()
 
 void Engine3DRadSpace::Game::Exit()
 {
-	running = false;
+	_running = false;
 }

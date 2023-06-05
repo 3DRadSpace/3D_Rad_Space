@@ -141,9 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
+    <ClInclude Include="Graphics\BlendState.hpp" />
     <ClInclude Include="Color.hpp" />
+    <ClInclude Include="Graphics\DepthStencilBuffer.hpp" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GameWindow.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="Graphics\DepthStencilState.hpp" />
     <ClInclude Include="Graphics\IndexBuffer.hpp" />
@@ -190,19 +191,22 @@
     <ClInclude Include="Math\Vector4.hpp" />
     <ClInclude Include="Objects\Camera.hpp" />
     <ClInclude Include="Reflection\FieldRepresentation.hpp" />
+    <ClInclude Include="Reflection\ReflectedFunction.hpp" />
     <ClInclude Include="Reflection\ReflectedField.hpp" />
     <ClInclude Include="Reflection\ReflectedObject.hpp" />
     <ClInclude Include="Reflection\Reflection.hpp" />
     <ClInclude Include="Reflection\UUID.hpp" />
     <ClInclude Include="Graphics\ShaderCompilationError.hpp" />
+    <ClInclude Include="Graphics\RenderTarget.hpp" />
     <ClInclude Include="Viewport.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
+    <ClCompile Include="Graphics\BlendState.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Graphics\DepthStencilBuffer.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />
@@ -240,7 +244,9 @@
     <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Reflection\FieldRepresentation.cpp" />
+    <ClCompile Include="Reflection\ReflectedFunction.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp" />
+    <ClCompile Include="Graphics\RenderTarget.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

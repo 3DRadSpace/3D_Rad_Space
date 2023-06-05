@@ -7,9 +7,9 @@ namespace Engine3DRadSpace::Graphics
 {
 	class ModelMeshPart
 	{
-		GraphicsDevice* device;
+		GraphicsDevice* _device;
 
-		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *shaders;
+		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *_shaders;
 	public:
 		std::unique_ptr<Engine3DRadSpace::Graphics::IndexBuffer> IndexBuffer;
 		std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer> VertexBuffer;
@@ -51,7 +51,7 @@ namespace Engine3DRadSpace::Graphics
 		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline* shaders,
 		Engine3DRadSpace::GraphicsDevice* Device, std::span<V> vertices, std::span<unsigned> indices
 	):
-		device(Device)
+		_device(Device)
 	{
 		VertexBuffer = std::make_unique<Engine3DRadSpace::Graphics::VertexBufferV<V>>(Device, vertices);
 		IndexBuffer = std::make_unique<Engine3DRadSpace::Graphics::IndexBuffer>(Device, indices);

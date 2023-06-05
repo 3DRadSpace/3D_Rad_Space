@@ -150,15 +150,15 @@ namespace Engine3DRadSpace
 
 		class Keyboard
 		{
-			uint8_t keys[10];
+			uint8_t _keys[10];
 
 			/// used inside the Window class
-			void addKey(uint8_t k);
-			void removeKey(uint8_t k);
-			void erase();
+			void _addKey(uint8_t k);
+			void _removeKey(uint8_t k);
+			void _erase();
 		public:
 
-			Keyboard() : keys{ 0 } {};
+			Keyboard();
 
 			bool IsKeyDown(Key k);
 			bool IsKeyUp(Key k);

@@ -10,8 +10,8 @@ namespace Engine3DRadSpace
 {
 	class Game : public IUpdateable, public IDrawable, public IInitiializable
 	{
-		bool valid;
-		bool running = true;
+		bool _valid;
+		bool _running = true;
 
 		double u_dt = 0;
 		double d_dt = 0;
