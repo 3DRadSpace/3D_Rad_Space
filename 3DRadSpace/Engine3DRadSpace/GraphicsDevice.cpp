@@ -65,7 +65,10 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
 
 	_stencilBuffer = std::make_unique<DepthStencilBuffer>(this);
-	_context->OMSetDepthStencilState(_stencilBuffer->_stencilState.Get(), 1);
+	_stencilState = std::make_unique<DepthStencilState>(this);
+	_blendState = std::make_unique<BlendState>(this);
+
+	_context->OMSetDepthStencilState(_stencilState->_state.Get(), 1);
 
 
 
@@ -109,38 +112,6 @@ void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewport
 #ifdef _DX11
 	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
 #endif // _DX11
-}
-
-void Engine3DRadSpace::GraphicsDevice::SetNewDepthStencil(const Graphics::DepthStencilState& state)
-{
-#ifdef _DX11
-	//create a description matching the state parameter.
-	D3D11_DEPTH_STENCIL_DESC dsDesc;
-
-	dsDesc.DepthEnable = state.EnableDepthCheck;
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK(state.WriteMask); //REFACTORING-NOTE: don't use initialization, may prefer a switch-case.
-	dsDesc.DepthFunc = D3D11_COMPARISON_FUNC(state.Function);
-
-	dsDesc.StencilEnable = state.EnableStencilCheck;
-	dsDesc.StencilReadMask = state.ReadMask;
-	dsDesc.StencilWriteMask = state.WriteMask;
-
-	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP(state.FrontFace.StencilFail);
-	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP(state.FrontFace.DepthFail);
-	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP(state.FrontFace.PassOp);
-	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_FUNC(state.FrontFace.Function);
-
-	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP(state.BackFace.StencilFail);
-	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP(state.BackFace.DepthFail);
-	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP(state.BackFace.PassOp);
-	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_FUNC(state.BackFace.Function);
-
-	HRESULT r = _device->CreateDepthStencilState(&dsDesc, _stencilBuffer->_stencilState.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state");
-
-	//recreate depth view resource.
-	_stencilBuffer = std::make_unique<DepthStencilBuffer>(this);
-#endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
@@ -288,6 +259,25 @@ void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState 
 {
 #ifdef _DX11
 	_context->RSSetState(state->_rasterizerState.Get());
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetDepthStencilBuffer(DepthStencilBuffer *depthBuffer)
+{
+#ifdef _DX11
+	ID3D11RenderTargetView *renderTargets[16];
+	_context->OMGetRenderTargets(16, renderTargets, nullptr);
+	
+	_context->OMSetRenderTargets(16, renderTargets, depthBuffer->_depthView.Get());
+#endif
+}
+
+void Engine3DRadSpace::GraphicsDevice::SetDepthStencilState(DepthStencilState *depthState, unsigned ref = 0)
+{
+#ifdef _DX11
+	if(depthState == nullptr)
+		_context->OMSetDepthStencilState(nullptr, ref);
+	else _context->OMSetDepthStencilState(depthState->_state.Get(), ref);
 #endif
 }
 

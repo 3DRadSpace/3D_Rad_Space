@@ -10,10 +10,10 @@ BlendState::BlendState(GraphicsDevice *device):
 {
 #ifdef _DX11
 	D3D11_BLEND_DESC blendDesc;
-	blendDesc.AlphaToCoverageEnable = true;
-	blendDesc.IndependentBlendEnable = true;
+	blendDesc.AlphaToCoverageEnable = false;
+	blendDesc.IndependentBlendEnable = false;
 
-	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].BlendEnable = false;
 	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
@@ -49,7 +49,7 @@ D3D11_BLEND Engine3DRadSpace::Graphics::BlendState::convert3DRSPBlend_toDX11(Ble
 		case Blend::SourceAlpha:
 			return D3D11_BLEND_SRC_ALPHA;
 
-		case Blend::InverseSourceAlpga:
+		case Blend::InverseSourceAlpha:
 			return D3D11_BLEND_INV_SRC_ALPHA;
 
 		case Blend::DestinationAlpha:
@@ -114,7 +114,7 @@ D3D11_BLEND_OP Engine3DRadSpace::Graphics::BlendState::convert3DRSPBlendOp_toDX1
 	}
 }
 
-BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, RenderTargetBlendState &renderTargetBlendState):
+BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend,const RenderTargetBlendState &renderTargetBlendState):
 	_device(device)
 {
 #ifdef _DX11
@@ -127,7 +127,7 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 	blendDesc.RenderTarget[0].BlendOpAlpha = convert3DRSPBlendOp_toDX11(renderTargetBlendState.BlendOpAlpha);
 	blendDesc.RenderTarget[0].DestBlend = convert3DRSPBlend_toDX11(renderTargetBlendState.DestinationBlend);
 	blendDesc.RenderTarget[0].DestBlendAlpha = convert3DRSPBlend_toDX11(renderTargetBlendState.DestinationBlendAlpha);
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = renderTargetBlendState.WriteMask;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = convert3DRSPColorWrite_toDX11(renderTargetBlendState.WriteMask);
 	blendDesc.RenderTarget[0].SrcBlend = convert3DRSPBlend_toDX11(renderTargetBlendState.SourceBlend);
 	blendDesc.RenderTarget[0].SrcBlendAlpha = convert3DRSPBlend_toDX11(renderTargetBlendState.SourceBlendAlpha);
 
@@ -154,7 +154,7 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 		blendDesc.RenderTarget[i].BlendOpAlpha = convert3DRSPBlendOp_toDX11(renderTargetBlendStates[i].BlendOpAlpha);
 		blendDesc.RenderTarget[i].DestBlend = convert3DRSPBlend_toDX11(renderTargetBlendStates[i].DestinationBlend);
 		blendDesc.RenderTarget[i].DestBlendAlpha = convert3DRSPBlend_toDX11(renderTargetBlendStates[i].DestinationBlendAlpha);
-		blendDesc.RenderTarget[i].RenderTargetWriteMask = renderTargetBlendStates[i].WriteMask;
+		blendDesc.RenderTarget[i].RenderTargetWriteMask = convert3DRSPColorWrite_toDX11(renderTargetBlendStates[i].WriteMask);
 		blendDesc.RenderTarget[i].SrcBlend = convert3DRSPBlend_toDX11(renderTargetBlendStates[i].SourceBlend);
 		blendDesc.RenderTarget[i].SrcBlendAlpha = convert3DRSPBlend_toDX11(renderTargetBlendStates[i].SourceBlendAlpha);
 	}
@@ -164,14 +164,33 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 #endif
 }
 
-Engine3DRadSpace::Graphics::BlendState::BlendState(BlendState &&blend) noexcept :
+D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEnable flag)
+{
+#ifdef _DX11
+	switch(flag)
+	{
+		case ColorWriteEnable::Red:
+			return D3D11_COLOR_WRITE_ENABLE_RED;
+		case ColorWriteEnable::Greed:
+			return D3D11_COLOR_WRITE_ENABLE_GREEN;
+		case ColorWriteEnable::Blue:
+			return D3D11_COLOR_WRITE_ENABLE_BLUE;
+		case ColorWriteEnable::Alpha:
+			return D3D11_COLOR_WRITE_ENABLE_ALPHA;
+		default:
+			return D3D11_COLOR_WRITE_ENABLE_ALL;
+	}
+#endif
+}
+
+BlendState::BlendState(BlendState &&blend) noexcept :
 	_device(blend._device),
 	_blendState(blend._blendState)
 {
 	blend._blendState.Reset();
 }
 
-BlendState &Engine3DRadSpace::Graphics::BlendState::operator=(BlendState &&blend) noexcept
+BlendState &BlendState::operator=(BlendState &&blend) noexcept
 {
 	this->_device = blend._device;
 
@@ -179,4 +198,55 @@ BlendState &Engine3DRadSpace::Graphics::BlendState::operator=(BlendState &&blend
 	this->_blendState = blend._blendState;
 
 	return *this;
+}
+
+BlendState BlendState::Opaque(GraphicsDevice *device)
+{
+	// https://github.com/microsoft/DirectXTK/wiki/CommonStates
+	return BlendState(device); //just return the default descriptor.
+}
+
+BlendState BlendState::AlphaBlend(GraphicsDevice *device)
+{
+	return BlendState(device, false, false, RenderTargetBlendState{
+			.EnableBlending = true,
+			.SourceBlend = Blend::One,
+			.DestinationBlend = Blend::InverseSourceAlpha,
+			.BlendOp = BlendOperation::Add,
+			.SourceBlendAlpha = Blend::One,
+			.DestinationBlendAlpha = Blend::InverseSourceAlpha,
+			.BlendOpAlpha = BlendOperation::Add,
+			.WriteMask = ColorWriteEnable::All
+		}
+	);
+}
+
+BlendState BlendState::Additive(GraphicsDevice *device)
+{
+	return BlendState(device, false, false, RenderTargetBlendState{
+			.EnableBlending = true,
+			.SourceBlend = Blend::SourceAlpha,
+			.DestinationBlend = Blend::One,
+			.BlendOp = BlendOperation::Add,
+			.SourceBlendAlpha = Blend::SourceAlpha,
+			.DestinationBlendAlpha = Blend::One,
+			.BlendOpAlpha = BlendOperation::Add,
+			.WriteMask = ColorWriteEnable::All
+		}
+	);
+}
+
+BlendState BlendState::NonPremultiplied(GraphicsDevice *device)
+{
+	return BlendState(device, false, false, RenderTargetBlendState{
+		.EnableBlending = true,
+		.SourceBlend = Blend::SourceAlpha,
+		.DestinationBlend = Blend::InverseSourceAlpha,
+		.BlendOp = BlendOperation::Add,
+		.SourceBlendAlpha = Blend::SourceAlpha,
+		.DestinationBlendAlpha = Blend::InverseSourceAlpha,
+		.BlendOpAlpha = BlendOperation::Add,
+		.WriteMask = ColorWriteEnable::All
+		}
+	);
 }

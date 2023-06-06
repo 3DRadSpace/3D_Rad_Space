@@ -29,18 +29,20 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
             break;
         }
         case WM_SYSKEYDOWN:
-        case WM_IME_KEYDOWN:
         case WM_KEYDOWN:
-        case WM_CHAR:
         {
             window->_keyDown(static_cast<uint8_t>(wParam));
             return 0;
         }
         case WM_KEYUP:
         case WM_SYSKEYUP:
-        case WM_IME_KEYUP:
         {
             window->_keyUp(static_cast<uint8_t>(wParam));
+            return 0;
+        }
+        case WM_KILLFOCUS:
+        {
+            window->_resetKeyboard();
             return 0;
         }
         case WM_MOUSEWHEEL:
@@ -116,6 +118,11 @@ void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool mid
     _mouse._leftButton = left;
     _mouse._middleButton = middle;
     _mouse._rightButton = right;
+}
+
+void Engine3DRadSpace::Window::_resetKeyboard()
+{
+    _keyboard._erase();
 }
 
 Engine3DRadSpace::Window::Window(const char* title, int width, int height)

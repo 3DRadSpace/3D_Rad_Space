@@ -83,12 +83,14 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 			-std::numbers::pi_v<float> / 2.f + std::numeric_limits<float>::epsilon(),
 			std::numbers::pi_v<float> / 2.f - std::numeric_limits<float>::epsilon()
 		);
-
-		if (keyboard.IsKeyDown(Key::F9))
-		{
-			OutputDebugStringA("pressed F9 \r\n");
-		}
 	}
+
+	if(keyboard.IsKeyDown(Key::Space))
+	{
+		//OutputDebugStringA("pressed F9 \r\n");
+		_keyboardTest = true;
+	}
+	else _keyboardTest = false;
 
 	Quaternion q = Quaternion::FromYawPitchRoll(-cameraPos.Y, 0, 0) * Quaternion::FromYawPitchRoll(0, -cameraPos.X, 0);
 	Camera.Position = Vector3::UnitZ().Transform(q) * (zoom + 5);
@@ -107,9 +109,12 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	Device->SetTopology(VertexTopology::LineList);
 	lines->Draw();
 
-	spriteBatch->Begin(SpriteBatchSortMode::Immediate);
-	spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
-	spriteBatch->End();
+	if(_keyboardTest)
+	{
+		spriteBatch->Begin(SpriteBatchSortMode::Immediate);
+		spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+		spriteBatch->End();
+	}
 
 	//Draw any other objects
 	for (auto& obj : Objects)

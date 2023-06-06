@@ -10,7 +10,7 @@ namespace Engine3DRadSpace::Graphics
         SourceColor,
         InverseSourceColor,
         SourceAlpha,
-        InverseSourceAlpga,
+        InverseSourceAlpha,
         DestinationAlpha,
         InverseDestinationAlpha,
         DestinationColor,
@@ -33,6 +33,15 @@ namespace Engine3DRadSpace::Graphics
         Maximum,
     };
 
+    enum class ColorWriteEnable
+    {
+        Red,
+        Greed,
+        Blue,
+        Alpha,
+        All
+    };
+
     struct RenderTargetBlendState
     {
         bool EnableBlending;
@@ -42,7 +51,7 @@ namespace Engine3DRadSpace::Graphics
         Blend SourceBlendAlpha;
         Blend DestinationBlendAlpha;
         BlendOperation BlendOpAlpha;
-        uint8_t WriteMask;
+        ColorWriteEnable WriteMask;
     };
 
 	class BlendState
@@ -53,6 +62,7 @@ namespace Engine3DRadSpace::Graphics
 
         D3D11_BLEND convert3DRSPBlend_toDX11(Blend b);
         D3D11_BLEND_OP convert3DRSPBlendOp_toDX11(BlendOperation op);
+        D3D11_COLOR_WRITE_ENABLE convert3DRSPColorWrite_toDX11(ColorWriteEnable flag);
 #endif
 	public:
 		/// <summary>
@@ -61,7 +71,7 @@ namespace Engine3DRadSpace::Graphics
 		/// <param name="device">Graphics device required to create the blend state.</param>
 		explicit BlendState(GraphicsDevice *device);
 
-        BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, RenderTargetBlendState &renderTargetBlendState);
+        BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, const RenderTargetBlendState &renderTargetBlendState);
         BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, std::array<RenderTargetBlendState, 8> renderTargetBlendStates);
 
         BlendState(BlendState &) = delete;
@@ -69,6 +79,11 @@ namespace Engine3DRadSpace::Graphics
 
         BlendState &operator=(BlendState &) = delete;
         BlendState &operator=(BlendState &&blend) noexcept;
+
+        static BlendState Opaque(GraphicsDevice *device);
+        static BlendState AlphaBlend(GraphicsDevice *device);
+        static BlendState Additive(GraphicsDevice *device);
+        static BlendState NonPremultiplied(GraphicsDevice *device);
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 	};

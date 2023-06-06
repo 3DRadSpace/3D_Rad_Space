@@ -34,12 +34,13 @@ namespace Engine3DRadSpace
 			CullBack = 3,
 		};
 
+
 		class RasterizerState
 		{
 			Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
 		public:
 
-			RasterizerState(
+			explicit RasterizerState(
 				GraphicsDevice *device,
 				RasterizerFillMode filling = RasterizerFillMode::Solid,
 				RasterizerCullMode culling = RasterizerCullMode::CullBack,
@@ -52,6 +53,17 @@ namespace Engine3DRadSpace
 				bool multisample = false,
 				bool aaLine = false
 			);
+
+			RasterizerState(RasterizerState &) = delete;
+			RasterizerState(RasterizerState &&state) noexcept;
+
+			RasterizerState &operator =(RasterizerState &) = delete;
+			RasterizerState &operator =(RasterizerState &&state) noexcept;
+
+			static RasterizerState CullNone(GraphicsDevice *device);
+			static RasterizerState CullClockwise(GraphicsDevice *device);
+			static RasterizerState CullCounterClockwise(GraphicsDevice *device);
+			static RasterizerState Wireframe(GraphicsDevice *device);
 
 			friend class GraphicsDevice;
 		};

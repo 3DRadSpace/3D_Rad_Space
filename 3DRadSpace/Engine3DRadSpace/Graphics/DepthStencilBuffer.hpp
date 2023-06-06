@@ -1,5 +1,6 @@
 #pragma once
 #include "../GraphicsDevice.hpp"
+#include "DepthStencilState.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -8,9 +9,9 @@ namespace Engine3DRadSpace::Graphics
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthView;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _depthTexture;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _stencilState;
 #endif
 		GraphicsDevice *_device;
+		void _createDepthTexture();
 	public:
 		explicit DepthStencilBuffer(GraphicsDevice* device);
 

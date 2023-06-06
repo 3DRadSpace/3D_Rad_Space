@@ -5,6 +5,7 @@
 #include "Graphics/VertexTopology.hpp"
 #include "Graphics/RasterizerState.hpp"
 #include "Graphics/DepthStencilState.hpp"
+#include "Graphics/DepthStencilBuffer.hpp"
 #include "Graphics/BlendState.hpp"
 
 namespace Engine3DRadSpace::Graphics
@@ -16,6 +17,7 @@ namespace Engine3DRadSpace::Graphics
 	class IShader;
 	class Texture2D;
 	class DepthStencilBuffer;
+	class DepthStencilState;
 	class SpriteBatch;
 	class SamplerState;
 	class RenderTarget;
@@ -36,10 +38,11 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
 
 		Engine3DRadSpace::Math::Point _resolution;
-
-		std::unique_ptr<Graphics::DepthStencilBuffer> _stencilBuffer;
-		std::unique_ptr<Graphics::BlendState> _blendState;
 #endif
+		std::unique_ptr<Graphics::DepthStencilBuffer> _stencilBuffer;
+		std::unique_ptr<Graphics::DepthStencilState> _stencilState;
+		std::unique_ptr<Graphics::BlendState> _blendState;
+
 	public:
 		Microsoft::WRL::ComPtr<ID3D11Device> _device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context;
@@ -55,8 +58,6 @@ namespace Engine3DRadSpace
 		void SetViewport(const Viewport& viewport);
 		void SetViewports(std::span<Viewport> viewports);
 
-		void SetNewDepthStencil(const Graphics::DepthStencilState& state);
-
 		void SetRenderTarget(Graphics::RenderTarget *remderTarget);
 		void SetRenderTargetAndDepth(Graphics::RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer);
 
@@ -64,9 +65,14 @@ namespace Engine3DRadSpace
 		void DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer);
 
 		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
+
+		void SetRasterizerState(const Graphics::RasterizerState *state);
+
+		void SetDepthStencilBuffer(Graphics::DepthStencilBuffer *depthBuffer);
+		void SetDepthStencilState(Graphics::DepthStencilState *depthState, unsigned ref);
+
 		void SetTopology(Graphics::VertexTopology topology);
 		void DrawAuto();
-		void SetRasterizerState(const Graphics::RasterizerState *state);
 		void Present();
 		
 		void SaveBackBufferToFile(const std::string &path);

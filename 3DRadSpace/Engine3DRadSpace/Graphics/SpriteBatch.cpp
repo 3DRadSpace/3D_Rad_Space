@@ -113,6 +113,7 @@ Engine3DRadSpace::Graphics::SpriteBatch::SpriteBatch(GraphicsDevice *device) :
 	_rasterizerState = std::make_unique<RasterizerState>(device, RasterizerFillMode::Solid);
 	_samplerState = std::make_unique<SamplerState>(SamplerState::PointWrap(device));
 	_spriteShader = std::make_unique<Shaders::SpriteShader>(device);
+	_depthBufferState = std::make_unique<DepthStencilState>(DepthStencilState::DepthNone(device));
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
@@ -194,6 +195,24 @@ void Engine3DRadSpace::Graphics::SpriteBatch::End()
 		_lastID = 1;
 		_textures.clear();
 	}
+}
+
+void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)
+{
+	_textures[1] = texture;
+	spriteBatchEntry tempEntry
+	{
+		.textureID = 1u,
+		.rectangle = RectangleF(-1.0f, -1.0f, 2.0f, 2.0f),
+		.tintColor = Colors::White,
+		.flipU = false,
+		.flipV = false,
+		.depth = false,
+		.sortingMode = SpriteBatchSortMode::Immediate
+	};
+
+	_drawEntry(tempEntry);
+	_textures.clear();
 }
 
 bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator>(const spriteBatchEntry &b) const

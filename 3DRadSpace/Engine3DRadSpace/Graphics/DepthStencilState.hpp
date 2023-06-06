@@ -1,4 +1,5 @@
 #pragma once
+#include "../GraphicsDevice.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -32,21 +33,38 @@ namespace Engine3DRadSpace::Graphics
 		DecrementWrap = 8
 	};
 
-	struct DepthStencilState
+	struct FaceOperation
 	{
-		bool EnableDepthCheck;
-		DepthWriteMask Mask;
+		StencilOperation StencilFail;
+		StencilOperation DepthFail;
+		StencilOperation PassOp;
 		ComparisonFunction Function;
+	};
 
-		bool EnableStencilCheck;
-		uint8_t ReadMask;
-		uint8_t WriteMask;
-		struct Operation
-		{
-			StencilOperation StencilFail;
-			StencilOperation DepthFail;
-			StencilOperation PassOp;
-			StencilOperation Function;
-		} FrontFace, BackFace;
+	class DepthStencilState
+	{
+#ifdef _DX11
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _state;
+#endif
+	public:
+		DepthStencilState(GraphicsDevice *device);
+
+		DepthStencilState( GraphicsDevice *device, bool EnableDepth, DepthWriteMask Mask, ComparisonFunction Function, bool EnableStencil,
+			uint8_t ReadMask, uint8_t WriteMask, FaceOperation FrontFace, FaceOperation BackFace);
+
+		DepthStencilState(DepthStencilState &) = delete;
+		DepthStencilState(DepthStencilState &&state) noexcept;
+
+		DepthStencilState& operator=(DepthStencilState &) = delete;
+		DepthStencilState &operator=(DepthStencilState &&state) noexcept;
+
+		static DepthStencilState DepthDefault(GraphicsDevice* device);
+		static DepthStencilState DepthNone(GraphicsDevice *device);
+		static DepthStencilState DepthRead(GraphicsDevice *device);
+
+		static DepthStencilState DepthReverseZ(GraphicsDevice *device);
+		static DepthStencilState DepthReadReverseZ(GraphicsDevice *device);
+
+		friend class GraphicsDevice;
 	};
 }

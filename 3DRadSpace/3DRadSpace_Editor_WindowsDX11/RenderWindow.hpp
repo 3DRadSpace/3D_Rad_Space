@@ -40,6 +40,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D> testTexture;
 	std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> spriteBatch;
 
+	bool _keyboardTest = false;
+
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

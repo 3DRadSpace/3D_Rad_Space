@@ -2,7 +2,7 @@
 #include "Texture2D.hpp"
 #include "VertexBuffer.hpp"
 #include "Shaders/SpriteShader.hpp"
-#include <CommonStates.h>
+#include "DepthStencilState.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -73,6 +73,7 @@ namespace Engine3DRadSpace::Graphics
 
 		std::unique_ptr<RasterizerState> _rasterizerState;
 		std::unique_ptr<SamplerState> _samplerState;
+		std::unique_ptr<DepthStencilState> _depthBufferState;
 	public:
 		SpriteBatch(GraphicsDevice *device);
 
@@ -84,6 +85,8 @@ namespace Engine3DRadSpace::Graphics
 
 		void Draw(Texture2D* texture,const Math::Vector2 &pos,const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
 		void End();
+
+		void DrawQuad(Texture2D *texture);
 
 		~SpriteBatch() = default;
 	};

@@ -208,6 +208,7 @@
     <ClCompile Include="Graphics\DepthStencilBuffer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="Graphics\DepthStencilState.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />
     <ClCompile Include="Graphics\IVertexShader.cpp" />
