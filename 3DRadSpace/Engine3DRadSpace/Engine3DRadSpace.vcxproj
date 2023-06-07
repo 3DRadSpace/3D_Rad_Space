@@ -141,6 +141,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
+    <ClInclude Include="Content\Asset.hpp" />
+    <ClInclude Include="Content\AssetReference.hpp" />
+    <ClInclude Include="Content\ContentManager.hpp" />
+    <ClInclude Include="Content\IAsset.hpp" />
+    <ClInclude Include="ILoadable.hpp" />
     <ClInclude Include="Graphics\BlendState.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="Graphics\DepthStencilBuffer.hpp" />
@@ -198,11 +203,14 @@
     <ClInclude Include="Reflection\UUID.hpp" />
     <ClInclude Include="Graphics\ShaderCompilationError.hpp" />
     <ClInclude Include="Graphics\RenderTarget.hpp" />
+    <ClInclude Include="Objects\Sprite.hpp" />
     <ClInclude Include="Viewport.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
+    <ClCompile Include="Content\ContentManager.cpp" />
+    <ClCompile Include="Content\IAsset.cpp" />
     <ClCompile Include="Graphics\BlendState.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Graphics\DepthStencilBuffer.cpp" />
@@ -248,6 +256,7 @@
     <ClCompile Include="Reflection\ReflectedFunction.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp" />
     <ClCompile Include="Graphics\RenderTarget.cpp" />
+    <ClCompile Include="Objects\Sprite.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -33,7 +33,6 @@ namespace Engine3DRadSpace::Graphics
 		enum SpriteBatchState
 		{
 			Immediate,
-			Ready,
 			BeginCalled,
 			EndCalled
 		} _state;
@@ -59,12 +58,13 @@ namespace Engine3DRadSpace::Graphics
 
 		std::unordered_map<unsigned, Texture2D *> _textures;
 
-		std::array<VertexPointUV,6> _createQuad(const Engine3DRadSpace::Math::RectangleF &r);
+		std::array<VertexPointUV,6> _createQuad(const Engine3DRadSpace::Math::RectangleF &r, bool flipU = false, bool flipV = false);
 		void _setEntry(const spriteBatchEntry &entry);
 		void _prepareGraphicsDevice();
 
 		void _drawEntry(const spriteBatchEntry& entry);
 		void _drawAllEntries_SortByTexture();
+		void _drawAllEntries();
 		void _restoreGraphicsDevice();
 
 		unsigned _lastID;
@@ -81,7 +81,7 @@ namespace Engine3DRadSpace::Graphics
 		SpriteBatch(SpriteBatch &&) = delete;
 
 		void Begin(SpriteBatchSortMode sortingMode);
-		void Begin(SpriteBatchSortMode sortingMode,SamplerState&& samplerState);
+		void Begin(SpriteBatchSortMode sortingMode,SamplerState samplerState);
 
 		void Draw(Texture2D* texture,const Math::Vector2 &pos,const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
 		void End();

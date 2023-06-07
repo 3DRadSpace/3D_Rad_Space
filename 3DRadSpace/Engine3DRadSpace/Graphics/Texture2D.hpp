@@ -19,8 +19,8 @@ namespace Engine3DRadSpace::Graphics
 		Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRenderTarget);
 		Texture2D(GraphicsDevice *device, bool bindRenderTarget = false);
 	public:
-		Texture2D(GraphicsDevice* device,const char *fileName);
-		Texture2D(GraphicsDevice* device, const wchar_t* filename);
+		Texture2D(GraphicsDevice* device, const std::string &fileName);
+		Texture2D(GraphicsDevice* device, const std::wstring &filename);
 
 		Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x, unsigned y);
 		Texture2D(GraphicsDevice *device, void* colors, unsigned x, unsigned y);

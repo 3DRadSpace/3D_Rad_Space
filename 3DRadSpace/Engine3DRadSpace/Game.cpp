@@ -6,8 +6,9 @@ using namespace Engine3DRadSpace::Input;
 Game::Game(const char* title, int width, int height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
-	this->Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
-	this->_valid = true;
+	Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
+	Content = std::make_unique<Engine3DRadSpace::Content::ContentManager>(Device.get());
+	_valid = true;
 }
 
 Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
@@ -15,8 +16,9 @@ Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
 {
 	Math::Point size = Window->Size();
 
-	this->Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
-	this->_valid = true;
+	Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
+	Content = std::make_unique<Engine3DRadSpace::Content::ContentManager>(Device.get());
+	_valid = true;
 }
 
 void Game::Run()

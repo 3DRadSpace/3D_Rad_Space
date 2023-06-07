@@ -21,12 +21,12 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	return {{ FieldRepresentationType::String, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Texture2D>()
+template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<RefTexture2D>()
 {
 	return {{FieldRepresentationType::Image, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Model3D>()
+template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<RefModel3D>()
 {
 	return {{FieldRepresentationType::Model, ""}};
 }

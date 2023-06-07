@@ -7,6 +7,7 @@
 #include "../Graphics/Texture2D.hpp"
 #include "../Graphics/Model3D.hpp"
 #include "../Input/Keyboard.hpp"
+#include "../Content/AssetReference.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -19,6 +20,9 @@ namespace Engine3DRadSpace::Reflection
 
 	template<typename N>
 	concept unsigned_integer = std::is_same_v<N, uint8_t> || std::is_same_v<N, uint16_t> || std::is_same_v<N, uint32_t> || std::is_same_v<N, uint64_t>;
+
+	using RefTexture2D = Engine3DRadSpace::Content::AssetReference<Engine3DRadSpace::Graphics::Texture2D>;
+	using RefModel3D = Engine3DRadSpace::Content::AssetReference<Engine3DRadSpace::Graphics::Model3D>;
 
 	enum class FieldRepresentationType
 	{
@@ -48,8 +52,8 @@ namespace Engine3DRadSpace::Reflection
 	template<unsigned_integer T> FieldRepresentation GetFieldRepresentation() { return {{FieldRepresentationType::Unsigned,""}}; }
 	template<std::floating_point T> FieldRepresentation GetFieldRepresentation() { return {{ FieldRepresentationType::Float,""}}; }
 	template<> FieldRepresentation GetFieldRepresentation<std::string>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Graphics::Texture2D>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Graphics::Model3D>();
+	template<> FieldRepresentation GetFieldRepresentation<RefTexture2D>();
+	template<> FieldRepresentation GetFieldRepresentation<RefModel3D>();
 	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Input::Key>();
 
 	//FieldRepresentationType() specializations for mathematical types

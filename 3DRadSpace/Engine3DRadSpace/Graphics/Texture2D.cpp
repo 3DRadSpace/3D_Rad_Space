@@ -13,14 +13,16 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
-Texture2D::Texture2D(GraphicsDevice* device, const char *filename):
-	_device(device)
+Texture2D::Texture2D(GraphicsDevice* device, const std::string &filename):
+	_device(device),
+	_width(0),
+	_height(0)
 {
 #ifdef _DX11
 	ID3D11Resource **resource = reinterpret_cast<ID3D11Resource **>(_texture.GetAddressOf());
 
 	wchar_t path[_MAX_PATH]{};
-	MultiByteToWideChar(CP_ACP, 0, filename,(int) strlen(filename), path, _MAX_PATH);
+	MultiByteToWideChar(CP_ACP, 0, filename.c_str(), (int)filename.length(), path, _MAX_PATH);
 
 	HRESULT r = DirectX::CreateWICTextureFromFile(
 		device->_device.Get(),
@@ -47,7 +49,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const char *filename):
 #endif
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const wchar_t* filename):
+Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const std::wstring &filename):
 	_device(device)
 {
 #ifdef _DX11
@@ -56,7 +58,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const w
 	HRESULT r = DirectX::CreateWICTextureFromFile(
 		device->_device.Get(),
 		device->_context.Get(),
-		filename,
+		filename.c_str(),
 		resource,
 		_resourceView.GetAddressOf()
 	);
@@ -65,7 +67,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const w
 		r = DirectX::CreateDDSTextureFromFile(
 			device->_device.Get(),
 			device->_context.Get(),
-			filename,
+			filename.c_str(),
 			resource,
 			_resourceView.GetAddressOf()
 		);
@@ -74,7 +76,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const w
 	if(FAILED(r))
 	{
 		char mbPath[_MAX_PATH]{};
-		WideCharToMultiByte(CP_ACP, 0, filename, lstrlenW(filename), mbPath, _MAX_PATH, nullptr, nullptr);
+		WideCharToMultiByte(CP_ACP, 0, filename.c_str(), filename.length(), mbPath, _MAX_PATH, nullptr, nullptr);
 		throw ResourceLoadingError(Tag<Texture2D>{}, mbPath, "Failed to create a texture!");
 	}
 

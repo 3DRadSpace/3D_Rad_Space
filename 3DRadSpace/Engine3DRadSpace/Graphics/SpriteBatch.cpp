@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r)
+std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool flipU, bool flipV)
 {
 /*
 	B -- C
@@ -29,16 +29,35 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r)
 	Vector2 d = r.BottomRight();
 	d = Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(d);
 
+	Vector2 uv_a = Vector2(0, 1);
+	Vector2 uv_b = Vector2(0, 0);
+	Vector2 uv_c = Vector2(1, 0);
+	Vector2 uv_d = Vector2(1, 1);
+
+	if(flipU)
+	{
+		uv_a.X = 1 - uv_a.X;
+		uv_b.X = 1 - uv_b.X;
+		uv_c.X = 1 - uv_c.X;
+		uv_d.X = 1 - uv_d.X;
+	}
+	if(flipV)
+	{
+		uv_a.Y = 1 - uv_a.Y;
+		uv_b.Y = 1 - uv_b.Y;
+		uv_c.Y = 1 - uv_c.Y;
+		uv_d.Y = 1 - uv_d.Y;
+	}
 
 	std::array<VertexPointUV, 6> quad =
 	{
-		VertexPointUV{a, Vector2(0, 1)},
-		VertexPointUV{b, Vector2(0, 0)},
-		VertexPointUV{c, Vector2(1, 0)},
+		VertexPointUV{a, uv_a},
+		VertexPointUV{b, uv_b},
+		VertexPointUV{c, uv_c},
 
-		VertexPointUV{a, Vector2(0,1)},
-		VertexPointUV{c, Vector2(1,0)},
-		VertexPointUV{d, Vector2(1,1)}
+		VertexPointUV{a, uv_a},
+		VertexPointUV{c, uv_c},
+		VertexPointUV{d, uv_d}
 	};
 
 	return quad;
@@ -86,15 +105,37 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries_SortByTexture()
 	{
 		if(entry.textureID == _lastID)
 		{
-			//currentVertices.insert(currentVertices.end(), _createQuad())
+			auto quad = _createQuad(entry.rectangle, entry.flipU, entry.flipV);
+			currentVertices.insert(currentVertices.end(), quad.begin(), quad.end());
 		}
 		else
 		{
-
+			vertexBuffers.push_back(std::make_unique<VertexBufferV<VertexPointUV>>(_device, currentVertices));
+			currentVertices.clear();
 		}
 	}
 
+	vertexBuffers.push_back(std::make_unique<VertexBufferV<VertexPointUV>>(_device, currentVertices));
+	currentVertices.clear();
 
+	for(size_t i =0; i < vertexBuffers.size(); i++)
+	{
+		_spriteShader->SetTexture(this->_textures[i]);
+		vertexBuffers[i]->Draw();
+	}
+
+	_restoreGraphicsDevice();
+}
+
+void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries()
+{
+	_prepareGraphicsDevice();
+
+	for(auto& entry : _entries)
+	{
+		_drawEntry(entry);
+	}
+	_restoreGraphicsDevice();
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::_restoreGraphicsDevice()
@@ -128,7 +169,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingM
 	else if(sortingMode == SpriteBatchSortMode::SortedByTexture)
 	{
 		if(_state == Immediate) return;
-		if(_state == Ready)
+		if(_state == EndCalled)
 		{
 			_state = BeginCalled;
 			return;
@@ -137,7 +178,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingM
 	}
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState &&samplerState)
+void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerState)
 {
 	_samplerState.reset();
 	_samplerState = std::make_unique<SamplerState>(std::move(samplerState));
@@ -183,6 +224,8 @@ void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, const Math:
 
 void Engine3DRadSpace::Graphics::SpriteBatch::End()
 {
+	if(_sortingMode == SpriteBatchSortMode::Immediate) return;
+
 	if(_state == BeginCalled)
 	{
 		//draw all entries
@@ -195,6 +238,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::End()
 		_lastID = 1;
 		_textures.clear();
 	}
+	else throw std::logic_error("Cannot draw sprites when ::End() was called!");
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)
@@ -203,7 +247,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)
 	spriteBatchEntry tempEntry
 	{
 		.textureID = 1u,
-		.rectangle = RectangleF(-1.0f, -1.0f, 2.0f, 2.0f),
+		.rectangle = RectangleF(0,0,1,1),
 		.tintColor = Colors::White,
 		.flipU = false,
 		.flipV = false,
