@@ -30,6 +30,7 @@ namespace Engine3DRadSpace::Objects
 		Engine3DRadSpace::Math::Vector3 LookAt;
 
 		void Initialize() override;
+		virtual void Load(Content::ContentManager *content) override;
 		void EditorInitialize() override;
 
 		/// <summary>
@@ -54,7 +55,8 @@ namespace Engine3DRadSpace::Objects
 		void EditorDraw(
 			const Engine3DRadSpace::Math::Matrix& view,
 			const Engine3DRadSpace::Math::Matrix& projection,
-			double dt
+			double dt,
+			bool selected
 		) override;
 
 		Reflection::UUID GetUUID() override;

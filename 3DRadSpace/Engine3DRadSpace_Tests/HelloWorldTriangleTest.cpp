@@ -7,6 +7,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Content;
 
 class TriangleTest : public Game
 {
@@ -16,6 +17,7 @@ public:
 	TriangleTest();
 
 	void Initialize() override;
+	void Load(ContentManager *content) override;
 	void Update(Keyboard& keyboard, Mouse& mouse, double dt) override;
 	void Draw(Matrix& view, Matrix &projection, double dt) override;
 
@@ -39,6 +41,10 @@ void TriangleTest::Initialize()
 	};
 
 	_triangleBuffer = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), triangle);
+}
+
+void TriangleTest::Load(ContentManager *content)
+{
 }
 
 void TriangleTest::Update(Keyboard& keyboard, Mouse& mouse, double dt)

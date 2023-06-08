@@ -61,6 +61,7 @@ public:
 	~EditorWindow();
 
 	Engine3DRadSpace::GraphicsDevice *GetGraphicsDevice();
+	Engine3DRadSpace::Content::ContentManager *GetContentManager();
 
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

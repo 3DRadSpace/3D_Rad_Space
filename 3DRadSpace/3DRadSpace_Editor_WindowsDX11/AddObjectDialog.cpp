@@ -7,6 +7,7 @@
 
 //Forward declarations of object reflection data
 REFL_DEF(Camera)
+REFL_DEF(Sprite)
 
 INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -49,11 +50,12 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case NM_DBLCLK:
 				{
 					LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
-					int nItems = (int)SendMessageA(aod->listView, LVM_GETITEMCOUNT, 0, 0);
 
-					EditObjectDialog dialog(hwnd, aod->hInstance, &CameraReflInstance, nullptr);
-					EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
-					
+					if(item->iItem >= 0)
+					{
+						EditObjectDialog dialog(hwnd, aod->hInstance, aod->objectData[item->iItem], nullptr);
+						EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
+					}
 					break;
 				}
 				default:
@@ -107,6 +109,11 @@ Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
 {
 	return reinterpret_cast<Engine3DRadSpace::IObject *>(Dialog::ShowDialog(static_cast<void *>(this)));
 }
+struct objectItem
+{
+	LPCWSTR image;
+	int categoryID;
+};
 
 void AddObjectDialog::createForms()
 {
@@ -121,49 +128,68 @@ void AddObjectDialog::createForms()
 
 	ListView_SetImageList(listView, imageList, LVSIL_NORMAL); //Assign the image list to the list view
 
-	//create image list for default objects.
-	std::unordered_map<std::string, LPCWSTR> objects; //creates a object name <-> image dictionary.
-	
-	std::unordered_map<std::string, int> categories; //Category - category ID map.
+	std::unordered_map<std::string, objectItem> objects;
+	std::unordered_map<std::string, int> categories;
 
 	//hardcoded list of already implemented objects.
-	std::vector<std::string> objectNames =
-	{
-		CameraReflInstance.Name
-	};
 	objectData =
 	{
-		&CameraReflInstance
+		&CameraReflInstance, //Camera
+		/*
+		&CameraReflInstance, //Counter
+		&CameraReflInstance, //Empty
+		&CameraReflInstance, //Event On Key
+		&CameraReflInstance, //EventOnLocation
+		&CameraReflInstance, //ExitFade
+		&CameraReflInstance, //Fog
+		&CameraReflInstance, //Force
+		&CameraReflInstance, //FPVCamera
+		&CameraReflInstance, //Settings
+		&CameraReflInstance, //G-Force
+		&CameraReflInstance, //Group
+		&CameraReflInstance, //Network chat
+		&CameraReflInstance, //Rigidbody
+		&CameraReflInstance, //C# Script
+		&CameraReflInstance, //Skinmesh
+		&CameraReflInstance, //Skybox
+		&CameraReflInstance, //Skycolor
+		&CameraReflInstance, //SoundEffect
+		&CameraReflInstance, //SoundSource
+		&CameraReflInstance, //C++ source
+		*/
+		&SpriteReflInstance, //Sprite
 	};
 
 	//populate the dictionaries
-	for (int i = IDB_PNG1, j = 0, k =0 ; i <= IDB_PNG24 && j < objectData.size(); i++, j++)
+	for (int i = IDB_PNG1, j = 0, k = 1 ; i <= IDB_PNG24 && j < objectData.size(); i++, j++)
 	{
-		objects[objectNames[j]] = MAKEINTRESOURCEW(i);
+		auto image = MAKEINTRESOURCEW(i);
+		if (objectData[j] == nullptr) continue;
 		
-		if (objectData[j] == nullptr) break;
-		auto f = categories.find(objectData[j]->Category);
-		if (f == categories.end())
-		{
-			categories[objectData[j]->Category] = k;
-			k++;
-		}
-	}
+		int categoryID = 0;
 
-	//Populate the image list categories:
-	for (auto& category : categories)
-	{
-		addCategory(category.first, category.second);
+		if(categories.find(objectData[j]->Category) == categories.end())
+		{
+			categories[objectData[j]->Category] = k++;
+			categoryID = k;
+			addCategory(objectData[j]->Category, categoryID);
+		}
+		else
+		{
+			categoryID = categories[objectData[j]->Category];
+		}
+		
+		objects.insert(std::make_pair(objectData[j]->Name, objectItem{image, categoryID}));
 	}
 
 	//Populate the image list with the object data (icons and names)
 	for (auto& o : objects)
 	{
-		HBITMAP img = loadImgResource(o.second,L"PNG", static_cast<HMODULE>(hInstance));
+		HBITMAP img = loadImgResource(o.second.image, L"PNG", static_cast<HMODULE>(hInstance));
 		int imgIndex = ImageList_Add(imageList, img, nullptr);
 		DeleteObject(img);
 
-		addObject(o.first, imgIndex, categories[o.first]);
+		addObject(o.first, imgIndex, o.second.categoryID );
 	}
 
 	resize();

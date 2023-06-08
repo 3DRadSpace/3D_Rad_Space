@@ -4,10 +4,11 @@
 #include "IUpdateable.hpp"
 #include "IDrawable.hpp"
 #include "Reflection/UUID.hpp"
+#include "ILoadable.hpp"
 
 namespace Engine3DRadSpace
 {
-	class IObject : public IInitiializable, public IUpdateable, public IDrawable
+	class IObject : public IInitiializable, public IUpdateable, public IDrawable, public ILoadable
 	{
 	protected:
 		GraphicsDevice* _device = nullptr;
@@ -34,7 +35,7 @@ namespace Engine3DRadSpace
 		virtual Engine3DRadSpace::Math::Matrix GetModelMartix();
 
 		virtual void EditorInitialize() = 0;
-		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection,double dt) = 0;
+		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection,double dt, bool selected) = 0;
 		virtual Reflection::UUID GetUUID() = 0;
 
 		GraphicsDevice *GetGraphicsDeviceHandle();

@@ -15,10 +15,5 @@ namespace Engine3DRadSpace::Content
 		{ 
 			return ID;
 		}
-
-		operator bool()
-		{
-			return ID != 0;
-		}
 	};
 }

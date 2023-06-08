@@ -10,7 +10,8 @@ using namespace Engine3DRadSpace::Objects;
 RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	Game(Engine3DRadSpace::Window(hInstance, parent)),
 	simpleShader(std::make_unique<BlankShader>(Device.get())),
-	editorWindow(parent)
+	editorWindow(parent), 
+	testTexture(nullptr)
 {
 }
 
@@ -54,14 +55,16 @@ void RenderWindow::Initialize()
 	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
 
 	lineRasterizer = std::make_unique<RasterizerState>(Device.get(),RasterizerFillMode::Solid, RasterizerCullMode::None);
-
 	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
 
 	texturedShader = std::make_unique<BasicTextured_NBT>(Device.get());
-	cameraModel = std::make_unique<Model3D>(Device.get(), "Data\\Models\\Camera.x");
-
-	testTexture = std::make_unique<Texture2D>(Device.get(), L"holding.png");
+	
 	spriteBatch = std::make_unique<SpriteBatch>(Device.get());
+}
+
+void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
+{
+	testTexture = content->Load<Texture2D>("holding.png");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -111,16 +114,16 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 
 	if(_keyboardTest)
 	{
-		//spriteBatch->Begin(SpriteBatchSortMode::Immediate);
-		//spriteBatch->Draw(testTexture.get(), Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
-		//spriteBatch->End();
-		spriteBatch->DrawQuad(testTexture.get());
+		spriteBatch->Begin(SpriteBatchSortMode::Immediate);
+		spriteBatch->Draw(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+		spriteBatch->End();
+		//spriteBatch->DrawQuad(testTexture);
 	}
 
 	//Draw any other objects
 	for (auto& obj : Objects)
 	{
-		obj->EditorDraw(view, projection, dt);
+		obj->EditorDraw(view, projection, dt, false);
 	}
 }
 

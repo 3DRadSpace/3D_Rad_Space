@@ -54,7 +54,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 			p.remove_filename();
 			p += texturePath.C_Str();
 
-			_textures.push_back(std::make_unique<Texture2D>(Device, p.c_str()));
+			_textures.push_back(std::make_unique<Texture2D>(Device, p.string()));
 		}
 	}
 	

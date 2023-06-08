@@ -37,7 +37,7 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT> texturedShader;
 	std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState> samplerState;
 
-	std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D> testTexture;
+	Engine3DRadSpace::Graphics::Texture2D* testTexture;
 	std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> spriteBatch;
 
 	bool _keyboardTest = false;
@@ -46,6 +46,7 @@ public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 
 	void Initialize() override;
+	void Load(Engine3DRadSpace::Content::ContentManager *content) override;
 	void Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) override;
 	void Draw(
 		Engine3DRadSpace::Math::Matrix &view,

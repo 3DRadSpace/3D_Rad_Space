@@ -1,8 +1,9 @@
 #include "Sprite.hpp"
 
 using namespace Engine3DRadSpace;
-using namespace Engine3DRadSpace::Objects;
+using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Reflection;
 
 Sprite::Sprite() :
@@ -16,7 +17,7 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 	FlipU(flipU),
 	FlipV(FlipV)
 {
-
+	_tempResourceString = std::make_unique<std::string>(path);
 }
 
 Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, Reflection::RefTexture2D resource, const Vector2 &pos, const Vector2 &scale,
@@ -29,30 +30,41 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 
 }
 
-void Engine3DRadSpace::Objects::Sprite::Initialize() 
+void Sprite::Initialize() 
 {
 
 }
 
-void Engine3DRadSpace::Objects::Sprite::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
+void Sprite::Load(Content::ContentManager *content)
+{
+	if(_tempResourceString != nullptr)
+	{
+		content->Load<Texture2D>(*_tempResourceString.get());
+		_tempResourceString.reset();
+	}
+}
+
+void Sprite::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
 {
 }
 
-void Engine3DRadSpace::Objects::Sprite::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+void Sprite::Draw(Matrix &view, Matrix &projection, double dt)
+{
+
+}
+
+void Sprite::EditorInitialize()
 {
 }
 
-void Engine3DRadSpace::Objects::Sprite::EditorInitialize()
+void Sprite::EditorDraw(const Matrix &view, const Matrix &projection, double dt, bool selected)
 {
 }
 
-void Engine3DRadSpace::Objects::Sprite::EditorDraw(const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &projection, double dt)
+Reflection::UUID Sprite::GetUUID()
 {
-}
-
-Reflection::UUID Engine3DRadSpace::Objects::Sprite::GetUUID()
-{
-	return Reflection::UUID();
+	// {90239EA1-D02D-424C-90BB-15ABC5E5D55D}
+	return Reflection::UUID{0x90239ea1, 0xd02d, 0x424c, { 0x90, 0xbb, 0x15, 0xab, 0xc5, 0xe5, 0xd5, 0x5d }};
 }
 
 REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")

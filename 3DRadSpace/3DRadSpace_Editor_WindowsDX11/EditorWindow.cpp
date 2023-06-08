@@ -228,7 +228,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 void EditorWindow::Run()
 {
 	//Modified code from Window::Run() so accelerators are also translated.
-	this->editor->Initialize();
+	editor->Initialize();
+	editor->Load(editor->Content.get());
 
 	double u_dt = 0;
 	double d_dt = 0;
@@ -275,6 +276,11 @@ EditorWindow::~EditorWindow()
 Engine3DRadSpace::GraphicsDevice *EditorWindow::GetGraphicsDevice()
 {
 	return this->editor->Device.get();
+}
+
+Engine3DRadSpace::Content::ContentManager *EditorWindow::GetContentManager()
+{
+	return editor->Content.get();
 }
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

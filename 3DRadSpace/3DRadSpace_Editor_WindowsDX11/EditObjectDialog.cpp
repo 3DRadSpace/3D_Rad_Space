@@ -6,6 +6,8 @@
 #include "EditorWindow.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Content;
+using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Reflection;
 
 INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -151,12 +153,12 @@ void EditObjectDialog::createForms()
 			};
 
 			//creates a Edit control (aka TextBox)
-			auto createTextbox = [&](const char* defValue) -> HWND
+			auto createTextbox = [&](const char* value) -> HWND
 			{
 				return CreateWindowExA(
 					0,
 					"Edit",
-					defValue,
+					value,
 					WS_VISIBLE | WS_CHILD | ES_AUTOHSCROLL,
 					px,
 					y,
@@ -187,6 +189,9 @@ void EditObjectDialog::createForms()
 				pathTextbox = createTextbox(defPath);
 				px += 80;
 
+				SIZE browseButtonLen;
+				GetTextExtentPoint32A(hdc, "Browse...", 9, &browseButtonLen);
+
 				CreateWindowExA(
 					0,
 					"Button",
@@ -194,7 +199,7 @@ void EditObjectDialog::createForms()
 					WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
 					px,
 					y,
-					50,
+					browseButtonLen.cx + 10,
 					25,
 					window,
 					nullptr,
@@ -379,7 +384,7 @@ void EditObjectDialog::createForms()
 				createLabel(fieldName.c_str(), sx);
 				px += sx + 5;
 
-				const std::string value = *static_cast<const std::string*>(field->DefaultValue());
+				const std::string value = *static_cast<const std::string*>(valuePtr);
 				windows.push_back(createTextbox(value.c_str()));
 
 				px += sx + 5;
@@ -388,7 +393,9 @@ void EditObjectDialog::createForms()
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Image:
 			{
-				const std::string value = *static_cast<const std::string*>(field->DefaultValue());
+				auto value = *static_cast<const Content::AssetReference<Graphics::Texture2D>*>(valuePtr);
+				
+				std::string path = value != 0 ? gEditorWindow->GetContentManager()->operator[](value)->Path : "";
 
 				HWND pictureBox = CreateWindowExA(
 					0,
@@ -405,10 +412,10 @@ void EditObjectDialog::createForms()
 					nullptr
 				);
 
-				HBITMAP image = LoadBitmapA(nullptr, value.c_str());
+				HBITMAP image = LoadBitmapA(nullptr, path.c_str());
 				SendMessageA(pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(image));
 
-				windows.push_back(createFileControls(x, y + 200, value.c_str()));
+				windows.push_back(createFileControls(x, y + 200, path.c_str()));
 
 				setMax(inc_y, 205 + textboxHeight);
 				break;
@@ -743,23 +750,7 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Image:
 				{
-					Engine3DRadSpace::Graphics::Texture2D *texture = nullptr;
-					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
-					try
-					{
-						texture = new Engine3DRadSpace::Graphics::Texture2D(graphicsDevice, text);
-					}
-					catch(Engine3DRadSpace::Logging::ResourceLoadingError& loadingError)
-					{
-						std::string errMsg = loadingError.What();
-						MessageBoxA(window, errMsg.c_str(), "Error creating texture!", MB_ICONERROR | MB_OK);
-
-						if(texture != nullptr) delete texture;
-						return false;
-					}
-
-					memcpy(newStruct.get(), texture, sizeof(Engine3DRadSpace::Graphics::Texture2D));
-					j += sizeof(Engine3DRadSpace::Graphics::Texture2D);
+					
 					break;
 				}
 				case FieldRepresentationType::Model:

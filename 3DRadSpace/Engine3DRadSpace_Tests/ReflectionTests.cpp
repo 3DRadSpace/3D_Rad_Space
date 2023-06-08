@@ -6,6 +6,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Input;
+using namespace Engine3DRadSpace::Content;
 
 class TestObject : public IObject
 {
@@ -18,6 +19,10 @@ public:
 	virtual void Initialize() override
 	{
 	}
+	virtual void Load(ContentManager *content)
+	{
+	}
+
 	virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override
 	{
 	}

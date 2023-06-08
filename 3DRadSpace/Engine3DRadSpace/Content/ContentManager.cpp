@@ -10,15 +10,10 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_resources.push_back(nullptr); // ID 0 = nullptr
 }
 
-IAsset *Engine3DRadSpace::Content::ContentManager::operator[](unsigned id)
-{
-	return _resources[id].get();
-}
-
 void ContentManager::RemoveAsset(const std::string &name)
 {
 	_resources.erase(std::remove_if(_resources.begin(), _resources.end(),
-		[name](IAsset *asset) -> bool
+		[name](std::unique_ptr<IAsset> &asset) -> bool
 		{
 			return asset->Name == name;
 		}
@@ -28,7 +23,7 @@ void ContentManager::RemoveAsset(const std::string &name)
 void ContentManager::RemoveAsset(unsigned id)
 {
 	_resources.erase(std::remove_if(_resources.begin(), _resources.end(),
-		[id](IAsset *asset) -> bool
+		[id](std::unique_ptr<IAsset> &asset) -> bool
 	{
 		return asset->ID() == id;
 	}
