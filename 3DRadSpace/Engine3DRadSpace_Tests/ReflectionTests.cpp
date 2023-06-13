@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
-#include <Engine3DRadSpace/IObject.hpp>
+#include <Engine3DRadSpace/IObject3D.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -8,10 +8,10 @@ using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Content;
 
-class TestObject : public IObject
+class TestObject : public IObject3D
 {
 public:
-	TestObject() : IObject("Test object"), Integer(5), Float(1.0f), TestKey(Key::Space)
+	TestObject() : IObject3D("Test object"), Integer(5), Float(1.0f), TestKey(Key::Space)
 	{
 	}
 
@@ -32,7 +32,7 @@ public:
 	virtual void EditorInitialize() override
 	{
 	}
-	virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection, double dt) override
+	virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection, double dt, bool selected) override
 	{
 	}
 	

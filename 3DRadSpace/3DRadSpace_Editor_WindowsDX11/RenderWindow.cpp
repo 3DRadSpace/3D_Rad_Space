@@ -123,7 +123,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	//Draw any other objects
 	for (auto& obj : Objects)
 	{
-		obj->EditorDraw(view, projection, dt, false);
+		//obj->EditorDraw(view, projection, dt, false);
 	}
 }
 

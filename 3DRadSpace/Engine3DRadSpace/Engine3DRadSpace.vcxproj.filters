@@ -41,7 +41,7 @@
     <ClInclude Include="IObject.hpp" />
     <ClInclude Include="IInitializable.hpp" />
     <ClInclude Include="GraphicsDevice.hpp" />
-    <ClInclude Include="IDrawable.hpp" />
+    <ClInclude Include="IDrawable3D.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="Reflection\UUID.hpp">
@@ -202,6 +202,9 @@
     <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\AssetReference.hpp" />
     <ClInclude Include="ILoadable.hpp" />
+    <ClInclude Include="IObject2D.hpp" />
+    <ClInclude Include="IObject3D.hpp" />
+    <ClInclude Include="IDrawable2D.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -340,5 +343,7 @@
     </ClCompile>
     <ClCompile Include="Content\ContentManager.cpp" />
     <ClCompile Include="Content\IAsset.cpp" />
+    <ClCompile Include="IObject3D.cpp" />
+    <ClCompile Include="IObject2D.cpp" />
   </ItemGroup>
 </Project>

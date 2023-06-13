@@ -37,7 +37,7 @@ int Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(const std::string& 
     {
         for (int j = 1; j <= b.length(); j++)
         {
-            if (a[i] == b[j]) cost = 0;
+            if (a[i-1] == b[j-1]) cost = 0;
             else
             {
                 cost = 1;

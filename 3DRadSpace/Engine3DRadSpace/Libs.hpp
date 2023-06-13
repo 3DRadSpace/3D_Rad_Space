@@ -18,6 +18,7 @@
 #include <filesystem>
 #include <set>
 #include <variant>
+#include <any>
 
 #ifdef _WIN32
 #define NOMINMAX

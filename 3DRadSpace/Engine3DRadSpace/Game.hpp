@@ -1,7 +1,8 @@
 #pragma once
 #include "Window.hpp"
 #include "IUpdateable.hpp"
-#include "IDrawable.hpp"
+#include "IDrawable3D.hpp"
+#include "IDrawable2d.hpp"
 #include "IInitializable.hpp"
 #include "IObject.hpp"
 #include "ILoadable.hpp"
@@ -10,7 +11,7 @@
 
 namespace Engine3DRadSpace
 {
-	class Game : public IUpdateable, public IDrawable, public IInitiializable, public ILoadable
+	class Game : public IUpdateable, public IDrawable3D, public IInitiializable, public ILoadable
 	{
 		bool _valid;
 		bool _running = true;

@@ -1,11 +1,11 @@
 #pragma once
-#include "../IObject.hpp"
+#include "../IObject3D.hpp"
 #include "../Math/Math.hpp"
 #include "../Reflection/Reflection.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
-	class Camera : public IObject
+	class Camera : public IObject3D
 	{
 	public:
 		Camera(const std::string& name = "Camera", const std::string& tag = "...", bool visible = true, 

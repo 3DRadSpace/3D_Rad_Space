@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
 Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vector3 pos, Vector3 look_at, Vector3 up,float aspectRatio, float fov, float npd, float fpd):
-	IObject(name,tag, visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
+	IObject3D(name,tag, visible, true, pos, Vector3::Zero(), Quaternion(), Vector3::One()),
 	UpwardsDir(up),
 	AspectRatio(aspectRatio),
 	FieldOfView(fov),
@@ -13,10 +13,6 @@ Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vec
 	NearPlaneDistance(npd),
 	LookAt(0,0,0),
 	LookMode(CameraMode::UseRotation)
-{
-}
-
-void Engine3DRadSpace::Objects::Camera::Initialize() 
 {
 }
 
@@ -55,6 +51,10 @@ Engine3DRadSpace::Reflection::UUID Engine3DRadSpace::Objects::Camera::GetUUID()
 {
 	// {84376082-A56E-49E6-B095-BAEEF4BF29B5}
 	return {0x84376082, 0xa56e, 0x49e6, { 0xb0, 0x95, 0xba, 0xee, 0xf4, 0xbf, 0x29, 0xb5 }};
+}
+
+void Engine3DRadSpace::Objects::Camera::Initialize()
+{
 }
 
 void Engine3DRadSpace::Objects::Camera::Load(Content::ContentManager *content)

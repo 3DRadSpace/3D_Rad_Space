@@ -755,22 +755,7 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Model:
 				{
-					Engine3DRadSpace::Graphics::Model3D *model = nullptr;
-					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
-					try
-					{
-						model = new Engine3DRadSpace::Graphics::Model3D(graphicsDevice, text);
-					}
-					catch(Engine3DRadSpace::Logging::ResourceLoadingError &e)
-					{
-						std::string msg = e.What();
-						MessageBoxA(window, msg.c_str(), "Error creating model!", MB_ICONERROR | MB_OK);
-						if(model != nullptr) delete model;
-						return false;
-					}
-
-					memcpy(newStruct.get(), model, sizeof(Engine3DRadSpace::Graphics::Model3D));
-					j += sizeof(Engine3DRadSpace::Graphics::Model3D);
+					
 					break;
 				}
 				case FieldRepresentationType::Key:

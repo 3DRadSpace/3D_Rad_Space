@@ -4,10 +4,10 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 	hInstance(instance),
 	dialogProc(dlgproc),
 	owner(hwndOwner),
-	window(nullptr)
-{
+	window(nullptr),
 	//Allocate memory for the dialog box
-	hGlobal = GlobalAlloc(GMEM_ZEROINIT, 512);
+	hGlobal(GlobalAlloc(GMEM_ZEROINIT, 512))
+{
 	if (hGlobal == nullptr) throw std::bad_alloc();
 
 	//Fill the dialog template data.

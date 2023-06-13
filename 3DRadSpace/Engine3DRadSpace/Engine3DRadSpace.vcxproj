@@ -145,6 +145,7 @@
     <ClInclude Include="Content\AssetReference.hpp" />
     <ClInclude Include="Content\ContentManager.hpp" />
     <ClInclude Include="Content\IAsset.hpp" />
+    <ClInclude Include="IDrawable2D.hpp" />
     <ClInclude Include="ILoadable.hpp" />
     <ClInclude Include="Graphics\BlendState.hpp" />
     <ClInclude Include="Color.hpp" />
@@ -172,7 +173,7 @@
     <ClInclude Include="Graphics\VertexDeclarations.hpp" />
     <ClInclude Include="Graphics\VertexTopology.hpp" />
     <ClInclude Include="Graphics\IDomainShader.hpp" />
-    <ClInclude Include="IDrawable.hpp" />
+    <ClInclude Include="IDrawable3D.hpp" />
     <ClInclude Include="Graphics\IHullShader.hpp" />
     <ClInclude Include="Graphics\IGeometryShader.hpp" />
     <ClInclude Include="IInitializable.hpp" />
@@ -180,6 +181,8 @@
     <ClInclude Include="Input\Mouse.hpp" />
     <ClInclude Include="IObject.hpp" />
     <ClInclude Include="Graphics\IPixelShader.hpp" />
+    <ClInclude Include="IObject2D.hpp" />
+    <ClInclude Include="IObject3D.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Libs.hpp" />
     <ClInclude Include="Logging\Error.hpp" />
@@ -240,6 +243,8 @@
     <ClCompile Include="Input\Mouse.cpp" />
     <ClCompile Include="IObject.cpp" />
     <ClCompile Include="Graphics\IPixelShader.cpp" />
+    <ClCompile Include="IObject2D.cpp" />
+    <ClCompile Include="IObject3D.cpp" />
     <ClCompile Include="Logging\Error.cpp" />
     <ClCompile Include="Logging\Exception.cpp" />
     <ClCompile Include="Logging\Warning.cpp" />

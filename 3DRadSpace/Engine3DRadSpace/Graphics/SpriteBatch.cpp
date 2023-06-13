@@ -222,6 +222,43 @@ void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, const Math:
 	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
 }
 
+void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+{
+	if(_state == Immediate)
+	{
+		_textures[1] = texture;
+		spriteBatchEntry tempEntry
+		{
+			.textureID = 1u,
+			.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
+			.tintColor = tintColor,
+			.flipU = flipU,
+			.flipV = flipV,
+			.depth = depth,
+			.sortingMode = SpriteBatchSortMode::Immediate
+		};
+
+		_drawEntry(tempEntry);
+		_textures.clear();
+	}
+	else if(_state == BeginCalled)
+	{
+		_entries.insert(
+			spriteBatchEntry
+			{
+				.textureID = _lastID,
+				.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
+				.tintColor = tintColor,
+				.flipU = flipU,
+				.flipV = flipV,
+				.depth = depth,
+				.sortingMode = _sortingMode
+			}
+		);
+	}
+	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
+}
+
 void Engine3DRadSpace::Graphics::SpriteBatch::End()
 {
 	if(_sortingMode == SpriteBatchSortMode::Immediate) return;

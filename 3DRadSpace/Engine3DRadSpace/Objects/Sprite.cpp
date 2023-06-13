@@ -2,35 +2,41 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Reflection;
 
 Sprite::Sprite() :
-	IObject("Sprite", "...", true, true)
+	IObject2D("Sprite", "...", true, true),
+	FlipU(false),
+	FlipV(false),
+	Image(0),
+	TintColor(Colors::Black)
 {
 }
 
-Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, const std::string &path, const Vector2 &pos, const Vector2 &scale,
-	float depth, float rotation, bool flipU, bool flipV) :
-	IObject(name, "...", visible, visible, Vector3(pos.X, pos.Y, depth), Vector3::Zero(), Quaternion(rotation,0,0,0), Vector3(scale.X, scale.Y,0)),
+Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, const std::string &path, const Vector2 &pos, const Vector2 &scale, const Vector2& pivot,
+	float depth, float rotation, bool flipU, bool flipV, const Color &tintColor) :
+	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
-	FlipV(FlipV)
+	FlipV(FlipV),
+	TintColor(tintColor)
 {
 	_tempResourceString = std::make_unique<std::string>(path);
 }
 
-Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, Reflection::RefTexture2D resource, const Vector2 &pos, const Vector2 &scale,
-	float depth, float rotation, bool flipU, bool flipV) :
-	IObject(name, "...", visible, visible, Vector3(pos.X, pos.Y, depth), Vector3::Zero(), Quaternion(rotation, 0, 0, 0), Vector3(scale.X, scale.Y, 0)),
+Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, RefTexture2D resource, const Vector2 &pos, const Vector2 &scale, float depth, const Vector2 &pivot,
+	float rotation, bool flipU, bool flipV, const Color &tintColor) :
+	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
 	FlipV(FlipV),
-	Image(resource)
+	Image(resource),
+	TintColor(tintColor)
 {
-
 }
 
-void Sprite::Initialize() 
+void Sprite::Initialize()
 {
 
 }
@@ -48,16 +54,16 @@ void Sprite::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
 {
 }
 
-void Sprite::Draw(Matrix &view, Matrix &projection, double dt)
+void Sprite::Draw(SpriteBatch *spriteBatch, double dt)
 {
-
+	spriteBatch->Draw(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
 }
 
 void Sprite::EditorInitialize()
 {
 }
 
-void Sprite::EditorDraw(const Matrix &view, const Matrix &projection, double dt, bool selected)
+void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
 {
 }
 
