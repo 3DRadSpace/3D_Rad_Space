@@ -32,6 +32,11 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Run vcpkg
+      uses: johnwason/vcpkg-action@v5
+      with:
+        pkgs: 'assimp:x86-Windows assimp:x64-Windows gtest:x86-Windows gtest:x86-Windows'
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
