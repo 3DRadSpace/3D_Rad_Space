@@ -36,7 +36,7 @@ jobs:
       #MSVC-Windows specific. Enables vcpkg support for Visual Studio.
     - name: Integrate vcpkg
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg integrate install
+      run: vcpkg integrate project
       
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
