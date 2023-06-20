@@ -40,7 +40,7 @@ jobs:
       
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg install gtest:x64-Windows assimp:x64-Windows
+      run: vcpkg install gtest:x64-windows assimp:x64-windows
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
