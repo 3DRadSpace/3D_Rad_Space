@@ -37,6 +37,7 @@ jobs:
       uses: johnwason/vcpkg-action@v5
       with:
         pkgs: 'assimp:x86-Windows assimp:x64-Windows gtest:x86-Windows gtest:x86-Windows'
+        token: ${{ github.token }}
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
