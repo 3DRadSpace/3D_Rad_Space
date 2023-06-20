@@ -38,12 +38,9 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: vcpkg integrate install
       
-    - name: Run vcpkg
-      uses: johnwason/vcpkg-action@v5
-      with:
-         pkgs: 'assimp gtest'
-         triplet: x64-windows-release
-         token: ${{ github.token }}
+    - name: Restore vcpkg packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: vcpkg install gtest:x64-Windows assimp:x64-Windows
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
