@@ -33,6 +33,12 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
       
+      #MSVC-Windows specific. Enables vcpkg support for Visual Studio.
+    - name: Integrate vcpkg
+      uses: johnwason/vcpkg-action@v5
+      with:
+        extra-args: 'integrate install'
+      
     - name: Run vcpkg
       uses: johnwason/vcpkg-action@v5
       with:
