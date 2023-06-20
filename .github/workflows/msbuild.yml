@@ -36,7 +36,8 @@ jobs:
     - name: Run vcpkg
       uses: johnwason/vcpkg-action@v5
       with:
-        pkgs: 'assimp:x86-Windows assimp:x64-Windows gtest:x86-Windows gtest:x86-Windows'
+        pkgs: 'assimp gtest'
+        triplet: x64-windows-release
         token: ${{ github.token }}
 
     - name: Restore NuGet packages
