@@ -38,6 +38,7 @@ jobs:
       uses: johnwason/vcpkg-action@v5
       with:
         extra-args: 'integrate install'
+        token: ${{ github.token }}
       
     - name: Run vcpkg
       uses: johnwason/vcpkg-action@v5
