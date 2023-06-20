@@ -28,7 +28,7 @@ namespace Engine3DRadSpace::Graphics
 		Texture2D(GraphicsDevice *device, unsigned x, unsigned y);
 
 		Texture2D(Texture2D &) = delete;
-		Texture2D(Texture2D &&txt) noexcept;
+		Texture2D(Texture2D &&txt) noexcept = default;
 
 		void SetColors(Color** colors, unsigned x, unsigned y);
 

@@ -43,19 +43,6 @@ DepthStencilState::DepthStencilState(GraphicsDevice *device, bool EnableDepth, D
 #endif
 }
 
-Engine3DRadSpace::Graphics::DepthStencilState::DepthStencilState(DepthStencilState &&state) noexcept:
-    _state(state._state)
-{
-    state._state.Reset();
-}
-
-DepthStencilState &Engine3DRadSpace::Graphics::DepthStencilState::operator=(DepthStencilState &&state) noexcept
-{
-    _state.Reset();
-    _state = state._state;
-    return *this;
-}
-
 DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthDefault(GraphicsDevice* device)
 {
     // https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc

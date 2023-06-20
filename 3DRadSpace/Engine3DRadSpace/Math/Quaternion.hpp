@@ -26,8 +26,14 @@ namespace Engine3DRadSpace::Math
 		
 		Vector3 ToYawPitchRoll();
 
-		Quaternion operator *(const Quaternion& q);
-		Quaternion operator /(float s);
+		Quaternion operator +(const Quaternion &q) const;
+		Quaternion operator +=(const Quaternion &q);
+
+		Quaternion operator *(const Quaternion &q) const;
+		Quaternion operator *=(const Quaternion &q);
+
+		Quaternion operator /(float s) const;
+		Quaternion operator /=(float s);
 
 		bool operator ==(const Quaternion& q) const = default;
 		bool operator !=(const Quaternion &q) const = default;

@@ -214,18 +214,6 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigne
 #endif
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(Texture2D &&txt) noexcept :
-	_device(txt._device),
-	_texture(txt._texture),
-	_resourceView(txt._resourceView),
-	_width(txt._width),
-	_height(txt._height)
-{
-	txt._device = nullptr;
-	txt._texture.Reset();
-	txt._resourceView.Reset();
-}
-
 void Engine3DRadSpace::Graphics::Texture2D::_retrieveSize()
 {
 	//Retrieve the image size

@@ -36,7 +36,10 @@ namespace Engine3DRadSpace::Graphics
 			float MipLODBias, unsigned MaxAnisotropy, ComparisonFunction ComparisionFunction, Color BorderColor, float MinLOD, float MaxLOD);
 
 		SamplerState(SamplerState &) = delete;
-		SamplerState(SamplerState &&samplerState) noexcept;
+		SamplerState(SamplerState &&) noexcept = default;
+
+		SamplerState& operator=(SamplerState &) = delete;
+		SamplerState& operator=(SamplerState &&) noexcept = default;
 
 		static SamplerState LinearClamp(GraphicsDevice *device);
 		static SamplerState LinearWrap(GraphicsDevice *device);

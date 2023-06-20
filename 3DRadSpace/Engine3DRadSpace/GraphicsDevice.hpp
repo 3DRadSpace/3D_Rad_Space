@@ -27,7 +27,7 @@ namespace Engine3DRadSpace::Graphics
 namespace Engine3DRadSpace
 {
 	/// <summary>
-	/// Graphics device represents a wrapped for GAPI(DirectX11) handles. GPU commands can be sent from here.
+	/// GraphicsDevice is a wrapper for GAPI(DirectX11/Vulkan(not implemented yet)) handles. GPU commands can be sent from here.
 	/// </summary>
 	class GraphicsDevice
 	{
@@ -47,7 +47,8 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11Device> _device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context;
 
-		GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
+		GraphicsDevice() = delete;
+		explicit GraphicsDevice(void* nativeWindowHandle, unsigned width = 800, unsigned height = 600);
 		
 		GraphicsDevice(GraphicsDevice&) = delete;
 		GraphicsDevice(GraphicsDevice&&) = delete;
@@ -70,6 +71,8 @@ namespace Engine3DRadSpace
 
 		void SetDepthStencilBuffer(Graphics::DepthStencilBuffer *depthBuffer);
 		void SetDepthStencilState(Graphics::DepthStencilState *depthState, unsigned ref);
+
+		void SetBlendState(Graphics::BlendState *blendState, const Color &blendFactor = Colors::Black, unsigned sampleMask = 0xFFFFFFFF);
 
 		void SetTopology(Graphics::VertexTopology topology);
 		void DrawAuto();

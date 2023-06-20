@@ -183,23 +183,6 @@ D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEna
 #endif
 }
 
-BlendState::BlendState(BlendState &&blend) noexcept :
-	_device(blend._device),
-	_blendState(blend._blendState)
-{
-	blend._blendState.Reset();
-}
-
-BlendState &BlendState::operator=(BlendState &&blend) noexcept
-{
-	this->_device = blend._device;
-
-	this->_blendState.Reset();
-	this->_blendState = blend._blendState;
-
-	return *this;
-}
-
 BlendState BlendState::Opaque(GraphicsDevice *device)
 {
 	// https://github.com/microsoft/DirectXTK/wiki/CommonStates

@@ -36,19 +36,6 @@ RasterizerState::RasterizerState(
 #endif
 }
 
-Engine3DRadSpace::Graphics::RasterizerState::RasterizerState(RasterizerState &&state) noexcept:
-	_rasterizerState(state._rasterizerState)
-{
-	state._rasterizerState.Reset();
-}
-
-RasterizerState &Engine3DRadSpace::Graphics::RasterizerState::operator=(RasterizerState &&state) noexcept
-{
-	_rasterizerState.Reset();
-	_rasterizerState = state._rasterizerState;
-	return *this;
-}
-
 RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullNone(GraphicsDevice *device)
 {
 	// https://github.com/microsoft/DirectXTK/wiki/CommonStates

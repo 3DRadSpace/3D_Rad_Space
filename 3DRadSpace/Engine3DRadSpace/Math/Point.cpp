@@ -9,7 +9,7 @@ Point Point::operator+=(const Point& p)
     return *this;
 }
 
-Point Point::operator+(const Point& p)
+Point Point::operator+(const Point& p) const
 {
     return Point(this->X + p.X, this->Y + p.Y);
 }
@@ -21,7 +21,7 @@ Point Point::operator-=(const Point& p)
     return *this;
 }
 
-Point Point::operator-(const Point& p)
+Point Point::operator-(const Point& p) const
 {
     return Point(this->X - p.X, this->Y - p.Y);
 }
@@ -42,7 +42,7 @@ Point Point::operator*=(float s)
     return *this;
 }
 
-Point Point::operator*(float s)
+Point Point::operator*(float s) const
 {
     return Point(int(this->X * s ),int(this->Y * s));
 }
@@ -55,7 +55,7 @@ Point Point::operator/=(float s)
 }
 #pragma warning(pop)
 
-Point Point::operator/(float s)
+Point Point::operator/(float s) const
 {
     return Point(int(this->X / s), int(this->Y / s));
 }

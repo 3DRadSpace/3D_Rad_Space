@@ -17,6 +17,8 @@ namespace Engine3DRadSpace::Math
 		float Angle() const;
 		
 		float Dot(const Vector2 &v) const;
+		
+		Vector2 Normalize();
 
 		Vector2& operator +=(const Vector2& v);
 		Vector2 operator +(const Vector2 &v) const;

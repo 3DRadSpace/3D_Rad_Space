@@ -120,11 +120,8 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 		//spriteBatch->DrawQuad(testTexture);
 	}
 
-	//Draw any other objects
-	for (auto& obj : Objects)
-	{
-		//obj->EditorDraw(view, projection, dt, false);
-	}
+	Game::Draw(view, projection, dt);
+	Game::Draw(spriteBatch.get(), dt);
 }
 
 bool RenderWindow::IsFocused()

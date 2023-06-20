@@ -89,8 +89,7 @@ namespace Engine3DRadSpace::Graphics
 	concept VertexDecl = requires(V v)
 	{
 		v.Position = Math::Vector3::Zero();
-	} || 
-	requires(V v)
+	} || requires(V v)
 	{
 		v.Position = Math::Vector2::Zero();
 	};

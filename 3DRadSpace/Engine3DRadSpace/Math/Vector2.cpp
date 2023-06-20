@@ -37,6 +37,14 @@ float Vector2::Dot(const Vector2 &v) const
     return this->X * v.X + this->Y * v.Y;
 }
 
+Vector2 Engine3DRadSpace::Math::Vector2::Normalize()
+{
+    float l = Length();
+    X /= l;
+    Y /= l;
+    return *this;
+}
+
 Vector2& Vector2::operator+=(const Vector2& v)
 {
     this->X += v.X;

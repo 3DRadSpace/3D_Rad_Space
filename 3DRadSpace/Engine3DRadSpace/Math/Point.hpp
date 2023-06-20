@@ -15,17 +15,17 @@ namespace Engine3DRadSpace
 			int Y;
 
 			Point operator+= (const Point& p);
-			Point operator +(const Point& p);
+			Point operator +(const Point &p) const;
 
 			Point operator -=(const Point& p);
-			Point operator -(const Point& p);
+			Point operator -(const Point &p) const;
 			Point operator -();
 
 			Point operator *=(float s);
-			Point operator *(float s);
+			Point operator *(float s) const;
 
 			Point operator /=(float s);
-			Point operator /(float s);
+			Point operator /(float s) const;
 
 			auto operator <=>(const Point&) const = default;
 

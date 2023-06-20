@@ -35,6 +35,12 @@ namespace Engine3DRadSpace
 				BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU
 			);
 
+			VertexBuffer(VertexBuffer &) = delete;
+			VertexBuffer(VertexBuffer &&) noexcept = default;
+
+			VertexBuffer &operator=(VertexBuffer &) = delete;
+			VertexBuffer &operator=(VertexBuffer &&) noexcept = default;
+
 			void SetData(void* data, size_t dataSize);
 			void Set();
 			void Draw(unsigned startIndex = 0);

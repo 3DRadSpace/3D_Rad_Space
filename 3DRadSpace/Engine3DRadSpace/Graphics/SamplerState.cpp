@@ -134,12 +134,6 @@ SamplerState::SamplerState(GraphicsDevice *device, TextureFilter Filter, Texture
 #endif
 }
 
-Engine3DRadSpace::Graphics::SamplerState::SamplerState(SamplerState &&samplerState) noexcept:
-	_samplerState(samplerState._samplerState)
-{
-	samplerState._samplerState.Reset();
-}
-
 SamplerState SamplerState::LinearClamp(GraphicsDevice* device)
 {
 	return SamplerState(

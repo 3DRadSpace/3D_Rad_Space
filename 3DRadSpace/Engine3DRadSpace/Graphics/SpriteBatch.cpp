@@ -79,8 +79,14 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_prepareGraphicsDevice()
 	_spriteShader->SetBasic();
 	_spriteShader->SetSamplerState(_samplerState.get());
 
+#ifdef _DX11
+	_device->_context->RSGetState(&_oldRasterizerState);
+	_device->_context->OMGetBlendState(&_oldBlendState, _oldBlendFactor, &_oldSampleMask);
+	_device->_context->OMGetDepthStencilState(&_oldStencilState, &_oldStencilRef);
+#endif
 	_device->SetRasterizerState(_rasterizerState.get());
 	_device->SetTopology(VertexTopology::TriangleList);
+	_device->SetBlendState(_blendState.get());
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::_drawEntry(const spriteBatchEntry &entry)
@@ -97,13 +103,13 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawEntry(const spriteBatchEntry 
 void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries_SortByTexture()
 {
 	std::vector<std::unique_ptr<VertexBufferV<VertexPointUV>>> vertexBuffers;
-	unsigned _lastID = 1;
+	unsigned lastID = 1;
 
 	std::vector<VertexPointUV> currentVertices;
 	_prepareGraphicsDevice();
 	for(auto &entry : _entries)
 	{
-		if(entry.textureID == _lastID)
+		if(entry.textureID == lastID)
 		{
 			auto quad = _createQuad(entry.rectangle, entry.flipU, entry.flipV);
 			currentVertices.insert(currentVertices.end(), quad.begin(), quad.end());
@@ -141,20 +147,23 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries()
 void Engine3DRadSpace::Graphics::SpriteBatch::_restoreGraphicsDevice()
 {
 #ifdef _DX11
-	_device->_context->RSSetState(_oldRasterizerState);
+	_device->_context->RSSetState(_oldRasterizerState.Get());
+	_device->_context->OMSetBlendState(_oldBlendState.Get(), _oldBlendFactor, _oldSampleMask);
+	_device->_context->OMSetDepthStencilState(_oldStencilState.Get(), _oldStencilRef);
 #endif
 }
 
 Engine3DRadSpace::Graphics::SpriteBatch::SpriteBatch(GraphicsDevice *device) :
 	_device(device),
-	_oldRasterizerState(nullptr),
 	_state(Immediate),
 	_lastID(1)
 {
+	_spriteShader = std::make_unique<Shaders::SpriteShader>(device);
+
 	_rasterizerState = std::make_unique<RasterizerState>(device, RasterizerFillMode::Solid);
 	_samplerState = std::make_unique<SamplerState>(SamplerState::PointWrap(device));
-	_spriteShader = std::make_unique<Shaders::SpriteShader>(device);
 	_depthBufferState = std::make_unique<DepthStencilState>(DepthStencilState::DepthNone(device));
+	_blendState = std::make_unique<BlendState>(BlendState::AlphaBlend(device));
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
@@ -270,12 +279,12 @@ void Engine3DRadSpace::Graphics::SpriteBatch::End()
 		{
 			_drawAllEntries_SortByTexture();
 		}
+		else _drawAllEntries();
 
 		_state = EndCalled;
 		_lastID = 1;
 		_textures.clear();
 	}
-	else throw std::logic_error("Cannot draw sprites when ::End() was called!");
 }
 
 void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)

@@ -35,23 +35,3 @@ DepthStencilBuffer::DepthStencilBuffer(GraphicsDevice *device):
 {
 	_createDepthTexture();
 }
-
-Engine3DRadSpace::Graphics::DepthStencilBuffer::DepthStencilBuffer(DepthStencilBuffer &&buff) noexcept:
-	_device(buff._device),
-	_depthTexture(buff._depthTexture),
-	_depthView(buff._depthView)
-{
-	buff._depthTexture.Reset();
-	buff._depthView.Reset();
-}
-
-DepthStencilBuffer &Engine3DRadSpace::Graphics::DepthStencilBuffer::operator=(DepthStencilBuffer &&buff) noexcept
-{
-	_depthTexture.Reset();
-	_depthView.Reset();
-
-	_depthTexture = buff._depthTexture;
-	_depthView = buff._depthView;
-
-	return *this;
-}

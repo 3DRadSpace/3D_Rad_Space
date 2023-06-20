@@ -16,10 +16,10 @@ namespace Engine3DRadSpace::Graphics
 		explicit DepthStencilBuffer(GraphicsDevice* device);
 
 		DepthStencilBuffer(DepthStencilBuffer &) = delete;
-		DepthStencilBuffer(DepthStencilBuffer &&buff) noexcept;
+		DepthStencilBuffer(DepthStencilBuffer &&buff) noexcept = default;
 
 		DepthStencilBuffer &operator=(DepthStencilBuffer &) = delete;
-		DepthStencilBuffer &operator=(DepthStencilBuffer &&buff) noexcept;
+		DepthStencilBuffer &operator=(DepthStencilBuffer &&buff) noexcept = default;
 
 		friend class GraphicsDevice;
 	};

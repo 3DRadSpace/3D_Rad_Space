@@ -83,7 +83,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	{
 		std::string filename;
 		std::getline(recent_projects, filename);
-		AppendMenuA(recentProjectsMenu, MF_STRING, CMD_OpenRecentFile1 + static_cast<UINT_PTR>(i), filename.c_str());
+		if(!filename.empty())
+			AppendMenuA(recentProjectsMenu, MF_STRING, CMD_OpenRecentFile1 + static_cast<UINT_PTR>(i), filename.c_str());
 	}
 	recent_projects.close();
 
@@ -227,7 +228,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 void EditorWindow::Run()
 {
-	//Modified code from Window::Run() so accelerators are also translated.
+	//Modified code from Window::Run() so accelerators(keyboard shortcuts) are also translated.
 	editor->Initialize();
 	editor->Load(editor->Content.get());
 
@@ -308,7 +309,6 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		case WM_QUIT:
 		{
 			exit(0);
-			break;
 		}
 		case WM_COMMAND:
 		{

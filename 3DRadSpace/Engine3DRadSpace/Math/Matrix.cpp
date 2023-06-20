@@ -163,6 +163,76 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateOrthographicProjection(const Point 
 	);
 }
 
+Matrix Engine3DRadSpace::Math::Matrix::operator+(const Matrix &m) const
+{
+	return Matrix(
+		M11 + m.M11, M12 + m.M12, M13 + m.M13, M14 + m.M14,	
+		M21 + m.M21, M22 + m.M22, M13 + m.M13, M14 + m.M14,	
+		M31 + m.M31, M32 + m.M32, M13 + m.M13, M14 + m.M14,	
+		M41 + m.M41, M42 + m.M42, M13 + m.M13, M14 + m.M14	
+	);
+}
+
+Matrix Engine3DRadSpace::Math::Matrix::operator+=(const Matrix &m)
+{
+	M11 += m.M11;
+	M12 += m.M12;
+	M13 += m.M13;
+	M14 += m.M14;
+
+	M21 += m.M21;
+	M22 += m.M22;
+	M23 += m.M23;
+	M24 += m.M24;
+
+	M31 += m.M31;
+	M32 += m.M32;
+	M33 += m.M33;
+	M34 += m.M34;
+
+	M41 += m.M41;
+	M42 += m.M42;
+	M43 += m.M43;
+	M44 += m.M44;
+
+	return *this;
+}
+
+Matrix Engine3DRadSpace::Math::Matrix::operator-(const Matrix &m) const
+{
+	return Matrix(
+		M11 - m.M11, M12 - m.M12, M13 - m.M13, M14 - m.M14,
+		M21 - m.M21, M22 - m.M22, M13 - m.M13, M14 - m.M14,
+		M31 - m.M31, M32 - m.M32, M13 - m.M13, M14 - m.M14,
+		M41 - m.M41, M42 - m.M42, M13 - m.M13, M14 - m.M14
+	);
+}
+
+Matrix Engine3DRadSpace::Math::Matrix::operator-=(const Matrix &m)
+{
+	M11 -= m.M11;
+	M12 -= m.M12;
+	M13 -= m.M13;
+	M14 -= m.M14;
+
+	M21 -= m.M21;
+	M22 -= m.M22;
+	M23 -= m.M23;
+	M24 -= m.M24;
+
+	M31 -= m.M31;
+	M32 -= m.M32;
+	M33 -= m.M33;
+	M34 -= m.M34;
+
+	M41 -= m.M41;
+	M42 -= m.M42;
+	M43 -= m.M43;
+	M44 -= m.M44;
+
+	return *this;
+}
+
 Matrix Engine3DRadSpace::Math::Matrix::operator*(const Matrix& m) const
 {
 	Matrix r;
@@ -262,5 +332,5 @@ float& Engine3DRadSpace::Math::Matrix::operator[](unsigned index)
 
 float Engine3DRadSpace::Math::Matrix::Trace() const
 {
-	return M11 * M22 * M33;
+	return M11 + M22 + M33 + M44;
 }

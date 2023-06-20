@@ -55,10 +55,10 @@ namespace Engine3DRadSpace
 			);
 
 			RasterizerState(RasterizerState &) = delete;
-			RasterizerState(RasterizerState &&state) noexcept;
+			RasterizerState(RasterizerState &&state) noexcept = default;
 
 			RasterizerState &operator =(RasterizerState &) = delete;
-			RasterizerState &operator =(RasterizerState &&state) noexcept;
+			RasterizerState &operator =(RasterizerState &&state) noexcept = default;
 
 			static RasterizerState CullNone(GraphicsDevice *device);
 			static RasterizerState CullClockwise(GraphicsDevice *device);

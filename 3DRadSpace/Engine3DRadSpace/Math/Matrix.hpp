@@ -14,8 +14,8 @@ namespace Engine3DRadSpace::Math
 		float M31, M32, M33, M34;
 		float M41, M42, M43, M44;
 
-		Matrix(float m[16]);
-		Matrix(
+		explicit Matrix(float m[16]);
+		explicit Matrix(
 			float m11 = 1, float m12 = 0, float m13 = 0, float m14 = 0,
 			float m21 = 0, float m22 = 1, float m23 = 0, float m24 = 0,
 			float m31 = 0, float m32 = 0, float m33 = 1, float m34 = 0,
@@ -33,6 +33,12 @@ namespace Engine3DRadSpace::Math
 
 		static Matrix CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd);
 		static Matrix CreateOrthographicProjection(const Point &screenSize, float npd, float fpd);
+
+		Matrix operator +(const Matrix &m) const;
+		Matrix operator +=(const Matrix &m);
+
+		Matrix operator -(const Matrix &m) const;
+		Matrix operator -=(const Matrix &m);
 
 		Matrix operator *(const Matrix& m) const;
 		Matrix& operator *=(const Matrix& m);

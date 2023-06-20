@@ -281,6 +281,13 @@ void Engine3DRadSpace::GraphicsDevice::SetDepthStencilState(DepthStencilState *d
 #endif
 }
 
+void Engine3DRadSpace::GraphicsDevice::SetBlendState(Graphics::BlendState *blendState,const Color &blendColor, unsigned sampleMask)
+{
+#if _DX11
+	_context->OMSetBlendState(blendState->_blendState.Get(), reinterpret_cast<const float *>(&blendColor), sampleMask);
+#endif
+}
+
 Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 {
 	return this->_resolution;

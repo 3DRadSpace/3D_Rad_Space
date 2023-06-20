@@ -23,7 +23,8 @@ Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
 
 void Game::Run()
 {
-	this->Initialize();
+	Initialize();
+	Load(Content.get());
 	while (_running)
 	{	
 		RunOneFrame();
@@ -58,4 +59,123 @@ void Engine3DRadSpace::Game::RunOneFrame()
 void Engine3DRadSpace::Game::Exit()
 {
 	_running = false;
+}
+
+void Engine3DRadSpace::Game::AddObject(IObject *obj)
+{
+	std::unique_ptr<IObject> ptr;
+	ptr.reset(obj);
+
+	objects[lastId++] = std::make_pair(1u, std::move(ptr));
+}
+
+void Engine3DRadSpace::Game::AddObject(IObject2D *obj)
+{
+	std::unique_ptr<IObject2D> ptr;
+	ptr.reset(obj);
+
+	objects[lastId++] = std::make_pair(2u, std::move(ptr));
+}
+
+void Engine3DRadSpace::Game::AddObject(IObject3D *obj)
+{
+	std::unique_ptr<IObject3D> ptr;
+	ptr.reset(obj);
+
+	objects[lastId++] = std::make_pair(3u, std::move(ptr));
+}
+
+IObject *Engine3DRadSpace::Game::FindObject(unsigned id)
+{
+	for(auto &pair : objects)
+	{
+		if(pair.first == id)
+			return pair.second.get();
+	}
+	return nullptr;
+}
+
+IObject *Engine3DRadSpace::Game::FindObject(const std::string &name)
+{
+	for(auto &pair : objects)
+	{
+		if(pair.second->Name == name)
+			return pair.second.get();
+	}
+	return nullptr;
+}
+
+void Engine3DRadSpace::Game::RemoveObject(unsigned id)
+{
+	objects.erase(objects.begin() + id, objects.begin() + id + 1);
+}
+
+void Engine3DRadSpace::Game::RemoveObjects(const std::string &name)
+{
+	std::erase_if(objects, [name](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
+	{
+		return p.second->Name == name;
+	});
+}
+
+void Engine3DRadSpace::Game::RemoveObjects(IObject *obj)
+{
+	std::erase_if(objects, [obj](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
+	{
+		return p.second.get() == obj;
+	});
+}
+
+void Engine3DRadSpace::Game::RemoveObjectsIf(std::function<bool(IObject*)> f)
+{
+	std::erase_if(objects, [f](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
+	{
+		return f(p.second.get());
+	});
+}
+
+void Engine3DRadSpace::Game::Load(Content::ContentManager *content)
+{
+	for(auto &p : objects)
+	{
+		p.second->Load(content);
+	}
+}
+
+void Engine3DRadSpace::Game::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
+{
+	for(auto &p : objects)
+	{
+		p.second->Update(keyboard, mouse, dt);
+	}
+}
+
+void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+{
+	for(auto &p : objects)
+	{
+		if(p.first == 3u)
+		{
+			(static_cast<IObject3D *>(p.second.get()))->Draw(view, projection, dt);
+		}
+	}
+}
+
+void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch *spriteBatch, double dt)
+{
+	for(auto &p : objects)
+	{
+		if(p.first == 2u)
+		{
+			(static_cast<IObject2D *>(p.second.get()))->Draw(spriteBatch, dt);
+		}
+	}
+}
+
+void Engine3DRadSpace::Game::Initialize()
+{
+	for(auto &p : objects)
+	{
+		p.second->Initialize();
+	}
 }

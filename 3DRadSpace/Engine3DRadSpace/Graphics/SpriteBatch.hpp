@@ -69,11 +69,20 @@ namespace Engine3DRadSpace::Graphics
 
 		unsigned _lastID;
 
-		ID3D11RasterizerState *_oldRasterizerState;
+#ifdef _DX11
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _oldRasterizerState;
 
+		Microsoft::WRL::ComPtr<ID3D11BlendState> _oldBlendState;
+		float _oldBlendFactor[4];
+		unsigned _oldSampleMask;
+
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _oldStencilState;
+		unsigned _oldStencilRef;
+#endif
 		std::unique_ptr<RasterizerState> _rasterizerState;
 		std::unique_ptr<SamplerState> _samplerState;
 		std::unique_ptr<DepthStencilState> _depthBufferState;
+		std::unique_ptr<BlendState> _blendState;
 	public:
 		SpriteBatch(GraphicsDevice *device);
 
@@ -83,8 +92,8 @@ namespace Engine3DRadSpace::Graphics
 		void Begin(SpriteBatchSortMode sortingMode);
 		void Begin(SpriteBatchSortMode sortingMode,SamplerState samplerState);
 
-		void Draw(Texture2D* texture,const Math::Vector2 &pos,const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
-		void Draw(Texture2D* texture,const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
+		void Draw(Texture2D* texture, const Math::Vector2 &pos, const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
+		void Draw(Texture2D* texture, const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color& tintColor, bool flipU, bool flipV, float depth = 0);
 		void End();
 
 		void DrawQuad(Texture2D *texture);

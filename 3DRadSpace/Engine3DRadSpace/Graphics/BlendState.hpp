@@ -75,10 +75,10 @@ namespace Engine3DRadSpace::Graphics
         BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, std::array<RenderTargetBlendState, 8> renderTargetBlendStates);
 
         BlendState(BlendState &) = delete;
-        BlendState(BlendState &&blend) noexcept;
+        BlendState(BlendState &&blend) noexcept = default;
 
         BlendState &operator=(BlendState &) = delete;
-        BlendState &operator=(BlendState &&blend) noexcept;
+        BlendState &operator=(BlendState &&blend) noexcept = default;
 
         static BlendState Opaque(GraphicsDevice *device);
         static BlendState AlphaBlend(GraphicsDevice *device);

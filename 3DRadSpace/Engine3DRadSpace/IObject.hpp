@@ -21,7 +21,7 @@ namespace Engine3DRadSpace
 		/// <param name="tag"></param>
 		/// <param name="enabled"></param>
 		/// <param name="visible"></param>
-		IObject(const std::string &name = "Empty",const std::string &tag = "...", bool enabled = false, bool visible = false);
+		explicit IObject(const std::string &name = "Empty",const std::string &tag = "...", bool enabled = false, bool visible = false);
 
 		std::string Name;
 		std::string Tag;

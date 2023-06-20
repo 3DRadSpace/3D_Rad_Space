@@ -53,10 +53,10 @@ namespace Engine3DRadSpace::Graphics
 			uint8_t ReadMask, uint8_t WriteMask, FaceOperation FrontFace, FaceOperation BackFace);
 
 		DepthStencilState(DepthStencilState &) = delete;
-		DepthStencilState(DepthStencilState &&state) noexcept;
+		DepthStencilState(DepthStencilState &&state) noexcept = default;
 
 		DepthStencilState& operator=(DepthStencilState &) = delete;
-		DepthStencilState &operator=(DepthStencilState &&state) noexcept;
+		DepthStencilState &operator=(DepthStencilState &&state) noexcept = default;
 
 		static DepthStencilState DepthDefault(GraphicsDevice* device);
 		static DepthStencilState DepthNone(GraphicsDevice *device);

@@ -139,7 +139,28 @@ Vector3 Engine3DRadSpace::Math::Quaternion::ToYawPitchRoll()
     return r;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::operator*(const Quaternion& q)
+Quaternion Quaternion::operator+(const Quaternion &q) const
+{
+    return Quaternion
+    {
+        X + q.X,
+        Y + q.Y,
+        Z + q.Z,
+        W + q.W
+    };
+}
+
+Quaternion Quaternion::operator+=(const Quaternion &q)
+{
+    X += q.X;
+    Y += q.Y;
+    Z += q.Z;
+    W += q.W;
+
+    return *this;
+}
+
+Quaternion Engine3DRadSpace::Math::Quaternion::operator*(const Quaternion& q) const
 {
     //https://stackoverflow.com/questions/19956555/how-to-multiply-two-quaternions
     Quaternion r;
@@ -151,11 +172,31 @@ Quaternion Engine3DRadSpace::Math::Quaternion::operator*(const Quaternion& q)
     return r;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::operator/(float s)
+Quaternion Quaternion::operator*=(const Quaternion &q)
+{
+    X = W * q.W - X * q.X - Y * q.Y - Z * q.Z;
+    Y = W * q.X + X * q.W + Y * q.Z - Z * q.Y;
+    Z = W * q.Y - X * q.Z + Y * q.W + Z * q.X;
+    W = W * q.Z + X * q.Y - Y * q.Z + Z * q.W;
+
+    return *this;
+}
+
+Quaternion Engine3DRadSpace::Math::Quaternion::operator/(float s) const
 {
     return Quaternion(
         this->X / s,
         this->Y / s,
         this->Z / s,
         this->W / s);
+}
+
+Quaternion Quaternion::operator/=(float s)
+{
+    X /= s;
+    Y /= s;
+    Z /= s;
+    W /= s;
+
+    return *this;
 }
