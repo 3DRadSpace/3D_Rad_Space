@@ -97,30 +97,17 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 	tDesc.Width = x;
 	tDesc.Usage = D3D11_USAGE_DYNAMIC;
 	tDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-
-	Color **colorsCopy = new Color*[y];
-
-	int k = 0;
-	for (unsigned i = 0; i < y; i++)
-	{
-		colorsCopy[i] = new Color[x];
-		for (unsigned j = 0; j < x; j++, k++)
-		{
-			colorsCopy[j][i] = colors[k];
-		}
-	}
+	tDesc.ArraySize = 1;
+	tDesc.SampleDesc.Count = 1;
+	tDesc.SampleDesc.Quality = 0;
+	tDesc.MipLevels = 1;
 
 	D3D11_SUBRESOURCE_DATA textureData{};
-	textureData.pSysMem = new Color[x * y];
+	textureData.pSysMem = &colors[0];
 	textureData.SysMemPitch = sizeof(Color) * x;
 
-	HRESULT r = device->_device->CreateTexture2D(&tDesc, nullptr, _texture.GetAddressOf());
-	delete[] textureData.pSysMem;
+	HRESULT r = device->_device->CreateTexture2D(&tDesc, &textureData, _texture.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC resViewDesc{};
-	resViewDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	resViewDesc.ViewDimension = D3D11_SRV_DIMENSION::D3D10_1_SRV_DIMENSION_TEXTURE2D;
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");

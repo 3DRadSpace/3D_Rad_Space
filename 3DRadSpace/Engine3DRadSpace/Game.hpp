@@ -43,6 +43,8 @@ namespace Engine3DRadSpace
 
 		std::unique_ptr<Engine3DRadSpace::Content::ContentManager> Content;
 
+		Color ClearColor = Colors::Black;
+
 		void Run();
 		void RunOneFrame();
 		void Exit();

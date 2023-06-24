@@ -8,7 +8,7 @@ Color Engine3DRadSpace::Colors::Green = { 0.0f,1.0f,0.0f,1.0f };
 Color Engine3DRadSpace::Colors::Blue = { 0.0f,0.0f,1.0f,1.0f };
 Color Engine3DRadSpace::Colors::Black = { 0.0f,0.0f,0.0f,1.0f };
 Color Engine3DRadSpace::Colors::Gray = { 0.5f, 0.5f, 0.5f, 1.0f };
-Color Engine3DRadSpace::Colors::DarkGray = { 0.5f, 0.5f, 0.5f, 1.0f };
+Color Engine3DRadSpace::Colors::DarkGray = { 0.25f, 0.25f, 0.25f, 1.0f };
 
 Color Engine3DRadSpace::Color::FromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {

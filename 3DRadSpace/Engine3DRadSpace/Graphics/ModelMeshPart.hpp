@@ -40,17 +40,19 @@ namespace Engine3DRadSpace::Graphics
 			std::span<V> vertices, std::span<unsigned> indices
 		);
 
-		Engine3DRadSpace::Math::Matrix Transform;
+		Engine3DRadSpace::Math::Matrix Transform = Engine3DRadSpace::Math::Matrix();
 		std::vector<std::unique_ptr<Engine3DRadSpace::Graphics::Texture2D>> Textures;
+		std::vector<std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState>> TextureSamplers;
 
 		void Draw();
+
+		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *GetShaders();
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>
 	inline ModelMeshPart::ModelMeshPart(
 		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline* shaders,
-		Engine3DRadSpace::GraphicsDevice* Device, std::span<V> vertices, std::span<unsigned> indices
-	):
+		Engine3DRadSpace::GraphicsDevice* Device, std::span<V> vertices, std::span<unsigned> indices ):
 		_device(Device)
 	{
 		VertexBuffer = std::make_unique<Engine3DRadSpace::Graphics::VertexBufferV<V>>(Device, vertices);

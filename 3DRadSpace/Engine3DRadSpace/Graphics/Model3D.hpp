@@ -7,12 +7,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 		Engine3DRadSpace::GraphicsDevice* _device;
 		std::vector<std::unique_ptr<ModelMesh>> _meshes;
-		std::vector<std::unique_ptr<Texture2D>> _textures;
 
 		void _processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts,void* currentNode);
 	public:
 		Model3D(GraphicsDevice* Device,const std::string& path);
 
+		void SetTransform(const Engine3DRadSpace::Math::Matrix &m);
 		void Draw();
 
 		using iterator = std::vector<std::unique_ptr<ModelMesh>>::iterator;

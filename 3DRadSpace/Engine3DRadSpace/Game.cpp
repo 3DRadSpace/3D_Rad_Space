@@ -45,7 +45,7 @@ void Engine3DRadSpace::Game::RunOneFrame()
 	auto ts_d1 = std::chrono::high_resolution_clock::now();
 
 	this->Device->SetViewport(Viewport(this->Window->RectangleF(), 0.0f, 1.0f));
-	this->Device->Clear();
+	this->Device->Clear(ClearColor);
 	this->Draw(View,Projection,d_dt);
 
 	this->Device->Present();

@@ -13,6 +13,7 @@ RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	editorWindow(parent), 
 	testTexture(nullptr)
 {
+
 }
 
 void RenderWindow::Initialize()
@@ -65,6 +66,8 @@ void RenderWindow::Initialize()
 void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("holding.png");
+
+	cameraModel = std::make_unique<Engine3DRadSpace::Graphics::Model3D>(Device.get(), "Data\\Models\\Camera.x");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -119,6 +122,9 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 		spriteBatch->End();
 		//spriteBatch->DrawQuad(testTexture);
 	}
+
+	cameraModel->SetTransform(viewProj);
+	cameraModel->Draw();
 
 	Game::Draw(view, projection, dt);
 	Game::Draw(spriteBatch.get(), dt);

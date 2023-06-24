@@ -42,25 +42,10 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		throw ResourceLoadingError(Tag<Model3D>{}, path, importer.GetErrorString());
 	if(!scene->HasMeshes())
 		throw ResourceLoadingError(Tag<Model3D>{}, path, "The scene doesn't contain any models!");
-
-	//load textures
-	for (unsigned i = 0; i < scene->mNumMaterials; i++)
-	{
-		aiString texturePath;
-		aiReturn r = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath);
-		if (r == aiReturn_SUCCESS)
-		{
-			std::filesystem::path p(path);
-			p.remove_filename();
-			p += texturePath.C_Str();
-
-			_textures.push_back(std::make_unique<Texture2D>(Device, p.string()));
-		}
-	}
 	
 	//loop meshes
 	std::vector<std::unique_ptr<ModelMeshPart>> meshParts;
-	for (unsigned i = 0; i < scene->mNumMeshes; i++) 
+	for (unsigned i = 0, k =0; i < scene->mNumMeshes; i++) 
 	{
 		//validate current mesh
 		if (!scene->mMeshes[i]->HasFaces())
@@ -127,7 +112,49 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 				}
 			}
 		}
-		meshParts.push_back(std::make_unique<ModelMeshPart>(basicTexturedNBT.get(), Device, &vertices[0], numVerts, structSize, indices));
+		auto mesh = std::make_unique<ModelMeshPart>(basicTexturedNBT.get(), Device, &vertices[0], numVerts, structSize, indices);
+		std::unique_ptr<Texture2D> diffuseTexture;
+
+		if(numUVMaps == 1)
+		{
+			int materialindex = scene->mMeshes[i]->mMaterialIndex;
+			aiString texturePath;
+			aiReturn r = scene->mMaterials[materialindex]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath);
+			if(r == aiReturn_SUCCESS)
+			{
+				std::filesystem::path p(path); //get the current path of the model
+				p.remove_filename(); //remove the model filename 
+				p += texturePath.C_Str(); //concatenate the texture path.
+
+				diffuseTexture = std::make_unique<Texture2D>(Device, p.string());
+			}
+			else
+			{
+				aiColor3D color;
+				r = scene->mMaterials[materialindex]->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+				if(r == aiReturn_SUCCESS)
+				{
+					float opacity = 1.0f;
+					r = scene->mMaterials[materialindex]->Get(AI_MATKEY_OPACITY, opacity);
+
+					std::array<Color, 4> tColors;
+					tColors.fill(Color(color.r, color.g, color.b, opacity));
+
+					diffuseTexture = std::make_unique<Texture2D>(Device, tColors, 2, 2);
+				}
+				else
+				{
+					std::array<Color, 4> tColors;
+					tColors.fill(Colors::White);
+
+					diffuseTexture = std::make_unique<Texture2D>(Device, tColors, 2, 2);
+				}
+			}
+		}
+
+		mesh->Textures.push_back(std::move(diffuseTexture));
+		mesh->TextureSamplers.push_back(std::make_unique<SamplerState>(Device));
+		meshParts.push_back(std::move(mesh));
 	}
 
 	//generate node structure
@@ -158,6 +185,17 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 	for (unsigned i = 0; i < node->mNumChildren; i++)
 	{
 		_processNode(parts,node->mChildren[i]);
+	}
+}
+
+void Engine3DRadSpace::Graphics::Model3D::SetTransform(const Engine3DRadSpace::Math::Matrix &m)
+{
+	for(auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = m;
+		}
 	}
 }
 

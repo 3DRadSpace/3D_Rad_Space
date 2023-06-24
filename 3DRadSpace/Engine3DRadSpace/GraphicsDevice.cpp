@@ -70,8 +70,6 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 	_context->OMSetDepthStencilState(_stencilState->_state.Get(), 1);
 
-
-
 	r = CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED);
 	RaiseFatalErrorIfFailed(r, "Failed to initialize COM!");
 #endif
@@ -85,9 +83,6 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
 	_context->ClearRenderTargetView(_mainRenderTarget.Get(), color);
 	_context->ClearDepthStencilView(_stencilBuffer->_depthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0xFF);
-
-	float blendFactor[4] = {1,1,1,1};
-	//context->OMSetBlendState(blendState.Get(), blendFactor, 0xFF);
 #endif
 }
 
