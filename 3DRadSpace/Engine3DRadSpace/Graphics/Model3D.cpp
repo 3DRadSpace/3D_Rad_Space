@@ -33,7 +33,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		aiProcess_GenSmoothNormals |
 		aiProcess_FlipUVs | 
 		aiProcess_CalcTangentSpace |
-		aiProcess_JoinIdenticalVertices | 
+		//aiProcess_JoinIdenticalVertices | (TODO: Fix index buffer?)
 		aiProcess_SplitLargeMeshes | 
 		aiProcess_SortByPType
 	);
@@ -75,7 +75,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		bool hasBitangents = scene->mMeshes[i]->HasTangentsAndBitangents();
 		int numUVMaps = scene->mMeshes[i]->GetNumUVChannels();
 
-		size_t structSize = sizeof(Vector3) * 12; // 3 (position) + 3 (normals) + 3 (tangents) + 3 (bitangents)
+		size_t structSize = sizeof(Vector3) * 4; //position + normal + tangent + bitangent
 		if (numUVMaps == 1) structSize += sizeof(Vector2);
 		if (numVertexColors == 1) structSize += sizeof(Color);
 

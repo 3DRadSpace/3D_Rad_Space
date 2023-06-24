@@ -7,7 +7,8 @@ using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
-	_device(device)
+	_device(device),
+	_numIndices(indices.size())
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
@@ -25,7 +26,8 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 }
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices):
-	_device(device)
+	_device(device),
+	_numIndices(numindices)
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
@@ -51,6 +53,11 @@ void Engine3DRadSpace::Graphics::IndexBuffer::SetData(std::span<unsigned> newind
 	memcpy(mappedBuff.pData, &newindices[0], newindices.size_bytes());
 	_device->_context->Unmap(_indexBuffer.Get(), 0);
 #endif
+}
+
+unsigned Engine3DRadSpace::Graphics::IndexBuffer::NumIndices() const
+{
+	return _numIndices;
 }
 
 void Engine3DRadSpace::Graphics::IndexBuffer::Set(unsigned offset)

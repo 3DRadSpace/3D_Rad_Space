@@ -98,6 +98,7 @@ void ModelMeshPart::Draw()
 
 	_device->SetTopology(VertexTopology::TriangleList);
 	_device->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
+	
 	//TODO: continue setting the input assembler
 }
 

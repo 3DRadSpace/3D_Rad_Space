@@ -13,6 +13,7 @@ namespace Engine3DRadSpace
 #endif
 			GraphicsDevice* _device;
 
+			unsigned _numIndices;
 		public:
 			IndexBuffer(GraphicsDevice* device, std::span<unsigned> indices);
 			IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices);
@@ -20,7 +21,10 @@ namespace Engine3DRadSpace
 			void Set(unsigned index = 0);
 			void SetData(std::span<unsigned> newindices);
 
+			unsigned NumIndices() const;
+
 			friend class GraphicsDevice;
+			friend class ModelMeshPart;
 		};
 	}
 }

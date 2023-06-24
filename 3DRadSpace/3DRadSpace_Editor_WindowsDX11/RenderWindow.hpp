@@ -28,7 +28,7 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	Engine3DRadSpace::Objects::Camera Camera;
 
-	std::unique_ptr < Engine3DRadSpace::Graphics::RasterizerState > lineRasterizer;
+	std::unique_ptr < Engine3DRadSpace::Graphics::RasterizerState> lineRasterizer;
 	std::unique_ptr<Engine3DRadSpace::Graphics::RasterizerState> defaultRasterizer;
 
 	float zoom = 5.0f;

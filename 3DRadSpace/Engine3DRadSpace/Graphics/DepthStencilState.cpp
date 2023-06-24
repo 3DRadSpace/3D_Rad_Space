@@ -52,8 +52,8 @@ DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthDefault(Gr
         DepthWriteMask::All, // Mask
         ComparisonFunction::LessEqual, // Function
         false, // EnableStencil
-        0xFF, // ReadMaskD3D11_DEFAULT_STENCIL_READ_MASK
-        0xFF, // WriteMask D3D11_DEFAULT_STENCIL_WRITE_MASK
+        1, // ReadMask D3D11_DEFAULT_STENCIL_READ_MASK
+        1, // WriteMask D3D11_DEFAULT_STENCIL_WRITE_MASK
         FaceOperation{
             .StencilFail = StencilOperation::Keep,
             .DepthFail = StencilOperation::Keep,

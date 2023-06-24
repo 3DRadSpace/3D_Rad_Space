@@ -123,6 +123,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 		//spriteBatch->DrawQuad(testTexture);
 	}
 
+	Device->SetRasterizerState(lineRasterizer.get());
 	cameraModel->SetTransform(viewProj);
 	cameraModel->Draw();
 
