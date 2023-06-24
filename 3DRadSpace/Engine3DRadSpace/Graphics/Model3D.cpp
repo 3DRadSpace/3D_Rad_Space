@@ -33,7 +33,10 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		aiProcess_GenSmoothNormals |
 		aiProcess_FlipUVs | 
 		aiProcess_CalcTangentSpace |
-		//aiProcess_JoinIdenticalVertices | (TODO: Fix index buffer?)
+		//aiProcess_JoinIdenticalVertices | //(TODO: Fix index buffer?)
+		aiProcess_OptimizeMeshes |
+		aiProcess_OptimizeGraph |
+		aiProcess_RemoveRedundantMaterials |
 		aiProcess_SplitLargeMeshes | 
 		aiProcess_SortByPType
 	);
@@ -159,11 +162,19 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 
 	//generate node structure
 	unsigned numChildren = scene->mRootNode->mNumChildren;
-	_meshes.reserve(numChildren);
 
-	for (unsigned i = 0; i < numChildren; i++)
+	if(numChildren != 0)
 	{
-		_processNode(meshParts,scene->mRootNode->mChildren[i]);
+		_meshes.reserve(numChildren);
+
+		for(unsigned i = 0; i < numChildren; i++)
+		{
+			_processNode(meshParts, scene->mRootNode->mChildren[i]);
+		}
+	}
+	else
+	{
+		_meshes.push_back(std::make_unique<ModelMesh>(meshParts));
 	}
 }
 
