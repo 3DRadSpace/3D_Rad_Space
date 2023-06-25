@@ -145,6 +145,7 @@
     <ClInclude Include="Content\AssetReference.hpp" />
     <ClInclude Include="Content\ContentManager.hpp" />
     <ClInclude Include="Content\IAsset.hpp" />
+    <ClInclude Include="Graphics\Primitives\Lines.hpp" />
     <ClInclude Include="IDrawable2D.hpp" />
     <ClInclude Include="ILoadable.hpp" />
     <ClInclude Include="Graphics\BlendState.hpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="Graphics\Model3D.cpp" />
     <ClCompile Include="Graphics\ModelMesh.cpp" />
     <ClCompile Include="Graphics\ModelMeshPart.cpp" />
+    <ClCompile Include="Graphics\Primitives\Lines.cpp" />
     <ClCompile Include="Graphics\RasterizerState.cpp" />
     <ClCompile Include="Graphics\SamplerState.cpp" />
     <ClCompile Include="Graphics\ShaderPipeline.cpp" />

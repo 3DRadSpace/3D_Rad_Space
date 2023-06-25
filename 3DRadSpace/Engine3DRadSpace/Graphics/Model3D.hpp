@@ -13,7 +13,10 @@ namespace Engine3DRadSpace::Graphics
 		Model3D(GraphicsDevice* Device,const std::string& path);
 
 		void SetTransform(const Engine3DRadSpace::Math::Matrix &m);
+
 		void Draw();
+		void Draw(const Engine3DRadSpace::Math::Matrix &m);
+		void Draw(const Engine3DRadSpace::Math::Matrix &model, const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &proj);
 
 		using iterator = std::vector<std::unique_ptr<ModelMesh>>::iterator;
 

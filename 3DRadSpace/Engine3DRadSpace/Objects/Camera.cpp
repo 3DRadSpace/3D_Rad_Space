@@ -1,6 +1,8 @@
 #include "Camera.hpp"
 #include "../Reflection/Reflection.hpp"
+#include "../Graphics/Model3D.hpp"
 
+using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
@@ -16,9 +18,18 @@ Camera::Camera(const std::string& name,const std::string &tag, bool visible, Vec
 {
 }
 
-void Engine3DRadSpace::Objects::Camera::EditorInitialize()
+void Camera::EditorInitialize()
 {
-	//TODO: Load 3D Camera model.
+}
+
+static Model3D *cameraModel = nullptr;
+
+void Camera::EditorLoad(Content::ContentManager *content)
+{
+	if(cameraModel == nullptr)
+	{
+		cameraModel = content->Load<Model3D>("Data\\Models\\Camera.x");
+	}
 }
 
 void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
@@ -42,9 +53,19 @@ void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& vie
 
 void Engine3DRadSpace::Objects::Camera::Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) { } //Do nothing
 
+Engine3DRadSpace::Math::Matrix Engine3DRadSpace::Objects::Camera::GetModelMartix()
+{
+	return Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
+}
+
 void Engine3DRadSpace::Objects::Camera::EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected)
 {
-	//TODO: draw 3d camera model
+	cameraModel->Draw(GetModelMartix(), view, projection);
+}
+
+std::optional<float> Engine3DRadSpace::Objects::Camera::Intersects(const Engine3DRadSpace::Math::Ray &r)
+{
+	
 }
 
 Engine3DRadSpace::Reflection::UUID Engine3DRadSpace::Objects::Camera::GetUUID()

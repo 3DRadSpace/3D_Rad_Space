@@ -33,7 +33,7 @@ namespace Engine3DRadSpace::Graphics
 		IShader(IShader&&) = delete;
 		IShader& operator=(IShader&) = delete;
 
-		void SetData(unsigned index,void *data, unsigned dataSize);
+		void SetData(unsigned index,const void *data, unsigned dataSize);
 		virtual void SetTexture(unsigned index, Texture2D *texture) = 0;
 		virtual void SetSampler(unsigned index, SamplerState *samplerState) = 0;
 		virtual void SetShader() = 0;

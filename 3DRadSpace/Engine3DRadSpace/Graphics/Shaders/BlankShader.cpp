@@ -24,8 +24,8 @@ Engine3DRadSpace::Graphics::Shaders::BlankShader::BlankShader(GraphicsDevice* de
 {
 }
 
-void Engine3DRadSpace::Graphics::Shaders::BlankShader::SetTransformation(Math::Matrix &matrix)
+void Engine3DRadSpace::Graphics::Shaders::BlankShader::SetTransformation(const Math::Matrix &matrix)
 {
-	_vertex->SetData(0, static_cast<void*>(&matrix), sizeof(Matrix));
-	_pixel->SetData(0, static_cast<void*>(&matrix), sizeof(Matrix));
+	_vertex->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));
+	_pixel->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));
 }

@@ -28,6 +28,6 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		/// Sets the linear transformation used to render the primitives.
 		/// </summary>
 		/// <param name="matrix">A MVP (model-view-projection) linear transformation is required.</param>
-		void SetTransformation(Math::Matrix &matrix);
+		void SetTransformation(const Math::Matrix &matrix);
 	};
 }

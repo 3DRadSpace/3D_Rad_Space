@@ -740,7 +740,7 @@ bool EditObjectDialog::setObject()
 
 					char* string = new char[len+1](0);
 
-					GetWindowTextA(textbox, string, len);
+					GetWindowTextA(textbox, string, len+1);
 
 					std::string *r = new std::string(string); //manually allocate a string.
 					// "move" the string to an other location in the memory. the string object will be destroyed at the same time with the object that's being modified.

@@ -63,6 +63,8 @@ public:
 	Engine3DRadSpace::GraphicsDevice *GetGraphicsDevice();
 	Engine3DRadSpace::Content::ContentManager *GetContentManager();
 
+	void AddObject(Engine3DRadSpace::IObject *obj);
+
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

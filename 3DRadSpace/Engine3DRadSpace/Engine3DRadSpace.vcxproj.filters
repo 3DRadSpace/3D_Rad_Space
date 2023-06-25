@@ -29,6 +29,9 @@
     <Filter Include="Logging">
       <UniqueIdentifier>{aa268d4d-1dc2-470d-8320-74d7083524ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Primitives">
+      <UniqueIdentifier>{cb49c844-2e30-46a5-b85d-440df29b0dbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -205,6 +208,9 @@
     <ClInclude Include="IObject2D.hpp" />
     <ClInclude Include="IObject3D.hpp" />
     <ClInclude Include="IDrawable2D.hpp" />
+    <ClInclude Include="Graphics\Primitives\Lines.hpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -345,5 +351,8 @@
     <ClCompile Include="Content\IAsset.cpp" />
     <ClCompile Include="IObject3D.cpp" />
     <ClCompile Include="IObject2D.cpp" />
+    <ClCompile Include="Graphics\Primitives\Lines.cpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

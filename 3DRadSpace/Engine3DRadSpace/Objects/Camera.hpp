@@ -29,9 +29,11 @@ namespace Engine3DRadSpace::Objects
 
 		Engine3DRadSpace::Math::Vector3 LookAt;
 
-		void Initialize() override;
+		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager *content) override;
-		void EditorInitialize() override;
+	
+		virtual void EditorInitialize() override;
+		virtual void EditorLoad(Content::ContentManager *content) override;
 
 		/// <summary>
 		/// Sets the view and projection matrices.
@@ -39,7 +41,7 @@ namespace Engine3DRadSpace::Objects
 		/// <param name="view">View matrix reference</param>
 		/// <param name="projection">Projection matrix reference</param>
 		/// <param name="dt">Delta time, not used.</param>
-		void Draw(
+		virtual void Draw(
 			Engine3DRadSpace::Math::Matrix& view,
 			Engine3DRadSpace::Math::Matrix& projection,
 			double dt) override;
@@ -50,16 +52,19 @@ namespace Engine3DRadSpace::Objects
 		/// <param name="keyboard">Keyboard reference</param>
 		/// <param name="mouse">Mouse reference</param>
 		/// <param name="dt">Delta-time</param>
-		void Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) override;
+		virtual void Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) override;
 
-		void EditorDraw(
+		virtual Engine3DRadSpace::Math::Matrix GetModelMartix() override;
+		virtual void EditorDraw(
 			const Engine3DRadSpace::Math::Matrix& view,
 			const Engine3DRadSpace::Math::Matrix& projection,
 			double dt,
 			bool selected
 		) override;
 
-		Reflection::UUID GetUUID() override;
+		virtual std::optional<float> Intersects(const Engine3DRadSpace::Math::Ray &r) override;
+
+		virtual Reflection::UUID GetUUID() override;
 	};
 }
 

@@ -8,14 +8,11 @@
 #include <Engine3DRadSpace/Graphics/Model3D.hpp>
 #include <Engine3DRadSpace/Graphics/Shaders/BasicTextured_NBT.hpp>
 #include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
+#include <Engine3DRadSpace/Graphics/Primitives/Lines.hpp>
 #include <CommonStates.h>
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
-	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
-	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> lines;
-	std::unique_ptr<Engine3DRadSpace::Graphics::Model3D> cameraModel;
-
 	Engine3DRadSpace::Math::Vector2 cameraPos =
 	{
 		cosf(std::numbers::pi_v<float> / 6), //30 degrees = pi/6 radians
@@ -25,11 +22,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 	Engine3DRadSpace::Math::Vector3 cursor3D = Engine3DRadSpace::Math::Vector3::Zero();
 
 	HWND editorWindow;
-
 	Engine3DRadSpace::Objects::Camera Camera;
-
-	std::unique_ptr < Engine3DRadSpace::Graphics::RasterizerState> lineRasterizer;
-	std::unique_ptr<Engine3DRadSpace::Graphics::RasterizerState> defaultRasterizer;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Primitives::Lines> lines;
 
 	float zoom = 5.0f;
 	float timer = 0;
@@ -38,7 +32,6 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState> samplerState;
 
 	Engine3DRadSpace::Graphics::Texture2D* testTexture;
-	std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> spriteBatch;
 
 	bool _keyboardTest = false;
 

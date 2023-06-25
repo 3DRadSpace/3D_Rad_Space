@@ -2,6 +2,7 @@
 #include "IObject.hpp"
 #include "Graphics/SpriteBatch.hpp"
 #include "IDrawable3D.hpp"
+#include "Math/Ray.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -24,6 +25,7 @@ namespace Engine3DRadSpace
 
 		virtual Engine3DRadSpace::Math::Matrix GetModelMartix();
 		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &projection, double dt, bool selected) = 0;
+		virtual std::optional<float> Intersects(const Math::Ray &r) = 0;
 
 		~IObject3D() = default;
 	};

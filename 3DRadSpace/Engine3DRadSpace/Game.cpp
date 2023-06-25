@@ -2,12 +2,14 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
+using namespace Engine3DRadSpace::Graphics;
 
 Game::Game(const char* title, int width, int height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
 	Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
 	Content = std::make_unique<Engine3DRadSpace::Content::ContentManager>(Device.get());
+	SpriteBatch = std::make_unique<Graphics::SpriteBatch>(Device.get());
 	_valid = true;
 }
 
@@ -17,7 +19,8 @@ Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
 	Math::Point size = Window->Size();
 
 	Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(), size.X, size.Y);
-	Content = std::make_unique<Engine3DRadSpace::Content::ContentManager>(Device.get());
+	Content = std::make_unique<Content::ContentManager>(Device.get());
+	SpriteBatch = std::make_unique<Graphics::SpriteBatch>(Device.get());
 	_valid = true;
 }
 
@@ -66,7 +69,7 @@ void Engine3DRadSpace::Game::AddObject(IObject *obj)
 	std::unique_ptr<IObject> ptr;
 	ptr.reset(obj);
 
-	objects[lastId++] = std::make_pair(1u, std::move(ptr));
+	objects.push_back(std::make_pair(1u, std::move(ptr)));
 }
 
 void Engine3DRadSpace::Game::AddObject(IObject2D *obj)
@@ -74,7 +77,7 @@ void Engine3DRadSpace::Game::AddObject(IObject2D *obj)
 	std::unique_ptr<IObject2D> ptr;
 	ptr.reset(obj);
 
-	objects[lastId++] = std::make_pair(2u, std::move(ptr));
+	objects.push_back(std::make_pair(2u, std::move(ptr)));
 }
 
 void Engine3DRadSpace::Game::AddObject(IObject3D *obj)
@@ -82,7 +85,7 @@ void Engine3DRadSpace::Game::AddObject(IObject3D *obj)
 	std::unique_ptr<IObject3D> ptr;
 	ptr.reset(obj);
 
-	objects[lastId++] = std::make_pair(3u, std::move(ptr));
+	objects.push_back(std::make_pair(3u, std::move(ptr)));
 }
 
 IObject *Engine3DRadSpace::Game::FindObject(unsigned id)

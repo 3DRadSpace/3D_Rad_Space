@@ -9,6 +9,7 @@
 #include "ILoadable.hpp"
 #include "Math/Matrix.hpp"
 #include "Content/ContentManager.hpp"
+#include "Graphics/SpriteBatch.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -20,12 +21,12 @@ namespace Engine3DRadSpace
 		double u_dt = 0;
 		double d_dt = 0;
 
+	protected:
 		/// Valid unsigned values :
 		/// 1u = IObject
 		/// 2u = IObject2D
 		/// 3u = IObject3D
 		std::vector<std::pair<unsigned, std::unique_ptr<IObject>>> objects;
-		unsigned lastId = 1;
 
 	public:
 		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
@@ -42,6 +43,8 @@ namespace Engine3DRadSpace
 		Engine3DRadSpace::Math::Matrix Projection;
 
 		std::unique_ptr<Engine3DRadSpace::Content::ContentManager> Content;
+
+		std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> SpriteBatch;
 
 		Color ClearColor = Colors::Black;
 

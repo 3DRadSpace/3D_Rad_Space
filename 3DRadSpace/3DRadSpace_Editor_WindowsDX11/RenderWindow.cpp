@@ -9,7 +9,6 @@ using namespace Engine3DRadSpace::Objects;
 
 RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	Game(Engine3DRadSpace::Window(hInstance, parent)),
-	simpleShader(std::make_unique<BlankShader>(Device.get())),
 	editorWindow(parent), 
 	testTexture(nullptr)
 {
@@ -18,8 +17,6 @@ RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 
 void RenderWindow::Initialize()
 {
-	this->simpleShader = std::make_unique<BlankShader>(Device.get());
-
 	std::vector<VertexPositionColor> dLines =
 	{
 		//+X
@@ -52,22 +49,13 @@ void RenderWindow::Initialize()
 		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
 	}
 
-	this->lines = std::make_unique<VertexBufferV<VertexPositionColor>>(Device.get(), dLines);
+	this->lines = std::make_unique<Primitives::Lines>(Device.get(), dLines);
 	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
-
-	lineRasterizer = std::make_unique<RasterizerState>(Device.get(),RasterizerFillMode::Solid, RasterizerCullMode::None);
-	defaultRasterizer = std::make_unique<RasterizerState>(Device.get());
-
-	texturedShader = std::make_unique<BasicTextured_NBT>(Device.get());
-	
-	spriteBatch = std::make_unique<SpriteBatch>(Device.get());
 }
 
 void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("holding.png");
-
-	cameraModel = std::make_unique<Engine3DRadSpace::Graphics::Model3D>(Device.get(), "Data\\Models\\Camera.x");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -93,7 +81,6 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 
 	if(keyboard.IsKeyDown(Key::Space))
 	{
-		//OutputDebugStringA("pressed F9 \r\n");
 		_keyboardTest = true;
 	}
 	else _keyboardTest = false;
@@ -108,27 +95,29 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	Camera.Draw(view, projection, dt);
 	Matrix viewProj = view * projection;
 
-	//Draw the lines.
-	simpleShader->SetBasic();
-	Device->SetRasterizerState(lineRasterizer.get());
-	simpleShader->SetTransformation(viewProj);
-	Device->SetTopology(VertexTopology::LineList);
-	lines->Draw();
+	lines->Draw(View, Projection, dt);
 
 	if(_keyboardTest)
 	{
-		spriteBatch->Begin(SpriteBatchSortMode::Immediate);
-		spriteBatch->Draw(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
-		spriteBatch->End();
-		//spriteBatch->DrawQuad(testTexture);
+		SpriteBatch->Begin(SpriteBatchSortMode::Immediate);
+		SpriteBatch->Draw(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+		SpriteBatch->End();
 	}
 
-	Device->SetRasterizerState(lineRasterizer.get());
-	cameraModel->SetTransform(viewProj);
-	cameraModel->Draw();
-
-	Game::Draw(view, projection, dt);
-	Game::Draw(spriteBatch.get(), dt);
+	for(auto &obj : objects)
+	{
+		switch(obj.first)
+		{
+			case 2:
+				static_cast<IObject2D *>(obj.second.get())->EditorDraw(SpriteBatch.get(), dt, false);
+				break;
+			case 3:
+				static_cast<IObject3D *>(obj.second.get())->EditorDraw(View, Projection, dt, false);
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 bool RenderWindow::IsFocused()

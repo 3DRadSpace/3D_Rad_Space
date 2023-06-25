@@ -63,6 +63,10 @@ void Sprite::EditorInitialize()
 {
 }
 
+void Engine3DRadSpace::Objects::Sprite::EditorLoad(Content::ContentManager *content)
+{
+}
+
 void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
 {
 }

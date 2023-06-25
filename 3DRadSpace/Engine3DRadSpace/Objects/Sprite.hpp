@@ -28,7 +28,9 @@ namespace Engine3DRadSpace::Objects
 		virtual void Load(Content::ContentManager *content) override;
 		virtual void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
 		virtual void Draw(Graphics::SpriteBatch *spriteBatch, double dt) override;
+
 		virtual void EditorInitialize() override;
+		virtual void EditorLoad(Content::ContentManager *content) override;
 		virtual void EditorDraw(Graphics::SpriteBatch *spriteBatch, double dt, bool selected) override;
 		virtual Reflection::UUID GetUUID() override;
 

@@ -218,6 +218,31 @@ void Model3D::Draw()
 	}
 }
 
+void Model3D::Draw(const Engine3DRadSpace::Math::Matrix &m)
+{
+	for(auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = m;
+			meshPart->Draw();
+		}
+	}
+}
+
+void Engine3DRadSpace::Graphics::Model3D::Draw(const Engine3DRadSpace::Math::Matrix &model, const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &proj)
+{
+	Matrix mvp = model * view * proj;
+	for(auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = mvp;
+			meshPart->Draw();
+		}
+	}
+}
+
 Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::begin()
 {
 	return _meshes.begin();

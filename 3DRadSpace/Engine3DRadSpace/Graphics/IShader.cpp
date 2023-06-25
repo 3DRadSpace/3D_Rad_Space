@@ -118,7 +118,7 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *Device, const std::
 {
 }
 
-void IShader::SetData(unsigned index, void *data, unsigned dataSize)
+void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 {
 	if (_constantBuffers[index].Get() == nullptr)
 	{

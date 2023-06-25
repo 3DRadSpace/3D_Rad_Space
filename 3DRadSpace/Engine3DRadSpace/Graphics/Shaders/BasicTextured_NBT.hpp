@@ -31,7 +31,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 	public:
 		explicit BasicTextured_NBT(GraphicsDevice* device);
 
-		void SetTransform(Engine3DRadSpace::Math::Matrix& m);
+		void SetTransform(const Engine3DRadSpace::Math::Matrix& m);
 		void SetTexture(Engine3DRadSpace::Graphics::Texture2D* texture);
 		void SetSampler(Engine3DRadSpace::Graphics::SamplerState* state);
 	};

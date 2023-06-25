@@ -284,6 +284,41 @@ Engine3DRadSpace::Content::ContentManager *EditorWindow::GetContentManager()
 	return editor->Content.get();
 }
 
+void EditorWindow::AddObject(Engine3DRadSpace::IObject *obj)
+{
+	if(obj == nullptr) return;
+
+	//add item into the treeView control
+	TVITEMA item{};
+	item.mask = TVIF_TEXT;
+	item.pszText = const_cast<char *>(obj->Name.c_str());
+	item.cChildren = 0;
+
+	TVINSERTSTRUCTA insertStruct{};
+	insertStruct.item = item;
+
+	SendMessageA(_listBox, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct));
+
+	//Load editor assets
+	obj->EditorLoad(GetContentManager());
+
+	//Convert the object to a 2D or 3D specific object then add it to the list of objects.
+	IObject2D *obj2D = dynamic_cast<IObject2D *>(obj);
+	if(obj2D != nullptr)
+	{
+		editor->AddObject(obj2D);
+		return;
+	}
+
+	IObject3D *obj3D = dynamic_cast<IObject3D *>(obj);
+	if(obj3D != nullptr)
+	{
+		editor->AddObject(obj3D);
+		return;
+	}
+	else editor->AddObject(obj);
+}
+
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
@@ -381,6 +416,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				{
 					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
 					auto obj = dialog.ShowDialog();
+					gEditorWindow->AddObject(obj);
 					break;
 				}
 				case CMD_AddAsset:

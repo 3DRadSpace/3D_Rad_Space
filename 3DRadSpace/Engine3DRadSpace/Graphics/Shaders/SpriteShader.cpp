@@ -24,7 +24,7 @@ SpriteShader::SpriteShader(GraphicsDevice *device) :
 	SetData(default_data);
 }
 
-void Engine3DRadSpace::Graphics::Shaders::SpriteShader::SetData(Data &d)
+void Engine3DRadSpace::Graphics::Shaders::SpriteShader::SetData(const Data &d)
 {
 	_vertex->SetData(0, &d, sizeof(Data));
 	_pixel->SetData(0, &d, sizeof(Data));

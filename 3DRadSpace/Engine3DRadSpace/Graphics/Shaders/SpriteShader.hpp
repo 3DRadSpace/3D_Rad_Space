@@ -33,7 +33,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 			int flipV = false;
 		};
 
-		void SetData(Data &d);
+		void SetData(const Data &d);
 		void SetTexture(Engine3DRadSpace::Graphics::Texture2D *texture);
 		void SetSamplerState(Engine3DRadSpace::Graphics::SamplerState *sampler);
 	};
