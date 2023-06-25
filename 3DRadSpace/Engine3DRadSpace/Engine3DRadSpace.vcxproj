@@ -190,15 +190,19 @@
     <ClInclude Include="Logging\Exception.hpp" />
     <ClInclude Include="Logging\ResourceLoadingError.hpp" />
     <ClInclude Include="Logging\Warning.hpp" />
+    <ClInclude Include="Math\BoundingBox.hpp" />
     <ClInclude Include="Math\Math.hpp" />
     <ClInclude Include="Math\Matrix.hpp" />
     <ClInclude Include="Math\Point.hpp" />
     <ClInclude Include="Math\Quaternion.hpp" />
     <ClInclude Include="Math\Rectangle.hpp" />
+    <ClInclude Include="Math\BoundingSphere.hpp" />
+    <ClInclude Include="Math\Triangle.hpp" />
     <ClInclude Include="Math\Vector2.hpp" />
     <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Math\Vector4.hpp" />
     <ClInclude Include="Objects\Camera.hpp" />
+    <ClInclude Include="Math\Ray.hpp" />
     <ClInclude Include="Reflection\FieldRepresentation.hpp" />
     <ClInclude Include="Reflection\ReflectedFunction.hpp" />
     <ClInclude Include="Reflection\ReflectedField.hpp" />
@@ -208,6 +212,7 @@
     <ClInclude Include="Graphics\ShaderCompilationError.hpp" />
     <ClInclude Include="Graphics\RenderTarget.hpp" />
     <ClInclude Include="Objects\Sprite.hpp" />
+    <ClInclude Include="Objects\Skinmesh.hpp" />
     <ClInclude Include="Viewport.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
@@ -254,6 +259,7 @@
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Point.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Math\Rectangle.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
@@ -264,6 +270,7 @@
     <ClCompile Include="Reflection\ReflectedObject.cpp" />
     <ClCompile Include="Graphics\RenderTarget.cpp" />
     <ClCompile Include="Objects\Sprite.cpp" />
+    <ClCompile Include="Objects\Skinmesh.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

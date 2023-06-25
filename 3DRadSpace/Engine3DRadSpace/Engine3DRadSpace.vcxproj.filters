@@ -211,6 +211,13 @@
     <ClInclude Include="Graphics\Primitives\Lines.hpp">
       <Filter>Graphics\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Ray.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\BoundingSphere.hpp" />
+    <ClInclude Include="Math\Triangle.hpp" />
+    <ClInclude Include="Objects\Skinmesh.hpp" />
+    <ClInclude Include="Math\BoundingBox.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -354,5 +361,7 @@
     <ClCompile Include="Graphics\Primitives\Lines.cpp">
       <Filter>Graphics\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Ray.cpp" />
+    <ClCompile Include="Objects\Skinmesh.cpp" />
   </ItemGroup>
 </Project>

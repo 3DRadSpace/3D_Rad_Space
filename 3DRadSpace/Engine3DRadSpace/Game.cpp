@@ -137,6 +137,11 @@ void Engine3DRadSpace::Game::RemoveObjectsIf(std::function<bool(IObject*)> f)
 	});
 }
 
+void Engine3DRadSpace::Game::ClearObjects()
+{
+	objects.clear();
+}
+
 void Engine3DRadSpace::Game::Load(Content::ContentManager *content)
 {
 	for(auto &p : objects)

@@ -41,6 +41,13 @@ public:
 		// {017161C9-9EB7-4C10-AEEE-24347466586D}
 		return {0x17161c9, 0x9eb7, 0x4c10, { 0xae, 0xee, 0x24, 0x34, 0x74, 0x66, 0x58, 0x6d }};
 	}
+	virtual void EditorLoad(Content::ContentManager *content) override
+	{
+	}
+	virtual std::optional<float> Intersects(const Math::Ray &r) override
+	{
+		return std::nullopt;
+	}
 
 	int Integer;
 	float Float;

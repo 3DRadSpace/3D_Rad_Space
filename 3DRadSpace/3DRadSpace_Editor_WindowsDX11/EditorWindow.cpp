@@ -17,7 +17,7 @@ EditorWindow* gEditorWindow = nullptr;
 
 void EditorWindow::_saveProject(const char* filename)
 {
-	if (filename == nullptr)
+	if (filename == nullptr || strlen(filename) == 0)
 	{
 		char filebuff[_MAX_PATH]{};
 
@@ -32,15 +32,21 @@ void EditorWindow::_saveProject(const char* filename)
 
 		if (GetSaveFileNameA(&ofn))
 		{
-			//save project at filename contained by filebuff
+			_writeProject(ofn.lpstrFile);
 		}
 		else if (GetLastError() != 0)
 			MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the save file dialog box! : {}", GetLastError()).c_str(), "Error!", MB_OK | MB_ICONWARNING);
 	}
 	else
 	{
-		//save project at filename
+		_writeProject(filename);
 	}
+}
+
+void EditorWindow::_writeProject(const char *fileName)
+{
+	_changesSaved = true;
+	//TODO: Serilaize object into a file
 }
 
 EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
@@ -110,6 +116,12 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	AppendMenuA(editMenu, MF_STRING, CMD_AddAddon, "Add Addon");
 	AppendMenuA(editMenu, MF_STRING, CMD_ResetCursor, "Reset the 3D cursor");
 
+	HMENU viewMenu = CreateMenu();
+	RaiseFatalErrorIfNull(viewMenu, "Failed to create the view menu!");
+
+	AppendMenuA(viewMenu, MF_STRING | MF_CHECKED, CMD_SwitchObjectList, "Objects list");
+	AppendMenuA(viewMenu, MF_STRING | MF_UNCHECKED, CMD_SwitchObjectList, "Property grid");
+
 	HMENU optionsMenu = CreateMenu();
 	RaiseFatalErrorIfNull(optionsMenu, "Failed to create the options menu!");
 
@@ -129,6 +141,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(fileMenu), "File");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(editMenu), "Edit");
+	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(viewMenu), "View");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(optionsMenu), "Options");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(helpMenu), "Help");
 
@@ -302,6 +315,9 @@ void EditorWindow::AddObject(Engine3DRadSpace::IObject *obj)
 	//Load editor assets
 	obj->EditorLoad(GetContentManager());
 
+	//Change editor state
+	_changesSaved = false;
+
 	//Convert the object to a 2D or 3D specific object then add it to the list of objects.
 	IObject2D *obj2D = dynamic_cast<IObject2D *>(obj);
 	if(obj2D != nullptr)
@@ -317,6 +333,20 @@ void EditorWindow::AddObject(Engine3DRadSpace::IObject *obj)
 		return;
 	}
 	else editor->AddObject(obj);
+}
+
+bool EditorWindow::WarnNotSaved()
+{
+	if(_changesSaved == true) return true;
+
+	int c =  MessageBoxA(_mainWindow, "Scene is not saved! Unsaved progress will be lost. Save the current work?", "Scene not saved", MB_ICONWARNING | MB_YESNOCANCEL);
+	if(c == IDYES)
+	{
+		_saveProject(gEditorWindow->_currentFile);
+		return true;
+	}
+	else if(c == IDNO) return true;
+	else return false;
 }
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -351,7 +381,15 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			{
 				case CMD_NewFile:
 				case ACC_NEW_PROJECT:
+				{
+					if(gEditorWindow->WarnNotSaved())
+					{
+						gEditorWindow->editor->ClearObjects();
+						SendMessageA(gEditorWindow->_listBox, TVM_DELETEITEM, 0, reinterpret_cast<LPARAM>(TVI_ROOT));
+						gEditorWindow->_changesSaved = true;
+					}
 					break;
+				}
 				case CMD_OpenFile:
 				case ACC_OPEN_PROJECT:
 				{
@@ -369,11 +407,13 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					if(GetOpenFileNameA(&ofn))
 					{
 						//open project file.
+						gEditorWindow->_changesSaved = true;
 					}
 					else if(GetLastError() != 0)
 						MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the open file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
 					break;
 				}
+
 				case CMD_OpenRecentFile1:
 					break;
 				case CMD_OpenRecentFile1 + 1:
@@ -394,13 +434,14 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					break;
 				case CMD_OpenRecentFile1 + 9:
 					break;
+
 				case CMD_SaveProject:
 				case ACC_SAVE_PROJECT:
 					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
 					break;
 				case CMD_SaveProjectAs:
 				case ACC_SAVE_PROJECT_AS:
-					gEditorWindow->_saveProject(nullptr);
+					gEditorWindow->_saveProject();
 					break;
 				case CMD_PlayProject:
 				case ACC_PLAY_PROJECT:
@@ -409,14 +450,17 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_BUILD_PROJECT:
 					break;
 				case CMD_Exit:
-					gEditorWindow->_running = false;
+				{
+					if(gEditorWindow->WarnNotSaved()) gEditorWindow->_running = false;
 					break;
+				}
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:
 				{
 					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
 					auto obj = dialog.ShowDialog();
-					gEditorWindow->AddObject(obj);
+					if(obj != nullptr && obj != reinterpret_cast<void*>(IDCANCEL))
+						gEditorWindow->AddObject(obj);
 					break;
 				}
 				case CMD_AddAsset:

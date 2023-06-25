@@ -3,9 +3,9 @@
 
 namespace Engine3DRadSpace::Math
 {
-	struct Sphere
+	struct BoundingBox
 	{
-		Vector3 Center;
-		float Radius;
+		Vector3 Position;
+		Vector3 Scale;
 	};
 }

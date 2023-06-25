@@ -1,7 +1,7 @@
 #include "Ray.hpp"
 
 //https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
-std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Sphere &sph)
+std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSphere &sph) const
 {
     float a = Direction.Dot(Origin - sph.Center);
     float nabla = powf(a, 2) - ((Origin - sph.Center).LengthSquared() - powf(sph.Radius, 2));
@@ -14,7 +14,7 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Sphere &sph)
 }
 
 //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri)
+std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri) const
 {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
     Vector3 vertex0 = tri.PointA;
@@ -30,17 +30,17 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri
     if(a > -epsilon && a < epsilon)
         return false;    // This ray is parallel to this triangle.
 
-    f = 1.0 / a;
+    f = 1.0f / a;
     s = Origin - vertex0;
     u = f * s.Dot(h);
 
-    if(u < 0.0 || u > 1.0)
+    if(u < 0.0f || u > 1.0f)
         return false;
 
     q = Vector3::Cross(s, edge1);
     v = f * Direction.Dot(q);
 
-    if(v < 0.0 || u + v > 1.0)
+    if(v < 0.0f || u + v > 1.0f)
         return false;
 
     // At this stage we can compute t to find out where the intersection point is on the line.
@@ -50,4 +50,11 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri
         return t;
     else // This means that there is a line intersection but not a ray intersection.
         return std::nullopt;
+}
+
+std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingBox &box) const
+{
+    //Branchless slab method https://tavianator.com/2011/ray_box.html
+   
+    return {};
 }

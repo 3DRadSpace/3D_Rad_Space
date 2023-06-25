@@ -12,7 +12,8 @@ Sprite::Sprite() :
 	FlipU(false),
 	FlipV(false),
 	Image(0),
-	TintColor(Colors::Black)
+	TintColor(Colors::Black),
+	_texture(nullptr)
 {
 }
 
@@ -21,7 +22,8 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
 	FlipV(FlipV),
-	TintColor(tintColor)
+	TintColor(tintColor),
+	_texture(nullptr)
 {
 	_tempResourceString = std::make_unique<std::string>(path);
 }
@@ -30,22 +32,27 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 	float rotation, bool flipU, bool flipV, const Color &tintColor) :
 	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
-	FlipV(FlipV),
+	FlipV(flipV),
 	Image(resource),
-	TintColor(tintColor)
+	TintColor(tintColor),
+	_texture(nullptr)
 {
+}
+
+Engine3DRadSpace::Graphics::Texture2D *Engine3DRadSpace::Objects::Sprite::GetSpriteImage()
+{
+	return _texture;
 }
 
 void Sprite::Initialize()
 {
-
 }
 
 void Sprite::Load(Content::ContentManager *content)
 {
 	if(_tempResourceString != nullptr)
 	{
-		content->Load<Texture2D>(*_tempResourceString.get());
+		_texture = content->Load<Texture2D>(*_tempResourceString.get());
 		_tempResourceString.reset();
 	}
 }

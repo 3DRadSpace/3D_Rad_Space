@@ -13,32 +13,26 @@ namespace Engine3DRadSpace::Content
 		ContentManager(GraphicsDevice *device);
 
 		template<AssetType T>
-		std::pair<T *, AssetReference<T>> LoadForEditor(const std::string &path)
+		T *Load(const std::string &path, AssetReference<T> *ref = nullptr)
 		{
 			auto r = std::make_unique<Asset<T>>(_device, path);
-			r->ID = _lastID++;
+			r->_id = _lastID++;
 
 			for(auto &asset : _resources)
 			{
-				if(asset->Path == path)
-					return std::make_pair(asset->Get(), asset->ID());
+				if(asset && asset->Path == path)
+				{
+					if(ref) *ref = AssetReference<T>(r->ID());
+					return static_cast<T *>(asset->Get());
+				}
 			}
 
-			_resources.push_back(r);
-			return std::make_pair(r.get(), AssetReference(r->ID));
-		}
+			unsigned int cID = r->ID();
+			T* assetPtr = static_cast<T *>(r->Get());
+			_resources.push_back(std::move(r));
 
-		template<AssetType T>
-		T *Load(const std::string &path)
-		{
-			auto asset = std::make_unique<Asset<T>>(_device, path);
-			
-			T *retPtr = static_cast<T *>(asset->Get());
-			
-			asset->_id = _lastID++;
-			_resources.push_back(std::move(asset));
-
-			return retPtr;
+			if(ref) *ref = AssetReference<T>(cID);
+			return assetPtr;
 		}
 
 		template<AssetType T>

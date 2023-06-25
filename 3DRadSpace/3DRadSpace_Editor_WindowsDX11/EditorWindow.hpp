@@ -35,6 +35,9 @@ constexpr int CMD_Documentation = 525;
 constexpr int CMD_Homepage = 526;
 constexpr int CMD_Github = 527;
 
+constexpr int CMD_SwitchObjectList = 528;
+constexpr int CMD_SwitchPropertyGrid = 529;
+
 constexpr int CMD_OpenIDE = 258;
 constexpr int CMD_Switch2D3D = 259;
 
@@ -50,9 +53,11 @@ class EditorWindow
 	std::unique_ptr<RenderWindow> editor;
 
 	bool _running;
+	bool _changesSaved = true;
 
 	char _currentFile[_MAX_PATH]{};
 	void _saveProject(const char* fileName = nullptr);
+	void _writeProject(const char *fileName);
 public:
 	EditorWindow(HINSTANCE hInstance, char* cmdArgs);
 
@@ -64,6 +69,7 @@ public:
 	Engine3DRadSpace::Content::ContentManager *GetContentManager();
 
 	void AddObject(Engine3DRadSpace::IObject *obj);
+	bool WarnNotSaved();
 
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

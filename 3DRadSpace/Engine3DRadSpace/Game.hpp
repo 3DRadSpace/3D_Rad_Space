@@ -65,6 +65,8 @@ namespace Engine3DRadSpace
 
 		void RemoveObjectsIf(std::function<bool(IObject*)> f);
 
+		void ClearObjects();
+
 		virtual ~Game() = default;
 
 		virtual void Initialize() override;

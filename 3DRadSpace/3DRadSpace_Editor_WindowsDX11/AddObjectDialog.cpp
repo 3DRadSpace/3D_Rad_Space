@@ -8,6 +8,7 @@
 //Forward declarations of object reflection data
 REFL_DEF(Camera)
 REFL_DEF(Sprite)
+REFL_DEF(Skinmesh)
 
 INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -150,7 +151,9 @@ void AddObjectDialog::createForms()
 		&CameraReflInstance, //Network chat
 		&CameraReflInstance, //Rigidbody
 		&CameraReflInstance, //C# Script
-		&CameraReflInstance, //Skinmesh
+		*/
+		&SkinmeshReflInstance, //Skinmesh
+		/*
 		&CameraReflInstance, //Skybox
 		&CameraReflInstance, //Skycolor
 		&CameraReflInstance, //SoundEffect

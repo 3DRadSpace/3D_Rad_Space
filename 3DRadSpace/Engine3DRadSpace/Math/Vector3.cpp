@@ -105,7 +105,7 @@ Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v1, const Vector3&
     );
 }
 
-float Engine3DRadSpace::Math::Vector3::Dot(const Vector3& v)
+float Engine3DRadSpace::Math::Vector3::Dot(const Vector3& v) const
 {
     return (this->X * v.X) + (this->Y * v.Y) + (this->Z * v.Z);
 }

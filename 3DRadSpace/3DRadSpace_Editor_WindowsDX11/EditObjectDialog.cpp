@@ -719,15 +719,15 @@ bool EditObjectDialog::setObject()
 				case FieldRepresentationType::Quaternion:
 				{
 					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
-					float x = std::stof(text);
+					float x = Math::ToRadians(std::stof(text));
 					
 					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
-					float y = std::stof(text);
+					float y = Math::ToRadians(std::stof(text));
 
 					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
-					float z = std::stof(text);
+					float z = Math::ToRadians(std::stof(text));
 
-					Engine3DRadSpace::Math::Quaternion q = Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(y, x, z); // y = yaw, x = pitch, z = roll (?)
+					Engine3DRadSpace::Math::Quaternion q = Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(x, y, z); // y = yaw, x = pitch, z = roll (?)
 
 					memcpy(newStruct.get() + j, &q, sizeof(Engine3DRadSpace::Math::Quaternion));
 					j += sizeof(Engine3DRadSpace::Math::Quaternion);

@@ -65,7 +65,11 @@ void Engine3DRadSpace::Objects::Camera::EditorDraw(const Matrix& view, const Mat
 
 std::optional<float> Engine3DRadSpace::Objects::Camera::Intersects(const Engine3DRadSpace::Math::Ray &r)
 {
-	
+	return r.Intersects(BoundingSphere{
+			.Center = Position,
+			.Radius = 1.5f
+		}
+	);
 }
 
 Engine3DRadSpace::Reflection::UUID Engine3DRadSpace::Objects::Camera::GetUUID()
