@@ -2,13 +2,16 @@
 #include <Engine3DRadSpace/Logging/Error.hpp>
 #include "resource.h"
 #include <CommCtrl.h>
-#include "EditObjectDialog.hpp"
-
 
 //Forward declarations of object reflection data
 REFL_DEF(Camera)
 REFL_DEF(Sprite)
 REFL_DEF(Skinmesh)
+
+using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Reflection;
+
+std::vector<std::pair<Reflection::UUID, ReflectedObject *>> AddObjectDialog::Objects;
 
 INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -54,7 +57,7 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(item->iItem >= 0)
 					{
-						EditObjectDialog dialog(hwnd, aod->hInstance, aod->objectData[item->iItem], nullptr);
+						EditObjectDialog dialog(hwnd, aod->hInstance, aod->Objects[item->iItem].second, nullptr);
 						EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
 					}
 					break;
@@ -106,6 +109,16 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance):
 {
 }
 
+Engine3DRadSpace::Reflection::ReflectedObject *AddObjectDialog::GetReflDataFromUUID(const Engine3DRadSpace::Reflection::UUID &uuid)
+{
+	for(auto &p : Objects)
+	{
+		if(p.first == uuid)
+			return p.second;
+	}
+	return nullptr;
+}
+
 Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
 {
 	return reinterpret_cast<Engine3DRadSpace::IObject *>(Dialog::ShowDialog(static_cast<void *>(this)));
@@ -133,56 +146,60 @@ void AddObjectDialog::createForms()
 	std::unordered_map<std::string, int> categories;
 
 	//hardcoded list of already implemented objects.
-	objectData =
+	if(Objects.size() == 0)
 	{
-		&CameraReflInstance, //Camera
-		/*
-		&CameraReflInstance, //Counter
-		&CameraReflInstance, //Empty
-		&CameraReflInstance, //Event On Key
-		&CameraReflInstance, //EventOnLocation
-		&CameraReflInstance, //ExitFade
-		&CameraReflInstance, //Fog
-		&CameraReflInstance, //Force
-		&CameraReflInstance, //FPVCamera
-		&CameraReflInstance, //Settings
-		&CameraReflInstance, //G-Force
-		&CameraReflInstance, //Group
-		&CameraReflInstance, //Network chat
-		&CameraReflInstance, //Rigidbody
-		&CameraReflInstance, //C# Script
-		*/
-		&SkinmeshReflInstance, //Skinmesh
-		/*
-		&CameraReflInstance, //Skybox
-		&CameraReflInstance, //Skycolor
-		&CameraReflInstance, //SoundEffect
-		&CameraReflInstance, //SoundSource
-		&CameraReflInstance, //C++ source
-		*/
-		&SpriteReflInstance, //Sprite
-	};
+		Objects =
+		{
+			{CameraReflInstance.ObjectUUID,&CameraReflInstance}, //Camera
+			/*
+			&CameraReflInstance, //Counter
+			&CameraReflInstance, //Empty
+			&CameraReflInstance, //Event On Key
+			&CameraReflInstance, //EventOnLocation
+			&CameraReflInstance, //ExitFade
+			&CameraReflInstance, //Fog
+			&CameraReflInstance, //Force
+			&CameraReflInstance, //FPVCamera
+			&CameraReflInstance, //Settings
+			&CameraReflInstance, //G-Force
+			&CameraReflInstance, //Group
+			&CameraReflInstance, //Network chat
+			&CameraReflInstance, //Rigidbody
+			&CameraReflInstance, //C# Script
+			*/
+			{SkinmeshReflInstance.ObjectUUID, &SkinmeshReflInstance}, //Skinmesh
+			/*
+			&CameraReflInstance, //Skybox
+			&CameraReflInstance, //Skycolor
+			&CameraReflInstance, //SoundEffect
+			&CameraReflInstance, //SoundSource
+			&CameraReflInstance, //C++ source
+			*/
+			{SpriteReflInstance.ObjectUUID, &SpriteReflInstance}, //Sprite
+		};
+	}
 
 	//populate the dictionaries
-	for (int i = IDB_PNG1, j = 0, k = 1 ; i <= IDB_PNG24 && j < objectData.size(); i++, j++)
+	for ( int i = IDB_PNG1, j = 0, k = 1 ; i <= IDB_PNG24 && j < Objects.size(); i++, j++, k++)
 	{
 		auto image = MAKEINTRESOURCEW(i);
-		if (objectData[j] == nullptr) continue;
+
+		if (Objects[j].second == nullptr) continue;
 		
 		int categoryID = 0;
 
-		if(categories.find(objectData[j]->Category) == categories.end())
+		if(categories.find(Objects[j].second->Category) == categories.end())
 		{
-			categories[objectData[j]->Category] = k++;
+			categories[Objects[j].second->Category] = k++;
 			categoryID = k;
-			addCategory(objectData[j]->Category, categoryID);
+			addCategory(Objects[j].second->Category, categoryID);
 		}
 		else
 		{
-			categoryID = categories[objectData[j]->Category];
+			categoryID = categories[Objects[j].second->Category];
 		}
 		
-		objects.insert(std::make_pair(objectData[j]->Name, objectItem{image, categoryID}));
+		objects.insert(std::make_pair(Objects[j].second->Name, objectItem{image, categoryID}));
 	}
 
 	//Populate the image list with the object data (icons and names)

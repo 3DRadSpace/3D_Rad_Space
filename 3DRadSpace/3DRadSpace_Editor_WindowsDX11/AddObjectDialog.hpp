@@ -2,6 +2,7 @@
 
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include "Dialog.hpp"
+#include "EditObjectDialog.hpp"
 
 class AddObjectDialog : public Dialog
 {
@@ -14,10 +15,12 @@ class AddObjectDialog : public Dialog
 
 	void createForms();
 	void resize();
-
-	std::vector<Engine3DRadSpace::Reflection::ReflectedObject *> objectData;
 public:
 	AddObjectDialog(HWND owner, HINSTANCE hInstance);
+
+	static std::vector<std::pair<Engine3DRadSpace::Reflection::UUID, Engine3DRadSpace::Reflection::ReflectedObject *>> Objects;
+
+	static Engine3DRadSpace::Reflection::ReflectedObject *GetReflDataFromUUID(const Engine3DRadSpace::Reflection::UUID &uuid);
 
 	[[nodiscard]] Engine3DRadSpace::IObject* ShowDialog();
 

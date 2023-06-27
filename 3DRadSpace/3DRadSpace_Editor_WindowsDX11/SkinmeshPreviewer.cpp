@@ -5,7 +5,10 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
 
 SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
-	Game("Skinmesh previewer", 800, 600, false)
+	Game((std::string("Skinmesh previewer - ") + meshPath.string()).c_str(), 800, 600, false)
 {
 	AddObject(new Skinmesh("", true, "", meshPath));
+	
+	_camera = new Camera();
+	AddObject(_camera);
 }

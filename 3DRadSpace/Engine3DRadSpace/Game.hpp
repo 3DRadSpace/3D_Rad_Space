@@ -10,6 +10,7 @@
 #include "Math/Matrix.hpp"
 #include "Content/ContentManager.hpp"
 #include "Graphics/SpriteBatch.hpp"
+#include "Reflection/ReflectedObject.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -52,18 +53,28 @@ namespace Engine3DRadSpace
 		void RunOneFrame();
 		void Exit();
 
-		void AddObject(IObject *obj);
-		void AddObject(IObject2D *obj);
-		void AddObject(IObject3D *obj);
+		unsigned AddObject(IObject *obj);
+		unsigned AddObject(IObject2D *obj);
+		unsigned AddObject(IObject3D *obj);
 
 		IObject *FindObject(unsigned id);
 		IObject *FindObject(const std::string &name);
+		/// <summary>
+		/// Finds and the i-th object of the type O.
+		/// </summary>
+		/// <typeparam name="O">Object type.</typeparam>
+		/// <param name="i">Index</param>
+		/// <returns>Returns the i-th object of the type O.</returns>
+		template<Reflection::ReflectableObject O>
+		O *FindObject(unsigned i = 0);
 
 		void RemoveObject(unsigned id);
 		void RemoveObjects(const std::string &name);
 		void RemoveObjects(IObject *obj);
 
 		void RemoveObjectsIf(std::function<bool(IObject*)> f);
+
+		void ReplaceObject(Engine3DRadSpace::IObject *obj, unsigned id);
 
 		void ClearObjects();
 
@@ -75,5 +86,23 @@ namespace Engine3DRadSpace
 		virtual void Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt) override;
 		virtual void Draw(Graphics::SpriteBatch *spriteBatch, double dt) override;
 	};
+
+	template<Reflection::ReflectableObject O>
+	inline O *Game::FindObject(unsigned i)
+	{
+		unsigned c = 0;
+		O *ptr = nullptr;
+
+		for(auto &pair : objects)
+		{
+			ptr = dynamic_cast<O *>(pair.second.get());
+			if(ptr != nullptr)
+			{
+				c++;
+				if(c == i) return ptr;
+			}
+		}
+		return ptr;
+	}
 }
 

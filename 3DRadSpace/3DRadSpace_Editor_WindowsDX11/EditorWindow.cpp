@@ -2,7 +2,6 @@
 #include "resource.h"
 #include "Engine3DRadSpace/Logging/Error.hpp"
 #include <fstream>
-#include <CommCtrl.h>
 #include "HelperFunctions.hpp"
 #include <d3d11.h>
 #include <assert.h>
@@ -47,6 +46,34 @@ void EditorWindow::_writeProject(const char *fileName)
 {
 	_changesSaved = true;
 	//TODO: Serilaize object into a file
+
+
+}
+
+HTREEITEM EditorWindow::_getSelectedListViewItem()
+{
+	HTREEITEM selectedItem = reinterpret_cast<HTREEITEM>(SendMessageA(
+		gEditorWindow->_listBox,
+		TVM_GETNEXTITEM,
+		TVGN_CARET,
+		reinterpret_cast<LPARAM>(nullptr)
+	));
+
+	return selectedItem;
+}
+
+std::pair<HTREEITEM, std::optional<unsigned>> EditorWindow::_getSelectedObjectID()
+{
+	HTREEITEM selectedItem = _getSelectedListViewItem();
+
+	if(selectedItem == nullptr) return {nullptr, std::nullopt};
+
+	TVITEMA item;
+	item.mask = LVIF_PARAM;
+	item.hItem = selectedItem;
+	SendMessageA(gEditorWindow->_listBox, TVM_GETITEMA, 0, reinterpret_cast<LPARAM>(&item));
+
+	return {selectedItem, static_cast<unsigned>(item.lParam)};
 }
 
 EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
@@ -301,38 +328,37 @@ void EditorWindow::AddObject(Engine3DRadSpace::IObject *obj)
 {
 	if(obj == nullptr) return;
 
-	//add item into the treeView control
-	TVITEMA item{};
-	item.mask = TVIF_TEXT;
-	item.pszText = const_cast<char *>(obj->Name.c_str());
-	item.cChildren = 0;
-
-	TVINSERTSTRUCTA insertStruct{};
-	insertStruct.item = item;
-
-	SendMessageA(_listBox, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct));
-
 	//Load editor assets
 	obj->EditorLoad(GetContentManager());
 
 	//Change editor state
 	_changesSaved = false;
 
+	unsigned objID;
+
 	//Convert the object to a 2D or 3D specific object then add it to the list of objects.
 	IObject2D *obj2D = dynamic_cast<IObject2D *>(obj);
 	if(obj2D != nullptr)
+		objID = editor->AddObject(obj2D); //case 2: obj is a IObject2D
+	else
 	{
-		editor->AddObject(obj2D);
-		return;
+		IObject3D *obj3D = dynamic_cast<IObject3D *>(obj);
+		if(obj3D != nullptr)
+			objID = editor->AddObject(obj3D); //case 3: obj is a IObject3D
+		else objID = editor->AddObject(obj); //base case: obj is a IObject
 	}
 
-	IObject3D *obj3D = dynamic_cast<IObject3D *>(obj);
-	if(obj3D != nullptr)
-	{
-		editor->AddObject(obj3D);
-		return;
-	}
-	else editor->AddObject(obj);
+	//add item into the treeView control
+	TVITEMA item{};
+	item.mask = TVIF_TEXT | TVIF_PARAM;
+	item.pszText = const_cast<char *>(obj->Name.c_str());
+	item.cChildren = 0;
+	item.lParam = objID;
+
+	TVINSERTSTRUCTA insertStruct{};
+	insertStruct.item = item;
+
+	SendMessageA(_listBox, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct));
 }
 
 bool EditorWindow::WarnNotSaved()
@@ -486,6 +512,67 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_Github:
 					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, SW_NORMAL);
 					break;
+				case CMD_EditObject:
+				{
+					auto objID = gEditorWindow->_getSelectedObjectID();
+					if(objID.second.has_value())
+					{
+						IObject *obj = gEditorWindow->editor->FindObject(objID.second.value());
+						
+						EditObjectDialog eod(
+							gEditorWindow->_mainWindow,
+							gEditorWindow->_hInstance,
+							AddObjectDialog::GetReflDataFromUUID(obj->GetUUID()),
+							obj
+						);
+
+						//update the list view.
+						auto new_obj = eod.ShowDialog();
+						if(new_obj != reinterpret_cast<void *>(IDCANCEL) && new_obj != nullptr)
+						{
+							TVITEMA item{};
+							item.mask = TVIF_TEXT;
+							item.hItem = objID.first;
+
+							SendMessageA(gEditorWindow->_listBox, TVM_GETITEMA, 0, reinterpret_cast<LPARAM>(&item));
+
+							item.pszText = const_cast<char *>(new_obj->Name.c_str());
+							SendMessageA(gEditorWindow->_listBox, TVM_SETITEMA, 0, reinterpret_cast<LPARAM>(&item));
+						}
+					}
+					break;
+				}
+				case CMD_DeleteObject:
+				{
+					auto objID = gEditorWindow->_getSelectedObjectID();
+					if(objID.second.has_value())
+					{
+						gEditorWindow->editor->RemoveObject(objID.second.value());
+
+						HTREEITEM deletedItem = objID.first;
+						HTREEITEM currItem = deletedItem;
+
+						//Update the indexes of the following elements
+						for(; currItem != nullptr; )
+						{
+							currItem = reinterpret_cast<HTREEITEM>(SendMessageA(gEditorWindow->_listBox, TVM_GETNEXTITEM, TVGN_NEXT, reinterpret_cast<LPARAM>(currItem)));
+
+							TVITEMA item{};
+							item.mask = TVIF_PARAM;
+							item.hItem = currItem;
+
+							SendMessageA(gEditorWindow->_listBox, TVM_GETITEMA, 0, reinterpret_cast<LPARAM>(&item)); //read the item data
+
+							//update the item data
+							item.lParam -= 1;
+							SendMessageA(gEditorWindow->_listBox, TVM_SETITEMA, 0, reinterpret_cast<LPARAM>(&item));
+						}
+
+						//delete selected listView item
+						SendMessageA(gEditorWindow->_listBox, TVM_DELETEITEM, 0, reinterpret_cast<LPARAM>(deletedItem));
+					}
+					break;
+				}
 				default: break;
 			}
 			break;
@@ -517,6 +604,45 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				DragQueryFileA(drop, i, file, _MAX_PATH);
 				//handle dropped file
 				//MessageBoxA(gEditorWindow->_mainWindow, file, "Dropped file", MB_ICONINFORMATION);
+			}
+			break;
+		}
+		case WM_NOTIFY:
+		{
+			NMHDR *notif = reinterpret_cast<NMHDR *>(lParam);
+			switch(notif->code)
+			{
+				case NM_RCLICK:
+				{
+					if(notif->hwndFrom == gEditorWindow->_listBox)
+					{
+						HTREEITEM selectedItem = reinterpret_cast<HTREEITEM>(SendMessageA(
+							gEditorWindow->_listBox, 
+							TVM_GETNEXTITEM,
+							TVGN_CARET,
+							reinterpret_cast<LPARAM>(nullptr)
+						));
+
+						if(selectedItem == nullptr) return 0;
+
+						HMENU objectMenu = CreatePopupMenu();
+						if(objectMenu == nullptr) throw std::exception("Failed to create a popup menu!");
+						
+						AppendMenuA(objectMenu, MF_STRING, CMD_EditObject, "Edit object");
+						AppendMenuA(objectMenu, MF_STRING, CMD_DeleteObject, "Delete object");
+						
+						POINT mousePos;
+						GetCursorPos(&mousePos);
+
+						BOOL r = TrackPopupMenu(objectMenu, TPM_LEFTALIGN, mousePos.x, mousePos.y, 0, gEditorWindow->_mainWindow, nullptr);
+						if(!r) throw std::exception("Failed to open a popup menu!");
+
+						return 1;
+					}
+					break;
+				}
+				default:
+					return 0;
 			}
 			break;
 		}

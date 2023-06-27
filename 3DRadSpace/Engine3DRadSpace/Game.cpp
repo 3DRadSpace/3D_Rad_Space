@@ -64,38 +64,36 @@ void Engine3DRadSpace::Game::Exit()
 	_running = false;
 }
 
-void Engine3DRadSpace::Game::AddObject(IObject *obj)
+unsigned Engine3DRadSpace::Game::AddObject(IObject *obj)
 {
 	std::unique_ptr<IObject> ptr;
 	ptr.reset(obj);
 
 	objects.push_back(std::make_pair(1u, std::move(ptr)));
+	return unsigned(objects.size() - 1);
 }
 
-void Engine3DRadSpace::Game::AddObject(IObject2D *obj)
+unsigned Engine3DRadSpace::Game::AddObject(IObject2D *obj)
 {
 	std::unique_ptr<IObject2D> ptr;
 	ptr.reset(obj);
 
 	objects.push_back(std::make_pair(2u, std::move(ptr)));
+	return unsigned(objects.size() - 1);
 }
 
-void Engine3DRadSpace::Game::AddObject(IObject3D *obj)
+unsigned Engine3DRadSpace::Game::AddObject(IObject3D *obj)
 {
 	std::unique_ptr<IObject3D> ptr;
 	ptr.reset(obj);
 
 	objects.push_back(std::make_pair(3u, std::move(ptr)));
+	return unsigned(objects.size() - 1);
 }
 
 IObject *Engine3DRadSpace::Game::FindObject(unsigned id)
 {
-	for(auto &pair : objects)
-	{
-		if(pair.first == id)
-			return pair.second.get();
-	}
-	return nullptr;
+	return objects[id].second.get();
 }
 
 IObject *Engine3DRadSpace::Game::FindObject(const std::string &name)
@@ -135,6 +133,11 @@ void Engine3DRadSpace::Game::RemoveObjectsIf(std::function<bool(IObject*)> f)
 	{
 		return f(p.second.get());
 	});
+}
+
+void Engine3DRadSpace::Game::ReplaceObject(Engine3DRadSpace::IObject *obj, unsigned id)
+{
+	objects[id].second.reset(obj);
 }
 
 void Engine3DRadSpace::Game::ClearObjects()

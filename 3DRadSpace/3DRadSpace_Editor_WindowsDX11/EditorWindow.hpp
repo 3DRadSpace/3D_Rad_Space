@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "RenderWindow.hpp"
+#include <CommCtrl.h>
 
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";
 constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
@@ -38,6 +39,9 @@ constexpr int CMD_Github = 527;
 constexpr int CMD_SwitchObjectList = 528;
 constexpr int CMD_SwitchPropertyGrid = 529;
 
+constexpr int CMD_EditObject = 530;
+constexpr int CMD_DeleteObject = 531;
+
 constexpr int CMD_OpenIDE = 258;
 constexpr int CMD_Switch2D3D = 259;
 
@@ -58,6 +62,9 @@ class EditorWindow
 	char _currentFile[_MAX_PATH]{};
 	void _saveProject(const char* fileName = nullptr);
 	void _writeProject(const char *fileName);
+
+	HTREEITEM _getSelectedListViewItem();
+	std::pair<HTREEITEM, std::optional<unsigned>> _getSelectedObjectID();
 public:
 	EditorWindow(HINSTANCE hInstance, char* cmdArgs);
 
