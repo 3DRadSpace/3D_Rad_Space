@@ -7,6 +7,8 @@ class NumericTextbox : public IControl
 public:
     NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, int cx, int cy, const char* value);
 
+    operator HWND() const;
+
     friend LRESULT WINAPI NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

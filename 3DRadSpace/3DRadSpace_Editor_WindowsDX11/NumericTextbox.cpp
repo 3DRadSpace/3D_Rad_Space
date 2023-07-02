@@ -80,3 +80,8 @@ NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, in
 
 	editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
 }
+
+NumericTextbox::operator HWND() const
+{
+	return this->window;
+}

@@ -31,6 +31,7 @@ namespace Engine3DRadSpace::Graphics
 		Texture2D(Texture2D &&txt) noexcept = default;
 
 		void SetColors(Color** colors, unsigned x, unsigned y);
+		void Resize(unsigned newX, unsigned newY);
 
 		void SaveToFile(const std::string &path);
 

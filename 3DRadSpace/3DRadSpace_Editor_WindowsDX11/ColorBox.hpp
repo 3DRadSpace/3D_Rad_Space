@@ -23,6 +23,8 @@ public:
 	void SetColor(Engine3DRadSpace::Color color);
 	Engine3DRadSpace::Color GetColor();
 
+	HWND GetWindowHandle();
+
 	~ColorBox();
 
 	friend LRESULT WINAPI ColorBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

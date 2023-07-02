@@ -2,10 +2,20 @@
 
 float Engine3DRadSpace::Math::ToRadians(float degrees)
 {
-    return std::numbers::pi_v<float> * degrees / 180.f;
+    return std::numbers::pi * degrees / 180;
 }
 
 float Engine3DRadSpace::Math::ToDegrees(float radians)
 {
-    return radians * 180.f / std::numbers::pi_v<float>;
+    return radians * 180 / std::numbers::pi;
+}
+
+double Engine3DRadSpace::Math::ToRadians(double degrees)
+{
+    return std::numbers::pi * degrees / 180;
+}
+
+double Engine3DRadSpace::Math::ToDegrees(double radians)
+{
+    return radians * 180 / std::numbers::pi;
 }

@@ -172,9 +172,9 @@ void EditObjectDialog::createForms()
 			};
 
 			//creates a edit control that only allows numbers
-			auto createNumericTextbox = [&](const char* defValue) -> HWND
+			auto createNumericTextbox = [&](const char* defValue) -> IControl*
 			{
-				return NumericTextbox(window, hInstance, px, y, 75, textboxHeight, defValue);
+				return new NumericTextbox(window, hInstance, px, y, 75, textboxHeight, defValue);
 			};
 
 			//creates a browse button, a label and a path textbox.
@@ -352,9 +352,9 @@ void EditObjectDialog::createForms()
 				auto q = *reinterpret_cast<const Engine3DRadSpace::Math::Quaternion *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
 				auto eulerAngles = q.ToYawPitchRoll();
 
-				auto pitch = std::to_string(eulerAngles.X);
-				auto yaw = std::to_string(eulerAngles.Y);
-				auto roll = std::to_string(eulerAngles.Z);
+				auto pitch = std::to_string(Math::ToDegrees(eulerAngles.X));
+				auto yaw = std::to_string(Math::ToDegrees(eulerAngles.Y));
+				auto roll = std::to_string(Math::ToDegrees(eulerAngles.Z));
 
 				int sx;
 				//Euler angles X field
@@ -497,7 +497,7 @@ void EditObjectDialog::createForms()
 				windows.push_back(createTextbox(alphaStr.c_str()));
 				px += 80;
 
-				windows.push_back(ColorBox(window, hInstance,px,y,25,25, color));
+				windows.push_back(new ColorBox(window, hInstance,px,y,25,25, color));
 				px += 30;
 				setMax(inc_y, textboxHeight + 5);
 				break;
@@ -652,11 +652,13 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Unsigned:
 				{
+					auto numericTextbox = static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++]));
+					GetWindowTextA(*numericTextbox, text, 255);
+
 					switch(structSize / field->Representation().size())
 					{
 						case sizeof(uint8_t) :
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							uint8_t value = (uint8_t)std::stoul(text);
 							memcpy(newStruct.get() + j, &value, sizeof(uint8_t));
 							j += sizeof(uint8_t);
@@ -664,7 +666,6 @@ bool EditObjectDialog::setObject()
 						}
 						case sizeof(uint16_t) :
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							uint16_t value = (uint16_t)std::stoul(text);
 							memcpy(newStruct.get() + j, &value, sizeof(uint16_t));
 							j += sizeof(uint16_t);
@@ -672,7 +673,6 @@ bool EditObjectDialog::setObject()
 						}
 						case sizeof(uint32_t) :
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							uint32_t value = std::stoul(text);
 							memcpy(newStruct.get() + j, &value, sizeof(uint32_t));
 							j += sizeof(uint32_t);
@@ -680,7 +680,6 @@ bool EditObjectDialog::setObject()
 						}
 						case sizeof(uint64_t) :
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							uint64_t value = std::stoull(text);
 							memcpy(newStruct.get() + j, &value, sizeof(uint64_t));
 							j += sizeof(uint64_t);
@@ -693,11 +692,13 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Float:
 				{
+					auto numericTextbox = static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++]));
+					GetWindowTextA(*numericTextbox, text, 255);
+
 					switch(structSize / field->Representation().size())
 					{
 						case sizeof(float) :
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							float value = std::stof(text);
 							memcpy(newStruct.get() + j, &value, sizeof(float));
 							j += sizeof(float);
@@ -705,7 +706,6 @@ bool EditObjectDialog::setObject()
 						}
 						case sizeof(double):
 						{
-							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							double value = std::stold(text);
 							memcpy(newStruct.get() + j, &value, sizeof(double));
 							j += sizeof(double);
@@ -718,13 +718,25 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Quaternion:
 				{
-					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
+					GetWindowTextA(
+						*static_cast<NumericTextbox*>(std::get<IControl*>(windows[i++])),
+						text,
+						255
+					);
 					float x = Math::ToRadians(std::stof(text));
 					
-					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
+					GetWindowTextA(
+						*static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++])),
+						text,
+						255
+					);
 					float y = Math::ToRadians(std::stof(text));
 
-					GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
+					GetWindowTextA(
+						*static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++])),
+						text,
+						255
+					);
 					float z = Math::ToRadians(std::stof(text));
 
 					Engine3DRadSpace::Math::Quaternion q = Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(x, y, z); // y = yaw, x = pitch, z = roll (?)
@@ -739,7 +751,6 @@ bool EditObjectDialog::setObject()
 					int len = GetWindowTextLengthA(textbox);
 
 					char* string = new char[len+1](0);
-
 					GetWindowTextA(textbox, string, len+1);
 
 					std::string *r = new std::string(string); //manually allocate a string.
@@ -812,8 +823,15 @@ Engine3DRadSpace::IObject* EditObjectDialog::ShowDialog()
 
 EditObjectDialog::~EditObjectDialog()
 {
-	for (HBITMAP bitmap : images)
+	for(auto &c : windows)
 	{
-		DeleteObject(bitmap);
+		try
+		{
+			auto control = std::get<IControl *>(c);
+			delete control;
+		}
+		catch([[maybe_unused]] const std::bad_variant_access &e) //do nothing if using the other type, HWND
+		{
+		}
 	}
 }

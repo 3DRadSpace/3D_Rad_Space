@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
+    <ClCompile Include="AssetControl.cpp" />
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="EditObjectDialog.cpp" />
@@ -159,9 +160,11 @@
     <ClCompile Include="NumericTextbox.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="SkinmeshPreviewer.cpp" />
+    <ClCompile Include="TextureControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
+    <ClInclude Include="AssetControl.hpp" />
     <ClInclude Include="ColorBox.hpp" />
     <ClInclude Include="Dialog.hpp" />
     <ClInclude Include="EditObjectDialog.hpp" />
@@ -173,6 +176,7 @@
     <ClInclude Include="RenderWindow.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SkinmeshPreviewer.hpp" />
+    <ClInclude Include="TextureControl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DRadSpace_Editor_WindowsDX11.rc" />

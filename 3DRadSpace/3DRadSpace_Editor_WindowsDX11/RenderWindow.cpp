@@ -55,7 +55,8 @@ void RenderWindow::Initialize()
 
 void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 {
-	testTexture = content->Load<Texture2D>("holding.png");
+	testTexture = content->Load<Texture2D>("gradient.png");
+	testTexture->Resize(256, 256);
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)

@@ -277,6 +277,82 @@ void Texture2D::SetColors(Color **colors, unsigned x, unsigned y)
 #endif
 }
 
+void Engine3DRadSpace::Graphics::Texture2D::Resize(unsigned newX, unsigned newY)
+{
+#ifdef _DX11
+	//1.) Create a staging texture.
+	D3D11_TEXTURE2D_DESC desc{};
+	_texture->GetDesc(&desc);
+
+	//Keep a copy of the original texture desc.
+	D3D11_TEXTURE2D_DESC resizedTextureDesc = desc;
+	resizedTextureDesc.Width = newX; //Set the new sizes
+	resizedTextureDesc.Height = newY;
+
+	desc.Usage = D3D11_USAGE_STAGING;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	desc.BindFlags = 0;
+	desc.MipLevels = 0;
+	desc.MiscFlags = 0;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> stagingTexture;
+	HRESULT r = _device->_device->CreateTexture2D(&desc, nullptr, &stagingTexture);
+	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a staging texture!");
+
+	//2.) Copy initial texture into the staging texture
+	_device->_context->CopyResource(stagingTexture.Get(), _texture.Get());
+
+	D3D11_MAPPED_SUBRESOURCE mappedRes;
+	r = _device->_context->Map(stagingTexture.Get(), 0, D3D11_MAP_READ, 0, &mappedRes);
+	Logging::RaiseFatalErrorIfFailed(r, "Failed to map the staging texture!");
+
+	struct ColorInt
+	{
+		uint8_t r;
+		uint8_t g;
+		uint8_t b;
+		uint8_t a;
+	};
+
+	std::span<ColorInt> oldTexture(reinterpret_cast<ColorInt *>(mappedRes.pData), _width * _height);
+
+	//3.) Create a new image buffer with the new size
+	std::unique_ptr<ColorInt[]> newTextureData = std::make_unique<ColorInt[]>(newX * newY);
+	std::span<ColorInt> nData(newTextureData.get(), newX * newY);
+
+	//4.) Use nearest neighbor interpolation for resampling
+	float ratioX = static_cast<float>(_width) / newX;
+	float ratioY = static_cast<float>(_height) / newY;
+
+	for(unsigned j = 0; j < newY; j++)
+	{
+		for(unsigned i = 0; i < newX; i++)
+		{
+			unsigned x = unsigned(i * ratioX);
+			unsigned y = unsigned(j * ratioY);
+
+			nData[i + (j * newX)] = oldTexture[x + (y * _width)];
+		}
+	}
+	_device->_context->Unmap(stagingTexture.Get(), 0);
+
+	//5.) Finally, replace the old texture with the new resized one
+	D3D11_SUBRESOURCE_DATA newSubresource{};
+	newSubresource.pSysMem = newTextureData.get();
+	newSubresource.SysMemPitch = sizeof(ColorInt) * newX;
+
+	resizedTextureDesc.MipLevels = 1;
+	r = _device->_device->CreateTexture2D(&resizedTextureDesc, &newSubresource, _texture.ReleaseAndGetAddressOf());
+	Logging::RaiseFatalErrorIfFailed(r, "Failed to recreate the texture!");
+	
+	r = _device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.ReleaseAndGetAddressOf()); //recreate the shader resource view for the new texture
+	Logging::RaiseFatalErrorIfFailed(r, "Failed to recreate the shader resource view!");
+#endif
+	//6.) Update fields
+	_width = newX;
+	_height = newY;
+}
+
 void Texture2D::SaveToFile(const std::string &path)
 {
 #ifdef _DX11

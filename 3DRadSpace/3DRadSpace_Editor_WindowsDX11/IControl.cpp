@@ -5,10 +5,4 @@ IControl::IControl(HWND hwnd, HINSTANCE HInstance):
 	owner(hwnd),
 	instance(HInstance)
 {
-
-}
-
-IControl::operator HWND()
-{
-	return window;
 }

@@ -10,6 +10,5 @@ protected:
 public:
 	IControl(HWND hwnd, HINSTANCE hInstance);
 
-	operator HWND();
 	virtual ~IControl() = default;
 };

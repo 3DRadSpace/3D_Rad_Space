@@ -88,6 +88,11 @@ Engine3DRadSpace::Color ColorBox::GetColor()
 	return color;
 }
 
+HWND ColorBox::GetWindowHandle()
+{
+	return window;
+}
+
 ColorBox::~ColorBox()
 {
 	if (brush != nullptr)
