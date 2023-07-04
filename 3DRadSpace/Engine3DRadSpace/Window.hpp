@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace
 {
-	class Window
+	class DLLEXPORT Window
 	{
 		void* _window;
 

@@ -148,7 +148,7 @@ namespace Engine3DRadSpace
 			Up = 1
 		};
 
-		class Keyboard
+		class DLLEXPORT Keyboard
 		{
 			uint8_t _keys[10];
 

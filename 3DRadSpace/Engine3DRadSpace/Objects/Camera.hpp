@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Objects
 {
-	class Camera : public IObject3D
+	class DLLEXPORT Camera : public IObject3D
 	{
 	public:
 		Camera(const std::string& name = "Camera", const std::string& tag = "...", bool visible = true, 
@@ -65,6 +65,8 @@ namespace Engine3DRadSpace::Objects
 		virtual std::optional<float> Intersects(const Engine3DRadSpace::Math::Ray &r) override;
 
 		virtual Reflection::UUID GetUUID() override;
+
+		virtual ~Camera() = default;
 	};
 }
 

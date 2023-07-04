@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Reflection
 {
-	class IReflectedFunction
+	class DLLEXPORT IReflectedFunction
 	{
 	public:
 		virtual unsigned int NumParameters() = 0;

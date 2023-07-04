@@ -5,7 +5,7 @@ namespace Engine3DRadSpace
 {
 	namespace Math
 	{
-		struct Rectangle
+		struct DLLEXPORT Rectangle
 		{
 			Rectangle(int x = 0, int y = 0, int w = 0, int h = 0) : X(x), Y(y), Width(w), Height(h) {};
 

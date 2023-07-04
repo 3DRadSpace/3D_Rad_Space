@@ -41,7 +41,7 @@ namespace Engine3DRadSpace::Graphics
 		ComparisonFunction Function;
 	};
 
-	class DepthStencilState
+	class DLLEXPORT DepthStencilState
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _state;
@@ -64,6 +64,8 @@ namespace Engine3DRadSpace::Graphics
 
 		static DepthStencilState DepthReverseZ(GraphicsDevice *device);
 		static DepthStencilState DepthReadReverseZ(GraphicsDevice *device);
+
+		~DepthStencilState() = default;
 
 		friend class GraphicsDevice;
 	};

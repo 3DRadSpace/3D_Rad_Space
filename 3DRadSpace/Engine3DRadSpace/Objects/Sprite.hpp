@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace::Objects
 {
-	class Sprite : public IObject2D
+	class DLLEXPORT Sprite : public IObject2D
 	{
 		Graphics::Texture2D *_texture;
 		std::unique_ptr<std::string> _tempResourceString;

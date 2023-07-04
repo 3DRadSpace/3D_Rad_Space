@@ -6,7 +6,7 @@ namespace Engine3DRadSpace
 	class GraphicsDevice;
 	namespace Graphics
 	{
-		class IndexBuffer
+		class DLLEXPORT IndexBuffer
 		{
 #ifdef _DX11
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _indexBuffer;
@@ -22,6 +22,8 @@ namespace Engine3DRadSpace
 			void SetData(std::span<unsigned> newindices);
 
 			unsigned NumIndices() const;
+
+			~IndexBuffer() = default;
 
 			friend class GraphicsDevice;
 			friend class ModelMeshPart;

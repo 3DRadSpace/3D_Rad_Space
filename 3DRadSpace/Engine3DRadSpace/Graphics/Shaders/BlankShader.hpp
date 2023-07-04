@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class BlankShader : public ShaderPipeline
+	class DLLEXPORT BlankShader : public ShaderPipeline
 	{
 		class VertexShader : public IVertexShader
 		{

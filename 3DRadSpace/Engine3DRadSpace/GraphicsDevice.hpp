@@ -29,7 +29,7 @@ namespace Engine3DRadSpace
 	/// <summary>
 	/// GraphicsDevice is a wrapper for GAPI(DirectX11/Vulkan(not implemented yet)) handles. GPU commands can be sent from here.
 	/// </summary>
-	class GraphicsDevice
+	class DLLEXPORT GraphicsDevice
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;

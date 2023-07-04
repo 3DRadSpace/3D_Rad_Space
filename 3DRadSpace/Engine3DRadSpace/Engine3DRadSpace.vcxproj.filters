@@ -32,6 +32,9 @@
     <Filter Include="Graphics\Primitives">
       <UniqueIdentifier>{cb49c844-2e30-46a5-b85d-440df29b0dbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{5ac37a0a-c08e-4bbf-a0a8-59565fbd4d7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -200,10 +203,6 @@
     <ClInclude Include="Objects\Sprite.hpp">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Content\Asset.hpp" />
-    <ClInclude Include="Content\ContentManager.hpp" />
-    <ClInclude Include="Content\IAsset.hpp" />
-    <ClInclude Include="Content\AssetReference.hpp" />
     <ClInclude Include="ILoadable.hpp" />
     <ClInclude Include="IObject2D.hpp" />
     <ClInclude Include="IObject3D.hpp" />
@@ -214,10 +213,29 @@
     <ClInclude Include="Math\Ray.hpp">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\BoundingSphere.hpp" />
     <ClInclude Include="Math\Triangle.hpp" />
-    <ClInclude Include="Objects\Skinmesh.hpp" />
-    <ClInclude Include="Math\BoundingBox.hpp" />
+    <ClInclude Include="Content\Asset.hpp">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Content\AssetReference.hpp">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\BoundingBox.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\BoundingSphere.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Content\ContentManager.hpp">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Content\IAsset.hpp">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Skinmesh.hpp">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Primitives\Box.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -354,14 +372,23 @@
     <ClCompile Include="Objects\Sprite.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Content\ContentManager.cpp" />
-    <ClCompile Include="Content\IAsset.cpp" />
     <ClCompile Include="IObject3D.cpp" />
     <ClCompile Include="IObject2D.cpp" />
     <ClCompile Include="Graphics\Primitives\Lines.cpp">
       <Filter>Graphics\Primitives</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Ray.cpp" />
-    <ClCompile Include="Objects\Skinmesh.cpp" />
+    <ClCompile Include="Content\ContentManager.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="Content\IAsset.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Ray.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Skinmesh.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Primitives\Box.cpp" />
   </ItemGroup>
 </Project>

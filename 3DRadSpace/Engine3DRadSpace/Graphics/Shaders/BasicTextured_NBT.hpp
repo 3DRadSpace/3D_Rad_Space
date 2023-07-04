@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class BasicTextured_NBT : public ShaderPipeline
+	class DLLEXPORT BasicTextured_NBT : public ShaderPipeline
 	{
 		class VertexShader : public IVertexShader
 		{

@@ -10,9 +10,14 @@
 
 #ifdef  _DX11
 #pragma comment(lib,"d3d11.lib")
-#endif //  _DX11
+#pragma comment(lib,"dxgi.lib")
+
 #include <ScreenGrab.h>
 #include <wincodec.h>
+#include <dxgidebug.h>
+#include <dxgi.h>
+#include <dxgi1_3.h>
+#endif //  _DX11
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -260,10 +265,10 @@ void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState 
 void Engine3DRadSpace::GraphicsDevice::SetDepthStencilBuffer(DepthStencilBuffer *depthBuffer)
 {
 #ifdef _DX11
-	ID3D11RenderTargetView *renderTargets[16];
-	_context->OMGetRenderTargets(16, renderTargets, nullptr);
+	ID3D11RenderTargetView *renderTargets[8];
+	_context->OMGetRenderTargets(8, renderTargets, nullptr);
 	
-	_context->OMSetRenderTargets(16, renderTargets, depthBuffer->_depthView.Get());
+	_context->OMSetRenderTargets(8, renderTargets, depthBuffer->_depthView.Get());
 #endif
 }
 
@@ -291,6 +296,7 @@ Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
 #ifdef _DX11
+	_context->ClearState();
 //
 //		UNCOMMENT THE COMMENT BLOCK BELOW IF THERE ARE DIRECTX OBJECTS LEAKING! 
 //
@@ -298,7 +304,7 @@ Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 /*
 #if _DEBUG
 	Microsoft::WRL::ComPtr<ID3D11Debug> debug;
-	device->QueryInterface<ID3D11Debug>(&debug);
+	_device->QueryInterface<ID3D11Debug>(&debug);
 	debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 #endif
 */

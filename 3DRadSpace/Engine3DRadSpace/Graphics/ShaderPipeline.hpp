@@ -7,7 +7,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class ShaderPipeline
+	class DLLEXPORT ShaderPipeline
 	{
 	protected:
 		GraphicsDevice* _device;

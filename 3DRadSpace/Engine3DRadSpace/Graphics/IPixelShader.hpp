@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class IPixelShader : public IShader
+	class DLLEXPORT IPixelShader : public IShader
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> _shader;
@@ -23,6 +23,8 @@ namespace Engine3DRadSpace::Graphics
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;
 		void SetShader() override;
+
+		virtual ~IPixelShader() = default;
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 	};

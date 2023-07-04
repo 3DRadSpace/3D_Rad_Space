@@ -14,6 +14,12 @@ namespace Engine3DRadSpace::Content
 			_asset = std::make_unique<T>(device, path);
 		}
 
+		Asset(Asset &) = delete;
+		Asset(Asset &&) noexcept = delete;
+
+		Asset &operator=(Asset &) = default;
+		Asset &operator=(Asset &&) noexcept = default;
+
 		virtual void *Get()
 		{
 			return _asset.get();

@@ -7,7 +7,7 @@
 
 namespace Engine3DRadSpace
 {
-	class IObject : public IInitiializable, public IUpdateable, public ILoadable
+	class DLLEXPORT IObject : public IInitiializable, public IUpdateable, public ILoadable
 	{
 	protected:
 		GraphicsDevice* _device = nullptr;
@@ -34,6 +34,8 @@ namespace Engine3DRadSpace
 		virtual Reflection::UUID GetUUID() = 0;
 
 		GraphicsDevice *GetGraphicsDeviceHandle();
+
+		virtual ~IObject() = default;
 	};
 }
 

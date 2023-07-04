@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace
 {
-	struct Color
+	struct DLLEXPORT Color
 	{
 		float R;
 		float G;
@@ -20,12 +20,12 @@ namespace Engine3DRadSpace
 	};
 	namespace Colors
 	{
-		extern Color White;
-		extern Color Red;
-		extern Color Green;
-		extern Color Blue;
-		extern Color Black;
-		extern Color Gray;
-		extern Color DarkGray;
+		extern DLLEXPORT Color White;
+		extern DLLEXPORT Color Red;
+		extern DLLEXPORT Color Green;
+		extern DLLEXPORT Color Blue;
+		extern DLLEXPORT Color Black;
+		extern DLLEXPORT Color Gray;
+		extern DLLEXPORT Color DarkGray;
 	};
 }

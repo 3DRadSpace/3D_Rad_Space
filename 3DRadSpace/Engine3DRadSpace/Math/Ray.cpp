@@ -1,8 +1,8 @@
 #include "Ray.hpp"
 
-//https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSphere &sph) const
 {
+    //https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
     float a = Direction.Dot(Origin - sph.Center);
     float nabla = powf(a, 2) - ((Origin - sph.Center).LengthSquared() - powf(sph.Radius, 2));
     
@@ -10,12 +10,11 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSpher
 
     if(nabla < 0) return std::nullopt;
     else return a - sqrtf(nabla);
-
 }
 
-//https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri) const
 {
+    //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
     Vector3 vertex0 = tri.PointA;
     Vector3 vertex1 = tri.PointB;
@@ -54,7 +53,36 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri
 
 std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingBox &box) const
 {
-    //Branchless slab method https://tavianator.com/2011/ray_box.html
-   
-    return {};
+    //Branchless ray-bounding box intersection algorithm: https://tavianator.com/2022/ray_box_boundary.html
+
+    Vector3 invD = 1.0f / Direction;
+
+    float tmin = 0.0;
+    float tmax = std::numeric_limits<float>::infinity();
+
+    //x coord
+    float tx1 = box.Position.X - Origin.X * invD.X;
+    float tx2 = (box.Position.X + box.Scale.X) - Origin.X * invD.X;
+
+    tmin = std::max(tmin, std::min(std::min(tx1, tx2), tmax));
+    tmax = std::min(tmax, std::max(std::max(tx1, tx2), tmin));
+
+    //y coord
+    float ty1 = box.Position.Y - Origin.Y * invD.Y;
+    float ty2 = (box.Position.Y + box.Scale.Y) - Origin.Y * invD.Y;
+
+    tmin = std::max(tmin, std::min(std::min(ty1, ty2), tmax));
+    tmax = std::min(tmax, std::max(std::max(ty1, ty2), tmin));
+
+    //z coord
+    float tz1 = box.Position.Z - Origin.Z * invD.Z;
+    float tz2 = (box.Position.Z + box.Scale.Z) - Origin.Z * invD.Z;
+
+    tmin = std::max(tmin, std::min(std::min(tz1, tz2), tmax));
+    tmax = std::min(tmax, std::max(std::max(tz1, tz2), tmin));
+
+    if(tmin <= tmax)
+        return tmin;
+    else return std::nullopt;
+
 }

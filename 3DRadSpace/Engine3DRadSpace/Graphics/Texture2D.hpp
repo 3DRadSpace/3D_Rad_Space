@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class Texture2D
+	class DLLEXPORT Texture2D
 	{
 		unsigned _width;
 		unsigned _height;
@@ -37,6 +37,8 @@ namespace Engine3DRadSpace::Graphics
 
 		unsigned Width();
 		unsigned Height();
+
+		virtual ~Texture2D() = default;
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 		friend class IVertexShader;

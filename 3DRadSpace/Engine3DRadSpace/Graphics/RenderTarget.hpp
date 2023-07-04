@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class RenderTarget : public Texture2D
+	class DLLEXPORT RenderTarget : public Texture2D
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTarget;
@@ -11,6 +11,8 @@ namespace Engine3DRadSpace::Graphics
 	public:
 		RenderTarget(GraphicsDevice *device);
 		RenderTarget(GraphicsDevice *device, unsigned x, unsigned y);
+
+		~RenderTarget() = default;
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 	};

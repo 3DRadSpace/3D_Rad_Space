@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Math
 	struct Quaternion;
 	struct Matrix;
 
-	struct Vector3
+	struct DLLEXPORT Vector3
 	{
 		float X;
 		float Y;
@@ -44,9 +44,13 @@ namespace Engine3DRadSpace::Math
 		Vector3& Transform(const Quaternion& q);
 		Vector3& Transform(const Matrix& m);
 
-		auto operator <=>(const Vector3& v) const = default;
+		bool operator ==(const Vector3& v) const = default;
+		bool operator !=(const Vector3 &v) const = default;
 	};
 
-	static Vector3& operator *=(float s, Vector3& v);
-	static Vector3 operator *(float s, const Vector3& v);
+	Vector3& operator *=(float s, Vector3& v);
+	Vector3 operator *(float s, const Vector3& v);
+
+	Vector3 &operator /=(float s, Vector3 &v);
+	Vector3 operator /(float s, const Vector3 &v);
 }

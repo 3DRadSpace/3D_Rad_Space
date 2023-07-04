@@ -35,7 +35,7 @@ namespace Engine3DRadSpace
 		};
 
 
-		class RasterizerState
+		class DLLEXPORT RasterizerState
 		{
 			Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
 		public:
@@ -64,6 +64,8 @@ namespace Engine3DRadSpace
 			static RasterizerState CullClockwise(GraphicsDevice *device);
 			static RasterizerState CullCounterClockwise(GraphicsDevice *device);
 			static RasterizerState Wireframe(GraphicsDevice *device);
+
+			~RasterizerState() = default;
 
 			friend class GraphicsDevice;
 		};

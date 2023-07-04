@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace
 {
-	class IDrawable2D
+	class DLLEXPORT IDrawable2D
 	{
 	public:
 		virtual void Draw(Graphics::SpriteBatch* spriteBatch, double dt) = 0;

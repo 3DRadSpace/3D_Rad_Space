@@ -31,7 +31,7 @@ namespace Engine3DRadSpace::Graphics
 		BlendWeights,
 		PointSize,
 	};
-	class IVertexShader : public IShader
+	class DLLEXPORT IVertexShader : public IShader
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> _shader;
@@ -57,6 +57,8 @@ namespace Engine3DRadSpace::Graphics
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;
 		void SetShader() override;
+
+		virtual ~IVertexShader() = default;
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 	};

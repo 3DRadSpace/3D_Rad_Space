@@ -10,4 +10,4 @@ static_cast<Engine3DRadSpace::Reflection::IReflectedField*>( new Engine3DRadSpac
 
 #define REFL_END static_cast<Engine3DRadSpace::Reflection::IReflectedField*>( new Engine3DRadSpace::Reflection::ReflectedField<void>())});
 
-#define REFL_DEF(ObjectName) extern Engine3DRadSpace::Reflection::ReflectedObject ObjectName##ReflInstance;
+#define REFL_DEF(ObjectName) extern DLLEXPORT Engine3DRadSpace::Reflection::ReflectedObject ObjectName##ReflInstance;

@@ -26,7 +26,7 @@ namespace Engine3DRadSpace::Graphics
 		SortedByDepth_BackToFront,
 	};
 
-	class SpriteBatch
+	class DLLEXPORT SpriteBatch
 	{
 		GraphicsDevice *_device;
 		SpriteBatchSortMode _sortingMode;
@@ -88,6 +88,9 @@ namespace Engine3DRadSpace::Graphics
 
 		SpriteBatch(SpriteBatch &) = delete;
 		SpriteBatch(SpriteBatch &&) = delete;
+
+		SpriteBatch& operator=(SpriteBatch &) = delete;
+		SpriteBatch &operator=(SpriteBatch &&) noexcept = default;
 
 		void Begin(SpriteBatchSortMode sortingMode);
 		void Begin(SpriteBatchSortMode sortingMode,SamplerState samplerState);

@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class Model3D
+	class DLLEXPORT Model3D
 	{
 		Engine3DRadSpace::GraphicsDevice* _device;
 		std::vector<std::unique_ptr<ModelMesh>> _meshes;
@@ -11,6 +11,12 @@ namespace Engine3DRadSpace::Graphics
 		void _processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts,void* currentNode);
 	public:
 		Model3D(GraphicsDevice* Device,const std::string& path);
+
+		Model3D(Model3D &) = delete;
+		Model3D(Model3D &&) noexcept = default;
+
+		Model3D &operator=(Model3D &) = delete;
+		Model3D &operator=(Model3D &&) noexcept = default;
 
 		void SetTransform(const Engine3DRadSpace::Math::Matrix &m);
 
@@ -22,6 +28,8 @@ namespace Engine3DRadSpace::Graphics
 
 		iterator begin();
 		iterator end();
+
+		~Model3D() = default;
 
 		ModelMesh *operator[](unsigned i);
 	};

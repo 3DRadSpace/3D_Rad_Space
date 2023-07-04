@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class IGeometryShader : public IShader
+	class DLLEXPORT IGeometryShader : public IShader
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11GeometryShader> _shader;
@@ -21,6 +21,8 @@ namespace Engine3DRadSpace::Graphics
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;
 		void SetShader() override;
+
+		~IGeometryShader() = default;
 
 		friend class Engine3DRadSpace::GraphicsDevice;
 	};

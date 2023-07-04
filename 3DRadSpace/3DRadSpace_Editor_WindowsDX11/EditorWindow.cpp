@@ -68,7 +68,7 @@ std::pair<HTREEITEM, std::optional<unsigned>> EditorWindow::_getSelectedObjectID
 
 	if(selectedItem == nullptr) return {nullptr, std::nullopt};
 
-	TVITEMA item;
+	TVITEMA item{};
 	item.mask = LVIF_PARAM;
 	item.hItem = selectedItem;
 	SendMessageA(gEditorWindow->_listBox, TVM_GETITEMA, 0, reinterpret_cast<LPARAM>(&item));

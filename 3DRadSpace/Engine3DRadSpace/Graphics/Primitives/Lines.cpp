@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-std::unique_ptr<BlankShader> simpleShader;
+inline std::unique_ptr<BlankShader> simpleShader;
 
 Lines::Lines(GraphicsDevice *device, std::span<VertexPositionColor> points):
 	_device(device)

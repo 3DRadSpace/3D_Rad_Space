@@ -46,25 +46,25 @@ namespace Engine3DRadSpace::Reflection
 	template<typename T> FieldRepresentation GetFieldRepresentation() = delete; //Only default and useer-written allow GetFieldRepresentation() specializations.
 
 	//GetFieldRepresentation() specializations, as defined in FieldRepresentationType
-	template<> FieldRepresentation GetFieldRepresentation<void>();
-	template<> FieldRepresentation GetFieldRepresentation<bool>();
+	template<> DLLEXPORT FieldRepresentation GetFieldRepresentation<void>();
+	template<> DLLEXPORT FieldRepresentation GetFieldRepresentation<bool>();
 	template<signed_integer T> FieldRepresentation GetFieldRepresentation() { return {{FieldRepresentationType::Integer,""}}; }
 	template<unsigned_integer T> FieldRepresentation GetFieldRepresentation() { return {{FieldRepresentationType::Unsigned,""}}; }
 	template<std::floating_point T> FieldRepresentation GetFieldRepresentation() { return {{ FieldRepresentationType::Float,""}}; }
-	template<> FieldRepresentation GetFieldRepresentation<std::string>();
-	template<> FieldRepresentation GetFieldRepresentation<RefTexture2D>();
-	template<> FieldRepresentation GetFieldRepresentation<RefModel3D>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Input::Key>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<std::string>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<RefTexture2D>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<RefModel3D>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Input::Key>();
 
 	//FieldRepresentationType() specializations for mathematical types
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Vector2>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Point>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Vector3>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Vector4>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Quaternion>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Color>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::Rectangle>();
-	template<> FieldRepresentation GetFieldRepresentation<Engine3DRadSpace::Math::RectangleF>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Vector2>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Point>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Vector3>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Vector4>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Quaternion>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Color>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::Rectangle>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Engine3DRadSpace::Math::RectangleF>();
 
 	template<typename T>
 	concept ReflectableType = requires

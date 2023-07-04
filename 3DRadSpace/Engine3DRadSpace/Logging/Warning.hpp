@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Logging
 {
-	struct Warning
+	struct DLLEXPORT Warning
 	{
 		const char *Details;
 		int32_t Code;
@@ -17,6 +17,6 @@ namespace Engine3DRadSpace::Logging
 	typedef void (*FuncWarningHandler)(const Warning& warning);
 	extern FuncWarningHandler WarningHandler;
 
-	void SetLastWarning(const Warning &warning);
-	void DefaultWarningHandler(const Warning &warning);
+	void DLLEXPORT SetLastWarning(const Warning &warning);
+	void DLLEXPORT DefaultWarningHandler(const Warning &warning);
 }

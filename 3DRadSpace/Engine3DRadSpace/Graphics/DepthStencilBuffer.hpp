@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DepthStencilBuffer
+	class DLLEXPORT DepthStencilBuffer
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthView;
@@ -20,6 +20,8 @@ namespace Engine3DRadSpace::Graphics
 
 		DepthStencilBuffer &operator=(DepthStencilBuffer &) = delete;
 		DepthStencilBuffer &operator=(DepthStencilBuffer &&buff) noexcept = default;
+
+		~DepthStencilBuffer() = default;
 
 		friend class GraphicsDevice;
 	};

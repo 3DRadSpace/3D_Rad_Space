@@ -6,7 +6,7 @@ namespace Engine3DRadSpace::Math
 	struct Vector3;
 	struct Matrix;
 
-	struct Quaternion
+	struct DLLEXPORT Quaternion
 	{
 		float X, Y, Z, W;
 

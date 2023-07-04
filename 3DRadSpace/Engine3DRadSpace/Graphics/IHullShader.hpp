@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class IHullShader : public Engine3DRadSpace::Graphics::IShader
+	class DLLEXPORT IHullShader : public Engine3DRadSpace::Graphics::IShader
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11HullShader> _shader;
@@ -18,6 +18,8 @@ namespace Engine3DRadSpace::Graphics
 		IHullShader(IHullShader &) = delete;
 		IHullShader(IHullShader &&) = delete;
 		IHullShader &operator=(IHullShader &) = delete;
+
+		~IHullShader() = default;
 
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;

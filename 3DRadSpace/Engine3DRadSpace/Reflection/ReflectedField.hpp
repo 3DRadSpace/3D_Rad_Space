@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Reflection
 {
-	class IReflectedField
+	class DLLEXPORT IReflectedField
 	{
 	public:
 		virtual const size_t TypeHash() const = 0;
@@ -86,11 +86,13 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return GetFieldRepresentation<T>();
 		}
+
+		~ReflectedField() = default;
 	};
 
 	/// Null specialization. Sentinel value.
 	template<>
-	class ReflectedField<void> : public IReflectedField
+	class DLLEXPORT ReflectedField<void> : public IReflectedField
 	{
 	public:
 		ReflectedField()

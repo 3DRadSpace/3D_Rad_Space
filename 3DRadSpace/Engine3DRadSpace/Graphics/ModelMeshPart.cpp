@@ -12,7 +12,8 @@ ModelMeshPart::ModelMeshPart(
 	Engine3DRadSpace::Graphics::IndexBuffer *buffer):
 	_device(vert->_device),
 	VertexBuffer(vert),
-	IndexBuffer(buffer)
+	IndexBuffer(buffer),
+	_shaders(nullptr)
 {
 }
 
@@ -98,8 +99,6 @@ void ModelMeshPart::Draw()
 
 	_device->SetTopology(VertexTopology::TriangleList);
 	_device->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
-	
-	//TODO: continue setting the input assembler
 }
 
 Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *Engine3DRadSpace::Graphics::ModelMeshPart::GetShaders()

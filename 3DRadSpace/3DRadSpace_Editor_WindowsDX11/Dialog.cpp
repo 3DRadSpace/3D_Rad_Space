@@ -32,9 +32,10 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 
 	//Title
 	LPWSTR title = reinterpret_cast<LPWSTR>(pWord);
-	int numChars = 1 + MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), windowTitle.length(), title, 50);
+	int numWChars = MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), int(windowTitle.length()), nullptr, 0);
+	MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), int(windowTitle.length()), title, numWChars);
 
-	pWord += numChars;
+	pWord += 1 + numWChars;
 
 	*pWord++ = 0; //No more creation data. Only a window is created. Controls are manually created in WM_INITDIALOG.
 

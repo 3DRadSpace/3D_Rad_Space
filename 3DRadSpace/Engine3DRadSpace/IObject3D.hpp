@@ -6,7 +6,7 @@
 
 namespace Engine3DRadSpace
 {
-	class IObject3D : public IObject, public IDrawable3D
+	class DLLEXPORT IObject3D : public IObject, public IDrawable3D
 	{
 	public:
 		explicit IObject3D(const std::string &name = "", const std::string &tag = "", bool enabled = false, bool visible = false, const Math::Vector3 &pos = Math::Vector3::Zero(),

@@ -4,13 +4,19 @@
 
 namespace Engine3DRadSpace::Content
 {
-	class ContentManager
+	class DLLEXPORT ContentManager
 	{
 		unsigned _lastID;
 		GraphicsDevice* _device;
 		std::vector<std::unique_ptr<IAsset>> _resources;
 	public:
 		ContentManager(GraphicsDevice *device);
+
+		ContentManager(ContentManager &) = delete;
+		ContentManager(ContentManager &&) noexcept = default;
+
+		ContentManager &operator = (ContentManager &) = delete;
+		ContentManager &operator = (ContentManager &&) noexcept = default;
 
 		template<AssetType T>
 		T *Load(const std::string &path, AssetReference<T> *ref = nullptr)

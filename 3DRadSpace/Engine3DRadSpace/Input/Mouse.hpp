@@ -7,7 +7,7 @@ namespace Engine3DRadSpace
 
 	namespace Input
 	{
-		class Mouse
+		class DLLEXPORT Mouse
 		{
 			bool _leftButton;
 			bool _middleButton;

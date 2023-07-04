@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class SpriteShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
+	class DLLEXPORT SpriteShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
 	{
 		class VertexShader : public Engine3DRadSpace::Graphics::IVertexShader
 		{

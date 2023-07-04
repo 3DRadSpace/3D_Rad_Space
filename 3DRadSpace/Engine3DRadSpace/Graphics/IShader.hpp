@@ -9,7 +9,7 @@ namespace Engine3DRadSpace::Graphics
 	using Array_ValidConstantBuffers = std::array<ID3D11Buffer *, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT>;
 #endif
 
-	class IShader
+	class DLLEXPORT IShader
 	{
 	protected:
 		Engine3DRadSpace::GraphicsDevice *_device;
@@ -31,7 +31,9 @@ namespace Engine3DRadSpace::Graphics
 
 		IShader(IShader&) = delete;
 		IShader(IShader&&) = delete;
+
 		IShader& operator=(IShader&) = delete;
+		IShader &operator=(IShader &&) noexcept = delete;
 
 		void SetData(unsigned index,const void *data, unsigned dataSize);
 		virtual void SetTexture(unsigned index, Texture2D *texture) = 0;

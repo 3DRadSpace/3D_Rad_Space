@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace
 {
-	class IObject2D : public IObject, public IDrawable2D
+	class DLLEXPORT IObject2D : public IObject, public IDrawable2D
 	{
 	public:
 		IObject2D(const std::string& name = "", const std::string &tag = "...", bool enabled = false, bool visible = false, const Math::Vector2 &pos = Math::Vector2::Zero(),
@@ -21,5 +21,7 @@ namespace Engine3DRadSpace
 		float Rotation;
 
 		virtual void EditorDraw(Graphics::SpriteBatch *spriteBatch, double dt, bool selected) = 0;
+
+		virtual ~IObject2D() = default;
 	};
 }

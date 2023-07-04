@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "Engine3DRadSpace/Logging/Error.hpp"
 #include "EditorWindow.hpp"
+#include "HelperFunctions.hpp"
 
 #include <PathCch.h>
 #pragma comment(lib,"Comctl32.lib")
@@ -9,12 +10,15 @@
 #include <commctrl.h>
 #pragma comment(lib,"Pathcch.lib")
 
-#include "HelperFunctions.hpp"
-
 //Enable visual styles
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+#include <dxgi1_3.h>
+#include <DXGIDebug.h>
+#pragma comment(lib, "DXGI.lib")
+#pragma comment(lib, "dxguid.lib")
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -45,11 +49,26 @@ void InitializeCommonControls()
 	InitCommonControlsEx(&iccs);
 }
 
+DEFINE_GUID(DXGI_DEBUG_ALL, 0xe48ae283, 0xda80, 0x490b, 0x87, 0xe6, 0x43, 0xe9, 0xa9, 0xcf, 0xda, 0x8);
+
+#ifdef _DEBUG
+void ReportLiveObjects()
+{
+	OutputDebugStringA("Live DXGI objects: \r\n");
+	Microsoft::WRL::ComPtr<IDXGIDebug1> dxgi_debug;
+	if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgi_debug.GetAddressOf()))))
+	{
+		dxgi_debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_DETAIL | DXGI_DEBUG_RLO_IGNORE_INTERNAL));
+	}
+}
+#endif
+
 int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPSTR cmdArgs,_In_ int nShowCmd)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 	std::atexit(HandleError);
+	std::atexit(ReportLiveObjects);
 
 	InitializeGDI();
 	InitializeCommonControls();

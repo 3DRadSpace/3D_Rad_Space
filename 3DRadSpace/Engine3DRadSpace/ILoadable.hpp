@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace
 {
-	class ILoadable
+	class DLLEXPORT ILoadable
 	{
 	public:
 		virtual void Load(Content::ContentManager *content) = 0;

@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
-	class Lines : public Engine3DRadSpace::IDrawable3D
+	class DLLEXPORT Lines : public Engine3DRadSpace::IDrawable3D
 	{
 		std::unique_ptr<VertexBufferV<VertexPositionColor>> _vertices;
 		std::unique_ptr<RasterizerState> _lineRasterizer;

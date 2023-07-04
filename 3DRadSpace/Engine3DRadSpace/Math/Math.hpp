@@ -2,9 +2,9 @@
 
 namespace Engine3DRadSpace::Math
 {
-	float ToRadians(float degrees);
-	float ToDegrees(float radians);
+	float DLLEXPORT ToRadians(float degrees);
+	float DLLEXPORT ToDegrees(float radians);
 
-	double ToRadians(double degrees);
-	double ToDegrees(double radians);
+	double DLLEXPORT ToRadians(double degrees);
+	double DLLEXPORT ToDegrees(double radians);
 }

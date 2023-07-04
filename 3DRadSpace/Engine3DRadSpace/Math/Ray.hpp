@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Math
 {
-	struct Ray
+	struct DLLEXPORT Ray
 	{
 		Vector3 Origin;
 		Vector3 Direction;

@@ -7,7 +7,7 @@ namespace Engine3DRadSpace
 	namespace Math
 	{
 		struct Vector2;
-		struct Point
+		struct DLLEXPORT Point
 		{
 			Point(int x = 0, int y = 0) : X(x), Y(y) {};
 
@@ -34,5 +34,5 @@ namespace Engine3DRadSpace
 	}
 }
 
-Engine3DRadSpace::Math::Point operator * (float s, const Engine3DRadSpace::Math::Point& p);
+Engine3DRadSpace::Math::Point DLLEXPORT operator * (float s, const Engine3DRadSpace::Math::Point& p);
 

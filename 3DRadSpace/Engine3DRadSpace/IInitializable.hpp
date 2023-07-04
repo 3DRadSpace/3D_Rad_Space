@@ -2,7 +2,7 @@
 
 namespace Engine3DRadSpace
 {
-	class IInitiializable
+	class DLLEXPORT IInitiializable
 	{
 	public:
 		virtual void Initialize() = 0;

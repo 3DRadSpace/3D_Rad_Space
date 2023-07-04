@@ -25,7 +25,7 @@ namespace Engine3DRadSpace::Graphics
 		MirrorOnce = 5
 	};
 
-	class SamplerState
+	class DLLEXPORT SamplerState
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> _samplerState;
@@ -49,6 +49,8 @@ namespace Engine3DRadSpace::Graphics
 
 		static SamplerState AnisotropicClamp(GraphicsDevice *device);
 		static SamplerState AnisotropicWrap(GraphicsDevice *device);
+
+		~SamplerState() = default;
 
 		friend class IVertexShader;
 		friend class IPixelShader;

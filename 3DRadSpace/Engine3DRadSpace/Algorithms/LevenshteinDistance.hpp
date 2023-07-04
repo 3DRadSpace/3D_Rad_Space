@@ -4,5 +4,5 @@
 
 namespace Engine3DRadSpace::Algorithms
 {
-	int DamerauLevenshteinDistance(const std::string& a, const std::string& b);
+	int DLLEXPORT DamerauLevenshteinDistance(const std::string& a, const std::string& b);
 }

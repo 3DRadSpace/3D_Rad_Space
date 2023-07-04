@@ -10,7 +10,7 @@ namespace Engine3DRadSpace::Reflection
 	template<ReflectableObject O>
 	struct ObjectTag {};
 
-	class ReflectedObject
+	class DLLEXPORT ReflectedObject
 	{
 		std::vector<IReflectedField*> _fields;
 

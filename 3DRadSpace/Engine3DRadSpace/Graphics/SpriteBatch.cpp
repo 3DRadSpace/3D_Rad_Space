@@ -124,7 +124,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries_SortByTexture()
 	vertexBuffers.push_back(std::make_unique<VertexBufferV<VertexPointUV>>(_device, currentVertices));
 	currentVertices.clear();
 
-	for(size_t i =0; i < vertexBuffers.size(); i++)
+	for(unsigned i =0; i < unsigned(vertexBuffers.size()); i++)
 	{
 		_spriteShader->SetTexture(this->_textures[i]);
 		vertexBuffers[i]->Draw();

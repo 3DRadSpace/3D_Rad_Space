@@ -76,7 +76,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, const s
 	if(FAILED(r))
 	{
 		char mbPath[_MAX_PATH]{};
-		WideCharToMultiByte(CP_ACP, 0, filename.c_str(), filename.length(), mbPath, _MAX_PATH, nullptr, nullptr);
+		WideCharToMultiByte(CP_ACP, 0, filename.c_str(), int(filename.length()), mbPath, _MAX_PATH, nullptr, nullptr);
 		throw ResourceLoadingError(Tag<Texture2D>{}, mbPath, "Failed to create a texture!");
 	}
 

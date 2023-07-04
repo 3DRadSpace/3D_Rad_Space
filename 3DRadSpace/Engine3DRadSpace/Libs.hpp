@@ -22,9 +22,18 @@
 
 #ifdef _WIN32
 #define NOMINMAX
-#ifdef _DX11
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#endif
 #include <wrl/client.h>
+
+#ifdef _WINDLL 
+	#define DLLEXPORT __declspec(dllexport)
+#else
+	#define DLLEXPORT __declspec(dllimport)
+#endif
+
+#ifdef _DX11
+	#include <d3d11.h>
+	#include <d3dcompiler.h>
+#endif
+#else
+#define DLLEXPORT
 #endif

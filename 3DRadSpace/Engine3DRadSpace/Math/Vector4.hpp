@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Math
 {
-	struct Vector4
+	struct DLLEXPORT Vector4
 	{
 		float X, Y, Z, W;
 

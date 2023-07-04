@@ -6,7 +6,7 @@ namespace Engine3DRadSpace::Logging
 	/// <summary>
 	/// Represents a complete error report. Used for example in the editor frontend to output exceptions to a message box.
 	/// </summary>
-	struct Error
+	struct DLLEXPORT Error
 	{
 		const char *Details;
 		int32_t ErrorCode;
@@ -16,11 +16,11 @@ namespace Engine3DRadSpace::Logging
 		Error(int32_t code, const char *details, const void *extra = nullptr);
 	};
 
-	extern Error LastError;
+	extern DLLEXPORT Error LastError;
 
-	void RaiseFatalError(const Error &e);
-	void RaiseFatalErrorIfFailed(HRESULT result, const char *details, const void *extra = nullptr);
-	void RaiseFatalErrorIfFalse(bool check, const char *details, const void *extra = nullptr);
+	void DLLEXPORT RaiseFatalError(const Error &e);
+	void DLLEXPORT RaiseFatalErrorIfFailed(HRESULT result, const char *details, const void *extra = nullptr);
+	void DLLEXPORT RaiseFatalErrorIfFalse(bool check, const char *details, const void *extra = nullptr);
 
 	inline void RaiseFatalErrorIfNull(_Post_notnull_ const void *ptr, const char *details, const void *extra = nullptr)
 	{

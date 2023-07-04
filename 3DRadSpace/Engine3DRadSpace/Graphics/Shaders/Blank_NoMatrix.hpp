@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class Blank_NoMatrix : public ShaderPipeline
+	class DLLEXPORT Blank_NoMatrix : public ShaderPipeline
 	{
 		class TrivialVertexShader : public IVertexShader
 		{

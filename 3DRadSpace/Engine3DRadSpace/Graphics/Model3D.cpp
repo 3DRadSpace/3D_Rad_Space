@@ -31,7 +31,6 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 	const aiScene* scene = importer.ReadFile(path, 
 		aiProcess_Triangulate | 
 		aiProcess_GenSmoothNormals |
-		aiProcess_FlipUVs | 
 		aiProcess_CalcTangentSpace |
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_OptimizeMeshes |
@@ -39,7 +38,10 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		aiProcess_RemoveRedundantMaterials |
 		aiProcess_SplitLargeMeshes | 
 		aiProcess_SortByPType |
+#if _DX11
+		aiProcess_FlipUVs | 
 		aiProcess_FlipWindingOrder
+#endif
 	);
 
 	if(scene == nullptr)

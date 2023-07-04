@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class ModelMeshPart
+	class DLLEXPORT ModelMeshPart
 	{
 		GraphicsDevice* _device;
 
@@ -47,6 +47,8 @@ namespace Engine3DRadSpace::Graphics
 		void Draw();
 
 		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *GetShaders();
+
+		~ModelMeshPart() = default;
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>

@@ -54,7 +54,7 @@ namespace Engine3DRadSpace::Graphics
         ColorWriteEnable WriteMask;
     };
 
-	class BlendState
+	class DLLEXPORT BlendState
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
@@ -79,6 +79,8 @@ namespace Engine3DRadSpace::Graphics
 
         BlendState &operator=(BlendState &) = delete;
         BlendState &operator=(BlendState &&blend) noexcept = default;
+
+        ~BlendState() = default;
 
         static BlendState Opaque(GraphicsDevice *device);
         static BlendState AlphaBlend(GraphicsDevice *device);

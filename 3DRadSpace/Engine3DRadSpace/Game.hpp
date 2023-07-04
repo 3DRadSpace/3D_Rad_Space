@@ -14,7 +14,7 @@
 
 namespace Engine3DRadSpace
 {
-	class Game : public IUpdateable, public IDrawable3D, public IDrawable2D, public IInitiializable, public ILoadable
+	class DLLEXPORT Game : public IUpdateable, public IDrawable3D, public IDrawable2D, public IInitiializable, public ILoadable
 	{
 		bool _valid;
 		bool _running = true;

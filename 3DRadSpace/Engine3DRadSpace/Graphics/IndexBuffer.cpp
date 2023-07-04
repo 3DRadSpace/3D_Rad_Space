@@ -8,7 +8,7 @@ using namespace Engine3DRadSpace::Graphics;
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	_device(device),
-	_numIndices(indices.size())
+	_numIndices(unsigned(indices.size()))
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
@@ -27,7 +27,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices):
 	_device(device),
-	_numIndices(numindices)
+	_numIndices(unsigned(numindices))
 {
 #ifdef _DX11
 	D3D11_BUFFER_DESC desc{};
