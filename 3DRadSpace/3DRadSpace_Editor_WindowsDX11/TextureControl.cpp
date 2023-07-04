@@ -21,7 +21,7 @@ TextureControl::TextureControl(
 		y + _cy + 25,
 		100,
 		100,
-		window,
+		owner,
 		nullptr,
 		hInstance,
 		nullptr

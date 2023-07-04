@@ -33,12 +33,13 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		aiProcess_GenSmoothNormals |
 		aiProcess_FlipUVs | 
 		aiProcess_CalcTangentSpace |
-		//aiProcess_JoinIdenticalVertices | //(TODO: Fix index buffer?)
+		aiProcess_JoinIdenticalVertices |
 		aiProcess_OptimizeMeshes |
 		aiProcess_OptimizeGraph |
 		aiProcess_RemoveRedundantMaterials |
 		aiProcess_SplitLargeMeshes | 
-		aiProcess_SortByPType
+		aiProcess_SortByPType |
+		aiProcess_FlipWindingOrder
 	);
 
 	if(scene == nullptr)

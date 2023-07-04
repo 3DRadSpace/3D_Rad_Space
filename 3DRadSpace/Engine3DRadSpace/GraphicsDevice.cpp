@@ -143,7 +143,7 @@ void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithindices(Engine3DRadSp
 	UINT offsets = 0;
 	_context->IASetIndexBuffer(indexBuffer->_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	_context->IASetVertexBuffers(0, 1, vertexBuffer->_buffer.GetAddressOf(), &strides, &offsets);
-	_context->Draw(UINT(vertexBuffer->_numVerts), 0u);
+	_context->DrawIndexed(UINT(indexBuffer->_numIndices),0u, 0u);
 #endif
 }
 void Engine3DRadSpace::GraphicsDevice::Present()

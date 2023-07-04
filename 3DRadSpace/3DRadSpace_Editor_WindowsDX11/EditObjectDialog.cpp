@@ -4,6 +4,7 @@
 #include <Engine3DRadSpace/IObject.hpp>
 #include <Engine3DRadSpace/Logging/ResourceLoadingError.hpp>
 #include "EditorWindow.hpp"
+#include "TextureControl.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -395,6 +396,7 @@ void EditObjectDialog::createForms()
 			{
 				auto value = *static_cast<const Content::AssetReference<Graphics::Texture2D>*>(valuePtr);
 				
+				/*
 				std::string path = value != 0 ? gEditorWindow->GetContentManager()->operator[](value)->Path : "";
 
 				HWND pictureBox = CreateWindowExA(
@@ -416,12 +418,17 @@ void EditObjectDialog::createForms()
 				SendMessageA(pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(image));
 
 				windows.push_back(createFileControls(x, y + 200, path.c_str()));
+				*/
+				
+				TextureControl *ctrl = new TextureControl(window, hInstance, nullptr, value, fieldName, x, y);
+				windows.push_back(ctrl);
 
 				setMax(inc_y, 205 + textboxHeight);
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
 			{
+				/*
 				const std::string value = *static_cast<const std::string*>(valuePtr);
 				windows.push_back(createFileControls(px, y, value.c_str()));
 				
@@ -443,6 +450,9 @@ void EditObjectDialog::createForms()
 
 				px = x + 30;
 				setMax(inc_y, textboxHeight + 5);
+				*/
+
+
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Key:
@@ -595,7 +605,7 @@ bool EditObjectDialog::setObject()
 		if(object == nullptr)
 			object = objRefl->CreateBlankObject();
 
-		for(auto repr : field->Representation())
+		for(auto &repr : field->Representation())
 		{
 			switch(repr.first)
 			{
@@ -605,7 +615,7 @@ bool EditObjectDialog::setObject()
 					auto state = SendMessageA(checkbox, BM_GETCHECK, 0, 0);
 					bool checked = (state == BST_CHECKED);
 
-					memcpy(newStruct.get() + j, &checked, sizeof(bool));
+					memcpy_s(newStruct.get() + j, sizeof(bool), & checked, sizeof(bool));
 					j += sizeof(bool);
 					break;
 				}
@@ -617,7 +627,7 @@ bool EditObjectDialog::setObject()
 						{
 							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							int8_t value = (int8_t)std::stoi(text);
-							memcpy(newStruct.get() + j, &value, sizeof(int8_t));
+							memcpy_s(newStruct.get() + j, sizeof(int8_t), &value, sizeof(int8_t));
 							j += sizeof(int8_t);
 							break;
 						}
@@ -625,7 +635,7 @@ bool EditObjectDialog::setObject()
 						{
 							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							int16_t value = (int16_t)std::stoi(text);
-							memcpy(newStruct.get() + j, &value, sizeof(int16_t));
+							memcpy_s(newStruct.get() + j,sizeof(int16_t), &value, sizeof(int16_t));
 							j += sizeof(int16_t);
 							break;
 						}
@@ -633,7 +643,7 @@ bool EditObjectDialog::setObject()
 						{
 							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							int32_t value = std::stol(text);
-							memcpy(newStruct.get() + j, &value, sizeof(int32_t));
+							memcpy_s(newStruct.get() + j,sizeof(int32_t), &value, sizeof(int32_t));
 							j += sizeof(int32_t);
 							break;
 						}
@@ -641,7 +651,7 @@ bool EditObjectDialog::setObject()
 						{
 							GetWindowTextA(std::get<HWND>(windows[i++]), text, 255);
 							int64_t value = std::stoll(text);
-							memcpy(newStruct.get() + j, &value, sizeof(int64_t));
+							memcpy_s(newStruct.get() + j, sizeof(int64_t), & value, sizeof(int64_t));
 							j += sizeof(int64_t);
 							break;
 						}
@@ -660,28 +670,28 @@ bool EditObjectDialog::setObject()
 						case sizeof(uint8_t) :
 						{
 							uint8_t value = (uint8_t)std::stoul(text);
-							memcpy(newStruct.get() + j, &value, sizeof(uint8_t));
+							memcpy_s(newStruct.get() + j, sizeof(uint8_t), &value, sizeof(uint8_t));
 							j += sizeof(uint8_t);
 							break;
 						}
 						case sizeof(uint16_t) :
 						{
 							uint16_t value = (uint16_t)std::stoul(text);
-							memcpy(newStruct.get() + j, &value, sizeof(uint16_t));
+							memcpy_s(newStruct.get() + j, sizeof(uint16_t),  &value, sizeof(uint16_t));
 							j += sizeof(uint16_t);
 							break;
 						}
 						case sizeof(uint32_t) :
 						{
 							uint32_t value = std::stoul(text);
-							memcpy(newStruct.get() + j, &value, sizeof(uint32_t));
+							memcpy_s(newStruct.get() + j, sizeof(uint32_t), &value, sizeof(uint32_t));
 							j += sizeof(uint32_t);
 							break;
 						}
 						case sizeof(uint64_t) :
 						{
 							uint64_t value = std::stoull(text);
-							memcpy(newStruct.get() + j, &value, sizeof(uint64_t));
+							memcpy_s(newStruct.get() + j, sizeof(uint64_t), &value, sizeof(uint64_t));
 							j += sizeof(uint64_t);
 							break;
 						}
@@ -700,14 +710,14 @@ bool EditObjectDialog::setObject()
 						case sizeof(float) :
 						{
 							float value = std::stof(text);
-							memcpy(newStruct.get() + j, &value, sizeof(float));
+							memcpy_s(newStruct.get() + j, sizeof(float), & value, sizeof(float));
 							j += sizeof(float);
 							break;
 						}
 						case sizeof(double):
 						{
 							double value = std::stold(text);
-							memcpy(newStruct.get() + j, &value, sizeof(double));
+							memcpy_s(newStruct.get() + j, sizeof(float), &value, sizeof(double));
 							j += sizeof(double);
 							break;
 						}
@@ -741,7 +751,7 @@ bool EditObjectDialog::setObject()
 
 					Engine3DRadSpace::Math::Quaternion q = Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(x, y, z); // y = yaw, x = pitch, z = roll (?)
 
-					memcpy(newStruct.get() + j, &q, sizeof(Engine3DRadSpace::Math::Quaternion));
+					memcpy_s(newStruct.get() + j, sizeof(Engine3DRadSpace::Math::Quaternion), &q, sizeof(Engine3DRadSpace::Math::Quaternion));
 					j += sizeof(Engine3DRadSpace::Math::Quaternion);
 					break;
 				}
@@ -755,7 +765,7 @@ bool EditObjectDialog::setObject()
 
 					std::string *r = new std::string(string); //manually allocate a string.
 					// "move" the string to an other location in the memory. the string object will be destroyed at the same time with the object that's being modified.
-					memcpy(newStruct.get() + j, r, sizeof(std::string));
+					memcpy_s(newStruct.get() + j, sizeof(std::string), r, sizeof(std::string));
 					j += sizeof(std::string);
 					break;
 				}
@@ -781,7 +791,7 @@ bool EditObjectDialog::setObject()
 						if(alt_k == HOTKEYF_SHIFT) k = Input::Key::Shift;
 					}
 
-					memcpy(newStruct.get(), &k, sizeof(Input::Key));
+					memcpy_s(newStruct.get(), sizeof(Input::Key), &k, sizeof(Input::Key));
 					j += sizeof(Input::Key);
 					break;
 				}
@@ -798,7 +808,7 @@ bool EditObjectDialog::setObject()
 					Engine3DRadSpace::Color color = cb->GetColor();
 					color.A = ((float)alpha) / 255.0f;
 
-					memcpy(newStruct.get(), &color, sizeof(Engine3DRadSpace::Color));
+					memcpy_s(newStruct.get(), sizeof(Engine3DRadSpace::Color), &color, sizeof(Engine3DRadSpace::Color));
 					j += sizeof(Engine3DRadSpace::Color);
 					break;
 				}

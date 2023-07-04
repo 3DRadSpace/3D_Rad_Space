@@ -10,5 +10,7 @@ public:
 
 	SkinmeshPreviewer(SkinmeshPreviewer &) = delete;
 	SkinmeshPreviewer &operator=(SkinmeshPreviewer &) = delete;
+
+	virtual void Update(Engine3DRadSpace::Input::Keyboard &keyboard, Engine3DRadSpace::Input::Mouse &mouse, double dt) override;
 };
 

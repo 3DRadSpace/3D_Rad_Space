@@ -25,13 +25,14 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 	dialogTemplate->cx = 400;
 	dialogTemplate->cy = 300;
 
-	//After the dialog template, a title is expected.
+	//After the dialog template, more data is expected, a menu handle, a dialog box class, title, and then dialog controls, such as buttons, labels, etc
 	LPWORD pWord = reinterpret_cast<LPWORD>(dialogTemplate + 1);
 	*pWord++ = 0; // No menu
 	*pWord++ = 0; // Predefined dialog box class (by default)
 
+	//Title
 	LPWSTR title = reinterpret_cast<LPWSTR>(pWord);
-	int numChars = 1 + MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, title, 50);
+	int numChars = 1 + MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), windowTitle.length(), title, 50);
 
 	pWord += numChars;
 

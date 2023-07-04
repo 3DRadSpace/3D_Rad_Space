@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Objects/Skinmesh.hpp>
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Objects;
 
 SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
@@ -11,4 +12,12 @@ SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
 	
 	_camera = new Camera();
 	AddObject(_camera);
+}
+
+void SkinmeshPreviewer::Update(Keyboard &keyboard, Mouse &mouse, double dt)
+{
+	if(mouse.LeftButton())
+	{
+		
+	}
 }
