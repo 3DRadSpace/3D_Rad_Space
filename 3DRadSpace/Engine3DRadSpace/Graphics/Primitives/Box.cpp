@@ -1,7 +1,9 @@
 #include "Box.hpp"
 #include "../Shaders/BlankShader.hpp"
+#include "../../Content/ShaderManager.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Graphics::Shaders;
@@ -32,6 +34,8 @@ Engine3DRadSpace::Graphics::Primitives::Box::Box(GraphicsDevice *device, const M
         0
     };
     _indices = std::make_unique<IndexBuffer>(device, indices);
+
+    _shader = ShaderManager::LoadShader<BlankShader>(device);
 }
 
 BoundingBox Box::GetBoundingBox()
@@ -62,9 +66,15 @@ void Engine3DRadSpace::Graphics::Primitives::Box::SetColor(const Engine3DRadSpac
 
 void Engine3DRadSpace::Graphics::Primitives::Box::SetTransform(const Math::Matrix &m)
 {
+    _worldMat = m;
 }
 
 void Box::Draw(Matrix &view, Matrix &projection, double dt)
 {
-
+    _shader->SetBasic();
+    Matrix mvp = _worldMat * view * projection;
+    _shader->SetTransformation(mvp);
+    
+    _device->SetTopology(VertexTopology::TriangleList);
+    _device->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }

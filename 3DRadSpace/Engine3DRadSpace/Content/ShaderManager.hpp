@@ -23,10 +23,10 @@ namespace Engine3DRadSpace::Content
 		ShaderManager &operator=(ShaderManager &&) noexcept = delete;
 
 		template<ShaderCollection S>
-		static std::shared_ptr<Graphics::Shaders::ShaderPipeline> LoadShader(GraphicsDevice *device);
+		static std::shared_ptr<S> LoadShader(GraphicsDevice *device);
 
 		template<ShaderCollection S>
-		static Graphics::Shaders::ShaderPipeline *GetShader(Tag<S> t);
+		static S *GetShader(Tag<S> t);
 
 		~ShaderManager() = default;
 
@@ -43,23 +43,23 @@ namespace Engine3DRadSpace::Content
 
 
 	template<ShaderCollection S>
-	inline std::shared_ptr<Graphics::Shaders::ShaderPipeline> ShaderManager::LoadShader(GraphicsDevice *device)
+	inline std::shared_ptr<S> ShaderManager::LoadShader(GraphicsDevice *device)
 	{
 		auto f = _shaders.find(typeid(S).hash_code());
 
 		if(f == _shaders.end())
 		{
-			std::shared_ptr<Graphics::Shaders::ShaderPipeline> ptr;
+			std::shared_ptr<S> ptr;
 			ptr.reset(new S(device));
 
 			_shaders.insert({typeid(S).hash_code(), ptr});
 			return ptr;
 		}
-		else return f->second;
+		else return std::static_pointer_cast<S>(f->second);
 	}
 
 	template<ShaderCollection S>
-	inline Graphics::Shaders::ShaderPipeline *ShaderManager::GetShader(Tag<S> t)
+	inline S *ShaderManager::GetShader(Tag<S> t)
 	{
 		return _shaders[typeid(S).hash_code()];
 	}

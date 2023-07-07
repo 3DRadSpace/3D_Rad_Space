@@ -10,7 +10,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		std::unique_ptr<RasterizerState> _lineRasterizer;
 		GraphicsDevice *_device;
 
-		std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
+		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _oldRasterizerState;
 #endif

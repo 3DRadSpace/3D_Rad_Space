@@ -65,8 +65,10 @@ class EditorWindow
 
 	HTREEITEM _getSelectedListViewItem();
 	std::pair<HTREEITEM, std::optional<unsigned>> _getSelectedObjectID();
+
+	void _parseCmdArgs(const std::string & cmdArgs);
 public:
-	EditorWindow(HINSTANCE hInstance, char* cmdArgs);
+	EditorWindow(HINSTANCE hInstance, const std::string &cmdArgs);
 
 	void Run();
 

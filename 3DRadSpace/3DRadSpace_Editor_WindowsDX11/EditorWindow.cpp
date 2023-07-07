@@ -5,6 +5,7 @@
 #include "HelperFunctions.hpp"
 #include <d3d11.h>
 #include <assert.h>
+#include <ranges>
 
 #include "AddObjectDialog.hpp"
 
@@ -76,7 +77,64 @@ std::pair<HTREEITEM, std::optional<unsigned>> EditorWindow::_getSelectedObjectID
 	return {selectedItem, static_cast<unsigned>(item.lParam)};
 }
 
-EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
+void EditorWindow::_parseCmdArgs(const std::string &cmdArgs)
+{
+	for(const auto token : std::views::split(cmdArgs, "\""))
+	{
+		//remove "s from the beginning and end if they exist
+		std::string path(token.begin(), token.end());
+		if(path[0] == '"') path.erase(0, 1);
+		if(path[path.length() - 1] == '"') path.erase(path.length() - 1, 1);
+
+		if(std::filesystem::exists(path))
+		{
+			//open project
+			//MessageBoxA(_mainWindow, (std::string("Opened project \r\n") + path).c_str(), "Test", MB_ICONINFORMATION | MB_OK);
+		}
+		else
+		{
+			std::unordered_map<std::string, int> dictCmdArgs =
+			{
+				{"-noautoupdater", 1}, //Disables checking for updates at startup
+				{"-na", 1},
+				{"-defaultsettings", 2}, //Uses the default settings
+				{"-ds", 2},
+				{"-play", 3}, //Plays a project
+				{"-p", 3},
+				{"-build", 4}, //Builds a project
+				{"-b", 4}
+			};
+
+			for(const auto token2 : std::views::split(token, " "))
+			{
+				std::string t2str(token2.begin(), token2.end());
+
+				switch(dictCmdArgs[t2str])
+				{
+					case 1:
+					{
+						break;
+					}
+					case 2:
+					{
+						break;
+					}
+					case 3:
+					{
+						break;
+					}
+					case 4:
+					{
+						break;
+					}
+					default: break;
+				}
+			}
+		}
+	}
+}
+
+EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	_hInstance(hInstance),
 	_mainWindow(nullptr),
 	_listBox(nullptr),
@@ -264,6 +322,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance, char* cmdArgs) :
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);
 	ShowWindow(_listBox, SW_NORMAL);
+
+	_parseCmdArgs(cmdArgs);
 }
 
 void EditorWindow::Run()
