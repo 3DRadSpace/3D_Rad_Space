@@ -35,6 +35,10 @@ void IVertexShader::_createShader()
 	);
 
 	if(FAILED(r)) throw std::exception("Failed to compile the shader!");
+#ifdef _DEBUG
+	const char shaderName[] = "IVertexShader::_shader";
+	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName) - 1, shaderName);
+#endif
 #endif // _DX11
 }
 
@@ -356,6 +360,11 @@ void IVertexShader::_generateInputLayout(std::span<InputLayoutElement> inputLayo
 		&this->_inputLayout
 	);
 	delete[] elements;
+
+#ifdef _DEBUG
+	const char inputLayoutName[] = "IVertexShader::InputLayout";
+	_inputLayout->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(inputLayoutName) - 1, inputLayoutName);
+#endif
 
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create the input layout!");
 #endif

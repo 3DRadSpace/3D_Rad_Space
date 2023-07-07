@@ -3,6 +3,16 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
+void Engine3DRadSpace::Graphics::VertexBuffer::_debugInfo()
+{
+#ifdef _DEBUG
+#ifdef _DX11
+	const char bufferName[] = "VertexBuffer::_buffer";
+	_buffer->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(bufferName) - 1, bufferName);
+#endif
+#endif
+}
+
 VertexBuffer::VertexBuffer(
 	_In_ GraphicsDevice* device,
 	_In_reads_bytes_(p_structSize * numVertices) const void* data,
@@ -27,6 +37,7 @@ VertexBuffer::VertexBuffer(
 	HRESULT r = device->_device->CreateBuffer(&vertexBuffDesc, &resource, _buffer.GetAddressOf());
 	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a vertex buffer!");
 #endif
+	_debugInfo();
 }
 
 void VertexBuffer::SetData(void *data, size_t size)

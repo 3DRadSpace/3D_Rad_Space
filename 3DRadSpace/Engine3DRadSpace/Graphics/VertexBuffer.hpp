@@ -19,6 +19,7 @@ namespace Engine3DRadSpace
 
 		class DLLEXPORT VertexBuffer
 		{
+			void _debugInfo();
 #ifdef  _DX11
 		protected:
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;

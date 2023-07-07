@@ -27,6 +27,8 @@ BlendState::BlendState(GraphicsDevice *device):
 
 	HRESULT r = device->_device->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
 	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+	
+	_debugInfo();
 #endif
 }
 
@@ -161,6 +163,8 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 
 	HRESULT r = device->_device->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
 	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+
+	_debugInfo();
 #endif
 }
 
@@ -180,6 +184,16 @@ D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEna
 		default:
 			return D3D11_COLOR_WRITE_ENABLE_ALL;
 	}
+#endif
+}
+
+void Engine3DRadSpace::Graphics::BlendState::_debugInfo()
+{
+#ifdef _DX11
+#ifdef _DEBUG
+	const char blendStateName[] = "BlendState::_blendState";
+	_blendState->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(blendStateName) - 1, blendStateName);
+#endif
 #endif
 }
 

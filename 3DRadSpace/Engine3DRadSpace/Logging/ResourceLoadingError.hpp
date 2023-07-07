@@ -1,14 +1,10 @@
 #pragma once
 #include <typeinfo>
 #include "Exception.hpp"
+#include "../Tag.hpp"
 
 namespace Engine3DRadSpace
 {
-	template<typename T>
-	struct Tag
-	{
-	};
-
 	namespace Logging
 	{
 		class ResourceLoadingError : public Exception

@@ -1,6 +1,5 @@
 #define NOMINMAX
 #include <cstdlib>
-#include "Engine3DRadSpace/Logging/Error.hpp"
 #include "EditorWindow.hpp"
 #include "HelperFunctions.hpp"
 
@@ -19,6 +18,9 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <DXGIDebug.h>
 #pragma comment(lib, "DXGI.lib")
 #pragma comment(lib, "dxguid.lib")
+
+#include <Engine3DRadSpace/Content/ShaderManager.hpp>
+#include <Engine3DRadSpace/Logging/Error.hpp>
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -42,19 +44,16 @@ void SetWorkingDirectory()
 
 void InitializeCommonControls()
 {
-	// Load controls such as the progress bar, tree views, list views, et cetera...
+	// Load controls such as the progress bar, tree views, list views, etc...
 	INITCOMMONCONTROLSEX iccs{};
 	iccs.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	iccs.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&iccs);
 }
 
-DEFINE_GUID(DXGI_DEBUG_ALL, 0xe48ae283, 0xda80, 0x490b, 0x87, 0xe6, 0x43, 0xe9, 0xa9, 0xcf, 0xda, 0x8);
-
 #ifdef _DEBUG
 void ReportLiveObjects()
 {
-	OutputDebugStringA("Live DXGI objects: \r\n");
 	Microsoft::WRL::ComPtr<IDXGIDebug1> dxgi_debug;
 	if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgi_debug.GetAddressOf()))))
 	{
@@ -67,8 +66,12 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
+
 	std::atexit(HandleError);
+// Lists leaked DX11 objects
+#ifdef _DEBUG
 	std::atexit(ReportLiveObjects);
+#endif
 
 	InitializeGDI();
 	InitializeCommonControls();
@@ -78,6 +81,11 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	editor.Run();
 
 	DeinitializeGDI();
+
+	//Manually release the stored shaders inside the ShaderManager class. 
+	//For some reason the destructor for ShaderManger::_shaders is not called at the end of execution because it is a global variable.
+	//This is necessary to avoid reports of live objects when the debug layer detects the application process being terminated.
+	Engine3DRadSpace::Content::ShaderManager::ReleaseAll();
 
 	return 0;
 }

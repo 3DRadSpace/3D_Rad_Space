@@ -7,6 +7,9 @@ namespace Engine3DRadSpace::Graphics
 	{
 		unsigned _width;
 		unsigned _height;
+
+		void _debugInfoTX2D();
+		void _debugInfoRT();
 	protected:
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture;

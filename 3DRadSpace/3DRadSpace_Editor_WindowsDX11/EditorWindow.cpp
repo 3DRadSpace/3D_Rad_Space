@@ -274,7 +274,7 @@ void EditorWindow::Run()
 
 	double u_dt = 0;
 	double d_dt = 0;
-	while (true)
+	while (_running && this->editor)
 	{
 		MSG msg;
 		while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -285,8 +285,6 @@ void EditorWindow::Run()
 				DispatchMessageA(&msg);
 			}
 		}
-		if (!_running) break;
-		if (!this->editor) continue;
 
 		auto ts_u1 = std::chrono::steady_clock::now();
 		editor->Update(editor->Window->GetKeyboardState(), editor->Window->GetMouseState(), u_dt);

@@ -33,6 +33,11 @@ RasterizerState::RasterizerState(
 
 	HRESULT r = device->_device->CreateRasterizerState(&desc, _rasterizerState.ReleaseAndGetAddressOf());
 	if (FAILED(r)) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a rasterizer state object");
+
+#ifdef _DEBUG
+	const char rasterizerStateName[] = "RasterizerState::_rasterizerState";
+	_rasterizerState->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(rasterizerStateName) - 1, rasterizerStateName);
+#endif
 #endif
 }
 

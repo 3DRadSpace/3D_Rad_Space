@@ -49,8 +49,10 @@ namespace Engine3DRadSpace::Graphics
 		IVertexShader(Engine3DRadSpace::GraphicsDevice *device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path& path, const char *vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 
 		IVertexShader(IVertexShader &) = delete;
-		IVertexShader(IVertexShader &&) = delete;
+		IVertexShader(IVertexShader &&) noexcept = delete;
+
 		IVertexShader &operator=(IVertexShader &) = delete;
+		IVertexShader &operator=(IVertexShader &&) noexcept = delete;
 
 		virtual std::span<InputLayoutElement> InputLayout() = 0;
 

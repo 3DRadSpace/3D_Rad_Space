@@ -77,6 +77,14 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 	r = CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED);
 	RaiseFatalErrorIfFailed(r, "Failed to initialize COM!");
+
+#if _DEBUG
+	const char deviceName[] = "GraphicsDevice::_device";
+	_device->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(deviceName) - 1, deviceName);
+
+	const char contextName[] = "GraphicsDevice::_context";
+	_context->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(contextName) - 1, contextName);
+#endif
 #endif
 }
 

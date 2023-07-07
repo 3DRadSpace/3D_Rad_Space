@@ -9,20 +9,20 @@ namespace Engine3DRadSpace::Graphics
 	{
 		GraphicsDevice* _device;
 
-		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *_shaders;
+		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> _shaders;
 	public:
 		std::unique_ptr<Engine3DRadSpace::Graphics::IndexBuffer> IndexBuffer;
 		std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer> VertexBuffer;
 
 		ModelMeshPart(
-			Engine3DRadSpace::Graphics::Shaders::ShaderPipeline* shaders,
+			std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders,
 			Engine3DRadSpace::Graphics::VertexBuffer* vert, 
 			Engine3DRadSpace::Graphics::IndexBuffer* buffer
 		);
 
 		ModelMeshPart(
-			Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *shaders, 
-			GraphicsDevice* Device, 
+			GraphicsDevice *Device,
+			std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders, 
 			void* vertices, size_t numVerts, size_t structSize, 
 			std::span<unsigned> indices
 		);
@@ -35,7 +35,7 @@ namespace Engine3DRadSpace::Graphics
 
 		template<Engine3DRadSpace::Graphics::VertexDecl V>
 		ModelMeshPart(
-			Engine3DRadSpace::Graphics::Shaders::ShaderPipeline* shaders,
+			std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders,
 			Engine3DRadSpace::GraphicsDevice* Device,
 			std::span<V> vertices, std::span<unsigned> indices
 		);
@@ -53,9 +53,10 @@ namespace Engine3DRadSpace::Graphics
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>
 	inline ModelMeshPart::ModelMeshPart(
-		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline* shaders,
+		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders,
 		Engine3DRadSpace::GraphicsDevice* Device, std::span<V> vertices, std::span<unsigned> indices ):
-		_device(Device)
+		_device(Device),
+		_shaders(shaders)
 	{
 		VertexBuffer = std::make_unique<Engine3DRadSpace::Graphics::VertexBufferV<V>>(Device, vertices);
 		IndexBuffer = std::make_unique<Engine3DRadSpace::Graphics::IndexBuffer>(Device, indices);

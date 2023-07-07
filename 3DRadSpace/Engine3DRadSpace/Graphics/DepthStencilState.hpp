@@ -46,6 +46,7 @@ namespace Engine3DRadSpace::Graphics
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _state;
 #endif
+		void _debugInfo();
 	public:
 		DepthStencilState(GraphicsDevice *device);
 

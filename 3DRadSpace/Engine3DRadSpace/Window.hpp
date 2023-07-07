@@ -26,6 +26,7 @@ namespace Engine3DRadSpace
 		Window(Window&& wnd);
 
 		Window& operator=(Window& wnd) = delete;
+		Window &operator=(Window &&wnd) noexcept = default;
 
 		void* NativeHandle();
 

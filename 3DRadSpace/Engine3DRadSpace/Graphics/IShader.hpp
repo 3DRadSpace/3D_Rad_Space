@@ -30,7 +30,7 @@ namespace Engine3DRadSpace::Graphics
 		IShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 
 		IShader(IShader&) = delete;
-		IShader(IShader&&) = delete;
+		IShader(IShader&&) noexcept = delete;
 
 		IShader& operator=(IShader&) = delete;
 		IShader &operator=(IShader &&) noexcept = delete;

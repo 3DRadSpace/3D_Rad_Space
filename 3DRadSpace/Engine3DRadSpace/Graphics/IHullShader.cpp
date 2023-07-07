@@ -11,10 +11,15 @@ void IHullShader::_createShader()
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
 		nullptr,
-		nullptr
+		_shader.GetAddressOf()
 	);
 
 	if(FAILED(r)) throw ShaderCompilationError("Failed to create a hull shader!");
+
+#ifdef _DEBUG
+	const char shaderName[] = "IHullShader::_shader";
+	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName) - 1, shaderName);
+#endif
 #endif
 }
 

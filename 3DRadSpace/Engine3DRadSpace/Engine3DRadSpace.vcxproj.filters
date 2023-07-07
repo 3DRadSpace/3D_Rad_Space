@@ -236,6 +236,8 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
+    <ClInclude Include="Content\ShaderManager.hpp" />
+    <ClInclude Include="Tag.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -390,5 +392,6 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
+    <ClCompile Include="Content\ShaderManager.cpp" />
   </ItemGroup>
 </Project>

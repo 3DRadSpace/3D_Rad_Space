@@ -15,8 +15,9 @@ namespace Engine3DRadSpace::Graphics
 		IDomainShader(GraphicsDevice *device, const std::filesystem::path &path, const char *fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
 
 		IDomainShader(IDomainShader &) = delete;
-		IDomainShader(IDomainShader &&) = delete;
+		IDomainShader(IDomainShader &&) noexcept = delete;
 		IDomainShader &operator = (IDomainShader &) = delete;
+		IDomainShader &operator = (IDomainShader &&) noexcept = delete;
 
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;

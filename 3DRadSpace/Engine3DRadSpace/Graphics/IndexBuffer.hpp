@@ -14,9 +14,17 @@ namespace Engine3DRadSpace
 			GraphicsDevice* _device;
 
 			unsigned _numIndices;
+
+			void _debugInfo();
 		public:
 			IndexBuffer(GraphicsDevice* device, std::span<unsigned> indices);
 			IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices);
+
+			IndexBuffer(IndexBuffer &) = delete;
+			IndexBuffer(IndexBuffer &&) noexcept = default;
+
+			IndexBuffer &operator=(IndexBuffer &) = delete;
+			IndexBuffer &operator=(IndexBuffer &&) noexcept = default;
 
 			void Set(unsigned index = 0);
 			void SetData(std::span<unsigned> newindices);

@@ -5,6 +5,16 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
+void Engine3DRadSpace::Graphics::DepthStencilState::_debugInfo()
+{
+#ifdef _DX11
+#ifdef _DEBUG
+    const char stateName[] = "DepthStencilState::_state";
+    _state->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(stateName) - 1, stateName);
+#endif
+#endif
+}
+
 DepthStencilState::DepthStencilState(GraphicsDevice *device)
 {
 #ifdef _DX11

@@ -1,5 +1,4 @@
 #include "Lines.hpp"
-#include "../Shaders/BlankShader.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -7,18 +6,13 @@ using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-inline std::unique_ptr<BlankShader> simpleShader;
-
 Lines::Lines(GraphicsDevice *device, std::span<VertexPositionColor> points):
 	_device(device)
 {
 	_vertices = std::make_unique<VertexBufferV<VertexPositionColor>>(device, points);
 	_lineRasterizer = std::make_unique<RasterizerState>(device, RasterizerFillMode::Solid, RasterizerCullMode::None);
 
-	if(simpleShader == nullptr)
-	{
-		simpleShader = std::make_unique<BlankShader>(device);
-	}
+	simpleShader = std::make_unique<BlankShader>(device);
 }
 
 void Engine3DRadSpace::Graphics::Primitives::Lines::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)

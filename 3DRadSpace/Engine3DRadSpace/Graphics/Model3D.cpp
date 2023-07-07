@@ -7,24 +7,21 @@
 #include "../Logging/Error.hpp"
 #include <filesystem>
 #include "../Logging/ResourceLoadingError.hpp"
-#include "Shaders/BasicTextured_NBT.hpp"
+#include "../Content/ShaderManager.hpp"
 
+using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
-using namespace Engine3DRadSpace;
 
 Assimp::Importer importer;
-
-std::unique_ptr<Shaders::BasicTextured_NBT> basicTexturedNBT;
 
 Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 	_device(Device)
 {
-	if(basicTexturedNBT == nullptr)
-	{
-		basicTexturedNBT = std::make_unique<Shaders::BasicTextured_NBT>(Device);
-	}
+	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured_NBT>(Device);
+	basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured_NBT>(Device);
 
 	if(!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 
@@ -118,7 +115,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 				}
 			}
 		}
-		auto mesh = std::make_unique<ModelMeshPart>(basicTexturedNBT.get(), Device, &vertices[0], numVerts, structSize, indices);
+		auto mesh = std::make_unique<ModelMeshPart>(Device, basicTexturedNBT, &vertices[0], numVerts, structSize, indices);
 		std::unique_ptr<Texture2D> diffuseTexture;
 
 		if(numUVMaps == 1)

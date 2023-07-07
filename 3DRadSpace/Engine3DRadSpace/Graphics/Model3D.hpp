@@ -1,5 +1,6 @@
 #pragma once
 #include "ModelMesh.hpp"
+#include "Shaders/BasicTextured_NBT.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -9,6 +10,8 @@ namespace Engine3DRadSpace::Graphics
 		std::vector<std::unique_ptr<ModelMesh>> _meshes;
 
 		void _processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts,void* currentNode);
+
+		std::shared_ptr<Shaders::ShaderPipeline> basicTexturedNBT;
 	public:
 		Model3D(GraphicsDevice* Device,const std::string& path);
 

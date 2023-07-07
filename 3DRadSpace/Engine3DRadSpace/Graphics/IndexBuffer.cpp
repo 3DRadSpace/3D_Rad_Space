@@ -6,6 +6,16 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 
+void Engine3DRadSpace::Graphics::IndexBuffer::_debugInfo()
+{
+#ifdef _DEBUG
+#ifdef _DX11
+	const char indexBufferName[] = "IndexBuffer::_indexBuffer";
+	_indexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(indexBufferName) - 1, indexBufferName);
+#endif
+#endif
+}
+
 IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	_device(device),
 	_numIndices(unsigned(indices.size()))
@@ -23,6 +33,8 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
 	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
 #endif
+
+	_debugInfo();
 }
 
 IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numindices):
@@ -42,6 +54,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numin
 	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
 	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
 #endif
+	_debugInfo();
 }
 
 void Engine3DRadSpace::Graphics::IndexBuffer::SetData(std::span<unsigned> newindices)

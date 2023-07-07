@@ -7,8 +7,6 @@ using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-inline std::unique_ptr<BlankShader> simpleShader;
-
 std::array<VertexPositionColor, 8> Box::_createVerts(const Math::BoundingBox &b, const Engine3DRadSpace::Color &color)
 {
     return std::array<VertexPositionColor, 8>

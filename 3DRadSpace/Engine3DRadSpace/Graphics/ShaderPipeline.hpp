@@ -22,11 +22,13 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		ShaderPipeline(GraphicsDevice *device, IVertexShader* vertexShader, IPixelShader* fragmentShader, IHullShader* hullShader = nullptr,
 			IDomainShader* domainShader = nullptr, IGeometryShader* geometryShader = nullptr);
 
-		ShaderPipeline(ShaderPipeline& p);
+		ShaderPipeline(ShaderPipeline &p) = delete;
 		ShaderPipeline(ShaderPipeline &&p) noexcept;
 
-		ShaderPipeline& operator =(ShaderPipeline& p);
-				int SetAll();
+		ShaderPipeline &operator =(ShaderPipeline &p) = delete;
+		ShaderPipeline &operator =(ShaderPipeline &&p) noexcept;
+		
+		int SetAll();
 		int SetBasic();
 		bool SetVertex();
 		bool SetHull();

@@ -63,6 +63,8 @@ namespace Engine3DRadSpace::Graphics
         D3D11_BLEND convert3DRSPBlend_toDX11(Blend b);
         D3D11_BLEND_OP convert3DRSPBlendOp_toDX11(BlendOperation op);
         D3D11_COLOR_WRITE_ENABLE convert3DRSPColorWrite_toDX11(ColorWriteEnable flag);
+
+        void _debugInfo();
 #endif
 	public:
 		/// <summary>

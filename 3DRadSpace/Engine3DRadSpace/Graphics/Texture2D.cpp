@@ -112,6 +112,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
 #endif
+	_debugInfoTX2D();
 }
 
 Texture2D::Texture2D(GraphicsDevice* device, void* colors, unsigned x, unsigned y):
@@ -142,6 +143,7 @@ Texture2D::Texture2D(GraphicsDevice* device, void* colors, unsigned x, unsigned 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
 #endif
+	_debugInfoTX2D();
 }
 
 Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device,const uint8_t* imageBuffer, size_t size):
@@ -199,6 +201,33 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigne
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
 #endif
+	_debugInfoTX2D();
+}
+
+void Engine3DRadSpace::Graphics::Texture2D::_debugInfoTX2D()
+{
+#ifdef _DEBUG
+#ifdef _DX11
+	const char textureName[] = "Texture2D::_texture";
+	_texture->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(textureName) - 1, textureName);
+
+	const char resourceViewName[] = "Texture2D::_resourceView";
+	_resourceView->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(resourceViewName) - 1, resourceViewName);
+#endif
+#endif
+}
+
+void Engine3DRadSpace::Graphics::Texture2D::_debugInfoRT()
+{
+#ifdef _DEBUG
+#ifdef _DX11
+	const char textureName[] = "RenderTarget(Texture2D)::_texture";
+	_texture->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(textureName) - 1, textureName);
+
+	const char resourceViewName[] = "RenderTarget(Texture2D)::_resourceView";
+	_resourceView->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(resourceViewName) - 1, resourceViewName);
+#endif
+#endif
 }
 
 void Engine3DRadSpace::Graphics::Texture2D::_retrieveSize()
@@ -235,6 +264,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigne
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
 #endif
+	_debugInfoTX2D();
 }
 
 Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget):
@@ -262,6 +292,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, bool bi
 
 	_width = device->_resolution.X;
 	_height = device->_resolution.Y;
+	_debugInfoRT();
 }
 
 void Texture2D::SetColors(Color **colors, unsigned x, unsigned y)

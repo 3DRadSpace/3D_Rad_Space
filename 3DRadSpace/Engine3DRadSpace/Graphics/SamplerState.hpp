@@ -30,6 +30,7 @@ namespace Engine3DRadSpace::Graphics
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> _samplerState;
 #endif
+		void _debugInfo();
 	public:
 		SamplerState(GraphicsDevice *device);
 		SamplerState(GraphicsDevice* device, TextureFilter Filter, TextureAddressMode AddressU, TextureAddressMode AddressV, TextureAddressMode AddressW,

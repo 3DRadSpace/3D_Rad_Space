@@ -17,8 +17,10 @@ namespace Engine3DRadSpace::Graphics
 		IPixelShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
 
 		IPixelShader(IPixelShader &) = delete;
-		IPixelShader(IPixelShader &&) = delete;
-		IPixelShader &operator =(IPixelShader &) = delete;
+		IPixelShader(IPixelShader &&) noexcept = delete;
+
+		IPixelShader &operator = (IPixelShader &) = delete;
+		IPixelShader &operator = (IPixelShader &&) noexcept = delete;
 
 		void SetTexture(unsigned index, Texture2D *texture) override;
 		void SetSampler(unsigned index, SamplerState *samplerState) override;

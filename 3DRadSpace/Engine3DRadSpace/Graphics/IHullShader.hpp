@@ -16,8 +16,9 @@ namespace Engine3DRadSpace::Graphics
 		IHullShader(GraphicsDevice *device, const std::filesystem::path &path, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
 
 		IHullShader(IHullShader &) = delete;
-		IHullShader(IHullShader &&) = delete;
+		IHullShader(IHullShader &&) noexcept = delete;
 		IHullShader &operator=(IHullShader &) = delete;
+		IHullShader &operator=(IHullShader &&) noexcept = delete;
 
 		~IHullShader() = default;
 

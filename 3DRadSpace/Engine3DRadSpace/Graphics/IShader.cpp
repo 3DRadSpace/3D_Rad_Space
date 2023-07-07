@@ -12,6 +12,7 @@ using namespace Engine3DRadSpace::Logging;
 
 Array_ValidConstantBuffers IShader::_validConstantBuffers(unsigned &numConstantBuffers)
 {
+#ifdef _DX11
 	const unsigned maxConstBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
 	Array_ValidConstantBuffers ppConstantBuffers = {nullptr};
 
@@ -25,6 +26,7 @@ Array_ValidConstantBuffers IShader::_validConstantBuffers(unsigned &numConstantB
 	}
 
 	return ppConstantBuffers;
+#endif
 }
 
 void IShader::_compileShader(const char *source, const char* target)
@@ -120,6 +122,7 @@ Engine3DRadSpace::Graphics::IShader::IShader(GraphicsDevice *Device, const std::
 
 void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 {
+#ifdef _DX11
 	if (_constantBuffers[index].Get() == nullptr)
 	{
 		D3D11_BUFFER_DESC constantBufferDesc{};
@@ -133,6 +136,12 @@ void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 
 		HRESULT r = _device->_device->CreateBuffer(&constantBufferDesc, &res, _constantBuffers[index].ReleaseAndGetAddressOf());
 		Logging::RaiseFatalErrorIfFailed(r, "Failed to create a constant buffer for a shader!");
+#ifdef _DEBUG
+		std::string constantBufferName = "IShader::constantBuffer[";
+		constantBufferName += std::to_string(index) + ']';
+
+		_constantBuffers[index]->SetPrivateData(WKPDID_D3DDebugObjectName, constantBufferName.length(), constantBufferName.c_str());
+#endif
 	}
 	else
 	{
@@ -142,6 +151,7 @@ void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 		memcpy(res.pData, data, dataSize);
 		_device->_context->Unmap(_constantBuffers[index].Get(), 0);
 	}
+#endif
 }
 
 

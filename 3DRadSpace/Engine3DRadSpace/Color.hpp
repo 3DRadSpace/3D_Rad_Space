@@ -10,22 +10,23 @@ namespace Engine3DRadSpace
 		float B;
 		float A;
 
-		Color(float r = 0.00f, float g = 0.00f, float b = 0.00f, float a = 1.00f) : R(r), G(g), B(b), A(a) {};
+		constexpr Color(float r = 0.00f, float g = 0.00f, float b = 0.00f, float a = 1.00f) : R(r), G(g), B(b), A(a) {};
 
-		static Color FromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+		constexpr static Color FromRGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
-		auto operator <=>(const Color& c) const = default;
+		constexpr bool operator ==(const Color& c) const = default;
+		constexpr bool operator !=(const Color& c) const = default;
 
-		float operator[](int i);
+		constexpr float operator[](int i) const;
 	};
 	namespace Colors
 	{
-		extern DLLEXPORT Color White;
-		extern DLLEXPORT Color Red;
-		extern DLLEXPORT Color Green;
-		extern DLLEXPORT Color Blue;
-		extern DLLEXPORT Color Black;
-		extern DLLEXPORT Color Gray;
-		extern DLLEXPORT Color DarkGray;
+		constexpr Color White = {1.0f,1.0f,1.0f,1.0f};
+		constexpr Color Red = {1.0f,0.0f,0.0f,1.0f};
+		constexpr Color Green = {0.0f,1.0f,0.0f,1.0f};
+		constexpr Color Blue = {0.0f,0.0f,1.0f,1.0f};
+		constexpr Color Black = {0.0f,0.0f,0.0f,1.0f};
+		constexpr Color Gray = {0.5f, 0.5f, 0.5f, 1.0f};
+		constexpr Color DarkGray = {0.25f, 0.25f, 0.25f, 1.0f};
 	};
 }

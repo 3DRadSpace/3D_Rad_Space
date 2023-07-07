@@ -25,14 +25,19 @@ const char *IGeometryShader::_determineTarget()
 void IGeometryShader::_createShader()
 {
 #ifdef _DX11
-	HRESULT r = _device->_device->CreateDomainShader(
+	HRESULT r = _device->_device->CreateGeometryShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
 		nullptr,
-		nullptr
+		_shader.GetAddressOf()
 	);
 
 	if(FAILED(r)) throw ShaderCompilationError("Failed to create a domain shader!");
+
+#ifdef _DEBUG
+	const char shaderName[] = "IGeometryShader::_shader";
+	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName) - 1, shaderName);
+#endif
 #endif
 }
 

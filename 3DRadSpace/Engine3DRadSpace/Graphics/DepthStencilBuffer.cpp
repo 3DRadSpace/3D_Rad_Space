@@ -27,6 +27,15 @@ void Engine3DRadSpace::Graphics::DepthStencilBuffer::_createDepthTexture()
 
 	r = _device->_device->CreateDepthStencilView(_depthTexture.Get(), &viewDesc, &_depthView); //the & operator release the previous stencil view object
 	RaiseFatalErrorIfFailed(r, "Failed to create the depth stencil view!");
+
+#ifdef _DEBUG
+	const char depthTextureName[] = "DepthStencilBuffer::_depthTexture";
+	_depthTexture->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(depthTextureName) - 1, depthTextureName);
+
+	const char depthViewName[] = "DepthStencilBuffer::_depthView";
+	_depthView->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(depthViewName) - 1, depthViewName);
+#endif // _DEBUG
+
 #endif //  _DX11
 }
 

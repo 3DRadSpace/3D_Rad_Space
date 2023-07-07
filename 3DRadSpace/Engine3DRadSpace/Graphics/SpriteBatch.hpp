@@ -87,7 +87,7 @@ namespace Engine3DRadSpace::Graphics
 		SpriteBatch(GraphicsDevice *device);
 
 		SpriteBatch(SpriteBatch &) = delete;
-		SpriteBatch(SpriteBatch &&) = delete;
+		SpriteBatch(SpriteBatch &&) noexcept = default;
 
 		SpriteBatch& operator=(SpriteBatch &) = delete;
 		SpriteBatch &operator=(SpriteBatch &&) noexcept = default;

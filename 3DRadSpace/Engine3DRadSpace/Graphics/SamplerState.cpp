@@ -4,6 +4,16 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
+void Engine3DRadSpace::Graphics::SamplerState::_debugInfo()
+{
+#ifdef _DEBUG
+#ifdef _DX11
+	const char samplerStateName[] = "SamplerState::_samplerState";
+	_samplerState->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(samplerStateName) - 1, samplerStateName);
+#endif
+#endif
+}
+
 SamplerState::SamplerState(GraphicsDevice* device)
 {
 #ifdef _DX11

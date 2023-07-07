@@ -14,17 +14,6 @@ ShaderPipeline::ShaderPipeline(GraphicsDevice *device, IVertexShader *vertexShad
 {
 }
 
-Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline& p) : 
-	_device(p._device),
-	_vertex(p._vertex),
-	_hull(p._hull),
-	_domain(p._domain),
-	_geometry(p._geometry),
-	_pixel(p._pixel)
-{
-	this->_destroy();
-}
-
 Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline &&p) noexcept:
 	_device(p._device),
 	_vertex(p._vertex),
@@ -42,7 +31,7 @@ Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeli
 	p._geometry = nullptr;
 }
 
-ShaderPipeline& Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::operator=(ShaderPipeline& p)
+ShaderPipeline& Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::operator=(ShaderPipeline&& p) noexcept
 {
 	_destroy();
 	_device = p._device;

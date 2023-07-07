@@ -16,6 +16,11 @@ void IPixelShader::_createShader()
 		_shader.GetAddressOf());
 
 	if(FAILED(r)) throw ShaderCompilationError("Failed to create a pixel shader!");
+
+#ifdef _DEBUG
+	const char shaderName[] = "IPixelShader::_shader";
+	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName), shaderName);
+#endif
 #endif
 }
 
