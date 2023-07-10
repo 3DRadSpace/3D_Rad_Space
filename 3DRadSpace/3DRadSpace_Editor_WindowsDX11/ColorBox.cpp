@@ -101,3 +101,11 @@ ColorBox::~ColorBox()
 		brush = nullptr;
 	}
 }
+
+void ColorBox::HandleClick(HWND clickedWindow)
+{
+	if(clickedWindow == window)
+	{
+		SetColor();
+	}
+}

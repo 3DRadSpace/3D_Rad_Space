@@ -36,6 +36,9 @@ namespace Engine3DRadSpace::Content
 		template<AssetType T>
 		IAsset *operator[](AssetReference<T> ref);
 
+		std::vector<std::unique_ptr<IAsset>>::iterator begin();
+		std::vector<std::unique_ptr<IAsset>>::iterator end();
+
 		void RemoveAsset(const std::string &name);
 		void RemoveAsset(unsigned id);
 	};

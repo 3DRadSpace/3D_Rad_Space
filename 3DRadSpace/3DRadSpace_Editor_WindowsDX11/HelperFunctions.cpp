@@ -14,12 +14,11 @@ int GetMenuBarHeight()
 
 std::wstring ConvertToWideString(const std::string& str)
 {
-	int len = MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), nullptr, 0) + sizeof(L'\00');
-	wchar_t* ws = new wchar_t[len];
-	memset(ws, 0, sizeof(wchar_t) * len);
+	int len = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, nullptr, 0) + sizeof(L'\00');
+	std::unique_ptr<wchar_t[]> ws = std::make_unique<wchar_t[]>(len);
+	memset(ws.get(), 0, sizeof(wchar_t) * len);
 	
-	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), ws, len);
-	std::wstring r(ws);
-	delete[] ws;
+	MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, ws.get(), len);
+	std::wstring r(ws.get());
 	return r;
 }

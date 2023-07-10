@@ -148,6 +148,7 @@
     <ClInclude Include="Content\ContentManager.hpp" />
     <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
+    <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
     <ClInclude Include="Graphics\Primitives\Lines.hpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="Graphics\ModelMeshPart.cpp" />
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
     <ClCompile Include="Graphics\Primitives\Lines.cpp" />
+    <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
     <ClCompile Include="Graphics\RasterizerState.cpp" />
     <ClCompile Include="Graphics\SamplerState.cpp" />
     <ClCompile Include="Graphics\ShaderPipeline.cpp" />

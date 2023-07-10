@@ -24,6 +24,7 @@ public:
 	Engine3DRadSpace::Color GetColor();
 
 	HWND GetWindowHandle();
+	virtual void HandleClick(HWND clickedWindow) override;
 
 	~ColorBox();
 

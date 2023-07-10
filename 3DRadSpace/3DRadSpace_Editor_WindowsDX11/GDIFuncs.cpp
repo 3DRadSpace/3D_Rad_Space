@@ -1,4 +1,5 @@
 #include "GDIFuncs.hpp"
+#include <string>
 
 Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 ULONG_PTR gdiplusToken;
@@ -58,6 +59,22 @@ HBITMAP loadImgResource(const wchar_t* pName,const wchar_t* pType, HMODULE hInst
 HBITMAP loadImgResource(WORD resNum, LPWSTR pType)
 {
     return loadImgResource(MAKEINTRESOURCE(resNum), pType, GetModuleHandle(0));//hInst);
+}
+
+std::wstring ConvertToWideString(const std::string &str);
+
+HBITMAP loadImageFromFile(const char *path, unsigned &w, unsigned &h)
+{
+    std::wstring wPath = ConvertToWideString(path);
+
+    HBITMAP r = nullptr;
+    Gdiplus::Bitmap *image = Gdiplus::Bitmap::FromFile(wPath.c_str());
+    if(image == nullptr) return nullptr;
+
+    image->GetHBITMAP(Gdiplus::Color(255, 255, 255), &r);
+    w = image->GetWidth();
+    h = image->GetHeight();
+    return r;
 }
 
 void DeinitializeGDI()

@@ -10,6 +10,16 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_resources.push_back(nullptr); // ID 0 = nullptr
 }
 
+std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::begin()
+{
+	return _resources.begin();
+}
+
+std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::end()
+{
+	return _resources.end();
+}
+
 void ContentManager::RemoveAsset(const std::string &name)
 {
 	_resources.erase(std::remove_if(_resources.begin(), _resources.end(),

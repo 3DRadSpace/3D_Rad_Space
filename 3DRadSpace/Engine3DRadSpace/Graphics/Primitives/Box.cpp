@@ -13,14 +13,14 @@ std::array<VertexPositionColor, 8> Box::_createVerts(const Math::BoundingBox &b,
 {
     return std::array<VertexPositionColor, 8>
     {
-        VertexPositionColor{ b.Position, color},
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X,0,0), color},
-        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y,0), color},
-        VertexPositionColor{ b.Position + Vector3(0, 0,b.Scale.Z), color},
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X, b.Scale.Y, 0), color},
-        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y, b.Scale.Z), color},
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X, b.Scale.Z), color},
-        VertexPositionColor{ b.Position + b.Scale , color},
+        VertexPositionColor{ b.Position, color}, // 0
+        VertexPositionColor{ b.Position + Vector3(b.Scale.X,0,0), color}, // 1
+        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y,0), color}, // 2
+        VertexPositionColor{ b.Position + Vector3(0, 0,b.Scale.Z), color}, // 3
+        VertexPositionColor{ b.Position + Vector3(b.Scale.X, b.Scale.Y, 0), color}, // 4
+        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y, b.Scale.Z), color}, // 5
+        VertexPositionColor{ b.Position + Vector3(b.Scale.X, b.Scale.Z), color}, // 6
+        VertexPositionColor{ b.Position + b.Scale , color}, // 7
     };
 }
 
@@ -31,7 +31,8 @@ Engine3DRadSpace::Graphics::Primitives::Box::Box(GraphicsDevice *device, const M
 
     std::array<unsigned, 32> indices =
     {
-        0
+        0, 1, 3,
+        3, 1, 5
     };
     _indices = std::make_unique<IndexBuffer>(device, indices);
 

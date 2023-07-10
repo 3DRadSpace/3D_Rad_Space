@@ -10,5 +10,7 @@ protected:
 public:
 	IControl(HWND hwnd, HINSTANCE hInstance);
 
+	virtual void HandleClick(HWND clickedWindow) = 0;
+
 	virtual ~IControl() = default;
 };

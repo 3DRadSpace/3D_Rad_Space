@@ -238,6 +238,7 @@
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Tag.hpp" />
+    <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -393,5 +394,6 @@
     </ClCompile>
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
     <ClCompile Include="Content\ShaderManager.cpp" />
+    <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
   </ItemGroup>
 </Project>

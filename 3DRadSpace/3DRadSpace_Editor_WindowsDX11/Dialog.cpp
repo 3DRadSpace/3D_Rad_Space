@@ -32,8 +32,8 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 
 	//Title
 	LPWSTR title = reinterpret_cast<LPWSTR>(pWord);
-	int numWChars = MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), int(windowTitle.length()), nullptr, 0);
-	MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), int(windowTitle.length()), title, numWChars);
+	int numWChars = MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, nullptr, 0);
+	MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, title, numWChars);
 
 	pWord += 1 + numWChars;
 

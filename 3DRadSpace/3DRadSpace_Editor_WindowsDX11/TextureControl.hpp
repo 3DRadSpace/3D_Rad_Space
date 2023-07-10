@@ -28,6 +28,8 @@ public:
 
 	HWND GetPixturebox();
 
+	virtual void HandleClick(HWND clickedWindow) override;
+
 	~TextureControl();
 };
 

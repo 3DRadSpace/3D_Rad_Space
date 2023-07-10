@@ -243,7 +243,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		nullptr,
 		mainMenu,
 		hInstance,
-		nullptr);
+		nullptr
+	);
 
 	RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
 

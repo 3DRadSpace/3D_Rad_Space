@@ -57,6 +57,9 @@
     <ClCompile Include="AssetControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetControl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

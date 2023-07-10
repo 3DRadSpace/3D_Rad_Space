@@ -6,12 +6,14 @@ AssetControl::AssetControl(HWND owner, HINSTANCE hInstance, int x, int y):
 	HDC hdc = GetDC(owner);
 
 	SIZE txtLen;
-	GetTextExtentPoint32A(hdc, "Path", 4, &txtLen);
+	GetTextExtentPoint32A(hdc, "Asset name", 10, &txtLen);
+
+	int accX = x;
 
 	_label = CreateWindowExA(
 		0,
 		"STATIC",
-		"Path",
+		"Asset name",
 		WS_VISIBLE | WS_CHILD,
 		x,
 		y,
@@ -24,13 +26,14 @@ AssetControl::AssetControl(HWND owner, HINSTANCE hInstance, int x, int y):
 	);
 
 	_cy = txtLen.cy;
+	accX += txtLen.cx;
 
 	_textBox = CreateWindowExA(
 		0,
 		"EDIT",
 		"",
 		ES_AUTOHSCROLL | ES_LEFT | WS_CHILD | WS_VISIBLE,
-		x + txtLen.cx + 5,
+		accX + 5,
 		y,
 		100,
 		txtLen.cy + 2,
@@ -40,17 +43,19 @@ AssetControl::AssetControl(HWND owner, HINSTANCE hInstance, int x, int y):
 		nullptr
 	);
 
+	accX += 110;
+
 	GetTextExtentPoint32A(hdc, "Browse...", 9, &txtLen);
 	_button = CreateWindowExA(
 		0,
 		"Button",
 		"Browse...",
 		WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-		x + 110,
+		accX + 5,
 		y,
 		txtLen.cx + 10,
-		25,
-		window,
+		txtLen.cy + 5,
+		owner,
 		nullptr,
 		hInstance,
 		nullptr

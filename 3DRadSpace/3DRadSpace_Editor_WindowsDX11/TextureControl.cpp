@@ -1,4 +1,5 @@
 #include "TextureControl.hpp"
+#include "GDIFuncs.hpp"
 
 TextureControl::TextureControl(
 	HWND owner,
@@ -9,7 +10,7 @@ TextureControl::TextureControl(
 	int x,
 	int y
 ):
-	AssetControl(owner, hInstance, x, y),
+	AssetControl(owner, hInstance, x, y + 205),
 	TextureReference(texture)
 {
 	_pictureBox = CreateWindowExA(
@@ -18,7 +19,7 @@ TextureControl::TextureControl(
 		"",
 		WS_VISIBLE | WS_CHILD | SS_BITMAP,
 		x,
-		y + _cy + 25,
+		y,
 		100,
 		100,
 		owner,
@@ -28,12 +29,18 @@ TextureControl::TextureControl(
 	);
 
 	_image = nullptr;
+	unsigned imageWidth;
+	unsigned imageHeight;
+
 	if(TextureReference.ID != 0)
-		_image = LoadBitmapA(nullptr, (*content)[TextureReference]->Path.c_str());
+		_image = loadImageFromFile((*content)[TextureReference]->Path.c_str(), imageWidth, imageHeight);
 	else
-		_image = LoadBitmapA(nullptr, "Data\\NoAsset.png");
+		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
+
+	float r_wh = float(imageWidth) / imageHeight;
 
 	SendMessageA(_pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(_image));
+	SetWindowPos(_pictureBox, nullptr, 0, 0, 200 * r_wh, 200, SWP_NOMOVE);
 }
 
 TextureControl::TextureControl(TextureControl &&c) noexcept:
@@ -79,4 +86,12 @@ HWND TextureControl::GetPixturebox()
 TextureControl::~TextureControl()
 {
 	if(_image != nullptr)DeleteObject(_image);
+}
+
+void TextureControl::HandleClick(HWND clickedWindow)
+{
+	if(clickedWindow == _pictureBox || clickedWindow == _button)
+	{
+		//open the asset manager.
+	}
 }

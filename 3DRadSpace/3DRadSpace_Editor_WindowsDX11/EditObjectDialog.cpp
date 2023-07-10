@@ -40,13 +40,27 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 				if(lParam == reinterpret_cast<LPARAM>(eod->okButton))
 				{
 					if(eod->setObject())
+					{
 						EndDialog(hwnd, IDOK);
+						return 1;
+					}
 				}
 				if(lParam == reinterpret_cast<LPARAM>(eod->cancelButton))
 				{
 					EndDialog(hwnd, IDCANCEL);
+					return 1;
 				}
-				return 1;
+
+				for(auto &c : eod->windows)
+				{
+					auto control = std::get_if<IControl *>(&c);
+					if(control != nullptr)
+					{
+						(*control)->HandleClick(reinterpret_cast<HWND>(lParam));
+						return 1;
+					}
+				}
+				return 0;
 			}
 			default:
 				return 0;
@@ -239,7 +253,7 @@ void EditObjectDialog::createForms()
 				windows.push_back(checkBox);
 
 				//send the checkbox state:
-				bool value = static_cast<const bool*>(valuePtr);
+				bool value = *reinterpret_cast<const bool*>(static_cast<const char*>(valuePtr) + fOffset);
 				SendMessageA(checkBox, BM_SETCHECK, value ? BST_CHECKED : BST_UNCHECKED, 0);
 
 				//update coordinates
@@ -396,34 +410,11 @@ void EditObjectDialog::createForms()
 			{
 				auto value = *static_cast<const Content::AssetReference<Graphics::Texture2D>*>(valuePtr);
 				
-				/*
-				std::string path = value != 0 ? gEditorWindow->GetContentManager()->operator[](value)->Path : "";
-
-				HWND pictureBox = CreateWindowExA(
-					0,
-					"Static",
-					"",
-					WS_VISIBLE | WS_CHILD | SS_BITMAP,
-					px,
-					y,
-					50,
-					50,
-					window,
-					nullptr,
-					hInstance,
-					nullptr
-				);
-
-				HBITMAP image = LoadBitmapA(nullptr, path.c_str());
-				SendMessageA(pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(image));
-
-				windows.push_back(createFileControls(x, y + 200, path.c_str()));
-				*/
-				
 				TextureControl *ctrl = new TextureControl(window, hInstance, nullptr, value, fieldName, x, y);
 				windows.push_back(ctrl);
 
 				setMax(inc_y, 205 + textboxHeight);
+				px = 205;
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
@@ -771,7 +762,10 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Image:
 				{
+					auto textureControl = static_cast<TextureControl *>(std::get<IControl *>(windows[i++]));
 					
+					memcpy_s(newStruct.get() + j, sizeof(RefTexture2D), &textureControl->TextureReference, sizeof(RefTexture2D));
+					j += sizeof(RefTexture2D);
 					break;
 				}
 				case FieldRepresentationType::Model:
@@ -835,13 +829,7 @@ EditObjectDialog::~EditObjectDialog()
 {
 	for(auto &c : windows)
 	{
-		try
-		{
-			auto control = std::get<IControl *>(c);
-			delete control;
-		}
-		catch([[maybe_unused]] const std::bad_variant_access &e) //do nothing if using the other type, HWND
-		{
-		}
+		auto control = std::get_if<IControl *>(&c);
+		if(control != nullptr) delete *control;
 	}
 }
