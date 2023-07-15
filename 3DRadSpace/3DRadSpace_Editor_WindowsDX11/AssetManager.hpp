@@ -5,15 +5,14 @@
 
 class AssetManager : public Dialog
 {
-	HWND _treeView;
+	HWND _assetList;
 
-	HWND _browseAssetButton;
-
+	HWND _searchLabel;
 	HWND _searchBox;
-	HWND _searchButton;
 
+	HIMAGELIST _imageList;
 public:
-	AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager &content);
+	AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content);
 
 	AssetManager(AssetManager &) = delete;
 	AssetManager(AssetManager &&) = delete;
@@ -22,5 +21,7 @@ public:
 	AssetManager &operator=(AssetManager &&) = delete;
 
 	friend INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+	~AssetManager();
 };
 

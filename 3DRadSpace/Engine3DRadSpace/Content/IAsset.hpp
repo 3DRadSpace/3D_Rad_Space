@@ -11,13 +11,15 @@ namespace Engine3DRadSpace::Content
 		std::string Name;
 		std::string Path;
 
-		IAsset() = default;
+		const std::type_info &Type;
+
+		IAsset(const unsigned id, const std::type_info& type, const std::string &path, const std::string &name = "");
 
 		IAsset(IAsset &) = default;
-		IAsset(IAsset &&) noexcept = default;
+		IAsset(IAsset &&) = default;
 
 		IAsset &operator=(IAsset &) = default;
-		IAsset &operator=(IAsset &&) noexcept = default;
+		IAsset &operator=(IAsset &&) = default;
 
 		virtual void *Get() = 0;
 		virtual ~IAsset() = default;

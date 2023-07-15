@@ -87,7 +87,7 @@ namespace Engine3DRadSpace::Content
 	{
 		auto path = _resources[ref.ID]->Path;
 
-		_resources[ref.ID].reset(new IAsset<T>(_device, path));
+		_resources[ref.ID].reset(new Asset<T>(_device, path));
 	}
 
 	template<AssetType T>

@@ -68,19 +68,21 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 
 	std::atexit(HandleError);
-// Lists leaked DX11 objects
 #ifdef _DEBUG
-	std::atexit(ReportLiveObjects);
+	std::atexit(ReportLiveObjects); // Lists leaked DX11 objects
 #endif
 
 	InitializeGDI();
 	InitializeCommonControls();
 	SetWorkingDirectory();
 
+	RaiseFatalErrorIfFailed(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED), "Failed to initialize COM!");
+
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();
 
 	DeinitializeGDI();
+	CoUninitialize();
 
 	//Manually release the stored shaders inside the ShaderManager class. 
 	//For some reason the destructor for ShaderManger::_shaders is not called at the end of execution because it is a global variable.

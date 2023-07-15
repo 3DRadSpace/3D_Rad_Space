@@ -1,5 +1,6 @@
 #include "TextureControl.hpp"
 #include "GDIFuncs.hpp"
+#include "AssetManager.hpp"
 
 TextureControl::TextureControl(
 	HWND owner,
@@ -10,7 +11,7 @@ TextureControl::TextureControl(
 	int x,
 	int y
 ):
-	AssetControl(owner, hInstance, x, y + 205),
+	AssetControl(owner, hInstance, x, y + 205, content),
 	TextureReference(texture)
 {
 	_pictureBox = CreateWindowExA(
@@ -92,6 +93,6 @@ void TextureControl::HandleClick(HWND clickedWindow)
 {
 	if(clickedWindow == _pictureBox || clickedWindow == _button)
 	{
-		//open the asset manager.
+		AssetManager assetManager(this->owner, this->instance, nullptr);
 	}
 }

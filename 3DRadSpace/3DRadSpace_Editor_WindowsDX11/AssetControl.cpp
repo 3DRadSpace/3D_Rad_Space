@@ -1,7 +1,10 @@
 #include "AssetControl.hpp"
 
-AssetControl::AssetControl(HWND owner, HINSTANCE hInstance, int x, int y):
-    IControl(owner, hInstance)
+using namespace Engine3DRadSpace::Content;
+
+AssetControl::AssetControl(HWND owner, HINSTANCE hInstance, int x, int y, ContentManager *content):
+    IControl(owner, hInstance),
+	_content(content)
 {
 	HDC hdc = GetDC(owner);
 

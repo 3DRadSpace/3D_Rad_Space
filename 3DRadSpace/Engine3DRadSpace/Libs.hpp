@@ -37,3 +37,29 @@
 #else
 #define DLLEXPORT
 #endif
+
+//Check if compiling for DirectX 11/12 or Vulkan.
+#ifndef _DX11
+#ifndef _DX12
+#ifndef _VULKAN
+#error Support for DirectX 11, 12 or Vulkan must be enabled!
+#endif
+#endif // !_DX11
+#endif
+
+#ifdef _DX11
+#ifndef _WIN32
+#error DirectX11 is only supported on Windows!
+#endif // !_WIN32
+#endif
+
+#ifdef _DX12
+#ifndef _WIN32
+#error DirectX12 is only supported on Windows!
+#endif // !_WIN32
+#endif
+
+//Check compiler support
+#ifndef __cplusplus
+#error A C++ supporting compiler is required!
+#endif

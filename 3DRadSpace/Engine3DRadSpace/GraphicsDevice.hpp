@@ -85,6 +85,9 @@ namespace Engine3DRadSpace
 
 		Engine3DRadSpace::Math::Point Resolution();
 
+		void ResizeBackBuffer(const Math::Point &newResolution);
+		void ToggleFullScreen();
+
 		~GraphicsDevice();
 
 		template<Graphics::VertexDecl V> friend class Graphics::VertexBufferV;

@@ -9,7 +9,8 @@ namespace Engine3DRadSpace::Content
 	{
 		std::unique_ptr<T> _asset;
 	public:
-		Asset(GraphicsDevice *device, const std::string &path)
+		Asset(GraphicsDevice *device, const std::string &path) :
+			IAsset( 0, typeid(T), path, "")
 		{
 			_asset = std::make_unique<T>(device, path);
 		}

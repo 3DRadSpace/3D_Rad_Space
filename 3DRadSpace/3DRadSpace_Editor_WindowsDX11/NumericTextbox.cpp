@@ -85,3 +85,7 @@ NumericTextbox::operator HWND() const
 {
 	return this->window;
 }
+
+void NumericTextbox::HandleClick(HWND clickedWindow)
+{
+}

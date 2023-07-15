@@ -75,9 +75,6 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 
 	_context->OMSetDepthStencilState(_stencilState->_state.Get(), 1);
 
-	r = CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED);
-	RaiseFatalErrorIfFailed(r, "Failed to initialize COM!");
-
 #if _DEBUG
 	const char deviceName[] = "GraphicsDevice::_device";
 	_device->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(deviceName) - 1, deviceName);
@@ -301,6 +298,22 @@ Engine3DRadSpace::Math::Point Engine3DRadSpace::GraphicsDevice::Resolution()
 	return this->_resolution;
 }
 
+void Engine3DRadSpace::GraphicsDevice::ResizeBackBuffer(const Math::Point &newResolution)
+{
+	_context->ClearState();
+	HRESULT r = _swapChain->ResizeBuffers(0, newResolution.X, newResolution.Y, DXGI_FORMAT_UNKNOWN, 0);
+	if(FAILED(r))
+	{
+		throw std::exception("Failed to resize buffers!");
+	}
+	else
+	{
+		r = _swapChain->GetBuffer(0, IID_PPV_ARGS(_screenTexture.GetAddressOf()));
+		if(FAILED(r)) throw std::exception("Failed to get the back buffer texture!");
+	}
+
+}
+
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
 #ifdef _DX11
@@ -316,6 +329,5 @@ Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 	debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 #endif
 */
-	CoUninitialize();
 #endif
 }

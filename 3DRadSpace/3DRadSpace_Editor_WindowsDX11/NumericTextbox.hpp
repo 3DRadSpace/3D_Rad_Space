@@ -9,6 +9,8 @@ public:
 
     operator HWND() const;
 
+    virtual void HandleClick(HWND clickedWindow) override;
+
     friend LRESULT WINAPI NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

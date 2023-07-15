@@ -154,6 +154,7 @@
     <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="AssetControl.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="AssetRenderer.cpp" />
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="EditObjectDialog.cpp" />
@@ -170,7 +171,9 @@
   <ItemGroup>
     <ClInclude Include="AddObjectDialog.hpp" />
     <ClInclude Include="AssetControl.hpp" />
+    <ClInclude Include="AssetListRenderer.hpp" />
     <ClInclude Include="AssetManager.hpp" />
+    <ClInclude Include="AssetRenderer.hpp" />
     <ClInclude Include="ColorBox.hpp" />
     <ClInclude Include="Dialog.hpp" />
     <ClInclude Include="EditObjectDialog.hpp" />
