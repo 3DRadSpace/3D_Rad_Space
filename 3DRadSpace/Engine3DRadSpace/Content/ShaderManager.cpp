@@ -7,8 +7,8 @@ std::unordered_map<size_t, std::shared_ptr<ShaderPipeline>> ShaderManager::_shad
 
 void Engine3DRadSpace::Content::ShaderManager::ReleaseAll()
 {
-	for(auto &p : _shaders)
+	for(auto &[id, shader] : _shaders)
 	{
-		p.second.reset();
+		shader.reset();
 	}
 }

@@ -36,4 +36,5 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 		device->SaveBackBufferToFile(imagePath);
 		return true;
 	}
+	return false;
 }

@@ -93,9 +93,9 @@ namespace Engine3DRadSpace
 		unsigned c = 0;
 		O *ptr = nullptr;
 
-		for(auto &pair : objects)
+		for(auto &[type, object] : objects)
 		{
-			ptr = dynamic_cast<O *>(pair.second.get());
+			ptr = dynamic_cast<O *>(object.get());
 			if(ptr != nullptr)
 			{
 				c++;

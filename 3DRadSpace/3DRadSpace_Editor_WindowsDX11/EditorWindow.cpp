@@ -150,6 +150,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	wndclass.lpfnWndProc = EditorWindow_WndProc;
 	wndclass.lpszClassName = EditorWindowClassName;
 	wndclass.hIcon = LoadIconA(hInstance,MAKEINTRESOURCEA(IDI_ICON1));
+	wndclass.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(32512)); //IDI_ARROW
 
 	ATOM a = RegisterClassA(&wndclass);
 	RaiseFatalErrorIfFalse(a != 0,"Failed to register class!");

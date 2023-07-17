@@ -41,7 +41,7 @@ TextureControl::TextureControl(
 	float r_wh = float(imageWidth) / imageHeight;
 
 	SendMessageA(_pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(_image));
-	SetWindowPos(_pictureBox, nullptr, 0, 0, 200 * r_wh, 200, SWP_NOMOVE);
+	SetWindowPos(_pictureBox, nullptr, 0, 0, int(200 * r_wh), 200, SWP_NOMOVE);
 }
 
 TextureControl::TextureControl(TextureControl &&c) noexcept:
@@ -94,5 +94,6 @@ void TextureControl::HandleClick(HWND clickedWindow)
 	if(clickedWindow == _pictureBox || clickedWindow == _button)
 	{
 		AssetManager assetManager(this->owner, this->instance, nullptr);
+		assetManager.ShowDialog<Engine3DRadSpace::Graphics::Texture2D>();
 	}
 }

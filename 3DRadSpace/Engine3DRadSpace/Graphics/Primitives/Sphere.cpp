@@ -30,9 +30,9 @@ Sphere::Sphere(GraphicsDevice *device, float radius, Color color, unsigned resol
 		{
 			sphere_points.push_back(VertexPositionColor{
 				Vector3(
-					local_radius * cos(theta),
-					h,
-					local_radius * sin(theta)
+					float(local_radius * cos(theta)),
+					float(h),
+					float(local_radius * sin(theta))
 				), color }
 			);
 		}

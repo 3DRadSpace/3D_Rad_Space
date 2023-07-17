@@ -98,10 +98,10 @@ IObject *Engine3DRadSpace::Game::FindObject(unsigned id)
 
 IObject *Engine3DRadSpace::Game::FindObject(const std::string &name)
 {
-	for(auto &pair : objects)
+	for(auto &[id, object] :objects)
 	{
-		if(pair.second->Name == name)
-			return pair.second.get();
+		if(object->Name == name)
+			return object.get();
 	}
 	return nullptr;
 }
@@ -147,46 +147,46 @@ void Engine3DRadSpace::Game::ClearObjects()
 
 void Engine3DRadSpace::Game::Load(Content::ContentManager *content)
 {
-	for(auto &p : objects)
+	for(auto &[type, object] : objects)
 	{
-		p.second->Load(content);
+		object->Load(content);
 	}
 }
 
 void Engine3DRadSpace::Game::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
 {
-	for(auto &p : objects)
+	for(auto &[type, object] : objects)
 	{
-		p.second->Update(keyboard, mouse, dt);
+		object->Update(keyboard, mouse, dt);
 	}
 }
 
 void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
 {
-	for(auto &p : objects)
+	for(auto &[type, object] : objects)
 	{
-		if(p.first == 3u)
+		if(type == 3u)
 		{
-			(static_cast<IObject3D *>(p.second.get()))->Draw(view, projection, dt);
+			(static_cast<IObject3D *>(object.get()))->Draw(view, projection, dt);
 		}
 	}
 }
 
 void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch *spriteBatch, double dt)
 {
-	for(auto &p : objects)
+	for(auto &[type, object] : objects)
 	{
-		if(p.first == 2u)
+		if(type == 2u)
 		{
-			(static_cast<IObject2D *>(p.second.get()))->Draw(spriteBatch, dt);
+			(static_cast<IObject2D *>(object.get()))->Draw(spriteBatch, dt);
 		}
 	}
 }
 
 void Engine3DRadSpace::Game::Initialize()
 {
-	for(auto &p : objects)
+	for(auto &[type, object] : objects)
 	{
-		p.second->Initialize();
+		object->Initialize();
 	}
 }

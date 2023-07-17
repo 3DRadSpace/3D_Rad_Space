@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="AddObjectDialog.cpp" />
     <ClCompile Include="AssetControl.cpp" />
+    <ClCompile Include="AssetListRenderer.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="AssetRenderer.cpp" />
     <ClCompile Include="ColorBox.cpp" />

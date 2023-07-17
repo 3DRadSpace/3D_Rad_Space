@@ -3,12 +3,12 @@
 int Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(const std::string& a, const std::string& b)
 {
     //if a is null, distance is length of b
-    if (a.length() == 0) return b.length();
+    if(a.length() == 0) return int(b.length());
     //the reverse also applies.
-    if (b.length() == 0) return a.length();
+    if(b.length() == 0) return int(a.length());
 
-    int n = a.length() + 1;
-    int m = b.length() + 1;
+    int n = int(a.length() + 1);
+    int m = int(b.length() + 1);
 
     //Allocate a two dimensional array of the size [a.length() + 1][b.length() + 1].
     int** d = new int* [n];

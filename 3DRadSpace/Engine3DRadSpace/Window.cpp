@@ -133,6 +133,7 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
     wndclass.lpfnWndProc = GameWndProc;
     wndclass.hInstance = GetModuleHandleA(nullptr); //In x86 and x64, HMODULE = HINSTANCE
     //wndclass.hIcon = LoadIconA(wndclass.hInstance, MAKEINTRESOURCE(IDI_ICON1));
+    wndclass.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(32512)); //IDI_CURSOR
     
     ATOM a = RegisterClassA(&wndclass);
     if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
@@ -187,13 +188,24 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
 #endif
 }
 
-Engine3DRadSpace::Window::Window(Window&& wnd):
+Engine3DRadSpace::Window::Window(Window &&wnd) noexcept:
     _window(wnd._window)
 {
     wnd._window = nullptr;
 #ifdef _WIN32
     SetWindowLongPtrA(static_cast<HWND>(this->_window), GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 #endif // 
+}
+
+Window &Engine3DRadSpace::Window::operator=(Window &&wnd) noexcept
+{
+    _window = wnd._window;
+    wnd._window = nullptr;
+
+#ifdef _WIN32
+    SetWindowLongPtrA(static_cast<HWND>(this->_window), GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+#endif // 
+    return *this;
 }
 
 void* Engine3DRadSpace::Window::NativeHandle()

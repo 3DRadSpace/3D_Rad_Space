@@ -111,10 +111,10 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance):
 
 Engine3DRadSpace::Reflection::ReflectedObject *AddObjectDialog::GetReflDataFromUUID(const Engine3DRadSpace::Reflection::UUID &uuid)
 {
-	for(auto &p : Objects)
+	for(auto &[obj_uuid, refl] : Objects)
 	{
-		if(p.first == uuid)
-			return p.second;
+		if(obj_uuid == uuid)
+			return refl;
 	}
 	return nullptr;
 }
@@ -203,13 +203,13 @@ void AddObjectDialog::createForms()
 	}
 
 	//Populate the image list with the object data (icons and names)
-	for (auto& o : objects)
+	for (auto& [name, obj] : objects)
 	{
-		HBITMAP img = loadImgResource(o.second.image, L"PNG", static_cast<HMODULE>(hInstance));
+		HBITMAP img = loadImgResource(obj.image, L"PNG", static_cast<HMODULE>(hInstance));
 		int imgIndex = ImageList_Add(imageList, img, nullptr);
 		DeleteObject(img);
 
-		addObject(o.first, imgIndex, o.second.categoryID );
+		addObject(name, imgIndex, obj.categoryID );
 	}
 
 	resize();
