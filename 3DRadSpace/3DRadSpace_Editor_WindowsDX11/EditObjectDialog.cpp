@@ -76,15 +76,16 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 	}
 }
 
-EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObject* data, IObject* obj):
+EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObject *data, ContentManager *content, IObject *obj) :
 	Dialog(owner, hInstance, EditObjectDialog_DlgProc, data->Name + " object"),
 	objRefl(data),
 	object(obj),
 	helpButton(nullptr),
 	okButton(nullptr),
-	cancelButton(nullptr)
+	cancelButton(nullptr),
+	_content(content)
 {
-	if (data == nullptr) throw std::invalid_argument("data was null");
+	//if (data == nullptr) throw std::invalid_argument("data was null");
 }
 
 void EditObjectDialog::createForms()
@@ -410,7 +411,7 @@ void EditObjectDialog::createForms()
 			{
 				auto value = *static_cast<const Content::AssetReference<Graphics::Texture2D>*>(valuePtr);
 				
-				TextureControl *ctrl = new TextureControl(window, hInstance, nullptr, value, fieldName, x, y);
+				TextureControl *ctrl = new TextureControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
 
 				setMax(inc_y, 205 + textboxHeight);

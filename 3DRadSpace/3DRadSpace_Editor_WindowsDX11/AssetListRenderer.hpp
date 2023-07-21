@@ -27,4 +27,6 @@ public:
 		_device->Present();
 		return r;
 	}
+
+	~AssetListRenderer();
 };

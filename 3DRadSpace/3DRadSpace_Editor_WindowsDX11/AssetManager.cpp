@@ -1,8 +1,55 @@
 #include "AssetManager.hpp"
-#include "AssetListRenderer.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
+
+
+INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	static AssetManager *assetManager = nullptr;
+	switch(msg)
+	{
+		case WM_INITDIALOG:
+		{
+			assetManager = reinterpret_cast<AssetManager *>(lParam);
+			assetManager->window = hwnd;
+			assetManager->_createForms();
+			return 1;
+		}
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			BeginPaint(hwnd, &ps);
+			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
+			EndPaint(hwnd, &ps);
+			return 1;
+		}
+		case WM_CLOSE:
+			EndDialog(hwnd, IDCANCEL);
+			return 1;
+		case WM_NOTIFY:
+		{
+			switch((reinterpret_cast<LPNMHDR>(lParam))->code)
+			{
+				case NM_DBLCLK:
+				{
+					LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
+
+					if(item->iItem >= 0)
+					{
+						EndDialog(hwnd, item->lParam);
+						return 0;
+					}
+					break;
+				}
+				default:
+					break;
+			}
+			return 1;
+		}
+		default: return 0;
+	}
+}
 
 void AssetManager::_createForms()
 {
@@ -21,7 +68,7 @@ void AssetManager::_createForms()
 		10,
 		textSize.cx,
 		textSize.cy,
-		owner,
+		window,
 		nullptr,
 		hInstance,
 		nullptr
@@ -36,7 +83,7 @@ void AssetManager::_createForms()
 		10,
 		300,
 		textSize.cy + 5,
-		owner,
+		window,
 		nullptr,
 		hInstance,
 		nullptr
@@ -53,35 +100,40 @@ void AssetManager::_createForms()
 		_assetListY,
 		400,
 		400 - _assetListY,
-		owner,
+		window,
 		nullptr,
 		hInstance,
 		nullptr
 	);
 
-	_imageList = ImageList_Create(64, 64, ILC_HIGHQUALITYSCALE | ILC_COLOR, 50, 100);
+	_imageList = ImageList_Create(64, 64, ILC_COLOR32 | ILC_MASK | ILC_ORIGINALSIZE, 50, 100);
+	SendMessageA(_assetList, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(_imageList));
+
+	//_renderer = std::make_unique<AssetListRenderer>(owner, hInstance, _content);
 
 	//iterate assets
 	for(auto &asset : *_content)
 	{
+		if(asset == nullptr) break;
+
 		LVITEMA item{};
 		item.lParam = asset->ID();
 		item.pszText = const_cast<char *>(asset->Name.c_str());
 		item.cchTextMax = int(asset->Name.length());
-		item.iImage = asset->ID();
+		item.iImage = asset->ID() - 1;
 		item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
 
 		SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next
+	}
 
-		AssetListRenderer renderer(owner, hInstance, _content);
-
-		std::thread image_loader(
-			[&renderer, &asset, this]()
+	std::thread image_loader = std::thread([this]()
+	{
+		for(auto &asset : *_content)
 		{
 			if(_imageList == nullptr) return;
 			if(_assetList == nullptr) return;
 
-			std::string imagePath = std::string("AssetImages//") + asset->Path + ".png";
+			std::string imagePath = std::string("Data//AssetImages//") + asset->Path + ".png";
 
 			if(!std::filesystem::exists(imagePath))
 			{
@@ -94,10 +146,10 @@ void AssetManager::_createForms()
 				switch(type_map[asset->Type.hash_code()])
 				{
 					case 1:
-						renderer.RenderAsset<Engine3DRadSpace::Graphics::Model3D>(imagePath, asset->Path);
+						if(_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Model3D>(imagePath, asset->Path);
 						break;
 					case 2:
-						renderer.RenderAsset<Engine3DRadSpace::Graphics::Texture2D>(imagePath, asset->Path);
+						if(_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Texture2D>(imagePath, asset->Path);
 						break;
 					default:
 						break;
@@ -115,14 +167,13 @@ void AssetManager::_createForms()
 
 			ImageList_Add(_imageList, image, nullptr);
 			DeleteObject(image);
-		});
-
-		image_loader.detach();
-	}
+		}
+	});
+	image_loader.detach();
 }
 
 AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content) :
-	Dialog(owner, instance, nullptr, "Asset Manager"),
+	Dialog(owner, instance, AssetManager_DlgProc, "Asset Manager"),
 	_assetList(nullptr),
 	_searchBox(nullptr),
 	_searchLabel(nullptr),
@@ -133,43 +184,9 @@ AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Con
 
 AssetManager::~AssetManager()
 {
-	if(_imageList != nullptr) ImageList_Destroy(_imageList);
-}
-
-INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	static AssetManager *assetManager = nullptr;
-	switch(msg)
+	if(_imageList != nullptr)
 	{
-		case WM_INITDIALOG:
-		{
-			assetManager = reinterpret_cast<AssetManager *>(lParam);
-			assetManager->window = hwnd;
-			assetManager->_createForms();
-			return 1;
-		}
-		case WM_CLOSE:
-			EndDialog(hwnd, IDCANCEL);
-			return 1;
-		case WM_NOTIFY:
-		{
-			switch((reinterpret_cast<LPNMHDR>(lParam))->code)
-			{
-				case NM_DBLCLK:
-				{
-					LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
-
-					if(item->iItem >= 0)
-					{
-						EndDialog(hwnd, item->lParam);
-					}
-					break;
-				}
-				default:
-					break;
-			}
-			return 1;
-		}
-		default: return 0;
+		ImageList_Destroy(_imageList);
+		_imageList = nullptr;
 	}
 }

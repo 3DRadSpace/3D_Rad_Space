@@ -12,7 +12,7 @@ ContentManager::ContentManager(GraphicsDevice *device):
 
 std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::begin()
 {
-	return _resources.begin();
+	return std::next(_resources.begin());
 }
 
 std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::end()

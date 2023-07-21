@@ -3,6 +3,7 @@
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
 #include "Dialog.hpp"
 #include <map>
+#include "AssetListRenderer.hpp"
 
 class AssetManager : public Dialog
 {
@@ -16,6 +17,7 @@ class AssetManager : public Dialog
 	std::map<int, HBITMAP> _imageDict;
 
 	Engine3DRadSpace::Content::ContentManager *_content;
+	std::unique_ptr<AssetListRenderer> _renderer;
 
 	void _createForms();
 public:
@@ -30,7 +32,8 @@ public:
 	template<Engine3DRadSpace::Content::AssetType T>
 	Engine3DRadSpace::Content::AssetReference<T> ShowDialog()
 	{
-		Dialog::ShowDialog(static_cast<void*>(this));
+		auto v = Dialog::ShowDialog(static_cast<void*>(this));
+		return Engine3DRadSpace::Content::AssetReference<T>(static_cast<unsigned>(v));
 	}
 
 	~AssetManager();

@@ -57,7 +57,7 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(item->iItem >= 0)
 					{
-						EditObjectDialog dialog(hwnd, aod->hInstance, aod->Objects[item->iItem].second, nullptr);
+						EditObjectDialog dialog(hwnd, aod->hInstance, aod->Objects[item->iItem].second, aod->_content);
 						EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
 					}
 					break;
@@ -102,10 +102,11 @@ void AddObjectDialog::addObject(const std::string& objectName, int imageIndex, i
 	ListView_InsertItem(listView, &item);
 }
 
-AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance):
+AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager* content):
 	Dialog(owner_window, instance, AddObjectDialog_DlgProc, "Add a object..."),
 	imageList(nullptr),
-	listView(nullptr)
+	listView(nullptr),
+	_content(content)
 {
 }
 

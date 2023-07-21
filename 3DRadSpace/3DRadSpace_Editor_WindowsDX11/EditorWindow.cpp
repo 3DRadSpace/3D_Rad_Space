@@ -543,7 +543,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_AddObject:
 				case ACC_ADD_OBJECT:
 				{
-					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
+					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance, gEditorWindow->GetContentManager());
 					auto obj = dialog.ShowDialog();
 					if(obj != nullptr && obj != reinterpret_cast<void*>(IDCANCEL))
 						gEditorWindow->AddObject(obj);
@@ -583,6 +583,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 							gEditorWindow->_mainWindow,
 							gEditorWindow->_hInstance,
 							AddObjectDialog::GetReflDataFromUUID(obj->GetUUID()),
+							gEditorWindow->GetContentManager(),
 							obj
 						);
 

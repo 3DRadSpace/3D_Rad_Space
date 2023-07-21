@@ -38,3 +38,8 @@ AssetListRenderer::AssetListRenderer(HWND owner, HINSTANCE instance, Engine3DRad
 
 	_device->Clear();
 }
+
+AssetListRenderer::~AssetListRenderer()
+{
+	DestroyWindow(_renderWindow);
+}

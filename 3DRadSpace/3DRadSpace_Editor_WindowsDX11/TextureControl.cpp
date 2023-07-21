@@ -86,14 +86,18 @@ HWND TextureControl::GetPixturebox()
 
 TextureControl::~TextureControl()
 {
-	if(_image != nullptr)DeleteObject(_image);
+	if(_image != nullptr)
+	{
+		DeleteObject(_image);
+		_image = nullptr;
+	}
 }
 
 void TextureControl::HandleClick(HWND clickedWindow)
 {
 	if(clickedWindow == _pictureBox || clickedWindow == _button)
 	{
-		AssetManager assetManager(this->owner, this->instance, nullptr);
+		AssetManager assetManager(this->owner, this->instance, _content);
 		assetManager.ShowDialog<Engine3DRadSpace::Graphics::Texture2D>();
 	}
 }

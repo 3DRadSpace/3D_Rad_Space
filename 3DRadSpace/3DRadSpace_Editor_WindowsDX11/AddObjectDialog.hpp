@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
+#include <Engine3DRadSpace/Content/ContentManager.hpp>
 #include "Dialog.hpp"
 #include "EditObjectDialog.hpp"
 
@@ -15,8 +16,10 @@ class AddObjectDialog : public Dialog
 
 	void createForms();
 	void resize();
+
+	Engine3DRadSpace::Content::ContentManager *_content;
 public:
-	AddObjectDialog(HWND owner, HINSTANCE hInstance);
+	AddObjectDialog(HWND owner, HINSTANCE hInstance, Engine3DRadSpace::Content::ContentManager *content);
 
 	static std::vector<std::pair<Engine3DRadSpace::Reflection::UUID, Engine3DRadSpace::Reflection::ReflectedObject *>> Objects;
 
