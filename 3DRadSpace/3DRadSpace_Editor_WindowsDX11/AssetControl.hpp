@@ -11,6 +11,7 @@ protected:
     HWND _button;
 
     int _cy;
+    int _cx;
 
     Engine3DRadSpace::Content::ContentManager *_content;
 public:
@@ -21,5 +22,7 @@ public:
 
     HWND GetTextbox();
     HWND GetBrowseButton();
+
+    int AccX();
 };
 

@@ -25,7 +25,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			return 1;
 		}
 		case WM_CLOSE:
-			EndDialog(hwnd, IDCANCEL);
+			EndDialog(hwnd, 0);
 			return 1;
 		case WM_NOTIFY:
 		{
@@ -37,7 +37,12 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 					if(item->iItem >= 0)
 					{
-						EndDialog(hwnd, item->lParam);
+						LVITEMA lvitem{};
+						lvitem.iItem = item->iItem;
+						lvitem.mask = LVIF_PARAM;
+						SendMessageA(assetManager->_assetList, LVM_GETITEMA, 0, reinterpret_cast<LPARAM>(&lvitem));
+
+						EndDialog(hwnd, lvitem.lParam);
 						return 0;
 					}
 					break;

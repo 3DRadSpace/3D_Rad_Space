@@ -107,8 +107,11 @@ Vector2 Engine3DRadSpace::Math::Vector2::operator/(float f) const
 
 Vector2 Engine3DRadSpace::Math::Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2 &norm)
 {
-    return norm * 2 - Vector2::One();
-}
+    return Vector2(
+        norm.X * 2 - 1,
+        (norm.Y) * 2 + 0.5
+    );
+ }
 
 Vector2 operator*(float s, const Vector2& v)
 {

@@ -56,7 +56,7 @@ void RenderWindow::Initialize()
 void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("gradient.png");
-	testTexture->Resize(256, 256);
+	//testTexture->Resize(256, 256);
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -102,6 +102,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	{
 		SpriteBatch->Begin(SpriteBatchSortMode::Immediate);
 		SpriteBatch->Draw(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+		//SpriteBatch->DrawQuad(testTexture);
 		SpriteBatch->End();
 	}
 

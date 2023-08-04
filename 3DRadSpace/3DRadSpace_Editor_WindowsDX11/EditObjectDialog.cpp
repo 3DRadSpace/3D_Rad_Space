@@ -57,7 +57,6 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 					if(control != nullptr)
 					{
 						(*control)->HandleClick(reinterpret_cast<HWND>(lParam));
-						return 1;
 					}
 				}
 				return 0;
@@ -415,7 +414,7 @@ void EditObjectDialog::createForms()
 				windows.push_back(ctrl);
 
 				setMax(inc_y, 205 + textboxHeight);
-				px = 205;
+				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
@@ -801,7 +800,7 @@ bool EditObjectDialog::setObject()
 
 					ColorBox *cb = static_cast<ColorBox *>(std::get<IControl *>(windows[i++]));
 					Engine3DRadSpace::Color color = cb->GetColor();
-					color.A = ((float)alpha) / 255.0f;
+					color.A = ((float)alpha);
 
 					memcpy_s(newStruct.get(), sizeof(Engine3DRadSpace::Color), &color, sizeof(Engine3DRadSpace::Color));
 					j += sizeof(Engine3DRadSpace::Color);

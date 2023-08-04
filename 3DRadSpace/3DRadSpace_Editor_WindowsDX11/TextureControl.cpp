@@ -10,7 +10,7 @@ TextureControl::TextureControl(
 	const std::string &name,
 	int x,
 	int y
-):
+) :
 	AssetControl(owner, hInstance, x, y + 205, content),
 	TextureReference(texture)
 {
@@ -18,11 +18,11 @@ TextureControl::TextureControl(
 		0,
 		"Static",
 		"",
-		WS_VISIBLE | WS_CHILD | SS_BITMAP,
+		WS_VISIBLE | WS_CHILD | SS_BITMAP | SS_REALSIZECONTROL,
 		x,
 		y,
-		100,
-		100,
+		200,
+		200,
 		owner,
 		nullptr,
 		hInstance,
@@ -30,6 +30,7 @@ TextureControl::TextureControl(
 	);
 
 	_image = nullptr;
+
 	unsigned imageWidth;
 	unsigned imageHeight;
 
@@ -38,11 +39,17 @@ TextureControl::TextureControl(
 	else
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
+	_setImage(_image, imageWidth, imageHeight);
+}
+
+void TextureControl::_setImage(HBITMAP _image, unsigned imageWidth, unsigned imageHeight)
+{
 	float r_wh = float(imageWidth) / imageHeight;
 
 	SendMessageA(_pictureBox, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(_image));
 	SetWindowPos(_pictureBox, nullptr, 0, 0, int(200 * r_wh), 200, SWP_NOMOVE);
 }
+
 
 TextureControl::TextureControl(TextureControl &&c) noexcept:
 	AssetControl(c),
@@ -98,6 +105,16 @@ void TextureControl::HandleClick(HWND clickedWindow)
 	if(clickedWindow == _pictureBox || clickedWindow == _button)
 	{
 		AssetManager assetManager(this->owner, this->instance, _content);
-		assetManager.ShowDialog<Engine3DRadSpace::Graphics::Texture2D>();
+		auto r = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Texture2D>();
+
+		if(r.ID != 0)
+		{
+			unsigned w;
+			unsigned h;
+			_image = loadImageFromFile((*_content)[r]->Path.c_str(), w, h);
+			_setImage(_image, w, h);
+
+			TextureReference = r.ID;
+		}
 	}
 }

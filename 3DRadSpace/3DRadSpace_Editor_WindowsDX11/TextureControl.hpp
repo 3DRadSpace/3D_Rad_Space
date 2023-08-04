@@ -7,6 +7,8 @@ class TextureControl : public AssetControl
 {
 	HWND _pictureBox;
 	HBITMAP _image;
+
+	void _setImage(HBITMAP _image, unsigned width, unsigned height);
 public:
 	TextureControl(
 		HWND owner, 

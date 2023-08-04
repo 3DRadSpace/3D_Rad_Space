@@ -1,21 +1,21 @@
 #include "ColorBox.hpp"
 #include <stdexcept>
+#include <CommCtrl.h>
 
 WNDPROC ColorBox::staticProc = nullptr;
 
 LRESULT WINAPI ColorBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	ColorBox *cb = reinterpret_cast<ColorBox *>(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
 	switch (msg)
 	{
 		case WM_PAINT:
 		{
-			ColorBox* cb = reinterpret_cast<ColorBox*>(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
-
 			PAINTSTRUCT ps;
 			BeginPaint(hwnd, &ps);
 			FillRect(ps.hdc, &ps.rcPaint, cb->brush);
 			EndPaint(hwnd, &ps);
-			return 1;
+			return 0;
 		}
 		default:
 			return ColorBox::staticProc(hwnd, msg, wParam, lParam);
@@ -44,7 +44,7 @@ ColorBox::ColorBox(HWND owner, HINSTANCE hInstance, int x, int y, int cx, int cy
 	);
 
 	SetWindowLongPtrA(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-	staticProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrA(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(ColorBoxProc)));
+	staticProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(ColorBoxProc)));
 }
 
 void ColorBox::SetColor()
@@ -54,11 +54,12 @@ void ColorBox::SetColor()
 	cc.hwndOwner = owner;
 	cc.Flags = CC_FULLOPEN | CC_ANYCOLOR;
 	cc.lpCustColors = &customColors[0];
+	cc.rgbResult = RGB(color.R * 255, color.G * 255, color.B * 255);
 
 	BOOL r = ChooseColorA(&cc);
 	if (r)
 	{
-		SetColor(Engine3DRadSpace::Color(
+		SetColor(Engine3DRadSpace::Color::FromRGB(
 			GetRValue(cc.rgbResult),
 			GetGValue(cc.rgbResult),
 			GetBValue(cc.rgbResult)
@@ -81,6 +82,8 @@ void ColorBox::SetColor(Engine3DRadSpace::Color color)
 
 	brush = CreateSolidBrush(RGB(r, g, b));
 	if (brush == nullptr) throw std::bad_alloc();
+
+	RedrawWindow(window, nullptr, nullptr, RDW_INTERNALPAINT | RDW_INVALIDATE);
 }
 
 Engine3DRadSpace::Color ColorBox::GetColor()

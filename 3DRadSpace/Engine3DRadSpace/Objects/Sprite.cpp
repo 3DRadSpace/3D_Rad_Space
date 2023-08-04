@@ -55,6 +55,7 @@ void Sprite::Load(Content::ContentManager *content)
 		_texture = content->Load<Texture2D>(*_tempResourceString.get());
 		_tempResourceString.reset();
 	}
+	else _texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
 }
 
 void Sprite::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
@@ -72,10 +73,12 @@ void Sprite::EditorInitialize()
 
 void Engine3DRadSpace::Objects::Sprite::EditorLoad(Content::ContentManager *content)
 {
+	_texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
 }
 
 void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
 {
+	spriteBatch->Draw(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
 }
 
 Reflection::UUID Sprite::GetUUID()
@@ -88,8 +91,11 @@ REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")
 	REFL_FIELD(Sprite, std::string, Name, "Name", "Sprite", "Object's name")
 	REFL_FIELD(Sprite, bool, Visible, "Enabled", true, "Is the sprite visible?")
 	REFL_FIELD(Sprite, RefTexture2D, Image, "Image", 0, "Sprite image reference")
-	REFL_FIELD(Sprite, Vector3, Position, "Position", Vector3::Zero(), "Sprite position in normalized 2D coordinates. Z is depth")
+	REFL_FIELD(Sprite, Vector2, Position, "Position", Vector2::Zero(), "Sprite position in normalized 2D coordinates.")
+	REFL_FIELD(Sprite, Vector2, Scale, "Scale", Vector2(0.25, 0.25), "Sprite scale in normalized 3D coordinates.")
+	REFL_FIELD(Sprite, float, Depth, "Depth", 0.0f, "Sprite Z-depth")
 	REFL_FIELD(Sprite, float, Rotation, "Rotation", 0.0f, "Sprite rotation in degrees")
 	REFL_FIELD(Sprite, bool, FlipU, "Flip horizontally", false, "Is the sprite image flipped horizontally?")
 	REFL_FIELD(Sprite, bool, FlipV, "Flip vertically", false, "Is the sprite image flipped vertically?")
+	REFL_FIELD(Sprite, Color, TintColor, "Tint Color", Colors::White, "Tint color")
 REFL_END
