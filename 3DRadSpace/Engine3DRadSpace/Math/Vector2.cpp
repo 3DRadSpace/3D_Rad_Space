@@ -109,7 +109,7 @@ Vector2 Engine3DRadSpace::Math::Vector2::ConvertFromNormalizedScreenSpaceToClipS
 {
     return Vector2(
         norm.X * 2 - 1,
-        (norm.Y) * 2 + 0.5
+        -(norm.Y * 2 - 1)
     );
  }
 

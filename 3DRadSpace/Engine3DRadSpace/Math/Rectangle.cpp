@@ -28,21 +28,21 @@ Point Rectangle::BottomRight() const
 
 Vector2 RectangleF::TopLeft() const
 {
-    return Vector2(X, Y + Height);
+    return Vector2(X, Y);
 }
 
 Vector2 RectangleF::TopRight() const
 {
-    return Vector2(X + Width, Y + Height);
+    return Vector2(X + Width, Y);
 }
 
 
 Vector2 RectangleF::BottomLeft() const
 {
-    return Vector2(X, Y);
+    return Vector2(X, Y + Height);
 }
 
 Vector2 RectangleF::BottomRight() const
 {
-    return Vector2(X + Width, Y);
+    return Vector2(X + Width, Y + Height);
 }

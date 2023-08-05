@@ -4,7 +4,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Graphics;
 
-Game::Game(const char* title, int width, int height, bool fullscreen) :
+Game::Game(const char* title, unsigned width, unsigned height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
 	Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);

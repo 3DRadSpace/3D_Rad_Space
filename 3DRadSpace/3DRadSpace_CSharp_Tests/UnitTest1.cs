@@ -10,6 +10,8 @@ namespace Engine3DRadSpace_CSharp_Tests
 		{
 			GraphicsDevice device = new GraphicsDevice(IntPtr.Zero, 800, 600);
 			device.Dispose();
+
+			Assert.AreEqual(1, 1);
 		}
 	}
 }

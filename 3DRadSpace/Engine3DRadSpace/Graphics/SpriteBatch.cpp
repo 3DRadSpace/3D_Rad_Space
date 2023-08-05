@@ -15,7 +15,7 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 
 	(winding order is clockwise.)
 	A -> B -> C
-	A -> C -> D
+	C -> D -> A
 */
 	Vector2 a = r.BottomLeft();
 	a = Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(a);
@@ -34,6 +34,7 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 	Vector2 uv_c = Vector2(1, 0);
 	Vector2 uv_d = Vector2(1, 1);
 
+	/*
 	if(flipU)
 	{
 		uv_a.X = 1 - uv_a.X;
@@ -48,6 +49,7 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 		uv_c.Y = 1 - uv_c.Y;
 		uv_d.Y = 1 - uv_d.Y;
 	}
+	*/
 
 	std::array<VertexPointUV, 6> quad =
 	{
@@ -55,9 +57,9 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 		VertexPointUV{b, uv_b},
 		VertexPointUV{c, uv_c},
 
-		VertexPointUV{a, uv_a},
 		VertexPointUV{c, uv_c},
-		VertexPointUV{d, uv_d}
+		VertexPointUV{d, uv_d},
+		VertexPointUV{a, uv_a}
 	};
 
 	return quad;

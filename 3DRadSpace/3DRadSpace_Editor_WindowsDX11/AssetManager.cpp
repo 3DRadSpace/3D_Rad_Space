@@ -52,6 +52,11 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			}
 			return 1;
 		}
+		case WM_SIZE:
+		{
+			
+			break;
+		}
 		default: return 0;
 	}
 }

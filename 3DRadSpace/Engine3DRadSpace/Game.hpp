@@ -30,7 +30,7 @@ namespace Engine3DRadSpace
 		std::vector<std::pair<unsigned, std::unique_ptr<IObject>>> objects;
 
 	public:
-		Game(const char* title, int width = 800, int height = 600, bool fullscreen = false);
+		Game(const char* title, unsigned width = 800, unsigned height = 600, bool fullscreen = false);
 		Game(Window&& window);
 
 		Game(Game&) = delete;

@@ -311,7 +311,11 @@ void Engine3DRadSpace::GraphicsDevice::ResizeBackBuffer(const Math::Point &newRe
 		r = _swapChain->GetBuffer(0, IID_PPV_ARGS(_screenTexture.GetAddressOf()));
 		if(FAILED(r)) throw std::exception("Failed to get the back buffer texture!");
 	}
+}
 
+void Engine3DRadSpace::GraphicsDevice::ToggleFullScreen()
+{
+	_swapChain->SetFullscreenState(_fullscreen = !_fullscreen, nullptr);
 }
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()

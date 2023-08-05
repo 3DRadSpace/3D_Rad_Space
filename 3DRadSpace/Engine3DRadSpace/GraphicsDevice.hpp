@@ -27,7 +27,7 @@ namespace Engine3DRadSpace::Graphics
 namespace Engine3DRadSpace
 {
 	/// <summary>
-	/// GraphicsDevice is a wrapper for GAPI(DirectX11/Vulkan(not implemented yet)) handles. GPU commands can be sent from here.
+	/// GraphicsDevice is a wrapper for GAPI(DirectX/Vulkan(not implemented yet)) handles. GPU commands can be sent from here.
 	/// </summary>
 	class DLLEXPORT GraphicsDevice
 	{
@@ -36,9 +36,10 @@ namespace Engine3DRadSpace
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _screenTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
-
-		Engine3DRadSpace::Math::Point _resolution;
 #endif
+		Engine3DRadSpace::Math::Point _resolution;
+		bool _fullscreen = false;
+
 		std::unique_ptr<Graphics::DepthStencilBuffer> _stencilBuffer;
 		std::unique_ptr<Graphics::DepthStencilState> _stencilState;
 		std::unique_ptr<Graphics::BlendState> _blendState;
@@ -57,6 +58,7 @@ namespace Engine3DRadSpace
 		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
 
 		void SetViewport(const Viewport& viewport);
+
 		void SetViewports(std::span<Viewport> viewports);
 
 		void SetRenderTarget(Graphics::RenderTarget *remderTarget);
