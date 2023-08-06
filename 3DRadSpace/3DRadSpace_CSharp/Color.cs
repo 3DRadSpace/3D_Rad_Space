@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Engine3DRadSpace
 {
 	[StructLayout(LayoutKind.Sequential, Pack = sizeof(float), Size = 4*sizeof(float))]
-	public struct Color
+	public struct Color : IEquatable<Color>
 	{
 		public float R;
 		public float G;
@@ -38,6 +39,14 @@ namespace Engine3DRadSpace
 				   A == color.A;
 		}
 
+		public bool Equals(Color other)
+		{
+			return this.R == other.R &&
+				this.G == other.G &&
+				this.B == other.B &&
+				this.A == other.A;
+		}
+
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(R, G, B, A);
@@ -49,19 +58,13 @@ namespace Engine3DRadSpace
 		}
 
 		public static bool operator ==(Color left, Color right)
-		{ 
-			return left.R == right.R && 
-					left.G == right.G &&
-					left.B == right.B &&
-					left.A == right.A;
+		{
+			return left.Equals(right);
 		}
 
 		public static bool operator !=(Color left, Color right)
 		{
-			return left.R != right.R ||
-					left.G != right.G ||
-					left.B != right.B ||
-					left.A != right.A;
+			return !left.Equals(right);
 		}
 	}
 }

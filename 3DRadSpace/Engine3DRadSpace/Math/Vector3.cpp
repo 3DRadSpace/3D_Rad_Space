@@ -152,13 +152,13 @@ Vector3 Engine3DRadSpace::Math::operator*(float s, const Vector3& v)
 
 Vector3 &Engine3DRadSpace::Math::operator/=(float s, Vector3 &v)
 {
-    v.X = 1.0f / v.X;
-    v.Y = 1.0f / v.Y;
-    v.Z = 1.0f / v.Z;
+    v.X = s / v.X;
+    v.Y = s / v.Y;
+    v.Z = s / v.Z;
     return v;
 }
 
 Vector3 Engine3DRadSpace::Math::operator/(float s, const Vector3 &v)
 {
-    return Vector3(1.0f / v.X, 1.0f / v.Y, 1.0f / v.Z);
+    return Vector3(s / v.X, s / v.Y, s / v.Z);
 }

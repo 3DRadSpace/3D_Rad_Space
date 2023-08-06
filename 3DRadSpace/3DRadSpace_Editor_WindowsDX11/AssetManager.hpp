@@ -11,6 +11,7 @@ class AssetManager : public Dialog
 
 	HWND _searchLabel;
 	HWND _searchBox;
+	HWND _browseButton;
 
 	HIMAGELIST _imageList;
 

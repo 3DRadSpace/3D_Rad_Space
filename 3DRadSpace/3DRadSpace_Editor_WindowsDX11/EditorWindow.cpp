@@ -599,6 +599,8 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 							item.pszText = const_cast<char *>(new_obj->Name.c_str());
 							SendMessageA(gEditorWindow->_listBox, TVM_SETITEMA, 0, reinterpret_cast<LPARAM>(&item));
+
+							new_obj->Load(gEditorWindow->GetContentManager());
 						}
 					}
 					break;

@@ -66,13 +66,13 @@ void AssetManager::_createForms()
 	HDC hdc = GetDC(owner);
 
 	SIZE textSize{};
-	GetTextExtentPoint32A(hdc, "Browse", 6, &textSize);
+	GetTextExtentPoint32A(hdc, "Find", 4, &textSize);
 
 	//create controls
 	_searchLabel = CreateWindowExA(
 		0,
 		"STATIC",
-		"Browse",
+		"Find",
 		ES_LEFT | WS_VISIBLE | WS_CHILD,
 		10,
 		10,
@@ -93,6 +93,24 @@ void AssetManager::_createForms()
 		10,
 		300,
 		textSize.cy + 5,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	SIZE browseTextSize;
+	GetTextExtentPoint32A(hdc, "Browse...", 8, &browseTextSize);
+
+	_browseButton = CreateWindowExA(
+		0,
+		"BUTTON",
+		"Browse...",
+		BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE,
+		350 + textSize.cx,
+		10,
+		browseTextSize.cx + 10,
+		browseTextSize.cy + 5,
 		window,
 		nullptr,
 		hInstance,
@@ -188,7 +206,8 @@ AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Con
 	_searchBox(nullptr),
 	_searchLabel(nullptr),
 	_content(content),
-	_imageList(nullptr)
+	_imageList(nullptr),
+	_browseButton(nullptr)
 {
 }
 

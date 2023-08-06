@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Engine3DRadSpace.Math
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct RectangleF
+	public struct RectangleF : IEquatable<RectangleF>
 	{
 		public float X;
 		public float Y;
@@ -22,10 +22,18 @@ namespace Engine3DRadSpace.Math
 			Width = w; 
 			Height = h;
 		}
+
+		public bool Equals(RectangleF other)
+		{
+			return X == other.X &&
+				Y == other.Y &&
+				Width == other.Width &&
+				Height == other.Height;
+		}
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Rectangle
+	public struct Rectangle : IEquatable<Rectangle>
 	{
 		public int X;
 		public int Y;
@@ -38,6 +46,14 @@ namespace Engine3DRadSpace.Math
 			Y = y;
 			Width = w;
 			Height = h;
+		}
+
+		public bool Equals(Rectangle other)
+		{
+			return X == other.X &&
+				Y == other.Y &&
+				Width == other.Width &&
+				Height == other.Height;
 		}
 	}
 }

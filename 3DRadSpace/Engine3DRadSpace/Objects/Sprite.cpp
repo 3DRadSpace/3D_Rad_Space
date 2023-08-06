@@ -73,7 +73,10 @@ void Sprite::EditorInitialize()
 
 void Engine3DRadSpace::Objects::Sprite::EditorLoad(Content::ContentManager *content)
 {
-	_texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
+	auto asset = content->operator[](Image);
+	if(asset != nullptr) _texture = static_cast<Texture2D *>(asset->Get());
+	else _texture = content->Load<Texture2D>("Data//NoAsset.png");
+	
 }
 
 void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
