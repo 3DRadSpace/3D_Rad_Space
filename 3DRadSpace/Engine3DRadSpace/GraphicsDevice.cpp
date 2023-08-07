@@ -96,6 +96,20 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 #endif
 }
 
+void Engine3DRadSpace::GraphicsDevice::SetViewport()
+{
+#ifdef _DX11
+	D3D11_VIEWPORT vp{};
+	vp.TopLeftX = vp.TopLeftY = 0;
+	vp.Width = _resolution.X;
+	vp.Height = _resolution.Y;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+
+	_context->RSSetViewports(1, &vp);
+#endif
+}
+
 void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 {
 #ifdef _DX11

@@ -62,6 +62,11 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
             window->_handleMouse({ x,y }, lBtn, mBtn, rBtn);
             break;
         }
+        case WM_CLOSE:
+        {
+            window->_window = nullptr;
+            break;
+        }
         default: break;
     }
     return DefWindowProcA(hwnd, msg, wParam, lParam);

@@ -5,7 +5,7 @@ Engine3DRadSpace::Logging::Exception::Exception(const std::string &err):
 {
 }
 
-std::string &Engine3DRadSpace::Logging::Exception::What()
+std::string Engine3DRadSpace::Logging::Exception::What() const
 {
-	return _str;
+	return std::string(_str);
 }

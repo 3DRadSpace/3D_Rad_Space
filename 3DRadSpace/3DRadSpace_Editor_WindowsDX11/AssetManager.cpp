@@ -1,4 +1,6 @@
 #include "AssetManager.hpp"
+#include <Engine3DRadSpace/Logging/Exception.hpp>
+#include <Engine3DRadSpace/Tag.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -52,10 +54,70 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			}
 			return 1;
 		}
+		case WM_COMMAND:
+		{
+			switch(HIWORD(wParam))
+			{
+				case BN_CLICKED:
+				{
+					if(lParam == reinterpret_cast<LPARAM>(assetManager->_browseButton))
+					{
+						char filename[_MAX_PATH] = {0};
+
+						OPENFILENAMEA ofn{};
+						ofn.lStructSize = sizeof(OPENFILENAMEA);
+						ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+						ofn.hwndOwner = assetManager->window;
+						ofn.hInstance = assetManager->hInstance;
+						ofn.lpstrFile = filename;
+						ofn.nMaxFile = _MAX_PATH;
+
+						if(GetOpenFileNameA(&ofn))
+						{
+							bool err = true;
+
+							auto try_load_asset = []<AssetType T>(Tag<T> dummy,ContentManager * content, const char *file, HWND current_window) -> std::optional<std::string>
+							{
+								try
+								{
+									AssetReference<T> ref;
+									content->Load<T>(file, &ref);
+									EndDialog(current_window, ref.ID);
+									return std::nullopt;
+								}
+								catch(std::exception &e)
+								{
+									return std::string(e.what());
+								}
+								catch(Logging::Exception &e)
+								{
+									return e.What();
+								}
+							};
+
+							std::string possibleErr = "";
+
+							//Texture2D
+							auto p = try_load_asset(Tag<Graphics::Texture2D>{}, assetManager->_content, filename, hwnd);
+							if(p.has_value()) possibleErr = p.value();
+							else return 1;
+							//Model3D
+							p = try_load_asset(Tag<Graphics::Model3D>{}, assetManager->_content, filename, hwnd);
+							if(p.has_value()) possibleErr = p.value();
+							else return 1;
+						}
+					}
+					break;
+				}
+				default:
+					break;
+			}
+			return 1;
+		}
 		case WM_SIZE:
 		{
 			
-			break;
+			return 1;
 		}
 		default: return 0;
 	}

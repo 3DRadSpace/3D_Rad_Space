@@ -57,6 +57,7 @@ namespace Engine3DRadSpace
 
 		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
 
+		void SetViewport();
 		void SetViewport(const Viewport& viewport);
 
 		void SetViewports(std::span<Viewport> viewports);

@@ -357,7 +357,7 @@ void EditorWindow::Run()
 
 		auto ts_d1 = std::chrono::steady_clock::now();
 
-		this->editor->Device->SetViewport(Viewport(RectangleF(0, 0, 800, 600), 0.0f, 1.0f));
+		this->editor->Device->SetViewport();
 		this->editor->Device->Clear(editor->ClearColor);
 		this->editor->Draw(this->editor->View, this->editor->Projection, d_dt);
 		this->editor->Device->Present();

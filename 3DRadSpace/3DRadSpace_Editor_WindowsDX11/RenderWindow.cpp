@@ -53,10 +53,14 @@ void RenderWindow::Initialize()
 	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
 }
 
+Model3D *fish = nullptr;
+
 void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("gradient.png");
 	//testTexture->Resize(256, 256);
+
+	//fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -95,6 +99,8 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
 	Matrix viewProj = view * projection;
+
+	//fish->Draw(Matrix(), view, projection);
 
 	lines->Draw(View, Projection, dt);
 

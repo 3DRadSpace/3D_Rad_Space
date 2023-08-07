@@ -23,12 +23,35 @@ namespace Engine3DRadSpace.Math
 			Height = h;
 		}
 
+		public override bool Equals(object? obj) 
+		{ 
+			if(obj is RectangleF r)
+			{
+				return r.Equals(obj);
+			}
+			return false;
+		}
+
 		public bool Equals(RectangleF other)
 		{
 			return X == other.X &&
 				Y == other.Y &&
 				Width == other.Width &&
 				Height == other.Height;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(X, Y, Width, Height);
+		}
+
+		public static bool operator==(RectangleF left, RectangleF right)
+		{
+			return left.Equals(right);
+		}
+		public static bool operator!=(RectangleF left, RectangleF right) 
+		{  
+			return !left.Equals(right);
 		}
 	}
 
@@ -54,6 +77,29 @@ namespace Engine3DRadSpace.Math
 				Y == other.Y &&
 				Width == other.Width &&
 				Height == other.Height;
+		}
+
+		public override bool Equals(object? other)
+		{
+			if(other is Rectangle r)
+			{
+				return r.Equals(this);
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(X, Y, Width, Height);
+		}
+
+		public static bool operator ==(Rectangle a, Rectangle b)
+		{
+			return a.Equals(b);
+		}
+		public static bool operator !=(Rectangle a, Rectangle b)
+		{  
+			return !a.Equals(b); 
 		}
 	}
 }

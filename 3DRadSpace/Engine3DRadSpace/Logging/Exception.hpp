@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Logging
 		std::string _str;
 	public:
 		explicit Exception(const std::string &err);
-		virtual std::string &What();
+		virtual std::string What() const;
 		virtual ~Exception() = default;
 	};
 }

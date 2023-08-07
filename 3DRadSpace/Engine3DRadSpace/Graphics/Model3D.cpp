@@ -36,7 +36,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 		aiProcess_SplitLargeMeshes | 
 		aiProcess_SortByPType |
 #if _DX11
-		aiProcess_FlipUVs | 
+		aiProcess_FlipUVs |
 		aiProcess_FlipWindingOrder
 #endif
 	);
