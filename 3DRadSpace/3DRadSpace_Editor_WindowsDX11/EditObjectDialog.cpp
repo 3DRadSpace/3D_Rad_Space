@@ -5,6 +5,7 @@
 #include <Engine3DRadSpace/Logging/ResourceLoadingError.hpp>
 #include "EditorWindow.hpp"
 #include "TextureControl.hpp"
+#include "ModelControl.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -419,31 +420,13 @@ void EditObjectDialog::createForms()
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
 			{
-				/*
-				const std::string value = *static_cast<const std::string*>(valuePtr);
-				windows.push_back(createFileControls(px, y, value.c_str()));
-				
-				//create preview button
-				CreateWindowExA(
-					0,
-					"Button",
-					"Preview",
-					BS_PUSHBUTTON | WS_VISIBLE | WS_CHILD,
-					x,
-					y,
-					50,
-					25,
-					window,
-					nullptr,
-					hInstance,
-					nullptr
-				);
+				auto value = *static_cast<const Content::AssetReference<Graphics::Model3D>*>(valuePtr);
 
-				px = x + 30;
-				setMax(inc_y, textboxHeight + 5);
-				*/
+				ModelControl* ctrl = new ModelControl(window, hInstance, _content, value, fieldName, x, y);
+				windows.push_back(ctrl);
 
-
+				setMax(inc_y, 205 + textboxHeight);
+				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
 			case Engine3DRadSpace::Reflection::FieldRepresentationType::Key:
@@ -755,8 +738,9 @@ bool EditObjectDialog::setObject()
 					GetWindowTextA(textbox, string, len+1);
 
 					std::string *r = new std::string(string); //manually allocate a string.
-					// "move" the string to an other location in the memory. the string object will be destroyed at the same time with the object that's being modified.
-					memcpy_s(newStruct.get() + j, sizeof(std::string), r, sizeof(std::string));
+					std::string* dest = reinterpret_cast<std::string*>(newStruct.get() + j);
+
+					*dest = std::move(*r);
 					j += sizeof(std::string);
 					break;
 				}
@@ -770,7 +754,10 @@ bool EditObjectDialog::setObject()
 				}
 				case FieldRepresentationType::Model:
 				{
-					
+					auto modelControl = static_cast<ModelControl*>(std::get<IControl*>(windows[i++]));
+
+					memcpy_s(newStruct.get() + j, sizeof(RefModel3D), &modelControl->ModelReference, sizeof(RefModel3D));
+					j += sizeof(RefModel3D);
 					break;
 				}
 				case FieldRepresentationType::Key:

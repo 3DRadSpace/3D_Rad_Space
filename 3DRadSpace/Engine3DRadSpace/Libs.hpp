@@ -42,7 +42,8 @@
 #ifndef _DX11
 #ifndef _DX12
 #ifndef _VULKAN
-#error Support for DirectX 11, 12 or Vulkan must be enabled!
+//#warning "Using DirectX11 as default backend."
+#define _DX11
 #endif
 #endif // !_DX11
 #endif

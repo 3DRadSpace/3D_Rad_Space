@@ -2,8 +2,7 @@
 #include "IControl.hpp"
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
 
-class AssetControl :
-    public IControl
+class AssetControl : public IControl
 {
 protected:
     HWND _label;

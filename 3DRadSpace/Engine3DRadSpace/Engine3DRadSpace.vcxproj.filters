@@ -239,6 +239,7 @@
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
+    <ClInclude Include="ObjectList.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -395,5 +396,7 @@
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
     <ClCompile Include="Content\ShaderManager.cpp" />
     <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
+    <ClCompile Include="Math\BoundingSphere.cpp" />
+    <ClCompile Include="ObjectList.cpp" />
   </ItemGroup>
 </Project>

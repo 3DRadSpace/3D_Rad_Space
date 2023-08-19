@@ -101,6 +101,16 @@ void ModelMeshPart::Draw()
 	_device->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
 }
 
+Math::BoundingSphere Engine3DRadSpace::Graphics::ModelMeshPart::GetBoundingSphere()
+{
+	return _sphere;
+}
+
+BoundingBox ModelMeshPart::GetBoundingBox()
+{
+	return _box;
+}
+
 Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *Engine3DRadSpace::Graphics::ModelMeshPart::GetShaders()
 {
 	return _shaders.get();

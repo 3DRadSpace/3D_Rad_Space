@@ -4,11 +4,7 @@ using namespace Engine3DRadSpace;
 
 INT_PTR WINAPI AssetListRenderer_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch(msg)
-	{
-		default:
-			return DefWindowProcA(hwnd, msg, wParam, lParam);	
-	}
+	return DefWindowProcA(hwnd, msg, wParam, lParam);
 }
 
 AssetListRenderer::AssetListRenderer(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content)

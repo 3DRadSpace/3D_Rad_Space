@@ -101,8 +101,8 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport()
 #ifdef _DX11
 	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = vp.TopLeftY = 0;
-	vp.Width = _resolution.X;
-	vp.Height = _resolution.Y;
+	vp.Width = static_cast<float>(_resolution.X);
+	vp.Height = static_cast<float>(_resolution.Y);
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 

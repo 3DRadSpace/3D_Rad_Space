@@ -199,7 +199,7 @@ void AssetManager::_createForms()
 	_imageList = ImageList_Create(64, 64, ILC_COLOR32 | ILC_MASK | ILC_ORIGINALSIZE, 50, 100);
 	SendMessageA(_assetList, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(_imageList));
 
-	//_renderer = std::make_unique<AssetListRenderer>(owner, hInstance, _content);
+	_renderer = std::make_unique<AssetListRenderer>(owner, hInstance, _content);
 
 	//iterate assets
 	for(auto &asset : *_content)

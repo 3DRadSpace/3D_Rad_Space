@@ -39,10 +39,10 @@ TextureControl::TextureControl(
 	else
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
-	_setImage(_image, imageWidth, imageHeight);
+	SetImage(_pictureBox,_image, imageWidth, imageHeight);
 }
 
-void TextureControl::_setImage(HBITMAP _image, unsigned imageWidth, unsigned imageHeight)
+void SetImage(HWND _pictureBox, HBITMAP _image, unsigned imageWidth, unsigned imageHeight)
 {
 	float r_wh = float(imageWidth) / imageHeight;
 
@@ -112,7 +112,7 @@ void TextureControl::HandleClick(HWND clickedWindow)
 			unsigned w;
 			unsigned h;
 			_image = loadImageFromFile((*_content)[r]->Path.c_str(), w, h);
-			_setImage(_image, w, h);
+			SetImage(_pictureBox,_image, w, h);
 
 			TextureReference = r.ID;
 		}

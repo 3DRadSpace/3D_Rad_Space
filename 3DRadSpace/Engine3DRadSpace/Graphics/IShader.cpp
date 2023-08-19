@@ -140,7 +140,7 @@ void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 		std::string constantBufferName = "IShader::constantBuffer[";
 		constantBufferName += std::to_string(index) + ']';
 
-		_constantBuffers[index]->SetPrivateData(WKPDID_D3DDebugObjectName, constantBufferName.length(), constantBufferName.c_str());
+		_constantBuffers[index]->SetPrivateData(WKPDID_D3DDebugObjectName, unsigned(constantBufferName.length()), constantBufferName.c_str());
 #endif
 	}
 	else

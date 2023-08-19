@@ -1,6 +1,8 @@
 #pragma once
 #include "ModelMesh.hpp"
 #include "Shaders/BasicTextured_NBT.hpp"
+#include "../Math/BoundingSphere.hpp"
+#include "../Math/BoundingBox.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -12,6 +14,9 @@ namespace Engine3DRadSpace::Graphics
 		void _processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts,void* currentNode);
 
 		std::shared_ptr<Shaders::ShaderPipeline> basicTexturedNBT;
+
+		Math::BoundingSphere _sphere;
+		Math::BoundingBox _box;
 	public:
 		Model3D(GraphicsDevice* Device,const std::string& path);
 

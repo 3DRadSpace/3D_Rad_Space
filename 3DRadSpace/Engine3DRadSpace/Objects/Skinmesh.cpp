@@ -4,6 +4,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Reflection;
 
 Skinmesh::Skinmesh() :
     IObject3D("Skinmesh", "..."),
@@ -90,6 +91,7 @@ std::optional<float> Engine3DRadSpace::Objects::Skinmesh::Intersects(const Math:
 REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")
 REFL_FIELD(Skinmesh, std::string, Name, "Name","Skinmesh","Object's name")
 REFL_FIELD(Skinmesh, bool, Visible, "Visible", true, "Is the object visible?")
+REFL_FIELD(Skinmesh, RefModel3D, Model, "Model", 0, "The skinmesh model")
 REFL_FIELD(Skinmesh, Vector3, Position, "Position", Vector3::Zero(), "Object's position in world space")
 REFL_FIELD(Skinmesh, Quaternion, Rotation, "Rotation", Quaternion(), "Object's rotation")
 REFL_FIELD(Skinmesh, Vector3, RotationCenter, "Rotation Center", Vector3::Zero(), "The rotation pivot")

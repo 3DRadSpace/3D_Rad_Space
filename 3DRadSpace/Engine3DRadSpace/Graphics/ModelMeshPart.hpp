@@ -2,6 +2,8 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "ShaderPipeline.hpp"
+#include "../Math/BoundingSphere.hpp"
+#include "../Math/BoundingBox.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -10,6 +12,9 @@ namespace Engine3DRadSpace::Graphics
 		GraphicsDevice* _device;
 
 		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> _shaders;
+
+		Math::BoundingBox _box;
+		Math::BoundingSphere _sphere;
 	public:
 		std::unique_ptr<Engine3DRadSpace::Graphics::IndexBuffer> IndexBuffer;
 		std::unique_ptr<Engine3DRadSpace::Graphics::VertexBuffer> VertexBuffer;
@@ -46,9 +51,14 @@ namespace Engine3DRadSpace::Graphics
 
 		void Draw();
 
+		Math::BoundingBox GetBoundingBox();
+		Math::BoundingSphere GetBoundingSphere();
+
 		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *GetShaders();
 
 		~ModelMeshPart() = default;
+
+		friend class Model3D;
 	};
 
 	template<Engine3DRadSpace::Graphics::VertexDecl V>

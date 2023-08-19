@@ -1,5 +1,4 @@
 #include "Vector3.hpp"
-#include <DirectXMath.h>
 
 using namespace Engine3DRadSpace::Math;
 
@@ -94,6 +93,15 @@ Vector3& Vector3::operator*=(float s)
 Vector3 Vector3::operator*(float s) const
 {
     return Vector3(s * this->X, s * this->Y, s * this->Z);
+}
+
+Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v)
+{
+    X = Y * v.Z - Z * v.Y;
+    Y = Z * v.X - X * v.Z;
+    Z = X * v.Y - Y * v.X;
+
+    return *this;
 }
 
 Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2)

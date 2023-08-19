@@ -117,3 +117,8 @@ Vector2 operator*(float s, const Vector2& v)
 {
     return Vector2(s * v.X, s * v.Y);
 }
+
+Engine3DRadSpace::Math::Vector2 operator/(float s, const Engine3DRadSpace::Math::Vector2& v)
+{
+    return Vector2(s / v.X, s / v.Y);
+}

@@ -23,9 +23,9 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 			Matrix(),
 			Matrix::CreateLookAtView(
 				Vector3(
-					cos(std::numbers::pi / 4),
+					float(cos(std::numbers::pi / 4)),
 					0,
-					sin(std::numbers::pi / 4)
+					float(sin(std::numbers::pi / 4))
 				),
 				Vector3::Zero(),
 				Vector3::UnitY()

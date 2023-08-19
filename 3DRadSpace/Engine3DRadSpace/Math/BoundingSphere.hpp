@@ -7,5 +7,8 @@ namespace Engine3DRadSpace::Math
 	{
 		Vector3 Center;
 		float Radius;
+
+		BoundingSphere() = default;
+		BoundingSphere(Vector3 center, float radius);
 	};
 }

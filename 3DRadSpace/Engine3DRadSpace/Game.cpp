@@ -38,6 +38,11 @@ void Game::Run()
 void Engine3DRadSpace::Game::RunOneFrame()
 {
 	auto ts_u1 = std::chrono::high_resolution_clock::now();
+
+	auto& keyboard = Window->GetKeyboardState();
+	auto& mouse = Window->GetMouseState();
+
+	Game::Update(keyboard, mouse, u_dt);
 	this->Update(Window->GetKeyboardState(), Window->GetMouseState(), u_dt);
 	auto ts_u2 = std::chrono::high_resolution_clock::now();
 
@@ -48,6 +53,8 @@ void Engine3DRadSpace::Game::RunOneFrame()
 
 	this->Device->SetViewport();
 	this->Device->Clear(ClearColor);
+
+	Game::Draw(View, Projection, d_dt);
 	this->Draw(View,Projection,d_dt);
 
 	this->Device->Present();
@@ -63,128 +70,48 @@ void Engine3DRadSpace::Game::Exit()
 	_running = false;
 }
 
-unsigned Engine3DRadSpace::Game::AddObject(IObject *obj)
+
+void Engine3DRadSpace::Game::Load(Content::ContentManager* content)
 {
-	std::unique_ptr<IObject> ptr;
-	ptr.reset(obj);
-
-	objects.push_back(std::make_pair(1u, std::move(ptr)));
-	return unsigned(objects.size() - 1);
-}
-
-unsigned Engine3DRadSpace::Game::AddObject(IObject2D *obj)
-{
-	std::unique_ptr<IObject2D> ptr;
-	ptr.reset(obj);
-
-	objects.push_back(std::make_pair(2u, std::move(ptr)));
-	return unsigned(objects.size() - 1);
-}
-
-unsigned Engine3DRadSpace::Game::AddObject(IObject3D *obj)
-{
-	std::unique_ptr<IObject3D> ptr;
-	ptr.reset(obj);
-
-	objects.push_back(std::make_pair(3u, std::move(ptr)));
-	return unsigned(objects.size() - 1);
-}
-
-IObject *Engine3DRadSpace::Game::FindObject(unsigned id)
-{
-	return objects[id].second.get();
-}
-
-IObject *Engine3DRadSpace::Game::FindObject(const std::string &name)
-{
-	for(auto &[id, object] :objects)
-	{
-		if(object->Name == name)
-			return object.get();
-	}
-	return nullptr;
-}
-
-void Engine3DRadSpace::Game::RemoveObject(unsigned id)
-{
-	objects.erase(objects.begin() + id, objects.begin() + id + 1);
-}
-
-void Engine3DRadSpace::Game::RemoveObjects(const std::string &name)
-{
-	std::erase_if(objects, [name](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
-	{
-		return p.second->Name == name;
-	});
-}
-
-void Engine3DRadSpace::Game::RemoveObjects(IObject *obj)
-{
-	std::erase_if(objects, [obj](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
-	{
-		return p.second.get() == obj;
-	});
-}
-
-void Engine3DRadSpace::Game::RemoveObjectsIf(std::function<bool(IObject*)> f)
-{
-	std::erase_if(objects, [f](std::pair<unsigned, std::unique_ptr<IObject>> &p) -> bool
-	{
-		return f(p.second.get());
-	});
-}
-
-void Engine3DRadSpace::Game::ReplaceObject(Engine3DRadSpace::IObject *obj, unsigned id)
-{
-	objects[id].second.reset(obj);
-}
-
-void Engine3DRadSpace::Game::ClearObjects()
-{
-	objects.clear();
-}
-
-void Engine3DRadSpace::Game::Load(Content::ContentManager *content)
-{
-	for(auto &[type, object] : objects)
+	for (auto& [object, type] : Objects)
 	{
 		object->Load(content);
 	}
 }
 
-void Engine3DRadSpace::Game::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
+void Engine3DRadSpace::Game::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt)
 {
-	for(auto &[type, object] : objects)
+	for (auto& [object, type] : Objects)
 	{
 		object->Update(keyboard, mouse, dt);
 	}
 }
 
-void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
 {
-	for(auto &[type, object] : objects)
+	for (auto& [object, type] : Objects)
 	{
-		if(type == 3u)
+		if (type == ObjectList::ObjectInstance::ObjectType::IObject3D)
 		{
-			(static_cast<IObject3D *>(object.get()))->Draw(view, projection, dt);
+			(static_cast<IObject3D*>(object.get()))->Draw(view, projection, dt);
 		}
 	}
 }
 
-void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch *spriteBatch, double dt)
+void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
 {
-	for(auto &[type, object] : objects)
+	for (auto& [object, type] : Objects)
 	{
-		if(type == 2u)
+		if (type == ObjectList::ObjectInstance::ObjectType::IObject2D)
 		{
-			(static_cast<IObject2D *>(object.get()))->Draw(spriteBatch, dt);
+			(static_cast<IObject2D*>(object.get()))->Draw(spriteBatch, dt);
 		}
 	}
 }
 
 void Engine3DRadSpace::Game::Initialize()
 {
-	for(auto &[type, object] : objects)
+	for (auto& [object, type] : Objects)
 	{
 		object->Initialize();
 	}

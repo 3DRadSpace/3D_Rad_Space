@@ -112,15 +112,15 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 		SpriteBatch->End();
 	}
 
-	for(auto &obj : objects)
+	for(auto &obj : Objects)
 	{
-		switch(obj.first)
+		switch(obj.InternalType)
 		{
-			case 2:
-				static_cast<IObject2D *>(obj.second.get())->EditorDraw(SpriteBatch.get(), dt, false);
+		case ObjectList::ObjectInstance::ObjectType::IObject2D:
+				static_cast<IObject2D *>(obj.Object.get())->EditorDraw(SpriteBatch.get(), dt, false);
 				break;
-			case 3:
-				static_cast<IObject3D *>(obj.second.get())->EditorDraw(View, Projection, dt, false);
+			case ObjectList::ObjectInstance::ObjectType::IObject3D:
+				static_cast<IObject3D *>(obj.Object.get())->EditorDraw(View, Projection, dt, false);
 				break;
 			default:
 				break;
