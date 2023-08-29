@@ -68,7 +68,7 @@ namespace Engine3DRadSpace::Reflection
 		{
 			if(objPtr == nullptr) throw std::invalid_argument("Get(): objPtr = nullptr");
 
-			return reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + _offset);
+			return reinterpret_cast<T *>(static_cast<std::byte *>(objPtr) + _offset);
 		}
 
 		void Set(void *objPtr, void *value) const override
@@ -76,7 +76,7 @@ namespace Engine3DRadSpace::Reflection
 			if(objPtr == nullptr) throw std::invalid_argument("Set(): objPtr = nullptr");
 			if(value == nullptr) throw std::invalid_argument("Set(): value = nullptr");
 
-			T *lhs = reinterpret_cast<T *>(reinterpret_cast<char *>(objPtr) + _offset);
+			T *lhs = reinterpret_cast<T *>(static_cast<std::byte *>(objPtr) + _offset);
 			T *rhs = reinterpret_cast<T *>(value);
 
 			*lhs = *rhs;

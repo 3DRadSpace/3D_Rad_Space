@@ -1,5 +1,6 @@
 #pragma once
 #include "FieldRepresentation.hpp"
+#include "ReflectedObject.hpp"
 
 namespace Engine3DRadSpace::Reflection
 {
@@ -12,6 +13,25 @@ namespace Engine3DRadSpace::Reflection
 		virtual const char *Name() = 0;
 
 		virtual ~IReflectedFunction() = default;
+	};
+
+	template<ReflectableObject O, ReflectableType R, ReflectableType ...Args>
+	class ReflectedFunction : public IReflectedFunction
+	{
+		const char* _name;
+		const unsigned _numParams;
+
+		using TypeFn = R(O::*)(Args...);
+		void* _function;
+	public:
+		ReflectedFunction(const char* name, void* fPtr, FieldRepresentation returnType, Args&& ...args):
+			_name(name),
+			_numParams(sizeof...(Args)),
+			_returnType(returnType),
+			_paramsType(std::forward<Args>(args)...),
+			_function(fPtr)
+		{
+		}
 	};
 
 	/*

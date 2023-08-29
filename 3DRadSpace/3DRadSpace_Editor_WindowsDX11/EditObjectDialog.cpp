@@ -737,11 +737,11 @@ bool EditObjectDialog::setObject()
 					char* string = new char[len+1](0);
 					GetWindowTextA(textbox, string, len+1);
 
-					std::string *r = new std::string(string); //manually allocate a string.
-					std::string* dest = reinterpret_cast<std::string*>(newStruct.get() + j);
+					std::string *dest = reinterpret_cast<std::string*>(newStruct.get() + j);
 
-					*dest = std::move(*r);
+					new (dest) std::string(string);
 					j += sizeof(std::string);
+
 					break;
 				}
 				case FieldRepresentationType::Image:

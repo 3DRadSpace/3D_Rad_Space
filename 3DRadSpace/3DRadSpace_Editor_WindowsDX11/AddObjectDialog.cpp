@@ -200,7 +200,7 @@ void AddObjectDialog::createForms()
 			categoryID = categories[Objects[j].second->Category];
 		}
 		
-		objects.insert(std::make_pair(Objects[j].second->Name, objectItem{image, categoryID}));
+		objects.insert(std::make_pair(std::string(Objects[j].second->Name), objectItem{image, categoryID}));
 	}
 
 	//Populate the image list with the object data (icons and names)

@@ -42,6 +42,6 @@ void ModelControl::HandleClick(HWND clickedHandle)
 {
 	if (_pictureBox == clickedHandle)
 	{
-
+		
 	}
 }
