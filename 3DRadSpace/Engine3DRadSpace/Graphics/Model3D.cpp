@@ -21,7 +21,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 	_device(Device)
 {
 	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured_NBT>(Device);
-	basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured_NBT>(Device);
+	auto basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured_NBT>(Device);
 
 	if(!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 
@@ -251,6 +251,17 @@ Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3
 Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::end()
 {
 	return _meshes.end();
+}
+
+void Engine3DRadSpace::Graphics::Model3D::SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect)
+{
+	for (auto& mesh : _meshes)
+	{
+		for (auto& meshPart : *mesh.get())
+		{
+			//meshPart->
+		}
+	}
 }
 
 ModelMesh *Engine3DRadSpace::Graphics::Model3D::operator[](unsigned i)

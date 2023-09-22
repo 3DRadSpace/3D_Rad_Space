@@ -201,64 +201,66 @@ void AssetManager::_createForms()
 
 	_renderer = std::make_unique<AssetListRenderer>(owner, hInstance, _content);
 
-	//iterate assets
-	for(auto &asset : *_content)
-	{
-		if(asset == nullptr) break;
+	_loadAssetIcons();
+}
 
-		LVITEMA item{};
-		item.lParam = asset->ID();
-		item.pszText = const_cast<char *>(asset->Name.c_str());
-		item.cchTextMax = int(asset->Name.length());
-		item.iImage = asset->ID() - 1;
-		item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
-
-		SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next
-	}
-
+void AssetManager::_loadAssetIcons()
+{
 	std::thread image_loader = std::thread([this]()
-	{
-		for(auto &asset : *_content)
 		{
-			if(_imageList == nullptr) return;
-			if(_assetList == nullptr) return;
-
-			std::string imagePath = std::string("Data//AssetImages//") + asset->Path + ".png";
-
-			if(!std::filesystem::exists(imagePath))
+			for (auto& asset : *_content)
 			{
-				std::unordered_map<size_t, int> type_map =
-				{
-					{typeid(Engine3DRadSpace::Graphics::Model3D).hash_code(), 1},
-					{typeid(Engine3DRadSpace::Graphics::Texture2D).hash_code(), 2},
-				};
+				if (_imageList == nullptr) return;
+				if (_assetList == nullptr) return;
 
-				switch(type_map[asset->Type.hash_code()])
+				if (asset == nullptr) continue;
+				if (asset->Type.hash_code() != _assetType.hash_code()) continue;
+			
+				std::string imagePath = std::string("Data//AssetImages//") + asset->Path + ".png";
+
+				if (!std::filesystem::exists(imagePath))
 				{
+					std::unordered_map<size_t, int> type_map =
+					{
+						{typeid(Engine3DRadSpace::Graphics::Model3D).hash_code(), 1},
+						{typeid(Engine3DRadSpace::Graphics::Texture2D).hash_code(), 2},
+					};
+
+					switch (type_map[asset->Type.hash_code()])
+					{
 					case 1:
-						if(_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Model3D>(imagePath, asset->Path);
+						if (_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Model3D>(imagePath, asset->Path);
 						break;
 					case 2:
-						if(_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Texture2D>(imagePath, asset->Path);
+						if (_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Texture2D>(imagePath, asset->Path);
 						break;
 					default:
 						break;
+					}
 				}
+
+				unsigned w, h;
+				HBITMAP image = loadImageFromFile(imagePath.c_str(), w, h);
+
+				if (image == nullptr) //if failed to render and save an image, fall back to the default one.
+					image = loadImageFromFile("Data//NoAsset.png", w, h);
+
+				if (image == nullptr)
+					throw std::exception("default image not found!");
+
+				ImageList_Add(_imageList, image, nullptr);
+				DeleteObject(image);
+
+				LVITEMA item{};
+				item.lParam = asset->ID();
+				item.pszText = const_cast<char*>(asset->Name.c_str());
+				item.cchTextMax = int(asset->Name.length());
+				item.iImage = asset->ID() - 1;
+				item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
+
+				SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next
 			}
-
-			unsigned w, h;
-			HBITMAP image = loadImageFromFile(imagePath.c_str(), w, h);
-
-			if(image == nullptr) //if failed to render and save an image, fall back to the default one.
-				image = loadImageFromFile("Data//NoAsset.png", w, h);
-
-			if(image == nullptr)
-				throw std::exception("default image not found!");
-
-			ImageList_Add(_imageList, image, nullptr);
-			DeleteObject(image);
-		}
-	});
+		});
 	image_loader.detach();
 }
 
@@ -269,7 +271,8 @@ AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Con
 	_searchLabel(nullptr),
 	_content(content),
 	_imageList(nullptr),
-	_browseButton(nullptr)
+	_browseButton(nullptr),
+	_assetType(typeid(void))
 {
 }
 

@@ -240,6 +240,10 @@
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="ObjectList.hpp" />
+    <ClInclude Include="Reflection\ReflectedEnum.hpp">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\FixedArray.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />

@@ -4,6 +4,7 @@
 #include "Dialog.hpp"
 #include <map>
 #include "AssetListRenderer.hpp"
+#include <typeindex>
 
 class AssetManager : public Dialog
 {
@@ -20,7 +21,10 @@ class AssetManager : public Dialog
 	Engine3DRadSpace::Content::ContentManager *_content;
 	std::unique_ptr<AssetListRenderer> _renderer;
 
+	std::type_index _assetType;
+
 	void _createForms();
+	void _loadAssetIcons();
 public:
 	AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content);
 
@@ -33,6 +37,8 @@ public:
 	template<Engine3DRadSpace::Content::AssetType T>
 	Engine3DRadSpace::Content::AssetReference<T> ShowDialog()
 	{
+		_assetType = typeid(T);
+
 		auto v = Dialog::ShowDialog(static_cast<void*>(this));
 		return Engine3DRadSpace::Content::AssetReference<T>(static_cast<unsigned>(v));
 	}

@@ -1,6 +1,7 @@
 #include "ModelControl.hpp"
 #include "GDIFuncs.hpp"
 #include "TextureControl.hpp"
+#include "AssetManager.hpp"
 
 ModelControl::ModelControl(
 	HWND owner,
@@ -38,10 +39,31 @@ ModelControl::ModelControl(
 	SetImage(_pictureBox,_image, imageWidth, imageHeight);
 }
 
+HWND ModelControl::GetPictureBox()
+{
+	return _pictureBox;
+}
+
 void ModelControl::HandleClick(HWND clickedHandle)
 {
-	if (_pictureBox == clickedHandle)
+	if (clickedHandle == _pictureBox || clickedHandle == _button)
 	{
-		
+		AssetManager assetManager(window, instance, _content);
+		auto r = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
+		if (r.ID != 0)
+		{
+			unsigned w, h;
+			_image = loadImageFromFile((*_content)[r]->Path.c_str(), w, h);
+			SetImage(_pictureBox, _image, w, h);
+		}
+	}
+}
+
+ModelControl::~ModelControl()
+{
+	if (_image != nullptr)
+	{
+		DeleteObject(_image);
+		_image = nullptr;
 	}
 }

@@ -18,7 +18,17 @@ public:
 		int y
 	);
 
+	ModelControl(ModelControl&) = delete;
+	ModelControl& operator=(ModelControl&) = delete;
+
+	ModelControl(ModelControl&&) = default;
+	ModelControl& operator=(ModelControl&&) = default;
+
+	HWND GetPictureBox();
+
 	Engine3DRadSpace::Reflection::RefModel3D ModelReference;
 
 	void HandleClick(HWND clickedHandle) override;
+
+	~ModelControl();
 };

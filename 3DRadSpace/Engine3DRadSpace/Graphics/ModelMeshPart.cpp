@@ -115,3 +115,8 @@ Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *Engine3DRadSpace::Graphics:
 {
 	return _shaders.get();
 }
+
+void Engine3DRadSpace::Graphics::ModelMeshPart::SetShaders(std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders)
+{
+	_shaders = shaders;
+}

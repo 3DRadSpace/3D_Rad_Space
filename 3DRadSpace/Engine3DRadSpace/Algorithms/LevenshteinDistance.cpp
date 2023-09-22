@@ -32,6 +32,7 @@ int Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(const std::string& 
         d[0][j] = j;
     }
 
+    //String distance calculation
     int cost = 0;
     for (int i = 1; i <= a.length(); i++)
     {

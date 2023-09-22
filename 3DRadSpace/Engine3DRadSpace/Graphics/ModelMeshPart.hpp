@@ -55,6 +55,7 @@ namespace Engine3DRadSpace::Graphics
 		Math::BoundingSphere GetBoundingSphere();
 
 		Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *GetShaders();
+		void SetShaders(std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders);
 
 		~ModelMeshPart() = default;
 
