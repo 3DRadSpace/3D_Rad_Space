@@ -259,7 +259,23 @@ void Engine3DRadSpace::Graphics::Model3D::SetShader(std::shared_ptr<Shaders::Sha
 	{
 		for (auto& meshPart : *mesh.get())
 		{
-			//meshPart->
+			meshPart->SetShaders(effect);
+		}
+	}
+}
+
+void Engine3DRadSpace::Graphics::Model3D::SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects)
+{
+	size_t i = 0;
+	size_t len = effects.size();
+
+	for (auto& mesh : _meshes)
+	{
+		for (auto& meshPart : *mesh.get())
+		{
+			if (i < len)
+				meshPart->SetShaders(effects[i++]);
+			else return;
 		}
 	}
 }

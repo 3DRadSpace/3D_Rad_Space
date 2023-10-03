@@ -1,8 +1,10 @@
 #include "AssetRenderer.hpp"
 #include <Engine3DRadSpace/Math/Matrix.hpp>
+#include <Engine3DRadSpace/Graphics/Shaders/BasicTextured_NBT.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
 template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePath, Texture2D *texture)
@@ -19,6 +21,9 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 {
 	if(device && model)
 	{
+		std::shared_ptr<BasicTextured_NBT> shader = std::make_shared<BasicTextured_NBT>(device);
+
+		model->SetShader(shader);
 		model->Draw(
 			Matrix(),
 			Matrix::CreateLookAtView(

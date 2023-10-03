@@ -39,6 +39,7 @@ namespace Engine3DRadSpace::Graphics
 		void SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect);
 		void SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects);
 
+
 		~Model3D() = default;
 
 		ModelMesh *operator[](unsigned i);
