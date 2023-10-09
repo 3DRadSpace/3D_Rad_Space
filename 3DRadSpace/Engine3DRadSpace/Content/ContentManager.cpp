@@ -39,3 +39,8 @@ void ContentManager::RemoveAsset(unsigned id)
 	}
 	), _resources.end());
 }
+
+GraphicsDevice* Engine3DRadSpace::Content::ContentManager::GetDevice()
+{
+	return _device;
+}

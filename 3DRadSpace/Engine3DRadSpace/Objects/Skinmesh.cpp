@@ -38,10 +38,14 @@ void Skinmesh::Initialize()
 
 void Skinmesh::Load(Content::ContentManager *content)
 {
-    if(_path != nullptr)
+    if (_path != nullptr)
     {
         _model = content->Load<Model3D>(*_path);
         _path.reset();
+    }
+    if (_model == nullptr && Model)
+    {
+        _model = static_cast<Model3D*>((*content)[Model]->Get());
     }
 }
 
@@ -55,11 +59,7 @@ void Skinmesh::EditorInitialize()
 
 void Skinmesh::EditorLoad(Content::ContentManager *content)
 {
-    if(_path != nullptr)
-    {
-        _model = content->Load<Model3D>(*_path);
-        _path.reset();
-    }
+    Load(content);
 }
 
 Reflection::UUID Skinmesh::GetUUID()

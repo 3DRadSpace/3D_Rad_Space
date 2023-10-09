@@ -42,8 +42,8 @@ void RenderWindow::Initialize()
 	for (int i = -10; i <= 10; i++)
 	{
 		if (i == 0) continue;
-		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,10),Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,-10),Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,10), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,-10), Colors::Gray });
 
 		dLines.push_back(VertexPositionColor{ Vector3(10, 0, float(i)), Colors::Gray });
 		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
@@ -60,7 +60,7 @@ void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
 	testTexture = content->Load<Texture2D>("gradient.png");
 	//testTexture->Resize(256, 256);
 
-	//fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
+	fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)

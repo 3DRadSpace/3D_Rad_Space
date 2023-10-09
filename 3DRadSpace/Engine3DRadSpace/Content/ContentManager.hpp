@@ -41,6 +41,8 @@ namespace Engine3DRadSpace::Content
 
 		void RemoveAsset(const std::string &name);
 		void RemoveAsset(unsigned id);
+
+		GraphicsDevice* GetDevice();
 	};
 
 

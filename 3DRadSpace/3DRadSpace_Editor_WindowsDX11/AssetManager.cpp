@@ -1,6 +1,7 @@
 #include "AssetManager.hpp"
 #include <Engine3DRadSpace/Logging/Exception.hpp>
 #include <Engine3DRadSpace/Tag.hpp>
+#include <shlobj_core.h>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -97,12 +98,24 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 							std::string possibleErr = "";
 
-							//Texture2D
-							auto p = try_load_asset(Tag<Graphics::Texture2D>{}, assetManager->_content, filename, hwnd);
-							if(p.has_value()) possibleErr = p.value();
-							else return 1;
-							//Model3D
-							p = try_load_asset(Tag<Graphics::Model3D>{}, assetManager->_content, filename, hwnd);
+							std::unordered_map<std::type_index, int> typemap =
+							{
+								{ typeid(Graphics::Texture2D), 1},
+								{ typeid(Graphics::Model3D), 2}
+							};
+
+							std::optional<std::string> p;
+							switch (typemap[assetManager->_assetType])
+							{
+							case 1:
+								p = try_load_asset(Tag<Graphics::Texture2D>{}, assetManager->_content, filename, hwnd);
+								break;
+							case 2:
+								p = try_load_asset(Tag<Graphics::Model3D>{}, assetManager->_content, filename, hwnd);
+								break;
+							default:
+								break;
+							}
 							if(p.has_value()) possibleErr = p.value();
 							else return 1;
 						}
@@ -215,8 +228,21 @@ void AssetManager::_loadAssetIcons()
 
 				if (asset == nullptr) continue;
 				if (asset->Type.hash_code() != _assetType.hash_code()) continue;
-			
-				std::string imagePath = std::string("Data//AssetImages//") + asset->Path + ".png";
+
+				std::string imagePath;
+				//Find %appdata%
+				char appdataPath[_MAX_PATH] = {};
+				HRESULT r;
+
+				if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
+				{
+					//Combine paths
+					imagePath = appdataPath + ("\\3DRadSpace\\AssetImages\\" + std::filesystem::path(asset->Path).relative_path().string()) + ".png";
+
+					auto dirPath = std::filesystem::path(imagePath).remove_filename();
+					std::filesystem::create_directories(dirPath);
+				}
+				else throw std::filesystem::filesystem_error("Cannot find the AppData folder", std::error_code(r, std::system_category()));
 
 				if (!std::filesystem::exists(imagePath))
 				{

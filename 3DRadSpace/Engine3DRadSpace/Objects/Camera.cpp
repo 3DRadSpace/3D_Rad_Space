@@ -22,13 +22,13 @@ void Camera::EditorInitialize()
 {
 }
 
-static Model3D *cameraModel = nullptr;
+static std::unique_ptr<Model3D> cameraModel;
 
 void Camera::EditorLoad(Content::ContentManager *content)
 {
 	if(cameraModel == nullptr)
 	{
-		cameraModel = content->Load<Model3D>("Data\\Models\\Camera.x");
+		cameraModel = std::make_unique<Model3D>(content->GetDevice(), "Data\\Models\\Camera.x");
 	}
 }
 

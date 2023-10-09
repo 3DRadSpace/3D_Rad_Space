@@ -49,11 +49,11 @@ void ModelControl::HandleClick(HWND clickedHandle)
 	if (clickedHandle == _pictureBox || clickedHandle == _button)
 	{
 		AssetManager assetManager(window, instance, _content);
-		auto r = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
-		if (r.ID != 0)
+		ModelReference = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
+		if (ModelReference.ID != 0)
 		{
 			unsigned w, h;
-			_image = loadImageFromFile((*_content)[r]->Path.c_str(), w, h);
+			_image = loadImageFromFile((*_content)[ModelReference]->Path.c_str(), w, h);
 			SetImage(_pictureBox, _image, w, h);
 		}
 	}
