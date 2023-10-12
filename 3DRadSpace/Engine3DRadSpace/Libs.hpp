@@ -19,6 +19,8 @@
 #include <set>
 #include <variant>
 #include <any>
+#include <map>
+#include <typeindex>
 
 #ifdef _WIN32
 #define NOMINMAX

@@ -165,44 +165,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AddObjectDialog.cpp" />
-    <ClCompile Include="AssetControl.cpp" />
-    <ClCompile Include="AssetListRenderer.cpp" />
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="AssetRenderer.cpp" />
-    <ClCompile Include="ColorBox.cpp" />
-    <ClCompile Include="Dialog.cpp" />
-    <ClCompile Include="EditObjectDialog.cpp" />
-    <ClCompile Include="EditorWindow.cpp" />
-    <ClCompile Include="GDIFuncs.cpp" />
-    <ClCompile Include="HelperFunctions.cpp" />
-    <ClCompile Include="IControl.cpp" />
+    <ClCompile Include="Editor\Shaders\PickingShader.cpp" />
+    <ClCompile Include="Frontend\Windows\AddObjectDialog.cpp" />
+    <ClCompile Include="Frontend\Controls\AssetControl.cpp" />
+    <ClCompile Include="Frontend\AssetListRenderer.cpp" />
+    <ClCompile Include="Frontend\Windows\AssetManagerDialog.cpp" />
+    <ClCompile Include="Frontend\AssetRenderer.cpp" />
+    <ClCompile Include="Frontend\Controls\ColorBox.cpp" />
+    <ClCompile Include="Frontend\Controls\Dialog.cpp" />
+    <ClCompile Include="Frontend\Windows\EditObjectDialog.cpp" />
+    <ClCompile Include="Frontend\Windows\EditorWindow.cpp" />
+    <ClCompile Include="Frontend\GDIFuncs.cpp" />
+    <ClCompile Include="Frontend\HelperFunctions.cpp" />
+    <ClCompile Include="Frontend\Controls\IControl.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModelControl.cpp" />
-    <ClCompile Include="NumericTextbox.cpp" />
-    <ClCompile Include="RenderWindow.cpp" />
-    <ClCompile Include="SkinmeshPreviewer.cpp" />
-    <ClCompile Include="TextureControl.cpp" />
+    <ClCompile Include="Frontend\Controls\ModelControl.cpp" />
+    <ClCompile Include="Frontend\Controls\NumericTextbox.cpp" />
+    <ClCompile Include="Editor\RenderWindow.cpp" />
+    <ClCompile Include="Editor\SkinmeshPreviewer.cpp" />
+    <ClCompile Include="Frontend\Controls\TextureControl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddObjectDialog.hpp" />
-    <ClInclude Include="AssetControl.hpp" />
-    <ClInclude Include="AssetListRenderer.hpp" />
-    <ClInclude Include="AssetManager.hpp" />
-    <ClInclude Include="AssetRenderer.hpp" />
-    <ClInclude Include="ColorBox.hpp" />
-    <ClInclude Include="Dialog.hpp" />
-    <ClInclude Include="EditObjectDialog.hpp" />
-    <ClInclude Include="EditorWindow.hpp" />
-    <ClInclude Include="GDIFuncs.hpp" />
-    <ClInclude Include="HelperFunctions.hpp" />
-    <ClInclude Include="IControl.hpp" />
-    <ClInclude Include="ModelControl.hpp" />
-    <ClInclude Include="NumericTextbox.hpp" />
-    <ClInclude Include="RenderWindow.hpp" />
+    <ClInclude Include="Frontend\Windows\AddObjectDialog.hpp" />
+    <ClInclude Include="Frontend\Controls\AssetControl.hpp" />
+    <ClInclude Include="Frontend\AssetListRenderer.hpp" />
+    <ClInclude Include="Frontend\Windows\AssetManagerDialog.hpp" />
+    <ClInclude Include="Frontend\AssetRenderer.hpp" />
+    <ClInclude Include="Frontend\Controls\ColorBox.hpp" />
+    <ClInclude Include="Frontend\Controls\Dialog.hpp" />
+    <ClInclude Include="Frontend\Windows\EditObjectDialog.hpp" />
+    <ClInclude Include="Frontend\Windows\EditorWindow.hpp" />
+    <ClInclude Include="Frontend\GDIFuncs.hpp" />
+    <ClInclude Include="Frontend\HelperFunctions.hpp" />
+    <ClInclude Include="Frontend\Controls\IControl.hpp" />
+    <ClInclude Include="Frontend\Controls\ModelControl.hpp" />
+    <ClInclude Include="Frontend\Controls\NumericTextbox.hpp" />
+    <ClInclude Include="Editor/RenderWindow.hpp" />
+    <ClInclude Include="Editor\Shaders\PickingShader.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SkinmeshPreviewer.hpp" />
-    <ClInclude Include="TextureControl.hpp" />
+    <ClInclude Include="Editor/SkinmeshPreviewer.hpp" />
+    <ClInclude Include="Frontend\Controls\TextureControl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DRadSpace_Editor_WindowsDX11.rc" />

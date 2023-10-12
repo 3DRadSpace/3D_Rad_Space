@@ -6,6 +6,11 @@ namespace Engine3DRadSpace::Graphics
 	class DLLEXPORT ModelMesh
 	{
 		std::vector<std::unique_ptr<ModelMeshPart>> _meshParts;
+
+		Math::BoundingBox _box;
+		Math::BoundingSphere _sphere;
+
+		void _createBoundingObjects();
 	public:
 		ModelMesh(std::span<std::unique_ptr<ModelMeshPart>> parts);
 		ModelMesh(ModelMeshPart* parts, size_t numParts);
@@ -24,6 +29,9 @@ namespace Engine3DRadSpace::Graphics
 		ModelMeshPart* operator[](unsigned i);
 
 		void Draw();
+
+		Math::BoundingBox GetBoundingBox();
+		Math::BoundingSphere GetBoundingSphere();
 
 		~ModelMesh() = default;
 	};

@@ -1,6 +1,6 @@
 #include "TextureControl.hpp"
-#include "GDIFuncs.hpp"
-#include "AssetManager.hpp"
+#include "..\GDIFuncs.hpp"
+#include "..\Windows\AssetManagerDialog.hpp"
 
 TextureControl::TextureControl(
 	HWND owner,

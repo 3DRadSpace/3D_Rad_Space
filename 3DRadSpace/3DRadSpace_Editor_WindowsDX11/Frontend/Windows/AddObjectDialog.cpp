@@ -1,6 +1,6 @@
 #include "AddObjectDialog.hpp"
 #include <Engine3DRadSpace/Logging/Error.hpp>
-#include "resource.h"
+#include "..\..\resource.h"
 #include <CommCtrl.h>
 
 //Forward declarations of object reflection data

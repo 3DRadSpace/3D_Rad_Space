@@ -13,60 +13,78 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{2761c830-5cc2-4241-bc12-6f9a1608962a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frontend">
+      <UniqueIdentifier>{1eeae2f2-6f93-4889-8823-3c55cb704f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frontend\Controls">
+      <UniqueIdentifier>{92225009-23c1-4145-ae67-f6e929dea23b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frontend\Windows">
+      <UniqueIdentifier>{12c332c6-88e7-445c-b298-cb18c13c61fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Shaders">
+      <UniqueIdentifier>{274939c7-df1d-475e-bdf3-5cd7257123f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditorWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Editor\RenderWindow.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="HelperFunctions.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Editor\SkinmeshPreviewer.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="RenderWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\AssetControl.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="AddObjectDialog.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\ColorBox.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="GDIFuncs.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\Dialog.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="EditObjectDialog.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\IControl.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\ModelControl.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="IControl.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\TextureControl.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="NumericTextbox.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Controls\NumericTextbox.cpp">
+      <Filter>Frontend\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="ColorBox.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\AssetRenderer.cpp">
+      <Filter>Frontend</Filter>
     </ClCompile>
-    <ClCompile Include="SkinmeshPreviewer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\AssetListRenderer.cpp">
+      <Filter>Frontend</Filter>
     </ClCompile>
-    <ClCompile Include="TextureControl.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\HelperFunctions.cpp">
+      <Filter>Frontend</Filter>
     </ClCompile>
-    <ClCompile Include="AssetControl.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\GDIFuncs.cpp">
+      <Filter>Frontend</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Windows\EditObjectDialog.cpp">
+      <Filter>Frontend\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="AssetRenderer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Windows\AssetManagerDialog.cpp">
+      <Filter>Frontend\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="AssetListRenderer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Frontend\Windows\AddObjectDialog.cpp">
+      <Filter>Frontend\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="ModelControl.cpp">
+    <ClCompile Include="Frontend\Windows\EditorWindow.cpp">
+      <Filter>Frontend\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Shaders\PickingShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,55 +92,58 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditorWindow.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Editor/SkinmeshPreviewer.hpp">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="HelperFunctions.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Editor/RenderWindow.hpp">
+      <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="RenderWindow.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\TextureControl.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="AddObjectDialog.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\NumericTextbox.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="GDIFuncs.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\ModelControl.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="EditObjectDialog.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\IControl.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="Dialog.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\ColorBox.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="IControl.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\Dialog.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="NumericTextbox.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Controls\AssetControl.hpp">
+      <Filter>Frontend\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="ColorBox.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Windows\AddObjectDialog.hpp">
+      <Filter>Frontend\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="SkinmeshPreviewer.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Windows\AssetManagerDialog.hpp">
+      <Filter>Frontend\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="TextureControl.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Windows\EditObjectDialog.hpp">
+      <Filter>Frontend\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="AssetControl.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\Windows\EditorWindow.hpp">
+      <Filter>Frontend\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManager.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\AssetListRenderer.hpp">
+      <Filter>Frontend</Filter>
     </ClInclude>
-    <ClInclude Include="AssetRenderer.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\AssetRenderer.hpp">
+      <Filter>Frontend</Filter>
     </ClInclude>
-    <ClInclude Include="AssetListRenderer.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Frontend\GDIFuncs.hpp">
+      <Filter>Frontend</Filter>
     </ClInclude>
-    <ClInclude Include="ModelControl.hpp">
+    <ClInclude Include="Frontend\HelperFunctions.hpp">
+      <Filter>Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Shaders\PickingShader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

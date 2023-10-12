@@ -25,10 +25,10 @@ namespace Engine3DRadSpace::Graphics
 #endif
 		void _compileShader( const char* source, const char* target);
 		void _compileShaderFromFile( const char* path, const char* target);
-	public:
-		IShader(GraphicsDevice *device, const char *shaderSourceCode, const char *entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
-		IShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 
+		IShader(GraphicsDevice* device, const char* shaderSourceCode, const char* entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
+		IShader(GraphicsDevice* device, const std::filesystem::path& path, const char* entry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
+	public:
 		IShader(IShader&) = delete;
 		IShader(IShader&&) noexcept = delete;
 

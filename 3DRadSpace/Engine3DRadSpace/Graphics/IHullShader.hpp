@@ -11,10 +11,10 @@ namespace Engine3DRadSpace::Graphics
 		void _createShader();
 #endif
 		const char *_determineTarget();
+	protected:
+		IHullShader(GraphicsDevice* device, const char* shaderSource, const char* hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
+		IHullShader(GraphicsDevice* device, const std::filesystem::path& path, const char* hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
 	public:
-		IHullShader(GraphicsDevice *device, const char *shaderSource, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
-		IHullShader(GraphicsDevice *device, const std::filesystem::path &path, const char *hsEntry, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
-
 		IHullShader(IHullShader &) = delete;
 		IHullShader(IHullShader &&) noexcept = delete;
 		IHullShader &operator=(IHullShader &) = delete;

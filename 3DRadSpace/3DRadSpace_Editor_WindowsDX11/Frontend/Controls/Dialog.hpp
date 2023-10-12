@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 #include <CommCtrl.h>
-#include "HelperFunctions.hpp"
+#include "../HelperFunctions.hpp"
 
 class Dialog
 {

@@ -95,6 +95,23 @@ Vector3 Vector3::operator*(float s) const
     return Vector3(s * this->X, s * this->Y, s * this->Z);
 }
 
+Vector3& Engine3DRadSpace::Math::Vector3::operator/=(float s)
+{
+    X /= s;
+    Y /= s;
+    Z /= s;
+    return *this;
+}
+
+Vector3 Engine3DRadSpace::Math::Vector3::operator/(float s) const
+{
+    return Vector3(
+        X / s,
+        Y / s,
+        Z / s
+    );
+}
+
 Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v)
 {
     X = Y * v.Z - Z * v.Y;

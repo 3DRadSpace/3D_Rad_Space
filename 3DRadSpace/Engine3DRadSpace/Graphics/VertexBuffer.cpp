@@ -2,6 +2,7 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Math;
 
 void Engine3DRadSpace::Graphics::VertexBuffer::_debugInfo()
 {

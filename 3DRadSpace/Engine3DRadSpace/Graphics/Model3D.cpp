@@ -17,24 +17,25 @@ using namespace Engine3DRadSpace::Math;
 
 Assimp::Importer importer;
 
-Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
+Model3D::Model3D(GraphicsDevice* Device, const std::string& path) :
 	_device(Device)
 {
 	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured_NBT>(Device);
 	auto basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured_NBT>(Device);
 
-	if(!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
+	if (!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 
-	const aiScene* scene = importer.ReadFile(path, 
-		aiProcess_Triangulate | 
+	const aiScene* scene = importer.ReadFile(path,
+		aiProcess_Triangulate |
 		aiProcess_GenSmoothNormals |
 		aiProcess_CalcTangentSpace |
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_OptimizeMeshes |
 		aiProcess_OptimizeGraph |
 		aiProcess_RemoveRedundantMaterials |
-		aiProcess_SplitLargeMeshes | 
+		aiProcess_SplitLargeMeshes |
 		aiProcess_SortByPType |
+		aiProcess_GenBoundingBoxes |
 #if _DX11
 		aiProcess_FlipUVs |
 		aiProcess_FlipWindingOrder
@@ -116,6 +117,15 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 			}
 		}
 		auto mesh = std::make_unique<ModelMeshPart>(Device, basicTexturedNBT, &vertices[0], numVerts, structSize, indices);
+		
+		//determine bounding box and sphere
+		auto aabbMin = scene->mMeshes[i]->mAABB.mMin;
+		auto aabbMax = scene->mMeshes[i]->mAABB.mMax;
+		mesh->_box = BoundingBox(
+			Vector3(aabbMin.x, aabbMin.y, aabbMin.z),
+			Vector3(aabbMax.x - aabbMin.x, aabbMax.y - aabbMin.y, aabbMax.z - aabbMin.z)
+		);
+		mesh->_sphere = BoundingSphere(mesh->_box);
 		std::unique_ptr<Texture2D> diffuseTexture;
 
 		if(numUVMaps == 1)
@@ -175,6 +185,15 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path):
 	else
 	{
 		_meshes.push_back(std::make_unique<ModelMesh>(meshParts));
+	}
+
+	_box = _meshes[0]->GetBoundingBox();
+	_sphere = _meshes[0]->GetBoundingSphere();
+
+	for (size_t i = 1; i < _meshes.size(); i++)
+	{
+		_box = BoundingBox(_box, _meshes[i]->GetBoundingBox());
+		_sphere = BoundingSphere(_sphere, _meshes[i]->GetBoundingSphere());
 	}
 }
 
@@ -253,7 +272,22 @@ Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3
 	return _meshes.end();
 }
 
-void Engine3DRadSpace::Graphics::Model3D::SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect)
+size_t Model3D::NumMeshes()
+{
+	return _meshes.size();
+}
+
+BoundingBox Model3D::GetBoundingBox()
+{
+	return _box;
+}
+
+BoundingSphere Model3D::GetBoundingSphere()
+{
+	return _sphere;
+}
+
+void Model3D::SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect)
 {
 	for (auto& mesh : _meshes)
 	{
@@ -264,7 +298,7 @@ void Engine3DRadSpace::Graphics::Model3D::SetShader(std::shared_ptr<Shaders::Sha
 	}
 }
 
-void Engine3DRadSpace::Graphics::Model3D::SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects)
+void Model3D::SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects)
 {
 	size_t i = 0;
 	size_t len = effects.size();

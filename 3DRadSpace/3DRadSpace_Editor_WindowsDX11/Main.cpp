@@ -1,7 +1,7 @@
 #define NOMINMAX
 #include <cstdlib>
-#include "EditorWindow.hpp"
-#include "HelperFunctions.hpp"
+#include "Frontend\Windows\EditorWindow.hpp"
+#include "Frontend\HelperFunctions.hpp"
 
 #include <PathCch.h>
 #pragma comment(lib,"Comctl32.lib")

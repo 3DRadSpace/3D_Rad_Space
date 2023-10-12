@@ -10,10 +10,10 @@ namespace Engine3DRadSpace::Graphics
 		const char *_determineTarget();
 #endif
 		void _createShader();
+	protected:
+		IGeometryShader(GraphicsDevice* device, const char* source, const char* fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
+		IGeometryShader(GraphicsDevice* device, const std::filesystem::path& path, const char* fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
 	public:
-		IGeometryShader(GraphicsDevice *device, const char *source, const char *fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
-		IGeometryShader(GraphicsDevice *device, const std::filesystem::path &path, const char *fnEntry, ShaderFeatureLevel fs = ShaderFeatureLevel::DX_V4);
-
 		IGeometryShader(IGeometryShader &) = delete;
 		IGeometryShader(IGeometryShader &&) noexcept = delete;
 		IGeometryShader &operator = (IGeometryShader &) = delete;

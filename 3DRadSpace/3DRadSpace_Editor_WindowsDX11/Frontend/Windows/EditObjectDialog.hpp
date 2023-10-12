@@ -2,9 +2,9 @@
 
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
-#include "Dialog.hpp"
+#include "..\Controls\Dialog.hpp"
 #include <variant>
-#include "IControl.hpp"
+#include "..\Controls\IControl.hpp"
 
 class EditObjectDialog : public Dialog
 {

@@ -23,15 +23,18 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 	{
 		std::shared_ptr<BasicTextured_NBT> shader = std::make_shared<BasicTextured_NBT>(device);
 
+		auto boundingSphere = model->GetBoundingSphere();
+
 		model->SetShader(shader);
 		model->Draw(
 			Matrix(),
 			Matrix::CreateLookAtView(
+				boundingSphere.Center + ((boundingSphere.Radius + 5) * 
 				Vector3(
 					float(cos(std::numbers::pi / 4)),
 					0,
 					float(sin(std::numbers::pi / 4))
-				),
+				)),
 				Vector3::Zero(),
 				Vector3::UnitY()
 			),

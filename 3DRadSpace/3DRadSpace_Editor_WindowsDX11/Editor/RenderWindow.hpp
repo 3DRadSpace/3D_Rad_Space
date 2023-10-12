@@ -9,7 +9,7 @@
 #include <Engine3DRadSpace/Graphics/Shaders/BasicTextured_NBT.hpp>
 #include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
 #include <Engine3DRadSpace/Graphics/Primitives/Lines.hpp>
-#include <CommonStates.h>
+#include "Shaders/PickingShader.hpp"
 
 class RenderWindow : public Engine3DRadSpace::Game
 {
@@ -32,6 +32,7 @@ class RenderWindow : public Engine3DRadSpace::Game
 	std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState> samplerState;
 
 	Engine3DRadSpace::Graphics::Texture2D* testTexture;
+	std::unique_ptr<PickingShader> _pickingShader;
 
 	bool _keyboardTest = false;
 

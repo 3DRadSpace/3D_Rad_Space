@@ -9,9 +9,9 @@ Engine3DRadSpace::IObject3D::IObject3D(const std::string &name, const std::strin
 {
 }
 
-Engine3DRadSpace::IObject3D::IObject3D(GraphicsDevice *device, const std::string &name, const std::string &tag, bool enabled, bool visible, const Math::Vector3 &pos, 
+Engine3DRadSpace::IObject3D::IObject3D(Game *game, const std::string &name, const std::string &tag, bool enabled, bool visible, const Math::Vector3 &pos, 
 	const Math::Vector3 &pivot, const Math::Quaternion &rotation, const Math::Vector3 &scale) :
-	IObject(device, name, tag, enabled, visible)
+	IObject(game, name, tag, enabled, visible)
 {
 }
 

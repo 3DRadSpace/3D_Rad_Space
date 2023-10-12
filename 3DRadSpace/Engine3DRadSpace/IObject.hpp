@@ -7,12 +7,14 @@
 
 namespace Engine3DRadSpace
 {
+	class Game;
 	class DLLEXPORT IObject : public IInitiializable, public IUpdateable, public ILoadable
 	{
 	protected:
+		Game* _game = nullptr;
 		GraphicsDevice* _device = nullptr;
-	public:
-		explicit IObject(GraphicsDevice* gdev, const std::string &name = "Empty", const std::string &tag = "...", bool enabled = false, bool visible = false);
+
+		explicit IObject(Game* game, const std::string& name = "Empty", const std::string& tag = "...", bool enabled = false, bool visible = false);
 
 		/// <summary>
 		/// Default constructor used for reflection. Objects created with this constructor are invalid, unless the _device field is explicitly set after a IObject instance is constructed.
@@ -21,8 +23,8 @@ namespace Engine3DRadSpace
 		/// <param name="tag"></param>
 		/// <param name="enabled"></param>
 		/// <param name="visible"></param>
-		explicit IObject(const std::string &name = "Empty",const std::string &tag = "...", bool enabled = false, bool visible = false);
-
+		explicit IObject(const std::string& name = "Empty", const std::string& tag = "...", bool enabled = false, bool visible = false);
+	public:
 		std::string Name;
 		std::string Tag;
 		bool Enabled;
@@ -34,6 +36,7 @@ namespace Engine3DRadSpace
 		virtual Reflection::UUID GetUUID() = 0;
 
 		GraphicsDevice *GetGraphicsDeviceHandle();
+		Game* GetGame();
 
 		virtual ~IObject() = default;
 	};

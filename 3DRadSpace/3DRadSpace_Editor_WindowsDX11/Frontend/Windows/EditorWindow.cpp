@@ -1,8 +1,8 @@
 #include "EditorWindow.hpp"
-#include "resource.h"
+#include "..\..\resource.h"
 #include "Engine3DRadSpace/Logging/Error.hpp"
 #include <fstream>
-#include "HelperFunctions.hpp"
+#include "..\HelperFunctions.hpp"
 #include <d3d11.h>
 #include <assert.h>
 #include <ranges>
@@ -47,8 +47,6 @@ void EditorWindow::_writeProject(const char *fileName)
 {
 	_changesSaved = true;
 	//TODO: Serilaize object into a file
-
-
 }
 
 HTREEITEM EditorWindow::_getSelectedListViewItem()
@@ -616,7 +614,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 						HTREEITEM currItem = deletedItem;
 
 						//Update the indexes of the following elements
-						for(; currItem != nullptr; )
+						while(currItem != nullptr)
 						{
 							currItem = reinterpret_cast<HTREEITEM>(SendMessageA(gEditorWindow->_listBox, TVM_GETNEXTITEM, TVGN_NEXT, reinterpret_cast<LPARAM>(currItem)));
 

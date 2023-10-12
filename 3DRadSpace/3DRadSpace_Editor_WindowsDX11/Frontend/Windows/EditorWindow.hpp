@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "RenderWindow.hpp"
+#include "..\..\Editor\RenderWindow.hpp"
 #include <CommCtrl.h>
 
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";

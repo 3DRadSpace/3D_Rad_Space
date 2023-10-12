@@ -2,7 +2,7 @@
 
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
-#include "Dialog.hpp"
+#include "..\Controls\Dialog.hpp"
 #include "EditObjectDialog.hpp"
 
 class AddObjectDialog : public Dialog

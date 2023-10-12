@@ -1,10 +1,8 @@
 #pragma once
 #include <Engine3DRadSpace/Reflection/ReflectedField.hpp>
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
-#include "Dialog.hpp"
-#include <map>
-#include "AssetListRenderer.hpp"
-#include <typeindex>
+#include "..\Controls\Dialog.hpp"
+#include "..\AssetListRenderer.hpp"
 
 class AssetManager : public Dialog
 {

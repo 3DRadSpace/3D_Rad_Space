@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Algorithms
 		size_t _num;
 		std::unique_ptr<T[]> _data;
 	public:
-		FixedArray(size_t numElements):
+		explicit FixedArray(size_t numElements):
 			_num(numElements),
 			_data(std::make_unique<T[]>(numElements))
 		{
@@ -51,7 +51,7 @@ namespace Engine3DRadSpace::Algorithms
 			pointer _ptr;
 
 		public:
-			Iterator(pointer ptr): _ptr(ptr) { }
+			explicit Iterator(pointer ptr): _ptr(ptr) { }
 
 			reference operator*() const 
 			{ 
@@ -83,7 +83,7 @@ namespace Engine3DRadSpace::Algorithms
 		}
 		Iterator end()
 		{
-			return Iterator(_data.get() + _num);
+			return Iterator(static_cast<T*>(_data.get()) + _num);
 		}
 	};
 }

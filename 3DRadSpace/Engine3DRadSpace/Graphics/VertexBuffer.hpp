@@ -20,14 +20,14 @@ namespace Engine3DRadSpace
 		class DLLEXPORT VertexBuffer
 		{
 			void _debugInfo();
-#ifdef  _DX11
 		protected:
+#ifdef  _DX11
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
+#endif //  _DX11
 			GraphicsDevice* _device;
 
 			size_t _numVerts;
 			size_t _structSize;
-#endif //  _DX11
 		public:
 			VertexBuffer(
 				_In_ GraphicsDevice* device, 

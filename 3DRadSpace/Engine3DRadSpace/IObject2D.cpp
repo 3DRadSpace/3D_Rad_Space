@@ -14,9 +14,9 @@ Engine3DRadSpace::IObject2D::IObject2D(const std::string &name, const std::strin
 {
 }
 
-Engine3DRadSpace::IObject2D::IObject2D(GraphicsDevice *device, const std::string &name, const std::string &tag, bool enabled, bool visible, const Vector2 &pos,
+Engine3DRadSpace::IObject2D::IObject2D(Game *game, const std::string &name, const std::string &tag, bool enabled, bool visible, const Vector2 &pos,
 	const Vector2& scale, float rotation, const Math::Vector2 &pivot, float depth): 
-	IObject(device, name, tag, false, false),
+	IObject(game, name, tag, false, false),
 	Position(pos),
 	Rotation(rotation),
 	RotationCenter(pivot),

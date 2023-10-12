@@ -46,7 +46,6 @@
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="IObject.hpp" />
     <ClInclude Include="IInitializable.hpp" />
-    <ClInclude Include="GraphicsDevice.hpp" />
     <ClInclude Include="IDrawable3D.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Color.hpp" />
@@ -213,7 +212,6 @@
     <ClInclude Include="Math\Ray.hpp">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Triangle.hpp" />
     <ClInclude Include="Content\Asset.hpp">
       <Filter>Content</Filter>
     </ClInclude>
@@ -235,20 +233,33 @@
     <ClInclude Include="Objects\Skinmesh.hpp">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Primitives\Box.hpp" />
-    <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Tag.hpp" />
-    <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="Algorithms\FixedArray.hpp" />
+    <ClInclude Include="Graphics\Primitives\Box.hpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\FixedArray.hpp">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDevice.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Primitives\Sphere.hpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Content\ShaderManager.hpp">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Triangle.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="IObject.cpp" />
-    <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp">
@@ -397,10 +408,24 @@
     <ClCompile Include="Objects\Skinmesh.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\Primitives\Box.cpp" />
-    <ClCompile Include="Content\ShaderManager.cpp" />
-    <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
-    <ClCompile Include="Math\BoundingSphere.cpp" />
     <ClCompile Include="ObjectList.cpp" />
+    <ClCompile Include="Math\BoundingSphere.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\BoundingBox.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Primitives\Box.cpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDevice.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Primitives\Sphere.cpp">
+      <Filter>Graphics\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Content\ShaderManager.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

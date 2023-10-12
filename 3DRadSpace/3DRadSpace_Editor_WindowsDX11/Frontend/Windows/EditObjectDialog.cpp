@@ -1,11 +1,11 @@
 #include "EditObjectDialog.hpp"
-#include "NumericTextbox.hpp"
-#include "ColorBox.hpp"
+#include "..\Controls\NumericTextbox.hpp"
+#include "..\Controls\ColorBox.hpp"
 #include <Engine3DRadSpace/IObject.hpp>
 #include <Engine3DRadSpace/Logging/ResourceLoadingError.hpp>
 #include "EditorWindow.hpp"
-#include "TextureControl.hpp"
-#include "ModelControl.hpp"
+#include "..\Controls\TextureControl.hpp"
+#include "..\Controls\ModelControl.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;

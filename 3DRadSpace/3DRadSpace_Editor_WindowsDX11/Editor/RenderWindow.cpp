@@ -51,6 +51,8 @@ void RenderWindow::Initialize()
 
 	this->lines = std::make_unique<Primitives::Lines>(Device.get(), dLines);
 	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
+
+	_pickingShader = std::make_unique<PickingShader>(Device.get());
 }
 
 Model3D *fish = nullptr;
@@ -98,9 +100,6 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
-	Matrix viewProj = view * projection;
-
-	//fish->Draw(Matrix(), view, projection);
 
 	lines->Draw(View, Projection, dt);
 

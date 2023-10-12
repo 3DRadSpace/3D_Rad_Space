@@ -2,7 +2,7 @@
 #include "AssetRenderer.hpp"
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
 #include <Engine3DRadSpace/Game.hpp>
-#include "Dialog.hpp"
+#include "Controls\Dialog.hpp"
 
 class AssetListRenderer
 {

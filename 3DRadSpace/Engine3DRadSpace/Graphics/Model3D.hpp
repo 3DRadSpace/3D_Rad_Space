@@ -13,8 +13,6 @@ namespace Engine3DRadSpace::Graphics
 
 		void _processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts,void* currentNode);
 
-		//std::shared_ptr<Shaders::ShaderPipeline> basicTexturedNBT;
-
 		Math::BoundingSphere _sphere;
 		Math::BoundingBox _box;
 	public:
@@ -35,10 +33,13 @@ namespace Engine3DRadSpace::Graphics
 		using iterator = std::vector<std::unique_ptr<ModelMesh>>::iterator;
 		iterator begin();
 		iterator end();
+		size_t NumMeshes();
+
+		Math::BoundingBox GetBoundingBox();
+		Math::BoundingSphere GetBoundingSphere();
 
 		void SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect);
 		void SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects);
-
 
 		~Model3D() = default;
 

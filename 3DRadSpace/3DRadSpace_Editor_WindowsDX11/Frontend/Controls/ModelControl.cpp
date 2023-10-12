@@ -1,7 +1,7 @@
 #include "ModelControl.hpp"
-#include "GDIFuncs.hpp"
+#include "..\GDIFuncs.hpp"
 #include "TextureControl.hpp"
-#include "AssetManager.hpp"
+#include "..\Windows\AssetManagerDialog.hpp"
 
 ModelControl::ModelControl(
 	HWND owner,

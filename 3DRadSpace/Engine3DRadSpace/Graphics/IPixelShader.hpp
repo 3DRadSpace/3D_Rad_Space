@@ -11,11 +11,10 @@ namespace Engine3DRadSpace::Graphics
 		void _createShader();
 #endif
 		const char *_determineTarget();
+	protected:
+		IPixelShader(GraphicsDevice* device, const char* shaderSource, const char* entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
+		IPixelShader(GraphicsDevice* device, const std::filesystem::path& path, const char* entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
 	public:
-		
-		IPixelShader(GraphicsDevice *device, const char *shaderSource, const char *entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
-		IPixelShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entryFunction, ShaderFeatureLevel fl = ShaderFeatureLevel::DX_V4);
-
 		IPixelShader(IPixelShader &) = delete;
 		IPixelShader(IPixelShader &&) noexcept = delete;
 

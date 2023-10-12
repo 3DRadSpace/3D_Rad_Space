@@ -281,6 +281,7 @@
     <ClCompile Include="Logging\Error.cpp" />
     <ClCompile Include="Logging\Exception.cpp" />
     <ClCompile Include="Logging\Warning.cpp" />
+    <ClCompile Include="Math\BoundingBox.cpp" />
     <ClCompile Include="Math\BoundingSphere.cpp" />
     <ClCompile Include="Math\Math.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
