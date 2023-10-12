@@ -164,7 +164,9 @@
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
+    <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="ObjectList.hpp" />
+    <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
@@ -265,6 +267,7 @@
     <ClCompile Include="Graphics\Shaders\BasicTextured_NBT.cpp" />
     <ClCompile Include="Graphics\Shaders\BlankShader.cpp" />
     <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp" />
+    <ClCompile Include="Algorithms\Picking\PickingShader.cpp" />
     <ClCompile Include="Graphics\Shaders\SpriteShader.cpp" />
     <ClCompile Include="Graphics\SpriteBatch.cpp" />
     <ClCompile Include="Graphics\Texture2D.cpp" />
@@ -294,6 +297,7 @@
     <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="ObjectList.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
     <ClCompile Include="Reflection\FieldRepresentation.cpp" />
     <ClCompile Include="Reflection\ReflectedFunction.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp" />

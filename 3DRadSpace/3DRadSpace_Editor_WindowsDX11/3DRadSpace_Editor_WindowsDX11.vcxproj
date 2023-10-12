@@ -165,7 +165,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Editor\Shaders\PickingShader.cpp" />
     <ClCompile Include="Frontend\Windows\AddObjectDialog.cpp" />
     <ClCompile Include="Frontend\Controls\AssetControl.cpp" />
     <ClCompile Include="Frontend\AssetListRenderer.cpp" />
@@ -201,7 +200,6 @@
     <ClInclude Include="Frontend\Controls\ModelControl.hpp" />
     <ClInclude Include="Frontend\Controls\NumericTextbox.hpp" />
     <ClInclude Include="Editor/RenderWindow.hpp" />
-    <ClInclude Include="Editor\Shaders\PickingShader.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Editor/SkinmeshPreviewer.hpp" />
     <ClInclude Include="Frontend\Controls\TextureControl.hpp" />

@@ -9,8 +9,10 @@ namespace Engine3DRadSpace::Graphics
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTarget;
 #endif
 	public:
-		RenderTarget(GraphicsDevice *device);
+		RenderTarget(GraphicsDevice *device, TextureFormat format = TextureFormat::R32G32B32A32_Float);
 		RenderTarget(GraphicsDevice *device, unsigned x, unsigned y);
+
+		RenderTarget(GraphicsDevice* device, unsigned x, unsigned y, TextureFormat format = TextureFormat::R32G32B32A32_Float);
 
 		~RenderTarget() = default;
 

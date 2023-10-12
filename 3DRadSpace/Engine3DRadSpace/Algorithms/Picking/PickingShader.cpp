@@ -2,23 +2,30 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Algorithms::Picking;
 
 PickingShader::VertexShader::VertexShader(Engine3DRadSpace::GraphicsDevice* device) : 
-	IVertexShader(device, elements, "Data\\Shaders\\PickInfo.hlsl", "VS_Main")
+	IVertexShader(device, _elements, std::filesystem::path("Data\\Shaders\\PickInfo.hlsl"), "VS_Main")
 {
 }
 
 std::span<InputLayoutElement> PickingShader::VertexShader::InputLayout()
 {
-	return elements;
+	return _elements;
 }
 
 PickingShader::PixelShader::PixelShader(GraphicsDevice* device) :
-	IPixelShader(device, "Data\\Shaders\\PickInfo.hlsl", "PS_Main")
+	IPixelShader(device, std::filesystem::path("Data\\Shaders\\PickInfo.hlsl"), "PS_Main")
 {
 }
 
 PickingShader::PickingShader(Engine3DRadSpace::GraphicsDevice* device) : 
 	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
 {
+}
+
+void PickingShader::SetData(const Data& d)
+{
+	_vertex->SetData(0, &d, sizeof(Data));
+	_pixel->SetData(0, &d, sizeof(Data));
 }

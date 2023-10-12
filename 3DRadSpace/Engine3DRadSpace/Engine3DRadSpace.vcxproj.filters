@@ -256,6 +256,8 @@
     <ClInclude Include="Math\Triangle.hpp">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
+    <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -427,5 +429,7 @@
     <ClCompile Include="Content\ShaderManager.cpp">
       <Filter>Content</Filter>
     </ClCompile>
+    <ClCompile Include="Algorithms\Picking\PickingShader.cpp" />
+    <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
   </ItemGroup>
 </Project>
