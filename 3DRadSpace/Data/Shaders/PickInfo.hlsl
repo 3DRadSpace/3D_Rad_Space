@@ -1,4 +1,4 @@
-cbuffer mybuff : register(b0)
+cbuffer Data : register(b0)
 {
     row_major matrix matWorldViewProj;
     uint ID;
@@ -21,7 +21,7 @@ VertexOut VS_Main(VertexIn v)
     return r;
 }
 
-float4 PS_Main(VertexOut v) : SV_TARGET
+int PS_Main(VertexOut v) : SV_TARGET
 {
-    return float4(ID);
+    return ID;
 }

@@ -29,12 +29,12 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 		model->Draw(
 			Matrix(),
 			Matrix::CreateLookAtView(
-				boundingSphere.Center + ((boundingSphere.Radius + 2) * 
-				Vector3(
-					float(cos(std::numbers::pi / 4)),
-					0,
-					float(sin(std::numbers::pi / 4))
-				)),
+				boundingSphere.Center + ((boundingSphere.Radius + 2) *
+					Vector3(
+						float(cos(std::numbers::pi / 4)),
+						0,
+						float(sin(std::numbers::pi / 4))
+					)),
 				Vector3::Zero(),
 				Vector3::UnitY()
 			),
@@ -42,6 +42,9 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 		);
 
 		device->SaveBackBufferToFile(imagePath);
+
+		device->Present();
+		device->Clear(Colors::Gray);
 		return true;
 	}
 	return false;

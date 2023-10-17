@@ -35,7 +35,7 @@ void Game::Run()
 	}
 }
 
-void Engine3DRadSpace::Game::RunOneFrame()
+void Game::RunOneFrame()
 {
 	auto ts_u1 = std::chrono::high_resolution_clock::now();
 
@@ -65,13 +65,13 @@ void Engine3DRadSpace::Game::RunOneFrame()
 	d_dt = dDiff.count();
 }
 
-void Engine3DRadSpace::Game::Exit()
+void Game::Exit()
 {
 	_running = false;
 }
 
 
-void Engine3DRadSpace::Game::Load(Content::ContentManager* content)
+void Game::Load(Content::ContentManager* content)
 {
 	for (auto& [object, type] : Objects)
 	{
@@ -79,7 +79,7 @@ void Engine3DRadSpace::Game::Load(Content::ContentManager* content)
 	}
 }
 
-void Engine3DRadSpace::Game::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt)
+void Game::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt)
 {
 	for (auto& [object, type] : Objects)
 	{
@@ -87,7 +87,7 @@ void Engine3DRadSpace::Game::Update(Input::Keyboard& keyboard, Input::Mouse& mou
 	}
 }
 
-void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
+void Game::Draw(Math::Matrix& view, Math::Matrix& projection, double dt)
 {
 	for (auto& [object, type] : Objects)
 	{
@@ -98,7 +98,7 @@ void Engine3DRadSpace::Game::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3D
 	}
 }
 
-void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
+void Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
 {
 	for (auto& [object, type] : Objects)
 	{
@@ -109,7 +109,7 @@ void Engine3DRadSpace::Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
 	}
 }
 
-void Engine3DRadSpace::Game::Initialize()
+void Game::Initialize()
 {
 	for (auto& [object, type] : Objects)
 	{
