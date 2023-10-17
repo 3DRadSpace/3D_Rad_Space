@@ -19,7 +19,7 @@ public:
 	template<Engine3DRadSpace::Content::AssetType T>
 	bool RenderAsset(const std::string& imagePath, const std::string &assetPath)
 	{
-		_device->Clear(Engine3DRadSpace::Colors::White);
+		_device->Clear(Engine3DRadSpace::Colors::Gray);
 
 		std::unique_ptr<T> asset = std::make_unique<T>(_device.get(), assetPath);
 

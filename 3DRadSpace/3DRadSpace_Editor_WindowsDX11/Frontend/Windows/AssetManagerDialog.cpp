@@ -244,7 +244,7 @@ void AssetManagerDialog::_loadAssetIcons()
 					}
 				}
 
-				imagePath = appdataPath + (R"\3DRadSpace\AssetImages\" + assetPath.string()) + ".png";
+				imagePath = appdataPath + (R"(\3DRadSpace\AssetImages\)" + assetPath.string()) + ".png";
 
 				auto dirPath = std::filesystem::path(imagePath).remove_filename().lexically_relative(GetExecutablePath());
 				if (dirPath.empty()) dirPath = std::filesystem::path(imagePath).remove_filename();

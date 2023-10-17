@@ -29,7 +29,7 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 		model->Draw(
 			Matrix(),
 			Matrix::CreateLookAtView(
-				boundingSphere.Center + ((boundingSphere.Radius + 5) * 
+				boundingSphere.Center + ((boundingSphere.Radius + 2) * 
 				Vector3(
 					float(cos(std::numbers::pi / 4)),
 					0,
