@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace Engine3DRadSpace
 {
-	[StructLayout(LayoutKind.Sequential, Pack = sizeof(float), Size = 4*sizeof(float))]
+	[StructLayout(LayoutKind.Sequential, Pack = sizeof(float), Size = 4 * sizeof(float))]
 	public struct Color : IEquatable<Color>
 	{
 		public float R;
@@ -20,7 +14,7 @@ namespace Engine3DRadSpace
 		{
 			R = r;
 			G = g;
-			B = b; 
+			B = b;
 			A = a;
 		}
 

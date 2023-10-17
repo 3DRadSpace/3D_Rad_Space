@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace::Algorithms::Picking
 {
-	class PickingShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
+	class DLLEXPORT PickingShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
 	{
 		class VertexShader : public Engine3DRadSpace::Graphics::IVertexShader
 		{

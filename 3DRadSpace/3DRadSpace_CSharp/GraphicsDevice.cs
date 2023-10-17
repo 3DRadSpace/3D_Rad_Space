@@ -20,7 +20,7 @@ namespace Engine3DRadSpace
 		static extern private void _graphicsDevice_SetViewport(IntPtr graphicsDeviceHandle, ref Viewport viewport);
 
 		[DllImport("Engine3DRadSpace.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "?SetViewports@GraphicsDevice@Engine3DRadSpace@@QEAAXV?$span@UViewport@Engine3DRadSpace@@$0?0@std@@@Z ")]
-		static extern private void _graphicsDevice_SetViewports(IntPtr graphicsDeviceHandle, IntPtr  viewports, uint numViewports);
+		static extern private void _graphicsDevice_SetViewports(IntPtr graphicsDeviceHandle, IntPtr viewports, uint numViewports);
 
 		public GraphicsDevice(IntPtr windowHandle, uint width, uint height)
 		{
@@ -45,10 +45,10 @@ namespace Engine3DRadSpace
 
 		private void Dispose(bool disposing)
 		{
-			if(!_disposed)
+			if (!_disposed)
 			{
 				_destroyGraphicsDevice(_graphicsDeviceHandle);
-				if(disposing)
+				if (disposing)
 				{
 
 				}

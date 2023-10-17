@@ -1,6 +1,7 @@
 #include "HelperFunctions.hpp"
 #include <codecvt>
 #include <locale>
+#include <filesystem>
 
 int GetTitleBarHeight()
 {
@@ -21,4 +22,12 @@ std::wstring ConvertToWideString(const std::string& str)
 	MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, ws.get(), len);
 	std::wstring r(ws.get());
 	return r;
+}
+
+std::string GetExecutablePath()
+{
+	auto len = GetCurrentDirectoryA(0, nullptr);
+	std::unique_ptr<char[]> path = std::make_unique<char[]>(len);
+	GetCurrentDirectoryA(len, path.get());
+	return std::string(path.get());
 }

@@ -3,8 +3,8 @@
 
 using namespace Engine3DRadSpace::Logging;
 
-Engine3DRadSpace::Graphics::RenderTarget::RenderTarget(GraphicsDevice *device) :
-	Texture2D(device, true)
+Engine3DRadSpace::Graphics::RenderTarget::RenderTarget(GraphicsDevice *device, PixelFormat format) :
+	Texture2D(device, true, format)
 {
 #ifdef _DX11
 	HRESULT r = device->_device->CreateRenderTargetView(_texture.Get(), nullptr, _renderTarget.GetAddressOf());
@@ -12,8 +12,8 @@ Engine3DRadSpace::Graphics::RenderTarget::RenderTarget(GraphicsDevice *device) :
 #endif
 }
 
-Engine3DRadSpace::Graphics::RenderTarget::RenderTarget(GraphicsDevice *device, unsigned x, unsigned y):
-	Texture2D(device, x, y, true)
+Engine3DRadSpace::Graphics::RenderTarget::RenderTarget(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat format):
+	Texture2D(device, x, y, true, format)
 {
 #ifdef _DX11
 	HRESULT r = device->_device->CreateRenderTargetView(_texture.Get(), nullptr, _renderTarget.GetAddressOf());

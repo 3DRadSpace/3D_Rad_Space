@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Logging/Exception.hpp>
 #include <Engine3DRadSpace/Tag.hpp>
 #include <shlobj_core.h>
+#include "../HelperFunctions.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -9,12 +10,12 @@ using namespace Engine3DRadSpace::Content;
 
 INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	static AssetManager *assetManager = nullptr;
+	static AssetManagerDialog *assetManager = nullptr;
 	switch(msg)
 	{
 		case WM_INITDIALOG:
 		{
-			assetManager = reinterpret_cast<AssetManager *>(lParam);
+			assetManager = reinterpret_cast<AssetManagerDialog *>(lParam);
 			assetManager->window = hwnd;
 			assetManager->_createForms();
 			return 1;
@@ -36,7 +37,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			{
 				case NM_DBLCLK:
 				{
-					LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
+					auto item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
 
 					if(item->iItem >= 0)
 					{
@@ -75,9 +76,10 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 						if(GetOpenFileNameA(&ofn))
 						{
-							bool err = true;
+							auto path = std::filesystem::path(filename);
+							auto relativePath = path.relative_path();
 
-							auto try_load_asset = []<AssetType T>(Tag<T> dummy,ContentManager * content, const char *file, HWND current_window) -> std::optional<std::string>
+							auto tryLoadAsset = []<AssetType T>(Tag<T> dummy,ContentManager * content, const char *file, HWND current_window) -> std::optional<std::string>
 							{
 								try
 								{
@@ -96,7 +98,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 								}
 							};
 
-							std::string possibleErr = "";
+							std::string possibleErr;
 
 							std::unordered_map<std::type_index, int> typemap =
 							{
@@ -108,10 +110,10 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 							switch (typemap[assetManager->_assetType])
 							{
 							case 1:
-								p = try_load_asset(Tag<Graphics::Texture2D>{}, assetManager->_content, filename, hwnd);
+								p = tryLoadAsset(Tag<Graphics::Texture2D>{}, assetManager->_content, filename, hwnd);
 								break;
 							case 2:
-								p = try_load_asset(Tag<Graphics::Model3D>{}, assetManager->_content, filename, hwnd);
+								p = tryLoadAsset(Tag<Graphics::Model3D>{}, assetManager->_content, filename, hwnd);
 								break;
 							default:
 								break;
@@ -127,16 +129,12 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			}
 			return 1;
 		}
-		case WM_SIZE:
-		{
-			
-			return 1;
-		}
-		default: return 0;
+		default: 
+			return 0;
 	}
 }
 
-void AssetManager::_createForms()
+void AssetManagerDialog::_createForms()
 {
 	HDC hdc = GetDC(owner);
 
@@ -217,80 +215,91 @@ void AssetManager::_createForms()
 	_loadAssetIcons();
 }
 
-void AssetManager::_loadAssetIcons()
+void AssetManagerDialog::_loadAssetIcons()
 {
-	std::thread image_loader = std::thread([this]()
+	auto imageLoader = std::thread([this]()
+	{
+		for (auto& asset : *_content)
 		{
-			for (auto& asset : *_content)
+			if (_imageList == nullptr) return;
+			if (_assetList == nullptr) return;
+
+			if (asset == nullptr) continue;
+			if (asset->Type.hash_code() != _assetType.hash_code()) continue;
+
+			std::string imagePath;
+			//Find %appdata%
+			char appdataPath[_MAX_PATH] = {};
+			HRESULT r;
+
+			if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
 			{
-				if (_imageList == nullptr) return;
-				if (_assetList == nullptr) return;
-
-				if (asset == nullptr) continue;
-				if (asset->Type.hash_code() != _assetType.hash_code()) continue;
-
-				std::string imagePath;
-				//Find %appdata%
-				char appdataPath[_MAX_PATH] = {};
-				HRESULT r;
-
-				if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
+				auto assetPath = std::filesystem::path(asset->Path);
+				if (!std::filesystem::exists(asset->Path))
 				{
-					//Combine paths
-					imagePath = appdataPath + ("\\3DRadSpace\\AssetImages\\" + std::filesystem::path(asset->Path).relative_path().string()) + ".png";
-
-					auto dirPath = std::filesystem::path(imagePath).remove_filename();
-					std::filesystem::create_directories(dirPath);
-				}
-				else throw std::filesystem::filesystem_error("Cannot find the AppData folder", std::error_code(r, std::system_category()));
-
-				if (!std::filesystem::exists(imagePath))
-				{
-					std::unordered_map<size_t, int> type_map =
+					assetPath = std::filesystem::path(asset->Path).lexically_relative(GetExecutablePath());
+					if (assetPath.empty())
 					{
-						{typeid(Engine3DRadSpace::Graphics::Model3D).hash_code(), 1},
-						{typeid(Engine3DRadSpace::Graphics::Texture2D).hash_code(), 2},
-					};
-
-					switch (type_map[asset->Type.hash_code()])
-					{
-					case 1:
-						if (_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Model3D>(imagePath, asset->Path);
-						break;
-					case 2:
-						if (_renderer) _renderer->RenderAsset<Engine3DRadSpace::Graphics::Texture2D>(imagePath, asset->Path);
-						break;
-					default:
-						break;
+						throw std::exception("Asset is not located in the executable root directory!");
 					}
 				}
 
-				unsigned w, h;
-				HBITMAP image = loadImageFromFile(imagePath.c_str(), w, h);
+				imagePath = appdataPath + (R"\3DRadSpace\AssetImages\" + assetPath.string()) + ".png";
 
-				if (image == nullptr) //if failed to render and save an image, fall back to the default one.
-					image = loadImageFromFile("Data//NoAsset.png", w, h);
+				auto dirPath = std::filesystem::path(imagePath).remove_filename().lexically_relative(GetExecutablePath());
+				if (dirPath.empty()) dirPath = std::filesystem::path(imagePath).remove_filename();
 
-				if (image == nullptr)
-					throw std::exception("default image not found!");
-
-				ImageList_Add(_imageList, image, nullptr);
-				DeleteObject(image);
-
-				LVITEMA item{};
-				item.lParam = asset->ID();
-				item.pszText = const_cast<char*>(asset->Name.c_str());
-				item.cchTextMax = int(asset->Name.length());
-				item.iImage = asset->ID() - 1;
-				item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
-
-				SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next
+				std::filesystem::create_directories(dirPath);
 			}
-		});
-	image_loader.detach();
+			else throw std::filesystem::filesystem_error("Cannot find the AppData folder", std::error_code(r, std::system_category()));
+
+			if (!std::filesystem::exists(imagePath))
+			{
+				std::unordered_map<size_t, int> type_map =
+				{
+					{typeid(Graphics::Model3D).hash_code(), 1},
+					{typeid(Graphics::Texture2D).hash_code(), 2},
+				};
+
+				switch (type_map[asset->Type.hash_code()])
+				{
+				case 1:
+					if (_renderer) _renderer->RenderAsset<Graphics::Model3D>(imagePath, asset->Path);
+					break;
+				case 2:
+					if (_renderer) _renderer->RenderAsset<Graphics::Texture2D>(imagePath, asset->Path);
+					break;
+				default:
+					break;
+				}
+			}
+
+			unsigned w, h;
+			HBITMAP image = loadImageFromFile(imagePath.c_str(), w, h);
+
+			if (image == nullptr) //if failed to render and save an image, fall back to the default one.
+				image = loadImageFromFile("Data//NoAsset.png", w, h);
+
+			if (image == nullptr)
+				throw std::exception("default image not found!");
+
+			ImageList_Add(_imageList, image, nullptr);
+			DeleteObject(image);
+
+			LVITEMA item{};
+			item.lParam = asset->ID();
+			item.pszText = const_cast<char*>(asset->Name.c_str());
+			item.cchTextMax = int(asset->Name.length());
+			item.iImage = int(asset->ID() - 1);
+			item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
+
+			SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next
+		}
+	});
+	imageLoader.detach();
 }
 
-AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content) :
+AssetManagerDialog::AssetManagerDialog(HWND owner, HINSTANCE instance, ContentManager *content) :
 	Dialog(owner, instance, AssetManager_DlgProc, "Asset Manager"),
 	_assetList(nullptr),
 	_searchBox(nullptr),
@@ -302,7 +311,7 @@ AssetManager::AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Con
 {
 }
 
-AssetManager::~AssetManager()
+AssetManagerDialog::~AssetManagerDialog()
 {
 	if(_imageList != nullptr)
 	{

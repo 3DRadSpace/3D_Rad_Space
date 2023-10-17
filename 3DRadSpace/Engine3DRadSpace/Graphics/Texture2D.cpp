@@ -92,7 +92,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 #ifdef _DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	tDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	tDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	tDesc.Height = y;
 	tDesc.Width = x;
 	tDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -115,7 +115,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 	_debugInfoTX2D();
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, void* buffer, unsigned x, unsigned y, PixelFormat format = PixelFormat::R32G32B32A32_Float)
+Texture2D::Texture2D(GraphicsDevice* device, void* buffer, unsigned x, unsigned y, PixelFormat format)
 {
 #ifdef _DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
@@ -159,7 +159,7 @@ Texture2D::Texture2D(GraphicsDevice* device, Color* colors, unsigned x, unsigned
 	desc.MipLevels = 1;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
 	D3D11_SUBRESOURCE_DATA data{};
 	data.pSysMem = colors;
@@ -174,7 +174,7 @@ Texture2D::Texture2D(GraphicsDevice* device, Color* colors, unsigned x, unsigned
 	_debugInfoTX2D();
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device,const uint8_t* imageBuffer, size_t size):
+Texture2D::Texture2D(GraphicsDevice* device,const uint8_t* imageBuffer, size_t size):
 	_device(device)
 {
 #ifdef _DX11
@@ -205,34 +205,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device,const ui
 #endif
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y):
-	_device(device),
-	_width(x),
-	_height(y)
-{
-#ifdef _DX11
-	D3D11_TEXTURE2D_DESC desc{};
-	desc.Width = x;
-	desc.Height = y;
-	desc.ArraySize = 1;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	desc.MipLevels = 1;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-
-	HRESULT r = device->_device->CreateTexture2D(&desc, nullptr, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
-
-	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
-#endif
-	_debugInfoTX2D();
-}
-
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, void* buffer, unsigned x, unsigned y, PixelFormat format):
+Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat format):
 	_device(device),
 	_width(x),
 	_height(y)
@@ -259,7 +232,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice* device, void* b
 	_debugInfoTX2D();
 }
 
-void Engine3DRadSpace::Graphics::Texture2D::_debugInfoTX2D()
+void Texture2D::_debugInfoTX2D()
 {
 #ifdef _DEBUG
 #ifdef _DX11
@@ -272,7 +245,7 @@ void Engine3DRadSpace::Graphics::Texture2D::_debugInfoTX2D()
 #endif
 }
 
-void Engine3DRadSpace::Graphics::Texture2D::_debugInfoRT()
+void Texture2D::_debugInfoRT()
 {
 #ifdef _DEBUG
 #ifdef _DX11
@@ -285,7 +258,7 @@ void Engine3DRadSpace::Graphics::Texture2D::_debugInfoRT()
 #endif
 }
 
-void Engine3DRadSpace::Graphics::Texture2D::_retrieveSize()
+void Texture2D::_retrieveSize()
 {
 	//Retrieve the image size
 	D3D11_TEXTURE2D_DESC desc;
@@ -295,7 +268,7 @@ void Engine3DRadSpace::Graphics::Texture2D::_retrieveSize()
 	_height = desc.Height;
 }
 
-DXGI_FORMAT Engine3DRadSpace::Graphics::Texture2D::_getTextureFormat(PixelFormat format)
+DXGI_FORMAT Texture2D::_getTextureFormat(PixelFormat format)
 {
 	switch (format)
 	{
@@ -449,7 +422,7 @@ DXGI_FORMAT Engine3DRadSpace::Graphics::Texture2D::_getTextureFormat(PixelFormat
 	}
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRenderTarget):
+Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRenderTarget, PixelFormat format):
 	_device(device),
 	_width(x),
 	_height(y)
@@ -476,7 +449,7 @@ Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, unsigne
 	_debugInfoTX2D();
 }
 
-Engine3DRadSpace::Graphics::Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget):
+Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget, PixelFormat format):
 	_device(device)
 {
 #ifdef _DX11
@@ -556,7 +529,7 @@ Texture2D Texture2D::CreateStaging(Texture2D* texture)
 	return Texture2D(texture->_device, std::move(stagingTexture));
 }
 
-void Engine3DRadSpace::Graphics::Texture2D::Resize(unsigned newX, unsigned newY)
+void Texture2D::Resize(unsigned newX, unsigned newY)
 {
 #ifdef _DX11
 	//1.) Create a staging texture.
@@ -582,7 +555,7 @@ void Engine3DRadSpace::Graphics::Texture2D::Resize(unsigned newX, unsigned newY)
 	_device->_context->CopyResource(stagingTexture.Get(), _texture.Get());
 
 	D3D11_MAPPED_SUBRESOURCE mappedRes{};
-	HRESULT r = _device->_context->Map(stagingTexture.Get(), 0, D3D11_MAP_READ, 0, &mappedRes);
+	r = _device->_context->Map(stagingTexture.Get(), 0, D3D11_MAP_READ, 0, &mappedRes);
 	Logging::RaiseFatalErrorIfFailed(r, "Failed to map the staging texture!");
 
 	struct ColorInt
@@ -643,19 +616,32 @@ void Texture2D::SaveToFile(const std::string &path)
 #endif
 }
 
-unsigned Engine3DRadSpace::Graphics::Texture2D::Width()
+unsigned Texture2D::Width()
 {
 	return _width;
 }
 
-unsigned Engine3DRadSpace::Graphics::Texture2D::Height()
+unsigned Texture2D::Height()
 {
 	return _height;
 }
 
-Texture2D Engine3DRadSpace::Graphics::Texture2D::Clone()
+Texture2D Texture2D::Clone()
 {
 	Texture2D staging = Texture2D::CreateStaging(this);
 
+#ifdef _DX11
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> copy = nullptr;
+
+	D3D11_TEXTURE2D_DESC desc{};
+	this->_texture->GetDesc(&desc);
+
+	HRESULT r = _device->_device->CreateTexture2D(&desc, nullptr, copy.GetAddressOf());
+	Logging::RaiseFatalErrorIfFailed(r, "Failed to create staging texture");
+
+	_device->_context->CopyResource(copy.Get(), staging._texture.Get());
+
+	return Texture2D(_device, std::move(copy));
+#endif
 }
 

@@ -4,7 +4,7 @@
 #include "..\Controls\Dialog.hpp"
 #include "..\AssetListRenderer.hpp"
 
-class AssetManager : public Dialog
+class AssetManagerDialog : public Dialog
 {
 	HWND _assetList;
 
@@ -24,13 +24,13 @@ class AssetManager : public Dialog
 	void _createForms();
 	void _loadAssetIcons();
 public:
-	AssetManager(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content);
+	AssetManagerDialog(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content);
 
-	AssetManager(AssetManager &) = delete;
-	AssetManager(AssetManager &&) = delete;
+	AssetManagerDialog(AssetManagerDialog&) = delete;
+	AssetManagerDialog(AssetManagerDialog&&) = delete;
 
-	AssetManager &operator=(AssetManager &) = delete;
-	AssetManager &operator=(AssetManager &&) = delete;
+	AssetManagerDialog &operator=(AssetManagerDialog&) = delete;
+	AssetManagerDialog &operator=(AssetManagerDialog&&) = delete;
 
 	template<Engine3DRadSpace::Content::AssetType T>
 	Engine3DRadSpace::Content::AssetReference<T> ShowDialog()
@@ -41,7 +41,7 @@ public:
 		return Engine3DRadSpace::Content::AssetReference<T>(static_cast<unsigned>(v));
 	}
 
-	~AssetManager();
+	~AssetManagerDialog();
 
 	friend INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

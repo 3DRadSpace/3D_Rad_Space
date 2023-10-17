@@ -104,7 +104,7 @@ void TextureControl::HandleClick(HWND clickedWindow)
 {
 	if(clickedWindow == _pictureBox || clickedWindow == _button)
 	{
-		AssetManager assetManager(this->owner, this->instance, _content);
+		AssetManagerDialog assetManager(this->owner, this->instance, _content);
 		auto r = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Texture2D>();
 
 		if(r.ID != 0)

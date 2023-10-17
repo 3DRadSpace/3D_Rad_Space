@@ -30,7 +30,7 @@ namespace Engine3DRadSpace::Reflection
 		const std::string _desc;
 		const T _defaultVal;
 	public:
-		ReflectedField(const size_t offset_obj_field, std::string visibleName, std::string description, T defaultValue) :
+		ReflectedField(const size_t offset_obj_field,const std::string &visibleName,const std::string &description, T defaultValue) :
 			_offset(offset_obj_field),
 			_name(visibleName),
 			_desc(description),
@@ -59,7 +59,7 @@ namespace Engine3DRadSpace::Reflection
 			return _offset;
 		}
 
-		const void *DefaultValue() const override
+		[[nodiscard]] const void *DefaultValue() const override
 		{
 			return reinterpret_cast<const void *>(&_defaultVal);
 		}
@@ -77,7 +77,7 @@ namespace Engine3DRadSpace::Reflection
 			if(value == nullptr) throw std::invalid_argument("Set(): value = nullptr");
 
 			T* lhs = std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset)); 
-			T* rhs = std::launder(reinterpret_cast<T*>(value));
+			T* rhs = std::launder(static_cast<T*>(value));
 
 			*lhs = *rhs;
 		}
@@ -87,17 +87,16 @@ namespace Engine3DRadSpace::Reflection
 			return GetFieldRepresentation<T>();
 		}
 
-		~ReflectedField() = default;
+		~ReflectedField() override = default;
 	};
 
 	/// Null specialization. Sentinel value.
 	template<>
-	class DLLEXPORT ReflectedField<void> : public IReflectedField
+	class DLLEXPORT ReflectedField<void> final : public IReflectedField
 	{
 	public:
-		ReflectedField()
-		{
-		}
+		ReflectedField() = default;
+
 		const size_t TypeHash() const override
 		{
 			return 0;

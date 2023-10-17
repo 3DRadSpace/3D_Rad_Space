@@ -11,8 +11,8 @@ using namespace Engine3DRadSpace::Content;
 
 class TriangleTest : public Game
 {
-	Engine3DRadSpace::Graphics::Shaders::Blank_NoMatrix _triangleShader;
-	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPositionColor>> _triangleBuffer;
+	Shaders::Blank_NoMatrix _triangleShader;
+	std::unique_ptr<VertexBufferV<VertexPositionColor>> _triangleBuffer;
 public:
 	TriangleTest();
 
@@ -53,14 +53,14 @@ void TriangleTest::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 
 void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
 {
+	if (frameCount == 1) Exit();
+	frameCount++;
+
 	_triangleShader.SetBasic();
 	Device->SetTopology(VertexTopology::TriangleList);
 	_triangleBuffer->Draw();
 	Device->SaveBackBufferToFile("Triangle.png");
-	//TODO: Check if the saved image is matching with a expected image.
-
-	if(frameCount == 1) Exit();
-	frameCount++;
+	//TODO: Check if the saved image is matching with a expected image
 }
 
 TEST(EngineCoreTests, HelloTriangle)
@@ -68,5 +68,4 @@ TEST(EngineCoreTests, HelloTriangle)
 	TriangleTest t;
 	t.Run();
 	EXPECT_TRUE(true);
-	//TODO: Save into a file and compare the image.
 }

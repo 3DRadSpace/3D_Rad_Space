@@ -167,6 +167,7 @@
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
+    <ClInclude Include="Graphics\PixelFormat.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Box.hpp" />

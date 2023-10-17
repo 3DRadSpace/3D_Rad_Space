@@ -258,6 +258,7 @@
     </ClInclude>
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
+    <ClInclude Include="Graphics\PixelFormat.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />

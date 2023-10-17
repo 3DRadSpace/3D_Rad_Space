@@ -8,7 +8,7 @@
 
 namespace Engine3DRadSpace::Algorithms::Picking
 {
-	class PickingRenderTargetRender : IDrawable3D
+	class DLLEXPORT PickingRenderTargetRender : IDrawable3D
 	{
 		std::shared_ptr<PickingShader> _shader;
 		Engine3DRadSpace::GraphicsDevice* _device;
@@ -17,13 +17,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 
 		bool _isDrawing = false;
 	public:
-		PickingRenderTargetRender(GraphicsDevice* device) :
-			_device(device),
-			_renderTarget(std::make_unique<Graphics::RenderTarget>(device, Graphics::TextureFormat::R32_SignedInt)),
-			_shader(Content::ShaderManager::LoadShader<PickingShader>(device)),
-			_depthBuffer(std::make_unique<Graphics::DepthStencilBuffer>(device))
-		{
-		}
+		PickingRenderTargetRender(GraphicsDevice* device);
 
 		void Begin()
 		{
@@ -61,7 +55,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 
 		unsigned Pick(const Math::Point& mouseCoords)
 		{
-
+			return 0;
 		}
 	};
 }

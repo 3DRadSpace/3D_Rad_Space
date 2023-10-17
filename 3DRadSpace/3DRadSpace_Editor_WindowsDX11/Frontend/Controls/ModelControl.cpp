@@ -48,7 +48,7 @@ void ModelControl::HandleClick(HWND clickedHandle)
 {
 	if (clickedHandle == _pictureBox || clickedHandle == _button)
 	{
-		AssetManager assetManager(window, instance, _content);
+		AssetManagerDialog assetManager(window, instance, _content);
 		ModelReference = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
 		if (ModelReference.ID != 0)
 		{

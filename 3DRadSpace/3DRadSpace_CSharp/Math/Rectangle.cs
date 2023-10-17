@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace Engine3DRadSpace.Math
 {
@@ -19,13 +14,13 @@ namespace Engine3DRadSpace.Math
 		{
 			X = x;
 			Y = y;
-			Width = w; 
+			Width = w;
 			Height = h;
 		}
 
-		public override bool Equals(object? obj) 
-		{ 
-			if(obj is RectangleF r)
+		public override bool Equals(object? obj)
+		{
+			if (obj is RectangleF r)
 			{
 				return r.Equals(obj);
 			}
@@ -45,12 +40,12 @@ namespace Engine3DRadSpace.Math
 			return HashCode.Combine(X, Y, Width, Height);
 		}
 
-		public static bool operator==(RectangleF left, RectangleF right)
+		public static bool operator ==(RectangleF left, RectangleF right)
 		{
 			return left.Equals(right);
 		}
-		public static bool operator!=(RectangleF left, RectangleF right) 
-		{  
+		public static bool operator !=(RectangleF left, RectangleF right)
+		{
 			return !left.Equals(right);
 		}
 	}
@@ -81,7 +76,7 @@ namespace Engine3DRadSpace.Math
 
 		public override bool Equals(object? other)
 		{
-			if(other is Rectangle r)
+			if (other is Rectangle r)
 			{
 				return r.Equals(this);
 			}
@@ -98,8 +93,8 @@ namespace Engine3DRadSpace.Math
 			return a.Equals(b);
 		}
 		public static bool operator !=(Rectangle a, Rectangle b)
-		{  
-			return !a.Equals(b); 
+		{
+			return !a.Equals(b);
 		}
 	}
 }
