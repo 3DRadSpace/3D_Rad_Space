@@ -6,7 +6,7 @@
 #include <ScreenGrab.h>
 #include <wincodec.h>
 #endif // _DX11
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 #include "../Logging/ResourceLoadingError.hpp"
 
 using namespace Engine3DRadSpace;
@@ -107,10 +107,10 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 	textureData.SysMemPitch = sizeof(Color) * x;
 
 	HRESULT r = device->_device->CreateTexture2D(&tDesc, &textureData, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 	_debugInfoTX2D();
 }
@@ -135,10 +135,10 @@ Texture2D::Texture2D(GraphicsDevice* device, void* buffer, unsigned x, unsigned 
 	textureData.SysMemPitch = sizeof(Color) * x;
 
 	HRESULT r = device->_device->CreateTexture2D(&tDesc, &textureData, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 	_debugInfoTX2D();
 }
@@ -166,10 +166,10 @@ Texture2D::Texture2D(GraphicsDevice* device, Color* colors, unsigned x, unsigned
 	data.SysMemPitch = sizeof(Color) * x;
 
 	HRESULT r = device->_device->CreateTexture2D(&desc, &data, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 	_debugInfoTX2D();
 }
@@ -199,7 +199,7 @@ Texture2D::Texture2D(GraphicsDevice* device,const uint8_t* imageBuffer, size_t s
 			_resourceView.GetAddressOf()
 		);
 	}
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create texture from memory!");
+	if (FAILED(r)) throw Exception("Failed to create texture from memory!");
 
 	_retrieveSize();
 #endif
@@ -224,10 +224,10 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat
 	desc.Format = _getTextureFormat(format);
 
 	HRESULT r = device->_device->CreateTexture2D(&desc, nullptr, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 	_debugInfoTX2D();
 }
@@ -441,10 +441,10 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRe
 	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
 	HRESULT r = device->_device->CreateTexture2D(&desc, nullptr, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 	_debugInfoTX2D();
 }
@@ -466,10 +466,10 @@ Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget, PixelFormat 
 	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
 	HRESULT r = device->_device->CreateTexture2D(&desc, nullptr, _texture.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to initialize a 2D texture!");
+	if (FAILED(r)) throw Exception("Failed to initialize a 2D texture!");
 
 	r = device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to create a shader resource view!");
 #endif
 
 	_width = device->_resolution.X;
@@ -523,7 +523,7 @@ Texture2D Texture2D::CreateStaging(Texture2D* texture)
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> stagingTexture;
 	HRESULT r = texture->_device->_device->CreateTexture2D(&desc, nullptr, &stagingTexture);
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a staging texture!");
+	if (FAILED(r)) throw Exception("Failed to create a staging texture!");
 #endif
 
 	return Texture2D(texture->_device, std::move(stagingTexture));
@@ -549,14 +549,14 @@ void Texture2D::Resize(unsigned newX, unsigned newY)
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> stagingTexture;
 	HRESULT r = _device->_device->CreateTexture2D(&desc, nullptr, &stagingTexture);
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a staging texture!");
+	if (FAILED(r)) throw Exception("Failed to create a staging texture!");
 
 	//2.) Copy initial texture into the staging texture
 	_device->_context->CopyResource(stagingTexture.Get(), _texture.Get());
 
 	D3D11_MAPPED_SUBRESOURCE mappedRes{};
 	r = _device->_context->Map(stagingTexture.Get(), 0, D3D11_MAP_READ, 0, &mappedRes);
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to map the staging texture!");
+	if (FAILED(r)) throw Exception("Failed to map the staging texture!");
 
 	struct ColorInt
 	{
@@ -595,10 +595,10 @@ void Texture2D::Resize(unsigned newX, unsigned newY)
 
 	resizedTextureDesc.MipLevels = 1;
 	r = _device->_device->CreateTexture2D(&resizedTextureDesc, &newSubresource, _texture.ReleaseAndGetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to recreate the texture!");
+	if (FAILED(r)) throw Exception("Failed to recreate the texture!");
 	
 	r = _device->_device->CreateShaderResourceView(_texture.Get(), nullptr, _resourceView.ReleaseAndGetAddressOf()); //recreate the shader resource view for the new texture
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to recreate the shader resource view!");
+	if (FAILED(r)) throw Exception("Failed to recreate the shader resource view!");
 #endif
 	//6.) Update fields
 	_width = newX;
@@ -612,7 +612,7 @@ void Texture2D::SaveToFile(const std::string &path)
 	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, wpath, _MAX_PATH);
 
 	HRESULT r = DirectX::SaveWICTextureToFile(_device->_context.Get(), _texture.Get(), GUID_ContainerFormatPng, wpath, nullptr, nullptr, true);
-	if(FAILED(r)) throw std::exception("Failed to save file!");
+	if(FAILED(r)) throw Exception("Failed to save file!");
 #endif
 }
 
@@ -637,11 +637,21 @@ Texture2D Texture2D::Clone()
 	this->_texture->GetDesc(&desc);
 
 	HRESULT r = _device->_device->CreateTexture2D(&desc, nullptr, copy.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create staging texture");
+	if (FAILED(r)) throw Exception("Failed to create staging texture");
 
 	_device->_context->CopyResource(copy.Get(), staging._texture.Get());
 
 	return Texture2D(_device, std::move(copy));
 #endif
+}
+
+void* Texture2D::TextureHandle() const
+{
+	return _texture.Get();
+}
+
+void* Texture2D::ResourceViewHandle() const
+{
+	return _resourceView.Get();
 }
 

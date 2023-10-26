@@ -1,10 +1,11 @@
 #include "SamplerState.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Logging;
 
-void Engine3DRadSpace::Graphics::SamplerState::_debugInfo()
+void SamplerState::_debugInfo()
 {
 #ifdef _DEBUG
 #ifdef _DX11
@@ -36,7 +37,7 @@ SamplerState::SamplerState(GraphicsDevice* device)
 	desc.MaxLOD = std::numeric_limits<float>::max();
 
 	HRESULT r = device->_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a sampler state with default values!");
+	if (FAILED(r)) throw Exception("Failed to create a sampler state with default values!");
 #endif
 }
 
@@ -140,7 +141,7 @@ SamplerState::SamplerState(GraphicsDevice *device, TextureFilter Filter, Texture
 	desc.MaxLOD = MaxLOD;
 
 	HRESULT r = device->_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to create a sampler state with default values!");
+	if (FAILED(r)) throw Exception("Failed to create a sampler state with default values!");
 #endif
 }
 
@@ -178,7 +179,7 @@ SamplerState SamplerState::LinearWrap(GraphicsDevice *device)
 	);
 }
 
-SamplerState Engine3DRadSpace::Graphics::SamplerState::PointClamp(GraphicsDevice *device)
+SamplerState SamplerState::PointClamp(GraphicsDevice *device)
 {
 	return SamplerState(
 		device,
@@ -195,7 +196,7 @@ SamplerState Engine3DRadSpace::Graphics::SamplerState::PointClamp(GraphicsDevice
 	);
 }
 
-SamplerState Engine3DRadSpace::Graphics::SamplerState::PointWrap(GraphicsDevice *device)
+SamplerState SamplerState::PointWrap(GraphicsDevice *device)
 {
 	return SamplerState(
 		device,
@@ -212,7 +213,7 @@ SamplerState Engine3DRadSpace::Graphics::SamplerState::PointWrap(GraphicsDevice 
 	);
 }
 
-SamplerState Engine3DRadSpace::Graphics::SamplerState::AnisotropicClamp(GraphicsDevice *device)
+SamplerState SamplerState::AnisotropicClamp(GraphicsDevice *device)
 {
 	return SamplerState(
 		device,
@@ -229,7 +230,7 @@ SamplerState Engine3DRadSpace::Graphics::SamplerState::AnisotropicClamp(Graphics
 	);
 }
 
-SamplerState Engine3DRadSpace::Graphics::SamplerState::AnisotropicWrap(GraphicsDevice *device)
+SamplerState SamplerState::AnisotropicWrap(GraphicsDevice *device)
 {
 	return SamplerState(
 		device,

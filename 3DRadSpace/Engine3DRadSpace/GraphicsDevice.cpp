@@ -1,8 +1,5 @@
 #include "GraphicsDevice.hpp"
-#include "Logging/Error.hpp"
-//include shader types
-
-#include <cassert>
+#include "Logging/Exception.hpp"
 #include "Graphics/VertexBuffer.hpp"
 #include "Graphics/IndexBuffer.hpp"
 #include "Graphics/RenderTarget.hpp"
@@ -23,7 +20,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
-Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
+GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
 	EnableVSync(true),
 	_resolution(width, height)
 {
@@ -61,13 +58,13 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 		nullptr,
 		&_context
 	);
-	RaiseFatalErrorIfFailed(r, "D3D11CreateDeviceAndSwapChain failed!");
+	if (FAILED(r)) throw Exception("D3D11CreateDeviceAndSwapChain failed!");
 
 	r = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), static_cast<void**>(&_screenTexture));
-	RaiseFatalErrorIfFailed(r, "Failed to get the back buffer texture!");
+	if (FAILED(r)) throw Exception("Failed to get the back buffer texture!");
 
 	r = _device->CreateRenderTargetView(_screenTexture.Get(), nullptr, &_mainRenderTarget);
-	RaiseFatalErrorIfFailed(r, "Failed to create the main render target!");
+	if (FAILED(r)) throw Exception("Failed to create the main render target!");
 
 	_stencilBuffer = std::make_unique<DepthStencilBuffer>(this);
 	_stencilState = std::make_unique<DepthStencilState>(this);
@@ -85,7 +82,7 @@ Engine3DRadSpace::GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsig
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
+void GraphicsDevice::Clear(const Color& clearColor)
 {
 #ifdef _DX11
 	_context->OMSetRenderTargets(1, _mainRenderTarget.GetAddressOf(), _stencilBuffer->_depthView.Get());
@@ -96,7 +93,7 @@ void Engine3DRadSpace::GraphicsDevice::Clear(const Color& clearColor)
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetViewport()
+void GraphicsDevice::SetViewport()
 {
 #ifdef _DX11
 	D3D11_VIEWPORT vp{};
@@ -110,7 +107,7 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport()
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
+void GraphicsDevice::SetViewport(const Viewport& viewport)
 {
 #ifdef _DX11
 	D3D11_VIEWPORT vp{};
@@ -126,14 +123,14 @@ void Engine3DRadSpace::GraphicsDevice::SetViewport(const Viewport& viewport)
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetViewports(std::span<Viewport> viewports)
+void GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
 #ifdef _DX11
 	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
 #endif // _DX11
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
+void GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
 {
 #ifdef _DX11
 	auto rt = renderTarget != nullptr ? renderTarget->_renderTarget.GetAddressOf() : _mainRenderTarget.GetAddressOf();
@@ -141,7 +138,7 @@ void Engine3DRadSpace::GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *r
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::SetRenderTargetAndDepth(Graphics::RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer)
+void GraphicsDevice::SetRenderTargetAndDepth(RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer)
 {
 #ifdef _DX11
 	auto depthviewBuffer = depthBuffer != nullptr ? depthBuffer->_depthView.Get() : _stencilBuffer->_depthView.Get();
@@ -150,7 +147,7 @@ void Engine3DRadSpace::GraphicsDevice::SetRenderTargetAndDepth(Graphics::RenderT
 #endif
 }
 
-void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot)
+void GraphicsDevice::DrawVertexBuffer(VertexBuffer* vertexBuffer, unsigned startSlot)
 {
 #ifdef _DX11
 	UINT strides = UINT(vertexBuffer->_structSize);
@@ -160,7 +157,7 @@ void Engine3DRadSpace::GraphicsDevice::DrawVertexBuffer(Engine3DRadSpace::Graphi
 	_context->Draw(UINT(vertexBuffer->_numVerts), UINT(startSlot));
 #endif
 }
-void Engine3DRadSpace::GraphicsDevice::DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer)
+void GraphicsDevice::DrawVertexBufferWithindices(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer)
 {
 #ifdef _DX11
 	UINT strides = UINT(vertexBuffer->_structSize);
@@ -176,36 +173,36 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 	HRESULT r = _swapChain->Present(EnableVSync ? 1 : 0, 0);
 	if (SUCCEEDED(r)) return; //if Present call succeded, skip error reporting.
 
-	if (r == DXGI_ERROR_DEVICE_RESET) RaiseFatalError(Error(r, "Graphics device reset"));
+	if (r == DXGI_ERROR_DEVICE_RESET) throw Exception( "Graphics device reset");
 	if (r == DXGI_ERROR_DEVICE_REMOVED)
 	{
 		HRESULT reason = _device->GetDeviceRemovedReason();
 		switch (reason)
 		{
 			case DXGI_ERROR_DEVICE_HUNG:
-				RaiseFatalError(Error(reason, "Graphics device hung"));
+				throw Exception("Graphics device hung");
 				break;
 			case DXGI_ERROR_DEVICE_REMOVED:
-				RaiseFatalError(Error(reason, "Graphics device removed"));
+				throw Exception("Graphics device removed");
 				break;
 			case DXGI_ERROR_DEVICE_RESET:
-				RaiseFatalError(Error(reason, "Graphics device reset"));
+				throw Exception("Graphics device reset");
 				break;
 			case DXGI_ERROR_DRIVER_INTERNAL_ERROR:
-				RaiseFatalError(Error(reason, "Internal driver error!"));
+				throw Exception("Internal driver error!");
 				break;
 			case DXGI_ERROR_INVALID_CALL:
-				RaiseFatalError(Error(reason, "Invalid call"));
+				throw Exception("Invalid call");
 				break;
 			default: break;
 		}
 	}
 	
-	RaiseFatalErrorIfFailed(r, "Unknown error when presenting a frame", this);
+	if (FAILED(r)) throw Exception("Unknown error when presenting a frame");
 #endif // _DX11
 }
 
-void Engine3DRadSpace::GraphicsDevice::SaveBackBufferToFile(const std::string &path)
+void GraphicsDevice::SaveBackBufferToFile(const std::string &path)
 {
 #ifdef _DX11
 	wchar_t wpath[_MAX_PATH]{};

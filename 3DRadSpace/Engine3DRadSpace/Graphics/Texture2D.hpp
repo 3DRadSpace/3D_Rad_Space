@@ -49,9 +49,12 @@ namespace Engine3DRadSpace::Graphics
         static Texture2D CreateStaging(Texture2D* texture);
         Texture2D Clone();
 
+		void* TextureHandle() const;
+		void* ResourceViewHandle() const;
+
 		virtual ~Texture2D() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class ::Engine3DRadSpace::GraphicsDevice;
 		friend class IVertexShader;
 		friend class IPixelShader;
 		friend class IHullShader;

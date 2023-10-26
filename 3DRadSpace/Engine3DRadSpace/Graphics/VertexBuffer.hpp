@@ -1,7 +1,7 @@
 #pragma once
 #include "../GraphicsDevice.hpp"
 #include "VertexDeclarations.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 #include "IShader.hpp"
 
 namespace Engine3DRadSpace
@@ -79,12 +79,12 @@ namespace Engine3DRadSpace
 #ifdef _DX11
 			D3D11_MAPPED_SUBRESOURCE resource{};
 			HRESULT r = _device->_context->Map(_buffer.Get(), 0, D3D11_MAP_WRITE, 0, &resource);
-			Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to map a vertex buffer that cannot be written by the CPU.");
+			if (FAILED(r)) throw Logging::Exception("Failed to map a vertex buffer that cannot be written by the CPU.");
 			
 			memcpy_s(resource.pData, data.size_bytes(), &data[0], data.size_bytes());
 
 			_device->_context->Unmap(_buffer.Get(), 0);
-			Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to unmap a vertex buffer object when writing data.");
+			if (FAILED(r)) throw Logging::Exception("Failed to unmap a vertex buffer object when writing data.");
 #endif
 		}
 	}

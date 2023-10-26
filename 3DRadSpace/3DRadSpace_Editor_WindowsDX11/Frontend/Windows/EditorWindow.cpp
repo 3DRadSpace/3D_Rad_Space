@@ -1,6 +1,5 @@
 #include "EditorWindow.hpp"
 #include "..\..\resource.h"
-#include "Engine3DRadSpace/Logging/Error.hpp"
 #include <fstream>
 #include "..\HelperFunctions.hpp"
 #include <d3d11.h>
@@ -8,6 +7,7 @@
 #include <ranges>
 
 #include "AddObjectDialog.hpp"
+#include "Engine3DRadSpace/Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
@@ -151,13 +151,14 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	wndclass.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(32512)); //IDI_ARROW
 
 	ATOM a = RegisterClassA(&wndclass);
-	RaiseFatalErrorIfFalse(a != 0,"Failed to register class!");
+	if(a == 0)
+		throw Exception("Failed to register class!");
 	
 	//
 	//Create the menu
 	//
 	HMENU recentProjectsMenu = CreateMenu();
-	RaiseFatalErrorIfNull(recentProjectsMenu,"Failed to create File > Recent files menu!");
+	if(recentProjectsMenu == nullptr) throw Exception("Failed to create File > Recent files menu!");
 
 	std::ifstream recent_projects(RecentProjectFile);
 	//Create the file if it doesn't exist or if it is empty
@@ -180,7 +181,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 
 	//Create the rest of the menu.
 	HMENU fileMenu = CreateMenu();
-	RaiseFatalErrorIfNull(fileMenu,"Failed to create the file menu!");
+	if(fileMenu == nullptr) 
+		throw Exception("Failed to create the file menu!");
 
 	AppendMenuA(fileMenu, MF_STRING, CMD_NewFile, "New Project (Ctrl+N)");
 	AppendMenuA(fileMenu, MF_STRING, CMD_OpenFile, "Open Project (Ctrl+O)");
@@ -192,7 +194,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	AppendMenuA(fileMenu, MF_STRING, CMD_Exit, "Exit (Alt+F4)");
 
 	HMENU editMenu = CreateMenu();
-	RaiseFatalErrorIfNull(editMenu, "Failed to create the edit menu!");
+	if(editMenu == nullptr)
+		throw Exception("Failed to create the edit menu!");
 
 	AppendMenuA(editMenu, MF_STRING, CMD_AddObject, "Add Object (Ctrl+A)");
 	AppendMenuA(editMenu, MF_STRING, CMD_AddAsset, "Add Asset (Ctrl+Shift+N)");
@@ -201,19 +204,22 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	AppendMenuA(editMenu, MF_STRING, CMD_ResetCursor, "Reset the 3D cursor");
 
 	HMENU viewMenu = CreateMenu();
-	RaiseFatalErrorIfNull(viewMenu, "Failed to create the view menu!");
+	if(viewMenu == nullptr)
+		throw Exception("Failed to create the view menu!");
 
 	AppendMenuA(viewMenu, MF_STRING | MF_CHECKED, CMD_SwitchObjectList, "Objects list");
 	AppendMenuA(viewMenu, MF_STRING | MF_UNCHECKED, CMD_SwitchObjectList, "Property grid");
 
 	HMENU optionsMenu = CreateMenu();
-	RaiseFatalErrorIfNull(optionsMenu, "Failed to create the options menu!");
+	if(optionsMenu == nullptr)
+		throw Exception("Failed to create the options menu!");
 
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Preferences, "Preferences");
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Update, "Search for updates");
 
 	HMENU helpMenu = CreateMenu();
-	RaiseFatalErrorIfNull(helpMenu, "Failed to create the help menu!");
+	if(helpMenu == nullptr)
+		throw Exception("Failed to create the help menu!");
 
 	AppendMenuA(helpMenu, MF_STRING,CMD_About, "About");
 	AppendMenuA(helpMenu, MF_STRING, CMD_Documentation, "Documentation");
@@ -221,7 +227,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	AppendMenuA(helpMenu, MF_STRING, CMD_Github, "Github");
 
 	HMENU mainMenu = CreateMenu();
-	RaiseFatalErrorIfNull(mainMenu, "Failed to create the main menu!");
+	if(mainMenu == nullptr)
+		throw Exception("Failed to create the main menu!");
 
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(fileMenu), "File");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(editMenu), "Edit");
@@ -245,7 +252,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		nullptr
 	);
 
-	RaiseFatalErrorIfNull(_mainWindow, "Failed to create the main window!");
+	if(_mainWindow == nullptr)
+		throw Exception("Failed to create the main window!");
 
 	//Create controls
 	_toolbar = CreateWindowExA(
@@ -262,10 +270,12 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		hInstance,
 		nullptr
 	);
-	RaiseFatalErrorIfNull(_toolbar, "Failed to create the toolbar!");
+	if(_toolbar == nullptr)
+		throw Exception("Failed to create the toolbar!");
 
 	HIMAGELIST toolbarImageList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 8, 1);
-	RaiseFatalErrorIfNull(toolbarImageList, "Failed to create the toolbar image list!");
+	if(toolbarImageList == nullptr)
+		throw Exception("Failed to create the toolbar image list!");
 
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON2)));
 	ImageList_AddIcon(toolbarImageList, LoadIconA(hInstance, MAKEINTRESOURCEA(IDI_ICON3)));
@@ -317,7 +327,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 
 	//Accelerator table
 	acceleratorTable = LoadAcceleratorsA(hInstance, MAKEINTRESOURCEA(IDR_ACCELERATOR1));
-	RaiseFatalErrorIfNull(acceleratorTable, "Failed to create the accelerator table");
+	if(acceleratorTable == nullptr)
+		throw Exception("Failed to create the accelerator table");
 	
 	ShowWindow(_mainWindow, SW_MAXIMIZE);
 	ShowWindow(_toolbar, SW_NORMAL);

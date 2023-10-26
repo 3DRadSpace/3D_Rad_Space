@@ -1,5 +1,5 @@
 #include "DepthStencilState.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -21,7 +21,7 @@ DepthStencilState::DepthStencilState(GraphicsDevice *device)
     CD3D11_DEPTH_STENCIL_DESC dsDesc(D3D11_DEFAULT);
 
     HRESULT r = device->_device->CreateDepthStencilState(&dsDesc, _state.GetAddressOf());
-    RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state");
+    if (FAILED(r)) throw Exception("Failed to create a depth stencil state");
 #endif
 }
 
@@ -49,7 +49,7 @@ DepthStencilState::DepthStencilState(GraphicsDevice *device, bool EnableDepth, D
     dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_FUNC(BackFace.Function);
 
     HRESULT r = device->_device->CreateDepthStencilState(&dsDesc, _state.GetAddressOf());
-    RaiseFatalErrorIfFailed(r, "Failed to create a depth stencil state");
+    if (FAILED(r)) throw Exception("Failed to create a depth stencil state");
 #endif
 }
 

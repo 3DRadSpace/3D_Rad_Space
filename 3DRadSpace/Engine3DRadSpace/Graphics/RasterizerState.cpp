@@ -1,9 +1,10 @@
 #include "RasterizerState.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 #include "../GraphicsDevice.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Logging;
 
 RasterizerState::RasterizerState(
 	GraphicsDevice* device,
@@ -32,7 +33,7 @@ RasterizerState::RasterizerState(
 	desc.AntialiasedLineEnable = aaLine;
 
 	HRESULT r = device->_device->CreateRasterizerState(&desc, _rasterizerState.ReleaseAndGetAddressOf());
-	if (FAILED(r)) Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a rasterizer state object");
+	if (FAILED(r)) throw Exception("Failed to create a rasterizer state object");
 
 #ifdef _DEBUG
 	const char rasterizerStateName[] = "RasterizerState::_rasterizerState";

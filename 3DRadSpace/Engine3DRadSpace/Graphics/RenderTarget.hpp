@@ -14,7 +14,9 @@ namespace Engine3DRadSpace::Graphics
 
 		~RenderTarget() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class ::Engine3DRadSpace::GraphicsDevice;
+
+		void* RenderTargetHandle();
 	};
 }
 

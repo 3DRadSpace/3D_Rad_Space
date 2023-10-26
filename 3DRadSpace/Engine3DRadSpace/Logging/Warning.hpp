@@ -5,13 +5,13 @@ namespace Engine3DRadSpace::Logging
 {
 	struct DLLEXPORT Warning
 	{
-		const char *Details;
+		const std::string Details;
 		int32_t Code;
 		int Severity;
 		const void *Extra;
 
-		Warning(int32_t code, int severity);
-		Warning(int32_t code, const char *details, int severity, const void *extra = nullptr);
+		Warning(const int32_t code, const int severity);
+		Warning(const int32_t code, const char *details,const int severity, const void *extra = nullptr);
 	};
 
 	typedef void (*FuncWarningHandler)(const Warning& warning);

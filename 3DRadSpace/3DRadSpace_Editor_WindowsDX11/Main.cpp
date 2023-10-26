@@ -20,17 +20,9 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #pragma comment(lib, "dxguid.lib")
 
 #include <Engine3DRadSpace/Content/ShaderManager.hpp>
-#include <Engine3DRadSpace/Logging/Error.hpp>
+#include "Engine3DRadSpace/Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace::Logging;
-
-void HandleError()
-{
-	if (LastError.ErrorCode < 0)
-	{
-		MessageBoxA(nullptr, LastError.Details, "Fatal error!", MB_ICONERROR | MB_OK);
-	}
-}
 
 void SetWorkingDirectory()
 {
@@ -67,7 +59,6 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 
-	std::atexit(HandleError);
 #ifdef _DEBUG
 	std::atexit(ReportLiveObjects); // Lists leaked DX11 objects
 #endif
@@ -76,7 +67,8 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	InitializeCommonControls();
 	SetWorkingDirectory();
 
-	RaiseFatalErrorIfFailed(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED), "Failed to initialize COM!");
+	if(FAILED(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED)))
+		throw Exception("Failed to initialize COM!");
 
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();

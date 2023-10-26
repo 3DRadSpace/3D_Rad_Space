@@ -1,5 +1,5 @@
 #include "IVertexShader.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 #include "../Logging/Warning.hpp"
 
 using namespace Engine3DRadSpace;
@@ -50,8 +50,7 @@ D3D11_INPUT_ELEMENT_DESC *IVertexShader::_generateInputElementDesc(std::span<Inp
 	D3D11_INPUT_ELEMENT_DESC *elem = new D3D11_INPUT_ELEMENT_DESC[numLayoutEntries]{};
 	if(elem == nullptr)
 	{
-		Logging::RaiseFatalError(Logging::Error(-1, "Failed to allocate heap memory for a D3D11_INPUT_ELEMENT_DESC array!"));
-		return nullptr;
+		throw Exception("Failed to allocate heap memory for a D3D11_INPUT_ELEMENT_DESC array!");
 	}
 
 	unsigned posIndex = 0;
@@ -366,7 +365,7 @@ void IVertexShader::_generateInputLayout(std::span<InputLayoutElement> inputLayo
 	_inputLayout->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(inputLayoutName) - 1, inputLayoutName);
 #endif
 
-	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create the input layout!");
+	if (FAILED(r)) throw Exception("Failed to create the input layout!");
 #endif
 }
 

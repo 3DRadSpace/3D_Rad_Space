@@ -4,7 +4,7 @@
 #include <assimp/material.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 #include <filesystem>
 #include "../Logging/ResourceLoadingError.hpp"
 #include "../Content/ShaderManager.hpp"

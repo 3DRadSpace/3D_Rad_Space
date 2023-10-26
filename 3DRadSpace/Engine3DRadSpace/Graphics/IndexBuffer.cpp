@@ -1,12 +1,12 @@
 #include "IndexBuffer.hpp"
 #include "../GraphicsDevice.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Graphics;
 
-void Engine3DRadSpace::Graphics::IndexBuffer::_debugInfo()
+void IndexBuffer::_debugInfo()
 {
 #ifdef _DEBUG
 #ifdef _DX11
@@ -31,7 +31,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	data.pSysMem = &indices[0];
 
 	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
-	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
+	if (FAILED(r)) throw Exception("Failed to create a index buffer!");
 #endif
 
 	_debugInfo();
@@ -52,28 +52,28 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numin
 	data.pSysMem = indices;
 
 	HRESULT r = device->_device->CreateBuffer(&desc, &data, &_indexBuffer);
-	RaiseFatalErrorIfFailed(r, "Failed to create a index buffer!");
+	if (FAILED(r)) throw Exception("Failed to create a index buffer!");
 #endif
 	_debugInfo();
 }
 
-void Engine3DRadSpace::Graphics::IndexBuffer::SetData(std::span<unsigned> newindices)
+void IndexBuffer::SetData(std::span<unsigned> newindices)
 {
 #ifdef _DX11
 	D3D11_MAPPED_SUBRESOURCE mappedBuff{};
 	HRESULT r = _device->_context->Map(_indexBuffer.Get(), 0, D3D11_MAP_WRITE, 0, &mappedBuff);
-	Logging::RaiseFatalErrorIfFailed(r, "Failed to map a index buffer!");
+	if (FAILED(r)) throw Exception("Failed to map a index buffer!");
 	memcpy(mappedBuff.pData, &newindices[0], newindices.size_bytes());
 	_device->_context->Unmap(_indexBuffer.Get(), 0);
 #endif
 }
 
-unsigned Engine3DRadSpace::Graphics::IndexBuffer::NumIndices() const
+unsigned IndexBuffer::NumIndices() const
 {
 	return _numIndices;
 }
 
-void Engine3DRadSpace::Graphics::IndexBuffer::Set(unsigned offset)
+void IndexBuffer::Set(unsigned offset)
 {
 #ifdef _DX11
 	_device->_context->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, offset);

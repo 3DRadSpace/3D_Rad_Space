@@ -1,1 +1,1 @@
-If there are "failed to compile shaders" errors when debugging, copy "Data" from <root>/3DRadSpace/ to <root>/x86/Debug and or /x64/Debug (or release if the case).
+If there are "failed to compile shaders" errors when debugging, copy "Data" from <root>/3DRadSpace/ to <root>/x64/Debug (or release if the case).

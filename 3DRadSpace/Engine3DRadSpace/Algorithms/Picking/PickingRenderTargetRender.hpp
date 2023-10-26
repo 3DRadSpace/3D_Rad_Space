@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 	class DLLEXPORT PickingRenderTargetRender : IDrawable3D
 	{
 		std::shared_ptr<PickingShader> _shader;
-		Engine3DRadSpace::GraphicsDevice* _device;
+		GraphicsDevice* _device;
 		std::unique_ptr<Graphics::RenderTarget> _renderTarget;
 		std::unique_ptr<Graphics::DepthStencilBuffer> _depthBuffer;
 
@@ -55,7 +55,20 @@ namespace Engine3DRadSpace::Algorithms::Picking
 
 		unsigned Pick(const Math::Point& mouseCoords)
 		{
-			return 0;
+#ifdef _DX11
+			D3D11_MAPPED_SUBRESOURCE mappedSubresource;
+
+			auto renderTarget = static_cast<ID3D11Texture2D*>(_renderTarget->RenderTargetHandle());
+
+			HRESULT r = _device->_context->Map(renderTarget, 0, D3D11_MAP_READ, 0, &mappedSubresource);
+			if (FAILED(r)) throw Logging::Exception("Failed to map the ID texture!");
+
+			int ID = *static_cast<int*>(mappedSubresource.pData) + (mouseCoords.Y * _renderTarget->Width()) + mouseCoords.X;
+
+			_device->_context->Unmap(renderTarget, 0);
+
+			return ID;
+#endif
 		}
 	};
 }

@@ -1,5 +1,5 @@
 #include "BlendState.hpp"
-#include "../Logging/Error.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -26,13 +26,14 @@ BlendState::BlendState(GraphicsDevice *device):
 		blendDesc.RenderTarget[i] = blendDesc.RenderTarget[0];
 
 	HRESULT r = device->_device->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+	if (FAILED(r))
+		throw Exception("Failed to create a default blend state!");
 	
 	_debugInfo();
 #endif
 }
 
-D3D11_BLEND Engine3DRadSpace::Graphics::BlendState::convert3DRSPBlend_toDX11(Blend b)
+D3D11_BLEND BlendState::convert3DRSPBlend_toDX11(Blend b)
 {
 	switch(b)
 	{
@@ -92,7 +93,7 @@ D3D11_BLEND Engine3DRadSpace::Graphics::BlendState::convert3DRSPBlend_toDX11(Ble
 	}
 }
 
-D3D11_BLEND_OP Engine3DRadSpace::Graphics::BlendState::convert3DRSPBlendOp_toDX11(BlendOperation op)
+D3D11_BLEND_OP BlendState::convert3DRSPBlendOp_toDX11(BlendOperation op)
 {
 	switch(op)
 	{
@@ -137,7 +138,8 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 		blendDesc.RenderTarget[i] = blendDesc.RenderTarget[0];
 
 	HRESULT r = device->_device->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+	if(FAILED(r))
+		throw Exception("Failed to create a default blend state!");
 #endif
 }
 
@@ -162,7 +164,8 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 	}
 
 	HRESULT r = device->_device->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
-	RaiseFatalErrorIfFailed(r, "Failed to create a default blend state!", "");
+	if (FAILED(r))
+		throw Exception("Failed to create a default blend state!");
 
 	_debugInfo();
 #endif

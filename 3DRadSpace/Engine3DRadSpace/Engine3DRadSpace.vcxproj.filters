@@ -178,9 +178,6 @@
     <ClInclude Include="Graphics\DepthStencilState.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Logging\Error.hpp">
-      <Filter>Logging</Filter>
-    </ClInclude>
     <ClInclude Include="Logging\Exception.hpp">
       <Filter>Logging</Filter>
     </ClInclude>
@@ -366,9 +363,6 @@
     </ClCompile>
     <ClCompile Include="Objects\Camera.cpp">
       <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Logging\Error.cpp">
-      <Filter>Logging</Filter>
     </ClCompile>
     <ClCompile Include="Logging\Exception.cpp">
       <Filter>Logging</Filter>

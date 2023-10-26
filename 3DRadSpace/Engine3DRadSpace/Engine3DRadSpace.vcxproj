@@ -212,7 +212,6 @@
     <ClInclude Include="IObject3D.hpp" />
     <ClInclude Include="IUpdateable.hpp" />
     <ClInclude Include="Libs.hpp" />
-    <ClInclude Include="Logging\Error.hpp" />
     <ClInclude Include="Logging\Exception.hpp" />
     <ClInclude Include="Logging\ResourceLoadingError.hpp" />
     <ClInclude Include="Logging\Warning.hpp" />
@@ -282,7 +281,6 @@
     <ClCompile Include="Graphics\IPixelShader.cpp" />
     <ClCompile Include="IObject2D.cpp" />
     <ClCompile Include="IObject3D.cpp" />
-    <ClCompile Include="Logging\Error.cpp" />
     <ClCompile Include="Logging\Exception.cpp" />
     <ClCompile Include="Logging\Warning.cpp" />
     <ClCompile Include="Math\BoundingBox.cpp" />

@@ -3,15 +3,15 @@
 
 using namespace Engine3DRadSpace::Logging;
 
-Warning::Warning(int32_t code, int severity) : 
-	Details(std::move(std::format("Warning code {} severity {}",code,severity).c_str())),
+Warning::Warning(const int32_t code,const int severity) : 
+	Details(std::format("Warning code {} severity {}",code,severity)),
 	Code(code),
 	Severity(severity),
 	Extra(nullptr)
 {
 }
 
-Warning::Warning(int32_t code, const char *details, int severity, const void *extra) :
+Warning::Warning(const int32_t code, const char *details,const int severity, const void *extra) :
 	Details(details),
 	Code(code),
 	Severity(severity),
@@ -21,7 +21,7 @@ Warning::Warning(int32_t code, const char *details, int severity, const void *ex
 
 void Engine3DRadSpace::Logging::SetLastWarning(const Warning &warning)
 {
-	Engine3DRadSpace::Logging::WarningHandler(warning);
+	WarningHandler(warning);
 }
 
 void Engine3DRadSpace::Logging::DefaultWarningHandler(const Warning &warning)
@@ -30,4 +30,4 @@ void Engine3DRadSpace::Logging::DefaultWarningHandler(const Warning &warning)
 	file <<"[WARNING]"<< warning.Details << " Code " << warning.Code << " Severity " << warning.Severity << std::endl; //new line + flush
 	file.close();
 }
-Engine3DRadSpace::Logging::FuncWarningHandler Engine3DRadSpace::Logging::WarningHandler = Engine3DRadSpace::Logging::DefaultWarningHandler;
+FuncWarningHandler Engine3DRadSpace::Logging::WarningHandler = DefaultWarningHandler;

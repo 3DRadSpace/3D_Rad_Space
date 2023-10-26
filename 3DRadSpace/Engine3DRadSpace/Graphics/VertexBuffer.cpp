@@ -3,8 +3,9 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Logging;
 
-void Engine3DRadSpace::Graphics::VertexBuffer::_debugInfo()
+void VertexBuffer::_debugInfo()
 {
 #ifdef _DEBUG
 #ifdef _DX11
@@ -36,7 +37,7 @@ VertexBuffer::VertexBuffer(
 	resource.pSysMem = data;
 
 	HRESULT r = device->_device->CreateBuffer(&vertexBuffDesc, &resource, _buffer.GetAddressOf());
-	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to create a vertex buffer!");
+	if (FAILED(r)) throw Exception("Failed to create a vertex buffer!");
 #endif
 	_debugInfo();
 }
@@ -49,7 +50,7 @@ void VertexBuffer::SetData(void *data, size_t size)
 	res.DepthPitch = (UINT)(size);
 
 	HRESULT r = _device->_context->Map(_buffer.Get(), 0, D3D11_MAP_READ_WRITE, 0, &res);
-	Engine3DRadSpace::Logging::RaiseFatalErrorIfFailed(r, "Failed to write a vertex buffer!");
+	if (FAILED(r)) throw Exception("Failed to write a vertex buffer!");
 	
 	_device->_context->Unmap(_buffer.Get(), 0);
 #endif
