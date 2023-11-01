@@ -3,38 +3,38 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT SpriteShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
+	class DLLEXPORT SpriteShader : public ShaderPipeline
 	{
-		class VertexShader : public Engine3DRadSpace::Graphics::IVertexShader
+		class VertexShader : public IVertexShader
 		{
 		public:
-			VertexShader(Engine3DRadSpace::GraphicsDevice *device);
-			std::span<Engine3DRadSpace::Graphics::InputLayoutElement> InputLayout() override;
+			VertexShader(GraphicsDevice *device);
+			std::span<InputLayoutElement> InputLayout() override;
 		};
 
-		class PixelShader : public Engine3DRadSpace::Graphics::IPixelShader
+		class PixelShader : public IPixelShader
 		{
 		public:
-			PixelShader(Engine3DRadSpace::GraphicsDevice *device);
+			PixelShader(GraphicsDevice *device);
 		};
 
-		static inline std::array<Engine3DRadSpace::Graphics::InputLayoutElement, 2> sprite_elements =
+		static inline std::array<InputLayoutElement, 2> sprite_elements =
 		{
-			Engine3DRadSpace::Graphics::InputLayoutElement::Position_Vec2,
-			Engine3DRadSpace::Graphics::InputLayoutElement::TextureCoordinate2D
+			InputLayoutElement::Position_Vec2,
+			InputLayoutElement::TextureCoordinate2D
 		};
 	public:
 		explicit SpriteShader(Engine3DRadSpace::GraphicsDevice *device);
 
 		struct alignas(16) Data
 		{
-			Engine3DRadSpace::Color tintColor;
-			int flipU = false;
-			int flipV = false;
+			Color TintColor;
+			int FlipU = false;
+			int FlipV = false;
 		};
 
 		void SetData(const Data &d);
-		void SetTexture(Engine3DRadSpace::Graphics::Texture2D *texture);
-		void SetSamplerState(Engine3DRadSpace::Graphics::SamplerState *sampler);
+		void SetTexture(Texture2D *texture);
+		void SetSamplerState(SamplerState *sampler);
 	};
 }

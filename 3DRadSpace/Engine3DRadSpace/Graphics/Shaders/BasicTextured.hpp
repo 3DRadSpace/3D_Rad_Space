@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT BasicTextured_NBT : public ShaderPipeline
+	class DLLEXPORT BasicTextured : public ShaderPipeline
 	{
 		class VertexShader : public IVertexShader
 		{
@@ -29,11 +29,11 @@ namespace Engine3DRadSpace::Graphics::Shaders
 			InputLayoutElement::TextureCoordinate2D
 		};
 	public:
-		explicit BasicTextured_NBT(GraphicsDevice* device);
+		explicit BasicTextured(GraphicsDevice* device);
 
-		void SetTransform(const Engine3DRadSpace::Math::Matrix& m);
-		void SetTexture(Engine3DRadSpace::Graphics::Texture2D* texture);
-		void SetSampler(Engine3DRadSpace::Graphics::SamplerState* state);
+		void SetTransform(const Math::Matrix& m);
+		void SetTexture(Texture2D* texture);
+		void SetSampler(SamplerState* state);
 	};
 }
 

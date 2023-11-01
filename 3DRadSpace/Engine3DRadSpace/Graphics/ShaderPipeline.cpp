@@ -14,36 +14,7 @@ ShaderPipeline::ShaderPipeline(GraphicsDevice *device, IVertexShader *vertexShad
 {
 }
 
-Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::ShaderPipeline(ShaderPipeline &&p) noexcept:
-	_device(p._device),
-	_vertex(p._vertex),
-	_hull(p._hull),
-	_domain(p._domain),
-	_geometry(p._geometry),
-	_pixel(p._pixel)
-{
-	p._vertex = nullptr;
-	p._domain = nullptr;
-	p._geometry = nullptr;
-	p._hull = nullptr;
-	p._pixel = nullptr;
-	p._vertex = nullptr;
-	p._geometry = nullptr;
-}
-
-ShaderPipeline& Engine3DRadSpace::Graphics::Shaders::ShaderPipeline::operator=(ShaderPipeline&& p) noexcept
-{
-	_destroy();
-	_device = p._device;
-	_vertex = p._vertex;
-	_hull = p._hull;
-	_domain = p._domain;
-	_geometry = p._geometry;
-	_pixel = p._pixel;
-	return *this;
-}
-
-int ShaderPipeline::SetAll()
+int ShaderPipeline::SetAll() const
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -54,7 +25,7 @@ int ShaderPipeline::SetAll()
 	return r;
 }
 
-int ShaderPipeline::SetBasic()
+int ShaderPipeline::SetBasic() const
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -62,101 +33,67 @@ int ShaderPipeline::SetBasic()
 	return r;
 }
 
-bool ShaderPipeline::SetVertex()
+bool ShaderPipeline::SetVertex() const
 {
 	if(_vertex == nullptr) return false;
 
-	_device->SetShader(_vertex);
+	_device->SetShader(_vertex.get());
 	return true;
 }
 
-bool ShaderPipeline::SetHull()
+bool ShaderPipeline::SetHull() const
 {
 	if(_hull == nullptr) return false;
 
-	_device->SetShader(_hull);
+	_device->SetShader(_hull.get());
 	return true;
 }
 
-bool ShaderPipeline::SetDomain()
+bool ShaderPipeline::SetDomain() const
 {
 	if(_domain == nullptr) return false;
 
-	_device->SetShader(_domain);
+	_device->SetShader(_domain.get());
 	return true;
 }
 
-bool ShaderPipeline::SetGeometry()
+bool ShaderPipeline::SetGeometry() const
 {
 	if(_geometry == nullptr) return false;
 
-	_device->SetShader(_geometry);
+	_device->SetShader(_geometry.get());
 	return true;
 }
 
-bool ShaderPipeline::SetFragment()
+bool ShaderPipeline::SetFragment() const
 {
 	if(_pixel == nullptr) return false;
 
-	_device->SetShader(_pixel);
+	_device->SetShader(_pixel.get());
 	return true;
 }
 
-IShader* ShaderPipeline::GetVertexShader()
+IShader* ShaderPipeline::GetVertexShader() const
 {
-	return _vertex;
+	return _vertex.get();
 }
 
-IShader* ShaderPipeline::GetHullShader()
+IShader* ShaderPipeline::GetHullShader() const 
 {
-	return _hull;
+	return _hull.get();
 }
 
-IShader* ShaderPipeline::GetDomainShader()
+IShader* ShaderPipeline::GetDomainShader() const
 {
-	return _domain;
+	return _domain.get();
 }
 
-IShader* ShaderPipeline::GetGeometryShader()
+IShader* ShaderPipeline::GetGeometryShader() const
 {
-	return _geometry;
+	return _geometry.get();
 }
 
-IShader* ShaderPipeline::GetPixelShader()
+IShader* ShaderPipeline::GetPixelShader() const
 {
-	return _pixel;
-}
-
-ShaderPipeline::~ShaderPipeline()
-{
-	_destroy();
-}
-
-void ShaderPipeline::_destroy()
-{
-	if (_vertex != nullptr)
-	{
-		delete _vertex;
-		_vertex = nullptr;
-	}
-	if (_hull != nullptr)
-	{
-		delete _hull;
-		_hull = nullptr;
-	}
-	if (_domain != nullptr)
-	{
-		delete _domain;
-		_domain = nullptr;
-	}
-	if (_geometry != nullptr)
-	{
-		delete _geometry;
-		_geometry = nullptr;
-	}
-	if (_pixel != nullptr)
-	{
-		delete _pixel;
-		_pixel = nullptr;
-	}
+	return _pixel.get();
 }

@@ -151,7 +151,7 @@
     <ClInclude Include="Math\Math.hpp">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Shaders\BasicTextured_NBT.hpp">
+    <ClInclude Include="Graphics\Shaders\BasicTextured.hpp">
       <Filter>Graphics\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Shaders\Blank_NoMatrix.hpp">
@@ -256,6 +256,12 @@
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
+    <ClInclude Include="Graphics\Rendering\IRenderer.hpp" />
+    <ClInclude Include="Graphics\Rendering\ForwardRenderer.hpp" />
+    <ClInclude Include="Graphics\Rendering\IRenderingEffect.hpp" />
+    <ClInclude Include="Graphics\Rendering\IEffectFog.hpp" />
+    <ClInclude Include="Graphics\Rendering\IEffectOutline.h" />
+    <ClInclude Include="IGraphicsDevice.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -343,7 +349,7 @@
     <ClCompile Include="Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\Shaders\BasicTextured_NBT.cpp">
+    <ClCompile Include="Graphics\Shaders\BasicTextured.cpp">
       <Filter>Graphics\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp">
@@ -426,5 +432,7 @@
     </ClCompile>
     <ClCompile Include="Algorithms\Picking\PickingShader.cpp" />
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
+    <ClCompile Include="Graphics\Rendering\IRenderer.cpp" />
+    <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #pragma once
+#include "IGraphicsDevice.hpp"
 #include "Libs.hpp"
 #include "Viewport.hpp"
 #include "Graphics/VertexDeclarations.hpp"
@@ -27,9 +28,9 @@ namespace Engine3DRadSpace::Graphics
 namespace Engine3DRadSpace
 {
 	/// <summary>
-	/// GraphicsDevice is a wrapper for GAPI(DirectX/Vulkan(not implemented yet)) handles. GPU commands can be sent from here.
+	/// DirectX11 RHI (Rendering Hardware Interface)
 	/// </summary>
-	class DLLEXPORT GraphicsDevice
+	class DLLEXPORT GraphicsDevice : public IGraphicsDevice
 	{
 #ifdef _DX11
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
@@ -37,7 +38,7 @@ namespace Engine3DRadSpace
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _screenTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTarget;
 #endif
-		Engine3DRadSpace::Math::Point _resolution;
+		Math::Point _resolution;
 		bool _fullscreen = false;
 
 		std::unique_ptr<Graphics::DepthStencilBuffer> _stencilBuffer;
@@ -54,6 +55,7 @@ namespace Engine3DRadSpace
 		GraphicsDevice(GraphicsDevice&) = delete;
 		GraphicsDevice(GraphicsDevice&&) = delete;
 		GraphicsDevice& operator=(GraphicsDevice&) = delete;
+
 
 		void Clear(const Color& clearColor = {0.0f,0.0f,0.0f,1.0f});
 

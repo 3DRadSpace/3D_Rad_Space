@@ -34,24 +34,7 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 	Vector2 uv_c = Vector2(1, 0);
 	Vector2 uv_d = Vector2(1, 1);
 
-	/*
-	if(flipU)
-	{
-		uv_a.X = 1 - uv_a.X;
-		uv_b.X = 1 - uv_b.X;
-		uv_c.X = 1 - uv_c.X;
-		uv_d.X = 1 - uv_d.X;
-	}
-	if(flipV)
-	{
-		uv_a.Y = 1 - uv_a.Y;
-		uv_b.Y = 1 - uv_b.Y;
-		uv_c.Y = 1 - uv_c.Y;
-		uv_d.Y = 1 - uv_d.Y;
-	}
-	*/
-
-	std::array<VertexPointUV, 6> quad =
+	std::array quad =
 	{
 		VertexPointUV{a, uv_a},
 		VertexPointUV{b, uv_b},
@@ -65,18 +48,18 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 	return quad;
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_setEntry(const spriteBatchEntry &entry)
+void SpriteBatch::_setEntry(const spriteBatchEntry &entry)
 {
-	SpriteShader::Data data{};
-	data.flipU = entry.flipU;
-	data.flipV = entry.flipV;
-	data.tintColor = entry.tintColor;
+	SpriteShader::Data data;
+	data.FlipU = entry.flipU;
+	data.FlipV = entry.flipV;
+	data.TintColor = entry.tintColor;
 
 	_spriteShader->SetData(data);
 	_spriteShader->SetTexture(_textures[entry.textureID]);
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_prepareGraphicsDevice()
+void SpriteBatch::_prepareGraphicsDevice()
 {
 	_spriteShader->SetBasic();
 	_spriteShader->SetSamplerState(_samplerState.get());
@@ -91,7 +74,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_prepareGraphicsDevice()
 	_device->SetBlendState(_blendState.get());
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_drawEntry(const spriteBatchEntry &entry)
+void SpriteBatch::_drawEntry(const spriteBatchEntry &entry)
 {
 	auto quad = _createQuad(entry.rectangle);
 	VertexBufferV<VertexPointUV> vertexBuffer(_device, quad);
@@ -102,7 +85,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawEntry(const spriteBatchEntry 
 	_restoreGraphicsDevice();
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries_SortByTexture()
+void SpriteBatch::_drawAllEntries_SortByTexture()
 {
 	std::vector<std::unique_ptr<VertexBufferV<VertexPointUV>>> vertexBuffers;
 	unsigned lastID = 1;
@@ -135,7 +118,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries_SortByTexture()
 	_restoreGraphicsDevice();
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries()
+void SpriteBatch::_drawAllEntries()
 {
 	_prepareGraphicsDevice();
 
@@ -146,7 +129,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_drawAllEntries()
 	_restoreGraphicsDevice();
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::_restoreGraphicsDevice()
+void SpriteBatch::_restoreGraphicsDevice()
 {
 #ifdef _DX11
 	_device->_context->RSSetState(_oldRasterizerState.Get());
@@ -155,10 +138,14 @@ void Engine3DRadSpace::Graphics::SpriteBatch::_restoreGraphicsDevice()
 #endif
 }
 
-Engine3DRadSpace::Graphics::SpriteBatch::SpriteBatch(GraphicsDevice *device) :
+SpriteBatch::SpriteBatch(GraphicsDevice *device) :
 	_device(device),
+	_sortingMode(SpriteBatchSortMode::Immediate),
 	_state(Immediate),
-	_lastID(1)
+	_lastID(1),
+	_oldBlendFactor{},
+	_oldSampleMask(0),
+	_oldStencilRef(0)
 {
 	_spriteShader = std::make_unique<Shaders::SpriteShader>(device);
 
@@ -168,7 +155,7 @@ Engine3DRadSpace::Graphics::SpriteBatch::SpriteBatch(GraphicsDevice *device) :
 	_blendState = std::make_unique<BlendState>(BlendState::AlphaBlend(device));
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
+void SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
 {
 	if(sortingMode == SpriteBatchSortMode::Immediate)
 	{
@@ -189,7 +176,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingM
 	}
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerState)
+void SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerState)
 {
 	_samplerState.reset();
 	_samplerState = std::make_unique<SamplerState>(std::move(samplerState));
@@ -270,7 +257,7 @@ void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, float rotat
 	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::End()
+void SpriteBatch::End()
 {
 	if(_sortingMode == SpriteBatchSortMode::Immediate) return;
 
@@ -289,7 +276,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::End()
 	}
 }
 
-void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)
+void SpriteBatch::DrawQuad(Texture2D *texture)
 {
 	_textures[1] = texture;
 	spriteBatchEntry tempEntry
@@ -307,7 +294,7 @@ void Engine3DRadSpace::Graphics::SpriteBatch::DrawQuad(Texture2D *texture)
 	_textures.clear();
 }
 
-bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator>(const spriteBatchEntry &b) const
+bool SpriteBatch::spriteBatchEntry::operator>(const spriteBatchEntry &b) const
 {
 	switch(sortingMode)
 	{
@@ -322,7 +309,7 @@ bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator>(const 
 	}
 }
 
-bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator<(const spriteBatchEntry &b) const
+bool SpriteBatch::spriteBatchEntry::operator<(const spriteBatchEntry &b) const
 {
 	switch(sortingMode)
 	{
@@ -337,7 +324,7 @@ bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator<(const 
 	}
 }
 
-bool Engine3DRadSpace::Graphics::SpriteBatch::spriteBatchEntry::operator==(const spriteBatchEntry &b) const
+bool SpriteBatch::spriteBatchEntry::operator==(const spriteBatchEntry &b) const
 {
 	return textureID == b.textureID && flipU == b.flipU && flipV == b.flipV;
 }

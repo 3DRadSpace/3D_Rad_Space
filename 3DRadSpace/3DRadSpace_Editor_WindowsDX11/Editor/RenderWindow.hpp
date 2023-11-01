@@ -6,7 +6,7 @@
 #include <Engine3DRadSpace/Math/Vector2.hpp>
 #include <Engine3DRadSpace/Objects/Camera.hpp>
 #include <Engine3DRadSpace/Graphics/Model3D.hpp>
-#include <Engine3DRadSpace/Graphics/Shaders/BasicTextured_NBT.hpp>
+#include <Engine3DRadSpace/Graphics/Shaders/BasicTextured.hpp>
 #include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
 #include <Engine3DRadSpace/Graphics/Primitives/Lines.hpp>
 #include <Engine3DRadSpace/Algorithms/Picking/PickingRenderTargetRender.hpp>
@@ -28,7 +28,7 @@ class RenderWindow : public Engine3DRadSpace::Game
 	float zoom = 5.0f;
 	float timer = 0;
 
-	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured_NBT> texturedShader;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Shaders::BasicTextured> texturedShader;
 	std::unique_ptr<Engine3DRadSpace::Graphics::SamplerState> samplerState;
 
 	Engine3DRadSpace::Graphics::Texture2D* testTexture;

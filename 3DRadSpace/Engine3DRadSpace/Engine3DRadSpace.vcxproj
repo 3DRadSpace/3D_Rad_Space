@@ -165,6 +165,12 @@
     <ClInclude Include="Algorithms\FixedArray.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
+    <ClInclude Include="Graphics\Rendering\ForwardRenderer.hpp" />
+    <ClInclude Include="Graphics\Rendering\IEffectFog.hpp" />
+    <ClInclude Include="Graphics\Rendering\IEffectOutline.h" />
+    <ClInclude Include="IGraphicsDevice.hpp" />
+    <ClInclude Include="Graphics\Rendering\IRenderer.hpp" />
+    <ClInclude Include="Graphics\Rendering\IRenderingEffect.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
@@ -190,7 +196,7 @@
     <ClInclude Include="Graphics\SamplerState.hpp" />
     <ClInclude Include="Graphics\ShaderFeatureLevel.hpp" />
     <ClInclude Include="Graphics\ShaderPipeline.hpp" />
-    <ClInclude Include="Graphics\Shaders\BasicTextured_NBT.hpp" />
+    <ClInclude Include="Graphics\Shaders\BasicTextured.hpp" />
     <ClInclude Include="Graphics\Shaders\BlankShader.hpp" />
     <ClInclude Include="Graphics\Shaders\Blank_NoMatrix.hpp" />
     <ClInclude Include="Graphics\Shaders\SpriteShader.hpp" />
@@ -262,9 +268,11 @@
     <ClCompile Include="Graphics\Primitives\Lines.cpp" />
     <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
     <ClCompile Include="Graphics\RasterizerState.cpp" />
+    <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
+    <ClCompile Include="Graphics\Rendering\IRenderer.cpp" />
     <ClCompile Include="Graphics\SamplerState.cpp" />
     <ClCompile Include="Graphics\ShaderPipeline.cpp" />
-    <ClCompile Include="Graphics\Shaders\BasicTextured_NBT.cpp" />
+    <ClCompile Include="Graphics\Shaders\BasicTextured.cpp" />
     <ClCompile Include="Graphics\Shaders\BlankShader.cpp" />
     <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp" />
     <ClCompile Include="Algorithms\Picking\PickingShader.cpp" />

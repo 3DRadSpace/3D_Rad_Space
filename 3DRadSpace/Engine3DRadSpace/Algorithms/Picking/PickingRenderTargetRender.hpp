@@ -37,7 +37,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			_shader->SetData(
 				PickingShader::Data{
 					.MVP = viewWorldProj,
-					.ObjectID = ID
+					.ObjectID = ID+1
 				}
 			);
 
@@ -53,7 +53,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			_device->SetRenderTargetAndDepth(nullptr, nullptr);
 		}
 
-		unsigned Pick(const Math::Point& mouseCoords)
+		std::optional<unsigned> Pick(const Math::Point& mouseCoords)
 		{
 #ifdef _DX11
 			D3D11_MAPPED_SUBRESOURCE mappedSubresource;
@@ -63,11 +63,12 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			HRESULT r = _device->_context->Map(renderTarget, 0, D3D11_MAP_READ, 0, &mappedSubresource);
 			if (FAILED(r)) throw Logging::Exception("Failed to map the ID texture!");
 
-			int ID = *static_cast<int*>(mappedSubresource.pData) + (mouseCoords.Y * _renderTarget->Width()) + mouseCoords.X;
+			unsigned ID = *static_cast<int*>(mappedSubresource.pData) + (mouseCoords.Y * _renderTarget->Width()) + mouseCoords.X;
 
 			_device->_context->Unmap(renderTarget, 0);
 
-			return ID;
+			if (ID != 0) return ID + 1;
+			return std::nullopt;
 #endif
 		}
 	};

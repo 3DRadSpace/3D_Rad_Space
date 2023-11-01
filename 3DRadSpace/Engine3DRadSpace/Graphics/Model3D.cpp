@@ -20,8 +20,8 @@ Assimp::Importer importer;
 Model3D::Model3D(GraphicsDevice* Device, const std::string& path) :
 	_device(Device)
 {
-	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured_NBT>(Device);
-	auto basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured_NBT>(Device);
+	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured>(Device);
+	auto basicTexturedNBT = ShaderManager::LoadShader<Shaders::BasicTextured>(Device);
 
 	if (!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 

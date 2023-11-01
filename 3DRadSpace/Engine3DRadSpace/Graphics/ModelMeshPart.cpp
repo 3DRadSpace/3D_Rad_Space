@@ -7,9 +7,9 @@ using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
 ModelMeshPart::ModelMeshPart(
-	std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders,
-	Engine3DRadSpace::Graphics::VertexBuffer *vert, 
-	Engine3DRadSpace::Graphics::IndexBuffer *buffer):
+	std::shared_ptr<ShaderPipeline> shaders,
+	Graphics::VertexBuffer *vert, 
+	Graphics::IndexBuffer *buffer):
 	_device(vert->_device),
 	VertexBuffer(vert),
 	IndexBuffer(buffer),
@@ -22,18 +22,18 @@ ModelMeshPart::ModelMeshPart(GraphicsDevice *Device, std::shared_ptr<ShaderPipel
 	_device(Device),
 	_shaders(shaders)
 {
-	VertexBuffer = std::make_unique<Engine3DRadSpace::Graphics::VertexBuffer>(Device, vertices, structSize, numVerts);
-	IndexBuffer = std::make_unique<Engine3DRadSpace::Graphics::IndexBuffer>(Device, indices);
+	VertexBuffer = std::make_unique<Graphics::VertexBuffer>(Device, vertices, structSize, numVerts);
+	IndexBuffer = std::make_unique<Graphics::IndexBuffer>(Device, indices);
 }
 
 ModelMeshPart::ModelMeshPart(ModelMeshPart&& meshPart) noexcept :
 	_device(meshPart._device),
-	VertexBuffer(std::move(meshPart.VertexBuffer)),
+	_shaders(meshPart._shaders),
 	IndexBuffer(std::move(meshPart.IndexBuffer)),
+	VertexBuffer(std::move(meshPart.VertexBuffer)),
 	Transform(meshPart.Transform),
 	Textures(std::move(meshPart.Textures)),
-	TextureSamplers(std::move(meshPart.TextureSamplers)),
-	_shaders(meshPart._shaders)
+	TextureSamplers(std::move(meshPart.TextureSamplers))
 {
 }
 
@@ -101,7 +101,7 @@ void ModelMeshPart::Draw()
 	_device->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
 }
 
-Math::BoundingSphere Engine3DRadSpace::Graphics::ModelMeshPart::GetBoundingSphere()
+Math::BoundingSphere ModelMeshPart::GetBoundingSphere()
 {
 	return _sphere;
 }
@@ -111,12 +111,12 @@ BoundingBox ModelMeshPart::GetBoundingBox()
 	return _box;
 }
 
-Engine3DRadSpace::Graphics::Shaders::ShaderPipeline *Engine3DRadSpace::Graphics::ModelMeshPart::GetShaders()
+ShaderPipeline *ModelMeshPart::GetShaders()
 {
 	return _shaders.get();
 }
 
-void Engine3DRadSpace::Graphics::ModelMeshPart::SetShaders(std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::ShaderPipeline> shaders)
+void ModelMeshPart::SetShaders(std::shared_ptr<ShaderPipeline> shaders)
 {
 	_shaders = shaders;
 }
