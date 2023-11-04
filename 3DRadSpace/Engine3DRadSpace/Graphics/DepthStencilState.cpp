@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Logging;
 
 void Engine3DRadSpace::Graphics::DepthStencilState::_debugInfo()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 #ifdef _DEBUG
     const char stateName[] = "DepthStencilState::_state";
     _state->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(stateName) - 1, stateName);
@@ -17,7 +17,7 @@ void Engine3DRadSpace::Graphics::DepthStencilState::_debugInfo()
 
 DepthStencilState::DepthStencilState(GraphicsDevice *device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
     CD3D11_DEPTH_STENCIL_DESC dsDesc(D3D11_DEFAULT);
 
     HRESULT r = device->_device->CreateDepthStencilState(&dsDesc, _state.GetAddressOf());
@@ -28,7 +28,7 @@ DepthStencilState::DepthStencilState(GraphicsDevice *device)
 DepthStencilState::DepthStencilState(GraphicsDevice *device, bool EnableDepth, DepthWriteMask Mask, ComparisonFunction Function, bool EnableStencil, 
     uint8_t ReadMask, uint8_t WriteMask, FaceOperation FrontFace, FaceOperation BackFace)
 {
-#ifdef _DX11
+#ifdef USING_DX11
     D3D11_DEPTH_STENCIL_DESC dsDesc;
     dsDesc.DepthEnable = EnableDepth;
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK(WriteMask); //REFACTORING-NOTE: don't use initialization, may prefer a switch-case.

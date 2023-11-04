@@ -2,7 +2,7 @@
 #include "../Logging/Exception.hpp"
 #include "../Logging/Warning.hpp"
 
-#ifdef _DX11
+#ifdef USING_DX11
 #pragma comment(lib,"d3dcompiler.lib")
 #endif
 
@@ -12,7 +12,7 @@ using namespace Engine3DRadSpace::Logging;
 
 Array_ValidConstantBuffers IShader::_validConstantBuffers(unsigned &numConstantBuffers)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	const unsigned maxConstBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
 	Array_ValidConstantBuffers ppConstantBuffers = {nullptr};
 
@@ -117,7 +117,7 @@ IShader::IShader(GraphicsDevice *Device, const std::filesystem::path &path, cons
 
 void IShader::SetData(unsigned index,const void *data, unsigned dataSize)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	if (_constantBuffers[index].Get() == nullptr)
 	{
 		D3D11_BUFFER_DESC constantBufferDesc{};

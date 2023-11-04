@@ -8,7 +8,7 @@ using namespace Engine3DRadSpace::Logging;
 BlendState::BlendState(GraphicsDevice *device):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BLEND_DESC blendDesc;
 	blendDesc.AlphaToCoverageEnable = false;
 	blendDesc.IndependentBlendEnable = false;
@@ -120,7 +120,7 @@ D3D11_BLEND_OP BlendState::convert3DRSPBlendOp_toDX11(BlendOperation op)
 BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend,const RenderTargetBlendState &renderTargetBlendState):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BLEND_DESC blendDesc;
 	blendDesc.AlphaToCoverageEnable = alphaCoverage;
 	blendDesc.IndependentBlendEnable = indepedentBlend;
@@ -146,7 +146,7 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepedentBlend, std::array<RenderTargetBlendState, 8> renderTargetBlendStates):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BLEND_DESC blendDesc;
 	blendDesc.AlphaToCoverageEnable = alphaCoverage;
 	blendDesc.IndependentBlendEnable = indepedentBlend;
@@ -173,7 +173,7 @@ BlendState::BlendState(GraphicsDevice *device, bool alphaCoverage, bool indepede
 
 D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEnable flag)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	switch(flag)
 	{
 		case ColorWriteEnable::Red:
@@ -192,7 +192,7 @@ D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEna
 
 void Engine3DRadSpace::Graphics::BlendState::_debugInfo()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 #ifdef _DEBUG
 	const char blendStateName[] = "BlendState::_blendState";
 	_blendState->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(blendStateName) - 1, blendStateName);

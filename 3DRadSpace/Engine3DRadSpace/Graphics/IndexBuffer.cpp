@@ -9,7 +9,7 @@ using namespace Engine3DRadSpace::Graphics;
 void IndexBuffer::_debugInfo()
 {
 #ifdef _DEBUG
-#ifdef _DX11
+#ifdef USING_DX11
 	const char indexBufferName[] = "IndexBuffer::_indexBuffer";
 	_indexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(indexBufferName) - 1, indexBufferName);
 #endif
@@ -20,7 +20,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device,std::span<unsigned> indices):
 	_device(device),
 	_numIndices(unsigned(indices.size()))
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BUFFER_DESC desc{};
 	desc.ByteWidth = UINT(indices.size() * sizeof(unsigned));
 	desc.Usage = D3D11_USAGE_DEFAULT;
@@ -41,7 +41,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numin
 	_device(device),
 	_numIndices(unsigned(numindices))
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BUFFER_DESC desc{};
 	desc.ByteWidth = UINT(numindices * sizeof(unsigned));
 	desc.Usage = D3D11_USAGE_DEFAULT;
@@ -59,7 +59,7 @@ IndexBuffer::IndexBuffer(GraphicsDevice* device, unsigned* indices, size_t numin
 
 void IndexBuffer::SetData(std::span<unsigned> newindices)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_MAPPED_SUBRESOURCE mappedBuff{};
 	HRESULT r = _device->_context->Map(_indexBuffer.Get(), 0, D3D11_MAP_WRITE, 0, &mappedBuff);
 	if (FAILED(r)) throw Exception("Failed to map a index buffer!");
@@ -75,7 +75,7 @@ unsigned IndexBuffer::NumIndices() const
 
 void IndexBuffer::Set(unsigned offset)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, offset);
 #endif
 }

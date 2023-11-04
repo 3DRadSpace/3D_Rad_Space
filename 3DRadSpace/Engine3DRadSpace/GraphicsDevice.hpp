@@ -32,7 +32,7 @@ namespace Engine3DRadSpace
 	/// </summary>
 	class DLLEXPORT GraphicsDevice : public IGraphicsDevice
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _screenTexture;

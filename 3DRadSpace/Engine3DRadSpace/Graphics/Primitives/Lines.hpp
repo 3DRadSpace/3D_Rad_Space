@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		GraphicsDevice *_device;
 
 		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _oldRasterizerState;
 #endif
 	public:

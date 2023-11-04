@@ -21,6 +21,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include <Engine3DRadSpace/Content/ShaderManager.hpp>
 #include "Engine3DRadSpace/Logging/Exception.hpp"
+#include "Frontend/Settings.hpp"
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -69,6 +70,8 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 
 	if(FAILED(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED)))
 		throw Exception("Failed to initialize COM!");
+
+	Settings::Load();
 
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();

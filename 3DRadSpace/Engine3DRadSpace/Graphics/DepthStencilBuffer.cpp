@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Logging;
 
 void DepthStencilBuffer::_createDepthTexture()
 {
-#ifdef  _DX11
+#ifdef  USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Format = DXGI_FORMAT_R32_TYPELESS;
 	desc.ArraySize = 1;
@@ -36,7 +36,7 @@ void DepthStencilBuffer::_createDepthTexture()
 	_depthView->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(depthViewName) - 1, depthViewName);
 #endif // _DEBUG
 
-#endif //  _DX11
+#endif //  USING_DX11
 }
 
 DepthStencilBuffer::DepthStencilBuffer(GraphicsDevice *device):

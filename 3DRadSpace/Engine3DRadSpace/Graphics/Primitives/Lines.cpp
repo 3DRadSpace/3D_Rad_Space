@@ -18,7 +18,7 @@ Lines::Lines(GraphicsDevice *device, std::span<VertexPositionColor> points):
 
 void Engine3DRadSpace::Graphics::Primitives::Lines::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->RSGetState(_oldRasterizerState.GetAddressOf());
 #endif
 	simpleShader->SetAll();
@@ -27,7 +27,7 @@ void Engine3DRadSpace::Graphics::Primitives::Lines::Draw(Engine3DRadSpace::Math:
 	_device->SetRasterizerState(_lineRasterizer.get());
 	_device->SetTopology(VertexTopology::LineList);
 	_vertices->Draw();
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->RSSetState(_oldRasterizerState.Get());
 #endif
 }

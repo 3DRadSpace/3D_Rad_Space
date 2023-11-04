@@ -8,7 +8,7 @@ namespace Engine3DRadSpace
 	{
 		class DLLEXPORT IndexBuffer
 		{
-#ifdef _DX11
+#ifdef USING_DX11
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _indexBuffer;
 #endif
 			GraphicsDevice* _device;

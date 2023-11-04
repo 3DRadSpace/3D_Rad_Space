@@ -5,7 +5,7 @@ namespace Engine3DRadSpace::Graphics
 {
 	class DLLEXPORT IGeometryShader : public IShader
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11GeometryShader> _shader;
 		const char *_determineTarget();
 #endif

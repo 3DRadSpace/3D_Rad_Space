@@ -5,7 +5,7 @@
 #include "Graphics/RenderTarget.hpp"
 #include "Graphics/DepthStencilBuffer.hpp"
 
-#ifdef  _DX11
+#ifdef  USING_DX11
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"dxgi.lib")
 
@@ -14,7 +14,7 @@
 #include <dxgidebug.h>
 #include <dxgi.h>
 #include <dxgi1_3.h>
-#endif //  _DX11
+#endif //  USING_DX11
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -24,7 +24,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigne
 	EnableVSync(true),
 	_resolution(width, height)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferCount = 2;
 	swapChainDesc.BufferDesc.Width = width;
@@ -84,7 +84,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigne
 
 void GraphicsDevice::Clear(const Color& clearColor)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_context->OMSetRenderTargets(1, _mainRenderTarget.GetAddressOf(), _stencilBuffer->_depthView.Get());
 
 	float color[4] = { clearColor.R,clearColor.G,clearColor.B,clearColor.A };
@@ -95,7 +95,7 @@ void GraphicsDevice::Clear(const Color& clearColor)
 
 void GraphicsDevice::SetViewport()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = vp.TopLeftY = 0;
 	vp.Width = static_cast<float>(_resolution.X);
@@ -109,7 +109,7 @@ void GraphicsDevice::SetViewport()
 
 void GraphicsDevice::SetViewport(const Viewport& viewport)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = viewport.ScreenRectangle.X;
 	vp.TopLeftY = viewport.ScreenRectangle.Y;
@@ -125,14 +125,14 @@ void GraphicsDevice::SetViewport(const Viewport& viewport)
 
 void GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	auto rt = renderTarget != nullptr ? renderTarget->_renderTarget.GetAddressOf() : _mainRenderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, rt, _stencilBuffer->_depthView.Get());
 #endif
@@ -140,7 +140,7 @@ void GraphicsDevice::SetRenderTarget(Graphics::RenderTarget *renderTarget)
 
 void GraphicsDevice::SetRenderTargetAndDepth(RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	auto depthviewBuffer = depthBuffer != nullptr ? depthBuffer->_depthView.Get() : _stencilBuffer->_depthView.Get();
 	auto renderTargetView = renderTarget != nullptr ? renderTarget->_renderTarget.GetAddressOf() : _mainRenderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, renderTargetView, depthviewBuffer);
@@ -149,7 +149,7 @@ void GraphicsDevice::SetRenderTargetAndDepth(RenderTarget *renderTarget, Graphic
 
 void GraphicsDevice::DrawVertexBuffer(VertexBuffer* vertexBuffer, unsigned startSlot)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	UINT strides = UINT(vertexBuffer->_structSize);
 	UINT offsets = 0;
 	_context->IASetVertexBuffers(startSlot, 1, vertexBuffer->_buffer.GetAddressOf(), &strides, &offsets);
@@ -159,7 +159,7 @@ void GraphicsDevice::DrawVertexBuffer(VertexBuffer* vertexBuffer, unsigned start
 }
 void GraphicsDevice::DrawVertexBufferWithindices(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	UINT strides = UINT(vertexBuffer->_structSize);
 	UINT offsets = 0;
 	_context->IASetIndexBuffer(indexBuffer->_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
@@ -169,7 +169,7 @@ void GraphicsDevice::DrawVertexBufferWithindices(VertexBuffer* vertexBuffer, Ind
 }
 void Engine3DRadSpace::GraphicsDevice::Present()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _swapChain->Present(EnableVSync ? 1 : 0, 0);
 	if (SUCCEEDED(r)) return; //if Present call succeded, skip error reporting.
 
@@ -199,12 +199,12 @@ void Engine3DRadSpace::GraphicsDevice::Present()
 	}
 	
 	if (FAILED(r)) throw Exception("Unknown error when presenting a frame");
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void GraphicsDevice::SaveBackBufferToFile(const std::string &path)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	wchar_t wpath[_MAX_PATH]{};
 	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, wpath, _MAX_PATH);
 
@@ -215,7 +215,7 @@ void GraphicsDevice::SaveBackBufferToFile(const std::string &path)
 
 void Engine3DRadSpace::GraphicsDevice::SaveBackBufferToFile(const std::wstring &path)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = DirectX::SaveWICTextureToFile(_context.Get(), _screenTexture.Get(), GUID_ContainerFormatPng, path.c_str(), nullptr, nullptr, true);
 	if(FAILED(r)) throw std::exception("Failed to save file!");
 #endif
@@ -228,7 +228,7 @@ void Engine3DRadSpace::GraphicsDevice::SetShader(Engine3DRadSpace::Graphics::ISh
 
 void Engine3DRadSpace::GraphicsDevice::SetTopology(Graphics::VertexTopology topology)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_PRIMITIVE_TOPOLOGY t = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
 	switch(topology)
 	{
@@ -266,21 +266,21 @@ void Engine3DRadSpace::GraphicsDevice::SetTopology(Graphics::VertexTopology topo
 
 void Engine3DRadSpace::GraphicsDevice::DrawAuto()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	this->_context->DrawAuto();
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetRasterizerState(const RasterizerState *state)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_context->RSSetState(state->_rasterizerState.Get());
 #endif
 }
 
 void Engine3DRadSpace::GraphicsDevice::SetDepthStencilBuffer(DepthStencilBuffer *depthBuffer)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	ID3D11RenderTargetView *renderTargets[8];
 	_context->OMGetRenderTargets(8, renderTargets, nullptr);
 	
@@ -290,7 +290,7 @@ void Engine3DRadSpace::GraphicsDevice::SetDepthStencilBuffer(DepthStencilBuffer 
 
 void Engine3DRadSpace::GraphicsDevice::SetDepthStencilState(DepthStencilState *depthState, unsigned ref = 0)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	if(depthState == nullptr)
 		_context->OMSetDepthStencilState(nullptr, ref);
 	else _context->OMSetDepthStencilState(depthState->_state.Get(), ref);
@@ -299,7 +299,7 @@ void Engine3DRadSpace::GraphicsDevice::SetDepthStencilState(DepthStencilState *d
 
 void Engine3DRadSpace::GraphicsDevice::SetBlendState(Graphics::BlendState *blendState,const Color &blendColor, unsigned sampleMask)
 {
-#if _DX11
+#if USING_DX11
 	_context->OMSetBlendState(blendState->_blendState.Get(), reinterpret_cast<const float *>(&blendColor), sampleMask);
 #endif
 }
@@ -331,7 +331,7 @@ void Engine3DRadSpace::GraphicsDevice::ToggleFullScreen()
 
 Engine3DRadSpace::GraphicsDevice::~GraphicsDevice()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_context->ClearState();
 //
 //		UNCOMMENT THE COMMENT BLOCK BELOW IF THERE ARE DIRECTX OBJECTS LEAKING! 

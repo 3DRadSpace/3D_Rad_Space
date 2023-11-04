@@ -8,7 +8,7 @@ using namespace Engine3DRadSpace::Logging;
 void VertexBuffer::_debugInfo()
 {
 #ifdef _DEBUG
-#ifdef _DX11
+#ifdef USING_DX11
 	const char bufferName[] = "VertexBuffer::_buffer";
 	_buffer->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(bufferName) - 1, bufferName);
 #endif
@@ -26,7 +26,7 @@ VertexBuffer::VertexBuffer(
 	_numVerts(numVertices),
 	_structSize(p_structSize)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_BUFFER_DESC vertexBuffDesc{};
 	vertexBuffDesc.ByteWidth = UINT(_structSize * numVertices);
 	vertexBuffDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -44,7 +44,7 @@ VertexBuffer::VertexBuffer(
 
 void VertexBuffer::SetData(void *data, size_t size)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_MAPPED_SUBRESOURCE res{};
 	res.pData = data;
 	res.DepthPitch = (UINT)(size);
@@ -58,17 +58,17 @@ void VertexBuffer::SetData(void *data, size_t size)
 
 void VertexBuffer::Set()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	unsigned strides = (UINT)this->_structSize;
 	unsigned offsets = 0;
 	this->_device->_context->IASetVertexBuffers(0, 1, _buffer.GetAddressOf(), &strides, &offsets);
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void VertexBuffer::Draw(unsigned startIndex)
 {
 	Set();
-#if _DX11
+#if USING_DX11
 	_device->_context->Draw(UINT(_numVerts), UINT(startIndex));
 #endif
 }

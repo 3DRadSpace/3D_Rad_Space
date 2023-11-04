@@ -56,7 +56,7 @@ namespace Engine3DRadSpace::Graphics
 
 	class DLLEXPORT BlendState
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
         GraphicsDevice *_device;
 

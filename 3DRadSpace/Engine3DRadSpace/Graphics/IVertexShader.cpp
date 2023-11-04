@@ -26,7 +26,7 @@ const char* IVertexShader::_determineTarget()
 
 void IVertexShader::_createShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _device->_device->CreateVertexShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
@@ -39,12 +39,12 @@ void IVertexShader::_createShader()
 	const char shaderName[] = "IVertexShader::_shader";
 	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName) - 1, shaderName);
 #endif
-#endif // _DX11
+#endif // USING_DX11
 }
 
 D3D11_INPUT_ELEMENT_DESC *IVertexShader::_generateInputElementDesc(std::span<InputLayoutElement> inputLayout)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	size_t numLayoutEntries = inputLayout.size();
 
 	D3D11_INPUT_ELEMENT_DESC *elem = new D3D11_INPUT_ELEMENT_DESC[numLayoutEntries]{};
@@ -348,7 +348,7 @@ D3D11_INPUT_ELEMENT_DESC *IVertexShader::_generateInputElementDesc(std::span<Inp
 
 void IVertexShader::_generateInputLayout(std::span<InputLayoutElement> inputLayout)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_INPUT_ELEMENT_DESC *elements = _generateInputElementDesc(inputLayout);
 
 	HRESULT r = _device->_device->CreateInputLayout(
@@ -387,27 +387,27 @@ IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span
 
 void IVertexShader::SetTexture(unsigned index, Texture2D *texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->VSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IVertexShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->VSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
 void IVertexShader::SetShader()
 {
-#ifdef  _DX11
+#ifdef  USING_DX11
 	unsigned i;
 	auto validConstantBuffers = this->_validConstantBuffers(i);
 	_device->_context->VSSetConstantBuffers(0, i, validConstantBuffers.data());
 
 	_device->_context->IASetInputLayout(_inputLayout.Get());
 	_device->_context->VSSetShader(_shader.Get(), nullptr, 0);
-#endif //  _DX11
+#endif //  USING_DX11
 
 }

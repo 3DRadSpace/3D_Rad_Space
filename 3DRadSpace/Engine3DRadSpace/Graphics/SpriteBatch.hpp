@@ -69,7 +69,7 @@ namespace Engine3DRadSpace::Graphics
 
 		unsigned _lastID;
 
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _oldRasterizerState;
 
 		Microsoft::WRL::ComPtr<ID3D11BlendState> _oldBlendState;

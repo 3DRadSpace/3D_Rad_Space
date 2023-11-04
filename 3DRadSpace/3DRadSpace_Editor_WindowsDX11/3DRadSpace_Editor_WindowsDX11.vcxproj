@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Frontend\Settings.cpp" />
     <ClCompile Include="Frontend\Windows\AddObjectDialog.cpp" />
     <ClCompile Include="Frontend\Controls\AssetControl.cpp" />
     <ClCompile Include="Frontend\AssetListRenderer.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="Frontend\Controls\TextureControl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Frontend\Settings.hpp" />
     <ClInclude Include="Frontend\Windows\AddObjectDialog.hpp" />
     <ClInclude Include="Frontend\Controls\AssetControl.hpp" />
     <ClInclude Include="Frontend\AssetListRenderer.hpp" />

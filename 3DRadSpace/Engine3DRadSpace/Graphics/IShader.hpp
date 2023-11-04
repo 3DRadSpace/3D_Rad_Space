@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	using Array_ValidConstantBuffers = std::array<ID3D11Buffer *, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT>;
 #endif
 
@@ -15,7 +15,7 @@ namespace Engine3DRadSpace::Graphics
 		Engine3DRadSpace::GraphicsDevice *_device;
 		ShaderFeatureLevel _featureLevel;
 		const char* _entry;
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3DBlob> _shaderBlob;
 		Microsoft::WRL::ComPtr<ID3DBlob> _errorBlob;
 

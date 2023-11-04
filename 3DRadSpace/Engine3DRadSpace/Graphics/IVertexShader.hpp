@@ -33,13 +33,13 @@ namespace Engine3DRadSpace::Graphics
 	};
 	class DLLEXPORT IVertexShader : public IShader
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> _shader;
 
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
 #endif
 		void _createShader();
-#ifdef _DX11
+#ifdef USING_DX11
 		const char *_determineTarget();
 		[[nodiscard]] D3D11_INPUT_ELEMENT_DESC *_generateInputElementDesc(std::span<InputLayoutElement> inputLayout);
 #endif

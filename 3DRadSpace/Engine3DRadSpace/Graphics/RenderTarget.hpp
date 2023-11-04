@@ -5,7 +5,7 @@ namespace Engine3DRadSpace::Graphics
 {
 	class DLLEXPORT RenderTarget : public Texture2D
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTarget;
 #endif
 	public:

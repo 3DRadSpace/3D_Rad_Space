@@ -24,7 +24,7 @@ const char *IGeometryShader::_determineTarget()
 
 void IGeometryShader::_createShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _device->_device->CreateGeometryShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
@@ -57,26 +57,26 @@ IGeometryShader::IGeometryShader(GraphicsDevice *device, const std::filesystem::
 
 void IGeometryShader::SetTexture(unsigned index, Texture2D *texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->GSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IGeometryShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->GSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
 void Engine3DRadSpace::Graphics::IGeometryShader::SetShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	unsigned i;
 	auto validConstantBuffers = this->_validConstantBuffers(i);
 	_device->_context->GSSetConstantBuffers(0, i, validConstantBuffers.data());
 
 	_device->_context->GSSetShader(_shader.Get(), nullptr, 0);
-#endif // _DX11
+#endif // USING_DX11
 }
 

@@ -36,7 +36,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path) :
 		aiProcess_SplitLargeMeshes |
 		aiProcess_SortByPType |
 		aiProcess_GenBoundingBoxes |
-#if _DX11
+#if USING_DX11
 		aiProcess_FlipUVs |
 		aiProcess_FlipWindingOrder
 #endif

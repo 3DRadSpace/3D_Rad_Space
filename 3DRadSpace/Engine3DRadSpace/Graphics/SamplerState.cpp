@@ -8,7 +8,7 @@ using namespace Engine3DRadSpace::Logging;
 void SamplerState::_debugInfo()
 {
 #ifdef _DEBUG
-#ifdef _DX11
+#ifdef USING_DX11
 	const char samplerStateName[] = "SamplerState::_samplerState";
 	_samplerState->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(samplerStateName) - 1, samplerStateName);
 #endif
@@ -17,7 +17,7 @@ void SamplerState::_debugInfo()
 
 SamplerState::SamplerState(GraphicsDevice* device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	//Default values, as described here: https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-pssetsamplers
 	D3D11_SAMPLER_DESC desc{};
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -43,7 +43,7 @@ SamplerState::SamplerState(GraphicsDevice* device)
 
 SamplerState::SamplerState(GraphicsDevice *device, TextureFilter Filter, TextureAddressMode AddressU, TextureAddressMode AddressV, TextureAddressMode AddressW, float MipLODBias, unsigned MaxAnisotropy, ComparisonFunction ComparisionFunction, Color BorderColor, float MinLOD, float MaxLOD)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_SAMPLER_DESC desc{};
 	
 	switch(Filter)

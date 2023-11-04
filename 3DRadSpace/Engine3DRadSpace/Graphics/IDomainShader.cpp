@@ -24,7 +24,7 @@ const char *IDomainShader::_determineTarget()
 
 void IDomainShader::_createShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _device->_device->CreateDomainShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
@@ -57,26 +57,26 @@ IDomainShader::IDomainShader(GraphicsDevice *device, const std::filesystem::path
 
 void IDomainShader::SetTexture(unsigned index, Texture2D *texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->DSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IDomainShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->DSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void Engine3DRadSpace::Graphics::IDomainShader::SetShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	unsigned i;
 	auto validConstantBuffers = this->_validConstantBuffers(i);
 	_device->_context->DSSetConstantBuffers(0, i, validConstantBuffers.data());
 
 	_device->_context->DSSetShader(_shader.Get(), nullptr, 0);
-#endif // _DX11
+#endif // USING_DX11
 }
 

@@ -64,7 +64,7 @@ void SpriteBatch::_prepareGraphicsDevice()
 	_spriteShader->SetBasic();
 	_spriteShader->SetSamplerState(_samplerState.get());
 
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->RSGetState(&_oldRasterizerState);
 	_device->_context->OMGetBlendState(&_oldBlendState, _oldBlendFactor, &_oldSampleMask);
 	_device->_context->OMGetDepthStencilState(&_oldStencilState, &_oldStencilRef);
@@ -131,7 +131,7 @@ void SpriteBatch::_drawAllEntries()
 
 void SpriteBatch::_restoreGraphicsDevice()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->RSSetState(_oldRasterizerState.Get());
 	_device->_context->OMSetBlendState(_oldBlendState.Get(), _oldBlendFactor, _oldSampleMask);
 	_device->_context->OMSetDepthStencilState(_oldStencilState.Get(), _oldStencilRef);

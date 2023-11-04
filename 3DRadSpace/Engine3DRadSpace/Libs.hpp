@@ -32,25 +32,17 @@
 	#define DLLEXPORT __declspec(dllimport)
 #endif
 
-#ifdef _DX11
-	#include <d3d11.h>
-	#include <d3dcompiler.h>
-#endif
-#else
-#define DLLEXPORT
-#endif
-
 //Check if compiling for DirectX 11/12 or Vulkan.
-#ifndef _DX11
-#ifndef _DX12
-#ifndef _VULKAN
+#ifndef USING_DX11
+#ifndef USING_DX12
+#ifndef USING_VULKAN
 //#warning "Using DirectX11 as default backend."
-#define _DX11
+#define USING_DX11
 #endif
-#endif // !_DX11
+#endif // !USING_DX11
 #endif
 
-#ifdef _DX11
+#ifdef USING_DX11
 #ifndef _WIN32
 #error DirectX11 is only supported on Windows!
 #endif // !_WIN32
@@ -60,6 +52,14 @@
 #ifndef _WIN32
 #error DirectX12 is only supported on Windows!
 #endif // !_WIN32
+#endif
+
+#ifdef USING_DX11
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#endif
+#else
+#define DLLEXPORT
 #endif
 
 //Check compiler support

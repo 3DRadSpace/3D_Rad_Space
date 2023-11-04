@@ -92,10 +92,6 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 								{
 									return std::string(e.what());
 								}
-								catch(Logging::Exception &e)
-								{
-									return e.What();
-								}
 							};
 
 							std::string possibleErr;

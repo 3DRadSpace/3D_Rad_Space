@@ -35,6 +35,9 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > Install latest version using vcpkg: (⚠️ NuGet versions are outdated!)
 >
 > `vcpkg install assimp:x64-Windows`
+- nlohmann JSON
+> Install using vcpkg:
+> `vcpkg install nlohmann-json:x64-windows`
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 

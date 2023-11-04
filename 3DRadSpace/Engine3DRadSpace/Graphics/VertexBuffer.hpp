@@ -21,9 +21,9 @@ namespace Engine3DRadSpace
 		{
 			void _debugInfo();
 		protected:
-#ifdef  _DX11
+#ifdef  USING_DX11
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
-#endif //  _DX11
+#endif //  USING_DX11
 			GraphicsDevice* _device;
 
 			size_t _numVerts;
@@ -76,7 +76,7 @@ namespace Engine3DRadSpace
 		template<VertexDecl V>
 		inline void VertexBufferV<V>::SetData(std::span<V> data)
 		{
-#ifdef _DX11
+#ifdef USING_DX11
 			D3D11_MAPPED_SUBRESOURCE resource{};
 			HRESULT r = _device->_context->Map(_buffer.Get(), 0, D3D11_MAP_WRITE, 0, &resource);
 			if (FAILED(r)) throw Logging::Exception("Failed to map a vertex buffer that cannot be written by the CPU.");

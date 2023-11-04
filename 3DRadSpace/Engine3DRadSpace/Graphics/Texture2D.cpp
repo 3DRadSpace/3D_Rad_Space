@@ -1,11 +1,11 @@
 #include "Texture2D.hpp"
-#ifdef _DX11
+#ifdef USING_DX11
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
 #include <Windows.h>
 #include <ScreenGrab.h>
 #include <wincodec.h>
-#endif // _DX11
+#endif // USING_DX11
 #include "../Logging/Exception.hpp"
 #include "../Logging/ResourceLoadingError.hpp"
 
@@ -18,7 +18,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const std::string &filename):
 	_width(0),
 	_height(0)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	ID3D11Resource **resource = reinterpret_cast<ID3D11Resource **>(_texture.GetAddressOf());
 
 	wchar_t path[_MAX_PATH]{};
@@ -52,7 +52,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const std::string &filename):
 Texture2D::Texture2D(GraphicsDevice* device, const std::wstring &filename):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	ID3D11Resource** resource = reinterpret_cast<ID3D11Resource**>(_texture.GetAddressOf());
 
 	HRESULT r = DirectX::CreateWICTextureFromFile(
@@ -89,7 +89,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 	_width(x),
 	_height(y)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	tDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -117,7 +117,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 
 Texture2D::Texture2D(GraphicsDevice* device, void* buffer, unsigned x, unsigned y, PixelFormat format)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	tDesc.Format = _getTextureFormat(format);
@@ -148,7 +148,7 @@ Texture2D::Texture2D(GraphicsDevice* device, Color* colors, unsigned x, unsigned
 	_width(x),
 	_height(y)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Width = x;
 	desc.Height = y;
@@ -177,7 +177,7 @@ Texture2D::Texture2D(GraphicsDevice* device, Color* colors, unsigned x, unsigned
 Texture2D::Texture2D(GraphicsDevice* device,const uint8_t* imageBuffer, size_t size):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	ID3D11Resource** resource = reinterpret_cast<ID3D11Resource**>(_texture.GetAddressOf());
 
 	HRESULT r = DirectX::CreateWICTextureFromMemory(
@@ -210,7 +210,7 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat
 	_width(x),
 	_height(y)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Width = x;
 	desc.Height = y;
@@ -235,7 +235,7 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat
 void Texture2D::_debugInfoTX2D()
 {
 #ifdef _DEBUG
-#ifdef _DX11
+#ifdef USING_DX11
 	const char textureName[] = "Texture2D::_texture";
 	_texture->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(textureName) - 1, textureName);
 
@@ -248,7 +248,7 @@ void Texture2D::_debugInfoTX2D()
 void Texture2D::_debugInfoRT()
 {
 #ifdef _DEBUG
-#ifdef _DX11
+#ifdef USING_DX11
 	const char textureName[] = "RenderTarget(Texture2D)::_texture";
 	_texture->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(textureName) - 1, textureName);
 
@@ -427,7 +427,7 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRe
 	_width(x),
 	_height(y)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Width = x;
 	desc.Height = y;
@@ -452,7 +452,7 @@ Texture2D::Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRe
 Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget, PixelFormat format):
 	_device(device)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	desc.Width = device->_resolution.X;
 	desc.Height = device->_resolution.Y;
@@ -495,7 +495,7 @@ Texture2D::Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Textur
 
 void Texture2D::SetColors(Color** colors, unsigned x, unsigned y)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	HRESULT r = _device->_context->Map(_texture.Get(), 0, D3D11_MAP_WRITE, 0, &resource);
@@ -508,7 +508,7 @@ void Texture2D::SetColors(Color** colors, unsigned x, unsigned y)
 
 Texture2D Texture2D::CreateStaging(Texture2D* texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC desc{};
 	texture->_texture->GetDesc(&desc);
 
@@ -531,7 +531,7 @@ Texture2D Texture2D::CreateStaging(Texture2D* texture)
 
 void Texture2D::Resize(unsigned newX, unsigned newY)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	//1.) Create a staging texture.
 	D3D11_TEXTURE2D_DESC desc{};
 	_texture->GetDesc(&desc);
@@ -607,7 +607,7 @@ void Texture2D::Resize(unsigned newX, unsigned newY)
 
 void Texture2D::SaveToFile(const std::string &path)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	wchar_t wpath[_MAX_PATH]{};
 	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, wpath, _MAX_PATH);
 
@@ -630,7 +630,7 @@ Texture2D Texture2D::Clone()
 {
 	Texture2D staging = Texture2D::CreateStaging(this);
 
-#ifdef _DX11
+#ifdef USING_DX11
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> copy = nullptr;
 
 	D3D11_TEXTURE2D_DESC desc{};

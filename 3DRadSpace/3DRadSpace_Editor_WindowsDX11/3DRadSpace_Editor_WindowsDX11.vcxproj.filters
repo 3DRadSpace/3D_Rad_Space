@@ -84,6 +84,9 @@
     <ClCompile Include="Frontend\Windows\EditorWindow.cpp">
       <Filter>Frontend\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="Frontend\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="Frontend\HelperFunctions.hpp">
       <Filter>Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="Frontend\Settings.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

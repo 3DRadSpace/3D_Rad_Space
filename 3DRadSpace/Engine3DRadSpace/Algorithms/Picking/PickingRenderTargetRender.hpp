@@ -55,7 +55,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 
 		std::optional<unsigned> Pick(const Math::Point& mouseCoords)
 		{
-#ifdef _DX11
+#ifdef USING_DX11
 			D3D11_MAPPED_SUBRESOURCE mappedSubresource;
 
 			auto renderTarget = static_cast<ID3D11Texture2D*>(_renderTarget->RenderTargetHandle());

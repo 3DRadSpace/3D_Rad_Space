@@ -8,7 +8,7 @@ using namespace Engine3DRadSpace::Logging;
 
 void IPixelShader::_createShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _device->_device->CreatePixelShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
@@ -57,21 +57,21 @@ Engine3DRadSpace::Graphics::IPixelShader::IPixelShader(GraphicsDevice *device, c
 
 void Engine3DRadSpace::Graphics::IPixelShader::SetTexture(unsigned index, Texture2D *texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->PSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void Engine3DRadSpace::Graphics::IPixelShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->PSSetSamplers(0, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
 void Engine3DRadSpace::Graphics::IPixelShader::SetShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	unsigned i;
 	auto validConstantBuffers = this->_validConstantBuffers(i);
 	_device->_context->PSSetConstantBuffers(0, i, validConstantBuffers.data());

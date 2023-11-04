@@ -6,7 +6,7 @@ using namespace Engine3DRadSpace::Graphics;
 
 void IHullShader::_createShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	HRESULT r = _device->_device->CreateHullShader(
 		_shaderBlob->GetBufferPointer(),
 		_shaderBlob->GetBufferSize(),
@@ -57,25 +57,25 @@ IHullShader::IHullShader(GraphicsDevice *device, const std::filesystem::path &pa
 
 void IHullShader::SetTexture(unsigned index, Texture2D *texture)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->HSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif
 }
 
 void IHullShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	_device->_context->HSSetSamplers(index, 1, samplerState->_samplerState.GetAddressOf());
-#endif // _DX11
+#endif // USING_DX11
 }
 
 void Engine3DRadSpace::Graphics::IHullShader::SetShader()
 {
-#ifdef _DX11
+#ifdef USING_DX11
 	unsigned i;
 	auto validConstantBuffers = this->_validConstantBuffers(i);
 	_device->_context->HSSetConstantBuffers(0, i, validConstantBuffers.data());
 
 	_device->_context->HSSetShader(_shader.Get(), nullptr, 0);
-#endif // _DX11
+#endif // USING_DX11
 }

@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Graphics
         Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& resource);
         Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture);
 	protected:
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _resourceView;
 		GraphicsDevice *_device;

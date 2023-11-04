@@ -43,7 +43,7 @@ namespace Engine3DRadSpace::Graphics
 
 	class DLLEXPORT DepthStencilState
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _state;
 #endif
 		void _debugInfo();

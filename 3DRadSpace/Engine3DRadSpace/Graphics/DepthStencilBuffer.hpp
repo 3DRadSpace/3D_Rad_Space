@@ -6,7 +6,7 @@ namespace Engine3DRadSpace::Graphics
 {
 	class DLLEXPORT DepthStencilBuffer
 	{
-#ifdef _DX11
+#ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthView;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _depthTexture;
 #endif
