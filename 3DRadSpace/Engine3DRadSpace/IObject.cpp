@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
 
-Engine3DRadSpace::IObject::IObject(Game* game, const std::string& name, const std::string& tag, bool enabled, bool visible) :
+IObject::IObject(Game* game, const std::string& name, const std::string& tag, bool enabled, bool visible) :
 	Name(name),
 	Tag(tag),
 	Enabled(enabled),
@@ -23,12 +23,12 @@ IObject::IObject(const std::string &name,const std::string& tag, bool enabled, b
 {
 }
 
-Engine3DRadSpace::GraphicsDevice *Engine3DRadSpace::IObject::GetGraphicsDeviceHandle()
+GraphicsDevice* IObject::GetGraphicsDeviceHandle()
 {
 	return _device;
 }
 
-Game* Engine3DRadSpace::IObject::GetGame()
+Game* IObject::GetGame()
 {
 	return _game;
 }

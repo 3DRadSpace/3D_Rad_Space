@@ -190,7 +190,7 @@ D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEna
 #endif
 }
 
-void Engine3DRadSpace::Graphics::BlendState::_debugInfo()
+void BlendState::_debugInfo()
 {
 #ifdef USING_DX11
 #ifdef _DEBUG

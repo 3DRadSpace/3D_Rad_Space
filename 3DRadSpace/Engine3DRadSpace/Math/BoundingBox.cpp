@@ -3,7 +3,7 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Engine3DRadSpace::Math::BoundingBox::BoundingBox(const Vector3& pos, const Vector3& scale):
+BoundingBox::BoundingBox(const Vector3& pos, const Vector3& scale):
     Position(pos),
     Scale(scale)
 {
@@ -31,11 +31,11 @@ BoundingBox::BoundingBox(const BoundingBox& box1, const BoundingBox& box2)
     Scale = maxVec - minVec;
 }
 
-Engine3DRadSpace::Math::BoundingBox::BoundingBox(const BoundingBox& box, const BoundingSphere& sphere) : BoundingBox(BoundingSphere(sphere,box))
+BoundingBox::BoundingBox(const BoundingBox& box, const BoundingSphere& sphere) : BoundingBox(BoundingSphere(sphere,box))
 {
 }
 
-Engine3DRadSpace::Math::BoundingBox::BoundingBox(const BoundingSphere& sph1, BoundingSphere& sph2) : BoundingBox(BoundingSphere(sph1, sph2))
+BoundingBox::BoundingBox(const BoundingSphere& sph1, BoundingSphere& sph2) : BoundingBox(BoundingSphere(sph1, sph2))
 {
 }
 

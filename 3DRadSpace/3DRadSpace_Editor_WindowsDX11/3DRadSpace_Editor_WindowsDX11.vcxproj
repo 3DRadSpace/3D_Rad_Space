@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Frontend\AutoupdaterState.cpp" />
     <ClCompile Include="Frontend\Settings.cpp" />
     <ClCompile Include="Frontend\Windows\AddObjectDialog.cpp" />
     <ClCompile Include="Frontend\Controls\AssetControl.cpp" />
@@ -184,8 +185,10 @@
     <ClCompile Include="Editor\RenderWindow.cpp" />
     <ClCompile Include="Editor\SkinmeshPreviewer.cpp" />
     <ClCompile Include="Frontend\Controls\TextureControl.cpp" />
+    <ClCompile Include="Frontend\Windows\UpdateProgressWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Frontend\AutoupdaterState.hpp" />
     <ClInclude Include="Frontend\Settings.hpp" />
     <ClInclude Include="Frontend\Windows\AddObjectDialog.hpp" />
     <ClInclude Include="Frontend\Controls\AssetControl.hpp" />
@@ -205,6 +208,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Editor/SkinmeshPreviewer.hpp" />
     <ClInclude Include="Frontend\Controls\TextureControl.hpp" />
+    <ClInclude Include="Frontend\Windows\UpdateProgressWindow.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DRadSpace_Editor_WindowsDX11.rc" />

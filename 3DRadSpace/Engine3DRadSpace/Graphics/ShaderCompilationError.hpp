@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT ShaderCompilationError : public Engine3DRadSpace::Logging::Exception
+	class DLLEXPORT ShaderCompilationError : public Logging::Exception
 	{
 	public:
 		ShaderCompilationError(const std::string &err) :

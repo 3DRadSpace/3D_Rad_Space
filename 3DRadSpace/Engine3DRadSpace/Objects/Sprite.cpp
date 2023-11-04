@@ -17,8 +17,8 @@ Sprite::Sprite() :
 {
 }
 
-Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, const std::string &path, const Vector2 &pos, const Vector2 &scale, const Vector2& pivot,
-	float depth, float rotation, bool flipU, bool flipV, const Color &tintColor) :
+Sprite::Sprite(const std::string &name, bool visible, const std::string &path, const Vector2 &pos, const Vector2 &scale, const Vector2& pivot,
+               float depth, float rotation, bool flipU, bool flipV, const Color &tintColor) :
 	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
 	FlipV(FlipV),
@@ -28,8 +28,8 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 	_tempResourceString = std::make_unique<std::string>(path);
 }
 
-Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible, RefTexture2D resource, const Vector2 &pos, const Vector2 &scale, float depth, const Vector2 &pivot,
-	float rotation, bool flipU, bool flipV, const Color &tintColor) :
+Sprite::Sprite(const std::string &name, bool visible, RefTexture2D resource, const Vector2 &pos, const Vector2 &scale, float depth, const Vector2 &pivot,
+               float rotation, bool flipU, bool flipV, const Color &tintColor) :
 	IObject2D(name, "...", visible, visible, Vector2(pos.X, pos.Y), scale, rotation, pivot, depth),
 	FlipU(flipU),
 	FlipV(flipV),
@@ -39,7 +39,7 @@ Engine3DRadSpace::Objects::Sprite::Sprite(const std::string &name, bool visible,
 {
 }
 
-Engine3DRadSpace::Graphics::Texture2D *Engine3DRadSpace::Objects::Sprite::GetSpriteImage()
+Texture2D* Sprite::GetSpriteImage()
 {
 	return _texture;
 }
@@ -58,7 +58,7 @@ void Sprite::Load(Content::ContentManager *content)
 	else _texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
 }
 
-void Sprite::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
+void Sprite::Update(Keyboard&keyboard, Mouse&mouse, double dt)
 {
 }
 
@@ -71,7 +71,7 @@ void Sprite::EditorInitialize()
 {
 }
 
-void Engine3DRadSpace::Objects::Sprite::EditorLoad(Content::ContentManager *content)
+void Sprite::EditorLoad(Content::ContentManager *content)
 {
 	auto asset = content->operator[](Image);
 	if(asset != nullptr) _texture = static_cast<Texture2D *>(asset->Get());

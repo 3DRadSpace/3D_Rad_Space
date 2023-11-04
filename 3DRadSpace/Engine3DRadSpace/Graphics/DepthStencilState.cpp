@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
 
-void Engine3DRadSpace::Graphics::DepthStencilState::_debugInfo()
+void DepthStencilState::_debugInfo()
 {
 #ifdef USING_DX11
 #ifdef _DEBUG
@@ -53,7 +53,7 @@ DepthStencilState::DepthStencilState(GraphicsDevice *device, bool EnableDepth, D
 #endif
 }
 
-DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthDefault(GraphicsDevice* device)
+DepthStencilState DepthStencilState::DepthDefault(GraphicsDevice* device)
 {
     // https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc
     return DepthStencilState(
@@ -79,7 +79,7 @@ DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthDefault(Gr
     );
 }
 
-DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthNone(GraphicsDevice *device)
+DepthStencilState DepthStencilState::DepthNone(GraphicsDevice *device)
 {
     //https://github.com/microsoft/DirectXTK/wiki/CommonStates
     return DepthStencilState(
@@ -105,7 +105,7 @@ DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthNone(Graph
     );
 }
 
-DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthRead(GraphicsDevice *device)
+DepthStencilState DepthStencilState::DepthRead(GraphicsDevice *device)
 {
     return DepthStencilState(
         device,
@@ -130,7 +130,7 @@ DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthRead(Graph
     );
 }
 
-DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthReverseZ(GraphicsDevice *device)
+DepthStencilState DepthStencilState::DepthReverseZ(GraphicsDevice *device)
 {
     return DepthStencilState(
         device,
@@ -155,7 +155,7 @@ DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthReverseZ(G
     );
 }
 
-DepthStencilState Engine3DRadSpace::Graphics::DepthStencilState::DepthReadReverseZ(GraphicsDevice *device)
+DepthStencilState DepthStencilState::DepthReadReverseZ(GraphicsDevice *device)
 {
     return DepthStencilState(
         device,

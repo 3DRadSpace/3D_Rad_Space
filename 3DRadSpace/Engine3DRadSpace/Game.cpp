@@ -7,13 +7,13 @@ using namespace Engine3DRadSpace::Graphics;
 Game::Game(const char* title, unsigned width, unsigned height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
-	Device = std::make_unique<Engine3DRadSpace::GraphicsDevice>(Window->NativeHandle(),width,height);
-	Content = std::make_unique<Engine3DRadSpace::Content::ContentManager>(Device.get());
+	Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(),width,height);
+	Content = std::make_unique<Content::ContentManager>(Device.get());
 	SpriteBatch = std::make_unique<Graphics::SpriteBatch>(Device.get());
 	_valid = true;
 }
 
-Engine3DRadSpace::Game::Game(Engine3DRadSpace::Window &&window) :
+Game::Game(Engine3DRadSpace::Window &&window) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(std::move(window)))
 {
 	Math::Point size = Window->Size();
@@ -79,7 +79,7 @@ void Game::Load(Content::ContentManager* content)
 	}
 }
 
-void Game::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt)
+void Game::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
 	for (auto& [object, type] : Objects)
 	{

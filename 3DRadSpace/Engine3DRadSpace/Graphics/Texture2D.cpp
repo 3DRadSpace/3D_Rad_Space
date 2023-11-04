@@ -628,7 +628,7 @@ unsigned Texture2D::Height()
 
 Texture2D Texture2D::Clone()
 {
-	Texture2D staging = Texture2D::CreateStaging(this);
+	Texture2D staging = CreateStaging(this);
 
 #ifdef USING_DX11
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> copy = nullptr;

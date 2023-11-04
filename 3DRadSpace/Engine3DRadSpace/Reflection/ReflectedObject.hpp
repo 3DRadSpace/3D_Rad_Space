@@ -5,7 +5,7 @@
 namespace Engine3DRadSpace::Reflection
 {
 	template<typename O>
-	concept ReflectableObject = std::is_base_of_v<Engine3DRadSpace::IObject, O> && std::is_default_constructible_v<O>;
+	concept ReflectableObject = std::is_base_of_v<IObject, O> && std::is_default_constructible_v<O>;
 
 	template<ReflectableObject O>
 	struct ObjectTag {};
@@ -15,7 +15,7 @@ namespace Engine3DRadSpace::Reflection
 		std::vector<IReflectedField*> _fields;
 
 		template<ReflectableObject O>
-		Reflection::UUID determineUUID(ObjectTag<O> tag)
+		UUID determineUUID(ObjectTag<O> tag)
 		{
 			auto obj = std::make_unique<O>();
 			return obj->GetUUID();
@@ -38,7 +38,7 @@ namespace Engine3DRadSpace::Reflection
 		const std::string Name;
 		const std::string Category;
 		const std::string Description;
-		const Reflection::UUID ObjectUUID;
+		const UUID ObjectUUID;
 
 		const size_t NumFields();
 		const IReflectedField *operator[](unsigned i);
@@ -47,7 +47,7 @@ namespace Engine3DRadSpace::Reflection
 		std::vector<IReflectedField *>::iterator begin();
 		std::vector<IReflectedField *>::iterator end();
 
-		std::function<Engine3DRadSpace::IObject *()> CreateBlankObject;
+		std::function<IObject *()> CreateBlankObject;
 
 		~ReflectedObject();
 	};

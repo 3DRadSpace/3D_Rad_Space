@@ -58,7 +58,7 @@ void RenderWindow::Initialize()
 
 Model3D *fish = nullptr;
 
-void RenderWindow::Load(Engine3DRadSpace::Content::ContentManager *content)
+void RenderWindow::Load(Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("gradient.png");
 	//testTexture->Resize(256, 256);

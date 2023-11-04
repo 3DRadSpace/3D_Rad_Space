@@ -24,7 +24,7 @@ void IPixelShader::_createShader()
 #endif
 }
 
-const char *Engine3DRadSpace::Graphics::IPixelShader::_determineTarget()
+const char * IPixelShader::_determineTarget()
 {
 	switch(_featureLevel)
 	{
@@ -41,35 +41,35 @@ const char *Engine3DRadSpace::Graphics::IPixelShader::_determineTarget()
 	}
 }
 
-Engine3DRadSpace::Graphics::IPixelShader::IPixelShader(GraphicsDevice *device, const char *shaderSource, const char *entryFunction, ShaderFeatureLevel fl):
+IPixelShader::IPixelShader(GraphicsDevice *device, const char *shaderSource, const char *entryFunction, ShaderFeatureLevel fl):
 	IShader(device, shaderSource, entryFunction, fl)
 {
 	_compileShader(shaderSource, _determineTarget());
 	_createShader();
 }
 
-Engine3DRadSpace::Graphics::IPixelShader::IPixelShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entryFunction, ShaderFeatureLevel fl):
+IPixelShader::IPixelShader(GraphicsDevice *device, const std::filesystem::path &path, const char *entryFunction, ShaderFeatureLevel fl):
 	IShader(device, path, entryFunction, fl)
 {
 	_compileShaderFromFile(path.string().c_str(), _determineTarget());
 	_createShader();
 }
 
-void Engine3DRadSpace::Graphics::IPixelShader::SetTexture(unsigned index, Texture2D *texture)
+void IPixelShader::SetTexture(unsigned index, Texture2D *texture)
 {
 #ifdef USING_DX11
 	_device->_context->PSSetShaderResources(index, 1, texture->_resourceView.GetAddressOf());
 #endif // USING_DX11
 }
 
-void Engine3DRadSpace::Graphics::IPixelShader::SetSampler(unsigned index, SamplerState *samplerState)
+void IPixelShader::SetSampler(unsigned index, SamplerState *samplerState)
 {
 #ifdef USING_DX11
 	_device->_context->PSSetSamplers(0, 1, samplerState->_samplerState.GetAddressOf());
 #endif
 }
 
-void Engine3DRadSpace::Graphics::IPixelShader::SetShader()
+void IPixelShader::SetShader()
 {
 #ifdef USING_DX11
 	unsigned i;

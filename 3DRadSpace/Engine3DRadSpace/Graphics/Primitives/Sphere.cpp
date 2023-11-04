@@ -48,7 +48,7 @@ Sphere::Sphere(GraphicsDevice *device, float radius, Color color, unsigned resol
 	_shader = ShaderManager::LoadShader<BlankShader>(device);
 }
 
-void Engine3DRadSpace::Graphics::Primitives::Sphere::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+void Sphere::Draw(Matrix&view, Matrix&projection, double dt)
 {
 	_shader->SetBasic();
 	_device->SetTopology(VertexTopology::TriangleList);

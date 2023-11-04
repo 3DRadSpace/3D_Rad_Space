@@ -35,12 +35,12 @@ namespace Engine3DRadSpace
 		std::unique_ptr<GraphicsDevice> Device;
 		ObjectList Objects;
 
-		Engine3DRadSpace::Math::Matrix View;
-		Engine3DRadSpace::Math::Matrix Projection;
+		Math::Matrix View;
+		Math::Matrix Projection;
 
-		std::unique_ptr<Engine3DRadSpace::Content::ContentManager> Content;
+		std::unique_ptr<Content::ContentManager> Content;
 
-		std::unique_ptr<Engine3DRadSpace::Graphics::SpriteBatch> SpriteBatch;
+		std::unique_ptr<Graphics::SpriteBatch> SpriteBatch;
 
 		Color ClearColor = Colors::Black;
 
@@ -53,7 +53,7 @@ namespace Engine3DRadSpace
 		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager* content) override;
 		virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override;
-		virtual void Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt) override;
+		virtual void Draw(Math::Matrix& view, Math::Matrix& projection, double dt) override;
 		virtual void Draw(Graphics::SpriteBatch* spriteBatch, double dt) override;
 	};
 }

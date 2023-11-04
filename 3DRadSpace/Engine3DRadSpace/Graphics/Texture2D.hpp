@@ -54,7 +54,7 @@ namespace Engine3DRadSpace::Graphics
 
 		virtual ~Texture2D() = default;
 
-		friend class ::Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 		friend class IVertexShader;
 		friend class IPixelShader;
 		friend class IHullShader;

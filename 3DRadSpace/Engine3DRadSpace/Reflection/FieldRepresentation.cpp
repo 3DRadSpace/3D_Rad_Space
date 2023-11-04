@@ -6,37 +6,37 @@ using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Reflection;
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<void>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<void>()
 {
 	return {{ FieldRepresentationType::Unknown, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<bool>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<bool>()
 {
 	return {{ FieldRepresentationType::Boolean, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<std::string>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<std::string>()
 {
 	return {{ FieldRepresentationType::String, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<RefTexture2D>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<RefTexture2D>()
 {
 	return {{FieldRepresentationType::Image, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<RefModel3D>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<RefModel3D>()
 {
 	return {{FieldRepresentationType::Model, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Key>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Key>()
 {
 	return {{FieldRepresentationType::Key, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Vector2>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Vector2>()
 {
 	return
 	{
@@ -45,7 +45,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Point>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Point>()
 {
 	return
 	{
@@ -54,7 +54,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Vector3>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Vector3>()
 {
 	return
 	{
@@ -64,7 +64,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Vector4>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Vector4>()
 {
 	return
 	{
@@ -75,12 +75,12 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Quaternion>() //Quaternions will be constructed from Euler angles.
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Quaternion>() //Quaternions will be constructed from Euler angles.
 {
 	return {{ FieldRepresentationType::Quaternion, ""}};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Color>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Color>()
 {
 	return
 	{
@@ -88,7 +88,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Engine3DRadSpace::Math::Rectangle>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<Math::Rectangle>()
 {
 	return
 	{
@@ -99,7 +99,7 @@ template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentat
 	};
 }
 
-template<> FieldRepresentation Engine3DRadSpace::Reflection::GetFieldRepresentation<Engine3DRadSpace::Math::RectangleF>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<RectangleF>()
 {
 	return
 	{

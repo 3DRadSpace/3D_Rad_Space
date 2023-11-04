@@ -45,8 +45,8 @@ namespace Engine3DRadSpace::Graphics
 #endif
 		void _generateInputLayout(std::span<InputLayoutElement> inputLayout);
 	protected:
-		IVertexShader(Engine3DRadSpace::GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* shaderSourceCode, const char* vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
-		IVertexShader(Engine3DRadSpace::GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path& path, const char* vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
+		IVertexShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const char* shaderSourceCode, const char* vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
+		IVertexShader(GraphicsDevice* device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path& path, const char* vsEntry, ShaderFeatureLevel featureLevel = ShaderFeatureLevel::DX_V4);
 	public:
 		IVertexShader(IVertexShader &) = delete;
 		IVertexShader(IVertexShader &&) noexcept = delete;
@@ -62,6 +62,6 @@ namespace Engine3DRadSpace::Graphics
 
 		virtual ~IVertexShader() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 	};
 }

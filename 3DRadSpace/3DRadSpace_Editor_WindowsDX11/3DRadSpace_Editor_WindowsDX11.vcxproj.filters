@@ -87,6 +87,12 @@
     <ClCompile Include="Frontend\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Frontend\AutoupdaterState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Frontend\Windows\UpdateProgressWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -144,6 +150,12 @@
       <Filter>Frontend</Filter>
     </ClInclude>
     <ClInclude Include="Frontend\Settings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frontend\AutoupdaterState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frontend\Windows\UpdateProgressWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

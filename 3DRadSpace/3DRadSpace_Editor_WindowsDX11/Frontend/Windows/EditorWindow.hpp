@@ -6,6 +6,7 @@
 constexpr const char* EditorWindowClassName = "CLASS_3DRADSPACE_MAINWINDOW";
 constexpr const char* RecentProjectFile = "Data\\RecentProjects.txt";
 constexpr const char* FileFilter = "3DRadSpace Project(*.3drsp)\0*.3drsp\0All Files(*.*)\0*.*\0\0";
+constexpr const char* EngineVersion = "0.1.0";
 
 constexpr int CMD_NewFile = 500;
 constexpr int CMD_OpenFile = 501;
@@ -62,6 +63,7 @@ class EditorWindow
 	char _currentFile[_MAX_PATH]{};
 	void _saveProject(const char* fileName = nullptr);
 	void _writeProject(const char *fileName);
+	void _findUpdate();
 
 	HTREEITEM _getSelectedListViewItem();
 	std::pair<HTREEITEM, std::optional<unsigned>> _getSelectedObjectID();

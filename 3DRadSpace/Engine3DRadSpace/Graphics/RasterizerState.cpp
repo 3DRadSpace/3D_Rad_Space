@@ -42,7 +42,7 @@ RasterizerState::RasterizerState(
 #endif
 }
 
-RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullNone(GraphicsDevice *device)
+RasterizerState RasterizerState::CullNone(GraphicsDevice *device)
 {
 	// https://github.com/microsoft/DirectXTK/wiki/CommonStates
 	return RasterizerState(device, 
@@ -59,7 +59,7 @@ RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullNone(GraphicsDe
 	);
 }
 
-RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullClockwise(GraphicsDevice *device)
+RasterizerState RasterizerState::CullClockwise(GraphicsDevice *device)
 {
 	return RasterizerState(device,
 		RasterizerFillMode::Solid,
@@ -75,7 +75,7 @@ RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullClockwise(Graph
 	);
 }
 
-RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullCounterClockwise(GraphicsDevice *device)
+RasterizerState RasterizerState::CullCounterClockwise(GraphicsDevice *device)
 {
 	return RasterizerState(device,
 		RasterizerFillMode::Solid,
@@ -91,7 +91,7 @@ RasterizerState Engine3DRadSpace::Graphics::RasterizerState::CullCounterClockwis
 	);
 }
 
-RasterizerState Engine3DRadSpace::Graphics::RasterizerState::Wireframe(GraphicsDevice *device)
+RasterizerState RasterizerState::Wireframe(GraphicsDevice *device)
 {
 	return RasterizerState(device,
 		RasterizerFillMode::Wireframe,

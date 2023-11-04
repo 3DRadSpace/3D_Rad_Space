@@ -22,7 +22,7 @@ Vector3 Vector3::UnitZ()
     return Vector3(0, 0, 1);
 }
 
-Vector3 Engine3DRadSpace::Math::Vector3::One()
+Vector3 Vector3::One()
 {
     return Vector3(1,1,1);
 }
@@ -95,7 +95,7 @@ Vector3 Vector3::operator*(float s) const
     return Vector3(s * this->X, s * this->Y, s * this->Z);
 }
 
-Vector3& Engine3DRadSpace::Math::Vector3::operator/=(float s)
+Vector3& Vector3::operator/=(float s)
 {
     X /= s;
     Y /= s;
@@ -103,7 +103,7 @@ Vector3& Engine3DRadSpace::Math::Vector3::operator/=(float s)
     return *this;
 }
 
-Vector3 Engine3DRadSpace::Math::Vector3::operator/(float s) const
+Vector3 Vector3::operator/(float s) const
 {
     return Vector3(
         X / s,
@@ -112,7 +112,7 @@ Vector3 Engine3DRadSpace::Math::Vector3::operator/(float s) const
     );
 }
 
-Vector3 Engine3DRadSpace::Math::Vector3::Cross(const Vector3& v)
+Vector3 Vector3::Cross(const Vector3& v)
 {
     X = Y * v.Z - Z * v.Y;
     Y = Z * v.X - X * v.Z;

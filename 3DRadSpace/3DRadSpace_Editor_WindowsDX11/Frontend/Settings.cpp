@@ -53,6 +53,7 @@ std::string GetAppDataFolder()
 	if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
 	{
 		std::string result = std::string(appdataPath) + "\\3DRadSpace\\";
+		return result;
 	}
 	throw std::system_error(std::error_code(static_cast<int>(r), std::system_category()), "Failed to get the appdata folder");
 }

@@ -7,7 +7,8 @@ INT_PTR WINAPI AssetListRenderer_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
 }
 
-AssetListRenderer::AssetListRenderer(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content)
+AssetListRenderer::AssetListRenderer(HWND owner, HINSTANCE instance, Content::ContentManager *content):
+	_hInstance(instance)
 {
 	WNDCLASSA wndClass{};
 	wndClass.lpfnWndProc = AssetListRenderer_WndProc;
@@ -38,4 +39,5 @@ AssetListRenderer::AssetListRenderer(HWND owner, HINSTANCE instance, Engine3DRad
 AssetListRenderer::~AssetListRenderer()
 {
 	DestroyWindow(_renderWindow);
+	UnregisterClassA("AssetRendererWindow", _hInstance);
 }

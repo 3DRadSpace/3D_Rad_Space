@@ -2,7 +2,7 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Quaternion Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(float yaw, float pitch, float roll)
+Quaternion Quaternion::FromYawPitchRoll(float yaw, float pitch, float roll)
 {
     //https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 
@@ -20,7 +20,7 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(float yaw, float
     return Quaternion(x, y, z, w);
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::FromAxisAngle(const Vector3& axis, float angle)
+Quaternion Quaternion::FromAxisAngle(const Vector3& axis, float angle)
 {
     float w = cos(angle / 2.0f);
     float x = axis.X * sin(angle / 2.0f);
@@ -30,7 +30,7 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromAxisAngle(const Vector3& axis
     return Quaternion(x, y, z, w);
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::FromMatrix(const Matrix& m)
+Quaternion Quaternion::FromMatrix(const Matrix& m)
 {
     Quaternion q;
 
@@ -71,7 +71,7 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromMatrix(const Matrix& m)
     return q;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::FromVectorToVector(const Vector3& a, const Vector3& b)
+Quaternion Quaternion::FromVectorToVector(const Vector3& a, const Vector3& b)
 {
     Quaternion q;
     Vector3 c = Vector3::Cross(a, b);
@@ -84,17 +84,17 @@ Quaternion Engine3DRadSpace::Math::Quaternion::FromVectorToVector(const Vector3&
     return q.Normalize();
 }
 
-float Engine3DRadSpace::Math::Quaternion::Length() const
+float Quaternion::Length() const
 {
     return sqrtf((X * X) + (Y * Y) + (Z * Z) + (W * W));
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::Normalize()
+Quaternion Quaternion::Normalize()
 {
     return *this / Length();
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::Conjugate()
+Quaternion Quaternion::Conjugate()
 {
     this->X *= -1;
     this->Y *= -1;
@@ -102,7 +102,7 @@ Quaternion Engine3DRadSpace::Math::Quaternion::Conjugate()
     return *this;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::Inverse()
+Quaternion Quaternion::Inverse()
 {
     float num2 = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
     float num = 1.0f / num2;
@@ -118,7 +118,7 @@ Vector3 Quaternion::Im() const
     return Vector3(X,Y,Z);
 }
 
-Vector3 Engine3DRadSpace::Math::Quaternion::ToYawPitchRoll()
+Vector3 Quaternion::ToYawPitchRoll()
 {
     //https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
     Vector3 r;
@@ -160,7 +160,7 @@ Quaternion Quaternion::operator+=(const Quaternion &q)
     return *this;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::operator*(const Quaternion& q) const
+Quaternion Quaternion::operator*(const Quaternion& q) const
 {
     //https://stackoverflow.com/questions/19956555/how-to-multiply-two-quaternions
     Quaternion r;
@@ -182,7 +182,7 @@ Quaternion Quaternion::operator*=(const Quaternion &q)
     return *this;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::operator/(float s) const
+Quaternion Quaternion::operator/(float s) const
 {
     return Quaternion(
         this->X / s,

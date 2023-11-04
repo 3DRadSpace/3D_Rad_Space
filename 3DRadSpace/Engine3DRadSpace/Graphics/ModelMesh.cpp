@@ -3,7 +3,7 @@
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
 
-Engine3DRadSpace::Graphics::ModelMesh::ModelMesh(std::span<std::unique_ptr<ModelMeshPart>> parts)
+ModelMesh::ModelMesh(std::span<std::unique_ptr<ModelMeshPart>> parts)
 {
 	for (auto&& mesh : parts)
 	{
@@ -12,7 +12,7 @@ Engine3DRadSpace::Graphics::ModelMesh::ModelMesh(std::span<std::unique_ptr<Model
 	_createBoundingObjects();
 }
 
-void Engine3DRadSpace::Graphics::ModelMesh::_createBoundingObjects()
+void ModelMesh::_createBoundingObjects()
 {
 	_box = _meshParts[0]->GetBoundingBox();
 	_sphere = _meshParts[0]->GetBoundingSphere();
@@ -23,7 +23,7 @@ void Engine3DRadSpace::Graphics::ModelMesh::_createBoundingObjects()
 	}
 }
 
-Engine3DRadSpace::Graphics::ModelMesh::ModelMesh(ModelMeshPart* parts, size_t numParts)
+ModelMesh::ModelMesh(ModelMeshPart* parts, size_t numParts)
 {
 	for (size_t i = 0; i < numParts; i++)
 	{
@@ -33,27 +33,27 @@ Engine3DRadSpace::Graphics::ModelMesh::ModelMesh(ModelMeshPart* parts, size_t nu
 	_createBoundingObjects();
 }
 
-std::vector<std::unique_ptr<ModelMeshPart>>::iterator Engine3DRadSpace::Graphics::ModelMesh::begin()
+std::vector<std::unique_ptr<ModelMeshPart>>::iterator ModelMesh::begin()
 {
 	return _meshParts.begin();
 }
 
-std::vector<std::unique_ptr<ModelMeshPart>>::iterator Engine3DRadSpace::Graphics::ModelMesh::end()
+std::vector<std::unique_ptr<ModelMeshPart>>::iterator ModelMesh::end()
 {
 	return _meshParts.end();
 }
 
-void Engine3DRadSpace::Graphics::ModelMesh::AddMeshPart(std::unique_ptr<ModelMeshPart>&& part)
+void ModelMesh::AddMeshPart(std::unique_ptr<ModelMeshPart>&& part)
 {
 	_meshParts.push_back(std::move(part));
 }
 
-ModelMeshPart* Engine3DRadSpace::Graphics::ModelMesh::operator[](unsigned i)
+ModelMeshPart* ModelMesh::operator[](unsigned i)
 {
 	return _meshParts[i].get();
 }
 
-void Engine3DRadSpace::Graphics::ModelMesh::Draw()
+void ModelMesh::Draw()
 {
 	for (auto& mesh : *this)
 	{
@@ -61,12 +61,12 @@ void Engine3DRadSpace::Graphics::ModelMesh::Draw()
 	}
 }
 
-BoundingBox Engine3DRadSpace::Graphics::ModelMesh::GetBoundingBox()
+BoundingBox ModelMesh::GetBoundingBox()
 {
 	return _box;
 }
 
-BoundingSphere Engine3DRadSpace::Graphics::ModelMesh::GetBoundingSphere()
+BoundingSphere ModelMesh::GetBoundingSphere()
 {
 	return _sphere;
 }

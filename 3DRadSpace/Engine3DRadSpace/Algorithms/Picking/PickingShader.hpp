@@ -4,21 +4,21 @@
 
 namespace Engine3DRadSpace::Algorithms::Picking
 {
-	class DLLEXPORT PickingShader : public Engine3DRadSpace::Graphics::Shaders::ShaderPipeline
+	class DLLEXPORT PickingShader : public Graphics::Shaders::ShaderPipeline
 	{
-		class VertexShader : public Engine3DRadSpace::Graphics::IVertexShader
+		class VertexShader : public Graphics::IVertexShader
 		{
-			static inline Engine3DRadSpace::Graphics::InputLayoutElement _elements[] = { Engine3DRadSpace::Graphics::InputLayoutElement::Position_Vec4 };
+			static inline Graphics::InputLayoutElement _elements[] = {Graphics::InputLayoutElement::Position_Vec4 };
 		public:
-			explicit VertexShader(Engine3DRadSpace::GraphicsDevice* device);
+			explicit VertexShader(GraphicsDevice* device);
 
-			std::span<Engine3DRadSpace::Graphics::InputLayoutElement> InputLayout() override;
+			std::span<Graphics::InputLayoutElement> InputLayout() override;
 		};
 
-		class PixelShader : public Engine3DRadSpace::Graphics::IPixelShader
+		class PixelShader : public Graphics::IPixelShader
 		{
 		public:
-			explicit PixelShader(Engine3DRadSpace::GraphicsDevice* device);
+			explicit PixelShader(GraphicsDevice* device);
 		};
 
 	public:
@@ -27,11 +27,11 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			/// <summary>
 			/// Model-View-Projection transformation matrix.
 			/// </summary>
-			Engine3DRadSpace::Math::Matrix MVP;
+			Math::Matrix MVP;
 			unsigned int ObjectID;
 		};
 
-		explicit PickingShader(Engine3DRadSpace::GraphicsDevice* device);
+		explicit PickingShader(GraphicsDevice* device);
 
 		void SetData(const Data& d);
 	};

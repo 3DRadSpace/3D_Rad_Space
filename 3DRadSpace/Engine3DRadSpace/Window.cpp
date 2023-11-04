@@ -74,7 +74,7 @@ LRESULT CALLBACK Engine3DRadSpace::GameWndProc(HWND hwnd, UINT msg, WPARAM wPara
 
 #endif
 
-void Engine3DRadSpace::Window::_keyUp(uint8_t k)
+void Window::_keyUp(uint8_t k)
 {
     switch (k)
     {
@@ -92,7 +92,7 @@ void Engine3DRadSpace::Window::_keyUp(uint8_t k)
     }
 }
 
-void Engine3DRadSpace::Window::_keyDown(uint8_t k)
+void Window::_keyDown(uint8_t k)
 {
     switch (k)
     {
@@ -110,12 +110,12 @@ void Engine3DRadSpace::Window::_keyDown(uint8_t k)
     }
 }
 
-void Engine3DRadSpace::Window::_scrollwheel(float dw)
+void Window::_scrollwheel(float dw)
 {
     _mouse._scrollWheel += dw / WHEEL_DELTA;
 }
 
-void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool middle, bool right)
+void Window::_handleMouse(Point pos, bool left, bool middle, bool right)
 {
     auto rectangle = this->Rectangle();
 
@@ -125,12 +125,12 @@ void Engine3DRadSpace::Window::_handleMouse(Math::Point pos, bool left, bool mid
     _mouse._rightButton = right;
 }
 
-void Engine3DRadSpace::Window::_resetKeyboard()
+void Window::_resetKeyboard()
 {
     _keyboard._erase();
 }
 
-Engine3DRadSpace::Window::Window(const char* title, int width, int height)
+Window::Window(const char* title, int width, int height)
 {
 #ifdef _WIN32
     WNDCLASSA wndclass{};
@@ -142,6 +142,8 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
     
     ATOM a = RegisterClassA(&wndclass);
     if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
+
+    _hInstance = wndclass.hInstance;
 
     _window = CreateWindowExA(
         0, 
@@ -160,7 +162,7 @@ Engine3DRadSpace::Window::Window(const char* title, int width, int height)
 #endif
 }
 
-Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
+Window::Window(void* hInstance,void* parentWindow)
 {
 #ifdef _WIN32
     WNDCLASSA wndclass{};
@@ -170,6 +172,8 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
     
     ATOM a = RegisterClassA(&wndclass);
     if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
+
+    _hInstance = wndclass.hInstance;
 
     _window = CreateWindowExA(
         0,
@@ -193,16 +197,20 @@ Engine3DRadSpace::Window::Window(void* hInstance,void* parentWindow)
 #endif
 }
 
-Engine3DRadSpace::Window::Window(Window &&wnd) noexcept:
+Window::Window(Window &&wnd) noexcept:
     _window(wnd._window)
+#ifdef _WIN32
+	,_hInstance(wnd._hInstance)
+#endif
 {
     wnd._window = nullptr;
 #ifdef _WIN32
+    wnd._hInstance = nullptr;
     SetWindowLongPtrA(static_cast<HWND>(this->_window), GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 #endif // 
 }
 
-Window &Engine3DRadSpace::Window::operator=(Window &&wnd) noexcept
+Window& Window::operator=(Window &&wnd) noexcept
 {
     _window = wnd._window;
     wnd._window = nullptr;
@@ -213,12 +221,12 @@ Window &Engine3DRadSpace::Window::operator=(Window &&wnd) noexcept
     return *this;
 }
 
-void* Engine3DRadSpace::Window::NativeHandle()
+void* Window::NativeHandle()
 {
     return this->_window;
 }
 
-void Engine3DRadSpace::Window::ProcessMessages()
+void Window::ProcessMessages()
 {
 #ifdef _WIN32
     MSG msg;
@@ -230,17 +238,17 @@ void Engine3DRadSpace::Window::ProcessMessages()
 #endif
 }
 
-Engine3DRadSpace::Input::Mouse& Engine3DRadSpace::Window::GetMouseState()
+Input::Mouse& Window::GetMouseState()
 {
     return _mouse;
 }
 
-Engine3DRadSpace::Input::Keyboard& Engine3DRadSpace::Window::GetKeyboardState()
+Input::Keyboard& Window::GetKeyboardState()
 {
     return _keyboard;
 }
 
-Math::Point Engine3DRadSpace::Window::Size()
+Point Window::Size()
 {
     RECT r;
     GetWindowRect(static_cast<HWND>(_window), &r);
@@ -248,7 +256,7 @@ Math::Point Engine3DRadSpace::Window::Size()
     return { r.right - r.left, r.bottom - r.top };
 }
 
-Engine3DRadSpace::Math::RectangleF Engine3DRadSpace::Window::RectangleF()
+RectangleF Window::RectangleF()
 {
 #ifdef  _WIN32
     RECT r;
@@ -258,7 +266,7 @@ Engine3DRadSpace::Math::RectangleF Engine3DRadSpace::Window::RectangleF()
 #endif //  _WIN32
 }
 
-Math::Rectangle Engine3DRadSpace::Window::Rectangle()
+Math::Rectangle Window::Rectangle()
 {
 #ifdef  _WIN32
     RECT r;
@@ -268,12 +276,12 @@ Math::Rectangle Engine3DRadSpace::Window::Rectangle()
 #endif //  _WIN32
 }
 
-bool Engine3DRadSpace::Window::IsFocused()
+bool Window::IsFocused()
 {
     return GetForegroundWindow() == _window;
 }
 
-void Engine3DRadSpace::Window::SetMousePosition(const Math::Point& p)
+void Window::SetMousePosition(const Point& p)
 {
 #ifdef _WIN32
     RECT rWnd;
@@ -291,9 +299,10 @@ void Engine3DRadSpace::Window::SetMousePosition(const Math::Point& p)
 #endif
 }
 
-Engine3DRadSpace::Window::~Window()
+Window::~Window()
 {
 #ifdef _WIN32
     DestroyWindow(static_cast<HWND>(_window));
+    UnregisterClassA("3DRSP_GAME", _hInstance);
 #endif
 }

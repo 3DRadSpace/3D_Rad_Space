@@ -19,7 +19,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		std::unique_ptr<VertexBufferV<VertexPositionColor>> _vertices;
 		std::unique_ptr<IndexBuffer> _indices;
 
-		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> _shader;
+		std::shared_ptr<Shaders::BlankShader> _shader;
 
 		std::array<VertexPositionColor, 8> _createVerts(const Math::BoundingBox &b, const Color &color);
 	public:
@@ -35,10 +35,10 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		void SetBoundingBox(const Math::BoundingBox &b);
 
 		Color GetColor();
-		void SetColor(const Engine3DRadSpace::Color &color);
+		void SetColor(const Color&color);
 
 		void SetTransform(const Math::Matrix &m);
 
-		virtual void Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
 	};
 }

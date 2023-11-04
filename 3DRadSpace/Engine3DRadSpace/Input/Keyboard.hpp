@@ -163,7 +163,7 @@ namespace Engine3DRadSpace
 			bool IsKeyDown(Key k);
 			bool IsKeyUp(Key k);
 
-			friend class Engine3DRadSpace::Window;
+			friend class Window;
 		};
 	}
 }

@@ -8,6 +8,7 @@ class AssetListRenderer
 {
 	std::unique_ptr<Engine3DRadSpace::GraphicsDevice> _device;
 	HWND _renderWindow;
+	HINSTANCE _hInstance;
 public:
 	AssetListRenderer(HWND owner, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager *content);
 	AssetListRenderer(AssetListRenderer &) = delete;

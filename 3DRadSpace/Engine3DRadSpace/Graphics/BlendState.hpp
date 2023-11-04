@@ -89,6 +89,6 @@ namespace Engine3DRadSpace::Graphics
         static BlendState Additive(GraphicsDevice *device);
         static BlendState NonPremultiplied(GraphicsDevice *device);
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 	};
 }

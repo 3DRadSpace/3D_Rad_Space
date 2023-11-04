@@ -16,15 +16,15 @@ namespace Engine3DRadSpace
 			const Math::Vector3& pos = Math::Vector3::Zero(), const Math::Vector3& pivot = Math::Vector3::Zero(), const Math::Quaternion& rotation = Math::Quaternion(),
 			const Math::Vector3& scale = Math::Vector3::One());
 	public:
-		Engine3DRadSpace::Math::Vector3 Position;
+		Math::Vector3 Position;
 
-		Engine3DRadSpace::Math::Vector3 RotationCenter;
-		Engine3DRadSpace::Math::Quaternion Rotation;
+		Math::Vector3 RotationCenter;
+		Math::Quaternion Rotation;
 
-		Engine3DRadSpace::Math::Vector3 Scale;
+		Math::Vector3 Scale;
 
-		virtual Engine3DRadSpace::Math::Matrix GetModelMartix();
-		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &projection, double dt, bool selected) = 0;
+		virtual Math::Matrix GetModelMartix();
+		virtual void EditorDraw(const Math::Matrix &view, const Math::Matrix &projection, double dt, bool selected) = 0;
 		virtual std::optional<float> Intersects(const Math::Ray &r) = 0;
 
 		~IObject3D() = default;

@@ -69,7 +69,7 @@ void IHullShader::SetSampler(unsigned index, SamplerState *samplerState)
 #endif // USING_DX11
 }
 
-void Engine3DRadSpace::Graphics::IHullShader::SetShader()
+void IHullShader::SetShader()
 {
 #ifdef USING_DX11
 	unsigned i;

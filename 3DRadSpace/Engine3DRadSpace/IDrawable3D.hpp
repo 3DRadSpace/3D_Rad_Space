@@ -9,7 +9,7 @@ namespace Engine3DRadSpace
 	public:
 		virtual void Draw(
 			Math::Matrix& view,
-			Engine3DRadSpace::Math::Matrix& projection,
+			Math::Matrix& projection,
 			double dt) = 0;
 		virtual ~IDrawable3D() = default;
 	};

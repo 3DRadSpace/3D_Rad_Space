@@ -55,7 +55,7 @@ void ReportLiveObjects()
 }
 #endif
 
-int __stdcall WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPSTR cmdArgs,_In_ int nShowCmd)
+int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR cmdArgs, _In_ int nShowCmd)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.

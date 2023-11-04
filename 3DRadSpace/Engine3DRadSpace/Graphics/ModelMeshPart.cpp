@@ -101,7 +101,7 @@ void ModelMeshPart::Draw()
 	_device->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
 }
 
-Math::BoundingSphere ModelMeshPart::GetBoundingSphere()
+BoundingSphere ModelMeshPart::GetBoundingSphere()
 {
 	return _sphere;
 }

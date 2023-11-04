@@ -11,12 +11,12 @@ unsigned ObjectList::Add(IObject* obj)
 	return unsigned(objects.size() - 1);
 }
 
-unsigned Engine3DRadSpace::ObjectList::Add(IObject2D* obj)
+unsigned ObjectList::Add(IObject2D* obj)
 {
 	return Add(static_cast<IObject*>(obj));
 }
 
-unsigned Engine3DRadSpace::ObjectList::Add(IObject3D* obj)
+unsigned ObjectList::Add(IObject3D* obj)
 {
 	return Add(static_cast<IObject*>(obj));
 }
@@ -70,7 +70,7 @@ void ObjectList::Replace(IObject* obj, unsigned id)
 	objects[id].Object.reset(obj);
 }
 
-void Engine3DRadSpace::ObjectList::Clear()
+void ObjectList::Clear()
 {
 	objects.clear();
 }
@@ -86,7 +86,7 @@ std::vector<ObjectList::ObjectInstance>::iterator ObjectList::end()
 }
 
 template<>
-Engine3DRadSpace::ObjectList::ObjectInstance::ObjectInstance(std::shared_ptr<IObject>&& obj) : 
+ObjectList::ObjectInstance::ObjectInstance(std::shared_ptr<IObject>&& obj) : 
 	Object(std::move(obj))
 {
 	auto ptr = Object.get();

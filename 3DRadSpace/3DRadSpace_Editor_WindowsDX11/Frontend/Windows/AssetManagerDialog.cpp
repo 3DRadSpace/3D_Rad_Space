@@ -33,7 +33,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 			return 1;
 		case WM_NOTIFY:
 		{
-			switch((reinterpret_cast<LPNMHDR>(lParam))->code)
+			switch(reinterpret_cast<LPNMHDR>(lParam)->code)
 			{
 				case NM_DBLCLK:
 				{
@@ -245,7 +245,7 @@ void AssetManagerDialog::_loadAssetIcons()
 				auto dirPath = std::filesystem::path(imagePath).remove_filename().lexically_relative(GetExecutablePath());
 				if (dirPath.empty()) dirPath = std::filesystem::path(imagePath).remove_filename();
 
-				std::filesystem::create_directories(dirPath);
+				create_directories(dirPath);
 			}
 			else throw std::filesystem::filesystem_error("Cannot find the AppData folder", std::error_code(r, std::system_category()));
 

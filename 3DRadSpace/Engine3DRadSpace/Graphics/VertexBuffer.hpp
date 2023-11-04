@@ -53,7 +53,7 @@ namespace Engine3DRadSpace
 
 			virtual ~VertexBuffer() = default;
 
-			friend class ::Engine3DRadSpace::GraphicsDevice;
+			friend class GraphicsDevice;
 			friend class ModelMeshPart;
 		};
 
@@ -64,7 +64,7 @@ namespace Engine3DRadSpace
 			VertexBufferV( _In_ GraphicsDevice* device, _In_ std::span<V> data, BufferUsage usage = BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
 			void SetData(std::span<V> data);
 
-			friend class ::Engine3DRadSpace::GraphicsDevice;
+			friend class GraphicsDevice;
 		};
 
 		template<VertexDecl V>

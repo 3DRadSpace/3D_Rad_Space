@@ -27,6 +27,6 @@ namespace Engine3DRadSpace::Graphics
 
 		virtual ~IPixelShader() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 	};
 }

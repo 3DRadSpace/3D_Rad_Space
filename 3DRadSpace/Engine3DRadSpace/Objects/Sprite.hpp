@@ -22,7 +22,7 @@ namespace Engine3DRadSpace::Objects
 		bool FlipV;
 
 		Reflection::RefTexture2D Image;
-		Engine3DRadSpace::Graphics::Texture2D *GetSpriteImage();
+		Graphics::Texture2D *GetSpriteImage();
 
 		Color TintColor;
 

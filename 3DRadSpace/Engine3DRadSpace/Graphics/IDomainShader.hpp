@@ -25,7 +25,7 @@ namespace Engine3DRadSpace::Graphics
 
 		~IDomainShader() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 	};
 }
 

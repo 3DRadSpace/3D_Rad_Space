@@ -232,7 +232,7 @@ void EditObjectDialog::createForms()
 
 			switch (repr.first)
 			{
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Boolean:
+			case FieldRepresentationType::Boolean:
 			{
 				int checkBoxLen = GetSystemMetrics(SM_CXMENUCHECK);
 
@@ -262,7 +262,7 @@ void EditObjectDialog::createForms()
 				px += fieldNameSize.cx + checkBoxLen + 5;
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Integer:
+			case FieldRepresentationType::Integer:
 			{
 				int sx;
 
@@ -299,7 +299,7 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Unsigned:
+			case FieldRepresentationType::Unsigned:
 			{
 				int sx;
 				createLabel(fieldName.c_str(), sx);
@@ -335,7 +335,7 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Float:
+			case FieldRepresentationType::Float:
 			{
 				int sx;
 				createLabel(fieldName.c_str(), sx);
@@ -362,10 +362,10 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Quaternion:
+			case FieldRepresentationType::Quaternion:
 			{
 				//read value
-				auto q = *reinterpret_cast<const Engine3DRadSpace::Math::Quaternion *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+				auto q = *reinterpret_cast<const Math::Quaternion *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
 				auto eulerAngles = q.ToYawPitchRoll();
 
 				auto pitch = std::to_string(Math::ToDegrees(eulerAngles.X));
@@ -394,7 +394,7 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::String:
+			case FieldRepresentationType::String:
 			{
 				int sx;
 				createLabel(fieldName.c_str(), sx);
@@ -407,9 +407,9 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Image:
+			case FieldRepresentationType::Image:
 			{
-				auto value = *static_cast<const Content::AssetReference<Graphics::Texture2D>*>(valuePtr);
+				auto value = *static_cast<const AssetReference<Texture2D>*>(valuePtr);
 				
 				TextureControl *ctrl = new TextureControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
@@ -418,9 +418,9 @@ void EditObjectDialog::createForms()
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Model:
+			case FieldRepresentationType::Model:
 			{
-				auto value = *static_cast<const Content::AssetReference<Graphics::Model3D>*>(valuePtr);
+				auto value = *static_cast<const AssetReference<Model3D>*>(valuePtr);
 
 				ModelControl* ctrl = new ModelControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
@@ -429,7 +429,7 @@ void EditObjectDialog::createForms()
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Key:
+			case FieldRepresentationType::Key:
 			{
 				int sx;
 				createLabel(fieldName.c_str(), sx);
@@ -453,13 +453,13 @@ void EditObjectDialog::createForms()
 
 				windows.push_back(hotkey);
 
-				auto key = static_cast<const Engine3DRadSpace::Input::Key*>(valuePtr);
+				auto key = static_cast<const Input::Key*>(valuePtr);
 				SendMessageA(hotkey, HKM_SETHOTKEY, static_cast<WPARAM>(LOBYTE(key)), 0);
 
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Enum:
+			case FieldRepresentationType::Enum:
 			{
 				int sx;
 				createLabel(fieldName.c_str(), sx);
@@ -469,7 +469,7 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Color:
+			case FieldRepresentationType::Color:
 			{
 				int sx;
 				Color color = *static_cast<const Color*>(valuePtr);
@@ -486,7 +486,7 @@ void EditObjectDialog::createForms()
 				setMax(inc_y, textboxHeight + 5);
 				break;
 			}
-			case Engine3DRadSpace::Reflection::FieldRepresentationType::Custom:
+			case FieldRepresentationType::Custom:
 			{
 				break;
 			}
@@ -723,10 +723,10 @@ bool EditObjectDialog::setObject()
 					);
 					float z = Math::ToRadians(std::stof(text));
 
-					Engine3DRadSpace::Math::Quaternion q = Engine3DRadSpace::Math::Quaternion::FromYawPitchRoll(x, y, z); // y = yaw, x = pitch, z = roll (?)
+					Math::Quaternion q = Math::Quaternion::FromYawPitchRoll(x, y, z); // y = yaw, x = pitch, z = roll (?)
 
-					memcpy_s(newStruct.get() + j, sizeof(Engine3DRadSpace::Math::Quaternion), &q, sizeof(Engine3DRadSpace::Math::Quaternion));
-					j += sizeof(Engine3DRadSpace::Math::Quaternion);
+					memcpy_s(newStruct.get() + j, sizeof(Math::Quaternion), &q, sizeof(Math::Quaternion));
+					j += sizeof(Math::Quaternion);
 					break;
 				}
 				case FieldRepresentationType::String:
@@ -786,11 +786,11 @@ bool EditObjectDialog::setObject()
 					uint8_t alpha = (uint8_t)std::stoi(text);
 
 					ColorBox *cb = static_cast<ColorBox *>(std::get<IControl *>(windows[i++]));
-					Engine3DRadSpace::Color color = cb->GetColor();
+					Color color = cb->GetColor();
 					color.A = ((float)alpha);
 
-					memcpy_s(newStruct.get(), sizeof(Engine3DRadSpace::Color), &color, sizeof(Engine3DRadSpace::Color));
-					j += sizeof(Engine3DRadSpace::Color);
+					memcpy_s(newStruct.get(), sizeof(Color), &color, sizeof(Color));
+					j += sizeof(Color);
 					break;
 				}
 				case FieldRepresentationType::Custom:
@@ -805,7 +805,7 @@ bool EditObjectDialog::setObject()
 	return true;
 }
 
-Engine3DRadSpace::IObject* EditObjectDialog::ShowDialog()
+IObject* EditObjectDialog::ShowDialog()
 {
 	INT_PTR r = Dialog::ShowDialog(this);
 	if (r == IDOK) return this->object;

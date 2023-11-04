@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Objects
 {
 	class DLLEXPORT Skinmesh : public IObject3D
 	{
-		Engine3DRadSpace::Graphics::Model3D *_model;
+		Graphics::Model3D *_model;
 		std::unique_ptr<std::string> _path;
 	public:
 		Skinmesh();
@@ -20,7 +20,7 @@ namespace Engine3DRadSpace::Objects
 
 		Reflection::RefModel3D Model;
 
-		Engine3DRadSpace::Graphics::Model3D *GetModel();
+		Graphics::Model3D *GetModel();
 
 		virtual void Initialize() override;
 		virtual void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
@@ -28,8 +28,8 @@ namespace Engine3DRadSpace::Objects
 		virtual void EditorInitialize() override;
 		virtual void EditorLoad(Content::ContentManager *content) override;
 		virtual Reflection::UUID GetUUID() override;
-		virtual void Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt) override;
-		virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &projection, double dt, bool selected) override;
+		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
+		virtual void EditorDraw(const Math::Matrix &view, const Math::Matrix &projection, double dt, bool selected) override;
 		virtual std::optional<float> Intersects(const Math::Ray &r) override;
 
 		virtual ~Skinmesh() = default;

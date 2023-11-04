@@ -30,7 +30,7 @@ const IReflectedField* ReflectedObject::operator[](const std::string& name)
 	for (int i = 0; i < NumFields(); i++)
 	{
 		v.push_back(std::make_pair(
-			Engine3DRadSpace::Algorithms::DamerauLevenshteinDistance(_fields[i]->FieldName(), name),
+			Algorithms::DamerauLevenshteinDistance(_fields[i]->FieldName(), name),
 			i
 		));
 	}

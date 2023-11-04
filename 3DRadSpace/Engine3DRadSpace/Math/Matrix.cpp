@@ -48,7 +48,7 @@ Matrix Matrix::CreateTranslation(const Vector3 &pos)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateScale(const Vector3 &scale)
+Matrix Matrix::CreateScale(const Vector3 &scale)
 {
 	return Matrix(
 		scale.X, 0, 0, 0,
@@ -58,7 +58,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateScale(const Vector3 &scale)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateRotationX(float theta)
+Matrix Matrix::CreateRotationX(float theta)
 {
 	return Matrix(
 		1, 0, 0, 0,
@@ -68,7 +68,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateRotationX(float theta)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateRotationY(float theta)
+Matrix Matrix::CreateRotationY(float theta)
 {
 	return Matrix(
 		cos(theta), 0, sin(theta), 0,
@@ -78,7 +78,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateRotationY(float theta)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateRotationZ(float theta)
+Matrix Matrix::CreateRotationZ(float theta)
 {
 	return Matrix(
 		cos(theta), -sin(theta), 0, 0,
@@ -88,7 +88,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateRotationZ(float theta)
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateFromQuaternion(const Quaternion& q)
+Matrix Matrix::CreateFromQuaternion(const Quaternion& q)
 {
 	//https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
 	float sqw = q.W * q.W;
@@ -119,7 +119,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateFromQuaternion(const Quaternion& q)
 	return r;
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
+Matrix Matrix::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
 {
 	Vector3 forward = (pos - look_at).Normalize();
 	Vector3 right = Vector3::Cross(up_dir, forward).Normalize();
@@ -133,7 +133,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateLookAtView(const Vector3 &pos,const
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd)
+Matrix Matrix::CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd)
 {
 	float h = 1.0f / tan(FOV * 0.5f);
 	float w = h / aspectRatio;
@@ -148,7 +148,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreatePerspectiveProjection(float aspectR
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::CreateOrthographicProjection(const Point &screenSize, float npd, float fpd)
+Matrix Matrix::CreateOrthographicProjection(const Point &screenSize, float npd, float fpd)
 {
 	float w = 2.0f / screenSize.X;
 	float h = 2.0f / screenSize.Y;
@@ -163,7 +163,7 @@ Matrix Engine3DRadSpace::Math::Matrix::CreateOrthographicProjection(const Point 
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::operator+(const Matrix &m) const
+Matrix Matrix::operator+(const Matrix &m) const
 {
 	return Matrix(
 		M11 + m.M11, M12 + m.M12, M13 + m.M13, M14 + m.M14,	
@@ -173,7 +173,7 @@ Matrix Engine3DRadSpace::Math::Matrix::operator+(const Matrix &m) const
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::operator+=(const Matrix &m)
+Matrix Matrix::operator+=(const Matrix &m)
 {
 	M11 += m.M11;
 	M12 += m.M12;
@@ -198,7 +198,7 @@ Matrix Engine3DRadSpace::Math::Matrix::operator+=(const Matrix &m)
 	return *this;
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::operator-(const Matrix &m) const
+Matrix Matrix::operator-(const Matrix &m) const
 {
 	return Matrix(
 		M11 - m.M11, M12 - m.M12, M13 - m.M13, M14 - m.M14,
@@ -208,7 +208,7 @@ Matrix Engine3DRadSpace::Math::Matrix::operator-(const Matrix &m) const
 	);
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::operator-=(const Matrix &m)
+Matrix Matrix::operator-=(const Matrix &m)
 {
 	M11 -= m.M11;
 	M12 -= m.M12;
@@ -233,7 +233,7 @@ Matrix Engine3DRadSpace::Math::Matrix::operator-=(const Matrix &m)
 	return *this;
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::operator*(const Matrix& m) const
+Matrix Matrix::operator*(const Matrix& m) const
 {
 	Matrix r;
 	r.M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
@@ -258,7 +258,7 @@ Matrix Engine3DRadSpace::Math::Matrix::operator*(const Matrix& m) const
 	return r;
 }
 
-Matrix& Engine3DRadSpace::Math::Matrix::operator*=(const Matrix& m)
+Matrix& Matrix::operator*=(const Matrix& m)
 {
 	this->M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
 	this->M12 = M11 * m.M12 + M12 * m.M22 + M13 * m.M32 + M14 * m.M42;
@@ -282,7 +282,7 @@ Matrix& Engine3DRadSpace::Math::Matrix::operator*=(const Matrix& m)
 	return *this;
 }
 
-Matrix Engine3DRadSpace::Math::Matrix::Transpose()
+Matrix Matrix::Transpose()
 {
 	Matrix copy = *this;
 	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
@@ -305,7 +305,7 @@ Matrix Engine3DRadSpace::Math::Matrix::Transpose()
 	return *this;
 }
 
-float& Engine3DRadSpace::Math::Matrix::operator[](unsigned index)
+float& Matrix::operator[](unsigned index)
 {
 	switch (index)
 	{
@@ -330,7 +330,7 @@ float& Engine3DRadSpace::Math::Matrix::operator[](unsigned index)
 	}
 }
 
-float Engine3DRadSpace::Math::Matrix::Trace() const
+float Matrix::Trace() const
 {
 	return M11 + M22 + M33 + M44;
 }

@@ -66,7 +66,7 @@ namespace Engine3DRadSpace
 
 		void RemoveIf(std::function<bool(IObject*)> f);
 
-		void Replace(Engine3DRadSpace::IObject* obj, unsigned id);
+		void Replace(IObject* obj, unsigned id);
 
 		void Clear();
 

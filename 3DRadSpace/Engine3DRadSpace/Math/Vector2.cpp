@@ -2,22 +2,22 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Vector2 Engine3DRadSpace::Math::Vector2::Zero()
+Vector2 Vector2::Zero()
 {
     return Vector2(0,0);
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::UnitX()
+Vector2 Vector2::UnitX()
 {
     return Vector2(1,0);
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::UnitY()
+Vector2 Vector2::UnitY()
 {
     return Vector2(0,1);
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::One()
+Vector2 Vector2::One()
 {
     return Vector2(1,1);
 }
@@ -37,7 +37,7 @@ float Vector2::Dot(const Vector2 &v) const
     return this->X * v.X + this->Y * v.Y;
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::Normalize()
+Vector2 Vector2::Normalize()
 {
     float l = Length();
     X /= l;
@@ -93,19 +93,19 @@ Vector2& Vector2::operator*=(float s)
     return *this;
 }
 
-Vector2 &Engine3DRadSpace::Math::Vector2::operator/=(float f)
+Vector2 & Vector2::operator/=(float f)
 {
     this->X /= f;
     this->Y /= f;
     return *this;
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::operator/(float f) const
+Vector2 Vector2::operator/(float f) const
 {
     return Vector2(X / f, Y / f);
 }
 
-Vector2 Engine3DRadSpace::Math::Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2 &norm)
+Vector2 Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2 &norm)
 {
     return Vector2(
         norm.X * 2 - 1,
@@ -118,7 +118,7 @@ Vector2 operator*(float s, const Vector2& v)
     return Vector2(s * v.X, s * v.Y);
 }
 
-Engine3DRadSpace::Math::Vector2 operator/(float s, const Engine3DRadSpace::Math::Vector2& v)
+Vector2 operator/(float s, const Vector2& v)
 {
     return Vector2(s / v.X, s / v.Y);
 }

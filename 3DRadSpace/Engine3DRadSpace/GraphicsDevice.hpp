@@ -67,10 +67,10 @@ namespace Engine3DRadSpace
 		void SetRenderTarget(Graphics::RenderTarget *remderTarget);
 		void SetRenderTargetAndDepth(Graphics::RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer);
 
-		void DrawVertexBuffer(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, unsigned startSlot = 0);
-		void DrawVertexBufferWithindices(Engine3DRadSpace::Graphics::VertexBuffer* vertexBuffer, Engine3DRadSpace::Graphics::IndexBuffer* indexBuffer);
+		void DrawVertexBuffer(Graphics::VertexBuffer* vertexBuffer, unsigned startSlot = 0);
+		void DrawVertexBufferWithindices(Graphics::VertexBuffer* vertexBuffer, Graphics::IndexBuffer* indexBuffer);
 
-		void SetShader(Engine3DRadSpace::Graphics::IShader *shader);
+		void SetShader(Graphics::IShader *shader);
 
 		void SetRasterizerState(const Graphics::RasterizerState *state);
 
@@ -88,7 +88,7 @@ namespace Engine3DRadSpace
 
 		bool EnableVSync;
 
-		Engine3DRadSpace::Math::Point Resolution();
+		Math::Point Resolution();
 
 		void ResizeBackBuffer(const Math::Point &newResolution);
 		void ToggleFullScreen();

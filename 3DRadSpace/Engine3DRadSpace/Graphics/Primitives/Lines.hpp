@@ -4,13 +4,13 @@
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
-	class DLLEXPORT Lines : public Engine3DRadSpace::IDrawable3D
+	class DLLEXPORT Lines : public IDrawable3D
 	{
 		std::unique_ptr<VertexBufferV<VertexPositionColor>> _vertices;
 		std::unique_ptr<RasterizerState> _lineRasterizer;
 		GraphicsDevice *_device;
 
-		std::shared_ptr<Engine3DRadSpace::Graphics::Shaders::BlankShader> simpleShader;
+		std::shared_ptr<Shaders::BlankShader> simpleShader;
 #ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _oldRasterizerState;
 #endif
@@ -23,8 +23,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Lines &operator=(Lines &) = delete;
 		Lines &operator=(Lines &&) noexcept = default;
 
-		Engine3DRadSpace::Math::Matrix Transform = Engine3DRadSpace::Math::Matrix();
+		Math::Matrix Transform = Math::Matrix();
 
-		virtual void Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
 	};
 }

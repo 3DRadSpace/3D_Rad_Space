@@ -12,22 +12,23 @@ Skinmesh::Skinmesh() :
 {
 }
 
-Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag, Reflection::RefModel3D model, 
-    const Math::Vector3 &pos, const Math::Quaternion &rot, const Math::Vector3 &pivot, const Math::Vector3 &scale) :
+Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag, RefModel3D model, 
+    const Vector3&pos, const Quaternion&rot, const Vector3&pivot, const Vector3&scale) :
     IObject3D(name, tag, visible, visible, pos, pivot, rot, scale),
     Model(model),
     _model(nullptr)
 {
 }
 
-Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag, const std::filesystem::path &path, const Math::Vector3 &pos,
-    const Math::Quaternion &rot, const Math::Vector3 &pivot, const Math::Vector3 &scale) :
+Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag, const std::filesystem::path &path, const
+                   Vector3&pos,
+    const Quaternion&rot, const Vector3&pivot, const Vector3&scale) :
     IObject3D(name, tag, visible, visible, pos, pivot, rot, scale)
 {
     _path = std::make_unique<std::string>(path.string());
 }
 
-Engine3DRadSpace::Graphics::Model3D *Engine3DRadSpace::Objects::Skinmesh::GetModel()
+Model3D* Skinmesh::GetModel()
 {
     return _model;
 }
@@ -68,13 +69,13 @@ Reflection::UUID Skinmesh::GetUUID()
     return {0xc3a243f6, 0x23e2, 0x437f, { 0xae, 0x8a, 0xb8, 0xe8, 0xc2, 0xa6, 0xe9, 0x44 }};
 }
 
-void Engine3DRadSpace::Objects::Skinmesh::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+void Skinmesh::Draw(Matrix&view, Matrix&projection, double dt)
 {
     if(Visible)
         _model->Draw(GetModelMartix(), view, projection);
 }
 
-void Engine3DRadSpace::Objects::Skinmesh::EditorDraw(const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &projection, double dt, bool selected)
+void Skinmesh::EditorDraw(const Matrix&view, const Matrix&projection, double dt, bool selected)
 {
     if(selected)
     {
@@ -83,7 +84,7 @@ void Engine3DRadSpace::Objects::Skinmesh::EditorDraw(const Engine3DRadSpace::Mat
     _model->Draw(GetModelMartix(), view, projection);
 }
 
-std::optional<float> Engine3DRadSpace::Objects::Skinmesh::Intersects(const Math::Ray &r)
+std::optional<float> Skinmesh::Intersects(const Ray&r)
 {
     return std::nullopt;
 }

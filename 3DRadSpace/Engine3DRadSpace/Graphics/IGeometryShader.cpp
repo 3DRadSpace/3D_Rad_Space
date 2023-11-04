@@ -69,7 +69,7 @@ void IGeometryShader::SetSampler(unsigned index, SamplerState *samplerState)
 #endif
 }
 
-void Engine3DRadSpace::Graphics::IGeometryShader::SetShader()
+void IGeometryShader::SetShader()
 {
 #ifdef USING_DX11
 	unsigned i;

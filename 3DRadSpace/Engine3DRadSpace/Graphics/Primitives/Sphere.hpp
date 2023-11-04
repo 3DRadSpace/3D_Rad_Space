@@ -6,7 +6,7 @@
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
-	class DLLEXPORT Sphere : public Engine3DRadSpace::IDrawable3D
+	class DLLEXPORT Sphere : public IDrawable3D
 	{
 		GraphicsDevice *_device;
 		std::unique_ptr<VertexBufferV<VertexPositionColor>> _vertices;
@@ -26,7 +26,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 
 		float GetRadius();
 
-		virtual void Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
 
 	};
 }

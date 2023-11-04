@@ -9,6 +9,9 @@
 #include "AddObjectDialog.hpp"
 #include "Engine3DRadSpace/Logging/Exception.hpp"
 
+#include "../AutoupdaterState.hpp"
+#include "UpdateProgressWindow.hpp"
+
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Math;
@@ -47,6 +50,114 @@ void EditorWindow::_writeProject(const char *fileName)
 {
 	_changesSaved = true;
 	//TODO: Serilaize object into a file
+}
+
+void EditorWindow::_findUpdate()
+{
+	_saveProject();
+	const std::string updateFilePath = "UpdateInfo.txt";
+
+	HRESULT r = URLDownloadToFileA(
+		nullptr, //IUnknown pCaller
+		"https://3dradspace.org/UpdateInfo/LastestVersion.txt", //const* char url
+		updateFilePath.c_str(), //const char* filename
+		BINDF_GETNEWESTVERSION | BINDF_NOWRITECACHE, //flags (MSDN says it's reserved, lol)
+		nullptr //IBindStatusCallback
+	);
+	switch (r) //Check if downloading info succeded
+	{
+	case S_OK:
+		break; //Continue to download setup
+	case E_OUTOFMEMORY:
+		MessageBoxA(_mainWindow, "Out of memory", "Update error", MB_ICONERROR | MB_OK);
+		return;
+	case INET_E_DOWNLOAD_FAILURE:
+
+		MessageBoxA(_mainWindow, "Network error. Check your internet connection.", "Update error", MB_ICONERROR | MB_OK);
+		return;
+	default:
+		MessageBoxA(_mainWindow, "Unknown error.", "Update error", MB_ICONERROR | MB_OK);
+		return;
+	}
+
+	//Parse info file
+	std::ifstream updateDataFile(updateFilePath);
+	if (updateDataFile.bad() || updateDataFile.fail())
+	{
+		MessageBoxA(_mainWindow, "Failed to load the update information!", "Update error", MB_ICONERROR | MB_OK);
+		return;
+	}
+
+	std::string version;
+	std::string downloadPath;
+	updateDataFile >> version >> downloadPath;
+
+	updateDataFile.close();
+
+	std::filesystem::remove(updateFilePath); //Delete info file
+
+	//Check version
+	if (version == EngineVersion)
+	{
+		MessageBoxA(_mainWindow, "No new updates were found.", "Update information", MB_ICONINFORMATION | MB_OK);
+		return;
+	}
+	//Download the update in a separate thread.
+	std::thread downloaderThread([downloadPath]()
+		{
+			Microsoft::WRL::ComPtr<AutoupdaterState> updaterState;
+			AutoupdaterState::Create(updaterState.GetAddressOf());
+
+			UpdateProgressWindow* downloadUIWindow = nullptr;
+			//The downloader thread also owns the UI thread.
+			std::thread downloaderUIThread([&updaterState, &downloadUIWindow]()
+				{
+					UpdateProgressWindow window(gEditorWindow->_hInstance, updaterState.Get());
+					downloadUIWindow = &window;
+
+					//Win32 message loop. Only read downloader status messages.
+					MSG msg;
+					while (GetMessageA(&msg, window.GetWindow(), 0, 0))
+					{
+						TranslateMessage(&msg);
+						DispatchMessageA(&msg);
+						if (window.Sync() == true) break;
+					}
+				});
+			downloaderUIThread.detach(); //Run the UI at the same time with the downloader.
+
+			HRESULT r = URLDownloadToFileA(nullptr, downloadPath.c_str(), "Setup.exe", BINDF_GETNEWESTVERSION, updaterState.Get());
+			switch (r)
+			{
+			case S_OK:
+			{
+				const int answer = MessageBoxA(gEditorWindow->_mainWindow, "Would you like to update 3DRadSpace now?", "Download complete!", MB_ICONQUESTION | MB_YESNO);
+
+				if (answer == IDYES)
+				{
+					const auto r2 = ShellExecuteA(nullptr, nullptr, "Setup.exe", nullptr, nullptr, SW_NORMAL);
+					if (reinterpret_cast<INT_PTR>(r2) < 32)
+						MessageBoxA(gEditorWindow->_mainWindow, "Failed to open the setup!", "Error installing update!", MB_ICONERROR | MB_OK);
+					else
+						gEditorWindow->_running = false;
+				}
+				break;
+			}
+			case E_OUTOFMEMORY:
+				MessageBoxA(gEditorWindow->_mainWindow, "Out of memory.", "Error downloading setup", MB_ICONERROR | MB_OK);
+				break;
+			case INET_E_DOWNLOAD_FAILURE:
+				MessageBoxA(gEditorWindow->_mainWindow, "Network error. Setup download was most likely interrupted by a network change.", "Error downloading setup", MB_ICONERROR | MB_OK);
+				break;
+			case E_ABORT:
+				break;
+			default:
+				MessageBoxA(gEditorWindow->_mainWindow, "Unknown error.", "Error downloading setup", MB_ICONERROR | MB_OK);
+				break;
+			}
+		});
+
+	downloaderThread.detach();
 }
 
 HTREEITEM EditorWindow::_getSelectedListViewItem()
@@ -381,19 +492,20 @@ void EditorWindow::Run()
 EditorWindow::~EditorWindow()
 {
 	DestroyWindow(this->_mainWindow);
+	UnregisterClassA(EditorWindowClassName, _hInstance);
 }
 
-Engine3DRadSpace::GraphicsDevice *EditorWindow::GetGraphicsDevice()
+GraphicsDevice*EditorWindow::GetGraphicsDevice()
 {
 	return this->editor->Device.get();
 }
 
-Engine3DRadSpace::Content::ContentManager *EditorWindow::GetContentManager()
+Content::ContentManager *EditorWindow::GetContentManager()
 {
 	return editor->Content.get();
 }
 
-void EditorWindow::AddObject(Engine3DRadSpace::IObject *obj)
+void EditorWindow::AddObject(IObject*obj)
 {
 	if(obj == nullptr) return;
 
@@ -569,7 +681,10 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_Preferences:
 					break;
 				case CMD_Update:
+				{
+					gEditorWindow->_findUpdate();
 					break;
+				}
 				case CMD_About:
 					break;
 				case CMD_Documentation:
@@ -667,9 +782,9 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_DROPFILES:
 		{
-			HDROP drop = reinterpret_cast<HDROP>(wParam);
+			auto drop = reinterpret_cast<HDROP>(wParam);
 			char file[_MAX_PATH];
-			int numFilesDropped = DragQueryFileA(drop, 0xFFFFFFFF, nullptr, 0);
+			int numFilesDropped = DragQueryFileA(drop, 0xFFFFFFFF, nullptr, 0u);
 
 			for(int i = 0; i < numFilesDropped; i++)
 			{
@@ -681,14 +796,14 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_NOTIFY:
 		{
-			NMHDR *notif = reinterpret_cast<NMHDR *>(lParam);
+			auto notif = reinterpret_cast<NMHDR *>(lParam);
 			switch(notif->code)
 			{
 				case NM_RCLICK:
 				{
 					if(notif->hwndFrom == gEditorWindow->_listBox)
 					{
-						HTREEITEM selectedItem = reinterpret_cast<HTREEITEM>(SendMessageA(
+						auto selectedItem = reinterpret_cast<HTREEITEM>(SendMessageA(
 							gEditorWindow->_listBox, 
 							TVM_GETNEXTITEM,
 							TVGN_CARET,

@@ -6,7 +6,7 @@ ULONG_PTR gdiplusToken;
 
 void InitializeGDI()
 {
-    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 }
 
 HBITMAP loadImgResource(const wchar_t* pName,const wchar_t* pType, HMODULE hInst)

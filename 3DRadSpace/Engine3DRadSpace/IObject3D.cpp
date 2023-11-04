@@ -3,19 +3,21 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
 
-Engine3DRadSpace::IObject3D::IObject3D(const std::string &name, const std::string &tag, bool enabled, bool visible, const Math::Vector3 &pos, const Math::Vector3 &pivot,
-	const Math::Quaternion &rotation, const Math::Vector3 &scale) :
+IObject3D::IObject3D(const std::string &name, const std::string &tag, bool enabled, bool visible, const Vector3&pos, const
+                     Vector3&pivot,
+                     const Quaternion&rotation, const Vector3&scale) :
 	IObject(name, tag, enabled, visible)
 {
 }
 
-Engine3DRadSpace::IObject3D::IObject3D(Game *game, const std::string &name, const std::string &tag, bool enabled, bool visible, const Math::Vector3 &pos, 
-	const Math::Vector3 &pivot, const Math::Quaternion &rotation, const Math::Vector3 &scale) :
+IObject3D::IObject3D(Game *game, const std::string &name, const std::string &tag, bool enabled, bool visible, const
+                     Vector3&pos, 
+                     const Vector3&pivot, const Quaternion&rotation, const Vector3&scale) :
 	IObject(game, name, tag, enabled, visible)
 {
 }
 
-Engine3DRadSpace::Math::Matrix Engine3DRadSpace::IObject3D::GetModelMartix()
+Matrix IObject3D::GetModelMartix()
 {
 	return Matrix::CreateScale(Scale) * Matrix::CreateTranslation(-RotationCenter) * Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
 }

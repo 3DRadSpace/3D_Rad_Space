@@ -24,7 +24,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 			InputLayoutElement::TextureCoordinate2D
 		};
 	public:
-		explicit SpriteShader(Engine3DRadSpace::GraphicsDevice *device);
+		explicit SpriteShader(GraphicsDevice*device);
 
 		struct alignas(16) Data
 		{

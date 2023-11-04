@@ -369,7 +369,7 @@ void IVertexShader::_generateInputLayout(std::span<InputLayoutElement> inputLayo
 #endif
 }
 
-IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel fl):
+IVertexShader::IVertexShader(GraphicsDevice*Device, std::span<InputLayoutElement> inputLayout, const char *shaderSourceCode, const char *vsEntry, ShaderFeatureLevel fl):
 	IShader(Device, shaderSourceCode, vsEntry, fl)
 {
 	_compileShader(shaderSourceCode, _determineTarget());
@@ -377,7 +377,7 @@ IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span
 	_generateInputLayout(inputLayout);
 }
 
-IVertexShader::IVertexShader(Engine3DRadSpace::GraphicsDevice *Device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path &path, const char *vsEntry, ShaderFeatureLevel fl):
+IVertexShader::IVertexShader(GraphicsDevice*Device, std::span<InputLayoutElement> inputLayout, const std::filesystem::path &path, const char *vsEntry, ShaderFeatureLevel fl):
 	IShader(Device, path, vsEntry, fl)
 {
 	_compileShaderFromFile(path.string().c_str(), _determineTarget());

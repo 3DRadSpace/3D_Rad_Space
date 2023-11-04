@@ -10,12 +10,12 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_resources.push_back(nullptr); // ID 0 = nullptr
 }
 
-std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::begin()
+std::vector<std::unique_ptr<IAsset>>::iterator ContentManager::begin()
 {
 	return std::next(_resources.begin());
 }
 
-std::vector<std::unique_ptr<IAsset>>::iterator Engine3DRadSpace::Content::ContentManager::end()
+std::vector<std::unique_ptr<IAsset>>::iterator ContentManager::end()
 {
 	return _resources.end();
 }
@@ -40,7 +40,7 @@ void ContentManager::RemoveAsset(unsigned id)
 	), _resources.end());
 }
 
-GraphicsDevice* Engine3DRadSpace::Content::ContentManager::GetDevice()
+GraphicsDevice* ContentManager::GetDevice()
 {
 	return _device;
 }

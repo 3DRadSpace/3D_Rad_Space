@@ -13,10 +13,10 @@ Lines::Lines(GraphicsDevice *device, std::span<VertexPositionColor> points):
 	_vertices = std::make_unique<VertexBufferV<VertexPositionColor>>(device, points);
 	_lineRasterizer = std::make_unique<RasterizerState>(device, RasterizerFillMode::Solid, RasterizerCullMode::None);
 
-	simpleShader = Engine3DRadSpace::Content::ShaderManager::LoadShader<BlankShader>(device);
+	simpleShader = Content::ShaderManager::LoadShader<BlankShader>(device);
 }
 
-void Engine3DRadSpace::Graphics::Primitives::Lines::Draw(Engine3DRadSpace::Math::Matrix &view, Engine3DRadSpace::Math::Matrix &projection, double dt)
+void Lines::Draw(Matrix&view, Matrix&projection, double dt)
 {
 #ifdef USING_DX11
 	_device->_context->RSGetState(_oldRasterizerState.GetAddressOf());

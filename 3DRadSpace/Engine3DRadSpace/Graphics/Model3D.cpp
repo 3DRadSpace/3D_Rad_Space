@@ -218,7 +218,7 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 	}
 }
 
-void Engine3DRadSpace::Graphics::Model3D::SetTransform(const Engine3DRadSpace::Math::Matrix &m)
+void Model3D::SetTransform(const Matrix&m)
 {
 	for(auto &mesh : _meshes)
 	{
@@ -237,7 +237,7 @@ void Model3D::Draw()
 	}
 }
 
-void Model3D::Draw(const Engine3DRadSpace::Math::Matrix &m)
+void Model3D::Draw(const Matrix&m)
 {
 	for(auto &mesh : _meshes)
 	{
@@ -249,7 +249,7 @@ void Model3D::Draw(const Engine3DRadSpace::Math::Matrix &m)
 	}
 }
 
-void Engine3DRadSpace::Graphics::Model3D::Draw(const Engine3DRadSpace::Math::Matrix &model, const Engine3DRadSpace::Math::Matrix &view, const Engine3DRadSpace::Math::Matrix &proj)
+void Model3D::Draw(const Matrix&model, const Matrix&view, const Matrix&proj)
 {
 	Matrix mvp = model * view * proj;
 	for(auto &mesh : _meshes)
@@ -262,12 +262,12 @@ void Engine3DRadSpace::Graphics::Model3D::Draw(const Engine3DRadSpace::Math::Mat
 	}
 }
 
-Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::begin()
+Model3D::iterator Model3D::begin()
 {
 	return _meshes.begin();
 }
 
-Engine3DRadSpace::Graphics::Model3D::iterator Engine3DRadSpace::Graphics::Model3D::end()
+Model3D::iterator Model3D::end()
 {
 	return _meshes.end();
 }
@@ -314,7 +314,7 @@ void Model3D::SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> eff
 	}
 }
 
-ModelMesh *Engine3DRadSpace::Graphics::Model3D::operator[](unsigned i)
+ModelMesh * Model3D::operator[](unsigned i)
 {
 	return _meshes.at(i).get();
 }

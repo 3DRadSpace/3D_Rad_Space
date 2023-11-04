@@ -23,28 +23,28 @@ public:
 	{
 	}
 
-	virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override
+	virtual void Update(Keyboard& keyboard, Mouse& mouse, double dt) override
 	{
 	}
-	virtual void Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt) override
+	virtual void Draw(Matrix& view, Matrix& projection, double dt) override
 	{
 	}
 	virtual void EditorInitialize() override
 	{
 	}
-	virtual void EditorDraw(const Engine3DRadSpace::Math::Matrix& view, const Engine3DRadSpace::Math::Matrix& projection, double dt, bool selected) override
+	virtual void EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected) override
 	{
 	}
 	
-	virtual Engine3DRadSpace::Reflection::UUID GetUUID()
+	virtual Reflection::UUID GetUUID()
 	{
 		// {017161C9-9EB7-4C10-AEEE-24347466586D}
 		return {0x17161c9, 0x9eb7, 0x4c10, { 0xae, 0xee, 0x24, 0x34, 0x74, 0x66, 0x58, 0x6d }};
 	}
-	virtual void EditorLoad(Content::ContentManager *content) override
+	virtual void EditorLoad(ContentManager*content) override
 	{
 	}
-	virtual std::optional<float> Intersects(const Math::Ray &r) override
+	virtual std::optional<float> Intersects(const Ray&r) override
 	{
 		return std::nullopt;
 	}

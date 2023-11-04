@@ -9,7 +9,7 @@ using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
-std::array<VertexPositionColor, 8> Box::_createVerts(const Math::BoundingBox &b, const Engine3DRadSpace::Color &color)
+std::array<VertexPositionColor, 8> Box::_createVerts(const BoundingBox&b, const Color&color)
 {
     return std::array<VertexPositionColor, 8>
     {
@@ -24,7 +24,7 @@ std::array<VertexPositionColor, 8> Box::_createVerts(const Math::BoundingBox &b,
     };
 }
 
-Engine3DRadSpace::Graphics::Primitives::Box::Box(GraphicsDevice *device, const Math::BoundingBox &b, Engine3DRadSpace::Color color)
+Box::Box(GraphicsDevice *device, const BoundingBox&b, Color color)
 {
     auto box_vertices = _createVerts(b, color);
     _vertices = std::make_unique<VertexBufferV<VertexPositionColor>>(device, box_vertices);
@@ -44,7 +44,7 @@ BoundingBox Box::GetBoundingBox()
     return _box;
 }
 
-void Engine3DRadSpace::Graphics::Primitives::Box::SetBoundingBox(const Math::BoundingBox &b)
+void Box::SetBoundingBox(const BoundingBox&b)
 {
     _box = b;
 
@@ -57,7 +57,7 @@ Color Box::GetColor()
     return _color;
 }
 
-void Engine3DRadSpace::Graphics::Primitives::Box::SetColor(const Engine3DRadSpace::Color &color)
+void Box::SetColor(const Color&color)
 {
     _color = color;
 
@@ -65,7 +65,7 @@ void Engine3DRadSpace::Graphics::Primitives::Box::SetColor(const Engine3DRadSpac
     _vertices->SetData(verts);
 }
 
-void Engine3DRadSpace::Graphics::Primitives::Box::SetTransform(const Math::Matrix &m)
+void Box::SetTransform(const Matrix&m)
 {
     _worldMat = m;
 }

@@ -10,7 +10,7 @@ Blank_NoMatrix::TrivialVertexShader::TrivialVertexShader(GraphicsDevice *device)
 {
 }
 
-std::span<InputLayoutElement> Engine3DRadSpace::Graphics::Shaders::Blank_NoMatrix::TrivialVertexShader::InputLayout()
+std::span<InputLayoutElement> Blank_NoMatrix::TrivialVertexShader::InputLayout()
 {
 	return std::span<InputLayoutElement>(elements);
 }

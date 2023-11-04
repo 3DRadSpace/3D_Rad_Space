@@ -147,7 +147,7 @@ SpriteBatch::SpriteBatch(GraphicsDevice *device) :
 	_oldSampleMask(0),
 	_oldStencilRef(0)
 {
-	_spriteShader = std::make_unique<Shaders::SpriteShader>(device);
+	_spriteShader = std::make_unique<SpriteShader>(device);
 
 	_rasterizerState = std::make_unique<RasterizerState>(device, RasterizerFillMode::Solid);
 	_samplerState = std::make_unique<SamplerState>(SamplerState::PointWrap(device));
@@ -183,7 +183,7 @@ void SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerSta
 	Begin(sortingMode);
 }
 
-void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, const Math::Vector2 &scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
 {
 	if(_state == Immediate)
 	{
@@ -220,7 +220,7 @@ void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, const Math:
 	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
 }
 
-void SpriteBatch::Draw(Texture2D *texture, const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, float rotation, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
 {
 	if(_state == Immediate)
 	{

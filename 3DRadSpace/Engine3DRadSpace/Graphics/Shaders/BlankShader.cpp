@@ -14,17 +14,17 @@ BlankShader::PixelShader::PixelShader(GraphicsDevice* device) :
 {
 }
 
-std::span<InputLayoutElement> Engine3DRadSpace::Graphics::Shaders::BlankShader::VertexShader::InputLayout()
+std::span<InputLayoutElement> BlankShader::VertexShader::InputLayout()
 {
 	return std::span<InputLayoutElement>(elements);
 }
 
-Engine3DRadSpace::Graphics::Shaders::BlankShader::BlankShader(GraphicsDevice* device):
+BlankShader::BlankShader(GraphicsDevice* device):
 	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
 {
 }
 
-void Engine3DRadSpace::Graphics::Shaders::BlankShader::SetTransformation(const Math::Matrix &matrix)
+void BlankShader::SetTransformation(const Matrix&matrix)
 {
 	_vertex->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));
 	_pixel->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));

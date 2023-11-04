@@ -3,7 +3,7 @@
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT IHullShader : public Engine3DRadSpace::Graphics::IShader
+	class DLLEXPORT IHullShader : public IShader
 	{
 #ifdef USING_DX11
 		Microsoft::WRL::ComPtr<ID3D11HullShader> _shader;

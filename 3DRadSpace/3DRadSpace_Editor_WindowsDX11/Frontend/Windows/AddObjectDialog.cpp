@@ -101,7 +101,7 @@ void AddObjectDialog::addObject(const std::string& objectName, int imageIndex, i
 	ListView_InsertItem(listView, &item);
 }
 
-AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Engine3DRadSpace::Content::ContentManager* content):
+AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Content::ContentManager* content):
 	Dialog(owner_window, instance, AddObjectDialog_DlgProc, "Add a object..."),
 	imageList(nullptr),
 	listView(nullptr),
@@ -109,7 +109,7 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Engine3D
 {
 }
 
-Engine3DRadSpace::Reflection::ReflectedObject *AddObjectDialog::GetReflDataFromUUID(const Engine3DRadSpace::Reflection::UUID &uuid)
+ReflectedObject*AddObjectDialog::GetReflDataFromUUID(const Reflection::UUID &uuid)
 {
 	for(auto &[obj_uuid, refl] : Objects)
 	{
@@ -119,9 +119,9 @@ Engine3DRadSpace::Reflection::ReflectedObject *AddObjectDialog::GetReflDataFromU
 	return nullptr;
 }
 
-Engine3DRadSpace::IObject* AddObjectDialog::ShowDialog()
+IObject* AddObjectDialog::ShowDialog()
 {
-	return reinterpret_cast<Engine3DRadSpace::IObject *>(Dialog::ShowDialog(static_cast<void *>(this)));
+	return reinterpret_cast<IObject*>(Dialog::ShowDialog(static_cast<void *>(this)));
 }
 struct objectItem
 {

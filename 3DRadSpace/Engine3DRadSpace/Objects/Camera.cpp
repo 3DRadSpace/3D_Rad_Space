@@ -32,7 +32,7 @@ void Camera::EditorLoad(Content::ContentManager *content)
 	}
 }
 
-void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& view, Engine3DRadSpace::Math::Matrix& projection, double dt)
+void Camera::Draw(Matrix& view, Matrix& projection, double dt)
 {
 	Vector3 focus(0, 0, 0);
 	switch (this->LookMode)
@@ -51,34 +51,34 @@ void Engine3DRadSpace::Objects::Camera::Draw(Engine3DRadSpace::Math::Matrix& vie
 	projection = Matrix::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
 }
 
-void Engine3DRadSpace::Objects::Camera::Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) { } //Do nothing
+void Camera::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) { } //Do nothing
 
-Engine3DRadSpace::Math::Matrix Engine3DRadSpace::Objects::Camera::GetModelMartix()
+Matrix Camera::GetModelMartix()
 {
 	return Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
 }
 
-void Engine3DRadSpace::Objects::Camera::EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected)
+void Camera::EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected)
 {
 	cameraModel->Draw(GetModelMartix(), view, projection);
 }
 
-std::optional<float> Engine3DRadSpace::Objects::Camera::Intersects(const Engine3DRadSpace::Math::Ray &r)
+std::optional<float> Camera::Intersects(const Ray&r)
 {
 	return r.Intersects(BoundingSphere(Position,1.5f));
 }
 
-Engine3DRadSpace::Reflection::UUID Engine3DRadSpace::Objects::Camera::GetUUID()
+Engine3DRadSpace::Reflection::UUID Camera::GetUUID()
 {
 	// {84376082-A56E-49E6-B095-BAEEF4BF29B5}
 	return {0x84376082, 0xa56e, 0x49e6, { 0xb0, 0x95, 0xba, 0xee, 0xf4, 0xbf, 0x29, 0xb5 }};
 }
 
-void Engine3DRadSpace::Objects::Camera::Initialize()
+void Camera::Initialize()
 {
 }
 
-void Engine3DRadSpace::Objects::Camera::Load(Content::ContentManager *content)
+void Camera::Load(Content::ContentManager *content)
 {
 }
 

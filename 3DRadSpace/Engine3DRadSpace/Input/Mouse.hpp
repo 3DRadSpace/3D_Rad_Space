@@ -27,7 +27,7 @@ namespace Engine3DRadSpace
 
 			float ScrollWheel();
 
-			friend class Engine3DRadSpace::Window;
+			friend class Window;
 		};
 	}
 }

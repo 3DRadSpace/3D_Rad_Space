@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Graphics
 	class DLLEXPORT IShader
 	{
 	protected:
-		Engine3DRadSpace::GraphicsDevice *_device;
+		GraphicsDevice*_device;
 		ShaderFeatureLevel _featureLevel;
 		const char* _entry;
 #ifdef USING_DX11
@@ -47,6 +47,6 @@ namespace Engine3DRadSpace::Graphics
 
 		virtual ~IShader() = default;
 
-		friend class Engine3DRadSpace::GraphicsDevice;
+		friend class GraphicsDevice;
 	};
 }

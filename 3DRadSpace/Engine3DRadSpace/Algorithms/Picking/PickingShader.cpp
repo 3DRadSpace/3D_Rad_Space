@@ -4,7 +4,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Algorithms::Picking;
 
-PickingShader::VertexShader::VertexShader(Engine3DRadSpace::GraphicsDevice* device) : 
+PickingShader::VertexShader::VertexShader(GraphicsDevice* device) : 
 	IVertexShader(device, _elements, std::filesystem::path("Data\\Shaders\\PickInfo.hlsl"), "VS_Main")
 {
 }
@@ -19,7 +19,7 @@ PickingShader::PixelShader::PixelShader(GraphicsDevice* device) :
 {
 }
 
-PickingShader::PickingShader(Engine3DRadSpace::GraphicsDevice* device) : 
+PickingShader::PickingShader(GraphicsDevice* device) : 
 	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
 {
 }

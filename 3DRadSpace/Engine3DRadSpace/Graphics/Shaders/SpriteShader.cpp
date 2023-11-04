@@ -21,7 +21,7 @@ SpriteShader::PixelShader::PixelShader(GraphicsDevice *device) : IPixelShader(de
 SpriteShader::SpriteShader(GraphicsDevice *device) :
 	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
 {
-	Data default_data = {Engine3DRadSpace::Colors::White, false, false};
+	Data default_data = {Colors::White, false, false};
 	SetData(default_data);
 }
 
