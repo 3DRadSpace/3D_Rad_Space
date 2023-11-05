@@ -36,8 +36,11 @@ namespace Engine3DRadSpace::Math
 
 		static Vector2 ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2& norm);
 
-		bool operator ==(const Vector2& v) const = default;
-		bool operator !=(const Vector2& v) const = default;
+		Vector2& RotateBy(float theta);
+		static Vector2 Rotate(const Vector2 &v, float theta);
+
+		Vector2& Hadamard(const Vector2& v);
+		static Vector2 Hadamard(const Vector2& a, const Vector2& b);
 	};
 }
 

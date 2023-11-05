@@ -107,7 +107,7 @@ void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
 	if(_keyboardTest)
 	{
 		SpriteBatch->Begin(SpriteBatchSortMode::Immediate);
-		SpriteBatch->Draw(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
+		SpriteBatch->DrawNormalized(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
 		//SpriteBatch->DrawQuad(testTexture);
 		SpriteBatch->End();
 	}

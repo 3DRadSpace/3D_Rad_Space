@@ -39,7 +39,7 @@ float Vector2::Dot(const Vector2 &v) const
 
 Vector2 Vector2::Normalize()
 {
-    float l = Length();
+    const float l = Length();
     X /= l;
     Y /= l;
     return *this;
@@ -54,7 +54,11 @@ Vector2& Vector2::operator+=(const Vector2& v)
 
 Vector2 Vector2::operator+(const Vector2& v) const
 {
-    return Vector2(this->X + v.X, this->Y + v.Y);
+    return Vector2
+    {
+        X + v.X,
+        Y + v.Y
+    };
 }
 
 Vector2& Vector2::operator-()
@@ -121,4 +125,37 @@ Vector2 operator*(float s, const Vector2& v)
 Vector2 operator/(float s, const Vector2& v)
 {
     return Vector2(s / v.X, s / v.Y);
+}
+
+Vector2& Vector2::RotateBy(float theta)
+{
+    return *this = Vector2(
+        Length() * cosf(Angle() + theta),
+        Length() * sinf(Angle() + theta)
+    );
+}
+
+Vector2 Vector2::Rotate(const Vector2 &v, float theta)
+{
+    return Vector2
+    {
+        v.Length() * cosf(v.Angle() + theta),
+        v.Length() * sinf(v.Angle() + theta)
+    };
+}
+
+Vector2& Vector2::Hadamard(const Vector2& v)
+{
+    X *= v.X;
+    Y += v.Y;
+    return *this;
+}
+
+Vector2 Vector2::Hadamard(const Vector2& a, const Vector2& b)
+{
+    return Vector2
+    {
+        a.X * b.X,
+        a.Y * b.Y
+    };
 }

@@ -162,28 +162,30 @@ Vector3& Vector3::Transform(const Matrix& m)
     return *this;
 }
 
-Vector3& Engine3DRadSpace::Math::operator*=(float s, Vector3& v)
+Vector3& Vector3::Hadamard(const Vector3& v)
 {
-    v.X *= s;
-    v.Y *= s;
-    v.Z *= s;
-    return v;
+    X *= v.X;
+    Y += v.Y;
+    Z += v.Z;
+    return *this;
+}
+
+Vector3 Vector3::Hadamard(const Vector3& a, const Vector3& b)
+{
+    return Vector3
+    {
+        a.X * b.X,
+        a.Y * b.Y,
+        a.Z * b.Z
+    };
 }
 
 Vector3 Engine3DRadSpace::Math::operator*(float s, const Vector3& v)
 {
-    return Vector3(s * v.X, s * v.Y, s * v.Z);
-}
-
-Vector3 &Engine3DRadSpace::Math::operator/=(float s, Vector3 &v)
-{
-    v.X = s / v.X;
-    v.Y = s / v.Y;
-    v.Z = s / v.Z;
-    return v;
+    return Vector3{ s * v.X, s * v.Y, s * v.Z };
 }
 
 Vector3 Engine3DRadSpace::Math::operator/(float s, const Vector3 &v)
 {
-    return Vector3(s / v.X, s / v.Y, s / v.Z);
+    return Vector3{ s / v.X, s / v.Y, s / v.Z };
 }

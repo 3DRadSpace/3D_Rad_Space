@@ -64,7 +64,7 @@ void Sprite::Update(Keyboard&keyboard, Mouse&mouse, double dt)
 
 void Sprite::Draw(SpriteBatch *spriteBatch, double dt)
 {
-	spriteBatch->Draw(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
+	spriteBatch->DrawNormalized(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
 }
 
 void Sprite::EditorInitialize()
@@ -81,7 +81,7 @@ void Sprite::EditorLoad(Content::ContentManager *content)
 
 void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
 {
-	spriteBatch->Draw(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
+	spriteBatch->DrawNormalized(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
 }
 
 Reflection::UUID Sprite::GetUUID()

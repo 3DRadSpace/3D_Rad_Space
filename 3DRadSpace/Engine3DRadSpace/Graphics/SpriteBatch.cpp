@@ -183,7 +183,7 @@ void SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerSta
 	Begin(sortingMode);
 }
 
-void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::DrawNormalized(Texture2D *texture, const Vector2&pos, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
 {
 	if(_state == Immediate)
 	{
@@ -220,7 +220,7 @@ void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, const Vector2&scal
 	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
 }
 
-void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, float rotation, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::DrawNormalized(Texture2D *texture, const Vector2 &pos, float rotation, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
 {
 	if(_state == Immediate)
 	{
@@ -254,7 +254,12 @@ void SpriteBatch::Draw(Texture2D *texture, const Vector2&pos, float rotation, co
 			}
 		);
 	}
-	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
+	else if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
+}
+
+void SpriteBatch::Draw(Texture2D* texture, const Math::Point& pos, const Math::Point& size, const Color& tintColor, bool flipU, bool flipV, float depth)
+{
+
 }
 
 void SpriteBatch::End()

@@ -48,13 +48,12 @@ namespace Engine3DRadSpace::Math
 		Vector3& Transform(const Quaternion& q);
 		Vector3& Transform(const Matrix& m);
 
-		bool operator ==(const Vector3& v) const = default;
-		bool operator !=(const Vector3 &v) const = default;
+		//Element-wise product.
+		Vector3& Hadamard(const Vector3& v);
+		//Element wise product
+		static Vector3 Hadamard(const Vector3& a, const Vector3& b);
 	};
 
-	DLLEXPORT Vector3& operator *=(float s, Vector3& v);
 	DLLEXPORT Vector3 operator *(float s, const Vector3& v);
-
-	DLLEXPORT Vector3 &operator /=(float s, Vector3 &v);
 	DLLEXPORT Vector3 operator /(float s, const Vector3 &v);
 }
