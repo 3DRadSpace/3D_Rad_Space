@@ -194,6 +194,7 @@ void EditObjectDialog::createForms()
 			};
 
 			//creates a browse button, a label and a path textbox.
+			/*
 			auto createFileControls = [&](int x, int y, const char* defPath)
 			{
 				int sx;
@@ -226,6 +227,7 @@ void EditObjectDialog::createForms()
 
 				return pathTextbox;
 			};
+			*/
 			
 			//Value of the field, either from the object that's being edited, or a default value.
 			const void* valuePtr = object != nullptr ? field->Get(object) : field->DefaultValue();
@@ -310,19 +312,19 @@ void EditObjectDialog::createForms()
 				switch (field->TypeSize() / field->Representation().size())
 				{
 					case sizeof(uint8_t) :
-						value = *reinterpret_cast<const uint8_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const uint8_t *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(uint8_t);
 						break;
 					case sizeof(uint16_t) :
-						value = *reinterpret_cast<const uint16_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const uint16_t *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(uint16_t);
 						break;
 					case sizeof(uint32_t) :
-						value = *reinterpret_cast<const uint32_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const uint32_t *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(uint32_t);
 						break;
 					case sizeof(uint64_t) :
-						value = *reinterpret_cast<const uint64_t *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const uint64_t *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(uint64_t);
 						break;
 					default:
@@ -345,11 +347,11 @@ void EditObjectDialog::createForms()
 				switch (field->TypeSize() / field->Representation().size())
 				{
 					case sizeof(float) :
-						value = *reinterpret_cast<const float *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const float *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(float);
 						break;
 					case sizeof(double) :
-						value = *reinterpret_cast<const double *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+						value = *reinterpret_cast<const double *>(static_cast<const char *>(valuePtr) + fOffset);
 						fOffset += sizeof(float);
 						break;
 					default:
@@ -365,7 +367,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::Quaternion:
 			{
 				//read value
-				auto q = *reinterpret_cast<const Math::Quaternion *>(reinterpret_cast<const char *>(valuePtr) + fOffset);
+				auto q = *reinterpret_cast<const Math::Quaternion *>(static_cast<const char *>(valuePtr) + fOffset);
 				auto eulerAngles = q.ToYawPitchRoll();
 
 				auto pitch = std::to_string(Math::ToDegrees(eulerAngles.X));
@@ -570,7 +572,7 @@ bool EditObjectDialog::setObject()
 	for(auto field : *objRefl)
 	{
 		int structSize = static_cast<int>(field->TypeSize());
-		std::unique_ptr<uint8_t[]> newStruct = std::make_unique<uint8_t[]>(structSize);
+		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int j = 0;
 		char text[256] = {0};
 
@@ -589,7 +591,7 @@ bool EditObjectDialog::setObject()
 					auto state = SendMessageA(checkbox, BM_GETCHECK, 0, 0);
 					bool checked = (state == BST_CHECKED);
 
-					memcpy_s(newStruct.get() + j, sizeof(bool), & checked, sizeof(bool));
+					memcpy_s(newStruct.get() + j, sizeof(bool), &checked, sizeof(bool));
 					j += sizeof(bool);
 					break;
 				}
@@ -690,7 +692,7 @@ bool EditObjectDialog::setObject()
 						}
 						case sizeof(double):
 						{
-							double value = std::stold(text);
+							double value = std::stod(text);
 							memcpy_s(newStruct.get() + j, sizeof(float), &value, sizeof(double));
 							j += sizeof(double);
 							break;

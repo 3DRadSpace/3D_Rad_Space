@@ -70,7 +70,7 @@ Point operator/(float s, const Point& p)
     return Point(int(s / p.X), int(s / p.Y));
 }
 
-Point::operator Engine3DRadSpace::Math::Vector2()
+Point::operator Engine3DRadSpace::Math::Vector2() const
 {
     return Vector2(float(X), float(Y));
 }

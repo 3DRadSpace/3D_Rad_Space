@@ -34,6 +34,12 @@ namespace Engine3DRadSpace::Math
 		static Matrix CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd);
 		static Matrix CreateOrthographicProjection(const Point &screenSize, float npd, float fpd);
 
+		static Matrix CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Vector3 cameraUp, Vector3 cameraForward);
+
+		///Element-wise product.
+		static Matrix Hadamard(const Matrix& a, const Matrix& b);
+		Matrix& Hadamard(const Matrix& m);
+
 		Matrix operator +(const Matrix &m) const;
 		Matrix operator +=(const Matrix &m);
 
@@ -43,12 +49,27 @@ namespace Engine3DRadSpace::Math
 		Matrix operator *(const Matrix& m) const;
 		Matrix& operator *=(const Matrix& m);
 
-		Matrix Transpose();
+		Matrix operator*(float scalar) const;
+		Matrix& operator *=(float scalar);
 
-		auto operator <=>(const Matrix& m) const = default;
+		Matrix Transpose();
 
 		float& operator[](unsigned index);
 
 		float Trace() const;
+
+		Vector3 Forward() const;
+		Vector3 Backward() const;
+
+		Vector3 Up() const;
+		Vector3 Down() const;
+
+		Vector3 Left() const;
+		Vector3 Right() const;
+
+		Vector3 Translation() const;
 	};
+
+	Matrix operator *(float scalar,const Matrix& m);
+	Matrix operator /(float f, const Matrix& m);
 }

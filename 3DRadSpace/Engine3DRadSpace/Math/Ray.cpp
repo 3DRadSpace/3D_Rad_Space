@@ -5,8 +5,6 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSpher
     //https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
     float a = Direction.Dot(Origin - sph.Center);
     float nabla = powf(a, 2) - ((Origin - sph.Center).LengthSquared() - powf(sph.Radius, 2));
-    
-    float epsilon = 1e-6f;
 
     if(nabla < 0) return std::nullopt;
     else return a - sqrtf(nabla);

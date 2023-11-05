@@ -13,6 +13,7 @@ void ForwardRenderer::Begin()
 	if (_beginCalled) return;
 	_beginCalled = true;
 
+	_device->SetRenderTargetAndDepth(nullptr, nullptr);
 	for(auto& effect : _effects)
 	{
 		effect->Apply();

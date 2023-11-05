@@ -30,5 +30,5 @@ public:
 
 	void HandleClick(HWND clickedHandle) override;
 
-	~ModelControl();
+	~ModelControl() override;
 };

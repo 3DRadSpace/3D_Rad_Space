@@ -12,9 +12,7 @@ TextureControl::TextureControl(
 	int y
 ) :
 	AssetControl(owner, hInstance, x, y + 205, content),
-	TextureReference(texture)
-{
-	_pictureBox = CreateWindowExA(
+	_pictureBox(CreateWindowExA(
 		0,
 		"Static",
 		"",
@@ -27,10 +25,10 @@ TextureControl::TextureControl(
 		nullptr,
 		hInstance,
 		nullptr
-	);
-
-	_image = nullptr;
-
+	)),
+	_image(nullptr),
+	TextureReference(texture)
+{
 	unsigned imageWidth;
 	unsigned imageHeight;
 
@@ -53,8 +51,8 @@ void SetImage(HWND _pictureBox, HBITMAP _image, unsigned imageWidth, unsigned im
 
 TextureControl::TextureControl(TextureControl &&c) noexcept:
 	AssetControl(c),
-	_image(c._image),
 	_pictureBox(c._pictureBox),
+	_image(c._image),
 	TextureReference(c.TextureReference)
 {
 	c._image = nullptr;

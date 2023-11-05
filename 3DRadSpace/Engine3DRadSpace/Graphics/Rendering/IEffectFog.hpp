@@ -7,9 +7,17 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 	protected:
 		IEffectFog() = default;
+
+		IEffectFog(IEffectFog&) = delete;
+		IEffectFog& operator=(IEffectFog&) = delete;
+
+		IEffectFog(IEffectFog&&) = default;
+		IEffectFog& operator=(IEffectFog&&) = default;
 	public:
 		Color FogColor;
 		float FogBegin;
 		float FogEnd;
+
+		~IEffectFog() override = default;
 	};
 }

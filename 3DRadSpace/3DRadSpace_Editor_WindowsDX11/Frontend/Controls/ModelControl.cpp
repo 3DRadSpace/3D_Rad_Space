@@ -12,9 +12,8 @@ ModelControl::ModelControl(
 	int x,
 	int y 
 ) : 
-	AssetControl(owner, hInstance, x, y, content)
-{
-	_pictureBox = CreateWindowExA(
+	AssetControl(owner, hInstance, x, y, content),
+	_pictureBox(CreateWindowExA(
 		0,
 		"Static",
 		"",
@@ -27,8 +26,8 @@ ModelControl::ModelControl(
 		nullptr,
 		hInstance,
 		nullptr
-	);
-
+	))
+{
 	unsigned imageWidth;
 	unsigned imageHeight;
 	if (ModelReference.ID != 0)

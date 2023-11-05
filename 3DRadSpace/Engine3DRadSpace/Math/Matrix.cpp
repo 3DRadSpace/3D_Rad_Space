@@ -163,6 +163,98 @@ Matrix Matrix::CreateOrthographicProjection(const Point &screenSize, float npd, 
 	);
 }
 
+Matrix Matrix::CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Vector3 cameraUp, Vector3 cameraForward)
+{
+	Matrix r;
+
+	Vector3 vector;
+
+	vector.X = objectPos.X - cameraPos.X;
+	vector.Y = objectPos.Y - cameraPos.Y;
+	vector.Z = objectPos.Z - cameraPos.Z;
+
+	Vector3 vector2;
+	Vector3 vector3;
+	float num = vector.LengthSquared();
+	if (num < 0.0001f)
+	{
+		vector = cameraForward;
+	}
+	else vector *= 1.f / sqrtf(num);
+
+	vector3 = Vector3::Cross(cameraUp, vector).Normalize();
+	vector2 = Vector3::Cross(vector, vector3);
+	r.M11 = vector3.X;
+	r.M12 = vector3.Y;
+	r.M13 = vector3.Z;
+	r.M14 = 0;
+	r.M21 = vector2.X;
+	r.M22 = vector2.Y;
+	r.M23 = vector2.Z;
+	r.M24 = 0;
+	r.M31 = objectPos.X - cameraPos.X;
+	r.M32 = objectPos.Y - cameraPos.Y;
+	r.M33 = objectPos.Z - cameraPos.Z;
+	r.M34 = 0;
+	r.M41 = objectPos.X;
+	r.M42 = objectPos.Y;
+	r.M43 = objectPos.Z;
+	r.M44 = 1;
+
+	return r;
+}
+
+Matrix Matrix::Hadamard(const Matrix& a, const Matrix& b)
+{
+	Matrix r;
+	r.M11 = a.M11 * b.M11;
+	r.M12 = a.M12 * b.M12;
+	r.M13 = a.M13 * b.M13;
+	r.M14 = a.M14 * b.M14;
+
+	r.M21 = a.M21 * b.M21;
+	r.M22 = a.M22 * b.M22;
+	r.M23 = a.M23 * b.M23;
+	r.M24 = a.M24 * b.M24;
+
+	r.M31 = a.M31 * b.M31;
+	r.M32 = a.M32 * b.M32;
+	r.M33 = a.M33 * b.M33;
+	r.M34 = a.M34 * b.M34;
+
+	r.M41 = a.M41 * b.M41;
+	r.M42 = a.M42 * b.M42;
+	r.M43 = a.M43 * b.M43;
+	r.M44 = a.M44 * b.M44;
+
+	return r;
+}
+
+Matrix& Matrix::Hadamard(const Matrix& m)
+{
+	M11 *= m.M11;
+	M12 *= m.M12;
+	M13 *= m.M13;
+	M14 *= m.M14;
+
+	M21 *= m.M21;
+	M22 *= m.M22;
+	M23 *= m.M23;
+	M24 *= m.M24;
+
+	M31 *= m.M31;
+	M32 *= m.M32;
+	M33 *= m.M33;
+	M34 *= m.M34;
+
+	M41 *= m.M41;
+	M42 *= m.M42;
+	M43 *= m.M43;
+	M44 *= m.M44;
+
+	return *this;
+}
+
 Matrix Matrix::operator+(const Matrix &m) const
 {
 	return Matrix(
@@ -282,9 +374,60 @@ Matrix& Matrix::operator*=(const Matrix& m)
 	return *this;
 }
 
+Matrix Matrix::operator*(float scalar) const
+{
+	Matrix m(*this);
+	m.M11 *= scalar;
+	m.M12 *= scalar;
+	m.M13 *= scalar;
+	m.M14 *= scalar;
+
+	m.M21 *= scalar;
+	m.M22 *= scalar;
+	m.M23 *= scalar;
+	m.M24 *= scalar;
+
+	m.M31 *= scalar;
+	m.M32 *= scalar;
+	m.M33 *= scalar;
+	m.M34 *= scalar;
+
+	m.M41 *= scalar;
+	m.M42 *= scalar;
+	m.M43 *= scalar;
+	m.M44 *= scalar;
+
+	return m;
+}
+
+Matrix& Matrix::operator*=(float scalar)
+{
+	M11 *= scalar;
+	M12 *= scalar;
+	M13 *= scalar;
+	M14 *= scalar;
+
+	M21 *= scalar;
+	M22 *= scalar;
+	M23 *= scalar;
+	M24 *= scalar;
+
+	M31 *= scalar;
+	M32 *= scalar;
+	M33 *= scalar;
+	M34 *= scalar;
+
+	M41 *= scalar;
+	M42 *= scalar;
+	M43 *= scalar;
+	M44 *= scalar;
+
+	return *this;
+}
+
 Matrix Matrix::Transpose()
 {
-	Matrix copy = *this;
+	const Matrix copy = *this;
 	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
 	M12 = copy.M21;
 	M13 = copy.M31;
@@ -333,4 +476,91 @@ float& Matrix::operator[](unsigned index)
 float Matrix::Trace() const
 {
 	return M11 + M22 + M33 + M44;
+}
+
+Vector3 Matrix::Forward() const
+{
+	return { -M31, -M32, -M33 };
+}
+
+Vector3 Matrix::Backward() const
+{
+	return { M31, M32, M33 };
+}
+
+Vector3 Matrix::Up() const
+{
+	return { M21, M22, M23 };
+}
+
+Vector3 Matrix::Down() const
+{
+	return { -M21, -M22, -M23 };
+}
+Vector3 Matrix::Left() const
+{
+	return { -M11, -M12, -M13 };
+}
+
+Vector3 Matrix::Right() const
+{
+	return { M11, M12, M13 };
+}
+
+Vector3 Matrix::Translation() const
+{
+	return { M41, M42, M43 };
+}
+
+
+Matrix Engine3DRadSpace::Math::operator*(float scalar, const Matrix& m)
+{
+	Matrix r(m);
+	r.M11 *= scalar;
+	r.M12 *= scalar;
+	r.M13 *= scalar;
+	r.M14 *= scalar;
+
+	r.M21 *= scalar;
+	r.M22 *= scalar;
+	r.M23 *= scalar;
+	r.M24 *= scalar;
+
+	r.M31 *= scalar;
+	r.M32 *= scalar;
+	r.M33 *= scalar;
+	r.M34 *= scalar;
+
+	r.M41 *= scalar;
+	r.M42 *= scalar;
+	r.M43 *= scalar;
+	r.M44 *= scalar;
+
+	return r;
+}
+
+Matrix Engine3DRadSpace::Math::operator/(float f, const Matrix& m)
+{
+	Matrix r(m);
+	r.M11 /= f;
+	r.M12 /= f;
+	r.M13 /= f;
+	r.M14 /= f;
+
+	r.M21 /= f;
+	r.M22 /= f;
+	r.M23 /= f;
+	r.M24 /= f;
+
+	r.M31 /= f;
+	r.M32 /= f;
+	r.M33 /= f;
+	r.M34 /= f;
+
+	r.M41 /= f;
+	r.M42 /= f;
+	r.M43 /= f;
+	r.M44 /= f;
+
+	return r;
 }

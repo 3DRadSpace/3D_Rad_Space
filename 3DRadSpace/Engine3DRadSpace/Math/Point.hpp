@@ -14,7 +14,7 @@ namespace Engine3DRadSpace
 			int X;
 			int Y;
 
-			Point operator+= (const Point& p);
+			Point operator +=(const Point& p);
 			Point operator +(const Point &p) const;
 
 			Point operator -=(const Point& p);
@@ -29,7 +29,7 @@ namespace Engine3DRadSpace
 
 			auto operator <=>(const Point&) const = default;
 
-			operator Engine3DRadSpace::Math::Vector2();
+			operator Engine3DRadSpace::Math::Vector2() const;
 		};
 	}
 }

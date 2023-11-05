@@ -30,7 +30,7 @@ public:
 
 	virtual void HandleClick(HWND clickedWindow) override;
 
-	~TextureControl();
+	~TextureControl() override;
 };
 
 void SetImage(HWND _pictureBox, HBITMAP _image, unsigned width, unsigned height);

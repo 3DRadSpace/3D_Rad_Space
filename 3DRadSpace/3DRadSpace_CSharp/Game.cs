@@ -17,7 +17,7 @@
 			Device = new GraphicsDevice(Window.NativeHandle, width, height);
 		}
 
-		public Window Window;
+		public Window Window { get; private set; }
 		public GraphicsDevice Device;
 
 	}

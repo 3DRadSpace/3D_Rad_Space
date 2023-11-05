@@ -3,7 +3,7 @@
 namespace Engine3DRadSpace
 {
 	[StructLayout(LayoutKind.Sequential, Pack = sizeof(float), Size = 4 * sizeof(float))]
-	public struct Color : IEquatable<Color>
+	public struct Color
 	{
 		public float R;
 		public float G;
@@ -24,41 +24,9 @@ namespace Engine3DRadSpace
 			return result;
 		}
 
-		public override bool Equals(object? obj)
-		{
-			return obj is Color color &&
-				   R == color.R &&
-				   G == color.G &&
-				   B == color.B &&
-				   A == color.A;
-		}
-
-		public bool Equals(Color other)
-		{
-			return this.R == other.R &&
-				this.G == other.G &&
-				this.B == other.B &&
-				this.A == other.A;
-		}
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(R, G, B, A);
-		}
-
 		public override string ToString()
 		{
 			return "{R " + R + " G " + G + " B " + B + " A " + A + " }";
-		}
-
-		public static bool operator ==(Color left, Color right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(Color left, Color right)
-		{
-			return !left.Equals(right);
 		}
 	}
 }
