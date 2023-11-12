@@ -87,7 +87,7 @@ void Game::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 	}
 }
 
-void Game::Draw(Math::Matrix& view, Math::Matrix& projection, double dt)
+void Game::Draw(Math::Matrix4x4& view, Math::Matrix4x4& projection, double dt)
 {
 	for (auto& [object, type] : Objects)
 	{

@@ -24,8 +24,8 @@ BlankShader::BlankShader(GraphicsDevice* device):
 {
 }
 
-void BlankShader::SetTransformation(const Matrix&matrix)
+void BlankShader::SetTransformation(const Matrix4x4&matrix)
 {
-	_vertex->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));
-	_pixel->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix));
+	_vertex->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix4x4));
+	_pixel->SetData(0, static_cast<const void*>(&matrix), sizeof(Matrix4x4));
 }

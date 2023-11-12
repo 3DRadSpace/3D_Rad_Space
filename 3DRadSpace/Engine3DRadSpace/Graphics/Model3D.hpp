@@ -24,11 +24,11 @@ namespace Engine3DRadSpace::Graphics
 		Model3D &operator=(Model3D &) = delete;
 		Model3D &operator=(Model3D &&) noexcept = default;
 
-		void SetTransform(const Math::Matrix &m);
+		void SetTransform(const Math::Matrix4x4 &m);
 
 		void Draw();
-		void Draw(const Math::Matrix &m);
-		void Draw(const Math::Matrix &model, const Math::Matrix &view, const Math::Matrix &proj);
+		void Draw(const Math::Matrix4x4 &m);
+		void Draw(const Math::Matrix4x4 &model, const Math::Matrix4x4 &view, const Math::Matrix4x4 &proj);
 
 		using iterator = std::vector<std::unique_ptr<ModelMesh>>::iterator;
 		iterator begin();

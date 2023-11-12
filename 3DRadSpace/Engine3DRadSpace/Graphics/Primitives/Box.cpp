@@ -65,15 +65,15 @@ void Box::SetColor(const Color&color)
     _vertices->SetData(verts);
 }
 
-void Box::SetTransform(const Matrix&m)
+void Box::SetTransform(const Matrix4x4&m)
 {
     _worldMat = m;
 }
 
-void Box::Draw(Matrix &view, Matrix &projection, double dt)
+void Box::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 {
     _shader->SetBasic();
-    Matrix mvp = _worldMat * view * projection;
+    Matrix4x4 mvp = _worldMat * view * projection;
     _shader->SetTransformation(mvp);
     
     _device->SetTopology(VertexTopology::TriangleList);

@@ -2,7 +2,7 @@
 #include "Engine3DRadSpace/Game.hpp"
 #include "Engine3DRadSpace/Graphics/VertexBuffer.hpp"
 #include <Engine3DRadSpace/Graphics/Shaders/BlankShader.hpp>
-#include <Engine3DRadSpace/Math/Matrix.hpp>
+#include <..\..\Engine3DRadSpace\Math\Matrix4x4.hpp>
 #include <Engine3DRadSpace/Math/Vector2.hpp>
 #include <Engine3DRadSpace/Objects/Camera.hpp>
 #include <Engine3DRadSpace/Graphics/Model3D.hpp>
@@ -43,8 +43,8 @@ public:
 	void Load(Engine3DRadSpace::Content::ContentManager *content) override;
 	void Update(Engine3DRadSpace::Input::Keyboard& keyboard, Engine3DRadSpace::Input::Mouse& mouse, double dt) override;
 	void Draw(
-		Engine3DRadSpace::Math::Matrix &view,
-		Engine3DRadSpace::Math::Matrix &projection,
+		Engine3DRadSpace::Math::Matrix4x4 &view,
+		Engine3DRadSpace::Math::Matrix4x4 &projection,
 		double dt) override;
 
 	bool IsFocused();

@@ -171,6 +171,7 @@
     <ClInclude Include="IGraphicsDevice.hpp" />
     <ClInclude Include="Graphics\Rendering\IRenderer.hpp" />
     <ClInclude Include="Graphics\Rendering\IRenderingEffect.hpp" />
+    <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
@@ -223,7 +224,7 @@
     <ClInclude Include="Logging\Warning.hpp" />
     <ClInclude Include="Math\BoundingBox.hpp" />
     <ClInclude Include="Math\Math.hpp" />
-    <ClInclude Include="Math\Matrix.hpp" />
+    <ClInclude Include="Math\Matrix4x4.hpp" />
     <ClInclude Include="Math\Point.hpp" />
     <ClInclude Include="Math\Quaternion.hpp" />
     <ClInclude Include="Math\Rectangle.hpp" />
@@ -294,7 +295,8 @@
     <ClCompile Include="Math\BoundingBox.cpp" />
     <ClCompile Include="Math\BoundingSphere.cpp" />
     <ClCompile Include="Math\Math.cpp" />
-    <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Math\Matrix4x4.cpp" />
+    <ClCompile Include="Math\Matrix3x3.cpp" />
     <ClCompile Include="Math\Point.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Ray.cpp" />

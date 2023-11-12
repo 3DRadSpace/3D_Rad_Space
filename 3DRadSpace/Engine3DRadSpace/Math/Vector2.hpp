@@ -3,6 +3,7 @@
 
 namespace Engine3DRadSpace::Math
 {
+	struct Matrix3x3;
 	struct DLLEXPORT Vector2
 	{
 		float X, Y;
@@ -17,6 +18,7 @@ namespace Engine3DRadSpace::Math
 		float Angle() const;
 		
 		float Dot(const Vector2 &v) const;
+		static float Dot(const Vector2& a, const Vector2& b);
 		
 		Vector2 Normalize();
 
@@ -41,6 +43,9 @@ namespace Engine3DRadSpace::Math
 
 		Vector2& Hadamard(const Vector2& v);
 		static Vector2 Hadamard(const Vector2& a, const Vector2& b);
+
+		Vector2& Transform(const Matrix3x3& m);
+		static Vector2 Transform(const Vector2& v, const Matrix3x3& m);
 	};
 }
 

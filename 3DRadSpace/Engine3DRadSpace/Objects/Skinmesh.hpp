@@ -28,8 +28,8 @@ namespace Engine3DRadSpace::Objects
 		virtual void EditorInitialize() override;
 		virtual void EditorLoad(Content::ContentManager *content) override;
 		virtual Reflection::UUID GetUUID() override;
-		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
-		virtual void EditorDraw(const Math::Matrix &view, const Math::Matrix &projection, double dt, bool selected) override;
+		virtual void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
+		virtual void EditorDraw(const Math::Matrix4x4 &view, const Math::Matrix4x4 &projection, double dt, bool selected) override;
 		virtual std::optional<float> Intersects(const Math::Ray &r) override;
 
 		virtual ~Skinmesh() = default;

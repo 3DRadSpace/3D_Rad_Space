@@ -61,7 +61,7 @@ void ModelMeshPart::Draw()
 		{
 			vertexShader->SetTexture(i, Textures[i].get());
 			vertexShader->SetSampler(i, TextureSamplers[i].get());
-			vertexShader->SetData(0, &Transform, sizeof(Matrix));
+			vertexShader->SetData(0, &Transform, sizeof(Matrix4x4));
 		}
 
 		auto hullShader = _shaders->GetHullShader();
@@ -69,7 +69,7 @@ void ModelMeshPart::Draw()
 		{
 			hullShader->SetTexture(i, Textures[i].get());
 			hullShader->SetSampler(i, TextureSamplers[i].get());
-			hullShader->SetData(0, &Transform, sizeof(Matrix));
+			hullShader->SetData(0, &Transform, sizeof(Matrix4x4));
 		}
 
 		auto domainShader = _shaders->GetDomainShader();
@@ -77,7 +77,7 @@ void ModelMeshPart::Draw()
 		{
 			domainShader->SetTexture(i, Textures[i].get());
 			domainShader->SetSampler(i, TextureSamplers[i].get());
-			domainShader->SetData(0, &Transform, sizeof(Matrix));
+			domainShader->SetData(0, &Transform, sizeof(Matrix4x4));
 		}
 
 		auto geometryShader = _shaders->GetGeometryShader();
@@ -85,7 +85,7 @@ void ModelMeshPart::Draw()
 		{
 			geometryShader->SetTexture(i, Textures[i].get());
 			geometryShader->SetSampler(i, TextureSamplers[i].get());
-			geometryShader->SetData(0, &Transform, sizeof(Matrix));
+			geometryShader->SetData(0, &Transform, sizeof(Matrix4x4));
 		}
 
 		auto pixelShader = _shaders->GetPixelShader();
@@ -93,7 +93,7 @@ void ModelMeshPart::Draw()
 		{
 			pixelShader->SetTexture(i, Textures[i].get());
 			pixelShader->SetSampler(i, TextureSamplers[i].get());
-			pixelShader->SetData(0, &Transform, sizeof(Matrix));
+			pixelShader->SetData(0, &Transform, sizeof(Matrix4x4));
 		}
 	}
 

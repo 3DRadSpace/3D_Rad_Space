@@ -17,7 +17,7 @@ IObject3D::IObject3D(Game *game, const std::string &name, const std::string &tag
 {
 }
 
-Matrix IObject3D::GetModelMartix()
+Matrix4x4 IObject3D::GetModelMartix()
 {
-	return Matrix::CreateScale(Scale) * Matrix::CreateTranslation(-RotationCenter) * Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
+	return Matrix4x4::CreateScale(Scale) * Matrix4x4::CreateTranslation(-RotationCenter) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }

@@ -38,8 +38,10 @@ namespace Engine3DRadSpace::Math
 		Vector4 operator /(float f) const;
 		Vector4& operator /=(float f);
 
-		Vector4& Transform(const Matrix& m);
-		static Vector4 Transform(const Vector4& v, const Matrix& m);
+		Vector4& Transform(const Matrix4x4& m);
+		static Vector4 Transform(const Vector4& v, const Matrix4x4& m);
+
+		auto operator <=>(const Vector4& v) const = default;
 	};
 
 	Vector4 operator *(float scalar, const Vector4& v);

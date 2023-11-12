@@ -1,6 +1,6 @@
 #pragma once
 #include "..\..\Graphics\ShaderPipeline.hpp"
-#include "..\..\Math\Matrix.hpp"
+#include "..\..\Math\Matrix4x4.hpp"
 
 namespace Engine3DRadSpace::Algorithms::Picking
 {
@@ -27,7 +27,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			/// <summary>
 			/// Model-View-Projection transformation matrix.
 			/// </summary>
-			Math::Matrix MVP;
+			Math::Matrix4x4 MVP;
 			unsigned int ObjectID;
 		};
 

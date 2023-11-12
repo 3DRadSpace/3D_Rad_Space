@@ -1,4 +1,5 @@
 #include "SpriteBatch.hpp"
+#include "../Math/Matrix3x3.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -262,6 +263,11 @@ void SpriteBatch::Draw(Texture2D* texture, const Math::Point& pos, const Math::P
 
 }
 
+void SpriteBatch::Draw(Texture2D* texture, const Math::Point& pos, float rotation, const Math::Point& size, const Color& tintColor, bool flipU, bool flipV, float depth)
+{
+
+}
+
 void SpriteBatch::End()
 {
 	if(_sortingMode == SpriteBatchSortMode::Immediate) return;
@@ -279,24 +285,6 @@ void SpriteBatch::End()
 		_lastID = 1;
 		_textures.clear();
 	}
-}
-
-void SpriteBatch::DrawQuad(Texture2D *texture)
-{
-	_textures[1] = texture;
-	spriteBatchEntry tempEntry
-	{
-		.textureID = 1u,
-		.rectangle = RectangleF(0,0,1,1),
-		.tintColor = Colors::White,
-		.flipU = false,
-		.flipV = false,
-		.depth = false,
-		.sortingMode = SpriteBatchSortMode::Immediate
-	};
-
-	_drawEntry(tempEntry);
-	_textures.clear();
 }
 
 bool SpriteBatch::spriteBatchEntry::operator>(const spriteBatchEntry &b) const

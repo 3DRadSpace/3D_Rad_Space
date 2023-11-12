@@ -30,7 +30,7 @@ Quaternion Quaternion::FromAxisAngle(const Vector3& axis, float angle)
     return Quaternion(x, y, z, w);
 }
 
-Quaternion Quaternion::FromMatrix(const Matrix& m)
+Quaternion Quaternion::FromMatrix(const Matrix4x4& m)
 {
     Quaternion q;
 
@@ -118,7 +118,7 @@ Vector3 Quaternion::Im() const
     return Vector3(X,Y,Z);
 }
 
-Vector3 Quaternion::ToYawPitchRoll()
+Vector3 Quaternion::ToYawPitchRoll() const
 {
     //https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
     Vector3 r;
@@ -199,4 +199,26 @@ Quaternion Quaternion::operator/=(float s)
     W /= s;
 
     return *this;
+}
+
+Quaternion Engine3DRadSpace::Math::operator/(float f, const Quaternion& q)
+{
+    return Quaternion
+    {
+        f / q.X,
+        f / q.Y,
+        f / q.Z,
+        f / q.W
+    };
+}
+
+Quaternion Engine3DRadSpace::Math::operator*(float s, const Quaternion& q)
+{
+    return Quaternion
+    {
+        q.X * s,
+        q.Y * s,
+        q.Z * s,
+        q.W * s,
+    };
 }

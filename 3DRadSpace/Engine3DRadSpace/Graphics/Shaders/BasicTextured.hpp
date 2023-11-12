@@ -1,6 +1,6 @@
 #pragma once
 #include "../ShaderPipeline.hpp"
-#include "../../Math/Matrix.hpp"
+#include "..\..\Math\Matrix4x4.hpp"
 #include "../Texture2D.hpp"
 
 namespace Engine3DRadSpace::Graphics::Shaders
@@ -31,7 +31,7 @@ namespace Engine3DRadSpace::Graphics::Shaders
 	public:
 		explicit BasicTextured(GraphicsDevice* device);
 
-		void SetTransform(const Math::Matrix& m);
+		void SetTransform(const Math::Matrix4x4& m);
 		void SetTexture(Texture2D* texture);
 		void SetSampler(SamplerState* state);
 	};

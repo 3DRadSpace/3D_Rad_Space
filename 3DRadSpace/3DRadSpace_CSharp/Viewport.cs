@@ -3,7 +3,7 @@
 namespace Engine3DRadSpace
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Viewport : IEquatable<Viewport>
+	public struct Viewport
 	{
 		public Viewport(Math.RectangleF r, float mind, float maxd)
 		{
@@ -16,32 +16,5 @@ namespace Engine3DRadSpace
 
 		public float MinDepth;
 		public float MaxDepth;
-
-		public bool Equals(Viewport other)
-		{
-			return ScreenRectangle == other.ScreenRectangle &&
-			MinDepth == other.MinDepth &&
-			MaxDepth == other.MaxDepth;
-		}
-
-		public override bool Equals(object? obj)
-		{
-			return obj is Viewport && Equals((Viewport)obj);
-		}
-
-		public static bool operator ==(Viewport left, Viewport right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(Viewport left, Viewport right)
-		{
-			return !(left == right);
-		}
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(ScreenRectangle, MinDepth, MaxDepth);
-		}
 	}
 }

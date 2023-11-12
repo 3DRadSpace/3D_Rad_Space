@@ -98,7 +98,7 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 	Camera.LookAt = cursor3D;
 }
 
-void RenderWindow::Draw(Matrix &view, Matrix &projection, double dt)
+void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
 

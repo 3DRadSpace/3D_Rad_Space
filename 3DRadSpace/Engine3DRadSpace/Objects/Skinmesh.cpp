@@ -69,13 +69,13 @@ Reflection::UUID Skinmesh::GetUUID()
     return {0xc3a243f6, 0x23e2, 0x437f, { 0xae, 0x8a, 0xb8, 0xe8, 0xc2, 0xa6, 0xe9, 0x44 }};
 }
 
-void Skinmesh::Draw(Matrix&view, Matrix&projection, double dt)
+void Skinmesh::Draw(Matrix4x4&view, Matrix4x4&projection, double dt)
 {
     if(Visible)
         _model->Draw(GetModelMartix(), view, projection);
 }
 
-void Skinmesh::EditorDraw(const Matrix&view, const Matrix&projection, double dt, bool selected)
+void Skinmesh::EditorDraw(const Matrix4x4&view, const Matrix4x4&projection, double dt, bool selected)
 {
     if(selected)
     {

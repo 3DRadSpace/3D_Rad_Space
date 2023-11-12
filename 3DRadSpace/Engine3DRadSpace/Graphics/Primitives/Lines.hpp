@@ -23,8 +23,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Lines &operator=(Lines &) = delete;
 		Lines &operator=(Lines &&) noexcept = default;
 
-		Math::Matrix Transform = Math::Matrix();
+		Math::Matrix4x4 Transform = Math::Matrix4x4();
 
-		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
 	};
 }

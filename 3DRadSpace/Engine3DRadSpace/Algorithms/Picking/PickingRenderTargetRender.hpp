@@ -30,7 +30,7 @@ namespace Engine3DRadSpace::Algorithms::Picking
 			else throw std::exception("Begin() already called.");
 		}
 
-		void DrawModel(Graphics::Model3D* model,const Math::Matrix &viewWorldProj, unsigned ID)
+		void DrawModel(Graphics::Model3D* model,const Math::Matrix4x4 &viewWorldProj, unsigned ID)
 		{
 			if (!_isDrawing) throw std::exception("Begin() was not called");
 			_shader->SetAll();

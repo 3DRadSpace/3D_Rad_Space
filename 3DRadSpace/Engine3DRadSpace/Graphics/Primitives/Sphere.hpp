@@ -22,11 +22,11 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Sphere &operator=(Sphere &) = delete;
 		Sphere &operator=(Sphere &&) noexcept = default;
 
-		Math::Matrix Transform;
+		Math::Matrix4x4 Transform;
 
 		float GetRadius();
 
-		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
 
 	};
 }

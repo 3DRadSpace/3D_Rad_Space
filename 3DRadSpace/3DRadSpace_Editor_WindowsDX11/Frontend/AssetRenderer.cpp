@@ -1,5 +1,5 @@
 #include "AssetRenderer.hpp"
-#include <Engine3DRadSpace/Math/Matrix.hpp>
+#include <..\..\Engine3DRadSpace\Math\Matrix4x4.hpp>
 #include <Engine3DRadSpace/Graphics/Shaders/BasicTextured.hpp>
 
 using namespace Engine3DRadSpace;
@@ -27,8 +27,8 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 
 		model->SetShader(shader);
 		model->Draw(
-			Matrix(),
-			Matrix::CreateLookAtView(
+			Matrix4x4(),
+			Matrix4x4::CreateLookAtView(
 				boundingSphere.Center + ((boundingSphere.Radius + 2) *
 					Vector3(
 						float(cos(std::numbers::pi / 4)),
@@ -38,7 +38,7 @@ template<> bool AssetRenderer(GraphicsDevice *device, const std::string &imagePa
 				Vector3::Zero(),
 				Vector3::UnitY()
 			),
-			Matrix::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f)
+			Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f)
 		);
 
 		device->SaveBackBufferToFile(imagePath);

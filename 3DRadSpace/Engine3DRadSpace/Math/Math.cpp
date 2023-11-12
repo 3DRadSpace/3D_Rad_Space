@@ -19,3 +19,14 @@ double Engine3DRadSpace::Math::ToDegrees(double radians)
 {
     return radians * 180 / std::numbers::pi;
 }
+
+double Engine3DRadSpace::Math::CatmullRom(float value1, float value2, float value3, float value4, float amount)
+{
+    //http://www.mvps.org/directx/articles/catmull/
+    const double sq = amount * amount; //pow(amount,2)
+    const double cb = sq * amount; //pow(amount,3)
+    return (0.5 * (2.0 * value2 +
+        (value3 - value1) * amount +
+        (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * sq +
+        (3.0 * value2 - value1 - 3.0 * value3 + value4) * cb));
+}

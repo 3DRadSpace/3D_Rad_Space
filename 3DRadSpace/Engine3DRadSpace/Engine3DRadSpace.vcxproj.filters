@@ -58,7 +58,7 @@
     <ClInclude Include="Reflection\ReflectedField.hpp">
       <Filter>Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Matrix.hpp">
+    <ClInclude Include="Math\Matrix4x4.hpp">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Point.hpp">
@@ -262,6 +262,7 @@
     <ClInclude Include="Graphics\Rendering\IEffectFog.hpp" />
     <ClInclude Include="Graphics\Rendering\IEffectOutline.h" />
     <ClInclude Include="IGraphicsDevice.hpp" />
+    <ClInclude Include="Math\Matrix3x3.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -271,7 +272,7 @@
     <ClCompile Include="Reflection\ReflectedObject.cpp">
       <Filter>Reflection</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Matrix.cpp">
+    <ClCompile Include="Math\Matrix4x4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Point.cpp">
@@ -434,5 +435,6 @@
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
     <ClCompile Include="Graphics\Rendering\IRenderer.cpp" />
     <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
+    <ClCompile Include="Math\Matrix3x3.cpp" />
   </ItemGroup>
 </Project>

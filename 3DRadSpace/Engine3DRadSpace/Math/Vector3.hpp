@@ -1,12 +1,12 @@
 #pragma once
 #include "../Libs.hpp"
 #include "Quaternion.hpp"
-#include "Matrix.hpp"
+#include "Matrix4x4.hpp"
 
 namespace Engine3DRadSpace::Math
 {
 	struct Quaternion;
-	struct Matrix;
+	struct Matrix4x4;
 
 	struct DLLEXPORT Vector3
 	{
@@ -46,12 +46,17 @@ namespace Engine3DRadSpace::Math
 		static float Dot(const Vector3& a, const Vector3& b);
 
 		Vector3& Transform(const Quaternion& q);
-		Vector3& Transform(const Matrix& m);
+		Vector3& Transform(const Matrix4x4& m);
+
+		static Vector3 Transform(const Vector3& v, const Quaternion& q);
+		static Vector3 Transform(const Vector3& v, const Matrix4x4& m);
 
 		//Element-wise product.
 		Vector3& Hadamard(const Vector3& v);
 		//Element wise product
 		static Vector3 Hadamard(const Vector3& a, const Vector3& b);
+
+		auto operator <=>(const Vector3& v) const = default;
 	};
 
 	DLLEXPORT Vector3 operator *(float s, const Vector3& v);

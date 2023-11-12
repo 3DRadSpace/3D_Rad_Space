@@ -16,7 +16,7 @@ Lines::Lines(GraphicsDevice *device, std::span<VertexPositionColor> points):
 	simpleShader = Content::ShaderManager::LoadShader<BlankShader>(device);
 }
 
-void Lines::Draw(Matrix&view, Matrix&projection, double dt)
+void Lines::Draw(Matrix4x4&view, Matrix4x4&projection, double dt)
 {
 #ifdef USING_DX11
 	_device->_context->RSGetState(_oldRasterizerState.GetAddressOf());

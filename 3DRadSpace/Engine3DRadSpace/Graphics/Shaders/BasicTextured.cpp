@@ -24,9 +24,9 @@ BasicTextured::BasicTextured(GraphicsDevice* device) :
 {
 }
 
-void BasicTextured::SetTransform(const Matrix& m)
+void BasicTextured::SetTransform(const Matrix4x4& m)
 {
-	_vertex->SetData(0, &m, sizeof(Matrix));
+	_vertex->SetData(0, &m, sizeof(Matrix4x4));
 }
 
 void BasicTextured::SetTexture(Texture2D* texture)

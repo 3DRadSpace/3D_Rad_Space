@@ -208,7 +208,7 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
 		lparts.push_back(std::move(parts[node->mMeshes[i]]));
-		lparts[i]->Transform = Matrix(reinterpret_cast<float*>(&node->mTransformation));
+		lparts[i]->Transform = Matrix4x4(reinterpret_cast<float*>(&node->mTransformation));
 	}
 	_meshes.push_back(std::make_unique<ModelMesh>(lparts));
 
@@ -218,7 +218,7 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 	}
 }
 
-void Model3D::SetTransform(const Matrix&m)
+void Model3D::SetTransform(const Matrix4x4&m)
 {
 	for(auto &mesh : _meshes)
 	{
@@ -237,7 +237,7 @@ void Model3D::Draw()
 	}
 }
 
-void Model3D::Draw(const Matrix&m)
+void Model3D::Draw(const Matrix4x4&m)
 {
 	for(auto &mesh : _meshes)
 	{
@@ -249,9 +249,9 @@ void Model3D::Draw(const Matrix&m)
 	}
 }
 
-void Model3D::Draw(const Matrix&model, const Matrix&view, const Matrix&proj)
+void Model3D::Draw(const Matrix4x4&model, const Matrix4x4&view, const Matrix4x4&proj)
 {
-	Matrix mvp = model * view * proj;
+	Matrix4x4 mvp = model * view * proj;
 	for(auto &mesh : _meshes)
 	{
 		for(auto &meshPart : *mesh.get())

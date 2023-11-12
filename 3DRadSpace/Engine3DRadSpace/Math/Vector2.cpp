@@ -1,25 +1,26 @@
 #include "Vector2.hpp"
+#include "Matrix3x3.hpp"
 
 using namespace Engine3DRadSpace::Math;
 
 Vector2 Vector2::Zero()
 {
-    return Vector2(0,0);
+    return { 0,0 };
 }
 
 Vector2 Vector2::UnitX()
 {
-    return Vector2(1,0);
+    return { 1,0 };
 }
 
 Vector2 Vector2::UnitY()
 {
-    return Vector2(0,1);
+    return { 0,1 };
 }
 
 Vector2 Vector2::One()
 {
-    return Vector2(1,1);
+    return { 1,1 };
 }
 
 float Vector2::Length() const
@@ -34,7 +35,12 @@ float Vector2::Angle() const
 
 float Vector2::Dot(const Vector2 &v) const
 { 
-    return this->X * v.X + this->Y * v.Y;
+    return X * v.X + Y * v.Y;
+}
+
+float Vector2::Dot(const Vector2& a, const Vector2& b)
+{
+    return a.X * b.X + a.Y * b.Y;
 }
 
 Vector2 Vector2::Normalize()
@@ -124,15 +130,15 @@ Vector2 operator*(float s, const Vector2& v)
 
 Vector2 operator/(float s, const Vector2& v)
 {
-    return Vector2(s / v.X, s / v.Y);
+    return Vector2{ s / v.X, s / v.Y };
 }
 
 Vector2& Vector2::RotateBy(float theta)
 {
-    return *this = Vector2(
+    return *this = Vector2{
         Length() * cosf(Angle() + theta),
         Length() * sinf(Angle() + theta)
-    );
+    };
 }
 
 Vector2 Vector2::Rotate(const Vector2 &v, float theta)
@@ -157,5 +163,21 @@ Vector2 Vector2::Hadamard(const Vector2& a, const Vector2& b)
     {
         a.X * b.X,
         a.Y * b.Y
+    };
+}
+
+Vector2& Vector2::Transform(const Matrix3x3& m)
+{
+    X = m.M11 * X + m.M12 * Y + m.M13;
+    Y = m.M21 * X + m.M22 * Y + m.M23;
+
+    return *this;
+}
+
+Vector2 Vector2::Transform(const Vector2& v, const Matrix3x3& m)
+{
+    return Vector2{
+        v.X * m.M11 + v.Y * m.M12 + m.M13,
+        v.X * m.M21 + v.Y * m.M22 + m.M13
     };
 }

@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 	{
 		Math::BoundingBox _box;
 		Color _color;
-		Math::Matrix _worldMat;
+		Math::Matrix4x4 _worldMat;
 
 		GraphicsDevice *_device;
 
@@ -37,8 +37,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Color GetColor();
 		void SetColor(const Color&color);
 
-		void SetTransform(const Math::Matrix &m);
+		void SetTransform(const Math::Matrix4x4 &m);
 
-		virtual void Draw(Math::Matrix &view, Math::Matrix &projection, double dt) override;
+		virtual void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
 	};
 }

@@ -143,7 +143,7 @@ Vector4& Vector4::operator/=(float f)
 	return *this;
 }
 
-Vector4& Vector4::Transform(const Matrix& m)
+Vector4& Vector4::Transform(const Matrix4x4& m)
 {
 	X = m.M11 * X + m.M12 * Y + m.M13 * Z + m.M14 * W;
 	Y = m.M21 * X + m.M22 * Y + m.M23 * Z + m.M24 * W;
@@ -152,7 +152,7 @@ Vector4& Vector4::Transform(const Matrix& m)
 	return *this;
 }
 
-Vector4 Vector4::Transform(const Vector4& v, const Matrix &m)
+Vector4 Vector4::Transform(const Vector4& v, const Matrix4x4 &m)
 {
 	Vector4 r;
 	r.X = m.M11 * r.X + m.M12 * r.Y + m.M13 * v.Z + m.M14 * v.W;

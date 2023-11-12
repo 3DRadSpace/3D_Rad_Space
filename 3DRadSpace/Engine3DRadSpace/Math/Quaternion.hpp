@@ -4,7 +4,7 @@
 namespace Engine3DRadSpace::Math
 {
 	struct Vector3;
-	struct Matrix;
+	struct Matrix4x4;
 
 	struct DLLEXPORT Quaternion
 	{
@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Math
 
 		static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
 		static Quaternion FromAxisAngle(const Vector3& axis, float angle);
-		static Quaternion FromMatrix(const Matrix& m);	
+		static Quaternion FromMatrix(const Matrix4x4& m);	
 		static Quaternion FromVectorToVector(const Vector3& a, const Vector3& b);
 
 		float Length() const;
@@ -24,7 +24,7 @@ namespace Engine3DRadSpace::Math
 
 		Vector3 Im() const;
 		
-		Vector3 ToYawPitchRoll();
+		Vector3 ToYawPitchRoll() const;
 
 		Quaternion operator +(const Quaternion &q) const;
 		Quaternion operator +=(const Quaternion &q);
@@ -35,8 +35,10 @@ namespace Engine3DRadSpace::Math
 		Quaternion operator /(float s) const;
 		Quaternion operator /=(float s);
 
-		bool operator ==(const Quaternion& q) const = default;
-		bool operator !=(const Quaternion &q) const = default;
+		auto operator <=>(const Quaternion& q) const = default;
 	};
+
+	Quaternion operator /(float f, const Quaternion& q);
+	Quaternion operator *(float s, const Quaternion& q);
 }
 

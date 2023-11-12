@@ -23,8 +23,8 @@ namespace Engine3DRadSpace
 
 		Math::Vector3 Scale;
 
-		virtual Math::Matrix GetModelMartix();
-		virtual void EditorDraw(const Math::Matrix &view, const Math::Matrix &projection, double dt, bool selected) = 0;
+		virtual Math::Matrix4x4 GetModelMartix();
+		virtual void EditorDraw(const Math::Matrix4x4 &view, const Math::Matrix4x4 &projection, double dt, bool selected) = 0;
 		virtual std::optional<float> Intersects(const Math::Ray &r) = 0;
 
 		~IObject3D() = default;

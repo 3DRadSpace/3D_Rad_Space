@@ -42,8 +42,8 @@ namespace Engine3DRadSpace::Objects
 		/// <param name="projection">Projection matrix reference</param>
 		/// <param name="dt">Delta time, not used.</param>
 		virtual void Draw(
-			Math::Matrix& view,
-			Math::Matrix& projection,
+			Math::Matrix4x4& view,
+			Math::Matrix4x4& projection,
 			double dt) override;
 
 		/// <summary>
@@ -54,10 +54,10 @@ namespace Engine3DRadSpace::Objects
 		/// <param name="dt">Delta-time</param>
 		virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override;
 
-		virtual Math::Matrix GetModelMartix() override;
+		virtual Math::Matrix4x4 GetModelMartix() override;
 		virtual void EditorDraw(
-			const Math::Matrix& view,
-			const Math::Matrix& projection,
+			const Math::Matrix4x4& view,
+			const Math::Matrix4x4& projection,
 			double dt,
 			bool selected
 		) override;

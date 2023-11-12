@@ -98,12 +98,10 @@ namespace Engine3DRadSpace::Graphics
 		void DrawNormalized(Texture2D* texture, const Math::Vector2 &pos, const Math::Vector2 &scale, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
 		void DrawNormalized(Texture2D* texture, const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
 
-		void Draw(Texture2D* texture, const Math::Point& pos, const Math::Point& size, const Color& tintColor = Colors::White, bool flipU, bool flipV, float depth = 0);
+		void Draw(Texture2D* texture, const Math::Point& pos, const Math::Point& size, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
 		void Draw(Texture2D* texture, const Math::Point& pos, float rotation, const Math::Point& size, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
 
 		void End();
-
-		void DrawQuad(Texture2D *texture);
 
 		~SpriteBatch() = default;
 	};

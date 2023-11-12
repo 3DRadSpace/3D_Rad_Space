@@ -7,7 +7,7 @@
 #include "IObject2D.hpp"
 #include "IObject3D.hpp"
 #include "ILoadable.hpp"
-#include "Math/Matrix.hpp"
+#include "Math\Matrix4x4.hpp"
 #include "Content/ContentManager.hpp"
 #include "Graphics/SpriteBatch.hpp"
 #include "Reflection/ReflectedObject.hpp"
@@ -35,8 +35,8 @@ namespace Engine3DRadSpace
 		std::unique_ptr<GraphicsDevice> Device;
 		ObjectList Objects;
 
-		Math::Matrix View;
-		Math::Matrix Projection;
+		Math::Matrix4x4 View;
+		Math::Matrix4x4 Projection;
 
 		std::unique_ptr<Content::ContentManager> Content;
 
@@ -53,7 +53,7 @@ namespace Engine3DRadSpace
 		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager* content) override;
 		virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override;
-		virtual void Draw(Math::Matrix& view, Math::Matrix& projection, double dt) override;
+		virtual void Draw(Math::Matrix4x4& view, Math::Matrix4x4& projection, double dt) override;
 		virtual void Draw(Graphics::SpriteBatch* spriteBatch, double dt) override;
 	};
 }

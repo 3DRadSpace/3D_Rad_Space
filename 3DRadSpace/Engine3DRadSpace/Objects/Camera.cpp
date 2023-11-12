@@ -32,7 +32,7 @@ void Camera::EditorLoad(Content::ContentManager *content)
 	}
 }
 
-void Camera::Draw(Matrix& view, Matrix& projection, double dt)
+void Camera::Draw(Matrix4x4& view, Matrix4x4& projection, double dt)
 {
 	Vector3 focus(0, 0, 0);
 	switch (this->LookMode)
@@ -47,18 +47,18 @@ void Camera::Draw(Matrix& view, Matrix& projection, double dt)
 		break;
 	}
 	
-	view = Matrix::CreateLookAtView(Position, focus, UpwardsDir);
-	projection = Matrix::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
+	view = Matrix4x4::CreateLookAtView(Position, focus, UpwardsDir);
+	projection = Matrix4x4::CreatePerspectiveProjection(AspectRatio, FieldOfView, NearPlaneDistance, FarPlaneDistance);
 }
 
 void Camera::Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) { } //Do nothing
 
-Matrix Camera::GetModelMartix()
+Matrix4x4 Camera::GetModelMartix()
 {
-	return Matrix::CreateFromQuaternion(Rotation) * Matrix::CreateTranslation(Position);
+	return Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
-void Camera::EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected)
+void Camera::EditorDraw(const Matrix4x4& view, const Matrix4x4& projection, double dt, bool selected)
 {
 	cameraModel->Draw(GetModelMartix(), view, projection);
 }

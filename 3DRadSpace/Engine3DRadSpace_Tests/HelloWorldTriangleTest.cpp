@@ -19,7 +19,7 @@ public:
 	void Initialize() override;
 	void Load(ContentManager *content) override;
 	void Update(Keyboard& keyboard, Mouse& mouse, double dt) override;
-	void Draw(Matrix& view, Matrix &projection, double dt) override;
+	void Draw(Matrix4x4& view, Matrix4x4 &projection, double dt) override;
 
 	int frameCount = 0;
 };
@@ -51,7 +51,7 @@ void TriangleTest::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
 }
 
-void TriangleTest::Draw(Matrix& view, Matrix &projection, double dt)
+void TriangleTest::Draw(Matrix4x4& view, Matrix4x4 &projection, double dt)
 {
 	if (frameCount == 1) Exit();
 	frameCount++;

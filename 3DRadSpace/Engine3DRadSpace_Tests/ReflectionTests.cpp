@@ -26,13 +26,13 @@ public:
 	virtual void Update(Keyboard& keyboard, Mouse& mouse, double dt) override
 	{
 	}
-	virtual void Draw(Matrix& view, Matrix& projection, double dt) override
+	virtual void Draw(Matrix4x4& view, Matrix4x4& projection, double dt) override
 	{
 	}
 	virtual void EditorInitialize() override
 	{
 	}
-	virtual void EditorDraw(const Matrix& view, const Matrix& projection, double dt, bool selected) override
+	virtual void EditorDraw(const Matrix4x4& view, const Matrix4x4& projection, double dt, bool selected) override
 	{
 	}
 	

@@ -58,7 +58,7 @@ Vector3& Vector3::operator+=(const Vector3& v)
 
 Vector3 Vector3::operator+(const Vector3& v) const
 {
-    return Vector3(this->X + v.X, this->Y + v.Y, this->Z + v.Z);
+    return Vector3{ this->X + v.X, this->Y + v.Y, this->Z + v.Z };
 }
 
 Vector3& Vector3::operator-=(const Vector3& v)
@@ -153,13 +153,27 @@ Vector3& Vector3::Transform(const Quaternion& q)
     return *this;
 }
 
-Vector3& Vector3::Transform(const Matrix& m)
+Vector3& Vector3::Transform(const Matrix4x4& m)
 {
     this->X = X * m.M11 + Y * m.M12 + Z * m.M13 + m.M14;
     this->Y = X * m.M21 + Y * m.M22 + Z * m.M23 + m.M24;
     this->Z = X * m.M31 + Y * m.M32 + Z * m.M33 + m.M34;
 
     return *this;
+}
+
+Vector3 Vector3::Transform(const Vector3& v, const Quaternion& q)
+{
+    return Vector3(v).Transform(q);
+}
+
+Vector3 Vector3::Transform(const Vector3& v, const Matrix4x4& m)
+{
+    return Vector3{
+        v.X * m.M11 + v.Y * m.M12 + v.Z * m.M13 + m.M14,
+        v.X * m.M21 + v.Y * m.M22 + v.Z * m.M23 + m.M24,
+        v.X * m.M31 + v.Y * m.M32 + v.Z * m.M33 + m.M34,
+    };
 }
 
 Vector3& Vector3::Hadamard(const Vector3& v)

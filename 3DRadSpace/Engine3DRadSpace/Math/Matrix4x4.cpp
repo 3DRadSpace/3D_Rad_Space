@@ -1,9 +1,9 @@
-#include "Matrix.hpp"
-#include <DirectXMath.h>
+#include "Matrix4x4.hpp"
+#include "Matrix3x3.hpp"
 
 using namespace Engine3DRadSpace::Math;
 
-Matrix::Matrix(float m[16])
+Matrix4x4::Matrix4x4(float m[16])
 {
 	M11 = m[0];
 	M12 = m[1];
@@ -26,7 +26,7 @@ Matrix::Matrix(float m[16])
 	M44 = m[15];
 }
 
-Matrix::Matrix(
+Matrix4x4::Matrix4x4(
 	float m11, float m12, float m13, float m14,
 	float m21, float m22, float m23, float m24,
 	float m31, float m32, float m33, float m34,
@@ -38,9 +38,9 @@ Matrix::Matrix(
 {
 }
 
-Matrix Matrix::CreateTranslation(const Vector3 &pos)
+Matrix4x4 Matrix4x4::CreateTranslation(const Vector3 &pos)
 {
-	return Matrix(
+	return Matrix4x4(
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
@@ -48,9 +48,9 @@ Matrix Matrix::CreateTranslation(const Vector3 &pos)
 	);
 }
 
-Matrix Matrix::CreateScale(const Vector3 &scale)
+Matrix4x4 Matrix4x4::CreateScale(const Vector3 &scale)
 {
-	return Matrix(
+	return Matrix4x4(
 		scale.X, 0, 0, 0,
 		0, scale.Y, 0, 0,
 		0, 0, scale.Z, 0,
@@ -58,9 +58,9 @@ Matrix Matrix::CreateScale(const Vector3 &scale)
 	);
 }
 
-Matrix Matrix::CreateRotationX(float theta)
+Matrix4x4 Matrix4x4::CreateRotationX(float theta)
 {
-	return Matrix(
+	return Matrix4x4(
 		1, 0, 0, 0,
 		0, cos(theta), -sin(theta), 0,
 		0, sin(theta), cos(theta), 0,
@@ -68,9 +68,9 @@ Matrix Matrix::CreateRotationX(float theta)
 	);
 }
 
-Matrix Matrix::CreateRotationY(float theta)
+Matrix4x4 Matrix4x4::CreateRotationY(float theta)
 {
-	return Matrix(
+	return Matrix4x4(
 		cos(theta), 0, sin(theta), 0,
 		0, 1, 0, 0,
 		-sin(theta), 0, cos(theta),0,
@@ -78,9 +78,9 @@ Matrix Matrix::CreateRotationY(float theta)
 	);
 }
 
-Matrix Matrix::CreateRotationZ(float theta)
+Matrix4x4 Matrix4x4::CreateRotationZ(float theta)
 {
-	return Matrix(
+	return Matrix4x4(
 		cos(theta), -sin(theta), 0, 0,
 		sin(theta), cos(theta), 0, 0,
 		0, 0, 1, 0,
@@ -88,7 +88,7 @@ Matrix Matrix::CreateRotationZ(float theta)
 	);
 }
 
-Matrix Matrix::CreateFromQuaternion(const Quaternion& q)
+Matrix4x4 Matrix4x4::CreateFromQuaternion(const Quaternion& q)
 {
 	//https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
 	float sqw = q.W * q.W;
@@ -96,7 +96,7 @@ Matrix Matrix::CreateFromQuaternion(const Quaternion& q)
 	float sqy = q.Y * q.Y;
 	float sqz = q.Z * q.Z;
 
-	Matrix r;
+	Matrix4x4 r;
 
 	r.M11 = (sqx - sqy - sqz + sqw);
 	r.M22 = (-sqx + sqy - sqz + sqw);
@@ -119,13 +119,13 @@ Matrix Matrix::CreateFromQuaternion(const Quaternion& q)
 	return r;
 }
 
-Matrix Matrix::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
+Matrix4x4 Matrix4x4::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
 {
-	Vector3 forward = (pos - look_at).Normalize();
-	Vector3 right = Vector3::Cross(up_dir, forward).Normalize();
-	Vector3 up = Vector3::Cross(forward,right);
+	const Vector3 forward = (pos - look_at).Normalize();
+	const Vector3 right = Vector3::Cross(up_dir, forward).Normalize();
+	const Vector3 up = Vector3::Cross(forward,right);
 
-	return Matrix(
+	return Matrix4x4(
 		right.X, up.X, forward.X, 0,
 		right.Y, up.Y, forward.Y, 0,
 		right.Z, up.Z, forward.Z, 0,
@@ -133,14 +133,14 @@ Matrix Matrix::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const 
 	);
 }
 
-Matrix Matrix::CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd)
+Matrix4x4 Matrix4x4::CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd)
 {
 	float h = 1.0f / tan(FOV * 0.5f);
 	float w = h / aspectRatio;
 	float a = fpd / (npd - fpd);
 	float b = (npd * fpd) / (npd - fpd);
 
-	return Matrix(
+	return Matrix4x4(
 		w, 0, 0, 0,
 		0, h, 0, 0,
 		0, 0, a, -1,
@@ -148,14 +148,14 @@ Matrix Matrix::CreatePerspectiveProjection(float aspectRatio, float FOV, float n
 	);
 }
 
-Matrix Matrix::CreateOrthographicProjection(const Point &screenSize, float npd, float fpd)
+Matrix4x4 Matrix4x4::CreateOrthographicProjection(const Point &screenSize, float npd, float fpd)
 {
 	float w = 2.0f / screenSize.X;
 	float h = 2.0f / screenSize.Y;
 	float a = 1.0f / (fpd - npd);
 	float b = -a * npd;
 
-	return Matrix(
+	return Matrix4x4(
 		w, 0, 0, 0,
 		0, h, 0, 0,
 		0, 0, a, 0,
@@ -163,9 +163,9 @@ Matrix Matrix::CreateOrthographicProjection(const Point &screenSize, float npd, 
 	);
 }
 
-Matrix Matrix::CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Vector3 cameraUp, Vector3 cameraForward)
+Matrix4x4 Matrix4x4::CreateSphericalBillboard(const Vector3 &objectPos,const Vector3 &cameraPos,const Vector3 &cameraUp,const Vector3 &cameraForward)
 {
-	Matrix r;
+	Matrix4x4 r;
 
 	Vector3 vector;
 
@@ -173,8 +173,6 @@ Matrix Matrix::CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Ve
 	vector.Y = objectPos.Y - cameraPos.Y;
 	vector.Z = objectPos.Z - cameraPos.Z;
 
-	Vector3 vector2;
-	Vector3 vector3;
 	float num = vector.LengthSquared();
 	if (num < 0.0001f)
 	{
@@ -182,8 +180,8 @@ Matrix Matrix::CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Ve
 	}
 	else vector *= 1.f / sqrtf(num);
 
-	vector3 = Vector3::Cross(cameraUp, vector).Normalize();
-	vector2 = Vector3::Cross(vector, vector3);
+	Vector3 vector3 = Vector3::Cross(cameraUp, vector).Normalize();
+	Vector3 vector2 = Vector3::Cross(vector, vector3);
 	r.M11 = vector3.X;
 	r.M12 = vector3.Y;
 	r.M13 = vector3.Z;
@@ -204,9 +202,14 @@ Matrix Matrix::CreateSphericalBillboard(Vector3 objectPos, Vector3 cameraPos, Ve
 	return r;
 }
 
-Matrix Matrix::Hadamard(const Matrix& a, const Matrix& b)
+Matrix4x4 Matrix4x4::CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis)
 {
-	Matrix r;
+	return Matrix4x4();
+}
+
+Matrix4x4 Matrix4x4::Hadamard(const Matrix4x4& a, const Matrix4x4& b)
+{
+	Matrix4x4 r;
 	r.M11 = a.M11 * b.M11;
 	r.M12 = a.M12 * b.M12;
 	r.M13 = a.M13 * b.M13;
@@ -230,7 +233,7 @@ Matrix Matrix::Hadamard(const Matrix& a, const Matrix& b)
 	return r;
 }
 
-Matrix& Matrix::Hadamard(const Matrix& m)
+Matrix4x4& Matrix4x4::Hadamard(const Matrix4x4& m)
 {
 	M11 *= m.M11;
 	M12 *= m.M12;
@@ -255,9 +258,9 @@ Matrix& Matrix::Hadamard(const Matrix& m)
 	return *this;
 }
 
-Matrix Matrix::operator+(const Matrix &m) const
+Matrix4x4 Matrix4x4::operator+(const Matrix4x4 &m) const
 {
-	return Matrix(
+	return Matrix4x4(
 		M11 + m.M11, M12 + m.M12, M13 + m.M13, M14 + m.M14,	
 		M21 + m.M21, M22 + m.M22, M13 + m.M13, M14 + m.M14,	
 		M31 + m.M31, M32 + m.M32, M13 + m.M13, M14 + m.M14,	
@@ -265,7 +268,7 @@ Matrix Matrix::operator+(const Matrix &m) const
 	);
 }
 
-Matrix Matrix::operator+=(const Matrix &m)
+Matrix4x4 Matrix4x4::operator+=(const Matrix4x4 &m)
 {
 	M11 += m.M11;
 	M12 += m.M12;
@@ -290,9 +293,9 @@ Matrix Matrix::operator+=(const Matrix &m)
 	return *this;
 }
 
-Matrix Matrix::operator-(const Matrix &m) const
+Matrix4x4 Matrix4x4::operator-(const Matrix4x4 &m) const
 {
-	return Matrix(
+	return Matrix4x4(
 		M11 - m.M11, M12 - m.M12, M13 - m.M13, M14 - m.M14,
 		M21 - m.M21, M22 - m.M22, M13 - m.M13, M14 - m.M14,
 		M31 - m.M31, M32 - m.M32, M13 - m.M13, M14 - m.M14,
@@ -300,7 +303,7 @@ Matrix Matrix::operator-(const Matrix &m) const
 	);
 }
 
-Matrix Matrix::operator-=(const Matrix &m)
+Matrix4x4 Matrix4x4::operator-=(const Matrix4x4 &m)
 {
 	M11 -= m.M11;
 	M12 -= m.M12;
@@ -325,9 +328,9 @@ Matrix Matrix::operator-=(const Matrix &m)
 	return *this;
 }
 
-Matrix Matrix::operator*(const Matrix& m) const
+Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 {
-	Matrix r;
+	Matrix4x4 r;
 	r.M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
 	r.M12 = M11 * m.M12 + M12 * m.M22 + M13 * m.M32 + M14 * m.M42;
 	r.M13 = M11 * m.M13 + M12 * m.M23 + M13 * m.M33 + M14 * m.M43;
@@ -350,7 +353,7 @@ Matrix Matrix::operator*(const Matrix& m) const
 	return r;
 }
 
-Matrix& Matrix::operator*=(const Matrix& m)
+Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& m)
 {
 	this->M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
 	this->M12 = M11 * m.M12 + M12 * m.M22 + M13 * m.M32 + M14 * m.M42;
@@ -374,9 +377,9 @@ Matrix& Matrix::operator*=(const Matrix& m)
 	return *this;
 }
 
-Matrix Matrix::operator*(float scalar) const
+Matrix4x4 Matrix4x4::operator*(float scalar) const
 {
-	Matrix m(*this);
+	Matrix4x4 m(*this);
 	m.M11 *= scalar;
 	m.M12 *= scalar;
 	m.M13 *= scalar;
@@ -400,7 +403,7 @@ Matrix Matrix::operator*(float scalar) const
 	return m;
 }
 
-Matrix& Matrix::operator*=(float scalar)
+Matrix4x4& Matrix4x4::operator*=(float scalar)
 {
 	M11 *= scalar;
 	M12 *= scalar;
@@ -425,9 +428,9 @@ Matrix& Matrix::operator*=(float scalar)
 	return *this;
 }
 
-Matrix Matrix::Transpose()
+Matrix4x4 Matrix4x4::Transpose()
 {
-	const Matrix copy = *this;
+	const Matrix4x4 copy = *this;
 	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
 	M12 = copy.M21;
 	M13 = copy.M31;
@@ -448,7 +451,7 @@ Matrix Matrix::Transpose()
 	return *this;
 }
 
-float& Matrix::operator[](unsigned index)
+float& Matrix4x4::operator[](unsigned index)
 {
 	switch (index)
 	{
@@ -473,49 +476,78 @@ float& Matrix::operator[](unsigned index)
 	}
 }
 
-float Matrix::Trace() const
+float Matrix4x4::Trace() const
 {
 	return M11 + M22 + M33 + M44;
 }
 
-Vector3 Matrix::Forward() const
+float Matrix4x4::Determinant() const
+{
+	float det1 = Matrix3x3{
+		M22, M23, M24,
+		M32, M33, M34,
+		M42, M34, M44
+	}.Determinant();
+
+	float det2 = Matrix3x3{
+		M21, M23, M24,
+		M31, M33, M34,
+		M41, M43, M44
+	}.Determinant();
+
+	float det3 = Matrix3x3{
+		M21, M22, M24,
+		M31, M32, M34,
+		M41, M32, M44
+	}.Determinant();
+
+	float det4 = Matrix3x3{
+		M21, M22, M23,
+		M31, M32, M33,
+		M41, M42, M43
+	}.Determinant();
+
+	return M11 * det1 - M12 * det2 + M13 * det3 + M14 * det4;
+}
+
+Vector3 Matrix4x4::Forward() const
 {
 	return { -M31, -M32, -M33 };
 }
 
-Vector3 Matrix::Backward() const
+Vector3 Matrix4x4::Backward() const
 {
 	return { M31, M32, M33 };
 }
 
-Vector3 Matrix::Up() const
+Vector3 Matrix4x4::Up() const
 {
 	return { M21, M22, M23 };
 }
 
-Vector3 Matrix::Down() const
+Vector3 Matrix4x4::Down() const
 {
 	return { -M21, -M22, -M23 };
 }
-Vector3 Matrix::Left() const
+Vector3 Matrix4x4::Left() const
 {
 	return { -M11, -M12, -M13 };
 }
 
-Vector3 Matrix::Right() const
+Vector3 Matrix4x4::Right() const
 {
 	return { M11, M12, M13 };
 }
 
-Vector3 Matrix::Translation() const
+Vector3 Matrix4x4::Translation() const
 {
 	return { M41, M42, M43 };
 }
 
 
-Matrix Engine3DRadSpace::Math::operator*(float scalar, const Matrix& m)
+Matrix4x4 Engine3DRadSpace::Math::operator*(float scalar, const Matrix4x4& m)
 {
-	Matrix r(m);
+	Matrix4x4 r(m);
 	r.M11 *= scalar;
 	r.M12 *= scalar;
 	r.M13 *= scalar;
@@ -539,9 +571,9 @@ Matrix Engine3DRadSpace::Math::operator*(float scalar, const Matrix& m)
 	return r;
 }
 
-Matrix Engine3DRadSpace::Math::operator/(float f, const Matrix& m)
+Matrix4x4 Engine3DRadSpace::Math::operator/(float f, const Matrix4x4& m)
 {
-	Matrix r(m);
+	Matrix4x4 r(m);
 	r.M11 /= f;
 	r.M12 /= f;
 	r.M13 /= f;

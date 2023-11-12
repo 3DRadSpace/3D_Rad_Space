@@ -45,7 +45,7 @@ namespace Engine3DRadSpace::Graphics
 			std::span<V> vertices, std::span<unsigned> indices
 		);
 
-		Math::Matrix Transform = Math::Matrix();
+		Math::Matrix4x4 Transform = Math::Matrix4x4();
 		std::vector<std::unique_ptr<Texture2D>> Textures;
 		std::vector<std::unique_ptr<SamplerState>> TextureSamplers;
 

@@ -36,6 +36,8 @@
 #define IDB_PNG22                       147
 #define IDB_PNG23                       148
 #define IDB_PNG24                       149
+#define IDD_DIALOG1                     150
+#define IDC_SPIN1                       1005
 #define ACC_NEW_PROJECT                 40001
 #define ACC_OPEN_PROJECT                40002
 #define ACC_SAVE_PROJECT                40003
@@ -50,9 +52,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        150
+#define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         40011
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
