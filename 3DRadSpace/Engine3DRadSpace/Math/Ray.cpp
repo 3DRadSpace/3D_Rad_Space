@@ -1,6 +1,8 @@
 #include "Ray.hpp"
 
-std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSphere &sph) const
+using namespace Engine3DRadSpace::Math;
+
+std::optional<float> Ray::Intersects(const BoundingSphere &sph) const
 {
     //https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
     float a = Direction.Dot(Origin - sph.Center);
@@ -10,7 +12,7 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingSpher
     else return a - sqrtf(nabla);
 }
 
-std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri) const
+std::optional<float> Ray::Intersects(const Triangle &tri) const
 {
     //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
@@ -49,7 +51,7 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const Triangle &tri
         return std::nullopt;
 }
 
-std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingBox &box) const
+std::optional<float> Ray::Intersects(const BoundingBox &box) const
 {
     //Branchless ray-bounding box intersection algorithm: https://tavianator.com/2022/ray_box_boundary.html
 
@@ -83,4 +85,21 @@ std::optional<float> Engine3DRadSpace::Math::Ray::Intersects(const BoundingBox &
         return tmin;
     else return std::nullopt;
 
+}
+
+std::optional<float> Ray::Intersects(const Plane& plane) const
+{
+    //https://stackoverflow.com/questions/23975555/how-to-do-ray-plane-intersection
+    const float denom = Vector3::Dot(plane.Normal, Direction);
+
+    // Prevent divide by zero:
+    if (abs(denom) <= std::numeric_limits<float>::epsilon())
+        return std::nullopt;
+
+    float t = -(Vector3::Dot(plane.Normal, Origin) + plane.D) / denom;
+
+    if (t <= 1e-4)
+        return std::nullopt;
+
+    return t;
 }

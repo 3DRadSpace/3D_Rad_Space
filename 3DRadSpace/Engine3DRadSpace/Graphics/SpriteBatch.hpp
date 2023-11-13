@@ -58,7 +58,8 @@ namespace Engine3DRadSpace::Graphics
 
 		std::unordered_map<unsigned, Texture2D *> _textures;
 
-		std::array<VertexPointUV,6> _createQuad(const Math::RectangleF &r, bool flipU = false, bool flipV = false);
+		static std::array<VertexPointUV,6> _createQuad(const Math::RectangleF &r, bool flipU = false, bool flipV = false);
+		static std::array<VertexPointUV, 6> _createQuad(const Math::Vector2& a, const Math::Vector2& b, const Math::Vector2& c, const Math::Vector2& d, bool flipU, bool flipV);
 		void _setEntry(const spriteBatchEntry &entry);
 		void _prepareGraphicsDevice();
 

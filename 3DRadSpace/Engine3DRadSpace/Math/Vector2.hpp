@@ -37,6 +37,7 @@ namespace Engine3DRadSpace::Math
 		Vector2 operator /(float f) const;
 
 		static Vector2 ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2& norm);
+		static Vector2 ConvertFromScreenCoordsToClipSpace(const Vector2& point, const Vector2& resolution);
 
 		Vector2& RotateBy(float theta);
 		static Vector2 Rotate(const Vector2 &v, float theta);
@@ -47,7 +48,7 @@ namespace Engine3DRadSpace::Math
 		Vector2& Transform(const Matrix3x3& m);
 		static Vector2 Transform(const Vector2& v, const Matrix3x3& m);
 	};
-}
 
-Engine3DRadSpace::Math::Vector2 operator*(float s, const Engine3DRadSpace::Math::Vector2& v);
-Engine3DRadSpace::Math::Vector2 operator/(float s, const Engine3DRadSpace::Math::Vector2& v);
+	Vector2 operator*(float s, const Vector2& v);
+	Vector2 operator/(float s, const Vector2& v);
+}

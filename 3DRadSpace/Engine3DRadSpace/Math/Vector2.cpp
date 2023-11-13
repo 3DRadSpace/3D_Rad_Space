@@ -123,6 +123,11 @@ Vector2 Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(const Vector2 &norm
     );
  }
 
+Vector2 Vector2::ConvertFromScreenCoordsToClipSpace(const Vector2& point, const Vector2& resolution)
+{
+    return ConvertFromNormalizedScreenSpaceToClipSpace(Hadamard(point, 1 / resolution));
+}
+
 Vector2 operator*(float s, const Vector2& v)
 {
     return Vector2(s * v.X, s * v.Y);

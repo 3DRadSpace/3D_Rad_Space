@@ -30,3 +30,8 @@ double Engine3DRadSpace::Math::CatmullRom(float value1, float value2, float valu
         (2.0 * value1 - 5.0 * value2 + 4.0 * value3 - value4) * sq +
         (3.0 * value2 - value1 - 3.0 * value3 + value4) * cb));
 }
+
+bool DLLEXPORT Engine3DRadSpace::Math::AABB(float p1, float w1, float p2, float w2)
+{
+    return p1 <= p2 + w2 && p1 + w1 >= p2;
+}

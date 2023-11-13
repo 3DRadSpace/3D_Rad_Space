@@ -30,6 +30,11 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 	Vector2 d = r.BottomRight();
 	d = Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(d);
 
+	return _createQuad(a, b, c, d, flipU, flipV);
+}
+
+std::array<VertexPointUV, 6> SpriteBatch::_createQuad(const Vector2 &a, const Vector2& b, const Vector2 &c, const Vector2 &d, bool flipU, bool flipV)
+{
 	Vector2 uv_a = Vector2(0, 1);
 	Vector2 uv_b = Vector2(0, 0);
 	Vector2 uv_c = Vector2(1, 0);
@@ -160,7 +165,7 @@ void SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
 {
 	if(sortingMode == SpriteBatchSortMode::Immediate)
 	{
-		if(_state == BeginCalled) throw std::exception("Begin() was already called with the sorting mode set by texture!");
+		if(_state == BeginCalled) throw std::logic_error("Begin() was already called with the sorting mode set by texture!");
 
 		_state = Immediate;
 		return;
@@ -173,7 +178,7 @@ void SpriteBatch::Begin(SpriteBatchSortMode sortingMode)
 			_state = BeginCalled;
 			return;
 		}
-		else throw std::exception("Begin() was called when the sprite batch was waiting for entries.");
+		else throw std::logic_error("Begin() was called when the sprite batch was waiting for entries.");
 	}
 }
 

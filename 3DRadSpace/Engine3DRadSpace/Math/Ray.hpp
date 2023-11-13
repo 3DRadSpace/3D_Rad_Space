@@ -2,6 +2,7 @@
 #include "BoundingSphere.hpp"
 #include "Triangle.hpp"
 #include "BoundingBox.hpp"
+#include "Plane.hpp"
 
 namespace Engine3DRadSpace::Math
 {
@@ -13,5 +14,6 @@ namespace Engine3DRadSpace::Math
 		std::optional<float> Intersects(const BoundingSphere &sph) const;
 		std::optional<float> Intersects(const Triangle &tri) const;
 		std::optional<float> Intersects(const BoundingBox &box) const;
+		std::optional<float> Intersects(const Plane& plane) const;
 	};
 }

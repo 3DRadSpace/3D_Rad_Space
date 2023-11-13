@@ -172,6 +172,7 @@
     <ClInclude Include="Graphics\Rendering\IRenderer.hpp" />
     <ClInclude Include="Graphics\Rendering\IRenderingEffect.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
+    <ClInclude Include="Math\Plane.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />

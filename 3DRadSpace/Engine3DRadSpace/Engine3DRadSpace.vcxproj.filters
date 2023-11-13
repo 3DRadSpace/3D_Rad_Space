@@ -263,6 +263,7 @@
     <ClInclude Include="Graphics\Rendering\IEffectOutline.h" />
     <ClInclude Include="IGraphicsDevice.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
+    <ClInclude Include="Math\Plane.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
