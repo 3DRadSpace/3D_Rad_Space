@@ -16,6 +16,8 @@ namespace Engine3DRadSpace
 		constexpr Color& operator *=(const Color& c);
 
 		constexpr float operator[](int i) const;
+
+		constexpr auto operator<=>(const Color& c) const = default;
 	};
 	namespace Colors
 	{

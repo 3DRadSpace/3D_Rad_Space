@@ -1,5 +1,5 @@
 #include "AssetRenderer.hpp"
-#include <..\..\Engine3DRadSpace\Math\Matrix4x4.hpp>
+#include <Engine3DRadSpace\Math\Matrix4x4.hpp>
 #include <Engine3DRadSpace/Graphics/Shaders/BasicTextured.hpp>
 
 using namespace Engine3DRadSpace;

@@ -39,7 +39,6 @@ BoundingBox::BoundingBox(const BoundingBox& box, const BoundingSphere& sphere) :
 
 BoundingBox::BoundingBox(const BoundingSphere& sph1,const BoundingSphere& sph2) : BoundingBox(BoundingSphere(sph1, sph2))
 {
-
 }
 
 Vector3 BoundingBox::Min() const
@@ -62,6 +61,7 @@ bool BoundingBox::Interescts(const BoundingBox& box) const
 bool BoundingBox::Intersects(const BoundingSphere& sphere) const
 {
     //https://gamedev.stackexchange.com/questions/156870/how-do-i-implement-a-aabb-sphere-collision
+    return false;
 }
 
 bool BoundingBox::Intersects(const Plane& plane) const

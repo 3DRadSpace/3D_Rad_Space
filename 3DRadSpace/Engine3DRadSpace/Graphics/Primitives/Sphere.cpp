@@ -26,7 +26,7 @@ Sphere::Sphere(GraphicsDevice *device, float radius, Color color, unsigned resol
 
 	for(double h = -radius + dh; h <= radius - dh; h += dh, it_h++)
 	{
-		for(double theta = 0, local_radius = sqrt(pow(radius,2) - pow(h,2)); theta <= 2 * std::numbers::pi; theta += dh)
+		for(double theta = 0, local_radius = sqrt(pow(radius,2) - pow(h,2)); theta <= 2 * std::numbers::pi; theta += dr)
 		{
 			sphere_points.push_back(VertexPositionColor{
 				Vector3(

@@ -21,6 +21,9 @@ namespace Engine3DRadSpace::Content
 		template<AssetType T>
 		T *Load(const std::string &path, AssetReference<T> *ref = nullptr);
 
+		template<AssetType T, typename ...Args>
+		T* Load(const std::string& path, AssetReference<T>* ref, Args&& ...params);
+
 		template<AssetType T>
 		void Reload(AssetReference<T> ref);
 
@@ -81,6 +84,29 @@ namespace Engine3DRadSpace::Content
 		_resources.push_back(std::move(r));
 
 		if(ref) *ref = AssetReference<T>(cID);
+		return assetPtr;
+	}
+
+	template<AssetType T, typename ...Args>
+	inline T* ContentManager::Load(const std::string& path, AssetReference<T>* ref, Args&& ...params)
+	{
+		for(auto &asset : _resources)
+		{
+			if(asset && asset->Path == path)
+			{
+				if (ref) *ref = AssetReference<T>(asset->ID());
+				return static_cast<T*>(asset->Get());
+			}
+		}
+
+		auto newAsset = std::make_unique<Asset<T>>(_device, path, std::forward<Args>(params)...);
+		newAsset->_id = _lastID++;
+
+		auto cID = newAsset->ID();
+		T* assetPtr = static_cast<T*>(newAsset->Get());
+		_resources.push_back(std::move(newAsset));
+
+		if (ref) *ref = AssetReference<T>(cID);
 		return assetPtr;
 	}
 

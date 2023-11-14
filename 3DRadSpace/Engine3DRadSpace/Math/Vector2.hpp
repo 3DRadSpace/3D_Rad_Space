@@ -49,6 +49,6 @@ namespace Engine3DRadSpace::Math
 		static Vector2 Transform(const Vector2& v, const Matrix3x3& m);
 	};
 
-	Vector2 operator*(float s, const Vector2& v);
-	Vector2 operator/(float s, const Vector2& v);
+	Vector2 DLLEXPORT operator*(float s, const Vector2& v);
+	Vector2 DLLEXPORT operator/(float s, const Vector2& v);
 }

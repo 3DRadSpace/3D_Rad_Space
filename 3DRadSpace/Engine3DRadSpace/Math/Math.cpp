@@ -20,7 +20,7 @@ double Engine3DRadSpace::Math::ToDegrees(double radians)
     return radians * 180 / std::numbers::pi;
 }
 
-double Engine3DRadSpace::Math::CatmullRom(float value1, float value2, float value3, float value4, float amount)
+double Engine3DRadSpace::Math::CatmullRom(double value1, double value2, double value3, double value4, double amount)
 {
     //http://www.mvps.org/directx/articles/catmull/
     const double sq = amount * amount; //pow(amount,2)
@@ -32,6 +32,11 @@ double Engine3DRadSpace::Math::CatmullRom(float value1, float value2, float valu
 }
 
 bool DLLEXPORT Engine3DRadSpace::Math::AABB(float p1, float w1, float p2, float w2)
+{
+    return p1 <= p2 + w2 && p1 + w1 >= p2;
+}
+
+bool DLLEXPORT Engine3DRadSpace::Math::AABB(double p1, double w1, double p2, double w2)
 {
     return p1 <= p2 + w2 && p1 + w1 >= p2;
 }

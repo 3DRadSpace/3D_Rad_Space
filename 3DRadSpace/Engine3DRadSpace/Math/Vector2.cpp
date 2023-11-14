@@ -186,3 +186,8 @@ Vector2 Vector2::Transform(const Vector2& v, const Matrix3x3& m)
         v.X * m.M21 + v.Y * m.M22 + m.M13
     };
 }
+
+Vector2 Engine3DRadSpace::Math::operator/(float s, const Vector2& v)
+{
+    return Vector2{ s / v.X, s / v.Y };
+}

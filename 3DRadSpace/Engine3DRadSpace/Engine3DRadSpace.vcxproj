@@ -163,6 +163,9 @@
     <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
+    <ClInclude Include="Graphics\Fronts\Font.hpp" />
+    <ClInclude Include="Graphics\Fronts\Glyph.hpp" />
+    <ClInclude Include="Graphics\Primitives\PlaneQuad.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="Graphics\Rendering\ForwardRenderer.hpp" />
@@ -260,6 +263,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Graphics\DepthStencilState.cpp" />
+    <ClCompile Include="Graphics\Fronts\Font.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />
     <ClCompile Include="Graphics\IVertexShader.cpp" />
@@ -268,6 +272,7 @@
     <ClCompile Include="Graphics\ModelMeshPart.cpp" />
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
     <ClCompile Include="Graphics\Primitives\Lines.cpp" />
+    <ClCompile Include="Graphics\Primitives\PlaneQuad.cpp" />
     <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
     <ClCompile Include="Graphics\RasterizerState.cpp" />
     <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />

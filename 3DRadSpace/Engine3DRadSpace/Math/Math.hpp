@@ -9,8 +9,9 @@ namespace Engine3DRadSpace::Math
 	double DLLEXPORT ToRadians(double degrees);
 	double DLLEXPORT ToDegrees(double radians);
 
-	double DLLEXPORT CatmullRom(float value1, float value2, float value3, float value4, float amount);
+	double DLLEXPORT CatmullRom(double value1, double value2, double value3, double value4, double amount);
 
 	//Axis aglined check for one single axis.
 	bool DLLEXPORT AABB(float p1, float w1, float p2, float w2);
+	bool DLLEXPORT AABB(double p1, double w1, double p2, double w2);
 }

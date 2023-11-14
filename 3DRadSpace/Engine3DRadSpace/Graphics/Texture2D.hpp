@@ -36,7 +36,7 @@ namespace Engine3DRadSpace::Graphics
 		explicit Texture2D(GraphicsDevice *device, unsigned x, unsigned y, PixelFormat format = PixelFormat::R32G32B32A32_Float);
 
 		Texture2D(Texture2D &) = delete;
-		Texture2D(Texture2D &&txt) noexcept = default;
+		Texture2D(Texture2D &&) noexcept = default;
 
 		void SetColors(Color** colors, unsigned x, unsigned y);
 		void Resize(unsigned newX, unsigned newY);
