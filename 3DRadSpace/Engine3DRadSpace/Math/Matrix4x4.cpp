@@ -119,6 +119,11 @@ Matrix4x4 Matrix4x4::CreateFromQuaternion(const Quaternion& q)
 	return r;
 }
 
+Matrix4x4 Engine3DRadSpace::Math::Matrix4x4::CreateRotationYawPitchRoll(float yaw, float pitch, float roll)
+{
+	return Matrix4x4::CreateFromQuaternion(Quaternion::FromYawPitchRoll(yaw, pitch, roll));
+}
+
 Matrix4x4 Matrix4x4::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
 {
 	const Vector3 forward = (pos - look_at).Normalize();
@@ -202,9 +207,79 @@ Matrix4x4 Matrix4x4::CreateSphericalBillboard(const Vector3 &objectPos,const Vec
 	return r;
 }
 
-Matrix4x4 Matrix4x4::CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis)
+Matrix4x4 Matrix4x4::CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward)
 {
-	return Matrix4x4();
+	Matrix4x4 result;
+
+	float num;
+	Vector3 vector;
+	Vector3 vector2;
+	Vector3 vector3;
+	vector2.X = objectPos.X - cameraPos.X;
+	vector2.Y = objectPos.Y - cameraPos.Y;
+	vector2.Z = objectPos.Z - cameraPos.Z;
+	float num2 = vector2.LengthSquared();
+	if (num2 < 0.0001f)
+	{
+		vector2 = cameraForward;
+	}
+	else
+	{
+		vector2 /= sqrtf(num2);
+	}
+	Vector3 vector4 = axis;
+	num = Vector3::Dot(axis, vector2);
+
+	if (fabs(num) > 0.9982547f)
+	{
+		if (objectForward.has_value())
+		{
+			vector = objectForward.value();
+			num = axis.Dot(vector);
+
+			if (fabs(num) > 0.9982547f)
+			{
+				num = ((axis.X * Vector3::Forward().X) + (axis.Y * Vector3::Forward().Y)) + (axis.Z * Vector3::Forward().Z);
+				vector = (fabs(num) > 0.9982547f) ? Vector3::Right() : Vector3::Forward();
+			}
+		}
+		else
+		{
+			num = ((axis.X * Vector3::Forward().X) + (axis.Y * Vector3::Forward().Y)) + (axis.Z * Vector3::Forward().Z);
+			vector = (fabs(num) > 0.9982547f) ? Vector3::Right() : Vector3::Forward();
+		}
+		vector3 = Vector3::Cross(axis, vector);
+		vector3.Normalize();
+
+		vector = Vector3::Cross(vector3, axis);
+		vector.Normalize();
+	}
+	else
+	{
+		vector3 = Vector3::Cross(axis, vector2);
+		vector3.Normalize();
+
+		vector = Vector3::Cross(vector3, vector4);
+		vector.Normalize();
+	}
+	result.M11 = vector3.X;
+	result.M12 = vector3.Y;
+	result.M13 = vector3.Z;
+	result.M14 = 0;
+	result.M21 = vector4.X;
+	result.M22 = vector4.Y;
+	result.M23 = vector4.Z;
+	result.M24 = 0;
+	result.M31 = vector.X;
+	result.M32 = vector.Y;
+	result.M33 = vector.Z;
+	result.M34 = 0;
+	result.M41 = objectPos.X;
+	result.M42 = objectPos.Y;
+	result.M43 = objectPos.Z;
+	result.M44 = 1;
+
+	return result;
 }
 
 Matrix4x4 Matrix4x4::Hadamard(const Matrix4x4& a, const Matrix4x4& b)

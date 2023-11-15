@@ -157,14 +157,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
+    <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Content\Asset.hpp" />
     <ClInclude Include="Content\AssetReference.hpp" />
     <ClInclude Include="Content\ContentManager.hpp" />
     <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
-    <ClInclude Include="Graphics\Fronts\Font.hpp" />
-    <ClInclude Include="Graphics\Fronts\Glyph.hpp" />
+    <ClInclude Include="Graphics\Fonts\Font.hpp" />
+    <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
     <ClInclude Include="Graphics\Primitives\PlaneQuad.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
@@ -254,6 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
+    <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Content\ContentManager.cpp" />
     <ClCompile Include="Content\IAsset.cpp" />
     <ClCompile Include="Content\ShaderManager.cpp" />
@@ -263,7 +265,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Graphics\DepthStencilState.cpp" />
-    <ClCompile Include="Graphics\Fronts\Font.cpp" />
+    <ClCompile Include="Graphics\Fonts\Font.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />
     <ClCompile Include="Graphics\IVertexShader.cpp" />
@@ -303,6 +305,7 @@
     <ClCompile Include="Math\Math.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Matrix3x3.cpp" />
+    <ClCompile Include="Math\Plane.cpp" />
     <ClCompile Include="Math\Point.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Ray.cpp" />

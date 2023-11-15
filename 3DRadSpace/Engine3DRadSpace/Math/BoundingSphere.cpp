@@ -1,5 +1,6 @@
 #include "BoundingSphere.hpp"
 #include "BoundingBox.hpp"
+#include "Ray.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
@@ -43,4 +44,35 @@ BoundingSphere::BoundingSphere(const BoundingBox& box1, const BoundingBox& box2)
 		}
 	))
 {
+}
+
+bool Engine3DRadSpace::Math::BoundingSphere::Intersects(const BoundingBox& box) const
+{
+	return box.Intersects(*this);
+}
+
+bool Engine3DRadSpace::Math::BoundingSphere::Intersects(const BoundingSphere& sphere) const
+{
+	return (sphere.Center - Center).LengthSquared() <= pow(sphere.Radius + Radius, 2);
+}
+
+bool Engine3DRadSpace::Math::BoundingSphere::Intersects(const Plane& plane) const
+{
+	//https://www.cuemath.com/geometry/distance-between-point-and-plane/
+	float ax = plane.Normal.X * Center.X;
+	float by = plane.Normal.Y * Center.Y;
+	float cz = plane.Normal.Z * Center.Z;
+
+	float distance = fabs(ax + by + cz + plane.D);
+	return distance <= Radius;
+}
+
+bool Engine3DRadSpace::Math::BoundingSphere::Intersects(const Ray& ray) const
+{
+	return ray.Intersects(*this).has_value();
+}
+
+bool Engine3DRadSpace::Math::BoundingSphere::Contains(const Vector3& p) const
+{
+	return (Center - p).LengthSquared() <= Radius * Radius;
 }

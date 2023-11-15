@@ -1,4 +1,5 @@
 #include "RenderWindow.hpp"
+#include <Engine3DRadSpace/Graphics/Fonts/Font.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Algorithms::Picking;
@@ -58,12 +59,16 @@ void RenderWindow::Initialize()
 
 Model3D *fish = nullptr;
 
+std::unique_ptr<Fonts::Font> testFont;
+
 void RenderWindow::Load(Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("gradient.png");
 	//testTexture->Resize(256, 256);
 
 	fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
+
+	testFont = std::make_unique<Fonts::Font>(Device.get(), "Data\\Fonts\\arial.ttf");
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)

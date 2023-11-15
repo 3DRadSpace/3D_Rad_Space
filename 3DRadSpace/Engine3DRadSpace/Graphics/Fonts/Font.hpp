@@ -4,7 +4,7 @@
 
 namespace Engine3DRadSpace::Graphics::Fonts
 {
-	class Font
+	class DLLEXPORT Font
 	{
 		bool _valid;
 		FT_Face _font;

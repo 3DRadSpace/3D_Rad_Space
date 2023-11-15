@@ -22,9 +22,13 @@ namespace Engine3DRadSpace::Math
 		Vector3 Center() const;
 		Vector3 Max() const;
 
-		bool Interescts(const BoundingBox& box) const;
+		bool Intersects(const BoundingBox& box) const;
 		bool Intersects(const BoundingSphere& sphere) const;
 		bool Intersects(const Plane& plane) const;
 		bool Intersects(const Ray& ray) const;
+
+		bool Contains(const Vector3& p) const;
+
+		Vector3 operator[](int i) const;
 	};
 }

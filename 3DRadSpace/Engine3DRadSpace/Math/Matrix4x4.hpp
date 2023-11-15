@@ -28,6 +28,7 @@ namespace Engine3DRadSpace::Math
 		static Matrix4x4 CreateRotationY(float theta);
 		static Matrix4x4 CreateRotationZ(float theta);
 		static Matrix4x4 CreateFromQuaternion(const Quaternion& q);
+		static Matrix4x4 CreateRotationYawPitchRoll(float yaw, float pitch, float roll);
 
 		static Matrix4x4 CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir);
 
@@ -35,7 +36,7 @@ namespace Engine3DRadSpace::Math
 		static Matrix4x4 CreateOrthographicProjection(const Point &screenSize, float npd, float fpd);
 
 		static Matrix4x4 CreateSphericalBillboard(const Vector3 &objectPos,const Vector3 &cameraPos,const Vector3 &cameraUp,const Vector3 &cameraForward);
-		static Matrix4x4 CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis);
+		static Matrix4x4 CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward);
 
 		///Element-wise product.
 		static Matrix4x4 Hadamard(const Matrix4x4& a, const Matrix4x4& b);

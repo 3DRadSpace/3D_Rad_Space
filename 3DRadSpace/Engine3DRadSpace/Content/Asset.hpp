@@ -5,7 +5,7 @@
 namespace Engine3DRadSpace::Content
 {
 	template<AssetType T>
-	class Asset : public IAsset
+	class Asset final : public IAsset
 	{
 		std::unique_ptr<T> _asset;
 	public:
@@ -28,7 +28,7 @@ namespace Engine3DRadSpace::Content
 		Asset &operator=(Asset &) = default;
 		Asset &operator=(Asset &&) noexcept = default;
 
-		virtual void *Get()
+		void *Get() override
 		{
 			return _asset.get();
 		}

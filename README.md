@@ -22,7 +22,7 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 2.) Install the dependencies:
 
 - Google test
-> `vcpkg install gtest:x64-Windows`
+> `vcpkg install gtest:x64-windows`
 - Windows API 
 > Included in Windows SDK, use VS Installer
 >
@@ -31,11 +31,13 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > Can be easily installed by using NuGet.
 - Assimp
 > Install latest version using vcpkg: (⚠️ NuGet versions are outdated!)
-> `vcpkg install assimp:x64-Windows`
+> `.\vcpkg install assimp:x64-Windows`
 - nlohmann JSON
-> `vcpkg install nlohmann-json:x64-windows`
+> `.\vcpkg install nlohmann-json:x64-windows`
 - Freetype
-> `vcpkg install freetype:x64-windows`
+> `.\vcpkg install freetype:x64-windows`
+- OpenAL-Soft
+> `.\vcpkg install openal-soft:x64-windows`
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 

@@ -27,6 +27,36 @@ Vector3 Vector3::One()
     return Vector3(1,1,1);
 }
 
+Vector3 Vector3::Up()
+{
+    return Vector3{ 0, 1, 0 };
+}
+
+Vector3 Vector3::Down()
+{
+    return Vector3{ 0, -1, 0 };
+}
+
+Vector3 Vector3::Forward()
+{
+    return Vector3{ 0, 0, -1 };
+}
+
+Vector3 Vector3::Backward()
+{
+    return Vector3{ 0, 0, 1 };
+}
+
+Vector3 Vector3::Left()
+{
+    return Vector3{ -1, 0, 0 };
+}
+
+Vector3 Vector3::Right()
+{
+    return Vector3{ 1, 0,0 };
+}
+
 float Vector3::Length() const
 {
     return sqrtf((X * X) + (Y * Y) + (Z * Z));

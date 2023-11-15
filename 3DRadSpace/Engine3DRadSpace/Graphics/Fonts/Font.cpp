@@ -38,8 +38,8 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 	std::string characters(supportedCharacters != nullptr ? supportedCharacters : "");
 	if(supportedCharacters == nullptr)
 	{
-		char defaultSupportedCharacters[256] = {};
-		for(int i = 0; i < 255; i++)
+		char defaultSupportedCharacters[128] = {};
+		for(int i = 0; i < 127; i++)
 		{
 			defaultSupportedCharacters[i] = i + 1;
 		}
@@ -48,26 +48,32 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 
 	for(auto c : characters)
 	{
-		if(FT_Load_Char(_font, c, FT_LOAD_RENDER))
-		{
-			throw Exception(std::string("Character ") + c + " not supported by font " + path);
-		}
+		if (FT_Load_Char(_font, c, FT_LOAD_RENDER))
+			continue;
 
 		auto width = _font->glyph->bitmap.width;
 		auto height = _font->glyph->bitmap.rows;
 		auto fontBitmapBuffer = _font->glyph->bitmap.buffer;
 
-		_characters.emplace_back(
-			Glyph
-			{
-				.Character = c,
-				.Size = Point{static_cast<int>(width), static_cast<int>(height)},
-				.Bearing = Point{_font->glyph->bitmap_left, _font->glyph->bitmap_top},
-				.Advance = static_cast<unsigned>(_font->glyph->advance.x)
-			},
-			//Texture2D(GraphicsDevice*, void, unsigned, unsigned, PixelFormat);
-			std::make_unique<Texture2D>(_device, fontBitmapBuffer, width, height, PixelFormat::R8_SignedInt)
-		);
+		auto glyph = Glyph
+		{
+			.Character = c,
+			.Size = Point{static_cast<int>(width), static_cast<int>(height)},
+			.Bearing = Point{_font->glyph->bitmap_left, _font->glyph->bitmap_top},
+			.Advance = static_cast<unsigned>(_font->glyph->advance.x)
+		};
+
+		//TODO: Use a font "megatexture" instead of one texture for each character for performance reasons.
+		[[likely]] if(fontBitmapBuffer != nullptr)
+		{
+			_characters.emplace_back(glyph, std::make_unique<Texture2D>(_device, fontBitmapBuffer, width, height, PixelFormat::R8_SignedInt));
+		}
+		else
+		{
+			//create a transparent texture.
+			std::array<Color, 4> transparentColors = { 0 };
+			_characters.emplace_back(glyph, std::make_unique<Texture2D>(_device, transparentColors, 2, 2));
+		}
 	}
 }
 
