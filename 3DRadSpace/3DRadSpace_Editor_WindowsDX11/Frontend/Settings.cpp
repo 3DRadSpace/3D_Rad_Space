@@ -8,7 +8,9 @@
 Setting<float> Settings::CameraSensitivity =
 {
 	.Name = "Camera sensitivity",
-	.Value = 1.0f
+	.Min = 0.0f,
+	.Value = 1.0f,
+	.Max = 10.0f
 };
 
 Setting<bool> Settings::StartupUpdate =
@@ -31,16 +33,16 @@ void Settings::Load()
 	jsonFile >> settings;
 	jsonFile.close();
 
-	CameraSensitivity.Value = settings["CameraSensitivity"].get<float>();
-	StartupUpdate.Value = settings["StartupUpdate"].get<bool>();
+	CameraSensitivity.Value = settings["Editor"]["CameraSensitivity"].get<float>();
+	StartupUpdate.Value = settings["Updates"]["StartupUpdate"].get<bool>();
 }
 
 void Settings::Save()
 {
 	//Saves the settings into a json file.
 	nlohmann::json jsonSettings;
-	jsonSettings["CameraSensitivity"] = CameraSensitivity.Value;
-	jsonSettings["StartupUpdate"] = StartupUpdate.Value;
+	jsonSettings["Editor"]["CameraSensitivity"] = CameraSensitivity.Value;
+	jsonSettings["Updates"]["StartupUpdate"] = StartupUpdate.Value;
 
 	std::ofstream jsonFile(GetAppDataFolder() + "Settings.json");
 	jsonFile << std::setw(4) << jsonSettings;

@@ -3,6 +3,7 @@
 #include <Engine3DRadSpace/Tag.hpp>
 #include <shlobj_core.h>
 #include "../HelperFunctions.hpp"
+#include <thread>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;

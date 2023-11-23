@@ -92,7 +92,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::span<Color> colors, unsigned x
 #ifdef USING_DX11
 	D3D11_TEXTURE2D_DESC tDesc{};
 	tDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	tDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	tDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	tDesc.Height = y;
 	tDesc.Width = x;
 	tDesc.Usage = D3D11_USAGE_DYNAMIC;

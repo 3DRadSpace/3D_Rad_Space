@@ -59,8 +59,6 @@ void RenderWindow::Initialize()
 
 Model3D *fish = nullptr;
 
-std::unique_ptr<Fonts::Font> testFont;
-
 void RenderWindow::Load(Content::ContentManager *content)
 {
 	testTexture = content->Load<Texture2D>("gradient.png");
@@ -141,4 +139,9 @@ bool RenderWindow::IsFocused()
 void RenderWindow::Reset3DCursor()
 {
 	cursor3D = Vector3::Zero();
+}
+
+RenderWindow::~RenderWindow()
+{
+	//testFont.~unique_ptr();
 }

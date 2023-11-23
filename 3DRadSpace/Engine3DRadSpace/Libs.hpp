@@ -21,6 +21,7 @@
 #include <any>
 #include <map>
 #include <typeindex>
+#include <cassert>
 
 #ifdef _WIN32
 #define NOMINMAX

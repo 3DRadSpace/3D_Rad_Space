@@ -8,6 +8,7 @@
 #include "../Graphics/Model3D.hpp"
 #include "../Input/Keyboard.hpp"
 #include "../Content/AssetReference.hpp"
+#include "../Concepts.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -15,12 +16,6 @@ namespace Engine3DRadSpace
 }
 namespace Engine3DRadSpace::Reflection
 {
-	template<typename N>
-	concept signed_integer = std::is_same_v<N, int8_t> || std::is_same_v<N, int16_t> || std::is_same_v<N, int32_t> || std::is_same_v<N, int64_t>;
-
-	template<typename N>
-	concept unsigned_integer = std::is_same_v<N, uint8_t> || std::is_same_v<N, uint16_t> || std::is_same_v<N, uint32_t> || std::is_same_v<N, uint64_t>;
-
 	using RefTexture2D = Content::AssetReference<Graphics::Texture2D>;
 	using RefModel3D = Content::AssetReference<Graphics::Model3D>;
 

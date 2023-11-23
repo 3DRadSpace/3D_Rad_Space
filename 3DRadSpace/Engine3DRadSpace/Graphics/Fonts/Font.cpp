@@ -26,7 +26,8 @@ Font::FontManager::~FontManager()
 Font::FontManager Font::_manager;
 
 Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const char* supportedCharacters):
-	_device(device)
+	_device(device),
+	_size(size)
 {
 	if(FT_New_Face(FontManager::FreeTypeLib, path.c_str(), 0, &_font))
 	{
@@ -38,10 +39,11 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 	std::string characters(supportedCharacters != nullptr ? supportedCharacters : "");
 	if(supportedCharacters == nullptr)
 	{
-		char defaultSupportedCharacters[128] = {};
-		for(int i = 0; i < 127; i++)
+		char defaultSupportedCharacters[128] = {}; 
+		const char offset = ' ';
+		for (char i = offset; i < '~'; i++)
 		{
-			defaultSupportedCharacters[i] = i + 1;
+			defaultSupportedCharacters[i - offset] = i;
 		}
 		characters = defaultSupportedCharacters;
 	}
@@ -75,6 +77,7 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 			_characters.emplace_back(glyph, std::make_unique<Texture2D>(_device, transparentColors, 2, 2));
 		}
 	}
+	_valid = true;
 }
 
 Font::Font(Font&& font) noexcept :
@@ -98,11 +101,16 @@ Font& Font::operator=(Font&& font) noexcept
 	_characters = std::move(font._characters);
 	_size = font._size;
 
+	font._valid = false;
+
 	return* this;
 }
 
 Font::~Font()
 {
-	if(_valid)
+	if (_valid)
+	{
 		FT_Done_Face(_font);
+		_valid = false;
+	}
 }

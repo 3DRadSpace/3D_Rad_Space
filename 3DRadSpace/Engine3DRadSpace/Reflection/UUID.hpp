@@ -1,4 +1,5 @@
 #pragma once
+#include "../Libs.hpp"
 
 namespace Engine3DRadSpace::Reflection
 {
@@ -13,3 +14,4 @@ namespace Engine3DRadSpace::Reflection
 		bool operator !=(const UUID &) const = default;
 	};
 }
+

@@ -74,7 +74,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,7 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -156,6 +156,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Concepts.hpp" />
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
     <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Content\Asset.hpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
+    <ClInclude Include="Reflection\Visitor.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
     <ClInclude Include="Graphics\Primitives\Lines.hpp" />
@@ -327,13 +329,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets')" />
-    <Import Project="..\packages\directxtk_desktop_2019.2023.3.30.1\build\native\directxtk_desktop_2019.targets" Condition="Exists('..\packages\directxtk_desktop_2019.2023.3.30.1\build\native\directxtk_desktop_2019.targets')" />
+    <Import Project="..\packages\directxtk_desktop_2019.2023.10.31.1\build\native\directxtk_desktop_2019.targets" Condition="Exists('..\packages\directxtk_desktop_2019.2023.10.31.1\build\native\directxtk_desktop_2019.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtk_desktop_2019.2023.3.30.1\build\native\directxtk_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2019.2023.3.30.1\build\native\directxtk_desktop_2019.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtk_desktop_2019.2023.10.31.1\build\native\directxtk_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2019.2023.10.31.1\build\native\directxtk_desktop_2019.targets'))" />
   </Target>
 </Project>

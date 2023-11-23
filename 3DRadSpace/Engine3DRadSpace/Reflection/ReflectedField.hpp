@@ -66,19 +66,31 @@ namespace Engine3DRadSpace::Reflection
 
 		void *Get(void *objPtr) const override
 		{
-			if(objPtr == nullptr) throw std::invalid_argument("Get(): objPtr = nullptr");
+			assert(objPtr != nullptr);
 
 			return std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset));
 		}
 
 		void Set(void *objPtr, void *value) const override
 		{
-			if(objPtr == nullptr) throw std::invalid_argument("Set(): objPtr = nullptr");
-			if(value == nullptr) throw std::invalid_argument("Set(): value = nullptr");
+			assert(objPtr != nullptr);
+			assert(value != nullptr);
 
 			T* lhs = std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset)); 
 			T* rhs = std::launder(static_cast<T*>(value));
 
+			*lhs = *rhs;
+		}
+
+		template<typename T>
+		[[nodiscard]] void Set(void* objPtr, const T* value)
+		{
+			assert(objPtr != nullptr);
+			assert(value != nullptr);
+
+			T* lhs = std::launder<T>(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset));
+			T* rhs = std::launder<T>(static_cast<T*>(value));
+			
 			*lhs = *rhs;
 		}
 

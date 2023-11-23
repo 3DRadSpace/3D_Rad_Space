@@ -4,10 +4,12 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 	hInstance(instance),
 	dialogProc(dlgproc),
 	owner(hwndOwner),
-	window(nullptr),
+	window(nullptr)
 	//Allocate memory for the dialog box
-	hGlobal(GlobalAlloc(GMEM_ZEROINIT, 512))
 {
+	int numWChars = MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, nullptr, 0);
+
+	hGlobal = GlobalAlloc(GMEM_ZEROINIT, sizeof(DLGTEMPLATE) + (numWChars * sizeof(wchar_t)) + (4 * sizeof(WORD)));
 	if (hGlobal == nullptr) throw std::bad_alloc();
 
 	//Fill the dialog template data.
@@ -32,7 +34,6 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 
 	//Title
 	LPWSTR title = reinterpret_cast<LPWSTR>(pWord);
-	int numWChars = MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, nullptr, 0);
 	MultiByteToWideChar(CP_ACP, 0, windowTitle.c_str(), -1, title, numWChars);
 
 	pWord += 1 + numWChars;

@@ -9,6 +9,7 @@
 #include <Engine3DRadSpace/Graphics/Shaders/BasicTextured.hpp>
 #include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
 #include <Engine3DRadSpace/Graphics/Primitives/Lines.hpp>
+#include <Engine3DRadSpace/Graphics/Fonts/Font.hpp>
 #include <Engine3DRadSpace/Algorithms/Picking/PickingRenderTargetRender.hpp>
 
 class RenderWindow : public Engine3DRadSpace::Game
@@ -36,6 +37,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	bool _keyboardTest = false;
 
+	std::unique_ptr<Engine3DRadSpace::Graphics::Fonts::Font> testFont;
+
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 
@@ -49,4 +52,6 @@ public:
 
 	bool IsFocused();
 	void Reset3DCursor();
+
+	~RenderWindow();
 };

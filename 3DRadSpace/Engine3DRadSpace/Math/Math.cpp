@@ -61,7 +61,7 @@ bool DLLEXPORT Engine3DRadSpace::Math::AABB(double p1, double w1, double p2, dou
 
 double DLLEXPORT Engine3DRadSpace::Math::SmoothStep(double value1, double value2, double amount)
 {
-    float result = std::clamp(amount, 0.0, 1.0);
+    double result = std::clamp(amount, 0.0, 1.0);
     result = Hermite(value1, 0, value2, 0, result);
 
     return result;

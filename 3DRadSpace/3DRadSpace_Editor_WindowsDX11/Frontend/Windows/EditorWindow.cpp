@@ -11,6 +11,7 @@
 
 #include "../AutoupdaterState.hpp"
 #include "UpdateProgressWindow.hpp"
+#include <thread>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;

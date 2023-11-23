@@ -93,6 +93,12 @@
     <ClCompile Include="Frontend\Windows\UpdateProgressWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Frontend\Serialization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Frontend\Windows\SettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -156,6 +162,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Frontend\Windows\UpdateProgressWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frontend\Serialization.hpp">
+      <Filter>Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="Frontend\Windows\SettingsWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

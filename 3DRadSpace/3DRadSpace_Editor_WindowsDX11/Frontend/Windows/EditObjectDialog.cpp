@@ -85,7 +85,7 @@ EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObj
 	cancelButton(nullptr),
 	_content(content)
 {
-	//if (data == nullptr) throw std::invalid_argument("data was null");
+	assert(data != nullptr);
 }
 
 void EditObjectDialog::createForms()
@@ -146,16 +146,16 @@ void EditObjectDialog::createForms()
 			std::string fieldName = repr.second.empty() ? field->FieldName() : repr.second;
 
 			//creates a Static control (aka Label)
-			auto createLabel = [&](const char* text, int &size_x) -> HWND
+			auto createLabel = [&](const std::string &text, int &size_x) -> HWND
 			{
 				SIZE size;
-				GetTextExtentPointA(hdc, text, int(strlen(text)), &size);
+				GetTextExtentPointA(hdc, text.c_str(), int(text.length()), &size);
 				
 				size_x = size.cx;
 				return CreateWindowExA(
 					0,
 					"Static",
-					text,
+					text.c_str(),
 					WS_VISIBLE | WS_CHILD,
 					px,
 					y,
@@ -193,42 +193,6 @@ void EditObjectDialog::createForms()
 				return new NumericTextbox(window, hInstance, px, y, 75, textboxHeight, defValue);
 			};
 
-			//creates a browse button, a label and a path textbox.
-			/*
-			auto createFileControls = [&](int x, int y, const char* defPath)
-			{
-				int sx;
-				HWND pathTextbox;
-
-				createLabel(fieldName.c_str(), sx);
-				px += sx + 5;
-
-				pathTextbox = createTextbox(defPath);
-				px += 80;
-
-				SIZE browseButtonLen;
-				GetTextExtentPoint32A(hdc, "Browse...", 9, &browseButtonLen);
-
-				CreateWindowExA(
-					0,
-					"Button",
-					"Browse...",
-					WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-					px,
-					y,
-					browseButtonLen.cx + 10,
-					25,
-					window,
-					nullptr,
-					hInstance,
-					nullptr
-				);
-				px += 50;
-
-				return pathTextbox;
-			};
-			*/
-			
 			//Value of the field, either from the object that's being edited, or a default value.
 			const void* valuePtr = object != nullptr ? field->Get(object) : field->DefaultValue();
 
@@ -268,7 +232,7 @@ void EditObjectDialog::createForms()
 			{
 				int sx;
 
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 
 				//Get signed numeric value.
@@ -304,7 +268,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::Unsigned:
 			{
 				int sx;
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 
 				//Get unsigned value.
@@ -340,7 +304,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::Float:
 			{
 				int sx;
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 
 				double value = 0;
@@ -399,7 +363,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::String:
 			{
 				int sx;
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 
 				const std::string value = *static_cast<const std::string*>(valuePtr);
@@ -434,7 +398,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::Key:
 			{
 				int sx;
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 
 				HWND hotkey = CreateWindowExA(
@@ -464,7 +428,7 @@ void EditObjectDialog::createForms()
 			case FieldRepresentationType::Enum:
 			{
 				int sx;
-				createLabel(fieldName.c_str(), sx);
+				createLabel(fieldName, sx);
 				px += sx + 5;
 				//TODO: Create a combo box with all enum types
 
