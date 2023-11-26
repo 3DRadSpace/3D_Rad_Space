@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Enigne3DRadSpace::Input
+namespace Engine3DRadSpace::Input
 {
 	enum class ButtonState : bool
 	{

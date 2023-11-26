@@ -7,6 +7,7 @@
 #include <ranges>
 
 #include "AddObjectDialog.hpp"
+#include "SettingsWindow.hpp"
 #include "Engine3DRadSpace/Logging/Exception.hpp"
 
 #include "../AutoupdaterState.hpp"
@@ -678,9 +679,13 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_ADD_PREFAB:
 					break;
 				case CMD_ResetCursor:
-					break;
+					break;				
 				case CMD_Preferences:
+				{
+					SettingsWindow wnd(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
+					wnd.ShowDialog();
 					break;
+				}
 				case CMD_Update:
 				{
 					gEditorWindow->_findUpdate();

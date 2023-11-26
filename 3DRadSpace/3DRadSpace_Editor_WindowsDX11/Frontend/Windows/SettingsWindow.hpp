@@ -28,9 +28,10 @@ private:
 	protected:
 		HWND _window = nullptr;
 	public:
-		virtual ~SettingControl<void>() = default;
-
 		HWND GetHandle();
+		virtual void GetSetting() = 0;
+
+		virtual ~SettingControl<void>() = default;
 	};
 
 	template<>
@@ -38,7 +39,7 @@ private:
 	{
 	public:
 		SettingControl(Setting<bool>& t, HWND owner, HINSTANCE hInstance, int py);
-		Setting<bool> GetSetting();
+		void GetSetting() override;
 	};
 
 	template<>
@@ -47,7 +48,7 @@ private:
 		std::unique_ptr<NumericTextbox> textbox;
 	public:
 		SettingControl(Setting<float>& t, HWND owner, HINSTANCE hInstance, int py);
-		Setting<float> GetSetting();
+		void GetSetting() override;
 	};
 
 	template<>
@@ -55,14 +56,23 @@ private:
 	{
 	public:
 		SettingControl(Setting<std::string>& t, HWND owner, HINSTANCE hInstance, int py);
-		Setting<std::string> GetSetting();
+		void GetSetting() override;
 	};
 
-	HWND _tab;
-	HWND _okButton;
-	HWND _cancelButton;
+	HWND _tab = nullptr;
+	HWND _okButton = nullptr;
+	HWND _cancelButton = nullptr;
 
-	std::vector<SettingControl<void>> _controls;
+	std::vector<std::unique_ptr<SettingControl<void>>> _controls;
+
+	template<typename T>
+	void _addSetting(Setting<T>& setting, int py)
+	{
+		std::unique_ptr<SettingControl<void>> ctrl;
+		ctrl.reset(new SettingControl<T>(setting, window, hInstance, py));
+
+		_controls.push_back(std::move(ctrl));
+	}
 
 	void _createControls();
 public:
@@ -74,7 +84,7 @@ public:
 	SettingsWindow& operator=(SettingsWindow&) = delete;
 	SettingsWindow& operator=(SettingsWindow&&) = delete;
 
-	void ShowDialog() const;
+	bool ShowDialog();
 
 	~SettingsWindow();
 

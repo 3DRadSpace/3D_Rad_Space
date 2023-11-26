@@ -1,4 +1,5 @@
 #include "SettingsWindow.hpp"
+#include <algorithm>
 
 INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -10,6 +11,7 @@ INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 			settingsWindow = reinterpret_cast<SettingsWindow*>(lParam);
 			settingsWindow->window = hwnd;
 			settingsWindow->_createControls();
+			return 1;
 		}
 		case WM_PAINT:
 		{
@@ -17,6 +19,32 @@ INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 			BeginPaint(hwnd, &ps);
 			FillRect(ps.hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
 			EndPaint(hwnd, &ps);
+			return 1;
+		}
+		case WM_COMMAND:
+		{
+			switch (HIWORD(wParam))
+			{
+				case BN_CLICKED:
+				{
+					if (lParam == reinterpret_cast<LPARAM>(settingsWindow->_okButton))
+					{
+						for (auto& setting : settingsWindow->_controls)
+						{
+							setting->GetSetting();
+						}
+						Settings::Save();
+						EndDialog(hwnd, IDOK);
+					}
+					if (lParam == reinterpret_cast<LPARAM>(settingsWindow->_cancelButton))
+					{
+						EndDialog(hwnd, IDCANCEL);
+					}
+					break;
+				}
+				default:
+					break;
+			}
 			return 1;
 		}
 		case WM_CLOSE:
@@ -46,22 +74,19 @@ SettingsWindow::SettingControl<bool>::SettingControl(Setting<bool>& t, HWND owne
 		WS_VISIBLE | BS_AUTOCHECKBOX | WS_CHILD,
 		10,
 		py,
-		textSize.cx + 5,
+		textSize.cx + 25,
 		textSize.cy + 5,
 		owner,
 		nullptr,
 		hInstance, nullptr
 	);
+
+	SendMessageA(_window, BM_SETCHECK, t.Value ? BST_CHECKED : BST_UNCHECKED, 0);
 }
 
-Setting<bool> SettingsWindow::SettingControl<bool>::GetSetting()
+void SettingsWindow::SettingControl<bool>::GetSetting()
 {
-	bool value = SendMessageA(_window, BM_GETCHECK, 0, 0) == BST_CHECKED;
-
-	Setting<bool> s = _setting;
-	s.Value = value;
-
-	return s;
+	_setting.Value = SendMessageA(_window, BM_GETCHECK, 0, 0) == BST_CHECKED;;
 }
 
 SettingsWindow::SettingControl<float>::SettingControl(Setting<float>& t, HWND owner, HINSTANCE hInstance, int py) :
@@ -88,16 +113,15 @@ SettingsWindow::SettingControl<float>::SettingControl(Setting<float>& t, HWND ow
 
 	std::string v = std::to_string(t.Value);
 	textbox = std::make_unique<NumericTextbox>(owner, hInstance, 20 + textSize.cx, 10, 75, textSize.cy + 5, v.c_str());
+	_window = static_cast<HWND>(*textbox);
 }
 
-Setting<float> SettingsWindow::SettingControl<float>::GetSetting()
+void SettingsWindow::SettingControl<float>::GetSetting()
 {
 	char text[256]{};
 	GetWindowTextA(_window, text, 255);
 
-	Setting<float> s = _setting;
-	s.Value = std::stof(std::string(text));
-	return s;
+	_setting.Value = std::clamp(std::stof(std::string(text)), _setting.Min, _setting.Max);
 }
 
 SettingsWindow::SettingControl<std::string>::SettingControl(Setting<std::string>& t, HWND owner, HINSTANCE hInstance, int py) :
@@ -107,38 +131,101 @@ SettingsWindow::SettingControl<std::string>::SettingControl(Setting<std::string>
 	SIZE size;
 
 	GetTextExtentPointA(hdc, _setting.Name.c_str(), int(_setting.Name.length()), &size);
+
+	HWND label = CreateWindowExA(
+		0,
+		"STATIC",
+		t.Name.c_str(),
+		WS_VISIBLE | WS_CHILD,
+		10,
+		py,
+		size.cx + 5,
+		size.cy + 5,
+		owner,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	_window = CreateWindowExA(
+		0,
+		"EDIT",
+		t.Value.c_str(),
+		WS_VISIBLE | WS_CHILD | ES_AUTOHSCROLL,
+		10,
+		py,
+		75,
+		size.cy + 5,
+		owner,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 }
 
-Setting<std::string> SettingsWindow::SettingControl<std::string>::GetSetting()
+void SettingsWindow::SettingControl<std::string>::GetSetting()
 {
 	char text[256]{};
 	GetWindowTextA(_window, text, 256);
 
-	Setting<std::string> s = _setting;
-	s.Value = std::string(text);
-	return s;
+	_setting.Value = std::string(text);
 }
 
 void SettingsWindow::_createControls()
 {
-	/*
-	_tab = CreateWindowExA(
+	_addSetting(Settings::CameraSensitivity,10);
+	_addSetting(Settings::StartupUpdate, 30);
+
+	HDC hdc = GetDC(window);
+
+	SIZE textSize;
+	GetTextExtentPointA(hdc, "Cancel", 7, &textSize);
+
+	_cancelButton = CreateWindowExA(
 		0,
-		WC_TABCONTROLA,
-		"",
-		WS_VISIBLE | WS_CHILS | T
-		)
-	*/
+		"Button",
+		"Cancel",
+		WS_VISIBLE | WS_CHILD,
+		10,
+		50,
+		textSize.cx + 5,
+		textSize.cy + 5,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	int accX = textSize.cx + 20;
+
+	GetTextExtentPointA(hdc, "OK", 2, &textSize);
+
+	_okButton = CreateWindowExA(
+		0,
+		"Button",
+		"OK",
+		WS_VISIBLE | WS_CHILD,
+		accX,
+		50,
+		textSize.cx + 5,
+		textSize.cy + 5,
+		window,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	SetWindowPos(window, nullptr, 0, 0, 250, 150, SWP_NOMOVE);
 }
 
 SettingsWindow::SettingsWindow(HWND owner, HINSTANCE hInstance) :
-	Dialog(owner, hInstance, nullptr, "Settings")
+	Dialog(owner, hInstance, SettingsWindow_DlgProc, "Settings")
 {
 }
 
-void SettingsWindow::ShowDialog() const
+bool SettingsWindow::ShowDialog()
 {
-
+	return Dialog::ShowDialog(static_cast<void*>(this)) == IDOK;
 }
 
 SettingsWindow::~SettingsWindow()
