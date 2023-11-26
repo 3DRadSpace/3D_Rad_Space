@@ -176,6 +176,9 @@
     <ClInclude Include="IGraphicsDevice.hpp" />
     <ClInclude Include="Graphics\Rendering\IRenderer.hpp" />
     <ClInclude Include="Graphics\Rendering\IRenderingEffect.hpp" />
+    <ClInclude Include="Input\ButtonState.hpp" />
+    <ClInclude Include="Input\Key.hpp" />
+    <ClInclude Include="Input\KeyState.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="Math\Plane.hpp" />
     <ClInclude Include="ObjectList.hpp" />

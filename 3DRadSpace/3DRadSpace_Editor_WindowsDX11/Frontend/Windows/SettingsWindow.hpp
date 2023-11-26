@@ -1,9 +1,14 @@
 #pragma once
 #include "../Settings.hpp"
 #include "../Controls/Dialog.hpp"
+#include "../Controls/NumericTextbox.hpp"
+#include "../../Includes.hpp"
 
-class SettingsWindow : public Dialog
+INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+class SettingsWindow final : public Dialog
 {
+private:
 	template<typename T>
 	class SettingControl{ };
 
@@ -13,6 +18,8 @@ class SettingsWindow : public Dialog
 	protected:
 		SettingControlBase(Setting<T>& s) : _setting(s) {}
 		Setting<T>& _setting;
+	public:
+		virtual ~SettingControlBase() = default;
 	};
 
 	template<>
@@ -22,6 +29,8 @@ class SettingsWindow : public Dialog
 		HWND _window = nullptr;
 	public:
 		virtual ~SettingControl<void>() = default;
+
+		HWND GetHandle();
 	};
 
 	template<>
@@ -35,6 +44,7 @@ class SettingsWindow : public Dialog
 	template<>
 	class SettingControl<float> final : public SettingControl<void>, public SettingControlBase<float>
 	{
+		std::unique_ptr<NumericTextbox> textbox;
 	public:
 		SettingControl(Setting<float>& t, HWND owner, HINSTANCE hInstance, int py);
 		Setting<float> GetSetting();
@@ -48,8 +58,13 @@ class SettingsWindow : public Dialog
 		Setting<std::string> GetSetting();
 	};
 
+	HWND _tab;
 	HWND _okButton;
 	HWND _cancelButton;
+
+	std::vector<SettingControl<void>> _controls;
+
+	void _createControls();
 public:
 	SettingsWindow(HWND owner, HINSTANCE hInstance);
 
@@ -59,5 +74,9 @@ public:
 	SettingsWindow& operator=(SettingsWindow&) = delete;
 	SettingsWindow& operator=(SettingsWindow&&) = delete;
 
+	void ShowDialog() const;
+
 	~SettingsWindow();
+
+	friend INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

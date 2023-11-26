@@ -1,7 +1,5 @@
 #pragma once
-#include <Windows.h>
-#include <Unknwn.h>
-#include <gdiplus.h>
+#include "../Includes.hpp"
 
 #pragma comment(lib,"Gdiplus.lib")
 

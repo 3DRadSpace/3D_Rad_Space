@@ -12,8 +12,8 @@ namespace Engine3DRadSpace::Reflection
 		virtual const size_t TypeSize() const = 0;
 		virtual const ptrdiff_t FieldOffset() const = 0;
 
-		virtual void *Get(void *objPtr) const = 0;
-		virtual void Set(void *objPtr, void *value) const = 0;
+		virtual const void *Get(void *objPtr) const = 0;
+		virtual void Set(void *objPtr,const void *value) const = 0;
 
 		virtual const void *DefaultValue() const = 0;
 
@@ -64,34 +64,42 @@ namespace Engine3DRadSpace::Reflection
 			return reinterpret_cast<const void *>(&_defaultVal);
 		}
 
-		void *Get(void *objPtr) const override
+		[[nodiscard]] const void *Get(void *objPtr) const override
 		{
 			assert(objPtr != nullptr);
 
 			return std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset));
 		}
 
-		void Set(void *objPtr, void *value) const override
+		void Set(void *objPtr,const void *value) const override
 		{
 			assert(objPtr != nullptr);
 			assert(value != nullptr);
 
 			T* lhs = std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset)); 
-			T* rhs = std::launder(static_cast<T*>(value));
+			const T* rhs = static_cast<const T*>(value);
 
 			*lhs = *rhs;
 		}
 
 		template<typename T>
-		[[nodiscard]] void Set(void* objPtr, const T* value)
+		void Set(void* objPtr, const T* value)  const
 		{
 			assert(objPtr != nullptr);
 			assert(value != nullptr);
 
 			T* lhs = std::launder<T>(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset));
-			T* rhs = std::launder<T>(static_cast<T*>(value));
+			const T* rhs = static_cast<const T*>(value);
 			
 			*lhs = *rhs;
+		}
+
+		template<typename T>
+		T Get(void* objPtr) const
+		{
+			assert(objPtr != nullptr);
+
+			return T(*std::launder(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + _offset)));
 		}
 
 		FieldRepresentation Representation() const override
@@ -129,11 +137,11 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return 0;
 		}
-		void *Get(void *objPtr) const override
+		const void *Get(void *objPtr) const override
 		{
 			return nullptr;
 		}
-		void Set(void *objPtr, void *value) const override
+		void Set(void *objPtr,const void *value) const override
 		{
 		}
 		const void *DefaultValue() const override

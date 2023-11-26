@@ -101,7 +101,7 @@ TEST(ReflectionTests, fieldName##RW ) \
 	type temp = value; \
 	TestObjectReflInstance[id]->Set(&test, &temp); \
 	EXPECT_EQ(temp, test. fieldName); \
-	EXPECT_EQ(*static_cast<type *>(TestObjectReflInstance[id]->Get(&test)), temp); \
+	EXPECT_EQ(*static_cast<const type *>(TestObjectReflInstance[id]->Get(&test)), temp); \
 }
 
 TestFieldRW(0, Name, std::string, "Test name")

@@ -170,6 +170,9 @@
     <ClInclude Include="Frontend\Windows\SettingsWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Includes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DRadSpace_Editor_WindowsDX11.rc">

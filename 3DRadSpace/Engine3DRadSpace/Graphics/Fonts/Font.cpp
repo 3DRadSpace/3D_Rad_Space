@@ -7,6 +7,7 @@
 using namespace Engine3DRadSpace::Graphics::Fonts;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Graphics;
 
 FT_Library Font::FontManager::FreeTypeLib;
 
@@ -27,7 +28,8 @@ Font::FontManager Font::_manager;
 
 Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const char* supportedCharacters):
 	_device(device),
-	_size(size)
+	_size(size),
+	_supportedCharacters(supportedCharacters != nullptr ? supportedCharacters : "")
 {
 	if(FT_New_Face(FontManager::FreeTypeLib, path.c_str(), 0, &_font))
 	{
@@ -36,7 +38,6 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 
 	FT_Set_Pixel_Sizes(_font, 0, size);
 
-	std::string characters(supportedCharacters != nullptr ? supportedCharacters : "");
 	if(supportedCharacters == nullptr)
 	{
 		char defaultSupportedCharacters[128] = {}; 
@@ -45,10 +46,10 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 		{
 			defaultSupportedCharacters[i - offset] = i;
 		}
-		characters = defaultSupportedCharacters;
+		_supportedCharacters = defaultSupportedCharacters;
 	}
 
-	for(auto c : characters)
+	for(auto c : _supportedCharacters)
 	{
 		if (FT_Load_Char(_font, c, FT_LOAD_RENDER))
 			continue;
@@ -104,6 +105,21 @@ Font& Font::operator=(Font&& font) noexcept
 	font._valid = false;
 
 	return* this;
+}
+
+unsigned Engine3DRadSpace::Graphics::Fonts::Font::Size() const
+{
+	return _size;
+}
+
+const std::string Engine3DRadSpace::Graphics::Fonts::Font::SupportedCharacters() const
+{
+	return _supportedCharacters;
+}
+
+Texture2D* Engine3DRadSpace::Graphics::Fonts::Font::operator[](int index)
+{
+	return _characters[index].second.get();
 }
 
 Font::~Font()

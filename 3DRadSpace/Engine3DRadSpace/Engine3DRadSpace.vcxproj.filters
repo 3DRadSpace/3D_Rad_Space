@@ -270,6 +270,9 @@
     <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
     <ClInclude Include="Concepts.hpp" />
+    <ClInclude Include="Input\ButtonState.hpp" />
+    <ClInclude Include="Input\KeyState.hpp" />
+    <ClInclude Include="Input\Key.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />

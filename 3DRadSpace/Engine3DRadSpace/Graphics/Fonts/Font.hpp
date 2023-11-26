@@ -6,10 +6,6 @@ namespace Engine3DRadSpace::Graphics::Fonts
 {
 	class DLLEXPORT Font
 	{
-		bool _valid;
-		FT_Face _font;
-		GraphicsDevice* _device;
-
 		class FontManager
 		{
 		public:
@@ -24,6 +20,13 @@ namespace Engine3DRadSpace::Graphics::Fonts
 
 			static FT_Library FreeTypeLib;
 		};
+
+		bool _valid;
+		
+		FT_Face _font;
+		std::string _supportedCharacters;
+
+		GraphicsDevice* _device;
 
 		static FontManager _manager;
 
@@ -41,6 +44,7 @@ namespace Engine3DRadSpace::Graphics::Fonts
 		unsigned Size() const;
 		const std::string SupportedCharacters() const;
 
+		Texture2D* operator[](int index);
 
 		~Font();
 	};
