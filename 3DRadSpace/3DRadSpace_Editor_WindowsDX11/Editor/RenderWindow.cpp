@@ -1,5 +1,6 @@
 #include "RenderWindow.hpp"
 #include <Engine3DRadSpace/Graphics/Fonts/Font.hpp>
+#include "../Frontend/Settings.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Algorithms::Picking;
@@ -83,7 +84,7 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 		Window->SetMousePosition(screenCenter);
 
 		Vector2 mouseDelta = (Vector2)(screenCenter - mousePos) * float(dt);
-		cameraPos -= mouseDelta * 10.0f;
+		cameraPos -= mouseDelta * Settings::CameraSensitivity.Value;
 
 		cameraPos.Y = std::clamp<float>(
 			cameraPos.Y,

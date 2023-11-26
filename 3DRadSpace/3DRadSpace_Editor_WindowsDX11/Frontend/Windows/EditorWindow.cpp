@@ -56,7 +56,8 @@ void EditorWindow::_writeProject(const char *fileName)
 
 void EditorWindow::_findUpdate()
 {
-	_saveProject();
+	if(!_changesSaved) _saveProject();
+
 	const std::string updateFilePath = "UpdateInfo.txt";
 
 	HRESULT r = URLDownloadToFileA(
@@ -104,6 +105,10 @@ void EditorWindow::_findUpdate()
 		MessageBoxA(_mainWindow, "No new updates were found.", "Update information", MB_ICONINFORMATION | MB_OK);
 		return;
 	}
+
+	auto q1 = MessageBoxA(_mainWindow, "There's a new update found, would you like to download it?", "Update found!", MB_ICONQUESTION | MB_YESNO);
+	if (q1 != IDYES) return;
+
 	//Download the update in a separate thread.
 	std::thread downloaderThread([downloadPath]()
 		{
@@ -448,6 +453,9 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	ShowWindow(_listBox, SW_NORMAL);
 
 	_parseCmdArgs(cmdArgs);
+
+	if (Settings::StartupUpdate.Value)
+		_findUpdate();
 }
 
 void EditorWindow::Run()

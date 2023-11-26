@@ -8,9 +8,9 @@
 Setting<float> Settings::CameraSensitivity =
 {
 	.Name = "Camera sensitivity",
-	.Min = 0.0f,
-	.Value = 1.0f,
-	.Max = 10.0f
+	.Min = 0.1f,
+	.Value = 5.0f,
+	.Max = 20.0f
 };
 
 Setting<bool> Settings::StartupUpdate =
