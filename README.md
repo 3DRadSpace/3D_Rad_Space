@@ -40,7 +40,7 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 - OpenAL-Soft
 > `.\vcpkg install openal-soft:x64-windows`
 - NVidia PhysX 5.30
-> `.vcpkg install physx:x64-windows`
+> `.\vcpkg install physx:x64-windows`
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 

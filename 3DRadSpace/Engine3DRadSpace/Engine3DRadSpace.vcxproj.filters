@@ -278,6 +278,7 @@
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
     <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
+    <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />

@@ -190,6 +190,7 @@
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
     <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
+    <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
     <ClInclude Include="Tag.hpp" />
     <ClInclude Include="Graphics\Primitives\Box.hpp" />
