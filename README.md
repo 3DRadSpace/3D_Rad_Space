@@ -43,16 +43,16 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > `.\vcpkg install physx:x64-windows`
 > 
 > If there are compilation errors such as:
-> ```
+```
 C1083	Cannot open include file: 'geometry/PxCustomGeometry.h': No such file or directory
 ```
 > it is needed to change
-> ```cpp
+```cpp
 #include <geometry/PxCustomGeometry.h>
 #include <geometry/PxGjkQuery.h>
 ```
 > to
-> ```cpp
+```cpp
 #include "geometry/PxCustomGeometry.h"
 #include "geometry/PxGjkQuery.h"
 ```
