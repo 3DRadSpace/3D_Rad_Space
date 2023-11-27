@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
 
 ModelMeshPart::ModelMeshPart(
-	std::shared_ptr<ShaderPipeline> shaders,
+	std::shared_ptr<Effect> shaders,
 	Graphics::VertexBuffer *vert, 
 	Graphics::IndexBuffer *buffer):
 	_device(vert->_device),
@@ -17,7 +17,7 @@ ModelMeshPart::ModelMeshPart(
 {
 }
 
-ModelMeshPart::ModelMeshPart(GraphicsDevice *Device, std::shared_ptr<ShaderPipeline> shaders,
+ModelMeshPart::ModelMeshPart(GraphicsDevice *Device, std::shared_ptr<Effect> shaders,
 	void *vertices, size_t numVerts, size_t structSize, std::span<unsigned> indices):
 	_device(Device),
 	_shaders(shaders)
@@ -111,12 +111,12 @@ BoundingBox ModelMeshPart::GetBoundingBox()
 	return _box;
 }
 
-ShaderPipeline *ModelMeshPart::GetShaders()
+Effect *ModelMeshPart::GetShaders()
 {
 	return _shaders.get();
 }
 
-void ModelMeshPart::SetShaders(std::shared_ptr<ShaderPipeline> shaders)
+void ModelMeshPart::SetShaders(std::shared_ptr<Effect> shaders)
 {
 	_shaders = shaders;
 }

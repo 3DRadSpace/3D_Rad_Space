@@ -13,13 +13,25 @@ namespace Engine3DRadSpace::Algorithms
 		size_t _num;
 		std::unique_ptr<T[]> _data;
 	public:
-		explicit FixedArray(size_t numElements):
+		explicit FixedArray(size_t numElements) :
 			_num(numElements),
 			_data(std::make_unique<T[]>(numElements))
 		{
 		}
 
-		FixedArray(FixedArray& c) :
+		FixedArray(std::initializer_list<T> lst)
+		{
+			_num = std::distance(lst.begin(), lst.end());
+			_data = std::make_unique<T[]>(_num);
+
+			for (int i = 0; auto e : lst)
+			{
+				_data[i] = e;
+				i++;
+			}
+		}
+
+		FixedArray(const FixedArray& c) :
 			_num(c._num),
 			_data(std::make_unique<T[]>(c._num))
 		{
@@ -34,7 +46,12 @@ namespace Engine3DRadSpace::Algorithms
 			return _data[i];
 		}
 
-		size_t Size()
+		T operator[](unsigned i) const
+		{
+			return _data[i];
+		}
+
+		size_t Size() const
 		{
 			return _num;
 		}
@@ -51,30 +68,51 @@ namespace Engine3DRadSpace::Algorithms
 			pointer _ptr;
 
 		public:
-			explicit Iterator(pointer ptr): _ptr(ptr) { }
+			explicit Iterator(pointer ptr) : _ptr(ptr) { }
 
-			reference operator*() const 
-			{ 
+			reference operator*() const
+			{
 				return *_ptr;
 			}
-			pointer operator->() 
+			pointer operator->()
 			{
-				return _ptr; 
+				return _ptr;
 			}
 			Iterator& operator++() //Prefix increment
 			{
-				_ptr++; 
-				return *this; 
+				_ptr++;
+				return *this;
 			}
 			Iterator operator++(int) //Postfix increment
 			{
-				Iterator tmp = *this; 
+				Iterator tmp = *this;
 				++(*this);
-				return tmp; 
+				return tmp;
 			}
 
-			friend bool operator ==(const Iterator& a, const Iterator& b) = default;
-			friend bool operator !=(const Iterator& a, const Iterator& b) = default;
+			Iterator operator+(int i)
+			{
+				return Iterator(_ptr + i);
+			}
+
+			Iterator operator-(int i)
+			{
+				return Interator(_ptr - i);
+			}
+
+			Iterator& operator+=(int i)
+			{
+				_ptr += i;
+				return *this;
+			}
+			Iterator& operator -=(int i)
+			{
+				_ptr -= i;
+				return *this;
+			}
+
+			bool operator ==( const Iterator& i) const = default;
+			bool operator !=(const Iterator& i) const = default;
 		};
 
 		Iterator begin()

@@ -1,11 +1,11 @@
 #pragma once
-#include "../Graphics/ShaderPipeline.hpp"
+#include "../Graphics/Effect.hpp"
 #include "../Tag.hpp"
 
 namespace Engine3DRadSpace::Content
 {
 	template<typename S>
-	concept ShaderCollection = std::is_base_of<Graphics::Shaders::ShaderPipeline,S>::value
+	concept ShaderCollection = std::is_base_of<Graphics::Shaders::Effect,S>::value
 		&& requires(GraphicsDevice* device)
 	{
 		S(device); //Shaders must be constructible from the graphics device.
@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Content
 
 	class DLLEXPORT ShaderManager
 	{
-		static std::unordered_map<size_t, std::shared_ptr<Graphics::Shaders::ShaderPipeline>> _shaders;
+		static std::unordered_map<size_t, std::shared_ptr<Graphics::Shaders::Effect>> _shaders;
 	public:
 		ShaderManager() = delete;
 		ShaderManager(ShaderManager &) = delete;

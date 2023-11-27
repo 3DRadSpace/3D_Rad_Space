@@ -31,6 +31,7 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > Can be easily installed by using NuGet.
 - Assimp
 > Install latest version using vcpkg: (⚠️ NuGet versions are outdated!)
+
 > `.\vcpkg install assimp:x64-Windows`
 - nlohmann JSON
 > `.\vcpkg install nlohmann-json:x64-windows`
@@ -38,14 +39,14 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > `.\vcpkg install freetype:x64-windows`
 - OpenAL-Soft
 > `.\vcpkg install openal-soft:x64-windows`
+- NVidia PhysX 5.30
+> `.vcpkg install physx:x64-windows`
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 
-3.) Upgrade the Windows SDK version to *atleast* 10.0.20348.0 in `3DRadSpace_Editor_WINDX11` project properties.
+3.) Set the starting project to `3DRadSpace_Editor_WINDX11`
 
-4.) Set the starting project to `3DRadSpace_Editor_WINDX11`
-
-5.) Compile the solution (Ctrl+Shift+B or F5) with any desired configuration (`Debug`/`Release`)
+4.) Compile the solution (Ctrl+Shift+B or F5) with any desired configuration (`Debug`/`Release`)
 
 Notices: Only x64-Windows is supported.
 

@@ -7,7 +7,7 @@
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT ShaderPipeline
+	class DLLEXPORT Effect
 	{
 	protected:
 		GraphicsDevice* _device;
@@ -17,14 +17,14 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		std::unique_ptr<IGeometryShader> _geometry;
 		std::unique_ptr<IPixelShader> _pixel;
 	public:
-		ShaderPipeline(GraphicsDevice *device, IVertexShader* vertexShader, IPixelShader* fragmentShader, IHullShader* hullShader = nullptr,
+		Effect(GraphicsDevice *device, IVertexShader* vertexShader, IPixelShader* fragmentShader, IHullShader* hullShader = nullptr,
 			IDomainShader* domainShader = nullptr, IGeometryShader* geometryShader = nullptr);
 
-		ShaderPipeline(ShaderPipeline &p) = delete;
-		ShaderPipeline(ShaderPipeline&& p) noexcept = default;
+		Effect(Effect &p) = delete;
+		Effect(Effect&& p) noexcept = default;
 
-		ShaderPipeline &operator =(ShaderPipeline &p) = delete;
-		ShaderPipeline& operator =(ShaderPipeline&& p) noexcept = default;
+		Effect &operator =(Effect &p) = delete;
+		Effect& operator =(Effect&& p) noexcept = default;
 		
 		int SetAll() const;
 		int SetBasic() const;
@@ -40,6 +40,6 @@ namespace Engine3DRadSpace::Graphics::Shaders
 		IShader* GetGeometryShader() const;
 		IShader* GetPixelShader() const;
 
-		virtual ~ShaderPipeline() = default;
+		virtual ~Effect() = default;
 	};
 }

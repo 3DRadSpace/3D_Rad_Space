@@ -70,4 +70,4 @@ namespace Engine3DRadSpace::Objects
 	};
 }
 
-REFL_DEF(Camera)
+REFL_FWD(Camera)

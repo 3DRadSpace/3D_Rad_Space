@@ -1,10 +1,10 @@
 #pragma once
-#include "..\..\Graphics\ShaderPipeline.hpp"
+#include "..\..\Graphics\Effect.hpp"
 #include "..\..\Math\Matrix4x4.hpp"
 
 namespace Engine3DRadSpace::Algorithms::Picking
 {
-	class DLLEXPORT PickingShader : public Graphics::Shaders::ShaderPipeline
+	class DLLEXPORT PickingShader : public Graphics::Shaders::Effect
 	{
 		class VertexShader : public Graphics::IVertexShader
 		{

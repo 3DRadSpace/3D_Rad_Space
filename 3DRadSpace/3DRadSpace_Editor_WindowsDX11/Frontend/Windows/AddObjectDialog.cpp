@@ -3,9 +3,9 @@
 #include <CommCtrl.h>
 
 //Forward declarations of object reflection data
-REFL_DEF(Camera)
-REFL_DEF(Sprite)
-REFL_DEF(Skinmesh)
+REFL_FWD(Camera)
+REFL_FWD(Sprite)
+REFL_FWD(Skinmesh)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;

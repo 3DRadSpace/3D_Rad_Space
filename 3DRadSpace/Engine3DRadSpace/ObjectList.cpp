@@ -75,6 +75,11 @@ void ObjectList::Clear()
 	objects.clear();
 }
 
+IObject* Engine3DRadSpace::ObjectList::operator[](unsigned i) const
+{
+	return objects[i].Object.get();
+}
+
 std::vector<ObjectList::ObjectInstance>::iterator ObjectList::begin()
 {
 	return objects.begin();

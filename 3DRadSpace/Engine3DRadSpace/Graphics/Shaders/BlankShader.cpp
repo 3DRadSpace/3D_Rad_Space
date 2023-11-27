@@ -20,7 +20,7 @@ std::span<InputLayoutElement> BlankShader::VertexShader::InputLayout()
 }
 
 BlankShader::BlankShader(GraphicsDevice* device):
-	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
+	Effect(device, new VertexShader(device), new PixelShader(device))
 {
 }
 

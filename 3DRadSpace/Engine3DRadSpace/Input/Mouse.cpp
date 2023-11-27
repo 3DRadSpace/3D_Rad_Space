@@ -1,35 +1,37 @@
 #include "Mouse.hpp"
+using namespace Engine3DRadSpace::Input;
+using namespace Engine3DRadSpace::Math;
 
-Engine3DRadSpace::Input::Mouse::Mouse() :
-	_leftButton(false),
-	_middleButton(false),
-	_rightButton(false),
+Mouse::Mouse() :
+	_leftButton(ButtonState::Released),
+	_middleButton(ButtonState::Released),
+	_rightButton(ButtonState::Released),
 	_position(),
 	_scrollWheel(0)
 {
 };
 
-bool Engine3DRadSpace::Input::Mouse::LeftButton()
+ButtonState Mouse::LeftButton()
 {
     return _leftButton;
 }
 
-bool Engine3DRadSpace::Input::Mouse::MiddleButton()
+ButtonState Mouse::MiddleButton()
 {
     return _middleButton;
 }
 
-bool Engine3DRadSpace::Input::Mouse::RightButton()
+ButtonState Mouse::RightButton()
 {
     return _rightButton;
 }
 
-Engine3DRadSpace::Math::Point Engine3DRadSpace::Input::Mouse::Position()
+Point Mouse::Position()
 {
     return _position;
 }
 
-float Engine3DRadSpace::Input::Mouse::ScrollWheel()
+float Mouse::ScrollWheel()
 {
     return _scrollWheel;
 }

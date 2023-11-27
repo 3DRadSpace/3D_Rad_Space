@@ -21,6 +21,6 @@ Blank_NoMatrix::TrivialPixelShader::TrivialPixelShader(GraphicsDevice* device) :
 }
 
 Blank_NoMatrix::Blank_NoMatrix(GraphicsDevice* device):
-	ShaderPipeline(device, new TrivialVertexShader(device), new TrivialPixelShader(device))
+	Effect(device, new TrivialVertexShader(device), new TrivialPixelShader(device))
 {
 }

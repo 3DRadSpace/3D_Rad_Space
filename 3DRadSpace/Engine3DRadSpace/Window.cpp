@@ -2,6 +2,7 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Input;
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -79,13 +80,14 @@ void Window::_keyUp(uint8_t k)
     switch (k)
     {
         case VK_LBUTTON:
-            _mouse._leftButton = true;
+            _mouse._leftButton = ButtonState::Pressed;
             break;
         case VK_RBUTTON:
-            _mouse._rightButton = true;
+            _mouse._rightButton = ButtonState::Pressed;
             break;
         case VK_MBUTTON:
-            _mouse._middleButton = true;
+            _mouse._middleButton = ButtonState::Pressed;
+            break;
         default:
             _keyboard._removeKey(k);
             break;
@@ -97,13 +99,14 @@ void Window::_keyDown(uint8_t k)
     switch (k)
     {
         case VK_LBUTTON:
-            _mouse._leftButton = false;
+            _mouse._leftButton = ButtonState::Released;
             break;
         case VK_RBUTTON:
-            _mouse._rightButton = false;
+            _mouse._rightButton = ButtonState::Released;
             break;
         case VK_MBUTTON:
-            _mouse._middleButton = false;
+            _mouse._middleButton = ButtonState::Released;
+            break;
         default:
             _keyboard._addKey(k);
             break;
@@ -120,9 +123,9 @@ void Window::_handleMouse(Point pos, bool left, bool middle, bool right)
     auto rectangle = this->Rectangle();
 
     _mouse._position = pos - Point(rectangle.X, rectangle.Y); //substract top-left point to make mouse coordinates screen relative.
-    _mouse._leftButton = left;
-    _mouse._middleButton = middle;
-    _mouse._rightButton = right;
+    _mouse._leftButton = static_cast<ButtonState>(left);
+    _mouse._middleButton = static_cast<ButtonState>(middle);
+    _mouse._rightButton = static_cast<ButtonState>(right);
 }
 
 void Window::_resetKeyboard()

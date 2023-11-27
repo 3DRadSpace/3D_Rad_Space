@@ -70,6 +70,8 @@ namespace Engine3DRadSpace
 
 		void Clear();
 
+		IObject* operator[](unsigned i) const;
+
 		std::vector<ObjectInstance>::iterator begin();
 		std::vector<ObjectInstance>::iterator end();
 	};

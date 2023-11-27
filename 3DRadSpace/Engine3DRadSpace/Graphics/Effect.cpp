@@ -1,9 +1,9 @@
-#include "ShaderPipeline.hpp"
+#include "Effect.hpp"
 
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 
-ShaderPipeline::ShaderPipeline(GraphicsDevice *device, IVertexShader *vertexShader, IPixelShader *fragmentShader, IHullShader *hullShader,
+Effect::Effect(GraphicsDevice *device, IVertexShader *vertexShader, IPixelShader *fragmentShader, IHullShader *hullShader,
 	IDomainShader *domainShader, IGeometryShader *geometryShader ):
 	_device(device),
 	_vertex(vertexShader),
@@ -14,7 +14,7 @@ ShaderPipeline::ShaderPipeline(GraphicsDevice *device, IVertexShader *vertexShad
 {
 }
 
-int ShaderPipeline::SetAll() const
+int Effect::SetAll() const
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -25,7 +25,7 @@ int ShaderPipeline::SetAll() const
 	return r;
 }
 
-int ShaderPipeline::SetBasic() const
+int Effect::SetBasic() const
 {
 	int r = 0;
 	if(SetVertex()) ++r;
@@ -33,7 +33,7 @@ int ShaderPipeline::SetBasic() const
 	return r;
 }
 
-bool ShaderPipeline::SetVertex() const
+bool Effect::SetVertex() const
 {
 	if(_vertex == nullptr) return false;
 
@@ -41,7 +41,7 @@ bool ShaderPipeline::SetVertex() const
 	return true;
 }
 
-bool ShaderPipeline::SetHull() const
+bool Effect::SetHull() const
 {
 	if(_hull == nullptr) return false;
 
@@ -49,7 +49,7 @@ bool ShaderPipeline::SetHull() const
 	return true;
 }
 
-bool ShaderPipeline::SetDomain() const
+bool Effect::SetDomain() const
 {
 	if(_domain == nullptr) return false;
 
@@ -57,7 +57,7 @@ bool ShaderPipeline::SetDomain() const
 	return true;
 }
 
-bool ShaderPipeline::SetGeometry() const
+bool Effect::SetGeometry() const
 {
 	if(_geometry == nullptr) return false;
 
@@ -65,7 +65,7 @@ bool ShaderPipeline::SetGeometry() const
 	return true;
 }
 
-bool ShaderPipeline::SetFragment() const
+bool Effect::SetFragment() const
 {
 	if(_pixel == nullptr) return false;
 
@@ -73,27 +73,27 @@ bool ShaderPipeline::SetFragment() const
 	return true;
 }
 
-IShader* ShaderPipeline::GetVertexShader() const
+IShader* Effect::GetVertexShader() const
 {
 	return _vertex.get();
 }
 
-IShader* ShaderPipeline::GetHullShader() const 
+IShader* Effect::GetHullShader() const 
 {
 	return _hull.get();
 }
 
-IShader* ShaderPipeline::GetDomainShader() const
+IShader* Effect::GetDomainShader() const
 {
 	return _domain.get();
 }
 
-IShader* ShaderPipeline::GetGeometryShader() const
+IShader* Effect::GetGeometryShader() const
 {
 	return _geometry.get();
 }
 
-IShader* ShaderPipeline::GetPixelShader() const
+IShader* Effect::GetPixelShader() const
 {
 	return _pixel.get();
 }

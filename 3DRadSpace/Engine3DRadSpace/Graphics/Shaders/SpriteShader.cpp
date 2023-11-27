@@ -19,7 +19,7 @@ SpriteShader::PixelShader::PixelShader(GraphicsDevice *device) : IPixelShader(de
 }
 
 SpriteShader::SpriteShader(GraphicsDevice *device) :
-	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
+	Effect(device, new VertexShader(device), new PixelShader(device))
 {
 	Data default_data = {Colors::White, false, false};
 	SetData(default_data);

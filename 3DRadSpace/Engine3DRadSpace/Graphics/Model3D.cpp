@@ -287,7 +287,7 @@ BoundingSphere Model3D::GetBoundingSphere()
 	return _sphere;
 }
 
-void Model3D::SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect)
+void Model3D::SetShader(std::shared_ptr<Shaders::Effect> effect)
 {
 	for (auto& mesh : _meshes)
 	{
@@ -298,7 +298,7 @@ void Model3D::SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect)
 	}
 }
 
-void Model3D::SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects)
+void Model3D::SetShaders(std::span<std::shared_ptr<Shaders::Effect>> effects)
 {
 	size_t i = 0;
 	size_t len = effects.size();

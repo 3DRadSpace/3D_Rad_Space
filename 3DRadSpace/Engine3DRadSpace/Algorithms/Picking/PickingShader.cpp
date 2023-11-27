@@ -20,7 +20,7 @@ PickingShader::PixelShader::PixelShader(GraphicsDevice* device) :
 }
 
 PickingShader::PickingShader(GraphicsDevice* device) : 
-	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
+	Effect(device, new VertexShader(device), new PixelShader(device))
 {
 }
 

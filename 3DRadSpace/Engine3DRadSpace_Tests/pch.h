@@ -1,7 +1,3 @@
-//
-// pch.h
-//
-
 #pragma once
 
 #pragma warning(push)

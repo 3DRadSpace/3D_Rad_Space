@@ -40,4 +40,4 @@ namespace Engine3DRadSpace::Objects
 	};
 }
 
-REFL_DEF(Sprite)
+REFL_FWD(Sprite)

@@ -5,3 +5,6 @@
 #define __REFL_FIELD(FieldType, ObjectName, FieldName, DefaultValue, Description, FieldVisibleName)
 #define TEST(test_case_name, test_name) GTEST_TEST(test_case_name, test_name)
 #define __REFL_BEGIN(Object)
+#define REFL_BEGIN(ObjectType, ObjectName, ObjectCategory, ObjectDescription) ::Engine3DRadSpace::Reflection::ReflectedObject ObjectType##ReflInstance( ::Engine3DRadSpace::Reflection::ObjectTag<ObjectType>{}, ObjectName, ObjectCategory, ObjectDescription, {
+#define EXPECT_EQ(val1, val2) EXPECT_PRED_FORMAT2(::testing::internal:: EqHelper<GTEST_IS_NULL_LITERAL_(val1)>::Compare, val1, val2)
+#define REFL_ENUM_END() EnumEntry{ .VisibleName = "__SentinelValue", .Value = std::numeric_limits<int>::max()}});

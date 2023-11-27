@@ -20,7 +20,7 @@ BasicTextured::PixelShader::PixelShader(GraphicsDevice* device) :
 
 
 BasicTextured::BasicTextured(GraphicsDevice* device) : 
-	ShaderPipeline(device, new VertexShader(device), new PixelShader(device))
+	Effect(device, new VertexShader(device), new PixelShader(device))
 {
 }
 

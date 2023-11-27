@@ -38,8 +38,8 @@ namespace Engine3DRadSpace::Graphics
 		Math::BoundingBox GetBoundingBox();
 		Math::BoundingSphere GetBoundingSphere();
 
-		void SetShader(std::shared_ptr<Shaders::ShaderPipeline> effect);
-		void SetShaders(std::span<std::shared_ptr<Shaders::ShaderPipeline>> effects);
+		void SetShader(std::shared_ptr<Shaders::Effect> effect);
+		void SetShaders(std::span<std::shared_ptr<Shaders::Effect>> effects);
 
 		~Model3D() = default;
 

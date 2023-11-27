@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 		bool _beginCalled = false;
 	public:
-		ForwardRenderer(GraphicsDevice* device, const std::shared_ptr<Shaders::ShaderPipeline>& pipeline);
+		ForwardRenderer(GraphicsDevice* device, const std::shared_ptr<Shaders::Effect>& pipeline);
 
 		void Begin() override;
 		void End() override;

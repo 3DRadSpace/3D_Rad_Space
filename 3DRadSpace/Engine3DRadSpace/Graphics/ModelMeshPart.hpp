@@ -1,7 +1,7 @@
 #pragma once
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
-#include "ShaderPipeline.hpp"
+#include "Effect.hpp"
 #include "../Math/BoundingSphere.hpp"
 #include "../Math/BoundingBox.hpp"
 
@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Graphics
 	{
 		GraphicsDevice* _device;
 
-		std::shared_ptr<Shaders::ShaderPipeline> _shaders;
+		std::shared_ptr<Shaders::Effect> _shaders;
 
 		Math::BoundingBox _box;
 		Math::BoundingSphere _sphere;
@@ -20,14 +20,14 @@ namespace Engine3DRadSpace::Graphics
 		std::unique_ptr<VertexBuffer> VertexBuffer;
 
 		ModelMeshPart(
-			std::shared_ptr<Shaders::ShaderPipeline> shaders,
+			std::shared_ptr<Shaders::Effect> shaders,
 			Graphics::VertexBuffer* vert, 
 			Graphics::IndexBuffer* buffer
 		);
 
 		ModelMeshPart(
 			GraphicsDevice *Device,
-			std::shared_ptr<Shaders::ShaderPipeline> shaders, 
+			std::shared_ptr<Shaders::Effect> shaders, 
 			void* vertices, size_t numVerts, size_t structSize, 
 			std::span<unsigned> indices
 		);
@@ -40,7 +40,7 @@ namespace Engine3DRadSpace::Graphics
 
 		template<VertexDecl V>
 		ModelMeshPart(
-			std::shared_ptr<Shaders::ShaderPipeline> shaders,
+			std::shared_ptr<Shaders::Effect> shaders,
 			GraphicsDevice* Device,
 			std::span<V> vertices, std::span<unsigned> indices
 		);
@@ -54,8 +54,8 @@ namespace Engine3DRadSpace::Graphics
 		Math::BoundingBox GetBoundingBox();
 		Math::BoundingSphere GetBoundingSphere();
 
-		Shaders::ShaderPipeline *GetShaders();
-		void SetShaders(std::shared_ptr<Shaders::ShaderPipeline> shaders);
+		Shaders::Effect *GetShaders();
+		void SetShaders(std::shared_ptr<Shaders::Effect> shaders);
 
 		~ModelMeshPart() = default;
 
@@ -64,7 +64,7 @@ namespace Engine3DRadSpace::Graphics
 
 	template<VertexDecl V>
 	inline ModelMeshPart::ModelMeshPart(
-		std::shared_ptr<Shaders::ShaderPipeline> shaders,
+		std::shared_ptr<Shaders::Effect> shaders,
 		GraphicsDevice* Device, std::span<V> vertices, std::span<unsigned> indices ):
 		_device(Device),
 		_shaders(shaders)

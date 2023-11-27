@@ -1,11 +1,11 @@
 #pragma once
-#include "../ShaderPipeline.hpp"
+#include "../Effect.hpp"
 #include "..\..\Math\Matrix4x4.hpp"
 #include "../Texture2D.hpp"
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT BasicTextured : public ShaderPipeline
+	class DLLEXPORT BasicTextured : public Effect
 	{
 		class VertexShader : public IVertexShader
 		{

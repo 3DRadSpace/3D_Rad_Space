@@ -100,7 +100,7 @@
     <ClInclude Include="Graphics\SpriteBatch.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\ShaderPipeline.hpp">
+    <ClInclude Include="Graphics\Effect.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ShaderFeatureLevel.hpp">
@@ -273,6 +273,11 @@
     <ClInclude Include="Input\ButtonState.hpp" />
     <ClInclude Include="Input\KeyState.hpp" />
     <ClInclude Include="Input\Key.hpp" />
+    <ClInclude Include="Graphics\Fonts\FontShader.hpp" />
+    <ClInclude Include="Legacy.hpp" />
+    <ClInclude Include="Physics\IPhysicsObject.hpp" />
+    <ClInclude Include="Physics\PhysicsEngine.hpp" />
+    <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -315,7 +320,7 @@
     <ClCompile Include="Graphics\SpriteBatch.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\ShaderPipeline.cpp">
+    <ClCompile Include="Graphics\Effect.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\SamplerState.cpp">
@@ -450,5 +455,11 @@
     <ClCompile Include="Graphics\Primitives\PlaneQuad.cpp" />
     <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Math\Plane.cpp" />
+    <ClCompile Include="Graphics\Fonts\FontShader.cpp" />
+    <ClCompile Include="Reflection\ReflectedEnum.cpp" />
+    <ClCompile Include="Legacy.cpp" />
+    <ClCompile Include="Physics\IPhysicsObject.cpp" />
+    <ClCompile Include="Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="Physics\PhysicsEngineAllocator.cpp" />
   </ItemGroup>
 </Project>

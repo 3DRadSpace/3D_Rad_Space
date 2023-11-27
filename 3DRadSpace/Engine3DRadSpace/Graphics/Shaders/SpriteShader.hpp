@@ -1,9 +1,9 @@
 #pragma once
-#include "../ShaderPipeline.hpp"
+#include "../Effect.hpp"
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT SpriteShader : public ShaderPipeline
+	class DLLEXPORT SpriteShader : public Effect
 	{
 		class VertexShader : public IVertexShader
 		{

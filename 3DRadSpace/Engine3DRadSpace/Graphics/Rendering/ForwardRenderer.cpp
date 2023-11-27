@@ -3,7 +3,7 @@
 using namespace Engine3DRadSpace::Graphics::Rendering;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 
-ForwardRenderer::ForwardRenderer(GraphicsDevice* device, const std::shared_ptr<ShaderPipeline>& pipeline):
+ForwardRenderer::ForwardRenderer(GraphicsDevice* device, const std::shared_ptr<Effect>& pipeline):
 	IRenderer(device)
 {
 }

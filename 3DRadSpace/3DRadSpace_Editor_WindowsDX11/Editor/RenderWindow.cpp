@@ -68,7 +68,6 @@ void RenderWindow::Load(Content::ContentManager *content)
 	fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
 
 	testFont = std::make_unique<Fonts::Font>(Device.get(), "Data\\Fonts\\arial.ttf");
-
 	//this->ClearColor.R = 0.128;
 }
 
@@ -77,7 +76,7 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 	zoom = mouse.ScrollWheel();
 	if (zoom < -4.0f) zoom = -4.0f;
 
-	if (mouse.LeftButton() && IsFocused())
+	if (mouse.LeftButton() == ButtonState::Pressed && IsFocused())
 	{
 		Point screenCenter = Window->Size() / 2;
 		Point mousePos = mouse.Position();
@@ -112,10 +111,7 @@ void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 
 	if(_keyboardTest)
 	{
-		SpriteBatch->Begin(SpriteBatchSortMode::Immediate);
-		//SpriteBatch->DrawNormalized(testTexture, Vector2(0.25, 0.25), Vector2::One() / 2, Colors::White, false, false);
-		SpriteBatch->DrawNormalized(testFont->operator[](70), Vector2(0.25f, 0.25f), Vector2(0.1f, 0.1f));
-		SpriteBatch->End();
+		
 	}
 
 	for(auto &obj : Objects)

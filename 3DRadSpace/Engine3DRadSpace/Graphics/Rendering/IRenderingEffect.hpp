@@ -1,5 +1,5 @@
 #pragma once
-#include "../ShaderPipeline.hpp"
+#include "../Effect.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {

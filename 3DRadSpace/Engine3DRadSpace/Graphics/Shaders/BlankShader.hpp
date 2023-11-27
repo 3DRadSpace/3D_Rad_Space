@@ -1,10 +1,10 @@
 #pragma once
-#include "../ShaderPipeline.hpp"
+#include "../Effect.hpp"
 #include "..\..\Math\Matrix4x4.hpp"
 
 namespace Engine3DRadSpace::Graphics::Shaders
 {
-	class DLLEXPORT BlankShader : public ShaderPipeline
+	class DLLEXPORT BlankShader : public Effect
 	{
 		class VertexShader : public IVertexShader
 		{

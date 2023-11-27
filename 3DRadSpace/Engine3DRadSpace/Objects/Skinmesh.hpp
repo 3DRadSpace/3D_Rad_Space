@@ -36,4 +36,4 @@ namespace Engine3DRadSpace::Objects
 	};
 }
 
-REFL_DEF(Skinmesh)
+REFL_FWD(Skinmesh)

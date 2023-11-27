@@ -1,5 +1,6 @@
 #pragma once
 #include "../Math/Point.hpp"
+#include "ButtonState.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -9,9 +10,9 @@ namespace Engine3DRadSpace
 	{
 		class DLLEXPORT Mouse
 		{
-			bool _leftButton;
-			bool _middleButton;
-			bool _rightButton;
+			ButtonState _leftButton;
+			ButtonState _middleButton;
+			ButtonState _rightButton;
 
 			Math::Point _position;
 
@@ -19,9 +20,9 @@ namespace Engine3DRadSpace
 		public:
 			Mouse();
 
-			bool LeftButton();
-			bool MiddleButton();
-			bool RightButton();
+			ButtonState LeftButton();
+			ButtonState MiddleButton();
+			ButtonState RightButton();
 
 			Math::Point Position();
 

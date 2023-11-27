@@ -18,7 +18,7 @@ SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
 
 void SkinmeshPreviewer::Update(Keyboard &keyboard, Mouse &mouse, double dt)
 {
-	if(mouse.LeftButton())
+	if(mouse.LeftButton() == ButtonState::Pressed)
 	{
 		
 	}

@@ -166,6 +166,7 @@
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
     <ClInclude Include="Graphics\Fonts\Font.hpp" />
+    <ClInclude Include="Graphics\Fonts\FontShader.hpp" />
     <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
     <ClInclude Include="Graphics\Primitives\PlaneQuad.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
@@ -179,11 +180,15 @@
     <ClInclude Include="Input\ButtonState.hpp" />
     <ClInclude Include="Input\Key.hpp" />
     <ClInclude Include="Input\KeyState.hpp" />
+    <ClInclude Include="Legacy.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="Math\Plane.hpp" />
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
+    <ClInclude Include="Physics\IPhysicsObject.hpp" />
+    <ClInclude Include="Physics\PhysicsEngine.hpp" />
+    <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
     <ClInclude Include="Tag.hpp" />
@@ -206,7 +211,7 @@
     <ClInclude Include="Graphics\RasterizerState.hpp" />
     <ClInclude Include="Graphics\SamplerState.hpp" />
     <ClInclude Include="Graphics\ShaderFeatureLevel.hpp" />
-    <ClInclude Include="Graphics\ShaderPipeline.hpp" />
+    <ClInclude Include="Graphics\Effect.hpp" />
     <ClInclude Include="Graphics\Shaders\BasicTextured.hpp" />
     <ClInclude Include="Graphics\Shaders\BlankShader.hpp" />
     <ClInclude Include="Graphics\Shaders\Blank_NoMatrix.hpp" />
@@ -271,6 +276,7 @@
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Graphics\DepthStencilState.cpp" />
     <ClCompile Include="Graphics\Fonts\Font.cpp" />
+    <ClCompile Include="Graphics\Fonts\FontShader.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />
     <ClCompile Include="Graphics\IVertexShader.cpp" />
@@ -285,7 +291,7 @@
     <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
     <ClCompile Include="Graphics\Rendering\IRenderer.cpp" />
     <ClCompile Include="Graphics\SamplerState.cpp" />
-    <ClCompile Include="Graphics\ShaderPipeline.cpp" />
+    <ClCompile Include="Graphics\Effect.cpp" />
     <ClCompile Include="Graphics\Shaders\BasicTextured.cpp" />
     <ClCompile Include="Graphics\Shaders\BlankShader.cpp" />
     <ClCompile Include="Graphics\Shaders\Blank_NoMatrix.cpp" />
@@ -303,6 +309,7 @@
     <ClCompile Include="Graphics\IPixelShader.cpp" />
     <ClCompile Include="IObject2D.cpp" />
     <ClCompile Include="IObject3D.cpp" />
+    <ClCompile Include="Legacy.cpp" />
     <ClCompile Include="Logging\Exception.cpp" />
     <ClCompile Include="Logging\Warning.cpp" />
     <ClCompile Include="Math\BoundingBox.cpp" />
@@ -321,7 +328,11 @@
     <ClCompile Include="ObjectList.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
+    <ClCompile Include="Physics\IPhysicsObject.cpp" />
+    <ClCompile Include="Physics\PhysicsEngine.cpp" />
+    <ClCompile Include="Physics\PhysicsEngineAllocator.cpp" />
     <ClCompile Include="Reflection\FieldRepresentation.cpp" />
+    <ClCompile Include="Reflection\ReflectedEnum.cpp" />
     <ClCompile Include="Reflection\ReflectedFunction.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp" />
     <ClCompile Include="Graphics\RenderTarget.cpp" />
