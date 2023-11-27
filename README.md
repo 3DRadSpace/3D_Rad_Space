@@ -41,6 +41,22 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 > `.\vcpkg install openal-soft:x64-windows`
 - NVidia PhysX 5.30
 > `.\vcpkg install physx:x64-windows`
+> 
+> If there are compilation errors such as:
+```
+C1083	Cannot open include file: 'geometry/PxCustomGeometry.h': No such file or directory
+```
+it is needed to change
+```cpp
+#include <geometry/PxCustomGeometry.h>
+#include <geometry/PxGjkQuery.h>
+```
+to
+```cpp
+#include "geometry/PxCustomGeometry.h"
+#include "geometry/PxGjkQuery.h"
+```
+at `<vcpkg root>\include\physx\extensions\PxCustomGeometryExt.h` L35, L36.
 
 2.) Open the .sln file ( `\3DRadSpace\3DRadSpace.sln` ) using Visual Studio 2022
 
