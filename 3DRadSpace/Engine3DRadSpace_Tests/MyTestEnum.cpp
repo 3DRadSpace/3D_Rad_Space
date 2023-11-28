@@ -10,7 +10,6 @@ REFL_ENUM_END
 
 TEST(EnumReflection, ReflEnumData)
 {
-	EXPECT_EQ(MyTestEnumEnumReflInstance.Name(), "MyTestEnum");
 	EXPECT_EQ(MyTestEnumEnumReflInstance.NumberOfEntries(), 4u);
 	EXPECT_EQ(MyTestEnumEnumReflInstance.TypeHashCode(), typeid(MyTestEnum).hash_code());
 }

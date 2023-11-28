@@ -5,27 +5,27 @@
 
 namespace Engine3DRadSpace::Reflection
 {
+#pragma warning(push)
+#pragma warning(disable:26495)
 	struct EnumEntry
 	{
 		std::string VisibleName;
 		int Value;
 	};
+#pragma warning(pop)
 
 	class DLLEXPORT ReflectedEnum
 	{
-		std::string _name;
 		Algorithms::FixedArray<EnumEntry> _entries;
 		size_t _typeHash;
 	public:
 		template<typename E> requires std::is_enum_v<E>
-		ReflectedEnum(Tag<E> dummy, const std::string& name, std::initializer_list<EnumEntry> entries) :
-			_name(name),
+		ReflectedEnum(Tag<E> dummy, std::initializer_list<EnumEntry> entries) :
 			_entries(entries),
 			_typeHash(typeid(E).hash_code())
 		{
 		}
 
-		const std::string Name() const;
 		const size_t NumberOfEntries() const;
 		const EnumEntry operator[](unsigned entryId) const;
 		const size_t TypeHashCode() const;

@@ -1,8 +1,11 @@
 #include "Game.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Physics;
+using namespace Engine3DRadSpace::Math;
 
 Game::Game(const char* title, unsigned width, unsigned height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
@@ -70,8 +73,19 @@ void Game::Exit()
 	_running = false;
 }
 
+void Game::RequestPhysicsInitialization(const Vector3 &gravity)
+{
+	Physics = std::make_unique<PhysicsEngine>(
+		Physics::PhysicsSettings
+		{
+			.PhysicsEnabled = true,
+			.Gravity = gravity,
+		}
+	);
+}
 
-void Game::Load(Content::ContentManager* content)
+
+void Game::Load(ContentManager* content)
 {
 	for (auto& [object, type] : Objects)
 	{
@@ -113,6 +127,7 @@ void Game::Initialize()
 {
 	for (auto& [object, type] : Objects)
 	{
+		object->internalInitialize(this);
 		object->Initialize();
 	}
 }

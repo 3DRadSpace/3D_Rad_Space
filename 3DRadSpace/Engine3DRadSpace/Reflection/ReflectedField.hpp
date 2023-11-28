@@ -5,6 +5,13 @@ namespace Engine3DRadSpace::Reflection
 {
 	class DLLEXPORT IReflectedField
 	{
+	protected:
+		IReflectedField() = default;
+		IReflectedField(const IReflectedField& f) = default;
+		IReflectedField(IReflectedField&&) = default;
+
+		IReflectedField& operator=(const IReflectedField& f) = default;
+		IReflectedField& operator=(IReflectedField&& f) = default;
 	public:
 		virtual const size_t TypeHash() const = 0;
 		virtual const std::string FieldName() const = 0;

@@ -287,10 +287,10 @@ bool Window::IsFocused()
 void Window::SetMousePosition(const Point& p)
 {
 #ifdef _WIN32
-    RECT rWnd;
-    GetWindowRect(static_cast<HWND>(_window), &rWnd);
+    POINT mp = { p.X, p.Y };
+    MapWindowPoints(static_cast<HWND>(_window), nullptr, &mp, 1);
 
-    _mouse._position = Point(rWnd.left + p.X, rWnd.top + p.Y);
+    _mouse._position = { mp.x, mp.y };
     BOOL r = SetCursorPos(_mouse._position.X, _mouse._position.Y);
     if (!r)
     {

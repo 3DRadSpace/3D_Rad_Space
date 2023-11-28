@@ -186,9 +186,10 @@
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
+    <ClInclude Include="Objects\GForce.hpp" />
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
-    <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
+    <ClInclude Include="Physics\PhysicsSettings.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
     <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
@@ -329,11 +330,12 @@
     <ClCompile Include="ObjectList.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
+    <ClCompile Include="Objects\GForce.cpp" />
     <ClCompile Include="Physics\IPhysicsObject.cpp" />
     <ClCompile Include="Physics\PhysicsEngine.cpp" />
-    <ClCompile Include="Physics\PhysicsEngineAllocator.cpp" />
     <ClCompile Include="Reflection\FieldRepresentation.cpp" />
     <ClCompile Include="Reflection\ReflectedEnum.cpp" />
+    <ClCompile Include="Reflection\ReflectedEnumField.cpp" />
     <ClCompile Include="Reflection\ReflectedFunction.cpp" />
     <ClCompile Include="Reflection\ReflectedObject.cpp" />
     <ClCompile Include="Graphics\RenderTarget.cpp" />

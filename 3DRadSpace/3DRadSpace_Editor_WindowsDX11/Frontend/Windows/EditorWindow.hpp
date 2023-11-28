@@ -83,6 +83,7 @@ public:
 	bool WarnNotSaved();
 
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	friend class Engine3DRadSpace::Game;
 };
 
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

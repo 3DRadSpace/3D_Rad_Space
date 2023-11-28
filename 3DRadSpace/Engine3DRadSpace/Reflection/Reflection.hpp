@@ -24,7 +24,7 @@
 #include "ReflectedEnum.hpp"
 
 //Reflects a enum, for use in editor
-#define REFL_ENUM_BEGIN(EnumType, EnumName) ::Engine3DRadSpace::Reflection::ReflectedEnum EnumType##EnumReflInstance(::Engine3DRadSpace::Tag<EnumType>{}, EnumName, std::initializer_list<::Engine3DRadSpace::Reflection::EnumEntry>{
+#define REFL_ENUM_BEGIN(EnumType) ::Engine3DRadSpace::Reflection::ReflectedEnum EnumType##EnumReflInstance(::Engine3DRadSpace::Tag<EnumType>{}, std::initializer_list<::Engine3DRadSpace::Reflection::EnumEntry>{
 
 //Reflects a enum entry, with a visible name and a number
 #define REFL_ENUM_ENTRY(Name, Num) ::Engine3DRadSpace::Reflection::EnumEntry{ .VisibleName = Name, .Value = static_cast<int>(Num)},
@@ -35,4 +35,4 @@
 //Forward reference to enumeration reflection instance
 #define REFL_ENUM_FWD(EnumType) extern ::Engine3DRadSpace::Reflection::ReflectedEnum EnumName##EnumReflInstance;
 
-#define REFL_FIELD_ENUM(ObjectType, EnumType, FieldName, FieldVisibleName, DefaultValue, Description) static_cast<::Engine3DRadSpace::Reflection::IReflectedEnum
+#define REFL_FIELD_ENUM(ObjectType, EnumType, FieldName, FieldVisibleName, DefaultValue, Description) static_cast<::Engine3DRadSpace::Reflection::IReflectedEnum*>()

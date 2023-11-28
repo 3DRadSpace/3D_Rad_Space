@@ -23,5 +23,6 @@ public:
     HWND GetBrowseButton();
 
     int AccX();
+    int AccY();
 };
 

@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Algorithms
 	/// "Fixed size array". Represents an array of type T that can be allocated one single time. Unlike std::array, the size can be defined at runtime, and not compile time.
 	/// </summary>
 	/// <typeparam name="T">Type of the array. Must be default initializable.</typeparam>
-	template<typename T>
+	template<std::default_initializable T>
 	class FixedArray
 	{
 		size_t _num;

@@ -22,6 +22,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <Engine3DRadSpace/Content/ShaderManager.hpp>
 #include "Engine3DRadSpace/Logging/Exception.hpp"
 #include "Frontend/Settings.hpp"
+#include "Editor/SkinmeshPreviewer.hpp"
 
 using namespace Engine3DRadSpace::Logging;
 
@@ -73,6 +74,8 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Settings::Load();
 
+	//SkinmeshPreviewer prev("Data\\Models\\Yellowfish.x");
+	//prev.Run();
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();
 

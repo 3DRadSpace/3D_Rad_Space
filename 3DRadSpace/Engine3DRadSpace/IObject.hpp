@@ -13,9 +13,6 @@ namespace Engine3DRadSpace
 	protected:
 		Game* _game = nullptr;
 		GraphicsDevice* _device = nullptr;
-
-		explicit IObject(Game* game, const std::string& name = "Empty", const std::string& tag = "...", bool enabled = false, bool visible = false);
-
 		/// <summary>
 		/// Default constructor used for reflection. Objects created with this constructor are invalid, unless the _device field is explicitly set after a IObject instance is constructed.
 		/// </summary>
@@ -24,6 +21,8 @@ namespace Engine3DRadSpace
 		/// <param name="enabled"></param>
 		/// <param name="visible"></param>
 		explicit IObject(const std::string& name = "Empty", const std::string& tag = "...", bool enabled = false, bool visible = false);
+
+		void internalInitialize(Game* game);
 	public:
 		std::string Name;
 		std::string Tag;
@@ -39,6 +38,8 @@ namespace Engine3DRadSpace
 		Game* GetGame();
 
 		virtual ~IObject() = default;
+
+		friend class Game;
 	};
 }
 

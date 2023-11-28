@@ -6,6 +6,7 @@
 class ModelControl : public AssetControl
 {
 	HWND _pictureBox = nullptr;
+	HWND _previewButton = nullptr;
 	HBITMAP _image = nullptr;
 public:
 	ModelControl(

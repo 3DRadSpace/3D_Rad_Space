@@ -12,6 +12,7 @@
 #include "Graphics/SpriteBatch.hpp"
 #include "Reflection/ReflectedObject.hpp"
 #include "ObjectList.hpp"
+#include "Physics/PhysicsEngine.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -44,9 +45,13 @@ namespace Engine3DRadSpace
 
 		Color ClearColor = Colors::Black;
 
+		std::unique_ptr<Physics::PhysicsEngine> Physics;
+
 		void Run();
 		void RunOneFrame();
 		void Exit();
+
+		void RequestPhysicsInitialization(const Math::Vector3& gravity);
 
 		virtual ~Game() = default;
 

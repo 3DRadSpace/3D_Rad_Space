@@ -81,3 +81,8 @@ int AssetControl::AccX()
 {
 	return _cx;
 }
+
+int AssetControl::AccY()
+{
+	return _cy;
+}

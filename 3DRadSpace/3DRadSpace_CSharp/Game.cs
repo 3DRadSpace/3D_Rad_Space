@@ -18,7 +18,7 @@
 		}
 
 		public Window Window { get; private set; }
-		public GraphicsDevice Device;
+		public GraphicsDevice Device { get; private set; }
 
 	}
 }

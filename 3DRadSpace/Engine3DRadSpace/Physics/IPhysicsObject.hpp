@@ -3,11 +3,13 @@
 
 namespace Engine3DRadSpace::Physics
 {
-	class IPhysicsObject : public IObject3D
+	class DLLEXPORT IPhysicsObject : public IObject3D
 	{
 	protected:
-		IPhysicsObject() = default;
+		explicit IPhysicsObject(const std::string& name = "", const std::string& tag = "", bool enabled = false, bool visible = false, const Math::Vector3& pos = Math::Vector3::Zero(),
+								const Math::Vector3& pivot = Math::Vector3::Zero(), const Math::Quaternion& rotation = Math::Quaternion(), const Math::Vector3& scale = Math::Vector3::One());
 	public:
 
+		virtual ~IPhysicsObject() = default;
 	};
 }

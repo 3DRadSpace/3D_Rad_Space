@@ -2,6 +2,7 @@
 #include "..\GDIFuncs.hpp"
 #include "TextureControl.hpp"
 #include "..\Windows\AssetManagerDialog.hpp"
+#include "..\..\Editor\SkinmeshPreviewer.hpp"
 
 ModelControl::ModelControl(
 	HWND owner,
@@ -19,7 +20,7 @@ ModelControl::ModelControl(
 		"",
 		WS_VISIBLE | WS_CHILD | SS_BITMAP | SS_REALSIZECONTROL,
 		x,
-		y,
+		y + _cy + 5,
 		200,
 		200,
 		owner,
@@ -36,6 +37,29 @@ ModelControl::ModelControl(
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
 	SetImage(_pictureBox,_image, imageWidth, imageHeight);
+
+	constexpr const char* previewBtnText = "Preview";
+
+	HDC hdc = GetDC(owner);
+	SIZE textSize;
+	GetTextExtentPointA(hdc, previewBtnText, int(strlen(previewBtnText)), &textSize);
+
+	_previewButton = CreateWindowExA(
+		0,
+		"Button",
+		previewBtnText,
+		WS_VISIBLE | WS_CHILD,
+		x + _cx + 10,
+		y,
+		textSize.cx + 5,
+		textSize.cy + 5,
+		owner,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	_cy += 205;
 }
 
 HWND ModelControl::GetPictureBox()
@@ -54,6 +78,14 @@ void ModelControl::HandleClick(HWND clickedHandle)
 			unsigned w, h;
 			_image = loadImageFromFile((*_content)[ModelReference]->Path.c_str(), w, h);
 			SetImage(_pictureBox, _image, w, h);
+		}
+	}
+	if (clickedHandle == _previewButton)
+	{
+		if (ModelReference.ID != 0)
+		{
+			SkinmeshPreviewer previewer(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path);
+			previewer.Run();
 		}
 	}
 }

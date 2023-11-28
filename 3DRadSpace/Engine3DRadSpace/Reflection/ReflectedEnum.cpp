@@ -2,11 +2,6 @@
 using namespace Engine3DRadSpace::Reflection;
 using namespace Engine3DRadSpace::Algorithms;
 
-const std::string ReflectedEnum::Name() const
-{
-	return _name;
-}
-
 const size_t ReflectedEnum::NumberOfEntries() const
 {
 	return _entries.Size() - 1;

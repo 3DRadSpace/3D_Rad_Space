@@ -277,8 +277,9 @@
     <ClInclude Include="Legacy.hpp" />
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
-    <ClInclude Include="Physics\PhysicsEngineAllocator.hpp" />
     <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
+    <ClInclude Include="Objects\GForce.hpp" />
+    <ClInclude Include="Physics\PhysicsSettings.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -461,6 +462,7 @@
     <ClCompile Include="Legacy.cpp" />
     <ClCompile Include="Physics\IPhysicsObject.cpp" />
     <ClCompile Include="Physics\PhysicsEngine.cpp" />
-    <ClCompile Include="Physics\PhysicsEngineAllocator.cpp" />
+    <ClCompile Include="Reflection\ReflectedEnumField.cpp" />
+    <ClCompile Include="Objects\GForce.cpp" />
   </ItemGroup>
 </Project>

@@ -380,7 +380,7 @@ void EditObjectDialog::createForms()
 				TextureControl *ctrl = new TextureControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
 
-				setMax(inc_y, 205 + textboxHeight);
+				setMax(inc_y, ctrl->AccY() + 5 + textboxHeight);
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
@@ -391,7 +391,7 @@ void EditObjectDialog::createForms()
 				ModelControl* ctrl = new ModelControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
 
-				setMax(inc_y, 205 + textboxHeight);
+				setMax(inc_y, ctrl->AccY() + 5 + textboxHeight);
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}

@@ -6,6 +6,7 @@
 REFL_FWD(Camera)
 REFL_FWD(Sprite)
 REFL_FWD(Skinmesh)
+REFL_FWD(GForce)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -160,8 +161,9 @@ void AddObjectDialog::createForms()
 			&CameraReflInstance, //Fog
 			&CameraReflInstance, //Force
 			&CameraReflInstance, //FPVCamera
-			&CameraReflInstance, //Settings
-			&CameraReflInstance, //G-Force
+			&CameraReflInstance, //Settings*/
+			{GForceReflInstance.ObjectUUID, &GForceReflInstance}, //G-Force
+			/*
 			&CameraReflInstance, //Group
 			&CameraReflInstance, //Network chat
 			&CameraReflInstance, //Rigidbody

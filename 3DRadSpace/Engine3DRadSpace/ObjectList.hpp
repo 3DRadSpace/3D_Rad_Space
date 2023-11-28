@@ -87,17 +87,17 @@ namespace Engine3DRadSpace
 	template<GameObject O, typename... Params>
 	inline std::pair<O*, unsigned> ObjectList::AddNew(Params&&... p)
 	{
-		auto obj = objects.emplace_back(std::make_shared<O>(std::forward<Params>(p)...));
+		auto &obj = objects.emplace_back(std::make_shared<O>(std::forward<Params>(p)...));
 		return std::make_pair(static_cast<O*>(obj.Object.get()), unsigned(objects.size() - 1));
 	}
 
 	template<GameObject O>
 	inline unsigned ObjectList::AddNew(O&& object)
 	{
-		auto new_obj = std::make_unique<O>(std::move(object));
+		auto new_obj = std::make_shared<O>(std::move(object));
 
-		objects.emplace_back(_get_list_type_index<O>(), std::move(new_obj));
-		return objects.size() - 1;
+		objects.emplace_back(std::move(new_obj));
+		return unsigned(objects.size() - 1);
 	}
 
 	template<GameObject O>

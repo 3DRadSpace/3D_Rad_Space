@@ -21,9 +21,9 @@ Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag
 }
 
 Skinmesh::Skinmesh(const std::string &name, bool visible, const std::string &tag, const std::filesystem::path &path, const
-                   Vector3&pos,
-    const Quaternion&rot, const Vector3&pivot, const Vector3&scale) :
-    IObject3D(name, tag, visible, visible, pos, pivot, rot, scale)
+                   Vector3&pos, const Quaternion&rot, const Vector3&pivot, const Vector3&scale) :
+    IObject3D(name, tag, visible, visible, pos, pivot, rot, scale),
+    _model(nullptr)
 {
     _path = std::make_unique<std::string>(path.string());
 }
