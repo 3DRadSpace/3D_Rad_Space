@@ -1,6 +1,6 @@
 #include "Dialog.hpp"
 
-Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::string &windowTitle):
+Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::string &windowTitle, short sx, short sy):
 	hInstance(instance),
 	dialogProc(dlgproc),
 	owner(hwndOwner),
@@ -24,8 +24,8 @@ Dialog::Dialog(HWND hwndOwner, HINSTANCE instance, DLGPROC dlgproc, const std::s
 	dialogTemplate->x = 0;
 	dialogTemplate->y = 0;
 
-	dialogTemplate->cx = 400;
-	dialogTemplate->cy = 300;
+	dialogTemplate->cx = sx;
+	dialogTemplate->cy = sy;
 
 	//After the dialog template, more data is expected, a menu handle, a dialog box class, title, and then dialog controls, such as buttons, labels, etc
 	LPWORD pWord = reinterpret_cast<LPWORD>(dialogTemplate + 1);

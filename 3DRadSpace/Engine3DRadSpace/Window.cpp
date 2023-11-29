@@ -174,7 +174,7 @@ Window::Window(void* hInstance,void* parentWindow)
     wndclass.hInstance = static_cast<HINSTANCE>(hInstance);
     
     ATOM a = RegisterClassA(&wndclass);
-    if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
+    //if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
 
     _hInstance = wndclass.hInstance;
 

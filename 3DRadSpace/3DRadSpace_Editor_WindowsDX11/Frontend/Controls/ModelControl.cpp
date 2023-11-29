@@ -2,7 +2,7 @@
 #include "..\GDIFuncs.hpp"
 #include "TextureControl.hpp"
 #include "..\Windows\AssetManagerDialog.hpp"
-#include "..\..\Editor\SkinmeshPreviewer.hpp"
+#include "..\Windows\SkinmeshPreviewDialog.hpp"
 
 ModelControl::ModelControl(
 	HWND owner,
@@ -29,6 +29,8 @@ ModelControl::ModelControl(
 		nullptr
 	))
 {
+	_cy += 205;
+
 	unsigned imageWidth;
 	unsigned imageHeight;
 	if (ModelReference.ID != 0)
@@ -49,9 +51,9 @@ ModelControl::ModelControl(
 		"Button",
 		previewBtnText,
 		WS_VISIBLE | WS_CHILD,
-		x + _cx + 10,
-		y,
-		textSize.cx + 5,
+		x + 10,
+		y + _cy,
+		200,
 		textSize.cy + 5,
 		owner,
 		nullptr,
@@ -59,7 +61,7 @@ ModelControl::ModelControl(
 		nullptr
 	);
 
-	_cy += 205;
+	_cy += textSize.cy + 5;
 }
 
 HWND ModelControl::GetPictureBox()
@@ -71,7 +73,7 @@ void ModelControl::HandleClick(HWND clickedHandle)
 {
 	if (clickedHandle == _pictureBox || clickedHandle == _button)
 	{
-		AssetManagerDialog assetManager(window, instance, _content);
+		AssetManagerDialog assetManager(owner, instance, _content);
 		ModelReference = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
 		if (ModelReference.ID != 0)
 		{
@@ -84,8 +86,8 @@ void ModelControl::HandleClick(HWND clickedHandle)
 	{
 		if (ModelReference.ID != 0)
 		{
-			SkinmeshPreviewer previewer(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path);
-			previewer.Run();
+			SkinmeshPreviewDialog previewer(owner, instance, std::filesystem::path(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path));
+			previewer.ShowDialog();
 		}
 	}
 }

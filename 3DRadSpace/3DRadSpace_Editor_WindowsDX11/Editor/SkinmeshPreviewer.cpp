@@ -4,23 +4,32 @@
 #include "../Frontend/Settings.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
-SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
-	Game((std::string("Skinmesh previewer - ") + meshPath.string()).c_str(), 800, 600, false)
+SkinmeshPreviewer::SkinmeshPreviewer(HWND owner, HINSTANCE hInstance, const std::filesystem::path &meshPath):
+	Game(Engine3DRadSpace::Window(static_cast<void*>(hInstance), static_cast<void*>(owner)))
 {
+	_basicShader.reset(new BasicTextured(Device.get()));
+
 	_skinmesh = std::make_unique<Skinmesh>("", true, "", meshPath);
 	_skinmesh->Load(Content.get());
 
-	_initialZoom = _skinmesh->GetModel()->GetBoundingSphere().Radius * 1.5f;
+	for (auto& meshPart : *_skinmesh->GetModel())
+	{
+		for (auto& modelMeshPart : *meshPart)
+		{
+			modelMeshPart->SetShaders(_basicShader);
+		}
+	}
+
+	_initialZoom = _skinmesh->GetModel()->GetBoundingSphere().Radius * 2.0f;
 
 	Camera camera("");
 	camera.LookAt = Vector3::Zero();
 
-	camera.Position = _initialZoom * Vector3::One();
-	camera.Position.Z *= -1;
 	camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
 	auto cameraID = Objects.AddNew<Camera>(std::move(camera));
 

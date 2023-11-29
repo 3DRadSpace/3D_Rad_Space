@@ -51,7 +51,7 @@ namespace Engine3DRadSpace
 
 		~Window();
 
-		friend LRESULT CALLBACK GameWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		friend LRESULT DLLEXPORT CALLBACK GameWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	};
 }
 

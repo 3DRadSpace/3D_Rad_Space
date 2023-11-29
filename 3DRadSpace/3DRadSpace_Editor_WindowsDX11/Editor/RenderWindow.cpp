@@ -42,14 +42,16 @@ void RenderWindow::Initialize()
 		VertexPositionColor{Vector3(0,0,-500),Colors::White},
 	};
 
-	for (int i = -10; i <= 10; i++)
+	constexpr int halfNumLines = 25;
+
+	for (int i = -halfNumLines; i <= halfNumLines; i++)
 	{
 		if (i == 0) continue;
-		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,10), Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,-10), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,halfNumLines), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(float(i),0,-halfNumLines), Colors::Gray });
 
-		dLines.push_back(VertexPositionColor{ Vector3(10, 0, float(i)), Colors::Gray });
-		dLines.push_back(VertexPositionColor{ Vector3(-10, 0, float(i)), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(halfNumLines, 0, float(i)), Colors::Gray });
+		dLines.push_back(VertexPositionColor{ Vector3(-halfNumLines, 0, float(i)), Colors::Gray });
 	}
 
 	this->lines = std::make_unique<Primitives::Lines>(Device.get(), dLines);
