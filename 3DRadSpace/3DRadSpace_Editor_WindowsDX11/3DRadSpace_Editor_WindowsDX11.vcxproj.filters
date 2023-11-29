@@ -99,9 +99,6 @@
     <ClCompile Include="Frontend\Windows\SettingsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Frontend\Windows\SkinmeshPreviewDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -174,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Includes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Frontend\Windows\SkinmeshPreviewDialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Physics;
 using namespace Engine3DRadSpace::Math;
 
-Game::Game(const char* title, unsigned width, unsigned height, bool fullscreen) :
+Game::Game(const std::string &title, unsigned width, unsigned height, bool fullscreen) :
 	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
 {
 	Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(),width,height);
@@ -82,6 +82,11 @@ void Game::RequestPhysicsInitialization(const Vector3 &gravity)
 			.Gravity = gravity,
 		}
 	);
+}
+
+Engine3DRadSpace::Game::~Game()
+{
+	Exit();
 }
 
 

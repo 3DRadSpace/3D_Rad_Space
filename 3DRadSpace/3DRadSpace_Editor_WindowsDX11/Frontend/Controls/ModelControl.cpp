@@ -2,7 +2,7 @@
 #include "..\GDIFuncs.hpp"
 #include "TextureControl.hpp"
 #include "..\Windows\AssetManagerDialog.hpp"
-#include "..\Windows\SkinmeshPreviewDialog.hpp"
+#include "../../Editor/SkinmeshPreviewer.hpp"
 
 ModelControl::ModelControl(
 	HWND owner,
@@ -84,10 +84,15 @@ void ModelControl::HandleClick(HWND clickedHandle)
 	}
 	if (clickedHandle == _previewButton)
 	{
-		if (ModelReference.ID != 0)
+		if (ModelReference.ID != 0 && _previwer == nullptr)
 		{
-			SkinmeshPreviewDialog previewer(owner, instance, std::filesystem::path(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path));
-			previewer.ShowDialog();
+			_previwer = std::make_unique<SkinmeshPreviewer>(std::filesystem::path(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path));
+			
+			std::thread previewThread([](SkinmeshPreviewer* preview)
+			{
+				preview->Run();
+			}, _previwer.get());
+			previewThread.detach();
 		}
 	}
 }

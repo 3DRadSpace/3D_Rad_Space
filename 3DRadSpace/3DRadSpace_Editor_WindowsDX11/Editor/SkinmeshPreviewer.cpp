@@ -9,8 +9,8 @@ using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Math;
 
-SkinmeshPreviewer::SkinmeshPreviewer(HWND owner, HINSTANCE hInstance, const std::filesystem::path &meshPath):
-	Game(Engine3DRadSpace::Window(static_cast<void*>(hInstance), static_cast<void*>(owner)))
+SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
+	Game(std::string("Skinmesh previewer -") + meshPath.string())
 {
 	_basicShader.reset(new BasicTextured(Device.get()));
 

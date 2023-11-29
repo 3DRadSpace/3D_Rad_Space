@@ -22,7 +22,7 @@ namespace Engine3DRadSpace
 		void _handleMouse(Math::Point pos,bool left,bool middle, bool right);
 		void _resetKeyboard();
 	public:
-		Window(const char* title, int width = 800, int height = 600);
+		Window(const std::string& title, int width = 800, int height = 600);
 		//Used for the Windows editor frontend.
 		Window(void* hInstance, void* parentWindow);
 

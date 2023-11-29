@@ -25,12 +25,13 @@ namespace Engine3DRadSpace
 		double u_dt = 0;
 		double d_dt = 0;
 	public:
-		Game(const char* title, unsigned width = 800, unsigned height = 600, bool fullscreen = false);
+		Game(const std::string &title, unsigned width = 800, unsigned height = 600, bool fullscreen = false);
 		Game(Window&& window);
 
 		Game(Game&) = delete;
 		Game(Game&&) = delete;
-		Game& operator=(Game&) = delete;
+		Game& operator=(const Game&) = delete;
+		Game& operator=(Game&&) = delete;
 
 		std::unique_ptr<Window> Window;
 		std::unique_ptr<GraphicsDevice> Device;
@@ -53,7 +54,7 @@ namespace Engine3DRadSpace
 
 		void RequestPhysicsInitialization(const Math::Vector3& gravity);
 
-		virtual ~Game() = default;
+		virtual ~Game();
 
 		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager* content) override;

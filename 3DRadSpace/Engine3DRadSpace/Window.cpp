@@ -133,7 +133,7 @@ void Window::_resetKeyboard()
     _keyboard._erase();
 }
 
-Window::Window(const char* title, int width, int height)
+Window::Window(const std::string &title, int width, int height)
 {
 #ifdef _WIN32
     WNDCLASSA wndclass{};
@@ -144,14 +144,14 @@ Window::Window(const char* title, int width, int height)
     wndclass.hCursor = LoadCursorA(nullptr, MAKEINTRESOURCEA(32512)); //IDI_CURSOR
     
     ATOM a = RegisterClassA(&wndclass);
-    if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
+    //if (a == 0) throw std::runtime_error("Failed to register the window class for the game window!");
 
     _hInstance = wndclass.hInstance;
 
     _window = CreateWindowExA(
         0, 
         "3DRSP_GAME",
-        title, 
+        title.c_str(),
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT,
         CW_USEDEFAULT,

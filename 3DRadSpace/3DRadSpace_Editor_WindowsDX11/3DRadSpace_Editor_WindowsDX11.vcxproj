@@ -183,7 +183,6 @@
     <ClCompile Include="Frontend\GDIFuncs.cpp" />
     <ClCompile Include="Frontend\HelperFunctions.cpp" />
     <ClCompile Include="Frontend\Controls\IControl.cpp" />
-    <ClCompile Include="Frontend\Windows\SkinmeshPreviewDialog.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Frontend\Controls\ModelControl.cpp" />
     <ClCompile Include="Frontend\Controls\NumericTextbox.cpp" />
@@ -196,7 +195,6 @@
   <ItemGroup>
     <ClInclude Include="Frontend\AutoupdaterState.hpp" />
     <ClInclude Include="Frontend\Settings.hpp" />
-    <ClInclude Include="Frontend\Windows\SkinmeshPreviewDialog.hpp" />
     <ClInclude Include="Frontend\Windows\AddObjectDialog.hpp" />
     <ClInclude Include="Frontend\Controls\AssetControl.hpp" />
     <ClInclude Include="Frontend\AssetListRenderer.hpp" />

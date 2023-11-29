@@ -20,7 +20,8 @@ class SkinmeshPreviewer : public Engine3DRadSpace::Game
 		sinf(std::numbers::pi_v<float> / 6)
 	};
 public:
-	explicit SkinmeshPreviewer(HWND owner, HINSTANCE hInstance, const std::filesystem::path& modelPath);
+
+	explicit SkinmeshPreviewer(const std::filesystem::path& modelPath);
 
 	SkinmeshPreviewer(SkinmeshPreviewer &) = delete;
 	SkinmeshPreviewer &operator=(SkinmeshPreviewer &) = delete;

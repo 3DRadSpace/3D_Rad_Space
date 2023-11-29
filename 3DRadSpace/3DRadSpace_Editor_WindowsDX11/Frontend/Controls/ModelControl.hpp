@@ -3,11 +3,13 @@
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
 
+class SkinmeshPreviewer;
 class ModelControl : public AssetControl
 {
 	HWND _pictureBox = nullptr;
 	HWND _previewButton = nullptr;
 	HBITMAP _image = nullptr;
+	std::unique_ptr<SkinmeshPreviewer> _previwer = nullptr;
 public:
 	ModelControl(
 		HWND owner,
