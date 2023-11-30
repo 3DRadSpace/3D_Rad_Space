@@ -7,6 +7,9 @@ TEST(LinearAlgebraTests,Vector)
 {
 	//Basic cross product test:
 	Vector3 a = Vector3::UnitX(), b = Vector3::UnitY();
-	EXPECT_EQ(Vector3::Cross(a, b),Vector3::UnitZ());
-	
+	Vector3 unitZ = Vector3::UnitZ();
+
+	EXPECT_FLOAT_EQ(Vector3::Cross(a, b).X, unitZ.X);
+	EXPECT_FLOAT_EQ(Vector3::Cross(a, b).Y, unitZ.Y);
+	EXPECT_FLOAT_EQ(Vector3::Cross(a, b).Z, unitZ.Z);
 }

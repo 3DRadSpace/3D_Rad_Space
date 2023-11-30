@@ -29,6 +29,9 @@ namespace Engine3DRadSpace
 			void Set(unsigned index = 0);
 			void SetData(std::span<unsigned> newindices);
 
+			size_t ReadData(void** data);
+			void EndRead();
+
 			unsigned NumIndices() const;
 
 			~IndexBuffer() = default;

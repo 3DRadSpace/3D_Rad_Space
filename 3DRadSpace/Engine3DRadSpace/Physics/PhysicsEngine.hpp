@@ -20,7 +20,7 @@ namespace physx
 namespace Engine3DRadSpace::Physics
 {
 	/*
-		Manages physics scene, and physics object creation.
+		Manages physics scene, and physics object factory.
 	*/
 	class DLLEXPORT PhysicsEngine
 	{

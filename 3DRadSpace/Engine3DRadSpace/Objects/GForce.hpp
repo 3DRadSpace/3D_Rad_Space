@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Objects
 	/// <summary>
 	/// A GForce object is a object that enables physics simulation and specifies the gravity.
 	/// </summary>
-	class GForce : public IObject
+	class DLLEXPORT GForce : public IObject
 	{
 	public:
 		GForce(const std::string& name = "GForce", bool enabled = true, const std::string& tag = "", const Math::Vector3& gravity = Math::Vector3(0, -9.81f, 0));

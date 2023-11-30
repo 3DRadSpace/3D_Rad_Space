@@ -40,7 +40,7 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	std::unique_ptr<Engine3DRadSpace::Graphics::Fonts::Font> testFont;
 	std::unique_ptr<Engine3DRadSpace::Graphics::Fonts::FontShader> fontShader;
-	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<VertexPointUV>> fontBuff;
+	std::unique_ptr<Engine3DRadSpace::Graphics::VertexBufferV<Engine3DRadSpace::Graphics::VertexPointUV>> fontBuff;
 public:
 	RenderWindow(HWND parent, HINSTANCE hInstance);
 

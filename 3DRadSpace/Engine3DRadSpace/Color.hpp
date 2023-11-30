@@ -21,12 +21,15 @@ namespace Engine3DRadSpace
 	};
 	namespace Colors
 	{
-		constexpr Color White = {1.0f,1.0f,1.0f,1.0f};
-		constexpr Color Red = {1.0f,0.0f,0.0f,1.0f};
-		constexpr Color Green = {0.0f,1.0f,0.0f,1.0f};
-		constexpr Color Blue = {0.0f,0.0f,1.0f,1.0f};
-		constexpr Color Black = {0.0f,0.0f,0.0f,1.0f};
+		constexpr Color White = {1.0f, 1.0f, 1.0f, 1.0f};
+		constexpr Color Red = {1.0f, 0.0f, 0.0f, 1.0f};
+		constexpr Color Green = {0.0f, 1.0f, 0.0f, 1.0f};
+		constexpr Color Blue = {0.0f, 0.0f, 1.0f, 1.0f};
+		constexpr Color Black = {0.0f, 0.0f, 0.0f, 1.0f};
 		constexpr Color Gray = {0.5f, 0.5f, 0.5f, 1.0f};
 		constexpr Color DarkGray = {0.25f, 0.25f, 0.25f, 1.0f};
+		constexpr Color Yellow = { 1.0f, 1.0f, 0.0f, 1.0f };
+		constexpr Color Pink = { 1.0f, 0.0f, 1.0f, 1.0f };
+		constexpr Color Cyan = { 0.0f, 1.0f, 1.0f, 1.0f };
 	};
 }

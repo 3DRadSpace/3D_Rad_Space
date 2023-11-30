@@ -19,6 +19,7 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
+using namespace Engine3DRadSpace::Math;
 
 GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, unsigned width, unsigned height) :
 	EnableVSync(true),
@@ -128,6 +129,17 @@ void GraphicsDevice::SetViewports(std::span<Viewport> viewports)
 #ifdef USING_DX11
 	_context->RSSetViewports(static_cast<UINT>(viewports.size()), reinterpret_cast<D3D11_VIEWPORT*>(&viewports[0]));
 #endif // USING_DX11
+}
+
+Viewport Engine3DRadSpace::GraphicsDevice::GetViewport()
+{
+#ifdef USING_DX11
+	UINT numVp = 1;
+	D3D11_VIEWPORT vp{};
+	_context->RSGetViewports(&numVp, &vp);
+
+	return Viewport(RectangleF(vp.TopLeftX, vp.TopLeftY, vp.Width, vp.Height), vp.MinDepth, vp.MaxDepth);
+#endif
 }
 
 void GraphicsDevice::SetRenderTarget(RenderTarget*renderTarget)
@@ -274,7 +286,10 @@ void GraphicsDevice::DrawAuto()
 void GraphicsDevice::SetRasterizerState(const RasterizerState *state)
 {
 #ifdef USING_DX11
-	_context->RSSetState(state->_rasterizerState.Get());
+	if (state != nullptr)
+		_context->RSSetState(state->_rasterizerState.Get());
+	else 
+		_context->RSSetState(nullptr);
 #endif
 }
 

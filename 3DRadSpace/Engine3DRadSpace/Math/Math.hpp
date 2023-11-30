@@ -18,4 +18,6 @@ namespace Engine3DRadSpace::Math
 
 	double DLLEXPORT SmoothStep(double value1, double value2, double amount);
 	double DLLEXPORT ReLU(double x);
+
+	bool DLLEXPORT WithinEpsilon(float a, float b);
 }

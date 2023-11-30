@@ -63,6 +63,7 @@ namespace Engine3DRadSpace
 		void SetViewport(const Viewport& viewport);
 
 		void SetViewports(std::span<Viewport> viewports);
+		Viewport GetViewport();
 
 		void SetRenderTarget(Graphics::RenderTarget *remderTarget);
 		void SetRenderTargetAndDepth(Graphics::RenderTarget *renderTarget, Graphics::DepthStencilBuffer *depthBuffer);

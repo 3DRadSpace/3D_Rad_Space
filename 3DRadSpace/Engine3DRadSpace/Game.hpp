@@ -53,6 +53,7 @@ namespace Engine3DRadSpace
 		void Exit();
 
 		void RequestPhysicsInitialization(const Math::Vector3& gravity);
+		Math::Ray GetMouseRay(const Math::Vector2& mousePosition, const Math::Matrix4x4& view, const Math::Matrix4x4& projection);
 
 		virtual ~Game();
 

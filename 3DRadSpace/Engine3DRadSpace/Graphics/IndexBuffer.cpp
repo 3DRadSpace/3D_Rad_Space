@@ -68,6 +68,24 @@ void IndexBuffer::SetData(std::span<unsigned> newindices)
 #endif
 }
 
+size_t Engine3DRadSpace::Graphics::IndexBuffer::ReadData(void** data)
+{
+#ifdef USING_DX11
+	D3D11_MAPPED_SUBRESOURCE res{};
+	_device->_context->Map(_indexBuffer.Get(), 0, D3D11_MAP_READ, 0, &res);
+
+	*data = res.pData;
+	return res.DepthPitch;
+#endif
+}
+
+void Engine3DRadSpace::Graphics::IndexBuffer::EndRead()
+{
+#ifdef USING_DX11
+	_device->_context->Unmap(_indexBuffer.Get(), 0);
+#endif
+}
+
 unsigned IndexBuffer::NumIndices() const
 {
 	return _numIndices;

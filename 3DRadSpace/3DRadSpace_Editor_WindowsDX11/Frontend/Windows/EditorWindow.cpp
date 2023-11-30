@@ -687,6 +687,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case ACC_ADD_PREFAB:
 					break;
 				case CMD_ResetCursor:
+					gEditorWindow->editor->Reset3DCursor();
 					break;				
 				case CMD_Preferences:
 				{

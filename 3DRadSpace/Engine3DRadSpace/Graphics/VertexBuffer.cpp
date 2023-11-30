@@ -56,6 +56,24 @@ void VertexBuffer::SetData(void *data, size_t size)
 #endif
 }
 
+size_t VertexBuffer::ReadData(void** data)
+{
+#ifdef USING_DX11
+	D3D11_MAPPED_SUBRESOURCE res{};
+	_device->_context->Map(_buffer.Get(), 0, D3D11_MAP_READ, 0, &res);
+
+	*data = res.pData;
+	return size_t(res.DepthPitch);
+#endif
+}
+
+void Engine3DRadSpace::Graphics::VertexBuffer::EndRead()
+{
+#ifdef USING_DX11
+	_device->_context->Unmap(_buffer.Get(), 0);
+#endif
+}
+
 void VertexBuffer::Set()
 {
 #ifdef USING_DX11

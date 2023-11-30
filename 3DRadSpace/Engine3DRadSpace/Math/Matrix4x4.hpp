@@ -54,7 +54,11 @@ namespace Engine3DRadSpace::Math
 		Matrix4x4 operator*(float scalar) const;
 		Matrix4x4& operator *=(float scalar);
 
-		Matrix4x4 Transpose();
+		Matrix4x4& Transpose();
+		static Matrix4x4 Transpose(const Matrix4x4& m);
+
+		Matrix4x4& Invert();
+		static Matrix4x4 Invert(const Matrix4x4& m);
 
 		float& operator[](unsigned index);
 

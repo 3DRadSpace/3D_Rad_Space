@@ -74,8 +74,6 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Settings::Load();
 
-	//SkinmeshPreviewer prev(nullptr, hInstance, "Data\\Models\\Yellowfish.x");
-	//prev.Run();
 	EditorWindow editor(hInstance, cmdArgs);
 	editor.Run();
 

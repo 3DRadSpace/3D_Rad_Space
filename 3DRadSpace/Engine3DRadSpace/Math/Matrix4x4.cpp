@@ -1,5 +1,6 @@
 #include "Matrix4x4.hpp"
 #include "Matrix3x3.hpp"
+#include <DirectXMath.h>
 
 using namespace Engine3DRadSpace::Math;
 
@@ -126,9 +127,19 @@ Matrix4x4 Engine3DRadSpace::Math::Matrix4x4::CreateRotationYawPitchRoll(float ya
 
 Matrix4x4 Matrix4x4::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,const Vector3 &up_dir)
 {
+	/*
+	auto m = DirectX::XMMatrixLookAtRH({ pos.X, pos.Y, pos.Z }, { look_at.X, look_at.Y, look_at.Z }, { up_dir.X, up_dir.Y, up_dir.Z });
+
+	return Matrix4x4(
+		m.r[0].m128_f32[0], m.r[0].m128_f32[1], m.r[0].m128_f32[2], m.r[0].m128_f32[3],
+		m.r[1].m128_f32[0], m.r[1].m128_f32[1], m.r[1].m128_f32[2], m.r[1].m128_f32[3],
+		m.r[2].m128_f32[0], m.r[2].m128_f32[1], m.r[2].m128_f32[2], m.r[2].m128_f32[3],
+		m.r[3].m128_f32[0], m.r[3].m128_f32[1], m.r[3].m128_f32[2], m.r[3].m128_f32[3]
+	);
+	*/
 	const Vector3 forward = (pos - look_at).Normalize();
 	const Vector3 right = Vector3::Cross(up_dir, forward).Normalize();
-	const Vector3 up = Vector3::Cross(forward,right);
+	const Vector3 up = Vector3::Cross(forward, right);
 
 	return Matrix4x4(
 		right.X, up.X, forward.X, 0,
@@ -139,17 +150,27 @@ Matrix4x4 Matrix4x4::CreateLookAtView(const Vector3 &pos,const Vector3 &look_at,
 }
 
 Matrix4x4 Matrix4x4::CreatePerspectiveProjection(float aspectRatio, float FOV, float npd, float fpd)
-{
+{	
+	/*
+	auto m = DirectX::XMMatrixPerspectiveFovRH(FOV, aspectRatio, npd, fpd);
+
+	return Matrix4x4(
+		m.r[0].m128_f32[0], m.r[0].m128_f32[1], m.r[0].m128_f32[2], m.r[0].m128_f32[3],
+		m.r[1].m128_f32[0], m.r[1].m128_f32[1], m.r[1].m128_f32[2], m.r[1].m128_f32[3],
+		m.r[2].m128_f32[0], m.r[2].m128_f32[1], m.r[2].m128_f32[2], m.r[2].m128_f32[3],
+		m.r[3].m128_f32[0], m.r[3].m128_f32[1], m.r[3].m128_f32[2], m.r[3].m128_f32[3]
+	);
+	*/
+	
 	float h = 1.0f / tan(FOV * 0.5f);
 	float w = h / aspectRatio;
 	float a = fpd / (npd - fpd);
-	float b = (npd * fpd) / (npd - fpd);
 
 	return Matrix4x4(
 		w, 0, 0, 0,
 		0, h, 0, 0,
 		0, 0, a, -1,
-		0, 0, b, 0
+		0, 0, npd * a, 0
 	);
 }
 
@@ -405,6 +426,20 @@ Matrix4x4 Matrix4x4::operator-=(const Matrix4x4 &m)
 
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 {
+	/*
+	auto m1 = DirectX::XMMATRIX(reinterpret_cast<float*>(const_cast<Matrix4x4*>(this)));
+	auto m2 = DirectX::XMMATRIX(reinterpret_cast<float*>(const_cast<Matrix4x4*>(&mat)));
+
+	auto m = DirectX::XMMatrixMultiply(m1, m2);
+
+	return Matrix4x4(
+		m.r[0].m128_f32[0], m.r[0].m128_f32[1], m.r[0].m128_f32[2], m.r[0].m128_f32[3],
+		m.r[1].m128_f32[0], m.r[1].m128_f32[1], m.r[1].m128_f32[2], m.r[1].m128_f32[3],
+		m.r[2].m128_f32[0], m.r[2].m128_f32[1], m.r[2].m128_f32[2], m.r[2].m128_f32[3],
+		m.r[3].m128_f32[0], m.r[3].m128_f32[1], m.r[3].m128_f32[2], m.r[3].m128_f32[3]
+	);
+	*/
+	
 	Matrix4x4 r;
 	r.M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
 	r.M12 = M11 * m.M12 + M12 * m.M22 + M13 * m.M32 + M14 * m.M42;
@@ -430,6 +465,16 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 
 Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& m)
 {
+	/*
+	auto m1 = DirectX::XMMATRIX(reinterpret_cast<float*>(this));
+	auto m2 = DirectX::XMMATRIX(reinterpret_cast<float*>(const_cast<Matrix4x4*>(&m)));
+
+	auto r = DirectX::XMMatrixMultiply(m1, m2);
+
+	memcpy(this, &r, sizeof(Matrix4x4));
+	return *this;
+	*/
+	
 	this->M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M31 + M14 * m.M41;
 	this->M12 = M11 * m.M12 + M12 * m.M22 + M13 * m.M32 + M14 * m.M42;
 	this->M13 = M11 * m.M13 + M12 * m.M23 + M13 * m.M33 + M14 * m.M43;
@@ -503,7 +548,7 @@ Matrix4x4& Matrix4x4::operator*=(float scalar)
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::Transpose()
+Matrix4x4& Matrix4x4::Transpose()
 {
 	const Matrix4x4 copy = *this;
 	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
@@ -524,6 +569,104 @@ Matrix4x4 Matrix4x4::Transpose()
 	M43 = copy.M34;
 
 	return *this;
+}
+
+Matrix4x4 Matrix4x4::Transpose(const Matrix4x4& m)
+{
+	Matrix4x4 r;
+
+	r.M11 = m.M11;
+	r.M22 = m.M22;
+	r.M33 = m.M33;
+	r.M44 = m.M44;
+
+	r.M12 = m.M21;
+	r.M13 = m.M31;
+	r.M14 = m.M41;
+
+	r.M21 = m.M12;
+	r.M23 = m.M32;
+	r.M24 = m.M42;
+
+	r.M31 = m.M13;
+	r.M32 = m.M23;
+	r.M34 = m.M43;
+
+	r.M41 = m.M14;
+	r.M42 = m.M24;
+	r.M43 = m.M34;
+
+	return r;
+}
+
+Matrix4x4& Matrix4x4::Invert()
+{
+		//https://github.com/MonoGame/MonoGame/blob/develop/MonoGame.Framework/Matrix.cs
+
+		float num1 = M11;
+		float num2 = M12;
+		float num3 = M13;
+		float num4 = M14;
+		float num5 = M21;
+		float num6 = M22;
+		float num7 = M23;
+		float num8 = M24;
+		float num9 = M31;
+		float num10 = M32;
+		float num11 = M33;
+		float num12 = M34;
+		float num13 = M41;
+		float num14 = M42;
+		float num15 = M43;
+		float num16 = M44;
+		float num17 = (float)((double)num11 * (double)num16 - (double)num12 * (double)num15);
+		float num18 = (float)((double)num10 * (double)num16 - (double)num12 * (double)num14);
+		float num19 = (float)((double)num10 * (double)num15 - (double)num11 * (double)num14);
+		float num20 = (float)((double)num9 * (double)num16 - (double)num12 * (double)num13);
+		float num21 = (float)((double)num9 * (double)num15 - (double)num11 * (double)num13);
+		float num22 = (float)((double)num9 * (double)num14 - (double)num10 * (double)num13);
+		float num23 = (float)((double)num6 * (double)num17 - (double)num7 * (double)num18 + (double)num8 * (double)num19);
+		float num24 = (float)-((double)num5 * (double)num17 - (double)num7 * (double)num20 + (double)num8 * (double)num21);
+		float num25 = (float)((double)num5 * (double)num18 - (double)num6 * (double)num20 + (double)num8 * (double)num22);
+		float num26 = (float)-((double)num5 * (double)num19 - (double)num6 * (double)num21 + (double)num7 * (double)num22);
+		float num27 = (float)(1.0 / ((double)num1 * (double)num23 + (double)num2 * (double)num24 + (double)num3 * (double)num25 + (double)num4 * (double)num26));
+
+		M11 = num23 * num27;
+		M21 = num24 * num27;
+		M31 = num25 * num27;
+		M41 = num26 * num27;
+		M12 = (float)-((double)num2 * (double)num17 - (double)num3 * (double)num18 + (double)num4 * (double)num19) * num27;
+		M22 = (float)((double)num1 * (double)num17 - (double)num3 * (double)num20 + (double)num4 * (double)num21) * num27;
+		M32 = (float)-((double)num1 * (double)num18 - (double)num2 * (double)num20 + (double)num4 * (double)num22) * num27;
+		M42 = (float)((double)num1 * (double)num19 - (double)num2 * (double)num21 + (double)num3 * (double)num22) * num27;
+		float num28 = (float)((double)num7 * (double)num16 - (double)num8 * (double)num15);
+		float num29 = (float)((double)num6 * (double)num16 - (double)num8 * (double)num14);
+		float num30 = (float)((double)num6 * (double)num15 - (double)num7 * (double)num14);
+		float num31 = (float)((double)num5 * (double)num16 - (double)num8 * (double)num13);
+		float num32 = (float)((double)num5 * (double)num15 - (double)num7 * (double)num13);
+		float num33 = (float)((double)num5 * (double)num14 - (double)num6 * (double)num13);
+		M13 = (float)((double)num2 * (double)num28 - (double)num3 * (double)num29 + (double)num4 * (double)num30) * num27;
+		M23 = (float)-((double)num1 * (double)num28 - (double)num3 * (double)num31 + (double)num4 * (double)num32) * num27;
+		M33 = (float)((double)num1 * (double)num29 - (double)num2 * (double)num31 + (double)num4 * (double)num33) * num27;
+		M43 = (float)-((double)num1 * (double)num30 - (double)num2 * (double)num32 + (double)num3 * (double)num33) * num27;
+		float num34 = (float)((double)num7 * (double)num12 - (double)num8 * (double)num11);
+		float num35 = (float)((double)num6 * (double)num12 - (double)num8 * (double)num10);
+		float num36 = (float)((double)num6 * (double)num11 - (double)num7 * (double)num10);
+		float num37 = (float)((double)num5 * (double)num12 - (double)num8 * (double)num9);
+		float num38 = (float)((double)num5 * (double)num11 - (double)num7 * (double)num9);
+		float num39 = (float)((double)num5 * (double)num10 - (double)num6 * (double)num9);
+		M14 = (float)-((double)num2 * (double)num34 - (double)num3 * (double)num35 + (double)num4 * (double)num36) * num27;
+		M24 = (float)((double)num1 * (double)num34 - (double)num3 * (double)num37 + (double)num4 * (double)num38) * num27;
+		M34 = (float)-((double)num1 * (double)num35 - (double)num2 * (double)num37 + (double)num4 * (double)num39) * num27;
+		M44 = (float)((double)num1 * (double)num36 - (double)num2 * (double)num38 + (double)num3 * (double)num39) * num27;
+
+		return *this;
+}
+
+Matrix4x4 Matrix4x4::Invert(const Matrix4x4& m)
+{
+	auto r = Matrix4x4(m).Invert();
+	return r;
 }
 
 float& Matrix4x4::operator[](unsigned index)

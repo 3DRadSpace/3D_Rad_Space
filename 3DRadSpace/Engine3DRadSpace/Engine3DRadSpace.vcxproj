@@ -168,7 +168,6 @@
     <ClInclude Include="Graphics\Fonts\Font.hpp" />
     <ClInclude Include="Graphics\Fonts\FontShader.hpp" />
     <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
-    <ClInclude Include="Graphics\Primitives\PlaneQuad.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingShader.hpp" />
     <ClInclude Include="Graphics\Rendering\ForwardRenderer.hpp" />
@@ -287,7 +286,6 @@
     <ClCompile Include="Graphics\ModelMeshPart.cpp" />
     <ClCompile Include="Graphics\Primitives\Box.cpp" />
     <ClCompile Include="Graphics\Primitives\Lines.cpp" />
-    <ClCompile Include="Graphics\Primitives\PlaneQuad.cpp" />
     <ClCompile Include="Graphics\Primitives\Sphere.cpp" />
     <ClCompile Include="Graphics\RasterizerState.cpp" />
     <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
@@ -341,6 +339,7 @@
     <ClCompile Include="Graphics\RenderTarget.cpp" />
     <ClCompile Include="Objects\Sprite.cpp" />
     <ClCompile Include="Objects\Skinmesh.cpp" />
+    <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

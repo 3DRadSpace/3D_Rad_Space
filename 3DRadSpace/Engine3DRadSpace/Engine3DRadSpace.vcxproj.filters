@@ -266,7 +266,6 @@
     <ClInclude Include="Math\Plane.hpp" />
     <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
     <ClInclude Include="Graphics\Fonts\Font.hpp" />
-    <ClInclude Include="Graphics\Primitives\PlaneQuad.hpp" />
     <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
     <ClInclude Include="Concepts.hpp" />
@@ -454,7 +453,6 @@
     <ClCompile Include="Graphics\Rendering\ForwardRenderer.cpp" />
     <ClCompile Include="Math\Matrix3x3.cpp" />
     <ClCompile Include="Graphics\Fonts\Font.cpp" />
-    <ClCompile Include="Graphics\Primitives\PlaneQuad.cpp" />
     <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Math\Plane.cpp" />
     <ClCompile Include="Graphics\Fonts\FontShader.cpp" />
@@ -464,5 +462,6 @@
     <ClCompile Include="Physics\PhysicsEngine.cpp" />
     <ClCompile Include="Reflection\ReflectedEnumField.cpp" />
     <ClCompile Include="Objects\GForce.cpp" />
+    <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
 </Project>

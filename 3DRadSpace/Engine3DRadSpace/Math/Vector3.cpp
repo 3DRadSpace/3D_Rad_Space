@@ -88,7 +88,7 @@ Vector3& Vector3::operator+=(const Vector3& v)
 
 Vector3 Vector3::operator+(const Vector3& v) const
 {
-    return Vector3{ this->X + v.X, this->Y + v.Y, this->Z + v.Z };
+    return Vector3{ X + v.X, Y + v.Y, Z + v.Z };
 }
 
 Vector3& Vector3::operator-=(const Vector3& v)

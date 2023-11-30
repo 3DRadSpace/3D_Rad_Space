@@ -71,3 +71,9 @@ double DLLEXPORT Engine3DRadSpace::Math::ReLU(double x)
 {
     return std::max(0.0, x);
 }
+
+bool DLLEXPORT Engine3DRadSpace::Math::WithinEpsilon(float a, float b)
+{
+    float num = a - b;
+    return ((-1.401298E-45f <= num) && (num <= std::numeric_limits<float>::epsilon()));
+}

@@ -44,6 +44,10 @@ namespace Engine3DRadSpace
 			VertexBuffer &operator=(VertexBuffer &&) noexcept = default;
 
 			void SetData(void* data, size_t dataSize);
+			
+			size_t ReadData(void** data);
+			void EndRead();
+
 			void Set();
 			void Draw(unsigned startIndex = 0);
 
