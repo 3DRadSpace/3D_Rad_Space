@@ -74,6 +74,15 @@ Vector2& Vector2::operator-()
     return *this;
 }
 
+Vector2 Vector2::operator-() const
+{
+    auto c = Vector2(*this);
+    c.X *= -1;
+    c.Y *= -1;
+
+    return c;
+}
+
 Vector2& Vector2::operator-=(const Vector2& v)
 {
     this->X -= v.X;
@@ -128,12 +137,12 @@ Vector2 Vector2::ConvertFromScreenCoordsToClipSpace(const Vector2& point, const 
     return ConvertFromNormalizedScreenSpaceToClipSpace(Hadamard(point, 1 / resolution));
 }
 
-Vector2 operator*(float s, const Vector2& v)
+Vector2 Engine3DRadSpace::Math::operator*(float s, const Vector2& v)
 {
     return Vector2(s * v.X, s * v.Y);
 }
 
-Vector2 operator/(float s, const Vector2& v)
+Vector2 Engine3DRadSpace::Math::operator/(float s, const Vector2& v)
 {
     return Vector2{ s / v.X, s / v.Y };
 }
@@ -185,9 +194,4 @@ Vector2 Vector2::Transform(const Vector2& v, const Matrix3x3& m)
         v.X * m.M11 + v.Y * m.M12 + m.M13,
         v.X * m.M21 + v.Y * m.M22 + m.M13
     };
-}
-
-Vector2 Engine3DRadSpace::Math::operator/(float s, const Vector2& v)
-{
-    return Vector2{ s / v.X, s / v.Y };
 }

@@ -185,6 +185,7 @@
     <ClInclude Include="ObjectList.hpp" />
     <ClInclude Include="Algorithms\Picking\PickingRenderTargetRender.hpp" />
     <ClInclude Include="Graphics\PixelFormat.hpp" />
+    <ClInclude Include="Objects\Empty.hpp" />
     <ClInclude Include="Objects\GForce.hpp" />
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
@@ -328,6 +329,7 @@
     <ClCompile Include="ObjectList.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
+    <ClCompile Include="Objects\Empty.cpp" />
     <ClCompile Include="Objects\GForce.cpp" />
     <ClCompile Include="Physics\IPhysicsObject.cpp" />
     <ClCompile Include="Physics\PhysicsEngine.cpp" />

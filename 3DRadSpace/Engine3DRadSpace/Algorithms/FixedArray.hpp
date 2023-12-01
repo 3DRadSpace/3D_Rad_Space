@@ -13,12 +13,20 @@ namespace Engine3DRadSpace::Algorithms
 		size_t _num;
 		std::unique_ptr<T[]> _data;
 	public:
+		/// <summary>
+		/// Creates T[numElements].
+		/// </summary>
+		/// <param name="numElements">Number of elements</param>
 		explicit FixedArray(size_t numElements) :
 			_num(numElements),
 			_data(std::make_unique<T[]>(numElements))
 		{
 		}
 
+		/// <summary>
+		/// Copies elements from an initializer list.
+		/// </summary>
+		/// <param name="lst">Initializer list</param>
 		FixedArray(std::initializer_list<T> lst)
 		{
 			_num = std::distance(lst.begin(), lst.end());
@@ -31,6 +39,10 @@ namespace Engine3DRadSpace::Algorithms
 			}
 		}
 
+		/// <summary>
+		/// Copy constructor.
+		/// </summary>
+		/// <param name="c">Object to be copied.</param>
 		FixedArray(const FixedArray& c) :
 			_num(c._num),
 			_data(std::make_unique<T[]>(c._num))
@@ -39,18 +51,36 @@ namespace Engine3DRadSpace::Algorithms
 			memcpy_s(_data.get(), s, c._data.get(), s);
 		}
 
+		/// <summary>
+		/// Move constructor. Default since FixedArray<T> uses an underlying std::unique_ptr<T[]>.
+		/// </summary>
+		/// <param name="c"></param>
 		FixedArray(FixedArray&& c) noexcept = default;
 
+		/// <summary>
+		/// Gets the i-th element. No bound checking.
+		/// </summary>
+		/// <param name="i">Index</param>
+		/// <returns>lvalue to the i-th element</returns>
 		T& operator[](unsigned i)
 		{
 			return _data[i];
 		}
-
+		
+		/// <summary>
+		/// Returns a copy of the i-th element.
+		/// </summary>
+		/// <param name="i">Index</param>
+		/// <returns>Copy of the i-th element</returns>
 		T operator[](unsigned i) const
 		{
 			return _data[i];
 		}
 
+		/// <summary>
+		/// Returns the number of elements.
+		/// </summary>
+		/// <returns>Number of elements.</returns>
 		size_t Size() const
 		{
 			return _num;

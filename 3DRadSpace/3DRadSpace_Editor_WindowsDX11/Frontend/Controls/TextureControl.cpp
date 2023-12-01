@@ -38,6 +38,8 @@ TextureControl::TextureControl(
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
 	SetImage(_pictureBox,_image, imageWidth, imageHeight);
+
+	_cy += 205;
 }
 
 void SetImage(HWND _pictureBox, HBITMAP _image, unsigned imageWidth, unsigned imageHeight)

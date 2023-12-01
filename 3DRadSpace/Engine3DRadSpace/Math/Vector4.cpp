@@ -88,6 +88,16 @@ Vector4& Vector4::operator+=(const Vector4& v)
 	return *this;
 }
 
+Vector4& Engine3DRadSpace::Math::Vector4::operator-()
+{
+	X *= -1;
+	Y *= -1;
+	Z *= -1;
+	W *= -1;
+
+	return *this;
+}
+
 Vector4 Vector4::operator-() const
 {
 	return { -X, -Y, -Z, -W };

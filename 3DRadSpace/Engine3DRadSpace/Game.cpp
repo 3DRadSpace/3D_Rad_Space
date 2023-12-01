@@ -75,13 +75,14 @@ void Game::Exit()
 	_running = false;
 }
 
-void Game::RequestPhysicsInitialization(const Vector3 &gravity)
+void Game::RequestPhysicsInitialization(const Vector3 &gravity, double timeStep)
 {
 	Physics = std::make_unique<PhysicsEngine>(
 		Physics::PhysicsSettings
 		{
 			.PhysicsEnabled = true,
 			.Gravity = gravity,
+			.TimeStep = timeStep
 		}
 	);
 }
@@ -98,6 +99,11 @@ void Game::Load(ContentManager* content)
 	{
 		object->Load(content);
 	}
+}
+
+void Game::Load(Content::ContentManager* content, const std::filesystem::path& path)
+{
+
 }
 
 void Game::Update(Keyboard& keyboard, Mouse& mouse, double dt)

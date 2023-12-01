@@ -35,6 +35,9 @@ namespace Engine3DRadSpace::Physics
 		physx::PxDefaultCpuDispatcher* _cpuDispatcher;
 
 		physx::PxScene* _scene;
+
+		double _accTimer = 0;
+		double _timeStep;
 	public:
 		PhysicsEngine(const PhysicsSettings& settings);
 

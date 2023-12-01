@@ -29,13 +29,14 @@ namespace Engine3DRadSpace::Math
 		Quaternion operator +(const Quaternion &q) const;
 		Quaternion operator +=(const Quaternion &q);
 
+		Quaternion operator -(const Quaternion& q) const;
+		Quaternion& operator-(const Quaternion& q);
+
 		Quaternion operator *(const Quaternion &q) const;
 		Quaternion operator *=(const Quaternion &q);
 
 		Quaternion operator /(float s) const;
 		Quaternion operator /=(float s);
-
-		auto operator <=>(const Quaternion& q) const = default;
 	};
 
 	Quaternion operator /(float f, const Quaternion& q);

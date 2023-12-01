@@ -26,6 +26,10 @@ void GForce::Load(Content::ContentManager* content)
 {
 }
 
+void GForce::Load(Content::ContentManager* content, const std::filesystem::path &path)
+{
+}
+
 void GForce::EditorInitialize()
 {
 }

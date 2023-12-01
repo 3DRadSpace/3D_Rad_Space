@@ -104,12 +104,22 @@ Vector3 Vector3::operator-(const Vector3& v) const
     return Vector3(this->X - v.X, this->Y - v.Y, this->Z - v.Z);
 }
 
-Vector3 Vector3::operator-()
+Vector3& Vector3::operator-()
 {
     this->X *= -1;
     this->Y *= -1;
     this->Z *= -1;
     return *this;
+}
+
+Vector3 Engine3DRadSpace::Math::Vector3::operator-() const
+{
+    Vector3 c(*this);
+    c.X *= 1;
+    c.Y *= 1;
+    c.Z *= 1;
+
+    return c;
 }
 
 Vector3& Vector3::operator*=(float s)

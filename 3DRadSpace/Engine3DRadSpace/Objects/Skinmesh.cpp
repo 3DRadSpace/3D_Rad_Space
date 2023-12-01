@@ -50,6 +50,12 @@ void Skinmesh::Load(Content::ContentManager *content)
     }
 }
 
+void Skinmesh::Load(Content::ContentManager* content,const std::filesystem::path& path)
+{
+    _path = std::make_unique<std::string>(path.string());
+    Load(content);
+}
+
 void Skinmesh::Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt)
 {
 }

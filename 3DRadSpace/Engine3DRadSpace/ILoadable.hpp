@@ -7,6 +7,7 @@ namespace Engine3DRadSpace
 	{
 	public:
 		virtual void Load(Content::ContentManager *content) = 0;
+		virtual void Load(Content::ContentManager* content, const std::filesystem::path& path) = 0;
 		virtual ~ILoadable() = default;
 	};
 }

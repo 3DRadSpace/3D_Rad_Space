@@ -26,6 +26,8 @@ namespace Engine3DRadSpace::Math
 		Vector2 operator +(const Vector2 &v) const;
 
 		Vector2& operator-();
+		Vector2 operator-() const;
+
 		Vector2& operator -=(const Vector2& v);
 		Vector2 operator -(const Vector2 &v) const;
 

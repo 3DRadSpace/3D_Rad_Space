@@ -151,7 +151,6 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
-
 	lines->Draw(View, Projection, dt);
 
 	//Device->SetRasterizerState(newRasterState.get());

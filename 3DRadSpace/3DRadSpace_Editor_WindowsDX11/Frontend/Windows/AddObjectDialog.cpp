@@ -7,6 +7,7 @@ REFL_FWD(Camera)
 REFL_FWD(Sprite)
 REFL_FWD(Skinmesh)
 REFL_FWD(GForce)
+REFL_FWD(Empty)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -88,18 +89,17 @@ void AddObjectDialog::addCategory(const std::string& category,int index)
 
 void AddObjectDialog::addObject(const std::string& objectName, int imageIndex, int groupIndex)
 {
-	LVITEMW item{};
+	LVITEMA item{};
 
-	std::wstring itemName = ConvertToWideString(objectName);
-	item.pszText = const_cast<wchar_t*>(itemName.c_str());
+	item.pszText = const_cast<char*>(objectName.c_str());
 
-	item.cchTextMax = int(itemName.size());
+	item.cchTextMax = int(objectName.length());
 	item.iGroupId = groupIndex;
 	item.iImage = imageIndex;
 	item.iItem = itemIndex++;
 	item.mask = LVIF_IMAGE | LVIF_TEXT | LVIF_GROUPID;
 
-	ListView_InsertItem(listView, &item);
+	SendMessageA(listView, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item));
 }
 
 AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Content::ContentManager* content):
@@ -151,10 +151,12 @@ void AddObjectDialog::createForms()
 	{
 		Objects =
 		{
-			{CameraReflInstance.ObjectUUID,&CameraReflInstance}, //Camera
+			{CameraReflInstance.ObjectUUID, &CameraReflInstance}, //Camera
 			/*
 			&CameraReflInstance, //Counter
-			&CameraReflInstance, //Empty
+			*/
+			{EmptyReflInstance.ObjectUUID, &EmptyReflInstance},
+			/*
 			&CameraReflInstance, //Event On Key
 			&CameraReflInstance, //EventOnLocation
 			&CameraReflInstance, //ExitFade
@@ -192,7 +194,7 @@ void AddObjectDialog::createForms()
 
 		if(categories.find(Objects[j].second->Category) == categories.end())
 		{
-			categories[Objects[j].second->Category] = k++;
+			categories[Objects[j].second->Category] = k;
 			categoryID = k;
 			addCategory(Objects[j].second->Category, categoryID);
 		}

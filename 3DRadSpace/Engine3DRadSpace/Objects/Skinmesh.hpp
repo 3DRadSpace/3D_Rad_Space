@@ -22,17 +22,18 @@ namespace Engine3DRadSpace::Objects
 
 		Graphics::Model3D *GetModel();
 
-		virtual void Initialize() override;
-		virtual void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
-		virtual void Load(Content::ContentManager *content) override;
-		virtual void EditorInitialize() override;
-		virtual void EditorLoad(Content::ContentManager *content) override;
-		virtual Reflection::UUID GetUUID() override;
-		virtual void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
-		virtual void EditorDraw(const Math::Matrix4x4 &view, const Math::Matrix4x4 &projection, double dt, bool selected) override;
-		virtual std::optional<float> Intersects(const Math::Ray &r) override;
+		void Initialize() override;
+		void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
+		void Load(Content::ContentManager *content) override;
+		void Load(Content::ContentManager* content, const std::filesystem::path& path) override;
+		void EditorInitialize() override;
+		void EditorLoad(Content::ContentManager *content) override;
+		Reflection::UUID GetUUID() override;
+		void Draw(Math::Matrix4x4 &view, Math::Matrix4x4 &projection, double dt) override;
+		void EditorDraw(const Math::Matrix4x4 &view, const Math::Matrix4x4 &projection, double dt, bool selected) override;
+		std::optional<float> Intersects(const Math::Ray &r) override;
 
-		virtual ~Skinmesh() = default;
+		~Skinmesh() override = default;
 	};
 }
 

@@ -82,6 +82,10 @@ void Camera::Load(Content::ContentManager *content)
 {
 }
 
+void Engine3DRadSpace::Objects::Camera::Load(Content::ContentManager* content, const std::filesystem::path& path)
+{
+}
+
 REFL_BEGIN(Camera,"Camera","Camera objects","Perspective camera")
 	REFL_FIELD(Camera, std::string, Name, "Name", "Camera", "Camera's name")
 	REFL_FIELD(Camera, bool, Enabled, "Enabled", true, "Does the camera render the scene?")

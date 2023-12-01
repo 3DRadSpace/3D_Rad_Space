@@ -7,5 +7,6 @@ namespace Engine3DRadSpace::Physics
 	{
 		bool PhysicsEnabled;
 		Math::Vector3 Gravity;
+		double TimeStep;
 	};
 }

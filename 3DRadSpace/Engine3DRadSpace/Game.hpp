@@ -52,13 +52,14 @@ namespace Engine3DRadSpace
 		void RunOneFrame();
 		void Exit();
 
-		void RequestPhysicsInitialization(const Math::Vector3& gravity);
+		void RequestPhysicsInitialization(const Math::Vector3& gravity, double timeStep = 1.0 / 60.0);
 		Math::Ray GetMouseRay(const Math::Vector2& mousePosition, const Math::Matrix4x4& view, const Math::Matrix4x4& projection);
 
 		virtual ~Game();
 
 		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager* content) override;
+		virtual void Load(Content::ContentManager* content, const std::filesystem::path &path) override;
 		virtual void Update(Input::Keyboard& keyboard, Input::Mouse& mouse, double dt) override;
 		virtual void Draw(Math::Matrix4x4& view, Math::Matrix4x4& projection, double dt) override;
 		virtual void Draw(Graphics::SpriteBatch* spriteBatch, double dt) override;

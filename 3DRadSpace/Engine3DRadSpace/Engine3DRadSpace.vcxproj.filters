@@ -279,6 +279,7 @@
     <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
     <ClInclude Include="Objects\GForce.hpp" />
     <ClInclude Include="Physics\PhysicsSettings.hpp" />
+    <ClInclude Include="Objects\Empty.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -463,5 +464,6 @@
     <ClCompile Include="Reflection\ReflectedEnumField.cpp" />
     <ClCompile Include="Objects\GForce.cpp" />
     <ClCompile Include="Viewport.cpp" />
+    <ClCompile Include="Objects\Empty.cpp" />
   </ItemGroup>
 </Project>

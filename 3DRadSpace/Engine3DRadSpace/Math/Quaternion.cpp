@@ -160,6 +160,26 @@ Quaternion Quaternion::operator+=(const Quaternion &q)
     return *this;
 }
 
+Quaternion Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q) const
+{
+    return Quaternion{
+        X - q.X,
+        Y - q.Y,
+        Z - q.Z,
+        W - q.W,
+    };
+}
+
+Quaternion& Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q)
+{
+    X -= q.X;
+    Y -= q.Y;
+    Z -= q.Z;
+    W -= q.W;
+
+    return *this;
+}
+
 Quaternion Quaternion::operator*(const Quaternion& q) const
 {
     //https://stackoverflow.com/questions/19956555/how-to-multiply-two-quaternions

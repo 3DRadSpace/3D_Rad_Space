@@ -31,6 +31,7 @@ namespace Engine3DRadSpace::Objects
 
 		virtual void Initialize() override;
 		virtual void Load(Content::ContentManager *content) override;
+		virtual void Load(Content::ContentManager *content, const std::filesystem::path &path) override;
 	
 		virtual void EditorInitialize() override;
 		virtual void EditorLoad(Content::ContentManager *content) override;

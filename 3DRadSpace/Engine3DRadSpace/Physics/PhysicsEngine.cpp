@@ -7,7 +7,8 @@ using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Physics;
 using namespace Engine3DRadSpace::Logging;
 
-PhysicsEngine::PhysicsEngine(const PhysicsSettings& settings)
+PhysicsEngine::PhysicsEngine(const PhysicsSettings& settings) :
+	_timeStep(settings.TimeStep)
 {
 	if (!settings.PhysicsEnabled) return;
 
@@ -53,8 +54,11 @@ Vector3 PhysicsEngine::GetGravity()
 
 void PhysicsEngine::Simulate(float dt)
 {
-	_scene->simulate(dt);
-	_scene->fetchResults(false);
+	for (_accTimer += dt; _accTimer >= _timeStep; _accTimer -= _timeStep)
+	{
+		_scene->simulate(dt);
+		_scene->fetchResults(false);
+	}
 }
 
 PhysicsEngine::~PhysicsEngine()
