@@ -135,15 +135,17 @@ void AddObjectDialog::createForms()
 	//Create the list view control
 	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 600, 600, window, nullptr, hInstance, nullptr);
 	if (listView == nullptr) throw std::exception("Failed to create a list view control!");
-	ListView_EnableGroupView(listView, true);
+	SendMessageA(listView, LVM_ENABLEGROUPVIEW, true, 0);
+	SendMessageA(listView, LVM_SETITEMCOUNT, this->Objects.size(), LVSICF_NOSCROLL);
 
 	//Create the image list
 	imageList = ImageList_Create(64, 64, ILC_COLOR32, 20, 5);
 	if (imageList == nullptr) throw std::exception("Failed to create a image list!");
 
-	ListView_SetImageList(listView, imageList, LVSIL_NORMAL); //Assign the image list to the list view
+	//Assign the image list to the list view
+	SendMessageA(listView, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(imageList));
 
-	std::unordered_map<std::string, objectItem> objects;
+	std::vector<std::pair<std::string, objectItem>> objects;
 	std::unordered_map<std::string, int> categories;
 
 	//hardcoded list of already implemented objects.
@@ -203,7 +205,7 @@ void AddObjectDialog::createForms()
 			categoryID = categories[Objects[j].second->Category];
 		}
 		
-		objects.insert(std::make_pair(std::string(Objects[j].second->Name), objectItem{image, categoryID}));
+		objects.emplace_back(std::string(Objects[j].second->Name), objectItem{image, categoryID});
 	}
 
 	//Populate the image list with the object data (icons and names)
