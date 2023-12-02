@@ -11,11 +11,11 @@
 #include "Content/ContentManager.hpp"
 #include "Graphics/SpriteBatch.hpp"
 #include "Reflection/ReflectedObject.hpp"
-#include "ObjectList.hpp"
 #include "Physics/PhysicsEngine.hpp"
 
 namespace Engine3DRadSpace
 {
+	class ObjectList;
 	class DLLEXPORT Game : public IUpdateable, public IDrawable3D, public IDrawable2D, public IInitiializable, public ILoadable
 	{
 	private:
@@ -35,7 +35,7 @@ namespace Engine3DRadSpace
 
 		std::unique_ptr<Window> Window;
 		std::unique_ptr<GraphicsDevice> Device;
-		ObjectList Objects;
+		std::unique_ptr<ObjectList> Objects;
 
 		Math::Matrix4x4 View;
 		Math::Matrix4x4 Projection;

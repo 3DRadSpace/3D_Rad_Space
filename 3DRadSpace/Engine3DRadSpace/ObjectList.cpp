@@ -1,34 +1,53 @@
 #include "ObjectList.hpp"
+#include "Game.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Internal;
 
-unsigned ObjectList::Add(IObject* obj)
+Engine3DRadSpace::ObjectList::ObjectList(Game* owner):
+	_game(owner)
 {
+}
+
+unsigned ObjectList::Add(IObject* obj, InitializationFlag flag)
+{
+	bool internalInitialize = flag != InitializationFlag::NoInitialization;
+	bool initialize = flag == InitializationFlag::Initialize || flag == InitializationFlag::InitializeAndLoad;
+	bool load = flag == InitializationFlag::InitializeAndLoad || flag == InitializationFlag::Load;
+
+	if (internalInitialize) obj->internalInitialize(_game);
+	if (initialize) obj->Initialize();
+	if (load) obj->Load(_game->Content.get());
+
+	obj->internalInitialize(_game);
+	obj->Initialize();
+	obj->Load(_game->Content.get());
+
 	std::shared_ptr<IObject> ptr;
 	ptr.reset(obj);
 
-	objects.emplace_back(std::move(ptr));
-	return unsigned(objects.size() - 1);
+	_objects.emplace_back(std::move(ptr));
+	return unsigned(_objects.size() - 1);
 }
 
-unsigned ObjectList::Add(IObject2D* obj)
+unsigned ObjectList::Add(IObject2D* obj, InitializationFlag flag)
 {
-	return Add(static_cast<IObject*>(obj));
+	return Add(static_cast<IObject*>(obj), flag);
 }
 
-unsigned ObjectList::Add(IObject3D* obj)
+unsigned ObjectList::Add(IObject3D* obj, InitializationFlag flag)
 {
-	return Add(static_cast<IObject*>(obj));
+	return Add(static_cast<IObject*>(obj), flag);
 }
 
 IObject* ObjectList::Find(unsigned id)
 {
-	return objects[id].Object.get();
+	return _objects[id].Object.get();
 }
 
 IObject* ObjectList::Find(const std::string& name)
 {
-	for (auto& [object, id] : objects)
+	for (auto& [object, id] : _objects)
 	{
 		if (object->Name == name)
 			return object.get();
@@ -38,12 +57,12 @@ IObject* ObjectList::Find(const std::string& name)
 
 void ObjectList::Remove(unsigned id)
 {
-	objects.erase(objects.begin() + id, objects.begin() + id + 1);
+	_objects.erase(_objects.begin() + id, _objects.begin() + id + 1);
 }
 
 void ObjectList::Remove(const std::string& name)
 {
-	std::erase_if(objects, [name](ObjectInstance& p) -> bool
+	std::erase_if(_objects, [name](ObjectInstance& p) -> bool
 		{
 			return p.Object->Name == name;
 		});
@@ -51,7 +70,7 @@ void ObjectList::Remove(const std::string& name)
 
 void ObjectList::Remove(IObject* obj)
 {
-	std::erase_if(objects, [obj](ObjectInstance& p) -> bool
+	std::erase_if(_objects, [obj](ObjectInstance& p) -> bool
 		{
 			return p.Object.get() == obj;
 		});
@@ -59,7 +78,7 @@ void ObjectList::Remove(IObject* obj)
 
 void ObjectList::RemoveIf(std::function<bool(IObject*)> f)
 {
-	std::erase_if(objects, [f](ObjectInstance& p) -> bool
+	std::erase_if(_objects, [f](ObjectInstance& p) -> bool
 		{
 			return f(p.Object.get());
 		});
@@ -67,27 +86,27 @@ void ObjectList::RemoveIf(std::function<bool(IObject*)> f)
 
 void ObjectList::Replace(IObject* obj, unsigned id)
 {
-	objects[id].Object.reset(obj);
+	_objects[id].Object.reset(obj);
 }
 
 void ObjectList::Clear()
 {
-	objects.clear();
+	_objects.clear();
 }
 
 IObject* Engine3DRadSpace::ObjectList::operator[](unsigned i) const
 {
-	return objects[i].Object.get();
+	return _objects[i].Object.get();
 }
 
 std::vector<ObjectList::ObjectInstance>::iterator ObjectList::begin()
 {
-	return objects.begin();
+	return _objects.begin();
 }
 
 std::vector<ObjectList::ObjectInstance>::iterator ObjectList::end()
 {
-	return objects.end();
+	return _objects.end();
 }
 
 template<>

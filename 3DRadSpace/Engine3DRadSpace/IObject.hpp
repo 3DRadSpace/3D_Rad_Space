@@ -14,7 +14,7 @@ namespace Engine3DRadSpace
 		Game* _game = nullptr;
 		GraphicsDevice* _device = nullptr;
 		/// <summary>
-		/// Default constructor used for reflection. Objects created with this constructor are invalid, unless the _device field is explicitly set after a IObject instance is constructed.
+		/// Default constructor used for reflection. Objects created with this constructor are initially invalid, until internalInitialize() is called.
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="tag"></param>
@@ -40,6 +40,7 @@ namespace Engine3DRadSpace
 		virtual ~IObject() = default;
 
 		friend class Game;
+		friend class ObjectList;
 	};
 }
 

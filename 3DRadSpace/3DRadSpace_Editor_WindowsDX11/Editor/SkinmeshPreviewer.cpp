@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Objects/Skinmesh.hpp>
 #include <Engine3DRadSpace/Objects/Camera.hpp>
 #include "../Frontend/Settings.hpp"
+#include <Engine3DRadSpace/ObjectList.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics::Shaders;
@@ -31,9 +32,9 @@ SkinmeshPreviewer::SkinmeshPreviewer(const std::filesystem::path &meshPath):
 	camera.LookAt = Vector3::Zero();
 
 	camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
-	auto cameraID = Objects.AddNew<Camera>(std::move(camera));
+	auto cameraID = Objects->AddNew<Camera>(std::move(camera));
 
-	_camera = static_cast<Camera*>(Objects[cameraID]);
+	_camera = static_cast<Camera*>((*Objects)[cameraID]);
 }
 
 void SkinmeshPreviewer::Update(Keyboard &keyboard, Mouse &mouse, double dt)

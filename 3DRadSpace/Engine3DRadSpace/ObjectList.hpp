@@ -2,6 +2,8 @@
 #include "IObject3D.hpp"
 #include "IObject2D.hpp"
 #include "Reflection/ReflectedObject.hpp"
+#include "Internal/InitializationFlag.hpp"
+#include "Game.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -30,9 +32,10 @@ namespace Engine3DRadSpace
 			ObjectInstance(std::shared_ptr<IObject> &&obj);
 		};
 	private:
-		std::vector<ObjectInstance> objects;
+		std::vector<ObjectInstance> _objects;
+		Game* _game;
 	public:
-		ObjectList() = default;
+		ObjectList(Game* owner);
 		ObjectList(ObjectList&) = delete;
 		ObjectList(ObjectList&&) noexcept = default;
 
@@ -40,14 +43,14 @@ namespace Engine3DRadSpace
 		ObjectList& operator=(ObjectList&&) noexcept = default;
 
 		template<GameObject O, typename ...Params>
-		std::pair<O*, unsigned> AddNew(Params&& ...p);
+		std::pair<O*, unsigned> AddNew(Internal::InitializationFlag flag, Params&& ...p);
 
 		template<GameObject O>
-		unsigned AddNew(O&& object);
+		unsigned AddNew(O&& object, Internal::InitializationFlag flag = Internal::InitializationFlag::InitializeAndLoad);
 
-		unsigned Add(IObject* obj);
-		unsigned Add(IObject2D* obj);
-		unsigned Add(IObject3D* obj);
+		unsigned Add(IObject* obj, Internal::InitializationFlag flag = Internal::InitializationFlag::InitializeAndLoad);
+		unsigned Add(IObject2D* obj, Internal::InitializationFlag flag = Internal::InitializationFlag::InitializeAndLoad);
+		unsigned Add(IObject3D* obj, Internal::InitializationFlag flag = Internal::InitializationFlag::InitializeAndLoad);
 
 		IObject* Find(unsigned id);
 		IObject* Find(const std::string& name);
@@ -85,19 +88,36 @@ namespace Engine3DRadSpace
 	}
 
 	template<GameObject O, typename... Params>
-	inline std::pair<O*, unsigned> ObjectList::AddNew(Params&&... p)
+	inline std::pair<O*, unsigned> ObjectList::AddNew(Internal::InitializationFlag flag, Params&&... p)
 	{
-		auto &obj = objects.emplace_back(std::make_shared<O>(std::forward<Params>(p)...));
-		return std::make_pair(static_cast<O*>(obj.Object.get()), unsigned(objects.size() - 1));
+		auto &obj = _objects.emplace_back(std::make_shared<O>(std::forward<Params>(p)...));
+		
+		bool internalInitialize = flag != Internal::InitializationFlag::NoInitialization;
+		bool initialize = flag == Internal::InitializationFlag::Initialize || flag == Internal::InitializationFlag::InitializeAndLoad;
+		bool load = flag == Internal::InitializationFlag::InitializeAndLoad || flag == Internal::InitializationFlag::Load;
+
+		if(internalInitialize) obj.internalInitialize(_game);
+		if(initialize) obj.Initialize();
+		if(load) obj.Load(_game->Content.get());
+
+		return std::make_pair(static_cast<O*>(obj.Object.get()), unsigned(_objects.size() - 1));
 	}
 
 	template<GameObject O>
-	inline unsigned ObjectList::AddNew(O&& object)
+	inline unsigned ObjectList::AddNew(O&& object, Internal::InitializationFlag flag)
 	{
 		auto new_obj = std::make_shared<O>(std::move(object));
 
-		objects.emplace_back(std::move(new_obj));
-		return unsigned(objects.size() - 1);
+		bool internalInitialize = flag != Internal::InitializationFlag::NoInitialization;
+		bool initialize = flag == Internal::InitializationFlag::Initialize || flag == Internal::InitializationFlag::InitializeAndLoad;
+		bool load = flag == Internal::InitializationFlag::InitializeAndLoad || flag == Internal::InitializationFlag::Load;
+
+		if (internalInitialize) new_obj->internalInitialize(_game);
+		if (initialize) new_obj->Initialize();
+		if (load) new_obj->Load(_game->Content.get());
+
+		_objects.emplace_back(std::move(new_obj));
+		return unsigned(_objects.size() - 1);
 	}
 
 	template<GameObject O>
@@ -106,7 +126,7 @@ namespace Engine3DRadSpace
 		unsigned c = 0;
 		O* ptr = nullptr;
 
-		for (auto& [type, object] : objects)
+		for (auto& [type, object] : _objects)
 		{
 			ptr = dynamic_cast<O*>(object.get());
 			if (ptr != nullptr)

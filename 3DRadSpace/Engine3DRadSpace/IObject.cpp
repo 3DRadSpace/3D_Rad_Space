@@ -16,6 +16,7 @@ IObject::IObject(const std::string &name,const std::string& tag, bool enabled, b
 void Engine3DRadSpace::IObject::internalInitialize(Game* game)
 {
 	_game = game;
+	_device = game->Device.get();
 }
 
 GraphicsDevice* IObject::GetGraphicsDeviceHandle()

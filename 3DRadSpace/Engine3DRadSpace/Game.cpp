@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "ObjectList.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -8,7 +9,8 @@ using namespace Engine3DRadSpace::Physics;
 using namespace Engine3DRadSpace::Math;
 
 Game::Game(const std::string &title, unsigned width, unsigned height, bool fullscreen) :
-	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height))
+	Window(std::make_unique<Engine3DRadSpace::Window>(title, width, height)),
+	Objects(std::make_unique<Engine3DRadSpace::ObjectList>(this))
 {
 	Device = std::make_unique<GraphicsDevice>(Window->NativeHandle(),width,height);
 	Content = std::make_unique<Content::ContentManager>(Device.get());
@@ -17,7 +19,8 @@ Game::Game(const std::string &title, unsigned width, unsigned height, bool fulls
 }
 
 Game::Game(Engine3DRadSpace::Window &&window) :
-	Window(std::make_unique<Engine3DRadSpace::Window>(std::move(window)))
+	Window(std::make_unique<Engine3DRadSpace::Window>(std::move(window))),
+	Objects(std::make_unique<Engine3DRadSpace::ObjectList>(this))
 {
 	Math::Point size = Window->Size();
 
@@ -95,7 +98,7 @@ Engine3DRadSpace::Game::~Game()
 
 void Game::Load(ContentManager* content)
 {
-	for (auto& [object, type] : Objects)
+	for (auto& [object, type] : *Objects)
 	{
 		object->Load(content);
 	}
@@ -108,7 +111,7 @@ void Game::Load(Content::ContentManager* content, const std::filesystem::path& p
 
 void Game::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 {
-	for (auto& [object, type] : Objects)
+	for (auto& [object, type] : *Objects)
 	{
 		object->Update(keyboard, mouse, dt);
 	}
@@ -116,7 +119,7 @@ void Game::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 
 void Game::Draw(Math::Matrix4x4& view, Math::Matrix4x4& projection, double dt)
 {
-	for (auto& [object, type] : Objects)
+	for (auto& [object, type] : *Objects)
 	{
 		if (type == ObjectList::ObjectInstance::ObjectType::IObject3D)
 		{
@@ -127,7 +130,7 @@ void Game::Draw(Math::Matrix4x4& view, Math::Matrix4x4& projection, double dt)
 
 void Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
 {
-	for (auto& [object, type] : Objects)
+	for (auto& [object, type] : *Objects)
 	{
 		if (type == ObjectList::ObjectInstance::ObjectType::IObject2D)
 		{
@@ -138,7 +141,7 @@ void Game::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
 
 void Game::Initialize()
 {
-	for (auto& [object, type] : Objects)
+	for (auto& [object, type] : *Objects)
 	{
 		object->internalInitialize(this);
 		object->Initialize();

@@ -179,6 +179,7 @@
     <ClInclude Include="Input\ButtonState.hpp" />
     <ClInclude Include="Input\Key.hpp" />
     <ClInclude Include="Input\KeyState.hpp" />
+    <ClInclude Include="Internal\InitializationFlag.hpp" />
     <ClInclude Include="Legacy.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="Math\Plane.hpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Graphics\PixelFormat.hpp" />
     <ClInclude Include="Objects\Empty.hpp" />
     <ClInclude Include="Objects\GForce.hpp" />
+    <ClInclude Include="Objects\SkyColor.hpp" />
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
     <ClInclude Include="Physics\PhysicsSettings.hpp" />
@@ -331,6 +333,7 @@
     <ClCompile Include="Algorithms\Picking\PickingRenderTargetRender.cpp" />
     <ClCompile Include="Objects\Empty.cpp" />
     <ClCompile Include="Objects\GForce.cpp" />
+    <ClCompile Include="Objects\SkyColor.cpp" />
     <ClCompile Include="Physics\IPhysicsObject.cpp" />
     <ClCompile Include="Physics\PhysicsEngine.cpp" />
     <ClCompile Include="Reflection\FieldRepresentation.cpp" />

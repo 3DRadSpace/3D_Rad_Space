@@ -9,6 +9,7 @@
 #include "AddObjectDialog.hpp"
 #include "SettingsWindow.hpp"
 #include "Engine3DRadSpace/Logging/Exception.hpp"
+#include <Engine3DRadSpace/ObjectList.hpp>
 
 #include "../AutoupdaterState.hpp"
 #include "UpdateProgressWindow.hpp"
@@ -17,6 +18,7 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
 using namespace Engine3DRadSpace::Math;
+using namespace Engine3DRadSpace::Internal;
 
 EditorWindow* gEditorWindow = nullptr;
 
@@ -519,9 +521,6 @@ void EditorWindow::AddObject(IObject*obj)
 {
 	if(obj == nullptr) return;
 
-	//Load editor assets
-	obj->EditorLoad(GetContentManager());
-
 	//Change editor state
 	_changesSaved = false;
 
@@ -530,13 +529,13 @@ void EditorWindow::AddObject(IObject*obj)
 	//Convert the object to a 2D or 3D specific object then add it to the list of objects.
 	IObject2D *obj2D = dynamic_cast<IObject2D *>(obj);
 	if(obj2D != nullptr)
-		objID = editor->Objects.Add(obj2D); //case 2: obj is a IObject2D
+		objID = editor->Objects->Add(obj2D, InitializationFlag::InternalValidation); //case 2: obj is a IObject2D
 	else
 	{
 		IObject3D *obj3D = dynamic_cast<IObject3D *>(obj);
 		if(obj3D != nullptr)
-			objID = editor->Objects.Add(obj3D); //case 3: obj is a IObject3D
-		else objID = editor->Objects.Add(obj); //base case: obj is a IObject
+			objID = editor->Objects->Add(obj3D, InitializationFlag::InternalValidation); //case 3: obj is a IObject3D
+		else objID = editor->Objects->Add(obj, InitializationFlag::InternalValidation); //base case: obj is a IObject
 	}
 
 	//add item into the treeView control
@@ -601,7 +600,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				{
 					if(gEditorWindow->WarnNotSaved())
 					{
-						gEditorWindow->editor->Objects.Clear();
+						gEditorWindow->editor->Objects->Clear();
 						SendMessageA(gEditorWindow->_listBox, TVM_DELETEITEM, 0, reinterpret_cast<LPARAM>(TVI_ROOT));
 						gEditorWindow->_changesSaved = true;
 					}
@@ -716,7 +715,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					auto objID = gEditorWindow->_getSelectedObjectID();
 					if(objID.second.has_value())
 					{
-						IObject *obj = gEditorWindow->editor->Objects.Find(objID.second.value());
+						IObject *obj = gEditorWindow->editor->Objects->Find(objID.second.value());
 						
 						EditObjectDialog eod(
 							gEditorWindow->_mainWindow,
@@ -749,7 +748,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					auto objID = gEditorWindow->_getSelectedObjectID();
 					if(objID.second.has_value())
 					{
-						gEditorWindow->editor->Objects.Remove(objID.second.value());
+						gEditorWindow->editor->Objects->Remove(objID.second.value());
 
 						HTREEITEM deletedItem = objID.first;
 						HTREEITEM currItem = deletedItem;

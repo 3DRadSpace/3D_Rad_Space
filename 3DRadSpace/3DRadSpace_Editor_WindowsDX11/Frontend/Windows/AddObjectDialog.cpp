@@ -8,6 +8,7 @@ REFL_FWD(Sprite)
 REFL_FWD(Skinmesh)
 REFL_FWD(GForce)
 REFL_FWD(Empty)
+REFL_FWD(SkyColor)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -157,7 +158,7 @@ void AddObjectDialog::createForms()
 			/*
 			&CameraReflInstance, //Counter
 			*/
-			{EmptyReflInstance.ObjectUUID, &EmptyReflInstance},
+			{EmptyReflInstance.ObjectUUID, &EmptyReflInstance}, //Empty
 			/*
 			&CameraReflInstance, //Event On Key
 			&CameraReflInstance, //EventOnLocation
@@ -176,7 +177,9 @@ void AddObjectDialog::createForms()
 			{SkinmeshReflInstance.ObjectUUID, &SkinmeshReflInstance}, //Skinmesh
 			/*
 			&CameraReflInstance, //Skybox
-			&CameraReflInstance, //Skycolor
+			*/
+			{SkyColorReflInstance.ObjectUUID, &SkyColorReflInstance},
+			/*
 			&CameraReflInstance, //SoundEffect
 			&CameraReflInstance, //SoundSource
 			&CameraReflInstance, //C++ source

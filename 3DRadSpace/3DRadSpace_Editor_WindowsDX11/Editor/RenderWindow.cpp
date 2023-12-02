@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Graphics/Fonts/Font.hpp>
 #include "../Frontend/Settings.hpp"
 #include <Engine3DRadSpace/Graphics/Primitives/Box.hpp>
+#include <Engine3DRadSpace/ObjectList.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Algorithms::Picking;
@@ -118,7 +119,7 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 	{
 		auto ray = GetMouseRay(mouse.Position(), View, Projection);
 
-		for (auto& obj : Objects)
+		for (auto& obj : *Objects)
 		{
 			if (obj.InternalType == ObjectList::ObjectInstance::ObjectType::IObject3D)
 			{
@@ -162,7 +163,7 @@ void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 		
 	}
 
-	for(auto &obj : Objects)
+	for(auto &obj : *Objects)
 	{
 		switch(obj.InternalType)
 		{
