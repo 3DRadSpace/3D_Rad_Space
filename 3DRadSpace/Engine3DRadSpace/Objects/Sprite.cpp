@@ -58,13 +58,21 @@ void Sprite::Load(Content::ContentManager *content)
 	else _texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
 }
 
+void Sprite::Load(Content::ContentManager* content, const std::filesystem::path &path)
+{
+	_tempResourceString = std::make_unique<std::string>(path.string());
+	Load(content);
+}
+
+
 void Sprite::Update(Keyboard&keyboard, Mouse&mouse, double dt)
 {
 }
 
 void Sprite::Draw(SpriteBatch *spriteBatch, double dt)
 {
-	spriteBatch->DrawNormalized(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
+	FlipMode flip = (FlipU ? FlipMode::FlipHorizontally : FlipMode::None) | (FlipV ? FlipMode::FlipVertically : FlipMode::None);
+	spriteBatch->DrawNormalized(_texture, RectangleF(Position.X, Position.Y, Scale.X, Scale.Y), Engine3DRadSpace::Math::RectangleF(0,0,1,1), TintColor, Rotation, flip, Depth);
 }
 
 void Sprite::EditorInitialize()
@@ -76,12 +84,13 @@ void Sprite::EditorLoad(Content::ContentManager *content)
 	auto asset = content->operator[](Image);
 	if(asset != nullptr) _texture = static_cast<Texture2D *>(asset->Get());
 	else _texture = content->Load<Texture2D>("Data//NoAsset.png");
-	
 }
 
 void Sprite::EditorDraw(SpriteBatch *spriteBatch, double dt, bool selected)
 {
-	spriteBatch->DrawNormalized(_texture, Position, Scale, TintColor, FlipU, FlipV, Depth);
+	Color nTint = selected ? Colors::Red : TintColor;
+	FlipMode flip = (FlipU ? FlipMode::FlipHorizontally : FlipMode::None) | (FlipV ? FlipMode::FlipVertically : FlipMode::None);
+	spriteBatch->DrawNormalized(_texture, RectangleF(Position.X, Position.Y, Scale.X, Scale.Y), Engine3DRadSpace::Math::RectangleF(0, 0, 1, 1), TintColor, Rotation, flip, Depth);
 }
 
 Reflection::UUID Sprite::GetUUID()
@@ -102,3 +111,9 @@ REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")
 	REFL_FIELD(Sprite, bool, FlipV, "Flip vertically", false, "Is the sprite image flipped vertically?")
 	REFL_FIELD(Sprite, Color, TintColor, "Tint Color", Colors::White, "Tint color")
 REFL_END
+
+void testFn()
+{
+	Sprite spr;
+
+}

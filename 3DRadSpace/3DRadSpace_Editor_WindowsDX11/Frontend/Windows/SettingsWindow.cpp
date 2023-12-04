@@ -1,5 +1,6 @@
 #include "SettingsWindow.hpp"
 #include <algorithm>
+#include "../HelperFunctions.hpp"
 
 INT_PTR SettingsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -61,6 +62,11 @@ HWND SettingsWindow::SettingControl<void>::GetHandle()
 	return _window;
 }
 
+int SettingsWindow::SettingControl<void>::AccY()
+{
+	return _cy;
+}
+
 SettingsWindow::SettingControl<bool>::SettingControl(Setting<bool>& t, HWND owner, HINSTANCE hInstance, int py) :
 	SettingControlBase(t)
 {
@@ -82,6 +88,7 @@ SettingsWindow::SettingControl<bool>::SettingControl(Setting<bool>& t, HWND owne
 	);
 
 	SendMessageA(_window, BM_SETCHECK, t.Value ? BST_CHECKED : BST_UNCHECKED, 0);
+	_cy = textSize.cy + 5;
 }
 
 void SettingsWindow::SettingControl<bool>::GetSetting()
@@ -114,6 +121,7 @@ SettingsWindow::SettingControl<float>::SettingControl(Setting<float>& t, HWND ow
 	std::string v = std::to_string(t.Value);
 	textbox = std::make_unique<NumericTextbox>(owner, hInstance, 20 + textSize.cx, 10, 75, textSize.cy + 5, v.c_str());
 	_window = static_cast<HWND>(*textbox);
+	_cy = textSize.cy + 5;
 }
 
 void SettingsWindow::SettingControl<float>::GetSetting()
@@ -161,6 +169,8 @@ SettingsWindow::SettingControl<std::string>::SettingControl(Setting<std::string>
 		hInstance,
 		nullptr
 	);
+	
+	_cy = size.cy + 5;
 }
 
 void SettingsWindow::SettingControl<std::string>::GetSetting()
@@ -173,8 +183,9 @@ void SettingsWindow::SettingControl<std::string>::GetSetting()
 
 void SettingsWindow::_createControls()
 {
-	_addSetting(Settings::CameraSensitivity,10);
-	_addSetting(Settings::StartupUpdate, 30);
+	_addSetting(Settings::CameraSensitivity);
+	_addSetting(Settings::StartupUpdate);
+	_addSetting(Settings::ShowGrid);
 
 	HDC hdc = GetDC(window);
 
@@ -187,7 +198,7 @@ void SettingsWindow::_createControls()
 		"Cancel",
 		WS_VISIBLE | WS_CHILD,
 		10,
-		50,
+		_cy,
 		textSize.cx + 5,
 		textSize.cy + 5,
 		window,
@@ -197,7 +208,6 @@ void SettingsWindow::_createControls()
 	);
 
 	int accX = textSize.cx + 20;
-
 	GetTextExtentPointA(hdc, "OK", 2, &textSize);
 
 	_okButton = CreateWindowExA(
@@ -206,7 +216,7 @@ void SettingsWindow::_createControls()
 		"OK",
 		WS_VISIBLE | WS_CHILD,
 		accX,
-		50,
+		_cy,
 		textSize.cx + 5,
 		textSize.cy + 5,
 		window,
@@ -214,8 +224,9 @@ void SettingsWindow::_createControls()
 		hInstance,
 		nullptr
 	);
+	_cy += textSize.cy + 5;
 
-	SetWindowPos(window, nullptr, 0, 0, 250, 150, SWP_NOMOVE);
+	SetWindowPos(window, nullptr, 0, 0, 250, _cy + GetTitleBarHeight() + 20, SWP_NOMOVE);
 }
 
 SettingsWindow::SettingsWindow(HWND owner, HINSTANCE hInstance) :

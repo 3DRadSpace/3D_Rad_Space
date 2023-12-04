@@ -26,15 +26,16 @@ namespace Engine3DRadSpace::Objects
 
 		Color TintColor;
 
-		virtual void Initialize() override;
-		virtual void Load(Content::ContentManager *content) override;
-		virtual void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
-		virtual void Draw(Graphics::SpriteBatch *spriteBatch, double dt) override;
+		void Initialize() override;
+		void Load(Content::ContentManager *content) override;
+		void Load(Content::ContentManager* content, const std::filesystem::path& path) override;
+		void Update(Input::Keyboard &keyboard, Input::Mouse &mouse, double dt) override;
+		void Draw(Graphics::SpriteBatch *spriteBatch, double dt) override;
 
-		virtual void EditorInitialize() override;
-		virtual void EditorLoad(Content::ContentManager *content) override;
-		virtual void EditorDraw(Graphics::SpriteBatch *spriteBatch, double dt, bool selected) override;
-		virtual Reflection::UUID GetUUID() override;
+		void EditorInitialize() override;
+		void EditorLoad(Content::ContentManager *content) override;
+		void EditorDraw(Graphics::SpriteBatch *spriteBatch, double dt, bool selected) override;
+		Reflection::UUID GetUUID() override;
 
 		virtual ~Sprite() = default;
 	};

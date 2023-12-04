@@ -1,10 +1,13 @@
 #include "SpriteBatch.hpp"
 #include "../Math/Matrix3x3.hpp"
+#include "../Math/Math.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Math;
+
+constexpr Math::RectangleF _fullDefaultUV(0.0f, 0.0f, 1.0f, 1.0f);
 
 std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool flipU, bool flipV)
 {
@@ -33,22 +36,22 @@ std::array<VertexPointUV,6> SpriteBatch::_createQuad(const RectangleF &r, bool f
 	return _createQuad(a, b, c, d, flipU, flipV);
 }
 
-std::array<VertexPointUV, 6> SpriteBatch::_createQuad(const Vector2 &a, const Vector2& b, const Vector2 &c, const Vector2 &d, bool flipU, bool flipV)
+std::array<VertexPointUV, 6> SpriteBatch::_createQuad(const Math::Vector2& a, const Math::Vector2& b, const Math::Vector2& c, const Math::Vector2& d, bool flipU, bool flipV, const Math::RectangleF uvRect)
 {
-	Vector2 uv_a = Vector2(0, 1);
-	Vector2 uv_b = Vector2(0, 0);
-	Vector2 uv_c = Vector2(1, 0);
-	Vector2 uv_d = Vector2(1, 1);
+	Vector2 uv_a = uvRect.BottomLeft();
+	Vector2 uv_b = uvRect.TopLeft();
+	Vector2 uv_c = uvRect.TopRight();
+	Vector2 uv_d = uvRect.BottomRight();
 
 	std::array quad =
 	{
-		VertexPointUV{a, uv_a},
-		VertexPointUV{b, uv_b},
-		VertexPointUV{c, uv_c},
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(a), uv_a},
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(b), uv_b},
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(c), uv_c},
 
-		VertexPointUV{c, uv_c},
-		VertexPointUV{d, uv_d},
-		VertexPointUV{a, uv_a}
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(c), uv_c},
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(d), uv_d},
+		VertexPointUV{Vector2::ConvertFromNormalizedScreenSpaceToClipSpace(a), uv_a}
 	};
 
 	return quad;
@@ -82,7 +85,38 @@ void SpriteBatch::_prepareGraphicsDevice()
 
 void SpriteBatch::_drawEntry(const spriteBatchEntry &entry)
 {
-	auto quad = _createQuad(entry.rectangle);
+	auto [min, max] = entry.coords;
+
+	auto center = (max + min) / 2.0f;
+	min -= center;
+	max -= center;
+
+	auto rotation = Matrix3x3::CreateRotation(Math::ToRadians(entry.rotation));
+
+	min += center;
+	max += center;
+
+	Vector2 a(min.X, max.Y); //bottom left
+	Vector2 b(min.X, min.X); //top left
+	Vector2 c(max.X, min.Y); //top right
+	Vector2 d(max.X, max.Y); //bottom right
+
+	a -= center;
+	b -= center;
+	c -= center;
+	d -= center;
+	
+	a.Transform(rotation);
+	b.Transform(rotation);
+	c.Transform(rotation);
+	d.Transform(rotation);
+
+	a += center;
+	b += center;
+	c += center;
+	d += center;
+
+	auto quad = _createQuad(a, b, c, d, entry.flipU, entry.flipV, entry.uvSource);
 	VertexBufferV<VertexPointUV> vertexBuffer(_device, quad);
 
 	_prepareGraphicsDevice();
@@ -102,7 +136,8 @@ void SpriteBatch::_drawAllEntries_SortByTexture()
 	{
 		if(entry.textureID == lastID)
 		{
-			auto quad = _createQuad(entry.rectangle, entry.flipU, entry.flipV);
+			auto& [min, max] = entry.coords;
+			auto quad = _createQuad(min.X, min.Y, max.X, max.Y, entry.flipU, entry.flipV);
 			currentVertices.insert(currentVertices.end(), quad.begin(), quad.end());
 		}
 		else
@@ -189,18 +224,23 @@ void SpriteBatch::Begin(SpriteBatchSortMode sortingMode, SamplerState samplerSta
 	Begin(sortingMode);
 }
 
-void SpriteBatch::DrawNormalized(Texture2D *texture, const Vector2&pos, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::DrawNormalized(Texture2D* texture, const Math::RectangleF& coords, const Math::RectangleF& source, Color tintColor, float rotation, FlipMode flipMode, float depth)
 {
-	if(_state == Immediate)
+	Vector2 min = coords.TopLeft();
+	Vector2 max = coords.BottomRight();
+
+	if (_state == Immediate)
 	{
 		_textures[1] = texture;
 		spriteBatchEntry tempEntry
 		{
 			.textureID = 1u,
-			.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
+			.coords = std::make_pair(min, max),
+			.uvSource = source,
 			.tintColor = tintColor,
-			.flipU = flipU,
-			.flipV = flipV,
+			.flipU = static_cast<bool>(FlipMode::FlipHorizontally & flipMode),
+			.flipV = static_cast<bool>(FlipMode::FlipVertically & flipMode),
+			.rotation = rotation,
 			.depth = depth,
 			.sortingMode = SpriteBatchSortMode::Immediate
 		};
@@ -208,69 +248,66 @@ void SpriteBatch::DrawNormalized(Texture2D *texture, const Vector2&pos, const Ve
 		_drawEntry(tempEntry);
 		_textures.clear();
 	}
-	else if(_state == BeginCalled)
+	else if (_state == BeginCalled)
 	{
 		_entries.insert(
 			spriteBatchEntry
 			{
 				.textureID = _lastID,
-				.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
+				.coords = std::make_pair(min, max),
+				.uvSource = source,
 				.tintColor = tintColor,
-				.flipU = flipU,
-				.flipV = flipV,
+				.flipU = static_cast<bool>(FlipMode::FlipHorizontally & flipMode),
+				.flipV = static_cast<bool>(FlipMode::FlipVertically & flipMode),
+				.rotation = rotation,
 				.depth = depth,
-				.sortingMode = _sortingMode
+				.sortingMode = SpriteBatchSortMode::Immediate
 			}
 		);
 	}
-	if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
+	if (_state == EndCalled) throw std::logic_error("Cannot draw textures when End() was called.");
 }
 
-void SpriteBatch::DrawNormalized(Texture2D *texture, const Vector2 &pos, float rotation, const Vector2&scale, const Color &tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::DrawNormalized(Texture2D* texture, const Math::RectangleF& coords, const Math::Rectangle source, Color tintColor, float rotation, FlipMode flipMode, float depth)
 {
-	if(_state == Immediate)
+	DrawNormalized(texture, coords, _fullDefaultUV, tintColor, rotation, flipMode, depth);
+}
+
+void SpriteBatch::Draw(Texture2D* texture, const Math::Rectangle& coords, const Math::Rectangle& source, Color tintColor, float rotation, FlipMode flipMode, float depth)
+{
+	auto screenSize = _device->Resolution();
+	RectangleF nCoords =
 	{
-		_textures[1] = texture;
-		spriteBatchEntry tempEntry
-		{
-			.textureID = 1u,
-			.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
-			.tintColor = tintColor,
-			.flipU = flipU,
-			.flipV = flipV,
-			.depth = depth,
-			.sortingMode = SpriteBatchSortMode::Immediate
-		};
+		static_cast<float>(coords.X) / static_cast<float>(screenSize.X),
+		static_cast<float>(coords.Y) / static_cast<float>(screenSize.Y),
+		static_cast<float>(coords.Width) / static_cast<float>(screenSize.X),
+		static_cast<float>(coords.Height) / static_cast<float>(screenSize.Y),
+	};
 
-		_drawEntry(tempEntry);
-		_textures.clear();
-	}
-	else if(_state == BeginCalled)
+	auto textureSize = texture->Size();
+	RectangleF nSource =
 	{
-		_entries.insert(
-			spriteBatchEntry
-			{
-				.textureID = _lastID,
-				.rectangle = RectangleF(pos.X, pos.Y, scale.X, scale.Y),
-				.tintColor = tintColor,
-				.flipU = flipU,
-				.flipV = flipV,
-				.depth = depth,
-				.sortingMode = _sortingMode
-			}
-		);
-	}
-	else if(_state == EndCalled) throw std::exception("Cannot draw textures when End() was called.");
+		static_cast<float>(source.X) / static_cast<float>(textureSize.X),
+		static_cast<float>(source.Y) / static_cast<float>(textureSize.Y),
+		static_cast<float>(source.Width) / static_cast<float>(textureSize.X),
+		static_cast<float>(source.Height) / static_cast<float>(textureSize.Y),
+	};
+
+	DrawNormalized(texture, nCoords, nSource, tintColor, rotation, flipMode, depth);
 }
 
-void SpriteBatch::Draw(Texture2D* texture, const Math::Point& pos, const Math::Point& size, const Color& tintColor, bool flipU, bool flipV, float depth)
+void SpriteBatch::Draw(Texture2D* texture, const Math::Rectangle& coords, Color tintColor, float rotation, FlipMode flipMode, float depth)
 {
+	auto screenSize = _device->Resolution();
+	RectangleF nCoords =
+	{
+		static_cast<float>(coords.X) / static_cast<float>(screenSize.X),
+		static_cast<float>(coords.Y) / static_cast<float>(screenSize.Y),
+		static_cast<float>(coords.Width) / static_cast<float>(screenSize.X),
+		static_cast<float>(coords.Height) / static_cast<float>(screenSize.Y),
+	};
 
-}
-
-void SpriteBatch::Draw(Texture2D* texture, const Math::Point& pos, float rotation, const Math::Point& size, const Color& tintColor, bool flipU, bool flipV, float depth)
-{
-
+	DrawNormalized(texture, nCoords, _fullDefaultUV, tintColor, rotation, flipMode, depth);
 }
 
 void SpriteBatch::End()

@@ -4,7 +4,7 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Matrix4x4::Matrix4x4(float m[16])
+constexpr Matrix4x4::Matrix4x4(float m[16])
 {
 	M11 = m[0];
 	M12 = m[1];
@@ -27,7 +27,7 @@ Matrix4x4::Matrix4x4(float m[16])
 	M44 = m[15];
 }
 
-Matrix4x4::Matrix4x4(
+constexpr Matrix4x4::Matrix4x4(
 	float m11, float m12, float m13, float m14,
 	float m21, float m22, float m23, float m24,
 	float m31, float m32, float m33, float m34,
@@ -303,7 +303,7 @@ Matrix4x4 Matrix4x4::CreateCilindricalBillboard(const Vector3& objectPos, const 
 	return result;
 }
 
-Matrix4x4 Matrix4x4::Hadamard(const Matrix4x4& a, const Matrix4x4& b)
+constexpr Matrix4x4 Matrix4x4::Hadamard(const Matrix4x4& a, const Matrix4x4& b)
 {
 	Matrix4x4 r;
 	r.M11 = a.M11 * b.M11;
@@ -329,7 +329,7 @@ Matrix4x4 Matrix4x4::Hadamard(const Matrix4x4& a, const Matrix4x4& b)
 	return r;
 }
 
-Matrix4x4& Matrix4x4::Hadamard(const Matrix4x4& m)
+constexpr Matrix4x4& Matrix4x4::Hadamard(const Matrix4x4& m)
 {
 	M11 *= m.M11;
 	M12 *= m.M12;
@@ -354,7 +354,7 @@ Matrix4x4& Matrix4x4::Hadamard(const Matrix4x4& m)
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::operator+(const Matrix4x4 &m) const
+constexpr Matrix4x4 Matrix4x4::operator+(const Matrix4x4 &m) const
 {
 	return Matrix4x4(
 		M11 + m.M11, M12 + m.M12, M13 + m.M13, M14 + m.M14,	
@@ -364,7 +364,7 @@ Matrix4x4 Matrix4x4::operator+(const Matrix4x4 &m) const
 	);
 }
 
-Matrix4x4 Matrix4x4::operator+=(const Matrix4x4 &m)
+constexpr Matrix4x4 Matrix4x4::operator+=(const Matrix4x4 &m)
 {
 	M11 += m.M11;
 	M12 += m.M12;
@@ -389,7 +389,7 @@ Matrix4x4 Matrix4x4::operator+=(const Matrix4x4 &m)
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::operator-(const Matrix4x4 &m) const
+constexpr Matrix4x4 Matrix4x4::operator-(const Matrix4x4 &m) const
 {
 	return Matrix4x4(
 		M11 - m.M11, M12 - m.M12, M13 - m.M13, M14 - m.M14,
@@ -399,7 +399,7 @@ Matrix4x4 Matrix4x4::operator-(const Matrix4x4 &m) const
 	);
 }
 
-Matrix4x4 Matrix4x4::operator-=(const Matrix4x4 &m)
+constexpr Matrix4x4 Matrix4x4::operator-=(const Matrix4x4 &m)
 {
 	M11 -= m.M11;
 	M12 -= m.M12;
@@ -424,7 +424,7 @@ Matrix4x4 Matrix4x4::operator-=(const Matrix4x4 &m)
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
+constexpr Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 {
 	/*
 	auto m1 = DirectX::XMMATRIX(reinterpret_cast<float*>(const_cast<Matrix4x4*>(this)));
@@ -463,7 +463,7 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 	return r;
 }
 
-Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& m)
+constexpr Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& m)
 {
 	/*
 	auto m1 = DirectX::XMMATRIX(reinterpret_cast<float*>(this));
@@ -497,7 +497,7 @@ Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& m)
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::operator*(float scalar) const
+constexpr Matrix4x4 Matrix4x4::operator*(float scalar) const
 {
 	Matrix4x4 m(*this);
 	m.M11 *= scalar;
@@ -523,7 +523,7 @@ Matrix4x4 Matrix4x4::operator*(float scalar) const
 	return m;
 }
 
-Matrix4x4& Matrix4x4::operator*=(float scalar)
+constexpr Matrix4x4& Matrix4x4::operator*=(float scalar)
 {
 	M11 *= scalar;
 	M12 *= scalar;
@@ -548,7 +548,7 @@ Matrix4x4& Matrix4x4::operator*=(float scalar)
 	return *this;
 }
 
-Matrix4x4& Matrix4x4::Transpose()
+constexpr Matrix4x4& Matrix4x4::Transpose()
 {
 	const Matrix4x4 copy = *this;
 	// M[i][j] = M[j][i]. Skip i=j. O(n^2 - n) = O(n^2)
@@ -571,7 +571,7 @@ Matrix4x4& Matrix4x4::Transpose()
 	return *this;
 }
 
-Matrix4x4 Matrix4x4::Transpose(const Matrix4x4& m)
+constexpr Matrix4x4 Matrix4x4::Transpose(const Matrix4x4& m)
 {
 	Matrix4x4 r;
 
@@ -599,7 +599,7 @@ Matrix4x4 Matrix4x4::Transpose(const Matrix4x4& m)
 	return r;
 }
 
-Matrix4x4& Matrix4x4::Invert()
+constexpr Matrix4x4& Matrix4x4::Invert()
 {
 		//https://github.com/MonoGame/MonoGame/blob/develop/MonoGame.Framework/Matrix.cs
 
@@ -663,13 +663,13 @@ Matrix4x4& Matrix4x4::Invert()
 		return *this;
 }
 
-Matrix4x4 Matrix4x4::Invert(const Matrix4x4& m)
+constexpr Matrix4x4 Matrix4x4::Invert(const Matrix4x4& m)
 {
 	auto r = Matrix4x4(m).Invert();
 	return r;
 }
 
-float& Matrix4x4::operator[](unsigned index)
+constexpr float& Matrix4x4::operator[](unsigned index)
 {
 	switch (index)
 	{
@@ -694,12 +694,12 @@ float& Matrix4x4::operator[](unsigned index)
 	}
 }
 
-float Matrix4x4::Trace() const
+constexpr float Matrix4x4::Trace() const
 {
 	return M11 + M22 + M33 + M44;
 }
 
-float Matrix4x4::Determinant() const
+constexpr float Matrix4x4::Determinant() const
 {
 	float det1 = Matrix3x3{
 		M22, M23, M24,
@@ -728,42 +728,42 @@ float Matrix4x4::Determinant() const
 	return M11 * det1 - M12 * det2 + M13 * det3 + M14 * det4;
 }
 
-Vector3 Matrix4x4::Forward() const
+constexpr Vector3 Matrix4x4::Forward() const
 {
 	return { -M31, -M32, -M33 };
 }
 
-Vector3 Matrix4x4::Backward() const
+constexpr Vector3 Matrix4x4::Backward() const
 {
 	return { M31, M32, M33 };
 }
 
-Vector3 Matrix4x4::Up() const
+constexpr Vector3 Matrix4x4::Up() const
 {
 	return { M21, M22, M23 };
 }
 
-Vector3 Matrix4x4::Down() const
+constexpr Vector3 Matrix4x4::Down() const
 {
 	return { -M21, -M22, -M23 };
 }
-Vector3 Matrix4x4::Left() const
+constexpr Vector3 Matrix4x4::Left() const
 {
 	return { -M11, -M12, -M13 };
 }
 
-Vector3 Matrix4x4::Right() const
+constexpr Vector3 Matrix4x4::Right() const
 {
 	return { M11, M12, M13 };
 }
 
-Vector3 Matrix4x4::Translation() const
+constexpr Vector3 Matrix4x4::Translation() const
 {
 	return { M41, M42, M43 };
 }
 
 
-Matrix4x4 Engine3DRadSpace::Math::operator*(float scalar, const Matrix4x4& m)
+constexpr Matrix4x4 Engine3DRadSpace::Math::operator*(float scalar, const Matrix4x4& m)
 {
 	Matrix4x4 r(m);
 	r.M11 *= scalar;
@@ -789,7 +789,7 @@ Matrix4x4 Engine3DRadSpace::Math::operator*(float scalar, const Matrix4x4& m)
 	return r;
 }
 
-Matrix4x4 Engine3DRadSpace::Math::operator/(float f, const Matrix4x4& m)
+constexpr Matrix4x4 Engine3DRadSpace::Math::operator/(float f, const Matrix4x4& m)
 {
 	Matrix4x4 r(m);
 	r.M11 /= f;

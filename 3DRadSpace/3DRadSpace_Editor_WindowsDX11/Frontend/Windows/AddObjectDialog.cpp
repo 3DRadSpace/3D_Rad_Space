@@ -111,46 +111,10 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Content:
 {
 }
 
-ReflectedObject*AddObjectDialog::GetReflDataFromUUID(const Reflection::UUID &uuid)
+void AddObjectDialog::InitializeReflData()
 {
-	for(auto &[obj_uuid, refl] : Objects)
-	{
-		if(obj_uuid == uuid)
-			return refl;
-	}
-	return nullptr;
-}
-
-IObject* AddObjectDialog::ShowDialog()
-{
-	return reinterpret_cast<IObject*>(Dialog::ShowDialog(static_cast<void *>(this)));
-}
-struct objectItem
-{
-	LPCWSTR image;
-	int categoryID;
-};
-
-void AddObjectDialog::createForms()
-{
-	//Create the list view control
-	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 600, 600, window, nullptr, hInstance, nullptr);
-	if (listView == nullptr) throw std::exception("Failed to create a list view control!");
-	SendMessageA(listView, LVM_ENABLEGROUPVIEW, true, 0);
-	SendMessageA(listView, LVM_SETITEMCOUNT, this->Objects.size(), LVSICF_NOSCROLL);
-
-	//Create the image list
-	imageList = ImageList_Create(64, 64, ILC_COLOR32, 20, 5);
-	if (imageList == nullptr) throw std::exception("Failed to create a image list!");
-
-	//Assign the image list to the list view
-	SendMessageA(listView, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(imageList));
-
-	std::vector<std::pair<std::string, objectItem>> objects;
-	std::unordered_map<std::string, int> categories;
-
 	//hardcoded list of already implemented objects.
-	if(Objects.size() == 0)
+	if (Objects.size() == 0)
 	{
 		Objects =
 		{
@@ -187,6 +151,47 @@ void AddObjectDialog::createForms()
 			{SpriteReflInstance.ObjectUUID, &SpriteReflInstance}, //Sprite
 		};
 	}
+}
+
+ReflectedObject*AddObjectDialog::GetReflDataFromUUID(const Reflection::UUID &uuid)
+{
+	for(auto &[obj_uuid, refl] : Objects)
+	{
+		if(obj_uuid == uuid)
+			return refl;
+	}
+	return nullptr;
+}
+
+IObject* AddObjectDialog::ShowDialog()
+{
+	return reinterpret_cast<IObject*>(Dialog::ShowDialog(static_cast<void *>(this)));
+}
+struct objectItem
+{
+	LPCWSTR image;
+	int categoryID;
+};
+
+void AddObjectDialog::createForms()
+{
+	//Create the list view control
+	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 800, 600, window, nullptr, hInstance, nullptr);
+	if (listView == nullptr) throw std::exception("Failed to create a list view control!");
+	SendMessageA(listView, LVM_ENABLEGROUPVIEW, true, 0);
+	SendMessageA(listView, LVM_SETITEMCOUNT, this->Objects.size(), LVSICF_NOSCROLL);
+
+	//Create the image list
+	imageList = ImageList_Create(64, 64, ILC_COLOR32, 20, 5);
+	if (imageList == nullptr) throw std::exception("Failed to create a image list!");
+
+	//Assign the image list to the list view
+	SendMessageA(listView, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(imageList));
+
+	std::vector<std::pair<std::string, objectItem>> objects;
+	std::unordered_map<std::string, int> categories;
+
+	InitializeReflData();
 
 	//populate the dictionaries
 	for ( int i = IDB_PNG1, j = 0, k = 1 ; i <= IDB_PNG24 && j < Objects.size(); i++, j++, k++)

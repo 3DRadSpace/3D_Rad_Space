@@ -675,8 +675,12 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				{
 					AddObjectDialog dialog(gEditorWindow->_mainWindow, gEditorWindow->_hInstance, gEditorWindow->GetContentManager());
 					auto obj = dialog.ShowDialog();
-					if(obj != nullptr && obj != reinterpret_cast<void*>(IDCANCEL))
+					if (obj != nullptr && obj != reinterpret_cast<void*>(IDCANCEL))
+					{
+						obj->EditorInitialize();
+						obj->EditorLoad(gEditorWindow->editor->Content.get());
 						gEditorWindow->AddObject(obj);
+					}
 					break;
 				}
 				case CMD_AddAsset:

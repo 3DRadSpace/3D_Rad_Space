@@ -22,6 +22,9 @@ public:
 	virtual void Load(ContentManager *content)
 	{
 	}
+	virtual void Load(ContentManager* content, const std::filesystem::path &dummy)
+	{
+	}
 
 	virtual void Update(Keyboard& keyboard, Mouse& mouse, double dt) override
 	{

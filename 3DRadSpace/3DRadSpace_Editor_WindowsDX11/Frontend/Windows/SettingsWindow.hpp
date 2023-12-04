@@ -27,8 +27,11 @@ private:
 	{
 	protected:
 		HWND _window = nullptr;
+		int _cy = 0;
 	public:
 		HWND GetHandle();
+		int AccY();
+
 		virtual void GetSetting() = 0;
 
 		virtual ~SettingControl<void>() = default;
@@ -66,13 +69,16 @@ private:
 	std::vector<std::unique_ptr<SettingControl<void>>> _controls;
 
 	template<typename T>
-	void _addSetting(Setting<T>& setting, int py)
+	void _addSetting(Setting<T>& setting)
 	{
 		std::unique_ptr<SettingControl<void>> ctrl;
-		ctrl.reset(new SettingControl<T>(setting, window, hInstance, py));
+		ctrl.reset(new SettingControl<T>(setting, window, hInstance, _cy));
+		_cy += ctrl->AccY() + 5;
 
 		_controls.push_back(std::move(ctrl));
 	}
+
+	int _cy = 10;
 
 	void _createControls();
 public:

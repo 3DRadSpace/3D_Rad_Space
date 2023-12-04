@@ -2,57 +2,57 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Vector3 Vector3::Zero()
+constexpr Vector3 Vector3::Zero()
 {
     return Vector3(0, 0, 0);
 }
 
-Vector3 Vector3::UnitX()
+constexpr Vector3 Vector3::UnitX()
 {
     return Vector3(1, 0, 0);
 }
 
-Vector3 Vector3::UnitY()
+constexpr Vector3 Vector3::UnitY()
 {
     return Vector3(0, 1, 0);
 }
 
-Vector3 Vector3::UnitZ()
+constexpr Vector3 Vector3::UnitZ()
 {
     return Vector3(0, 0, 1);
 }
 
-Vector3 Vector3::One()
+constexpr Vector3 Vector3::One()
 {
     return Vector3(1,1,1);
 }
 
-Vector3 Vector3::Up()
+constexpr Vector3 Vector3::Up()
 {
     return Vector3{ 0, 1, 0 };
 }
 
-Vector3 Vector3::Down()
+constexpr Vector3 Vector3::Down()
 {
     return Vector3{ 0, -1, 0 };
 }
 
-Vector3 Vector3::Forward()
+constexpr Vector3 Vector3::Forward()
 {
     return Vector3{ 0, 0, -1 };
 }
 
-Vector3 Vector3::Backward()
+constexpr Vector3 Vector3::Backward()
 {
     return Vector3{ 0, 0, 1 };
 }
 
-Vector3 Vector3::Left()
+constexpr Vector3 Vector3::Left()
 {
     return Vector3{ -1, 0, 0 };
 }
 
-Vector3 Vector3::Right()
+constexpr Vector3 Vector3::Right()
 {
     return Vector3{ 1, 0,0 };
 }
@@ -62,12 +62,12 @@ float Vector3::Length() const
     return sqrtf((X * X) + (Y * Y) + (Z * Z));
 }
 
-float Vector3::LengthSquared() const
+constexpr float Vector3::LengthSquared() const
 {
     return (X * X) + (Y * Y) + (Z * Z);
 }
 
-Vector3 Vector3::Normalize()
+Vector3& Vector3::Normalize()
 {
     float l = this->Length();
 
@@ -78,7 +78,13 @@ Vector3 Vector3::Normalize()
     return *this;
 }
 
-Vector3& Vector3::operator+=(const Vector3& v)
+Vector3 Engine3DRadSpace::Math::Vector3::Normalize(const Vector3& v)
+{
+    float l = v.Length();
+    return { v.X / l, v.Y / l, v.Z / l };
+}
+
+constexpr Vector3& Vector3::operator+=(const Vector3& v)
 {
     this->X += v.X;
     this->Y += v.Y;
@@ -86,12 +92,12 @@ Vector3& Vector3::operator+=(const Vector3& v)
     return *this;
 }
 
-Vector3 Vector3::operator+(const Vector3& v) const
+constexpr Vector3 Vector3::operator+(const Vector3& v) const
 {
     return Vector3{ X + v.X, Y + v.Y, Z + v.Z };
 }
 
-Vector3& Vector3::operator-=(const Vector3& v)
+constexpr Vector3& Vector3::operator-=(const Vector3& v)
 {
     this->X -= v.X;
     this->Y -= v.Z;
@@ -99,12 +105,12 @@ Vector3& Vector3::operator-=(const Vector3& v)
     return *this;
 }
 
-Vector3 Vector3::operator-(const Vector3& v) const
+constexpr Vector3 Vector3::operator-(const Vector3& v) const
 {
     return Vector3(this->X - v.X, this->Y - v.Y, this->Z - v.Z);
 }
 
-Vector3& Vector3::operator-()
+constexpr Vector3& Vector3::operator-()
 {
     this->X *= -1;
     this->Y *= -1;
@@ -112,7 +118,7 @@ Vector3& Vector3::operator-()
     return *this;
 }
 
-Vector3 Engine3DRadSpace::Math::Vector3::operator-() const
+constexpr Vector3 Engine3DRadSpace::Math::Vector3::operator-() const
 {
     Vector3 c(*this);
     c.X *= 1;
@@ -122,7 +128,7 @@ Vector3 Engine3DRadSpace::Math::Vector3::operator-() const
     return c;
 }
 
-Vector3& Vector3::operator*=(float s)
+constexpr Vector3& Vector3::operator*=(float s)
 {
     this->X *= s;
     this->Y *= s;
@@ -130,12 +136,12 @@ Vector3& Vector3::operator*=(float s)
     return *this;
 }
 
-Vector3 Vector3::operator*(float s) const
+constexpr Vector3 Vector3::operator*(float s) const
 {
     return Vector3(s * this->X, s * this->Y, s * this->Z);
 }
 
-Vector3& Vector3::operator/=(float s)
+constexpr Vector3& Vector3::operator/=(float s)
 {
     X /= s;
     Y /= s;
@@ -143,7 +149,7 @@ Vector3& Vector3::operator/=(float s)
     return *this;
 }
 
-Vector3 Vector3::operator/(float s) const
+constexpr Vector3 Vector3::operator/(float s) const
 {
     return Vector3(
         X / s,
@@ -152,7 +158,7 @@ Vector3 Vector3::operator/(float s) const
     );
 }
 
-Vector3 Vector3::Cross(const Vector3& v)
+constexpr Vector3 Vector3::Cross(const Vector3& v)
 {
     X = Y * v.Z - Z * v.Y;
     Y = Z * v.X - X * v.Z;
@@ -161,7 +167,7 @@ Vector3 Vector3::Cross(const Vector3& v)
     return *this;
 }
 
-Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2)
+constexpr Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2)
 {
     return Vector3(
         v1.Y * v2.Z - v1.Z * v2.Y,
@@ -170,17 +176,17 @@ Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2)
     );
 }
 
-float Vector3::Dot(const Vector3& v) const
+constexpr float Vector3::Dot(const Vector3& v) const
 {
     return (this->X * v.X) + (this->Y * v.Y) + (this->Z * v.Z);
 }
 
-float Vector3::Dot(const Vector3& a, const Vector3& b)
+constexpr float Vector3::Dot(const Vector3& a, const Vector3& b)
 {
     return (a.X * b.X) + (a.Y + b.Y) + (a.Z * b.Z);
 }
 
-Vector3& Vector3::Transform(const Quaternion& q)
+constexpr Vector3& Vector3::Transform(const Quaternion& q)
 {
     float x = 2 * (q.Y * Z - q.Z * Y);
     float y = 2 * (q.Z * X - q.X * Z);
@@ -193,7 +199,7 @@ Vector3& Vector3::Transform(const Quaternion& q)
     return *this;
 }
 
-Vector3& Vector3::Transform(const Matrix4x4& m)
+constexpr Vector3& Vector3::Transform(const Matrix4x4& m)
 {
     this->X = X * m.M11 + Y * m.M12 + Z * m.M13 + m.M14;
     this->Y = X * m.M21 + Y * m.M22 + Z * m.M23 + m.M24;
@@ -202,12 +208,12 @@ Vector3& Vector3::Transform(const Matrix4x4& m)
     return *this;
 }
 
-Vector3 Vector3::Transform(const Vector3& v, const Quaternion& q)
+constexpr Vector3 Vector3::Transform(const Vector3& v, const Quaternion& q)
 {
     return Vector3(v).Transform(q);
 }
 
-Vector3 Vector3::Transform(const Vector3& v, const Matrix4x4& m)
+constexpr Vector3 Vector3::Transform(const Vector3& v, const Matrix4x4& m)
 {
     return Vector3{
         v.X * m.M11 + v.Y * m.M12 + v.Z * m.M13 + m.M14,
@@ -216,7 +222,7 @@ Vector3 Vector3::Transform(const Vector3& v, const Matrix4x4& m)
     };
 }
 
-Vector3& Vector3::Hadamard(const Vector3& v)
+constexpr Vector3& Vector3::Hadamard(const Vector3& v)
 {
     X *= v.X;
     Y += v.Y;
@@ -224,7 +230,7 @@ Vector3& Vector3::Hadamard(const Vector3& v)
     return *this;
 }
 
-Vector3 Vector3::Hadamard(const Vector3& a, const Vector3& b)
+constexpr Vector3 Vector3::Hadamard(const Vector3& a, const Vector3& b)
 {
     return Vector3
     {
@@ -234,12 +240,12 @@ Vector3 Vector3::Hadamard(const Vector3& a, const Vector3& b)
     };
 }
 
-Vector3 Engine3DRadSpace::Math::operator*(float s, const Vector3& v)
+constexpr Vector3 Engine3DRadSpace::Math::operator*(float s, const Vector3& v)
 {
     return Vector3{ s * v.X, s * v.Y, s * v.Z };
 }
 
-Vector3 Engine3DRadSpace::Math::operator/(float s, const Vector3 &v)
+constexpr Vector3 Engine3DRadSpace::Math::operator/(float s, const Vector3 &v)
 {
     return Vector3{ s / v.X, s / v.Y, s / v.Z };
 }

@@ -120,7 +120,7 @@
       <PreprocessorDefinitions>_DEBUG;USING_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4099;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;USING_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4099;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -165,6 +165,7 @@
     <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
+    <ClInclude Include="Graphics\FlipMode.hpp" />
     <ClInclude Include="Graphics\Fonts\Font.hpp" />
     <ClInclude Include="Graphics\Fonts\FontShader.hpp" />
     <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
@@ -279,6 +280,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="Graphics\DepthStencilState.cpp" />
+    <ClCompile Include="Graphics\FlipMode.cpp" />
     <ClCompile Include="Graphics\Fonts\Font.cpp" />
     <ClCompile Include="Graphics\Fonts\FontShader.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />

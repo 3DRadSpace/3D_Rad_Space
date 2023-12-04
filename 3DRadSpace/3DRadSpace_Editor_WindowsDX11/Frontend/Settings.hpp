@@ -29,6 +29,7 @@ class Settings
 public:
 	static Setting<float> CameraSensitivity;
 	static Setting<bool> StartupUpdate;
+	static Setting<bool> ShowGrid;
 
 	static void Load();
 	static void Save();

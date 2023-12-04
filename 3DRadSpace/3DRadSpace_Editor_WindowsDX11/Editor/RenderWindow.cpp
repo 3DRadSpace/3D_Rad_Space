@@ -18,15 +18,11 @@ RenderWindow::RenderWindow(HWND parent, HINSTANCE hInstance) :
 	editorWindow(parent), 
 	testTexture(nullptr)
 {
-
 }
-
-std::unique_ptr<Box> testBox;
-std::unique_ptr<RasterizerState> newRasterState;
 
 void RenderWindow::Initialize()
 {
-	std::vector<VertexPositionColor> dLines =
+	std::vector<VertexPositionColor> axisLines =
 	{
 		//+X
 		VertexPositionColor{Vector3(0,0,0),Colors::Red},
@@ -50,6 +46,7 @@ void RenderWindow::Initialize()
 
 	constexpr int halfNumLines = 25;
 
+	std::vector<VertexPositionColor> dLines;
 	for (int i = -halfNumLines; i <= halfNumLines; i++)
 	{
 		if (i == 0) continue;
@@ -60,7 +57,8 @@ void RenderWindow::Initialize()
 		dLines.push_back(VertexPositionColor{ Vector3(-halfNumLines, 0, float(i)), Colors::Gray });
 	}
 
-	this->lines = std::make_unique<Primitives::Lines>(Device.get(), dLines);
+	axis = std::make_unique<Primitives::Lines>(Device.get(), axisLines);
+	grid = std::make_unique<Primitives::Lines>(Device.get(), dLines);
 	Camera.LookMode = Camera::CameraMode::UseLookAtCoordinates;
 	Camera.FarPlaneDistance = 10'000.0f;
 
@@ -73,11 +71,6 @@ void RenderWindow::Initialize()
 		Vector3(5, 10, -5),
 		Vector3(-5, 10, -5),
 	};
-
-	testBox = std::make_unique<Box>(Device.get(), BoundingBox(Vector3{0,0,0}, Vector3{2,2,2}), Color(1.0f, 0.5f, 0.0f, 0.5f));
-	testBox->SetTransform(Matrix4x4());
-
-	newRasterState = std::make_unique<RasterizerState>(RasterizerState::Wireframe(Device.get()));
 }
 
 Model3D *fish = nullptr;
@@ -88,7 +81,7 @@ void RenderWindow::Load(Content::ContentManager *content)
 	//testTexture->Resize(256, 256);
 
 	fish = content->Load<Model3D>("Data\\Models\\YellowFish.x");
-	content->Load<Model3D>("Data\\Models\\terrain0100.x");
+	//content->Load<Model3D>("Data\\Models\\terrain0100.x");
 
 	//testFont = std::make_unique<Fonts::Font>(Device.get(), "Data\\Fonts\\arial.ttf");
 	//this->ClearColor.R = 0.128;
@@ -152,17 +145,21 @@ void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
 void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 {
 	Camera.Draw(view, projection, dt);
-	lines->Draw(View, Projection, dt);
 
-	//Device->SetRasterizerState(newRasterState.get());
-	testBox->Draw(View, Projection, dt);
-	//Device->SetRasterizerState(nullptr);
+	axis->Transform = Matrix4x4::CreateTranslation(cursor3D);
+	axis->Draw(View, Projection, dt);
+
+	if (Settings::ShowGrid.Value)
+	{
+		grid->Draw(View, Projection, dt);
+	}
 
 	if(_keyboardTest)
 	{
 		
 	}
 
+	//Main rendering pass
 	for(auto &obj : *Objects)
 	{
 		switch(obj.InternalType)
@@ -175,6 +172,14 @@ void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 				break;
 			default:
 				break;
+		}
+	}
+	//Picking passs
+	for (auto& obj : *Objects)
+	{
+		if (obj.InternalType == ObjectList::ObjectInstance::ObjectType::IObject3D)
+		{
+
 		}
 	}
 }

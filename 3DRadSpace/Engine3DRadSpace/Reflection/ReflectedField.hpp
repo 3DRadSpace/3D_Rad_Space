@@ -22,6 +22,12 @@ namespace Engine3DRadSpace::Reflection
 		virtual const void *Get(void *objPtr) const = 0;
 		virtual void Set(void *objPtr,const void *value) const = 0;
 
+		template<typename T>
+		T GetAtOffset(void* objPtr, intptr_t offset)
+		{
+			return *std::launder<T>(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + FieldOffset() + offset));
+		}
+
 		virtual const void *DefaultValue() const = 0;
 
 		virtual FieldRepresentation Representation() const = 0;

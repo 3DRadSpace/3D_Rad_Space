@@ -25,7 +25,8 @@ class RenderWindow : public Engine3DRadSpace::Game
 
 	HWND editorWindow;
 	Engine3DRadSpace::Objects::Camera Camera;
-	std::unique_ptr<Engine3DRadSpace::Graphics::Primitives::Lines> lines;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Primitives::Lines> axis;
+	std::unique_ptr<Engine3DRadSpace::Graphics::Primitives::Lines> grid;
 
 	float zoom = 5.0f;
 	float timer = 0;

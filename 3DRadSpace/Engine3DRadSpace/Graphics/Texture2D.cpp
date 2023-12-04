@@ -12,6 +12,7 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Logging;
+using namespace Engine3DRadSpace::Math;
 
 Texture2D::Texture2D(GraphicsDevice* device, const std::string &filename):
 	_device(device),
@@ -624,6 +625,11 @@ unsigned Texture2D::Width()
 unsigned Texture2D::Height()
 {
 	return _height;
+}
+
+Point Texture2D::Size()
+{
+	return Point(static_cast<int>(_width), static_cast<int>(_height));
 }
 
 Texture2D Texture2D::Clone()

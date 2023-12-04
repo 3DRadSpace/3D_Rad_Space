@@ -94,7 +94,7 @@ Quaternion Quaternion::Normalize()
     return *this / Length();
 }
 
-Quaternion Quaternion::Conjugate()
+constexpr Quaternion Quaternion::Conjugate()
 {
     this->X *= -1;
     this->Y *= -1;
@@ -102,7 +102,7 @@ Quaternion Quaternion::Conjugate()
     return *this;
 }
 
-Quaternion Quaternion::Inverse()
+constexpr Quaternion Quaternion::Inverse()
 {
     float num2 = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
     float num = 1.0f / num2;
@@ -113,7 +113,7 @@ Quaternion Quaternion::Inverse()
     return *this;
 }
 
-Vector3 Quaternion::Im() const
+constexpr Vector3 Quaternion::Im() const
 {
     return Vector3(X,Y,Z);
 }
@@ -139,7 +139,7 @@ Vector3 Quaternion::ToYawPitchRoll() const
     return r;
 }
 
-Quaternion Quaternion::operator+(const Quaternion &q) const
+constexpr Quaternion Quaternion::operator+(const Quaternion &q) const
 {
     return Quaternion
     {
@@ -150,7 +150,7 @@ Quaternion Quaternion::operator+(const Quaternion &q) const
     };
 }
 
-Quaternion Quaternion::operator+=(const Quaternion &q)
+constexpr Quaternion Quaternion::operator+=(const Quaternion &q)
 {
     X += q.X;
     Y += q.Y;
@@ -160,7 +160,7 @@ Quaternion Quaternion::operator+=(const Quaternion &q)
     return *this;
 }
 
-Quaternion Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q) const
+constexpr Quaternion Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q) const
 {
     return Quaternion{
         X - q.X,
@@ -170,7 +170,7 @@ Quaternion Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q) co
     };
 }
 
-Quaternion& Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q)
+constexpr Quaternion& Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q)
 {
     X -= q.X;
     Y -= q.Y;
@@ -180,7 +180,7 @@ Quaternion& Engine3DRadSpace::Math::Quaternion::operator-(const Quaternion& q)
     return *this;
 }
 
-Quaternion Quaternion::operator*(const Quaternion& q) const
+constexpr Quaternion Quaternion::operator*(const Quaternion& q) const
 {
     //https://stackoverflow.com/questions/19956555/how-to-multiply-two-quaternions
     Quaternion r;
@@ -192,7 +192,7 @@ Quaternion Quaternion::operator*(const Quaternion& q) const
     return r;
 }
 
-Quaternion Quaternion::operator*=(const Quaternion &q)
+constexpr Quaternion Quaternion::operator*=(const Quaternion &q)
 {
     X = W * q.W - X * q.X - Y * q.Y - Z * q.Z;
     Y = W * q.X + X * q.W + Y * q.Z - Z * q.Y;
@@ -202,7 +202,7 @@ Quaternion Quaternion::operator*=(const Quaternion &q)
     return *this;
 }
 
-Quaternion Quaternion::operator/(float s) const
+constexpr Quaternion Quaternion::operator/(float s) const
 {
     return Quaternion(
         this->X / s,
@@ -211,7 +211,7 @@ Quaternion Quaternion::operator/(float s) const
         this->W / s);
 }
 
-Quaternion Quaternion::operator/=(float s)
+constexpr Quaternion Quaternion::operator/=(float s)
 {
     X /= s;
     Y /= s;
@@ -221,7 +221,7 @@ Quaternion Quaternion::operator/=(float s)
     return *this;
 }
 
-Quaternion Engine3DRadSpace::Math::operator/(float f, const Quaternion& q)
+constexpr Quaternion Engine3DRadSpace::Math::operator/(float f, const Quaternion& q)
 {
     return Quaternion
     {
@@ -232,7 +232,7 @@ Quaternion Engine3DRadSpace::Math::operator/(float f, const Quaternion& q)
     };
 }
 
-Quaternion Engine3DRadSpace::Math::operator*(float s, const Quaternion& q)
+constexpr Quaternion Engine3DRadSpace::Math::operator*(float s, const Quaternion& q)
 {
     return Quaternion
     {

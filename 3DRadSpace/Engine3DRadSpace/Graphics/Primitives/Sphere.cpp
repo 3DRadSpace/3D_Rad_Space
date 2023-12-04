@@ -11,11 +11,16 @@ using namespace Engine3DRadSpace::Math;
 Sphere::Sphere(GraphicsDevice *device, float radius, Color color, unsigned resolution):
 	_device(device)
 {
-	if(resolution <= 1) resolution += 1;
+	if (resolution <= 1) resolution = 2;
 
 	std::vector<VertexPositionColor> sphere_points =
 	{
 		VertexPositionColor{Vector3::UnitY() * -radius, color }
+	};
+
+	std::vector<unsigned> sphere_indices =
+	{
+		0
 	};
 
 	double dr = 2 * std::numbers::pi / resolution;
@@ -41,8 +46,6 @@ Sphere::Sphere(GraphicsDevice *device, float radius, Color color, unsigned resol
 	sphere_points.push_back(VertexPositionColor(Vector3::UnitY() * radius, color));
 
 	_vertices = std::make_unique<VertexBufferV<VertexPositionColor>>(device, sphere_points);
-
-	std::vector<unsigned> sphere_indices;
 
 	_indices = std::make_unique<IndexBuffer>(device, sphere_indices);
 	_shader = ShaderManager::LoadShader<BlankShader>(device);

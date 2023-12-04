@@ -1,6 +1,7 @@
 #pragma once
 #include "../GraphicsDevice.hpp"
 #include "PixelFormat.hpp"
+#include "../Math/Point.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -45,6 +46,7 @@ namespace Engine3DRadSpace::Graphics
 
 		unsigned Width();
 		unsigned Height();
+		Math::Point Size();
 
         static Texture2D CreateStaging(Texture2D* texture);
         Texture2D Clone();

@@ -9,30 +9,30 @@ namespace Engine3DRadSpace
 		struct Vector2;
 		struct DLLEXPORT Point
 		{
-			Point(int x = 0, int y = 0) : X(x), Y(y) {};
+			constexpr Point(int x = 0, int y = 0) : X(x), Y(y) {};
 
 			int X;
 			int Y;
 
-			Point operator +=(const Point& p);
-			Point operator +(const Point &p) const;
+			constexpr Point operator +=(const Point& p);
+			constexpr Point operator +(const Point &p) const;
 
-			Point operator -=(const Point& p);
-			Point operator -(const Point &p) const;
-			Point operator -();
+			constexpr Point operator -=(const Point& p);
+			constexpr Point operator -(const Point &p) const;
+			constexpr Point operator -();
 
-			Point operator *=(float s);
-			Point operator *(float s) const;
+			constexpr Point operator *=(float s);
+			constexpr Point operator *(float s) const;
 
-			Point operator /=(float s);
-			Point operator /(float s) const;
+			constexpr Point operator /=(float s);
+			constexpr Point operator /(float s) const;
 
-			auto operator <=>(const Point&) const = default;
+			constexpr auto operator <=>(const Point&) const = default;
 
-			operator Engine3DRadSpace::Math::Vector2() const;
+			constexpr operator Engine3DRadSpace::Math::Vector2() const;
 		};
 	}
 }
 
-Engine3DRadSpace::Math::Point DLLEXPORT operator * (float s, const Engine3DRadSpace::Math::Point& p);
+constexpr Engine3DRadSpace::Math::Point DLLEXPORT operator * (float s, const Engine3DRadSpace::Math::Point& p);
 

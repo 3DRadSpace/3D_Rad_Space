@@ -23,6 +23,7 @@ public:
 
 	static std::vector<std::pair<Engine3DRadSpace::Reflection::UUID, Engine3DRadSpace::Reflection::ReflectedObject *>> Objects;
 
+	static void InitializeReflData();
 	static Engine3DRadSpace::Reflection::ReflectedObject *GetReflDataFromUUID(const Engine3DRadSpace::Reflection::UUID &uuid);
 
 	[[nodiscard]] Engine3DRadSpace::IObject* ShowDialog();

@@ -14,8 +14,8 @@ namespace Engine3DRadSpace::Math
 		float M31, M32, M33, M34;
 		float M41, M42, M43, M44;
 
-		explicit Matrix4x4(float m[16]);
-		explicit Matrix4x4(
+		constexpr explicit Matrix4x4(float m[16]);
+		constexpr explicit Matrix4x4(
 			float m11 = 1, float m12 = 0, float m13 = 0, float m14 = 0,
 			float m21 = 0, float m22 = 1, float m23 = 0, float m24 = 0,
 			float m31 = 0, float m32 = 0, float m33 = 1, float m34 = 0,
@@ -39,44 +39,44 @@ namespace Engine3DRadSpace::Math
 		static Matrix4x4 CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward);
 
 		///Element-wise product.
-		static Matrix4x4 Hadamard(const Matrix4x4& a, const Matrix4x4& b);
-		Matrix4x4& Hadamard(const Matrix4x4& m);
+		constexpr static Matrix4x4 Hadamard(const Matrix4x4& a, const Matrix4x4& b);
+		constexpr Matrix4x4& Hadamard(const Matrix4x4& m);
 
-		Matrix4x4 operator +(const Matrix4x4 &m) const;
-		Matrix4x4 operator +=(const Matrix4x4 &m);
+		constexpr Matrix4x4 operator +(const Matrix4x4 &m) const;
+		constexpr Matrix4x4 operator +=(const Matrix4x4 &m);
 
-		Matrix4x4 operator -(const Matrix4x4 &m) const;
-		Matrix4x4 operator -=(const Matrix4x4 &m);
+		constexpr Matrix4x4 operator -(const Matrix4x4 &m) const;
+		constexpr Matrix4x4 operator -=(const Matrix4x4 &m);
 
-		Matrix4x4 operator *(const Matrix4x4& m) const;
-		Matrix4x4& operator *=(const Matrix4x4& m);
+		constexpr Matrix4x4 operator *(const Matrix4x4& m) const;
+		constexpr Matrix4x4& operator *=(const Matrix4x4& m);
 
-		Matrix4x4 operator*(float scalar) const;
-		Matrix4x4& operator *=(float scalar);
+		constexpr Matrix4x4 operator*(float scalar) const;
+		constexpr Matrix4x4& operator *=(float scalar);
 
-		Matrix4x4& Transpose();
-		static Matrix4x4 Transpose(const Matrix4x4& m);
+		constexpr Matrix4x4& Transpose();
+		constexpr static Matrix4x4 Transpose(const Matrix4x4& m);
 
-		Matrix4x4& Invert();
-		static Matrix4x4 Invert(const Matrix4x4& m);
+		constexpr Matrix4x4& Invert();
+		constexpr static Matrix4x4 Invert(const Matrix4x4& m);
 
-		float& operator[](unsigned index);
+		constexpr float& operator[](unsigned index);
 
-		float Trace() const;
-		float Determinant() const;
+		constexpr float Trace() const;
+		constexpr float Determinant() const;
 
-		Vector3 Forward() const;
-		Vector3 Backward() const;
+		constexpr Vector3 Forward() const;
+		constexpr Vector3 Backward() const;
 
-		Vector3 Up() const;
-		Vector3 Down() const;
+		constexpr Vector3 Up() const;
+		constexpr Vector3 Down() const;
 
-		Vector3 Left() const;
-		Vector3 Right() const;
+		constexpr Vector3 Left() const;
+		constexpr Vector3 Right() const;
 
-		Vector3 Translation() const;
+		constexpr Vector3 Translation() const;
 	};
 
-	Matrix4x4 operator *(float scalar,const Matrix4x4& m);
-	Matrix4x4 operator /(float f, const Matrix4x4& m);
+	constexpr Matrix4x4 operator *(float scalar,const Matrix4x4& m);
+	constexpr Matrix4x4 operator /(float f, const Matrix4x4& m);
 }

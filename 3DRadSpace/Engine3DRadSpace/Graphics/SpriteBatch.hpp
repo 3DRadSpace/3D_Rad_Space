@@ -3,6 +3,7 @@
 #include "VertexBuffer.hpp"
 #include "Shaders/SpriteShader.hpp"
 #include "DepthStencilState.hpp"
+#include "FlipMode.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -41,13 +42,15 @@ namespace Engine3DRadSpace::Graphics
 
 		struct spriteBatchEntry
 		{
-			const unsigned textureID;
-			const Math::RectangleF rectangle;
-			const Color tintColor;
-			const bool flipU;
-			const bool flipV;
-			const float depth;
-			const SpriteBatchSortMode sortingMode;
+			unsigned textureID;
+			std::pair<Math::Vector2,Math::Vector2> coords;
+			Math::RectangleF uvSource;
+			Color tintColor;
+			bool flipU;
+			bool flipV;
+			float rotation;
+			float depth;
+			SpriteBatchSortMode sortingMode;
 
 			bool operator >(const spriteBatchEntry &b) const;
 			bool operator <(const spriteBatchEntry &b) const;
@@ -59,7 +62,8 @@ namespace Engine3DRadSpace::Graphics
 		std::unordered_map<unsigned, Texture2D *> _textures;
 
 		static std::array<VertexPointUV,6> _createQuad(const Math::RectangleF &r, bool flipU = false, bool flipV = false);
-		static std::array<VertexPointUV, 6> _createQuad(const Math::Vector2& a, const Math::Vector2& b, const Math::Vector2& c, const Math::Vector2& d, bool flipU, bool flipV);
+		static std::array<VertexPointUV, 6> _createQuad(const Math::Vector2& a, const Math::Vector2& b, const Math::Vector2& c, const Math::Vector2& d, bool flipU, bool flipV,
+														const Math::RectangleF uvRect = Math::RectangleF(0.0f,0.0f,1.0f,1.0f));
 		void _setEntry(const spriteBatchEntry &entry);
 		void _prepareGraphicsDevice();
 
@@ -95,12 +99,12 @@ namespace Engine3DRadSpace::Graphics
 
 		void Begin(SpriteBatchSortMode sortingMode);
 		void Begin(SpriteBatchSortMode sortingMode,SamplerState samplerState);
+		
+		void DrawNormalized(Texture2D* texture, const Math::RectangleF& coords, const Math::RectangleF& source = Math::RectangleF(0.0f, 0.0f, 1.0f, 1.0f), Color tintColor = Colors::White, float rotation = 0.0f, FlipMode flipMode = FlipMode::None, float depth = 0);
+		void DrawNormalized(Texture2D* texture, const Math::RectangleF& coords, const Math::Rectangle source, Color tintColor = Colors::White, float rotation = 0.0f, FlipMode flipMode = FlipMode::None, float depth = 0);
 
-		void DrawNormalized(Texture2D* texture, const Math::Vector2 &pos, const Math::Vector2 &scale, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
-		void DrawNormalized(Texture2D* texture, const Math::Vector2 &pos, float rotation, const Math::Vector2 &scale, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
-
-		void Draw(Texture2D* texture, const Math::Point& pos, const Math::Point& size, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
-		void Draw(Texture2D* texture, const Math::Point& pos, float rotation, const Math::Point& size, const Color& tintColor = Colors::White, bool flipU = false, bool flipV = false, float depth = 0);
+		void Draw(Texture2D* texture, const Math::Rectangle& coords, const Math::Rectangle& source, Color tintColor = Colors::White, float rotation = 0.0f, FlipMode flipMode = FlipMode::None, float depth = 0);
+		void Draw(Texture2D* texture, const Math::Rectangle& coords, Color tintColor = Colors::White, float rotation = 0.0f, FlipMode flipMode = FlipMode::None, float depth = 0);
 
 		void End();
 

@@ -282,6 +282,7 @@
     <ClInclude Include="Objects\Empty.hpp" />
     <ClInclude Include="Objects\SkyColor.hpp" />
     <ClInclude Include="Internal\InitializationFlag.hpp" />
+    <ClInclude Include="Graphics\FlipMode.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -468,5 +469,6 @@
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="Objects\Empty.cpp" />
     <ClCompile Include="Objects\SkyColor.cpp" />
+    <ClCompile Include="Graphics\FlipMode.cpp" />
   </ItemGroup>
 </Project>

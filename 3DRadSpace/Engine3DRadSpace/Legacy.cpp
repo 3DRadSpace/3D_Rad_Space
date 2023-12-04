@@ -157,16 +157,17 @@ int Engine3DRadSpace::Legacy::iObjectScan(int obj_x, const Math::Vector3& origin
 		if (intersection.has_value())
 		{
 			float d = intersection.value();
-			if (d > radius) return 0;
+			if (d > radius) return false;
 			else
 			{
 				contactPoint = origin + (d * direction);
 				contactNormal = -direction;
+				return true;
 			}
 		}
-		else return -1;
+		else return false;
 	}
-	else return -1;
+	else return false;
 }
 
 void DLLEXPORT Engine3DRadSpace::Legacy::iObjectRefresh(int obj_x, const std::filesystem::path& path)

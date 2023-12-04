@@ -19,6 +19,12 @@ Setting<bool> Settings::StartupUpdate =
 	.Value = true
 };
 
+Setting<bool> Settings::ShowGrid
+{
+	.Name = "Show grid",
+	.Value = true
+};
+
 void Settings::Load()
 {
 	nlohmann::json settings;
@@ -35,6 +41,7 @@ void Settings::Load()
 
 	CameraSensitivity.Value = settings["Editor"]["CameraSensitivity"].get<float>();
 	StartupUpdate.Value = settings["Updates"]["StartupUpdate"].get<bool>();
+	ShowGrid.Value = settings["Editor"]["ShowGrid"].get<bool>();
 }
 
 void Settings::Save()
@@ -43,6 +50,7 @@ void Settings::Save()
 	nlohmann::json jsonSettings;
 	jsonSettings["Editor"]["CameraSensitivity"] = CameraSensitivity.Value;
 	jsonSettings["Updates"]["StartupUpdate"] = StartupUpdate.Value;
+	jsonSettings["Editor"]["ShowGrid"] = ShowGrid.Value;
 
 	std::ofstream jsonFile(GetAppDataFolder() + "Settings.json");
 	jsonFile << std::setw(4) << jsonSettings;

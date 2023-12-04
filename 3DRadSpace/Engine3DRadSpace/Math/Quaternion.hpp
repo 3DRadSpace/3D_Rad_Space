@@ -10,36 +10,38 @@ namespace Engine3DRadSpace::Math
 	{
 		float X, Y, Z, W;
 
-		Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) : X(x), Y(y), Z(z), W(w) {};
+		constexpr Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) : X(x), Y(y), Z(z), W(w) {};
 
 		static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
 		static Quaternion FromAxisAngle(const Vector3& axis, float angle);
-		static Quaternion FromMatrix(const Matrix4x4& m);	
+		static Quaternion FromMatrix(const Matrix4x4& m);
 		static Quaternion FromVectorToVector(const Vector3& a, const Vector3& b);
 
 		float Length() const;
 		Quaternion Normalize();
-		Quaternion Conjugate();
-		Quaternion Inverse();
+		constexpr Quaternion Conjugate();
+		constexpr Quaternion Inverse();
 
-		Vector3 Im() const;
+		constexpr Vector3 Im() const;
 		
 		Vector3 ToYawPitchRoll() const;
 
-		Quaternion operator +(const Quaternion &q) const;
-		Quaternion operator +=(const Quaternion &q);
+		constexpr Quaternion operator +(const Quaternion &q) const;
+		constexpr Quaternion operator +=(const Quaternion &q);
 
-		Quaternion operator -(const Quaternion& q) const;
-		Quaternion& operator-(const Quaternion& q);
+		constexpr Quaternion operator -(const Quaternion& q) const;
+		constexpr Quaternion& operator-(const Quaternion& q);
 
-		Quaternion operator *(const Quaternion &q) const;
-		Quaternion operator *=(const Quaternion &q);
+		constexpr Quaternion operator *(const Quaternion &q) const;
+		constexpr Quaternion operator *=(const Quaternion &q);
 
-		Quaternion operator /(float s) const;
-		Quaternion operator /=(float s);
+		constexpr Quaternion operator /(float s) const;
+		constexpr Quaternion operator /=(float s);
+
+		constexpr auto operator <=>(const Quaternion& q) const = default;
 	};
 
-	Quaternion operator /(float f, const Quaternion& q);
-	Quaternion operator *(float s, const Quaternion& q);
+	constexpr Quaternion operator /(float f, const Quaternion& q);
+	constexpr Quaternion operator *(float s, const Quaternion& q);
 }
 

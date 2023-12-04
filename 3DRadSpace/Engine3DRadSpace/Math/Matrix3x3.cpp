@@ -3,14 +3,14 @@
 
 using namespace Engine3DRadSpace::Math;
 
-Matrix3x3::Matrix3x3(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33):
+constexpr Matrix3x3::Matrix3x3(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33):
 	M11(m11), M12(m12), M13(m13),
 	M21(m21), M22(m22), M23(m23),
 	M31(m31), M32(m32), M33(m33)
 {
 }
 
-Matrix3x3::Matrix3x3(float m[6]):
+constexpr Matrix3x3::Matrix3x3(float m[9]):
 	M11(m[0]), M12(m[1]), M13(m[2]),
 	M21(m[3]), M22(m[4]), M23(m[5]),
 	M31(m[6]), M32(m[7]), M33(m[8])
@@ -53,18 +53,18 @@ Matrix3x3 Matrix3x3::Create2DSkewing(const Vector2& skewing)
 	);
 }
 
-float Matrix3x3::Trace() const
+constexpr float Matrix3x3::Trace() const
 {
 	return M11 + M22 + M33;
 }
 
-float Matrix3x3::Determinant() const
+constexpr float Matrix3x3::Determinant() const
 {
 	//Using Rule of Sarrus
 	return M11 * M22 * M33 + M12 * M23 * M31 + M21 * M32 * M13 - M13 * M22 * M31 - M21 * M12 * M33 - M11 * M23 * M32;
 }
 
-float& Matrix3x3::operator[](unsigned index)
+constexpr float& Matrix3x3::operator[](unsigned index)
 {
 	switch(index)
 	{
@@ -81,7 +81,7 @@ float& Matrix3x3::operator[](unsigned index)
 	}
 }
 
-Matrix3x3& Matrix3x3::Hadamard(const Matrix3x3& m)
+constexpr Matrix3x3& Matrix3x3::Hadamard(const Matrix3x3& m)
 {
 	M11 *= m.M11;
 	M12 *= m.M12;
@@ -98,7 +98,7 @@ Matrix3x3& Matrix3x3::Hadamard(const Matrix3x3& m)
 	return *this;
 }
 
-Matrix3x3 Matrix3x3::Hadamard(const Matrix3x3& a, const Matrix3x3& b)
+constexpr Matrix3x3 Matrix3x3::Hadamard(const Matrix3x3& a, const Matrix3x3& b)
 {
 	return Matrix3x3
 	{
@@ -116,7 +116,7 @@ Matrix3x3 Matrix3x3::Hadamard(const Matrix3x3& a, const Matrix3x3& b)
 	};
 }
 
-Matrix3x3 Matrix3x3::operator+(const Matrix3x3& m) const
+constexpr Matrix3x3 Matrix3x3::operator+(const Matrix3x3& m) const
 {
 	return Matrix3x3
 	{
@@ -126,7 +126,7 @@ Matrix3x3 Matrix3x3::operator+(const Matrix3x3& m) const
 	};
 }
 
-Matrix3x3& Matrix3x3::operator+=(const Matrix3x3& m)
+constexpr Matrix3x3& Matrix3x3::operator+=(const Matrix3x3& m)
 {
 	M11 += m.M11;
 	M12 += m.M12;
@@ -143,7 +143,7 @@ Matrix3x3& Matrix3x3::operator+=(const Matrix3x3& m)
 	return *this;
 }
 
-Matrix3x3& Matrix3x3::operator-()
+constexpr Matrix3x3& Matrix3x3::operator-()
 {
 	M11 *= -1;
 	M12 *= -1;
@@ -160,7 +160,7 @@ Matrix3x3& Matrix3x3::operator-()
 	return *this;
 }
 
-Matrix3x3 Matrix3x3::operator-(const Matrix3x3& m) const
+constexpr Matrix3x3 Matrix3x3::operator-(const Matrix3x3& m) const
 {
 	return Matrix3x3{
 		M11 - m.M11, M12 - m.M12, M13 - m.M13,
@@ -169,7 +169,7 @@ Matrix3x3 Matrix3x3::operator-(const Matrix3x3& m) const
 	};
 }
 
-Matrix3x3& Matrix3x3::operator-=(const Matrix3x3& m)
+constexpr Matrix3x3& Matrix3x3::operator-=(const Matrix3x3& m)
 {
 	M11 -= m.M11;
 	M12 -= m.M12;
@@ -186,7 +186,7 @@ Matrix3x3& Matrix3x3::operator-=(const Matrix3x3& m)
 	return *this;
 }
 
-Matrix3x3 Matrix3x3::operator*(const Matrix3x3& m) const
+constexpr Matrix3x3 Matrix3x3::operator*(const Matrix3x3& m) const
 {
 	return Matrix3x3
 	{
@@ -204,7 +204,7 @@ Matrix3x3 Matrix3x3::operator*(const Matrix3x3& m) const
 	};
 }
 
-Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& m)
+constexpr Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& m)
 {
 	M11 = M11 * m.M11 + M12 * m.M21 + M13 * m.M13;
 	M12 = M11 * m.M12 + M12 * m.M22 + M13 + m.M23;
@@ -221,7 +221,7 @@ Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& m)
 	return *this;
 }
 
-Matrix3x3 Matrix3x3::operator*(float s) const
+constexpr Matrix3x3 Matrix3x3::operator*(float s) const
 {
 	return Matrix3x3
 	{
@@ -231,7 +231,7 @@ Matrix3x3 Matrix3x3::operator*(float s) const
 	};
 }
 
-Matrix3x3& Matrix3x3::operator*=(float s)
+constexpr Matrix3x3& Matrix3x3::operator*=(float s)
 {
 	M11 *= s;
 	M12 *= s;
@@ -248,7 +248,7 @@ Matrix3x3& Matrix3x3::operator*=(float s)
 	return *this;
 }
 
-Matrix3x3 Matrix3x3::operator/(float s) const
+constexpr Matrix3x3 Matrix3x3::operator/(float s) const
 {
 	return Matrix3x3
 	{
@@ -258,7 +258,7 @@ Matrix3x3 Matrix3x3::operator/(float s) const
 	};
 }
 
-Matrix3x3& Matrix3x3::operator/=(float s)
+constexpr Matrix3x3& Matrix3x3::operator/=(float s)
 {
 	M11 /= s;
 	M12 /= s;
@@ -275,7 +275,7 @@ Matrix3x3& Matrix3x3::operator/=(float s)
 	return *this;
 }
 
-Matrix3x3 Engine3DRadSpace::Math::operator*(float s, const Matrix3x3& m)
+constexpr Matrix3x3 Engine3DRadSpace::Math::operator*(float s, const Matrix3x3& m)
 {
 	return Matrix3x3
 	{
@@ -285,7 +285,7 @@ Matrix3x3 Engine3DRadSpace::Math::operator*(float s, const Matrix3x3& m)
 	};
 }
 
-Matrix3x3 Engine3DRadSpace::Math::operator/(float s, const Matrix3x3& m)
+constexpr Matrix3x3 Engine3DRadSpace::Math::operator/(float s, const Matrix3x3& m)
 {
 	return Matrix3x3
 	{

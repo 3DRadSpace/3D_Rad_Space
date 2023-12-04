@@ -15,5 +15,7 @@ namespace Engine3DRadSpace::Content
 		{ 
 			return ID;
 		}
+
+		std::type_index AssetType = typeid(T);
 	};
 }
