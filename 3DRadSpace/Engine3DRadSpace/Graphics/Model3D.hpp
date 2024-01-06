@@ -4,9 +4,14 @@
 #include "../Math/BoundingSphere.hpp"
 #include "../Math/BoundingBox.hpp"
 
+namespace Engine3DRadSpace::Internal
+{
+	struct AssetUUIDReader;
+}
+
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT Model3D
+	class DLLEXPORT Model3D : public Content::Asset
 	{
 		GraphicsDevice* _device;
 		std::vector<std::unique_ptr<ModelMesh>> _meshes;
@@ -16,7 +21,7 @@ namespace Engine3DRadSpace::Graphics
 		Math::BoundingSphere _sphere;
 		Math::BoundingBox _box;
 	public:
-		Model3D(GraphicsDevice* Device,const std::string& path);
+		Model3D(GraphicsDevice* Device,const std::filesystem::path& path);
 
 		Model3D(Model3D &) = delete;
 		Model3D(Model3D &&) noexcept = default;
@@ -40,6 +45,8 @@ namespace Engine3DRadSpace::Graphics
 
 		void SetShader(std::shared_ptr<Shaders::Effect> effect);
 		void SetShaders(std::span<std::shared_ptr<Shaders::Effect>> effects);
+
+		Reflection::UUID GetUUID() override;
 
 		~Model3D() = default;
 

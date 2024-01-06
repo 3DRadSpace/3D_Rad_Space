@@ -17,7 +17,7 @@ using namespace Engine3DRadSpace::Math;
 
 Assimp::Importer importer;
 
-Model3D::Model3D(GraphicsDevice* Device, const std::string& path) :
+Model3D::Model3D(GraphicsDevice* Device, const std::filesystem::path& path) :
 	_device(Device)
 {
 	//basicTexturedNBT = std::make_unique<Shaders::BasicTextured>(Device);
@@ -25,7 +25,7 @@ Model3D::Model3D(GraphicsDevice* Device, const std::string& path) :
 
 	if (!std::filesystem::exists(path)) throw ResourceLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 
-	const aiScene* scene = importer.ReadFile(path,
+	const aiScene* scene = importer.ReadFile(path.string(),
 		aiProcess_Triangulate |
 		aiProcess_GenSmoothNormals |
 		aiProcess_CalcTangentSpace |
@@ -312,6 +312,12 @@ void Model3D::SetShaders(std::span<std::shared_ptr<Shaders::Effect>> effects)
 			else return;
 		}
 	}
+}
+
+Reflection::UUID Engine3DRadSpace::Graphics::Model3D::GetUUID()
+{
+	// {A405951A-7454-4A03-868C-1D2022D43F45}
+	return { 0xa405951a, 0x7454, 0x4a03, { 0x86, 0x8c, 0x1d, 0x20, 0x22, 0xd4, 0x3f, 0x45 } };
 }
 
 ModelMesh * Model3D::operator[](unsigned i)

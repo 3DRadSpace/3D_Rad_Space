@@ -1,36 +1,24 @@
 #pragma once
-#include "IAsset.hpp"
-#include "../Graphics/Model3D.hpp"
+#include "../GraphicsDevice.hpp"
+#include "../Reflection/UUID.hpp"
+
+namespace Engine3DRadSpace::Internal
+{
+	struct AssetUUIDReader;
+}
 
 namespace Engine3DRadSpace::Content
 {
-	template<AssetType T>
-	class Asset final : public IAsset
+	class DLLEXPORT Asset
 	{
-		std::unique_ptr<T> _asset;
+	protected:
+		Asset() = default;
 	public:
-		Asset(GraphicsDevice *device, const std::string &path) :
-			IAsset( 0, typeid(T), path, "")
-		{
-			_asset = std::make_unique<T>(device, path);
-		}
-
-		template<typename ...Args>
-		Asset(GraphicsDevice* device, const std::string& path, Args&& ...params) :
-			IAsset(0, typeid(T), path, "")
-		{
-			_asset = std::make_unique<T>(device, path, std::forward<Args>(params)...);
-		}
-
-		Asset(Asset &) = delete;
-		Asset(Asset &&) noexcept = delete;
-
-		Asset &operator=(Asset &) = default;
-		Asset &operator=(Asset &&) noexcept = default;
-
-		void *Get() override
-		{
-			return _asset.get();
-		}
+		virtual Reflection::UUID GetUUID() = 0;
+		virtual ~Asset() = default;
 	};
+
+	template<typename T>
+	concept AssetType = std::is_base_of_v<Asset, T> &&
+		(std::is_constructible_v<T, GraphicsDevice*, const std::string&> || std::is_constructible_v<T, GraphicsDevice*, const std::filesystem::path&>);
 }

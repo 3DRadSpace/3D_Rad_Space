@@ -18,7 +18,7 @@ public:
 	AssetListRenderer operator=(AssetListRenderer &&) = delete;
 
 	template<Engine3DRadSpace::Content::AssetType T>
-	bool RenderAsset(const std::string& imagePath, const std::string &assetPath)
+	bool RenderAsset(const std::string& imagePath, const std::filesystem::path &assetPath)
 	{
 		_device->SetViewport();
 		_device->Clear(Engine3DRadSpace::Colors::Gray);

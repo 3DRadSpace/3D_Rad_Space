@@ -1,14 +1,54 @@
 #pragma once
 #include "Asset.hpp"
-#include "AssetReference.hpp"
+#include "../GraphicsDevice.hpp"
+#include "../Reflection/UUID.hpp"
+#include "AssetID.hpp"
 
 namespace Engine3DRadSpace::Content
 {
 	class DLLEXPORT ContentManager
 	{
+		struct AssetEntry
+		{
+			template<AssetType T>
+			AssetEntry(GraphicsDevice* device, const std::filesystem::path& path) :
+				Path(path),
+				Entry(std::unique_ptr<T>(static_cast<Asset*>(new T(device, path)))),
+				Type(typeid(T)),
+				Name(std::filesystem::path(path).stem().string())
+			{
+			}
+
+			template<AssetType T>
+			AssetEntry(std::unique_ptr<T>&& asset, const std::filesystem::path &path) :
+				Entry(std::move(asset)),
+				Path(path),
+				Type(typeid(T)),
+				Name(std::filesystem::path(path).stem().string())
+			{
+			}
+
+			AssetEntry(std::unique_ptr<Asset>&& asset, const std::filesystem::path& path) :
+				Entry(std::move(asset)),
+				Path(path),
+				Type(typeid(*Entry)),
+				Name(std::filesystem::path(path).stem().string())
+			{
+			}
+
+			explicit AssetEntry(std::nullptr_t a) : Type(typeid(std::nullptr_t)) {};
+
+			std::unique_ptr<Content::Asset> Entry;
+			std::filesystem::path Path;
+			std::type_index Type;
+			unsigned ID = 0;
+			std::string Name;
+		};
+
 		unsigned _lastID;
 		GraphicsDevice* _device;
-		std::vector<std::unique_ptr<IAsset>> _resources;
+		std::vector<AssetEntry> _assets;
+		std::vector<std::pair<Reflection::UUID, std::function<Asset* (GraphicsDevice*, const std::filesystem::path&)>>> _types;
 	public:
 		ContentManager(GraphicsDevice *device);
 
@@ -19,16 +59,12 @@ namespace Engine3DRadSpace::Content
 		ContentManager &operator = (ContentManager &&) noexcept = default;
 
 		template<AssetType T>
-		T *Load(const std::string &path, AssetReference<T> *ref = nullptr);
+		T *Load(const std::filesystem::path &path, AssetID<T>*refID = nullptr);
 
 		template<AssetType T, typename ...Args>
-		T* Load(const std::string& path, AssetReference<T>* ref, Args&& ...params);
+		T* Load(const std::filesystem::path& path, AssetID<T>* refID, Args&& ...params);
 
-		template<AssetType T>
-		void Reload(AssetReference<T> ref);
-
-		template<AssetType T>
-		void Reload(const std::string &name);
+		void Reload(unsigned ref);
 
 		template<AssetType T>
 		void Reload(unsigned id);
@@ -37,12 +73,13 @@ namespace Engine3DRadSpace::Content
 		void RemoveAsset(const T *asset);
 
 		template<AssetType T>
-		IAsset *operator[](AssetReference<T> ref);
+		T *operator[](AssetID<T> ref);
 
-		std::vector<std::unique_ptr<IAsset>>::iterator begin();
-		std::vector<std::unique_ptr<IAsset>>::iterator end();
+		std::filesystem::path GetAssetPath(unsigned id);
 
-		void RemoveAsset(const std::string &name);
+		std::vector<AssetEntry>::iterator begin();
+		std::vector<AssetEntry>::iterator end();
+
 		void RemoveAsset(unsigned id);
 
 		GraphicsDevice* GetDevice();
@@ -61,101 +98,55 @@ namespace Engine3DRadSpace::Content
 	///										IMPLEMENTATION FOR ContentManager TEMPLATE METHODS
 	/// ___________________________________________________________________________________________________________________________________________
 	/// 
+	///
+	
 
 	template<AssetType T>
-	inline T *ContentManager::Load(const std::string &path, AssetReference<T> *ref)
+	inline T* ContentManager::Load(const std::filesystem::path& path, AssetID<T> *refID)
 	{
-		//Find existing resource
-		for(auto &asset : _resources)
+		std::unique_ptr<Asset> a;
+		auto ptr = new T(_device, path);
+		a.reset(ptr);
+
+		_assets.emplace_back(std::move(a), path);
+		_assets[_assets.size() - 1].ID = _assets.size() - 1;
+
+		if (refID)
 		{
-			if(asset && asset->Path == path)
-			{
-				if(ref) *ref = AssetReference<T>(asset->ID());
-				return static_cast<T *>(asset->Get());
-			}
+			*refID = _assets.size() - 1;
 		}
-
-		//Else create a new one
-		auto r = std::make_unique<Asset<T>>(_device, path);
-		r->_id = _lastID++;
-
-		unsigned int cID = r->ID();
-		T *assetPtr = static_cast<T *>(r->Get());
-		_resources.push_back(std::move(r));
-
-		if(ref) *ref = AssetReference<T>(cID);
-		return assetPtr;
+		return ptr;
 	}
 
 	template<AssetType T, typename ...Args>
-	inline T* ContentManager::Load(const std::string& path, AssetReference<T>* ref, Args&& ...params)
+	inline T* ContentManager::Load(const std::filesystem::path& path, AssetID<T>* refID, Args && ...params)
 	{
-		for(auto &asset : _resources)
+		std::unique_ptr<Asset> a;
+		auto ptr = new T(_device, path, std::forward<Args>(params)...);
+		a.reset(ptr);
+
+		_assets.emplace_back(std::move(a), path);
+		_assets[_assets.size() - 1].ID = _assets.size() - 1;
+
+		if (refID)
 		{
-			if(asset && asset->Path == path)
-			{
-				if (ref) *ref = AssetReference<T>(asset->ID());
-				return static_cast<T*>(asset->Get());
-			}
+			*refID = _assets.size() - 1;
 		}
-
-		auto newAsset = std::make_unique<Asset<T>>(_device, path, std::forward<Args>(params)...);
-		newAsset->_id = _lastID++;
-
-		auto cID = newAsset->ID();
-		T* assetPtr = static_cast<T*>(newAsset->Get());
-		_resources.push_back(std::move(newAsset));
-
-		if (ref) *ref = AssetReference<T>(cID);
-		return assetPtr;
+		return ptr;
 	}
 
 	template<AssetType T>
-	inline void ContentManager::Reload(AssetReference<T> ref)
+	void ContentManager::RemoveAsset(const T* asset)
 	{
-		auto path = _resources[ref.ID]->Path;
-
-		_resources[ref.ID].reset(new Asset<T>(_device, path));
-	}
-
-	template<AssetType T>
-	inline void ContentManager::Reload(const std::string &name)
-	{
-		auto f = std::find(_resources.begin(), _resources.end(),
-			[name](std::unique_ptr<IAsset> &asset) -> bool
+		std::erase_if(_assets, [](std::unique_ptr<AssetEntry>& asset) -> bool
 		{
-			return asset->Name == name;
+			return (static_cast<T>(asset->Entry.get()) == asset);
 		});
-
-		if(f != _resources.end())
-		{
-			f->reset(new Asset<T>(_device, f->get()->Path));
-		}
 	}
 
 	template<AssetType T>
-	inline void ContentManager::Reload(unsigned id)
+	inline T* ContentManager::operator[](AssetID<T> ref)
 	{
-		auto path = _resources[id]->Path;
-		_resources[id].reset(new Asset<T>(_device, path));
-	}
-
-	template<AssetType T>
-	inline void ContentManager::RemoveAsset(const T *asset)
-	{
-		for(size_t i = 0; i < _resources.size(); i++)
-		{
-			if(_resources[i].get() == asset)
-			{
-				_resources.erase(_resources.begin() + i);
-				break;
-			}
-		}
-	}
-
-	template<AssetType T>
-	inline IAsset *ContentManager::operator[](AssetReference<T> ref)
-	{
-		return _resources[ref.ID].get();
+		return dynamic_cast<T*>(_assets[ref].Entry.get());
 	}
 }

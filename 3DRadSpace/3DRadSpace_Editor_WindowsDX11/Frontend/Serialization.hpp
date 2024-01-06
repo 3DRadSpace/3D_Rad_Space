@@ -16,7 +16,7 @@ namespace Engine3DRadSpace::Reflection
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
-
+using namespace Engine3DRadSpace::Graphics;
 
 class Serializator
 {
@@ -160,22 +160,22 @@ public:
 					}
 					case FieldRepresentationType::Image:
 					{
-						RefTexture2D texture = field->GetAtOffset<RefTexture2D>(objPtr, offset);
-						assets[std::to_string(texture.ID)]["Path"] = obj->GetGame()->Content->operator[](texture)->Path;
-						assets[std::to_string(texture.ID)]["Type"] = texture.AssetType.name();
-						jsonField[subFieldName][str_i] = texture.ID;
+						unsigned texture = field->GetAtOffset<unsigned>(objPtr, offset);
+						assets[std::to_string(texture)]["Path"] = obj->GetGame()->Content->GetAssetPath(texture);
+						assets[std::to_string(texture)]["Type"] = obj->GetUUID();
+						jsonField[subFieldName][str_i] = texture;
 
-						offset += sizeof(RefTexture2D);
+						offset += sizeof(unsigned);
 						break;
 					}
 					case FieldRepresentationType::Model:
 					{
-						RefModel3D model = field->GetAtOffset<RefModel3D>(objPtr, offset);
-						assets[std::to_string(model.ID)]["Path"] = obj->GetGame()->Content->operator[](model)->Path;
-						assets[std::to_string(model.ID)]["Type"] = model.AssetType.name();
-						jsonField[subFieldName][str_i] = model.ID;
+						unsigned model = field->GetAtOffset<unsigned>(objPtr, offset);
+						assets[std::to_string(model)]["Path"] = obj->GetGame()->Content->GetAssetPath(model);
+						assets[std::to_string(model)]["Type"] = obj->GetUUID();
+						jsonField[subFieldName][str_i] = model;
 
-						offset += sizeof(RefModel3D);
+						offset += sizeof(unsigned);
 						break;
 					}
 					case FieldRepresentationType::Key:
@@ -230,9 +230,7 @@ public:
 
 		for (auto& asset : j[strID]["Assets"])
 		{
-			auto id = asset.get<std::string>();
-		
-			//std::string path = asset[id]["Path"].get<std::string>()
+
 		}
 
 		for (auto& field : *refl)

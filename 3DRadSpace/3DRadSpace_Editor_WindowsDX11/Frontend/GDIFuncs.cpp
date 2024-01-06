@@ -63,7 +63,7 @@ HBITMAP loadImgResource(WORD resNum, LPWSTR pType)
 
 std::wstring ConvertToWideString(const std::string &str);
 
-HBITMAP loadImageFromFile(const char *path, unsigned &w, unsigned &h)
+HBITMAP loadImageFromFile(const std::string &path, unsigned &w, unsigned &h)
 {
     std::wstring wPath = ConvertToWideString(path);
 

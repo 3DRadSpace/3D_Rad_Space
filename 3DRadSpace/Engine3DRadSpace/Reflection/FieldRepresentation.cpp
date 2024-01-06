@@ -1,6 +1,7 @@
 #include "FieldRepresentation.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Input;
 using namespace Engine3DRadSpace::Math;
@@ -21,12 +22,12 @@ template<> FieldRepresentation Reflection::GetFieldRepresentation<std::string>()
 	return {{ FieldRepresentationType::String, ""}};
 }
 
-template<> FieldRepresentation Reflection::GetFieldRepresentation<RefTexture2D>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<AssetID<Texture2D>>()
 {
 	return {{FieldRepresentationType::Image, ""}};
 }
 
-template<> FieldRepresentation Reflection::GetFieldRepresentation<RefModel3D>()
+template<> FieldRepresentation Reflection::GetFieldRepresentation<AssetID<Model3D>>()
 {
 	return {{FieldRepresentationType::Model, ""}};
 }

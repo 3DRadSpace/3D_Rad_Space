@@ -661,3 +661,8 @@ void* Texture2D::ResourceViewHandle() const
 	return _resourceView.Get();
 }
 
+Reflection::UUID Engine3DRadSpace::Graphics::Texture2D::GetUUID()
+{	
+	// {5AAE5C7A-C0E7-405A-B6FD-03CF9E3E36CC}
+	return { 0x5aae5c7a, 0xc0e7, 0x405a, { 0xb6, 0xfd, 0x3, 0xcf, 0x9e, 0x3e, 0x36, 0xcc } };
+}

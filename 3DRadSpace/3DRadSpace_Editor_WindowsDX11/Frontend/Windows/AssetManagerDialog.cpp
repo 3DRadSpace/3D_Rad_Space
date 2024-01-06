@@ -84,7 +84,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 							{
 								try
 								{
-									AssetReference<T> ref;
+									AssetID<T> ref;
 									content->Load<T>(file, &ref);
 									EndDialog(current_window, ref.ID);
 									return std::nullopt;
@@ -221,8 +221,8 @@ void AssetManagerDialog::_loadAssetIcons()
 			if (_imageList == nullptr) return;
 			if (_assetList == nullptr) return;
 
-			if (asset == nullptr) continue;
-			if (asset->Type.hash_code() != _assetType.hash_code()) continue;
+			if (asset.Entry == nullptr) continue;
+			if (asset.Type.hash_code() != _assetType.hash_code()) continue;
 
 			std::string imagePath;
 			//Find %appdata%
@@ -231,10 +231,10 @@ void AssetManagerDialog::_loadAssetIcons()
 
 			if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
 			{
-				auto assetPath = std::filesystem::path(asset->Path);
-				if (!std::filesystem::exists(asset->Path))
+				auto assetPath = std::filesystem::path(asset.Path);
+				if (!std::filesystem::exists(asset.Path))
 				{
-					assetPath = std::filesystem::path(asset->Path).lexically_relative(GetExecutablePath());
+					assetPath = std::filesystem::path(asset.Path).lexically_relative(GetExecutablePath());
 					if (assetPath.empty())
 					{
 						throw std::exception("Asset is not located in the executable root directory!");
@@ -258,13 +258,13 @@ void AssetManagerDialog::_loadAssetIcons()
 					{typeid(Graphics::Texture2D).hash_code(), 2},
 				};
 
-				switch (type_map[asset->Type.hash_code()])
+				switch (type_map[asset.Type.hash_code()])
 				{
 				case 1:
-					if (_renderer) _renderer->RenderAsset<Graphics::Model3D>(imagePath, asset->Path);
+					if (_renderer) _renderer->RenderAsset<Graphics::Model3D>(imagePath, asset.Path);
 					break;
 				case 2:
-					if (_renderer) _renderer->RenderAsset<Graphics::Texture2D>(imagePath, asset->Path);
+					if (_renderer) _renderer->RenderAsset<Graphics::Texture2D>(imagePath, asset.Path);
 					break;
 				default:
 					break;
@@ -284,10 +284,10 @@ void AssetManagerDialog::_loadAssetIcons()
 			DeleteObject(image);
 
 			LVITEMA item{};
-			item.lParam = asset->ID();
-			item.pszText = const_cast<char*>(asset->Name.c_str());
-			item.cchTextMax = int(asset->Name.length());
-			item.iImage = int(asset->ID() - 1);
+			item.lParam = asset.ID;
+			item.pszText = const_cast<char*>(asset.Name.c_str());
+			item.cchTextMax = int(asset.Name.length());
+			item.iImage = int(asset.ID - 1);
 			item.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
 
 			SendMessageA(_assetList, LVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&item)); //add item first, then load image next

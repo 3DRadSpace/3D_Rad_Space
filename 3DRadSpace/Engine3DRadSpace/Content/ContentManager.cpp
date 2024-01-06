@@ -7,37 +7,32 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_device(device),
 	_lastID(1)
 {
-	_resources.push_back(nullptr); // ID 0 = nullptr
+	_assets.emplace_back(nullptr);
 }
 
-std::vector<std::unique_ptr<IAsset>>::iterator ContentManager::begin()
+void Engine3DRadSpace::Content::ContentManager::Reload(unsigned id)
 {
-	return std::next(_resources.begin());
+
 }
 
-std::vector<std::unique_ptr<IAsset>>::iterator ContentManager::end()
+std::filesystem::path Engine3DRadSpace::Content::ContentManager::GetAssetPath(unsigned id)
 {
-	return _resources.end();
+	return _assets[id].Path;
 }
 
-void ContentManager::RemoveAsset(const std::string &name)
+std::vector<ContentManager::AssetEntry>::iterator ContentManager::begin()
 {
-	_resources.erase(std::remove_if(_resources.begin(), _resources.end(),
-		[name](std::unique_ptr<IAsset> &asset) -> bool
-		{
-			return asset->Name == name;
-		}
-	), _resources.end());
+	return std::next(_assets.begin());
+}
+
+std::vector<ContentManager::AssetEntry>::iterator ContentManager::end()
+{
+	return _assets.end();
 }
 
 void ContentManager::RemoveAsset(unsigned id)
 {
-	_resources.erase(std::remove_if(_resources.begin(), _resources.end(),
-		[id](std::unique_ptr<IAsset> &asset) -> bool
-	{
-		return asset->ID() == id;
-	}
-	), _resources.end());
+	_assets.erase(_assets.begin() + id);
 }
 
 GraphicsDevice* ContentManager::GetDevice()

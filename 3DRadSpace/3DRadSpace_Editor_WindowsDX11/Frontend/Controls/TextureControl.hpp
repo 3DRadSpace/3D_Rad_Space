@@ -12,7 +12,7 @@ public:
 		HWND owner, 
 		HINSTANCE hInstance,
 		Engine3DRadSpace::Content::ContentManager* content,
-		Engine3DRadSpace::Reflection::RefTexture2D texture, 
+		unsigned texture, 
 		const std::string &name, 
 		int x,
 		int y
@@ -23,8 +23,6 @@ public:
 
 	TextureControl(TextureControl &&c) noexcept;
 	TextureControl &operator=(TextureControl &&c) noexcept;
-
-	Engine3DRadSpace::Reflection::RefTexture2D TextureReference;
 
 	HWND GetPixturebox();
 

@@ -33,12 +33,12 @@ public:
 	AssetManagerDialog &operator=(AssetManagerDialog&&) = delete;
 
 	template<Engine3DRadSpace::Content::AssetType T>
-	Engine3DRadSpace::Content::AssetReference<T> ShowDialog()
+	Engine3DRadSpace::Content::AssetID<T> ShowDialog()
 	{
 		_assetType = typeid(T);
 
 		auto v = Dialog::ShowDialog(static_cast<void*>(this));
-		return Engine3DRadSpace::Content::AssetReference<T>(static_cast<unsigned>(v));
+		return Engine3DRadSpace::Content::AssetID<T>(static_cast<unsigned>(v));
 	}
 
 	~AssetManagerDialog();

@@ -375,7 +375,7 @@ void EditObjectDialog::createForms()
 			}
 			case FieldRepresentationType::Image:
 			{
-				auto value = *static_cast<const AssetReference<Texture2D>*>(valuePtr);
+				auto value = *static_cast<const AssetID<Texture2D>*>(valuePtr);
 				
 				TextureControl *ctrl = new TextureControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
@@ -386,7 +386,7 @@ void EditObjectDialog::createForms()
 			}
 			case FieldRepresentationType::Model:
 			{
-				auto value = *static_cast<const AssetReference<Model3D>*>(valuePtr);
+				auto value = *static_cast<const AssetID<Model3D>*>(valuePtr);
 
 				ModelControl* ctrl = new ModelControl(window, hInstance, _content, value, fieldName, x, y);
 				windows.push_back(ctrl);
@@ -714,16 +714,16 @@ bool EditObjectDialog::setObject()
 				{
 					auto textureControl = static_cast<TextureControl *>(std::get<IControl *>(windows[i++]));
 					
-					memcpy_s(newStruct.get() + j, sizeof(RefTexture2D), &textureControl->TextureReference, sizeof(RefTexture2D));
-					j += sizeof(RefTexture2D);
+					memcpy_s(newStruct.get() + j, sizeof(AssetID<Texture2D>), &textureControl->AssetReference, sizeof(AssetID<Texture2D>));
+					j += sizeof(AssetID<Texture2D>);
 					break;
 				}
 				case FieldRepresentationType::Model:
 				{
 					auto modelControl = static_cast<ModelControl*>(std::get<IControl*>(windows[i++]));
 
-					memcpy_s(newStruct.get() + j, sizeof(RefModel3D), &modelControl->ModelReference, sizeof(RefModel3D));
-					j += sizeof(RefModel3D);
+					memcpy_s(newStruct.get() + j, sizeof(AssetID<Model3D>), &modelControl->AssetReference, sizeof(AssetID<Texture2D>));
+					j += sizeof(AssetID<Model3D>);
 					break;
 				}
 				case FieldRepresentationType::Key:

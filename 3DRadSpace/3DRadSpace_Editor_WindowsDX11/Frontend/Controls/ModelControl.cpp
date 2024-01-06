@@ -8,7 +8,7 @@ ModelControl::ModelControl(
 	HWND owner,
 	HINSTANCE hInstance, 
 	Engine3DRadSpace::Content::ContentManager* content,
-	Engine3DRadSpace::Reflection::RefModel3D model,
+	unsigned model,
 	const std::string& name,
 	int x,
 	int y 
@@ -33,8 +33,8 @@ ModelControl::ModelControl(
 
 	unsigned imageWidth;
 	unsigned imageHeight;
-	if (ModelReference.ID != 0)
-		_image = loadImageFromFile((*content)[ModelReference]->Path.c_str(), imageWidth, imageHeight);
+	if (AssetReference != 0)
+		_image = loadImageFromFile(content->GetAssetPath(AssetReference).string().c_str(), imageWidth, imageHeight);
 	else
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
@@ -74,19 +74,19 @@ void ModelControl::HandleClick(HWND clickedHandle)
 	if (clickedHandle == _pictureBox || clickedHandle == _button)
 	{
 		AssetManagerDialog assetManager(owner, instance, _content);
-		ModelReference = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
-		if (ModelReference.ID != 0)
+		AssetReference = assetManager.ShowDialog<Engine3DRadSpace::Graphics::Model3D>();
+		if (AssetReference != 0)
 		{
 			unsigned w, h;
-			_image = loadImageFromFile((*_content)[ModelReference]->Path.c_str(), w, h);
+			_image = loadImageFromFile(_content->GetAssetPath(AssetReference).string(), w, h);
 			SetImage(_pictureBox, _image, w, h);
 		}
 	}
 	if (clickedHandle == _previewButton)
 	{
-		if (ModelReference.ID != 0 && _previwer == nullptr)
+		if (AssetReference != 0 && _previwer == nullptr)
 		{
-			_previwer = std::make_unique<SkinmeshPreviewer>(std::filesystem::path(_content->operator[]<Engine3DRadSpace::Graphics::Model3D>(ModelReference)->Path));
+			_previwer = std::make_unique<SkinmeshPreviewer>(std::filesystem::path(_content->GetAssetPath(AssetReference).string()));
 			
 			std::thread previewThread([](SkinmeshPreviewer* preview)
 			{

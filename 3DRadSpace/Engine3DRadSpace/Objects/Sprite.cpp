@@ -55,7 +55,7 @@ void Sprite::Load(Content::ContentManager *content)
 		_texture = content->Load<Texture2D>(*_tempResourceString.get());
 		_tempResourceString.reset();
 	}
-	else _texture = static_cast<Texture2D *>((content->operator[](Image))->Get());
+	else _texture = static_cast<Texture2D *>((content->operator[](Image)));
 }
 
 void Sprite::Load(Content::ContentManager* content, const std::filesystem::path &path)
@@ -82,7 +82,7 @@ void Sprite::EditorInitialize()
 void Sprite::EditorLoad(Content::ContentManager *content)
 {
 	auto asset = content->operator[](Image);
-	if(asset != nullptr) _texture = static_cast<Texture2D *>(asset->Get());
+	if(asset != nullptr) _texture = static_cast<Texture2D *>(asset);
 	else _texture = content->Load<Texture2D>("Data//NoAsset.png");
 }
 
@@ -111,9 +111,3 @@ REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")
 	REFL_FIELD(Sprite, bool, FlipV, "Flip vertically", false, "Is the sprite image flipped vertically?")
 	REFL_FIELD(Sprite, Color, TintColor, "Tint Color", Colors::White, "Tint color")
 REFL_END
-
-void testFn()
-{
-	Sprite spr;
-
-}

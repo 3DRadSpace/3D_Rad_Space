@@ -15,7 +15,7 @@ public:
 		HWND owner,
 		HINSTANCE hInstance,
 		Engine3DRadSpace::Content::ContentManager* content,
-		Engine3DRadSpace::Reflection::RefModel3D model,
+		unsigned model,
 		const std::string& name,
 		int x,
 		int y
@@ -28,8 +28,6 @@ public:
 	ModelControl& operator=(ModelControl&&) = default;
 
 	HWND GetPictureBox();
-
-	Engine3DRadSpace::Reflection::RefModel3D ModelReference;
 
 	void HandleClick(HWND clickedHandle) override;
 

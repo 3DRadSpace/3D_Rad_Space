@@ -46,7 +46,7 @@ void Skinmesh::Load(Content::ContentManager *content)
     }
     if (_model == nullptr && Model)
     {
-        _model = static_cast<Model3D*>((*content)[Model]->Get());
+        _model = static_cast<Model3D*>((*content)[Model]);
     }
 }
 

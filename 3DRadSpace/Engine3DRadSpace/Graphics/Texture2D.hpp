@@ -2,10 +2,16 @@
 #include "../GraphicsDevice.hpp"
 #include "PixelFormat.hpp"
 #include "../Math/Point.hpp"
+#include "../Content/Asset.hpp"
+
+namespace Engine3DRadSpace::Internal
+{
+	struct AssetUUIDReader;
+}
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT Texture2D
+	class DLLEXPORT Texture2D : public Content::Asset
 	{
 		unsigned _width;
 		unsigned _height;
@@ -55,6 +61,8 @@ namespace Engine3DRadSpace::Graphics
 		void* ResourceViewHandle() const;
 
 		virtual ~Texture2D() = default;
+
+		Reflection::UUID GetUUID() override;
 
 		friend class GraphicsDevice;
 		friend class IVertexShader;

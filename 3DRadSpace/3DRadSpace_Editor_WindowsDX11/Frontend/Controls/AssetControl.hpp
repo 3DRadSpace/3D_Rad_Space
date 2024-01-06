@@ -24,5 +24,7 @@ public:
 
     int AccX();
     int AccY();
+
+    unsigned AssetReference;
 };
 

@@ -4,6 +4,8 @@
 
 namespace Engine3DRadSpace::Objects
 {
+	using RefTexture2D = Content::AssetID<Graphics::Texture2D>;
+
 	class DLLEXPORT Sprite : public IObject2D
 	{
 		Graphics::Texture2D *_texture;
@@ -14,14 +16,14 @@ namespace Engine3DRadSpace::Objects
 			const Math::Vector2& pivot = Math::Vector2::Zero(), float depth = 0.0,
 			float rotation = 0.0f, bool flipU = false, bool flipV = false, const Color &tintColor = Colors::White);
 
-		Sprite(const std::string &name, bool visible, Reflection::RefTexture2D resource, const Math::Vector2 &pos, const Math::Vector2& scale, float depth = 0.0, 
+		Sprite(const std::string &name, bool visible, RefTexture2D resource, const Math::Vector2 &pos, const Math::Vector2& scale, float depth = 0.0,
 			const Math::Vector2 &pivot = Math::Vector2::Zero(), float rotation = 0.0f, bool flipU = false, bool flipV = false,
 			const Color &tintColor = Colors::White);
 
 		bool FlipU;
 		bool FlipV;
 
-		Reflection::RefTexture2D Image;
+		RefTexture2D Image;
 		Graphics::Texture2D *GetSpriteImage();
 
 		Color TintColor;

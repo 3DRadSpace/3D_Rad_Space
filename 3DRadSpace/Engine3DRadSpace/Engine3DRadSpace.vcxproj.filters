@@ -209,12 +209,6 @@
     <ClInclude Include="Math\Ray.hpp">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Content\Asset.hpp">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="Content\AssetReference.hpp">
-      <Filter>Content</Filter>
-    </ClInclude>
     <ClInclude Include="Math\BoundingBox.hpp">
       <Filter>Math</Filter>
     </ClInclude>
@@ -222,9 +216,6 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Content\ContentManager.hpp">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="Content\IAsset.hpp">
       <Filter>Content</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Skinmesh.hpp">
@@ -283,6 +274,10 @@
     <ClInclude Include="Objects\SkyColor.hpp" />
     <ClInclude Include="Internal\InitializationFlag.hpp" />
     <ClInclude Include="Graphics\FlipMode.hpp" />
+    <ClInclude Include="Content\Asset.hpp" />
+    <ClInclude Include="Content\AssetTypeRegistration.hpp" />
+    <ClInclude Include="Internal\AssetUUIDReader.hpp" />
+    <ClInclude Include="Content\AssetID.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -423,9 +418,6 @@
     <ClCompile Include="Content\ContentManager.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-    <ClCompile Include="Content\IAsset.cpp">
-      <Filter>Content</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Ray.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -470,5 +462,6 @@
     <ClCompile Include="Objects\Empty.cpp" />
     <ClCompile Include="Objects\SkyColor.cpp" />
     <ClCompile Include="Graphics\FlipMode.cpp" />
+    <ClCompile Include="Content\AssetTypeRegistration.cpp" />
   </ItemGroup>
 </Project>

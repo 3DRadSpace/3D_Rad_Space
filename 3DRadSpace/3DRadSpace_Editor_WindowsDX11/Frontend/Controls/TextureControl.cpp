@@ -6,7 +6,7 @@ TextureControl::TextureControl(
 	HWND owner,
 	HINSTANCE hInstance,
 	Engine3DRadSpace::Content::ContentManager *content,
-	Engine3DRadSpace::Reflection::RefTexture2D texture,
+	unsigned texture,
 	const std::string &name,
 	int x,
 	int y
@@ -26,14 +26,13 @@ TextureControl::TextureControl(
 		hInstance,
 		nullptr
 	)),
-	_image(nullptr),
-	TextureReference(texture)
+	_image(nullptr)
 {
 	unsigned imageWidth;
 	unsigned imageHeight;
 
-	if(TextureReference.ID != 0)
-		_image = loadImageFromFile((*content)[TextureReference]->Path.c_str(), imageWidth, imageHeight);
+	if(AssetReference != 0)
+		_image = loadImageFromFile(_content->GetAssetPath(AssetReference).string(), imageWidth, imageHeight);
 	else
 		_image = loadImageFromFile("Data\\NoAsset.png", imageWidth, imageHeight);
 
@@ -54,11 +53,13 @@ void SetImage(HWND _pictureBox, HBITMAP _image, unsigned imageWidth, unsigned im
 TextureControl::TextureControl(TextureControl &&c) noexcept:
 	AssetControl(c),
 	_pictureBox(c._pictureBox),
-	_image(c._image),
-	TextureReference(c.TextureReference)
+	_image(c._image)
 {
+	AssetReference = c.AssetReference;
+
 	c._image = nullptr;
 	c._pictureBox = nullptr;
+	c.AssetReference = 0;
 }
 
 TextureControl &TextureControl::operator=(TextureControl &&c) noexcept
@@ -71,7 +72,7 @@ TextureControl &TextureControl::operator=(TextureControl &&c) noexcept
 	_button = c._button;
 	_pictureBox = c._pictureBox;
 	_image = c._image;
-	TextureReference = c.TextureReference;
+	AssetReference = c.AssetReference;
 
 	c.window = nullptr;
 	c.instance = nullptr;
@@ -81,7 +82,7 @@ TextureControl &TextureControl::operator=(TextureControl &&c) noexcept
 	c._button = nullptr;
 	c._pictureBox = nullptr;
 	c._image = nullptr;
-	c.TextureReference = Engine3DRadSpace::Reflection::RefTexture2D(0);
+	c.AssetReference = 0;
 
 	return *this;
 }
@@ -111,10 +112,10 @@ void TextureControl::HandleClick(HWND clickedWindow)
 		{
 			unsigned w;
 			unsigned h;
-			_image = loadImageFromFile((*_content)[r]->Path.c_str(), w, h);
+			_image = loadImageFromFile(_content->GetAssetPath(r.ID).string(), w, h);
 			SetImage(_pictureBox,_image, w, h);
 
-			TextureReference = r.ID;
+			AssetReference = r.ID;
 		}
 	}
 }

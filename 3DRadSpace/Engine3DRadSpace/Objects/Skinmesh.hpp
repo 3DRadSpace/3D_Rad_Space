@@ -5,6 +5,8 @@
 
 namespace Engine3DRadSpace::Objects
 {
+	using RefModel3D = Content::AssetID<Graphics::Model3D>;
+
 	class DLLEXPORT Skinmesh : public IObject3D
 	{
 		Graphics::Model3D *_model;
@@ -12,13 +14,13 @@ namespace Engine3DRadSpace::Objects
 	public:
 		Skinmesh();
 
-		Skinmesh(const std::string &name, bool visible, const std::string &tag, Reflection::RefModel3D model, const Math::Vector3 &pos,
+		Skinmesh(const std::string &name, bool visible, const std::string &tag, RefModel3D model, const Math::Vector3 &pos,
 			const Math::Quaternion &rot, const Math::Vector3 &pivot, const Math::Vector3 &scale);
 
 		Skinmesh(const std::string &name, bool visible, const std::string &tag, const std::filesystem::path &path,const Math::Vector3 &pos = Math::Vector3::Zero(),
 			const Math::Quaternion &rot = Math::Quaternion(), const Math::Vector3 &pivot = Math::Vector3::Zero(), const Math::Vector3 &scale = Math::Vector3::One());
 
-		Reflection::RefModel3D Model;
+		RefModel3D Model;
 
 		Graphics::Model3D *GetModel();
 

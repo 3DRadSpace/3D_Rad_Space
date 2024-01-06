@@ -7,8 +7,8 @@
 #include "../Graphics/Texture2D.hpp"
 #include "../Graphics/Model3D.hpp"
 #include "../Input/Keyboard.hpp"
-#include "../Content/AssetReference.hpp"
 #include "../Concepts.hpp"
+#include "../Content/AssetID.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -16,9 +16,6 @@ namespace Engine3DRadSpace
 }
 namespace Engine3DRadSpace::Reflection
 {
-	using RefTexture2D = Content::AssetReference<Graphics::Texture2D>;
-	using RefModel3D = Content::AssetReference<Graphics::Model3D>;
-
 	enum class FieldRepresentationType
 	{
 		Unknown,
@@ -47,8 +44,16 @@ namespace Engine3DRadSpace::Reflection
 	template<unsigned_integer T> FieldRepresentation GetFieldRepresentation() { return {{FieldRepresentationType::Unsigned,""}}; }
 	template<std::floating_point T> FieldRepresentation GetFieldRepresentation() { return {{ FieldRepresentationType::Float,""}}; }
 	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<std::string>();
-	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<RefTexture2D>();
-	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<RefModel3D>();
+
+	template<Content::AssetType T>
+	using AssetIDType = Content::AssetID<T>;
+
+	template<AssetIDType T>
+	FieldRepresentation GetFieldRepresentation() { return { {FieldRepresentationType::Custom,""} }; }
+	
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Content::AssetID<Graphics::Texture2D>>();
+	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Content::AssetID<Graphics::Model3D>>();
+
 	template<> FieldRepresentation DLLEXPORT GetFieldRepresentation<Input::Key>();
 
 	//FieldRepresentationType() specializations for mathematical types

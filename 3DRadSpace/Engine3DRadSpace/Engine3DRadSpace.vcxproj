@@ -160,9 +160,9 @@
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
     <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Content\Asset.hpp" />
-    <ClInclude Include="Content\AssetReference.hpp" />
+    <ClInclude Include="Content\AssetID.hpp" />
+    <ClInclude Include="Content\AssetTypeRegistration.hpp" />
     <ClInclude Include="Content\ContentManager.hpp" />
-    <ClInclude Include="Content\IAsset.hpp" />
     <ClInclude Include="Content\ShaderManager.hpp" />
     <ClInclude Include="Algorithms\FixedArray.hpp" />
     <ClInclude Include="Graphics\FlipMode.hpp" />
@@ -181,6 +181,7 @@
     <ClInclude Include="Input\Key.hpp" />
     <ClInclude Include="Input\KeyState.hpp" />
     <ClInclude Include="Internal\InitializationFlag.hpp" />
+    <ClInclude Include="Internal\AssetUUIDReader.hpp" />
     <ClInclude Include="Legacy.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="Math\Plane.hpp" />
@@ -271,8 +272,8 @@
   <ItemGroup>
     <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
     <ClCompile Include="Audio\AudioEngine.cpp" />
+    <ClCompile Include="Content\AssetTypeRegistration.cpp" />
     <ClCompile Include="Content\ContentManager.cpp" />
-    <ClCompile Include="Content\IAsset.cpp" />
     <ClCompile Include="Content\ShaderManager.cpp" />
     <ClCompile Include="Graphics\BlendState.cpp" />
     <ClCompile Include="Color.cpp" />

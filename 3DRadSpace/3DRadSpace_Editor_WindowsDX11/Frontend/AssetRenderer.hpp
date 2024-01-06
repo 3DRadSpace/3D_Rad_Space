@@ -1,6 +1,5 @@
 #pragma once
 #include <Engine3DRadSpace/Graphics/Model3D.hpp>
-#include <Engine3DRadSpace/Content/IAsset.hpp>
 
 template<typename T>
 bool AssetRenderer(Engine3DRadSpace::GraphicsDevice *device, const std::string &imagePath, T *assetPtr) = delete;
