@@ -62,8 +62,10 @@ json Serializer::SerializeObject(IObject* obj)
 		json jsonField;
 		intptr_t offset = 0;
 		auto repr = field->Representation();
-		for (int i = 0; auto & [reprType, subFieldName] : repr)
+		for (int i = 0; auto &[reprType, sFieldName] : repr)
 		{
+			std::string subFieldName = !sFieldName.empty() ? sFieldName : "f";
+
 			auto str_i = std::to_string(i);
 			size_t numSubFields = field->TypeSize() / field->Representation().size();
 			switch (reprType)
@@ -254,17 +256,17 @@ json Serializer::SerializeObject(IObject* obj)
 		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int offset = 0;
 
-		for (int i = 0; auto & [reprType, subFieldName] : repr)
+		for (int i = 0; auto & [reprType, sFieldName] : repr)
 		{
-			auto str_i = std::to_string(i);
+			std::string subFieldName = !sFieldName.empty() ? sFieldName : "f";
 
-			auto& jsonField = j[field->FieldName()][subFieldName];
+			auto& jsonField = j[field->FieldName()][subFieldName][std::to_string(i)];
 
 			switch (reprType)
 			{
 				case FieldRepresentationType::Boolean:
 				{
-					bool value = jsonField[subFieldName][str_i].get<bool>();
+					bool value = jsonField.get<bool>();
 
 					memcpy_s(newStruct.get() + offset, sizeof(bool), &value, sizeof(bool));
 					offset += sizeof(bool);
@@ -276,7 +278,7 @@ json Serializer::SerializeObject(IObject* obj)
 					{
 						case sizeof(int8_t) :
 						{
-							int8_t value = jsonField[subFieldName][str_i].get<uint8_t>();
+							int8_t value = jsonField.get<uint8_t>();
 
 							memcpy_s(newStruct.get() + offset, sizeof(int8_t), &value, sizeof(int8_t));
 							offset += sizeof(int8_t);
@@ -284,7 +286,7 @@ json Serializer::SerializeObject(IObject* obj)
 						}
 						case sizeof(int16_t) :
 						{
-							int16_t value = jsonField[subFieldName][str_i].get<uint16_t>();
+							int16_t value = jsonField.get<uint16_t>();
 
 							memcpy_s(newStruct.get() + offset, sizeof(int16_t), &value, sizeof(int16_t));
 							offset += sizeof(int16_t);
@@ -292,7 +294,7 @@ json Serializer::SerializeObject(IObject* obj)
 						}
 						case sizeof(int32_t) :
 						{
-							int32_t value = jsonField[subFieldName][str_i].get<uint32_t>();
+							int32_t value = jsonField.get<uint32_t>();
 
 							memcpy_s(newStruct.get() + offset, sizeof(int32_t), &value, sizeof(int32_t));
 							offset += sizeof(int32_t);
@@ -300,7 +302,7 @@ json Serializer::SerializeObject(IObject* obj)
 						}
 						case sizeof(int64_t) :
 						{
-							int64_t value = jsonField[subFieldName][str_i].get<uint64_t>();
+							int64_t value = jsonField.get<uint64_t>();
 
 							memcpy_s(newStruct.get() + offset, sizeof(int64_t), &value, sizeof(int64_t));
 							offset += sizeof(int64_t);
@@ -317,28 +319,28 @@ json Serializer::SerializeObject(IObject* obj)
 					{
 						case sizeof(uint8_t) :
 						{
-							uint8_t value = jsonField[subFieldName][str_i].get<uint8_t>();
+							uint8_t value = jsonField.get<uint8_t>();
 							memcpy_s(newStruct.get() + offset, sizeof(uint8_t), &value, sizeof(uint8_t));
 							offset += sizeof(uint8_t);
 							break;
 						}
 						case sizeof(uint16_t) :
 						{
-							uint16_t value = jsonField[subFieldName][str_i].get<uint16_t>();
+							uint16_t value = jsonField.get<uint16_t>();
 							memcpy_s(newStruct.get() + offset, sizeof(uint16_t), &value, sizeof(uint16_t));
 							offset += sizeof(uint16_t);
 							break;
 						}
 						case sizeof(uint32_t) :
 						{
-							uint32_t value = jsonField[subFieldName][str_i].get<uint32_t>();
+							uint32_t value = jsonField.get<uint32_t>();
 							memcpy_s(newStruct.get() + offset, sizeof(uint32_t), &value, sizeof(uint32_t));
 							offset += sizeof(uint32_t);
 							break;
 						}
 						case sizeof(uint64_t) :
 						{
-							uint64_t value = jsonField[subFieldName][str_i].get<uint64_t>();
+							uint64_t value = jsonField.get<uint64_t>();
 							memcpy_s(newStruct.get() + offset, sizeof(uint64_t), &value, sizeof(uint64_t));
 							offset += sizeof(uint64_t);
 							break;
@@ -354,14 +356,14 @@ json Serializer::SerializeObject(IObject* obj)
 					{
 						case sizeof(float) :
 						{
-							float value = jsonField[subFieldName][str_i].get<float>();
+							float value = jsonField.get<float>();
 							memcpy_s(newStruct.get() + offset, sizeof(float), &value, sizeof(float));
 							offset += sizeof(float);
 							break;
 						}
 						case sizeof(double) :
 						{
-							double value = jsonField[subFieldName][str_i].get<double>();
+							double value = jsonField.get<double>();
 							memcpy_s(newStruct.get() + offset, sizeof(float), &value, sizeof(double));
 							offset += sizeof(double);
 							break;
@@ -373,10 +375,10 @@ json Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Quaternion:
 				{
-					float x = jsonField[str_i]["X"] .get<float>();
-					float y = jsonField[subFieldName][str_i]["Y"];
-					float z = jsonField[subFieldName][str_i]["Z"];
-					float w = jsonField[subFieldName][str_i]["W"];
+					float x = jsonField["X"].get<float>();
+					float y = jsonField["Y"].get<float>();;
+					float z = jsonField["Z"].get<float>();;
+					float w = jsonField["W"].get<float>();;
 
 					Quaternion q(x, y, z, w);
 
@@ -386,7 +388,7 @@ json Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::String:
 				{
-					std::string string = jsonField[subFieldName][str_i].get<std::string>();
+					std::string string = jsonField.get<std::string>();
 
 					std::string* dest = reinterpret_cast<std::string*>(newStruct.get() + offset);
 
@@ -398,7 +400,7 @@ json Serializer::SerializeObject(IObject* obj)
 				case FieldRepresentationType::Image:
 				case FieldRepresentationType::Model:
 				{
-					unsigned value = jsonField[subFieldName][str_i].get<unsigned>();
+					unsigned value = jsonField.get<unsigned>();
 
 					memcpy_s(newStruct.get() + offset, sizeof(unsigned), &value, sizeof(unsigned));
 					offset += sizeof(unsigned);
@@ -406,7 +408,7 @@ json Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Key:
 				{
-					Input::Key k = static_cast<Input::Key>(jsonField[subFieldName][str_i].get<uint8_t>());
+					Input::Key k = static_cast<Input::Key>(jsonField.get<uint8_t>());
 
 					memcpy_s(newStruct.get() + offset, sizeof(Input::Key), &k, sizeof(Input::Key));
 					offset += sizeof(Input::Key);
@@ -418,10 +420,10 @@ json Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Color:
 				{
-					uint8_t r = jsonField[subFieldName][str_i].get<uint8_t>();
-					uint8_t g = jsonField[subFieldName][str_i].get<uint8_t>();
-					uint8_t b = jsonField[subFieldName][str_i].get<uint8_t>();
-					uint8_t a = jsonField[subFieldName][str_i].get<uint8_t>();
+					uint8_t r = jsonField["R"].get<uint8_t>();
+					uint8_t g = jsonField["G"].get<uint8_t>();
+					uint8_t b = jsonField["B"].get<uint8_t>();
+					uint8_t a = jsonField["A"].get<uint8_t>();
 
 					Color color(r, g, b, a);
 
@@ -436,15 +438,15 @@ json Serializer::SerializeObject(IObject* obj)
 				default:
 					break;
 			}
-
-			field->Set(&r, newStruct.get());
+			i++;
 		}
+		field->Set(r, newStruct.get());
 	}
 
 	return r;
 }
 
-bool Serializer::LoadProject(ObjectList& lst, ContentManager &content, const std::filesystem::path& projectPath, Internal::InitializationFlag f )
+bool Serializer::LoadProject(ObjectList* lst, ContentManager *content, const std::filesystem::path& projectPath, Internal::InitializationFlag f )
 {
 	std::ifstream file(projectPath);
 
@@ -456,36 +458,39 @@ bool Serializer::LoadProject(ObjectList& lst, ContentManager &content, const std
 	size_t numObjects = j["numObjects"].get<size_t>();
 	size_t numAssets = j["numAssets"].get<size_t>();
 
-	for (size_t i = 1; i <= numAssets; ++i)
+	for (size_t i = 1; i < numAssets; ++i)
 	{
 		auto& jAsset = j["assets"][std::to_string(i)];
 
 		auto type = jAsset["type"].get<Reflection::UUID>();
 		auto path = jAsset["path"].get<std::string>();
 
-		content.Load(type, path, nullptr);
+		content->Load(type, path, nullptr);
 	}
 
 	for (size_t i = 0; i < numObjects; ++i)
 	{
 		auto obj = DeserializeObject(j["objects"][std::to_string(i)]);
-		lst.Add(obj, f);
+		lst->Add(obj, f);
+
+		obj->EditorInitialize();
+		obj->EditorLoad(content);
 	}
 
 	return true;
 }
 
-bool Serializer::SaveProject(ObjectList& lst, ContentManager& content,const std::filesystem::path& projectPath)
+bool Serializer::SaveProject(ObjectList* lst, ContentManager* content,const std::filesystem::path& projectPath)
 {
 	std::ofstream file(projectPath);
 
 	if (file.bad() || file.fail()) return false;
 
 	json j;
-	j["numObjects"] = lst.Count();
-	j["numAssets"] = content.Count();
+	j["numObjects"] = lst->Count();
+	j["numAssets"] = content->Count();
 
-	for (auto& asset : content)
+	for (auto& asset : *content)
 	{
 		auto id = std::to_string(asset.ID);
 
@@ -495,9 +500,9 @@ bool Serializer::SaveProject(ObjectList& lst, ContentManager& content,const std:
 		json_asset["name"] = asset.Name;
 	}
 
-	for (size_t i = 0; i < lst.Count(); i++)
+	for (size_t i = 0; i < lst->Count(); i++)
 	{
-		auto obj = SerializeObject(lst[i]);
+		auto obj = SerializeObject((*lst)[i]);
 		j["objects"][std::to_string(i)] = obj;
 	}
 

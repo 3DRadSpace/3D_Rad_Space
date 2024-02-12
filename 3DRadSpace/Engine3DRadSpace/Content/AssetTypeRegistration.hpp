@@ -29,10 +29,16 @@ namespace Engine3DRadSpace::Content
 			if (uuid == Internal::AssetUUIDReader::GetUUID(Tag<T>()))
 				return false;
 		}
-		Internal::assetTypes.emplace_back(Internal::AssetUUIDReader::GetUUID(Tag<T>()), reinterpret_cast<Internal::AssetCtor>(CreateAssetInstance<T>));
+		Internal::assetTypes.emplace_back(Internal::AssetUUIDReader::GetUUID(Tag<T>()),
+			[](GraphicsDevice* device, const std::filesystem::path& path) -> Content::Asset*
+			{
+				return static_cast<Content::Asset*>(new T(device, path));
+			}								  
+		);
 		return true;
 	}
 
+	/*
 	template<typename R, typename Fn, typename ...Args>
 	std::optional<R> AssetVisit(Reflection::UUID asset_uuid, Fn &&callable, Args&& ...args)
 	{
@@ -53,4 +59,5 @@ namespace Engine3DRadSpace::Content
 				callable(std::forward<Args>(args)...);
 		}
 	}
+	*/
 }

@@ -738,7 +738,7 @@ bool EditObjectDialog::setObject()
 						if(alt_k == HOTKEYF_SHIFT) k = Input::Key::Shift;
 					}
 
-					memcpy_s(newStruct.get(), sizeof(Input::Key), &k, sizeof(Input::Key));
+					memcpy_s(newStruct.get() + j, sizeof(Input::Key), &k, sizeof(Input::Key));
 					j += sizeof(Input::Key);
 					break;
 				}
@@ -755,7 +755,7 @@ bool EditObjectDialog::setObject()
 					Color color = cb->GetColor();
 					color.A = ((float)alpha);
 
-					memcpy_s(newStruct.get(), sizeof(Color), &color, sizeof(Color));
+					memcpy_s(newStruct.get() + j, sizeof(Color), &color, sizeof(Color));
 					j += sizeof(Color);
 					break;
 				}

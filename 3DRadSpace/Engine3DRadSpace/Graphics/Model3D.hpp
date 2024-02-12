@@ -54,7 +54,7 @@ namespace Engine3DRadSpace::Graphics
 
 		ModelMesh *operator[](unsigned i);
 		
-		friend class Internal::AssetUUIDReader;
+		friend struct Internal::AssetUUIDReader;
 	};
 }
 

@@ -14,8 +14,8 @@ namespace Engine3DRadSpace::Internal
 		template<Content::AssetType T>
 		static Reflection::UUID GetUUID(Tag<T> dummy)
 		{
-			T dummy(AssetUUIDReader{});
-			return dummy.GetUUID();
+			T useless_instance(AssetUUIDReader{});
+			return useless_instance.GetUUID();
 		}
 	};
 }

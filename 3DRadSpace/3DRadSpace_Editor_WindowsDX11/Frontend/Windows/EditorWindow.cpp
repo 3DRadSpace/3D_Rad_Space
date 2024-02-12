@@ -55,7 +55,7 @@ void EditorWindow::_writeProject(const char *fileName)
 {
 	_changesSaved = true;
 
-	Serializer::SaveProject(*editor->Objects, *editor->Content, std::filesystem::path(fileName));
+	Serializer::SaveProject(editor->Objects.get(), editor->Content.get(), std::filesystem::path(fileName));
 }
 
 void EditorWindow::_findUpdate()
@@ -567,6 +567,8 @@ bool EditorWindow::WarnNotSaved()
 	else return false;
 }
 
+void SetWorkingDirectory();
+
 LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
@@ -629,7 +631,28 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 						gEditorWindow->_changesSaved = true;
 
 						gEditorWindow->editor->Content->Clear();
-						Serializer::LoadProject(*gEditorWindow->editor->Objects, *gEditorWindow->editor->Content, filebuff);
+						SetWorkingDirectory();
+						Serializer::LoadProject(gEditorWindow->editor->Objects.get(), gEditorWindow->editor->Content.get(), filebuff);
+
+						SendMessageA(gEditorWindow->_listBox, LVM_DELETEALLITEMS, 0, 0);
+
+						for (int i = 0; auto& instance : *(gEditorWindow->editor->Objects))
+						{
+							auto object = instance.Object.get();
+
+							TVITEMA item{};
+							item.mask = TVIF_TEXT | TVIF_PARAM;
+							item.pszText = const_cast<char*>(object->Name.c_str());
+							item.cChildren = 0;
+							item.lParam = i;
+
+							TVINSERTSTRUCTA insertStruct{};
+							insertStruct.item = item;
+
+							SendMessageA(gEditorWindow->_listBox, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct));
+
+							++i;
+						}
 					}
 					else if(GetLastError() != 0)
 						MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the open file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);
@@ -660,10 +683,12 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_SaveProject:
 				case ACC_SAVE_PROJECT:
 					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
+					SetWorkingDirectory();
 					break;
 				case CMD_SaveProjectAs:
 				case ACC_SAVE_PROJECT_AS:
 					gEditorWindow->_saveProject();
+					SetWorkingDirectory();
 					break;
 				case CMD_PlayProject:
 				case ACC_PLAY_PROJECT:

@@ -71,7 +71,7 @@ namespace Engine3DRadSpace::Graphics
 		friend class IHullShader;
 		friend class IDomainShader;
 		friend class IGeometryShader;
-		friend class Internal::AssetUUIDReader;
+		friend struct Internal::AssetUUIDReader;
 	};
 }
 
