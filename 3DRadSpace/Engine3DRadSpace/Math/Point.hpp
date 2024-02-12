@@ -14,25 +14,25 @@ namespace Engine3DRadSpace
 			int X;
 			int Y;
 
-			constexpr Point operator +=(const Point& p);
-			constexpr Point operator +(const Point &p) const;
+			Point operator +=(const Point& p);
+			Point operator +(const Point &p) const;
 
-			constexpr Point operator -=(const Point& p);
-			constexpr Point operator -(const Point &p) const;
-			constexpr Point operator -();
+			Point operator -=(const Point& p);
+			Point operator -(const Point &p) const;
+			Point operator -();
 
-			constexpr Point operator *=(float s);
-			constexpr Point operator *(float s) const;
+			Point operator *=(float s);
+			Point operator *(float s) const;
 
-			constexpr Point operator /=(float s);
-			constexpr Point operator /(float s) const;
+			Point operator /=(float s);
+			Point operator /(float s) const;
 
-			constexpr auto operator <=>(const Point&) const = default;
+			auto operator <=>(const Point&) const = default;
 
-			constexpr operator Engine3DRadSpace::Math::Vector2() const;
+			operator Engine3DRadSpace::Math::Vector2() const;
 		};
 	}
 }
 
-constexpr Engine3DRadSpace::Math::Point DLLEXPORT operator * (float s, const Engine3DRadSpace::Math::Point& p);
+Engine3DRadSpace::Math::Point DLLEXPORT operator * (float s, const Engine3DRadSpace::Math::Point& p);
 

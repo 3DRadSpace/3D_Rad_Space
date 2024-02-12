@@ -7,45 +7,45 @@ namespace Engine3DRadSpace::Math
 	{
 		float X, Y, Z, W;
 
-		constexpr Vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) : X(x), Y(y), Z(z), W(w) {};
-		constexpr Vector4(Vector3 v) : X(v.X), Y(v.Y), Z(v.Z), W(1) {};
+		Vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) : X(x), Y(y), Z(z), W(w) {};
+		Vector4(Vector3 v) : X(v.X), Y(v.Y), Z(v.Z), W(1) {};
 
-		constexpr static Vector4 UnitX();
-		constexpr  Vector4 UnitY();
-		constexpr static Vector4 UnitZ();
-		constexpr static Vector4 UnitW();
-		constexpr static Vector4 One();
+		static Vector4 UnitX();
+		 Vector4 UnitY();
+		static Vector4 UnitZ();
+		static Vector4 UnitW();
+		static Vector4 One();
 
 		float Length() const;
-		constexpr float LengthSquared() const;
+		float LengthSquared() const;
 
-		constexpr static float Dot(const Vector4& a, const Vector4 &b);
-		constexpr float Dot(const Vector4& v) const;
+		static float Dot(const Vector4& a, const Vector4 &b);
+		float Dot(const Vector4& v) const;
 
-		constexpr static Vector4 Hadamard(const Vector4& a, const Vector4& b);
-		constexpr Vector4& Hadamard(const Vector4& v);
+		static Vector4 Hadamard(const Vector4& a, const Vector4& b);
+		Vector4& Hadamard(const Vector4& v);
 
-		constexpr Vector4 operator+(const Vector4& v) const;
-		constexpr Vector4& operator+=(const Vector4& v);
+		Vector4 operator+(const Vector4& v) const;
+		Vector4& operator+=(const Vector4& v);
 
-		constexpr Vector4& operator-();
-		constexpr Vector4 operator-() const;
+		Vector4& operator-();
+		Vector4 operator-() const;
 
-		constexpr Vector4 operator-(const Vector4& v) const;
-		constexpr Vector4& operator -=(const Vector4& v);
+		Vector4 operator-(const Vector4& v) const;
+		Vector4& operator -=(const Vector4& v);
 
-		constexpr Vector4 operator *(float scalar) const;
-		constexpr Vector4& operator *=(float scalar);
+		Vector4 operator *(float scalar) const;
+		Vector4& operator *=(float scalar);
 
-		constexpr Vector4 operator /(float f) const;
-		constexpr Vector4& operator /=(float f);
+		Vector4 operator /(float f) const;
+		Vector4& operator /=(float f);
 
-		constexpr Vector4& Transform(const Matrix4x4& m);
-		constexpr static Vector4 Transform(const Vector4& v, const Matrix4x4& m);
+		Vector4& Transform(const Matrix4x4& m);
+		static Vector4 Transform(const Vector4& v, const Matrix4x4& m);
 
-		constexpr auto operator <=>(const Vector4& v) const = default;
+		auto operator <=>(const Vector4& v) const = default;
 	};
 
-	constexpr Vector4 operator *(float scalar, const Vector4& v);
-	constexpr Vector4 operator /(float scalar, const Vector4& v);
+	Vector4 operator *(float scalar, const Vector4& v);
+	Vector4 operator /(float scalar, const Vector4& v);
 }

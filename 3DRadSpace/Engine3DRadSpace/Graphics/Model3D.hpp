@@ -20,6 +20,8 @@ namespace Engine3DRadSpace::Graphics
 
 		Math::BoundingSphere _sphere;
 		Math::BoundingBox _box;
+
+		Model3D(Internal::AssetUUIDReader);
 	public:
 		Model3D(GraphicsDevice* Device,const std::filesystem::path& path);
 
@@ -51,6 +53,8 @@ namespace Engine3DRadSpace::Graphics
 		~Model3D() = default;
 
 		ModelMesh *operator[](unsigned i);
+		
+		friend class Internal::AssetUUIDReader;
 	};
 }
 

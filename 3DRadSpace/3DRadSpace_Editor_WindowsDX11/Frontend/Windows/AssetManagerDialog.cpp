@@ -222,7 +222,7 @@ void AssetManagerDialog::_loadAssetIcons()
 			if (_assetList == nullptr) return;
 
 			if (asset.Entry == nullptr) continue;
-			if (asset.Type.hash_code() != _assetType.hash_code()) continue;
+			if (asset.RTTI.hash_code() != _assetType.hash_code()) continue;
 
 			std::string imagePath;
 			//Find %appdata%
@@ -258,7 +258,7 @@ void AssetManagerDialog::_loadAssetIcons()
 					{typeid(Graphics::Texture2D).hash_code(), 2},
 				};
 
-				switch (type_map[asset.Type.hash_code()])
+				switch (type_map[asset.RTTI.hash_code()])
 				{
 				case 1:
 					if (_renderer) _renderer->RenderAsset<Graphics::Model3D>(imagePath, asset.Path);
@@ -269,6 +269,7 @@ void AssetManagerDialog::_loadAssetIcons()
 				default:
 					break;
 				}
+				
 			}
 
 			unsigned w, h;

@@ -32,6 +32,7 @@ namespace Engine3DRadSpace::Graphics
 
 		Texture2D(GraphicsDevice *device, unsigned x, unsigned y, bool bindRenderTarget, PixelFormat format = PixelFormat::R32G32B32A32_Float);
 		Texture2D(GraphicsDevice *device, bool bindRenderTarget = false, PixelFormat format = PixelFormat::R32G32B32A32_Float);
+		Texture2D(Internal::AssetUUIDReader);
 	public:
 		explicit Texture2D(GraphicsDevice* device, const std::string &fileName);
 		explicit Texture2D(GraphicsDevice* device, const std::wstring &filename);
@@ -70,6 +71,7 @@ namespace Engine3DRadSpace::Graphics
 		friend class IHullShader;
 		friend class IDomainShader;
 		friend class IGeometryShader;
+		friend class Internal::AssetUUIDReader;
 	};
 }
 

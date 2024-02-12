@@ -3,6 +3,7 @@
 #include "../GraphicsDevice.hpp"
 #include "../Reflection/UUID.hpp"
 #include "AssetID.hpp"
+#include "AssetTypeRegistration.hpp"
 
 namespace Engine3DRadSpace::Content
 {
@@ -14,7 +15,8 @@ namespace Engine3DRadSpace::Content
 			AssetEntry(GraphicsDevice* device, const std::filesystem::path& path) :
 				Path(path),
 				Entry(std::unique_ptr<T>(static_cast<Asset*>(new T(device, path)))),
-				Type(typeid(T)),
+				Type(Entry->GetUUID()),
+				RTTI(typeid(T)),
 				Name(std::filesystem::path(path).stem().string())
 			{
 			}
@@ -23,7 +25,8 @@ namespace Engine3DRadSpace::Content
 			AssetEntry(std::unique_ptr<T>&& asset, const std::filesystem::path &path) :
 				Entry(std::move(asset)),
 				Path(path),
-				Type(typeid(T)),
+				Type(Entry->GetUUID()),
+				RTTI(typeid(T)),
 				Name(std::filesystem::path(path).stem().string())
 			{
 			}
@@ -31,17 +34,19 @@ namespace Engine3DRadSpace::Content
 			AssetEntry(std::unique_ptr<Asset>&& asset, const std::filesystem::path& path) :
 				Entry(std::move(asset)),
 				Path(path),
-				Type(typeid(*Entry)),
+				Type(Entry->GetUUID()),
+				RTTI(typeid(Entry.get())),
 				Name(std::filesystem::path(path).stem().string())
 			{
 			}
 
-			explicit AssetEntry(std::nullptr_t a) : Type(typeid(std::nullptr_t)) {};
+			explicit AssetEntry(std::nullptr_t a) : Type(), RTTI(typeid(void)) {};
 
 			std::unique_ptr<Content::Asset> Entry;
 			std::filesystem::path Path;
-			std::type_index Type;
-			unsigned ID = 0;
+			Reflection::UUID Type;
+			std::type_index RTTI;
+			size_t ID = 0;
 			std::string Name;
 		};
 
@@ -59,10 +64,12 @@ namespace Engine3DRadSpace::Content
 		ContentManager &operator = (ContentManager &&) noexcept = default;
 
 		template<AssetType T>
-		T *Load(const std::filesystem::path &path, AssetID<T>*refID = nullptr);
+		T* Load(const std::filesystem::path& path, AssetID<T>* refID = nullptr);
 
 		template<AssetType T, typename ...Args>
 		T* Load(const std::filesystem::path& path, AssetID<T>* refID, Args&& ...params);
+
+		Asset* Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID = nullptr);
 
 		void Reload(unsigned ref);
 
@@ -75,14 +82,18 @@ namespace Engine3DRadSpace::Content
 		template<AssetType T>
 		T *operator[](AssetID<T> ref);
 
-		std::filesystem::path GetAssetPath(unsigned id);
+		std::filesystem::path GetAssetPath(unsigned id) const;
+		Reflection::UUID GetAssetType(unsigned id) const;
+		std::string GetAssetName(unsigned id) const;
 
 		std::vector<AssetEntry>::iterator begin();
 		std::vector<AssetEntry>::iterator end();
 
 		void RemoveAsset(unsigned id);
+		void Clear();
 
-		GraphicsDevice* GetDevice();
+		GraphicsDevice* GetDevice() const noexcept;
+		size_t Count() const noexcept;
 	};
 
 
@@ -113,7 +124,7 @@ namespace Engine3DRadSpace::Content
 
 		if (refID)
 		{
-			*refID = _assets.size() - 1;
+			*refID = static_cast<unsigned>(_assets.size() - 1);
 		}
 		return ptr;
 	}

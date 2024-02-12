@@ -8,6 +8,7 @@
 #include <filesystem>
 #include "../Logging/ResourceLoadingError.hpp"
 #include "../Content/ShaderManager.hpp"
+#include "../Internal/AssetUUIDReader.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -16,6 +17,10 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
 
 Assimp::Importer importer;
+
+Engine3DRadSpace::Graphics::Model3D::Model3D(Internal::AssetUUIDReader)
+{
+}
 
 Model3D::Model3D(GraphicsDevice* Device, const std::filesystem::path& path) :
 	_device(Device)

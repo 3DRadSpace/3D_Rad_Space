@@ -1,7 +1,9 @@
 #include "ContentManager.hpp"
+#include "AssetTypeRegistration.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
+using namespace Engine3DRadSpace::Reflection;
 
 ContentManager::ContentManager(GraphicsDevice *device):
 	_device(device),
@@ -10,14 +12,43 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_assets.emplace_back(nullptr);
 }
 
-void Engine3DRadSpace::Content::ContentManager::Reload(unsigned id)
+Asset* ContentManager::Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID)
 {
+	auto asset = CreateAssetInstance(uuid, _device, path);
+	
+	std::unique_ptr<Asset> ptrAsset;
+	ptrAsset.reset(asset);
 
+	_assets.emplace_back(std::move(ptrAsset), path);
+	_assets[_assets.size() - 1].ID = _assets.size() - 1;
+
+	if (refID)
+	{
+		*refID = static_cast<unsigned>(_assets.size() - 1);
+	}
+
+	return asset;
 }
 
-std::filesystem::path Engine3DRadSpace::Content::ContentManager::GetAssetPath(unsigned id)
+void ContentManager::Reload(unsigned id)
+{
+	auto asset = CreateAssetInstance(_assets[id].Entry->GetUUID(), _device, _assets[id].Path);
+	_assets[id].Entry.reset(asset);
+}
+
+std::filesystem::path ContentManager::GetAssetPath(unsigned id) const
 {
 	return _assets[id].Path;
+}
+
+Reflection::UUID ContentManager::GetAssetType(unsigned id) const
+{
+	return _assets[id].Type;
+}
+
+std::string ContentManager::GetAssetName(unsigned id) const
+{
+	return _assets[id].Name;
 }
 
 std::vector<ContentManager::AssetEntry>::iterator ContentManager::begin()
@@ -35,7 +66,17 @@ void ContentManager::RemoveAsset(unsigned id)
 	_assets.erase(_assets.begin() + id);
 }
 
-GraphicsDevice* ContentManager::GetDevice()
+void Engine3DRadSpace::Content::ContentManager::Clear()
+{
+	_assets.clear();
+}
+
+size_t Engine3DRadSpace::Content::ContentManager::Count() const noexcept
+{
+	return _assets.size();
+}
+
+GraphicsDevice* ContentManager::GetDevice() const noexcept
 {
 	return _device;
 }

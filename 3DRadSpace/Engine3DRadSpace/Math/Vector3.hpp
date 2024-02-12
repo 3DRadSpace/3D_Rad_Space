@@ -14,61 +14,61 @@ namespace Engine3DRadSpace::Math
 		float Y;
 		float Z;
 
-		constexpr Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
+		Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
 
-		constexpr static Vector3 Zero();
-		constexpr static Vector3 UnitX();
-		constexpr static Vector3 UnitY();
-		constexpr static Vector3 UnitZ();
-		constexpr static Vector3 One();
+		static Vector3 Zero();
+		static Vector3 UnitX();
+		static Vector3 UnitY();
+		static Vector3 UnitZ();
+		static Vector3 One();
 
-		constexpr static Vector3 Up();
-		constexpr static Vector3 Down();
-		constexpr static Vector3 Forward();
-		constexpr static Vector3 Backward();
-		constexpr static Vector3 Left();
-		constexpr static Vector3 Right();
+		static Vector3 Up();
+		static Vector3 Down();
+		static Vector3 Forward();
+		static Vector3 Backward();
+		static Vector3 Left();
+		static Vector3 Right();
 
 		float Length() const;
-		constexpr float LengthSquared() const;
+		float LengthSquared() const;
 
 		Vector3& Normalize();
 		static Vector3 Normalize(const Vector3& v);
 
-		constexpr Vector3& operator +=(const Vector3& v);
-		constexpr Vector3 operator +(const Vector3& v) const;
-		constexpr Vector3& operator -=(const Vector3& v);
-		constexpr Vector3 operator -(const Vector3& v) const;
+		Vector3& operator +=(const Vector3& v);
+		Vector3 operator +(const Vector3& v) const;
+		Vector3& operator -=(const Vector3& v);
+		Vector3 operator -(const Vector3& v) const;
 
-		constexpr Vector3& operator-();
-		constexpr Vector3 operator-() const;
+		Vector3& operator-();
+		Vector3 operator-() const;
 
-		constexpr Vector3& operator *=(float s);
-		constexpr Vector3 operator*(float s) const;
+		Vector3& operator *=(float s);
+		Vector3 operator*(float s) const;
 
-		constexpr Vector3& operator /=(float s);
-		constexpr Vector3 operator /(float s) const;
+		Vector3& operator /=(float s);
+		Vector3 operator /(float s) const;
 
-		constexpr Vector3 Cross(const Vector3& v);
-		constexpr static Vector3 Cross(const Vector3& v1, const Vector3 &v2);
-		
-		constexpr float Dot(const Vector3 &v) const;
-		constexpr static float Dot(const Vector3& a, const Vector3& b);
+		Vector3 Cross(const Vector3& v);
+		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
-		constexpr Vector3& Transform(const Quaternion& q);
-		constexpr Vector3& Transform(const Matrix4x4& m);
+		float Dot(const Vector3& v) const;
+		static float Dot(const Vector3& a, const Vector3& b);
 
-		constexpr static Vector3 Transform(const Vector3& v, const Quaternion& q);
-		constexpr static Vector3 Transform(const Vector3& v, const Matrix4x4& m);
+		Vector3& Transform(const Quaternion& q);
+		Vector3& Transform(const Matrix4x4& m);
+
+		static Vector3 Transform(const Vector3& v, const Quaternion& q);
+		static Vector3 Transform(const Vector3& v, const Matrix4x4& m);
 
 		//Element-wise product.
-		constexpr Vector3& Hadamard(const Vector3& v);
+		Vector3& Hadamard(const Vector3& v);
 		//Element wise product
-		constexpr static Vector3 Hadamard(const Vector3& a, const Vector3& b);
+		static Vector3 Hadamard(const Vector3& a, const Vector3& b);
 
 		auto operator <=>(const Vector3& v) const = default;
 	};
 
-	constexpr DLLEXPORT Vector3 operator *(float s, const Vector3& v);
-	constexpr DLLEXPORT Vector3 operator /(float s, const Vector3 &v);
+	DLLEXPORT Vector3 operator *(float s, const Vector3& v);
+	DLLEXPORT Vector3 operator /(float s, const Vector3& v);
 }

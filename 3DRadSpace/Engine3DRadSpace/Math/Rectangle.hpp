@@ -7,21 +7,21 @@ namespace Engine3DRadSpace
 	{
 		struct DLLEXPORT Rectangle
 		{
-			constexpr Rectangle(int x = 0, int y = 0, int w = 0, int h = 0) : X(x), Y(y), Width(w), Height(h) {};
+			Rectangle(int x = 0, int y = 0, int w = 0, int h = 0) : X(x), Y(y), Width(w), Height(h) {};
 
 			int X;
 			int Y;
 			int Width;
 			int Height;
 
-			constexpr Point TopLeft() const;
-			constexpr Point TopRight() const;
-			constexpr Point BottomLeft() const;
-			constexpr Point BottomRight() const;
-			constexpr Point Center() const;
+			Point TopLeft() const;
+			Point TopRight() const;
+			Point BottomLeft() const;
+			Point BottomRight() const;
+			Point Center() const;
 
-			constexpr bool operator ==(const Rectangle& r) const = default;
-			constexpr bool operator !=(const Rectangle& r) const = default;
+			bool operator ==(const Rectangle& r) const = default;
+			bool operator !=(const Rectangle& r) const = default;
 		};
 
 		struct DLLEXPORT RectangleF
@@ -33,14 +33,14 @@ namespace Engine3DRadSpace
 			float Width;
 			float Height;
 
-			constexpr Vector2 TopLeft() const;
-			constexpr Vector2 TopRight() const;
-			constexpr Vector2 BottomLeft() const;
-			constexpr Vector2 BottomRight() const;
-			constexpr Vector2 Center() const;
+			Vector2 TopLeft() const;
+			Vector2 TopRight() const;
+			Vector2 BottomLeft() const;
+			Vector2 BottomRight() const;
+			Vector2 Center() const;
 
-			constexpr bool operator ==(const RectangleF& r) const = default;
-			constexpr bool operator !=(const RectangleF& r) const = default;
+			bool operator ==(const RectangleF& r) const = default;
+			bool operator !=(const RectangleF& r) const = default;
 		};
 	}
 }

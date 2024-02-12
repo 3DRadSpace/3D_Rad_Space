@@ -13,6 +13,7 @@
 
 #include "../AutoupdaterState.hpp"
 #include "UpdateProgressWindow.hpp"
+#include "../Serialization.hpp"
 #include <thread>
 
 using namespace Engine3DRadSpace;
@@ -53,7 +54,8 @@ void EditorWindow::_saveProject(const char* filename)
 void EditorWindow::_writeProject(const char *fileName)
 {
 	_changesSaved = true;
-	//TODO: Serilaize object into a file
+
+	Serializer::SaveProject(*editor->Objects, *editor->Content, std::filesystem::path(fileName));
 }
 
 void EditorWindow::_findUpdate()
@@ -619,11 +621,15 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					ofn.nMaxFile = _MAX_PATH;
 					ofn.lpstrFilter = FileFilter;
 					ofn.hInstance = gEditorWindow->_hInstance;
+					
 
 					if(GetOpenFileNameA(&ofn))
 					{
 						//open project file.
 						gEditorWindow->_changesSaved = true;
+
+						gEditorWindow->editor->Content->Clear();
+						Serializer::LoadProject(*gEditorWindow->editor->Objects, *gEditorWindow->editor->Content, filebuff);
 					}
 					else if(GetLastError() != 0)
 						MessageBoxA(gEditorWindow->_mainWindow, std::format("Error trying to create the open file dialog box! : {}", GetLastError()).c_str(), "Test", MB_OK | MB_ICONWARNING);

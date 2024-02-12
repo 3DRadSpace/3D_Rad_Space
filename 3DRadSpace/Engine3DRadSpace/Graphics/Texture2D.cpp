@@ -8,6 +8,7 @@
 #endif // USING_DX11
 #include "../Logging/Exception.hpp"
 #include "../Logging/ResourceLoadingError.hpp"
+#include "../Internal/AssetUUIDReader.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -478,6 +479,13 @@ Texture2D::Texture2D(GraphicsDevice *device, bool bindRenderTarget, PixelFormat 
 	_debugInfoRT();
 }
 
+Engine3DRadSpace::Graphics::Texture2D::Texture2D(Internal::AssetUUIDReader a):
+	_device(nullptr),
+	_width(0),
+	_height(0)
+{
+}
+
 Texture2D::Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& resource) :
 	_device(device),
 	_texture(std::move(texture)),
@@ -662,7 +670,7 @@ void* Texture2D::ResourceViewHandle() const
 }
 
 Reflection::UUID Engine3DRadSpace::Graphics::Texture2D::GetUUID()
-{	
+{
 	// {5AAE5C7A-C0E7-405A-B6FD-03CF9E3E36CC}
 	return { 0x5aae5c7a, 0xc0e7, 0x405a, { 0xb6, 0xfd, 0x3, 0xcf, 0x9e, 0x3e, 0x36, 0xcc } };
 }

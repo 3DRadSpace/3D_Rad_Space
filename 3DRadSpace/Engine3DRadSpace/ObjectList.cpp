@@ -99,6 +99,11 @@ IObject* Engine3DRadSpace::ObjectList::operator[](unsigned i) const
 	return _objects[i].Object.get();
 }
 
+size_t Engine3DRadSpace::ObjectList::Count() const noexcept
+{
+	return _objects.size();
+}
+
 std::vector<ObjectList::ObjectInstance>::iterator ObjectList::begin()
 {
 	return _objects.begin();

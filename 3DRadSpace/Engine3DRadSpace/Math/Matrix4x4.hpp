@@ -39,44 +39,44 @@ namespace Engine3DRadSpace::Math
 		static Matrix4x4 CreateCilindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward);
 
 		///Element-wise product.
-		constexpr static Matrix4x4 Hadamard(const Matrix4x4& a, const Matrix4x4& b);
-		constexpr Matrix4x4& Hadamard(const Matrix4x4& m);
+		static Matrix4x4 Hadamard(const Matrix4x4& a, const Matrix4x4& b);
+		Matrix4x4& Hadamard(const Matrix4x4& m);
 
-		constexpr Matrix4x4 operator +(const Matrix4x4 &m) const;
-		constexpr Matrix4x4 operator +=(const Matrix4x4 &m);
+		Matrix4x4 operator +(const Matrix4x4 &m) const;
+		Matrix4x4 operator +=(const Matrix4x4 &m);
 
-		constexpr Matrix4x4 operator -(const Matrix4x4 &m) const;
-		constexpr Matrix4x4 operator -=(const Matrix4x4 &m);
+		Matrix4x4 operator -(const Matrix4x4 &m) const;
+		Matrix4x4 operator -=(const Matrix4x4 &m);
 
-		constexpr Matrix4x4 operator *(const Matrix4x4& m) const;
-		constexpr Matrix4x4& operator *=(const Matrix4x4& m);
+		Matrix4x4 operator *(const Matrix4x4& m) const;
+		Matrix4x4& operator *=(const Matrix4x4& m);
 
-		constexpr Matrix4x4 operator*(float scalar) const;
-		constexpr Matrix4x4& operator *=(float scalar);
+		Matrix4x4 operator*(float scalar) const;
+		Matrix4x4& operator *=(float scalar);
 
-		constexpr Matrix4x4& Transpose();
-		constexpr static Matrix4x4 Transpose(const Matrix4x4& m);
+		Matrix4x4& Transpose();
+		static Matrix4x4 Transpose(const Matrix4x4& m);
 
-		constexpr Matrix4x4& Invert();
-		constexpr static Matrix4x4 Invert(const Matrix4x4& m);
+		Matrix4x4& Invert();
+		static Matrix4x4 Invert(const Matrix4x4& m);
 
-		constexpr float& operator[](unsigned index);
+		float& operator[](unsigned index);
 
-		constexpr float Trace() const;
-		constexpr float Determinant() const;
+		float Trace() const;
+		float Determinant() const;
 
-		constexpr Vector3 Forward() const;
-		constexpr Vector3 Backward() const;
+		Vector3 Forward() const;
+		Vector3 Backward() const;
 
-		constexpr Vector3 Up() const;
-		constexpr Vector3 Down() const;
+		Vector3 Up() const;
+		Vector3 Down() const;
 
-		constexpr Vector3 Left() const;
-		constexpr Vector3 Right() const;
+		Vector3 Left() const;
+		Vector3 Right() const;
 
-		constexpr Vector3 Translation() const;
+		Vector3 Translation() const;
 	};
 
-	constexpr Matrix4x4 operator *(float scalar,const Matrix4x4& m);
-	constexpr Matrix4x4 operator /(float f, const Matrix4x4& m);
+	Matrix4x4 operator *(float scalar,const Matrix4x4& m);
+	Matrix4x4 operator /(float f, const Matrix4x4& m);
 }

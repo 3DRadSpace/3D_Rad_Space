@@ -2,27 +2,27 @@
 
 using namespace Engine3DRadSpace::Math;
 
-constexpr Vector4 Vector4::UnitX()
+Vector4 Vector4::UnitX()
 {
     return { 1,0,0,0 };
 }
 
-constexpr Vector4 Vector4::UnitY()
+Vector4 Vector4::UnitY()
 {
 	return { 0, 1, 0, 0 };
 }
 
-constexpr Vector4 Vector4::UnitZ()
+Vector4 Vector4::UnitZ()
 {
 	return { 0, 0, 1, 0 };
 }
 
-constexpr Vector4 Vector4::UnitW()
+Vector4 Vector4::UnitW()
 {
 	return { 0, 0, 0, 1 };
 }
 
-constexpr Vector4 Vector4::One()
+Vector4 Vector4::One()
 {
 	return { 1,1,1,1 };
 }
@@ -32,22 +32,22 @@ float Vector4::Length() const
 	return sqrtf(X * X + Y * Y + Z * Z + W * W);
 }
 
-constexpr float Vector4::LengthSquared() const
+float Vector4::LengthSquared() const
 {
 	return X * X + Y * Y + Z * Z + W * W;
 }
 
-constexpr float Vector4::Dot(const Vector4& a, const Vector4& b)
+float Vector4::Dot(const Vector4& a, const Vector4& b)
 {
 	return a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
 }
 
-constexpr float Vector4::Dot(const Vector4& v) const
+float Vector4::Dot(const Vector4& v) const
 {
 	return X * v.X + Y * v.Y + Z * v.Z + W * v.W;
 }
 
-constexpr Vector4 Vector4::Hadamard(const Vector4 &a, const Vector4& b)
+Vector4 Vector4::Hadamard(const Vector4 &a, const Vector4& b)
 {
 	return Vector4
 	{
@@ -58,7 +58,7 @@ constexpr Vector4 Vector4::Hadamard(const Vector4 &a, const Vector4& b)
 	};
 }
 
-constexpr Vector4& Vector4::Hadamard(const Vector4& v)
+Vector4& Vector4::Hadamard(const Vector4& v)
 {
 	X *= v.X;
 	Y += v.Y;
@@ -68,7 +68,7 @@ constexpr Vector4& Vector4::Hadamard(const Vector4& v)
 	return *this;
 }
 
-constexpr Vector4 Vector4::operator+(const Vector4& v) const
+Vector4 Vector4::operator+(const Vector4& v) const
 {
 	return
 	{
@@ -79,7 +79,7 @@ constexpr Vector4 Vector4::operator+(const Vector4& v) const
 	};
 }
 
-constexpr Vector4& Vector4::operator+=(const Vector4& v)
+Vector4& Vector4::operator+=(const Vector4& v)
 {
 	X += v.X;
 	Y += v.Y;
@@ -88,7 +88,7 @@ constexpr Vector4& Vector4::operator+=(const Vector4& v)
 	return *this;
 }
 
-constexpr Vector4& Engine3DRadSpace::Math::Vector4::operator-()
+Vector4& Engine3DRadSpace::Math::Vector4::operator-()
 {
 	X *= -1;
 	Y *= -1;
@@ -98,12 +98,12 @@ constexpr Vector4& Engine3DRadSpace::Math::Vector4::operator-()
 	return *this;
 }
 
-constexpr Vector4 Vector4::operator-() const
+Vector4 Vector4::operator-() const
 {
 	return { -X, -Y, -Z, -W };
 }
 
-constexpr Vector4 Vector4::operator-(const Vector4& v) const
+Vector4 Vector4::operator-(const Vector4& v) const
 {
 	return
 	{
@@ -114,7 +114,7 @@ constexpr Vector4 Vector4::operator-(const Vector4& v) const
 	};
 }
 
-constexpr Vector4& Vector4::operator-=(const Vector4& v)
+Vector4& Vector4::operator-=(const Vector4& v)
 {
 	X -= v.X;
 	Y -= v.Y;
@@ -124,12 +124,12 @@ constexpr Vector4& Vector4::operator-=(const Vector4& v)
 	return *this;
 }
 
-constexpr Vector4 Vector4::operator*(float scalar) const
+Vector4 Vector4::operator*(float scalar) const
 {
 	return { X * scalar, Y * scalar, Z * scalar, W * scalar };
 }
 
-constexpr Vector4& Vector4::operator*=(float scalar)
+Vector4& Vector4::operator*=(float scalar)
 {
 	X *= scalar;
 	Y *= scalar;
@@ -139,12 +139,12 @@ constexpr Vector4& Vector4::operator*=(float scalar)
 	return *this;
 }
 
-constexpr Vector4 Vector4::operator/(float f) const
+Vector4 Vector4::operator/(float f) const
 {
 	return { X / f, Y / f, Z / f, W / f };
 }
 
-constexpr Vector4& Vector4::operator/=(float f)
+Vector4& Vector4::operator/=(float f)
 {
 	X = 1 / X;
 	Y = 1 / Y;
@@ -153,7 +153,7 @@ constexpr Vector4& Vector4::operator/=(float f)
 	return *this;
 }
 
-constexpr Vector4& Vector4::Transform(const Matrix4x4& m)
+Vector4& Vector4::Transform(const Matrix4x4& m)
 {
 	X = m.M11 * X + m.M12 * Y + m.M13 * Z + m.M14 * W;
 	Y = m.M21 * X + m.M22 * Y + m.M23 * Z + m.M24 * W;
@@ -162,7 +162,7 @@ constexpr Vector4& Vector4::Transform(const Matrix4x4& m)
 	return *this;
 }
 
-constexpr Vector4 Vector4::Transform(const Vector4& v, const Matrix4x4 &m)
+Vector4 Vector4::Transform(const Vector4& v, const Matrix4x4 &m)
 {
 	Vector4 r;
 	r.X = m.M11 * r.X + m.M12 * r.Y + m.M13 * v.Z + m.M14 * v.W;
@@ -171,4 +171,24 @@ constexpr Vector4 Vector4::Transform(const Vector4& v, const Matrix4x4 &m)
 	r.W = m.M41 * r.X + m.M42 * r.Y + m.M43 * v.Z + m.M44 * v.W;
 
 	return r;
+}
+
+Vector4 Engine3DRadSpace::Math::operator*(float scalar, const Vector4& v)
+{
+	return Vector4(
+		scalar * v.X,
+		scalar * v.Y,
+		scalar * v.Z,
+		scalar * v.W
+	);
+}
+
+Vector4 Engine3DRadSpace::Math::operator/(float scalar, const Vector4& v)
+{
+	return Vector4(
+		scalar / v.X,
+		scalar / v.Y,
+		scalar / v.Z,
+		scalar / v.W
+	);
 }
