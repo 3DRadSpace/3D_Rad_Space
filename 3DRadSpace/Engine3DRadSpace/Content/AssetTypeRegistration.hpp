@@ -7,19 +7,19 @@
 
 namespace Engine3DRadSpace::Internal
 {
-	typedef Content::Asset* (*AssetCtor)(GraphicsDevice* device, const std::filesystem::path& path);
+	typedef Content::IAsset* (*AssetCtor)(GraphicsDevice* device, const std::filesystem::path& path);
 	inline std::vector<std::pair<Engine3DRadSpace::Reflection::UUID, Engine3DRadSpace::Internal::AssetCtor>> assetTypes;
 }
 
 namespace Engine3DRadSpace::Content
 {
 	template<AssetType T>
-	Asset* CreateAssetInstance(GraphicsDevice* device, std::filesystem::path& path)
+	IAsset* CreateAssetInstance(GraphicsDevice* device, std::filesystem::path& path)
 	{
 		return new T(device, path);
 	}
 
-	DLLEXPORT Asset* CreateAssetInstance(Reflection::UUID uuid, GraphicsDevice* device,const std::filesystem::path& path);
+	DLLEXPORT IAsset* CreateAssetInstance(Reflection::UUID uuid, GraphicsDevice* device,const std::filesystem::path& path);
 
 	template<AssetType T>
 	bool RegisterAssetType()
@@ -30,34 +30,11 @@ namespace Engine3DRadSpace::Content
 				return false;
 		}
 		Internal::assetTypes.emplace_back(Internal::AssetUUIDReader::GetUUID(Tag<T>()),
-			[](GraphicsDevice* device, const std::filesystem::path& path) -> Content::Asset*
+			[](GraphicsDevice* device, const std::filesystem::path& path) -> Content::IAsset*
 			{
-				return static_cast<Content::Asset*>(new T(device, path));
+				return static_cast<Content::IAsset*>(new T(device, path));
 			}								  
 		);
 		return true;
 	}
-
-	/*
-	template<typename R, typename Fn, typename ...Args>
-	std::optional<R> AssetVisit(Reflection::UUID asset_uuid, Fn &&callable, Args&& ...args)
-	{
-		for (auto& [uuid, ctor] : Internal::assetTypes)
-		{
-			if (uuid == asset_uuid)
-				return callable(std::forward<Args>(args)...);
-		}
-		return {};
-	}
-
-	template<typename Fn, typename ...Args>
-	void AssetVisit(Reflection::UUID asset_uuid, Fn&& callable, Args&& ...args)
-	{
-		for (auto& [uuid, ctor] : Internal::assetTypes)
-		{
-			if (uuid == asset_uuid)
-				callable(std::forward<Args>(args)...);
-		}
-	}
-	*/
 }

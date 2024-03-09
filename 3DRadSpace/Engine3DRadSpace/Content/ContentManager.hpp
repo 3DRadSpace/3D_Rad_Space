@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Content
 			template<AssetType T>
 			AssetEntry(GraphicsDevice* device, const std::filesystem::path& path) :
 				Path(path),
-				Entry(std::unique_ptr<T>(static_cast<Asset*>(new T(device, path)))),
+				Entry(std::unique_ptr<T>(static_cast<IAsset*>(new T(device, path)))),
 				Type(Entry->GetUUID()),
 				RTTI(typeid(T)),
 				Name(std::filesystem::path(path).stem().string())
@@ -31,7 +31,7 @@ namespace Engine3DRadSpace::Content
 			{
 			}
 
-			AssetEntry(std::unique_ptr<Asset>&& asset, const std::filesystem::path& path) :
+			AssetEntry(std::unique_ptr<IAsset>&& asset, const std::filesystem::path& path) :
 				Entry(std::move(asset)),
 				Path(path),
 				Type(Entry->GetUUID()),
@@ -42,7 +42,10 @@ namespace Engine3DRadSpace::Content
 
 			explicit AssetEntry(std::nullptr_t a) : Type(), RTTI(typeid(void)) {};
 
-			std::unique_ptr<Content::Asset> Entry;
+			AssetEntry(AssetEntry&&) noexcept = default;
+			AssetEntry& operator=(AssetEntry&&) noexcept = default;
+			
+			std::unique_ptr<Content::IAsset> Entry;
 			std::filesystem::path Path;
 			Reflection::UUID Type;
 			std::type_index RTTI;
@@ -53,7 +56,7 @@ namespace Engine3DRadSpace::Content
 		unsigned _lastID;
 		GraphicsDevice* _device;
 		std::vector<AssetEntry> _assets;
-		std::vector<std::pair<Reflection::UUID, std::function<Asset* (GraphicsDevice*, const std::filesystem::path&)>>> _types;
+		std::vector<std::pair<Reflection::UUID, std::function<IAsset* (GraphicsDevice*, const std::filesystem::path&)>>> _types;
 	public:
 		ContentManager(GraphicsDevice *device);
 
@@ -69,7 +72,7 @@ namespace Engine3DRadSpace::Content
 		template<AssetType T, typename ...Args>
 		T* Load(const std::filesystem::path& path, AssetID<T>* refID, Args&& ...params);
 
-		Asset* Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID = nullptr);
+		IAsset* Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID = nullptr);
 
 		void Reload(unsigned ref);
 
@@ -115,7 +118,7 @@ namespace Engine3DRadSpace::Content
 	template<AssetType T>
 	inline T* ContentManager::Load(const std::filesystem::path& path, AssetID<T> *refID)
 	{
-		std::unique_ptr<Asset> a;
+		std::unique_ptr<IAsset> a;
 		auto ptr = new T(_device, path);
 		a.reset(ptr);
 
@@ -132,7 +135,7 @@ namespace Engine3DRadSpace::Content
 	template<AssetType T, typename ...Args>
 	inline T* ContentManager::Load(const std::filesystem::path& path, AssetID<T>* refID, Args && ...params)
 	{
-		std::unique_ptr<Asset> a;
+		std::unique_ptr<IAsset> a;
 		auto ptr = new T(_device, path, std::forward<Args>(params)...);
 		a.reset(ptr);
 

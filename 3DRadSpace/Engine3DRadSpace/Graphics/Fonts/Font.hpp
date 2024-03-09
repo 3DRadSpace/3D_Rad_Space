@@ -44,7 +44,7 @@ namespace Engine3DRadSpace::Graphics::Fonts
 		unsigned Size() const;
 		const std::string SupportedCharacters() const;
 
-		Texture2D* operator[](int index);
+		Texture2D* operator[](char chr);
 
 		~Font();
 	};

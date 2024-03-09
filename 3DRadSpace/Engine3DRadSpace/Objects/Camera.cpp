@@ -82,8 +82,15 @@ void Camera::Load(Content::ContentManager *content)
 {
 }
 
-void Engine3DRadSpace::Objects::Camera::Load(Content::ContentManager* content, const std::filesystem::path& path)
+void Camera::Load(Content::ContentManager* content, const std::filesystem::path& path)
 {
+}
+
+Camera::~Camera()
+{
+	//Deallocate camera model early, to avoid DirectX debug layer STATE_CREATION warnings, despite the Camera editor model being a std::unique_ptr.
+	if (cameraModel != nullptr)
+		cameraModel.reset();
 }
 
 REFL_BEGIN(Camera,"Camera","Camera objects","Perspective camera")

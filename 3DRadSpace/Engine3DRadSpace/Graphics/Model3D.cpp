@@ -18,7 +18,8 @@ using namespace Engine3DRadSpace::Math;
 
 Assimp::Importer importer;
 
-Engine3DRadSpace::Graphics::Model3D::Model3D(Internal::AssetUUIDReader)
+Engine3DRadSpace::Graphics::Model3D::Model3D(Internal::AssetUUIDReader) : 
+	_device(nullptr)
 {
 }
 
@@ -282,12 +283,12 @@ size_t Model3D::NumMeshes()
 	return _meshes.size();
 }
 
-BoundingBox Model3D::GetBoundingBox()
+BoundingBox Model3D::GetBoundingBox() const
 {
 	return _box;
 }
 
-BoundingSphere Model3D::GetBoundingSphere()
+BoundingSphere Model3D::GetBoundingSphere() const
 {
 	return _sphere;
 }

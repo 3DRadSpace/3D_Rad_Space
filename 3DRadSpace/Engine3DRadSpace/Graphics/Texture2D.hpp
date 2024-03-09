@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Internal
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT Texture2D : public Content::Asset
+	class DLLEXPORT Texture2D : public Content::IAsset
 	{
 		unsigned _width;
 		unsigned _height;

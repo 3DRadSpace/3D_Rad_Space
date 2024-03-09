@@ -156,10 +156,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio\AudioSource.hpp" />
+    <ClInclude Include="Audio\Sound.hpp" />
     <ClInclude Include="Concepts.hpp" />
     <ClInclude Include="Algorithms\LevenshteinDistance.hpp" />
     <ClInclude Include="Audio\AudioEngine.hpp" />
     <ClInclude Include="Content\Asset.hpp" />
+    <ClInclude Include="Content\AssetFactory.hpp" />
     <ClInclude Include="Content\AssetID.hpp" />
     <ClInclude Include="Content\AssetTypeRegistration.hpp" />
     <ClInclude Include="Content\ContentManager.hpp" />
@@ -167,6 +170,7 @@
     <ClInclude Include="Algorithms\FixedArray.hpp" />
     <ClInclude Include="Graphics\FlipMode.hpp" />
     <ClInclude Include="Graphics\Fonts\Font.hpp" />
+    <ClInclude Include="Graphics\Fonts\FontRenderer.hpp" />
     <ClInclude Include="Graphics\Fonts\FontShader.hpp" />
     <ClInclude Include="Graphics\Fonts\Glyph.hpp" />
     <ClInclude Include="Graphics\Primitives\Sphere.hpp" />
@@ -194,6 +198,7 @@
     <ClInclude Include="Physics\IPhysicsObject.hpp" />
     <ClInclude Include="Physics\PhysicsEngine.hpp" />
     <ClInclude Include="Physics\PhysicsSettings.hpp" />
+    <ClInclude Include="Physics\StaticRigidbody.hpp" />
     <ClInclude Include="Reflection\ReflectedEnum.hpp" />
     <ClInclude Include="Reflection\ReflectedEnumField.hpp" />
     <ClInclude Include="Reflection\Visitor.hpp" />
@@ -272,6 +277,7 @@
   <ItemGroup>
     <ClCompile Include="Algorithms\LevenshteinDistance.cpp" />
     <ClCompile Include="Audio\AudioEngine.cpp" />
+    <ClCompile Include="Content\AssetFactory.cpp" />
     <ClCompile Include="Content\AssetTypeRegistration.cpp" />
     <ClCompile Include="Content\ContentManager.cpp" />
     <ClCompile Include="Content\ShaderManager.cpp" />
@@ -283,6 +289,7 @@
     <ClCompile Include="Graphics\DepthStencilState.cpp" />
     <ClCompile Include="Graphics\FlipMode.cpp" />
     <ClCompile Include="Graphics\Fonts\Font.cpp" />
+    <ClCompile Include="Graphics\Fonts\FontRenderer.cpp" />
     <ClCompile Include="Graphics\Fonts\FontShader.cpp" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\IShader.cpp" />

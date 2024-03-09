@@ -4,9 +4,12 @@
 #include <Engine3DRadSpace/Graphics/Primitives/Box.hpp>
 #include <Engine3DRadSpace/ObjectList.hpp>
 
+#include <Engine3DRadSpace/Graphics/Fonts/FontRenderer.hpp>
+
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Algorithms::Picking;
 using namespace Engine3DRadSpace::Graphics;
+using namespace Engine3DRadSpace::Graphics::Fonts;
 using namespace Engine3DRadSpace::Graphics::Shaders;
 using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Math;
@@ -74,6 +77,7 @@ void RenderWindow::Initialize()
 }
 
 Model3D *fish = nullptr;
+std::unique_ptr<FontRenderer> frenderer;
 
 void RenderWindow::Load(Content::ContentManager *content)
 {
@@ -85,6 +89,9 @@ void RenderWindow::Load(Content::ContentManager *content)
 
 	//testFont = std::make_unique<Fonts::Font>(Device.get(), "Data\\Fonts\\arial.ttf");
 	//this->ClearColor.R = 0.128;
+
+	//
+	// frenderer = std::make_unique<FontRenderer>(Device.get());
 }
 
 void RenderWindow::Update(Keyboard& keyboard, Mouse& mouse, double dt)
@@ -154,9 +161,11 @@ void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 		grid->Draw(View, Projection, dt);
 	}
 
-	if(_keyboardTest)
+	if (_keyboardTest)
 	{
-		
+		//SpriteBatch->Draw((*testFont)['A'], Math::Rectangle(0, 0, 50, 50));
+		//SpriteBatch->DrawNormalized((*testFont)['A'], RectangleF(0, 0, 0.2f, 0.2f));
+		frenderer->Render(*testFont, 'A');
 	}
 
 	//Main rendering pass
@@ -182,6 +191,10 @@ void RenderWindow::Draw(Matrix4x4 &view, Matrix4x4 &projection, double dt)
 
 		}
 	}
+}
+
+void RenderWindow::Draw(Graphics::SpriteBatch* spriteBatch, double dt)
+{
 }
 
 bool RenderWindow::IsFocused()

@@ -11,7 +11,7 @@ using namespace Engine3DRadSpace::Internal;
 
 //inline std::vector<std::pair<Reflection::UUID, AssetCtor>> Engine3DRadSpace::Internal::assetTypes;
 
-Asset* Engine3DRadSpace::Content::CreateAssetInstance(Reflection::UUID nuuid, GraphicsDevice* device,const std::filesystem::path& path)
+IAsset* Engine3DRadSpace::Content::CreateAssetInstance(Reflection::UUID nuuid, GraphicsDevice* device,const std::filesystem::path& path)
 {
 	if (Internal::assetTypes.empty())
 	{

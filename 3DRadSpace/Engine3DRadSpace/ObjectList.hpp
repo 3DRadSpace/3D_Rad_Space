@@ -15,7 +15,7 @@ namespace Engine3DRadSpace
 	public:
 		struct ObjectInstance
 		{
-			std::shared_ptr<IObject> Object;
+			std::unique_ptr<IObject> Object;
 
 			enum class ObjectType : uint8_t
 			{
@@ -26,10 +26,10 @@ namespace Engine3DRadSpace
 			} InternalType;
 
 			template<GameObject O>
-			ObjectInstance(std::shared_ptr<O>&& obj);
+			ObjectInstance(std::unique_ptr<O>&& obj);
 
 			template<>
-			ObjectInstance(std::shared_ptr<IObject> &&obj);
+			ObjectInstance(std::unique_ptr<IObject> &&obj);
 		};
 	private:
 		std::vector<ObjectInstance> _objects;
@@ -73,7 +73,7 @@ namespace Engine3DRadSpace
 
 		void Clear();
 
-		IObject* operator[](unsigned i) const;
+		IObject* operator[](size_t i) const;
 		size_t Count() const noexcept;
 
 		std::vector<ObjectInstance>::iterator begin();
@@ -81,7 +81,7 @@ namespace Engine3DRadSpace
 	};
 
 	template<GameObject O>
-	inline ObjectList::ObjectInstance::ObjectInstance(std::shared_ptr<O>&& obj) : Object(std::move(obj))
+	inline ObjectList::ObjectInstance::ObjectInstance(std::unique_ptr<O>&& obj) : Object(std::move(obj))
 	{
 		InternalType = ObjectType::IObject;
 		if constexpr (std::is_base_of_v<IObject2D, O>) InternalType = ObjectType::IObject2D;
@@ -91,7 +91,7 @@ namespace Engine3DRadSpace
 	template<GameObject O, typename... Params>
 	inline std::pair<O*, unsigned> ObjectList::AddNew(Internal::InitializationFlag flag, Params&&... p)
 	{
-		auto &obj = _objects.emplace_back(std::make_shared<O>(std::forward<Params>(p)...));
+		auto &obj = _objects.emplace_back(std::make_unique<O>(std::forward<Params>(p)...));
 		
 		bool internalInitialize = flag != Internal::InitializationFlag::NoInitialization;
 		bool initialize = flag == Internal::InitializationFlag::Initialize || flag == Internal::InitializationFlag::InitializeAndLoad;
@@ -107,7 +107,7 @@ namespace Engine3DRadSpace
 	template<GameObject O>
 	inline unsigned ObjectList::AddNew(O&& object, Internal::InitializationFlag flag)
 	{
-		auto new_obj = std::make_shared<O>(std::move(object));
+		auto new_obj = std::make_unique<O>(std::move(object));
 
 		bool internalInitialize = flag != Internal::InitializationFlag::NoInitialization;
 		bool initialize = flag == Internal::InitializationFlag::Initialize || flag == Internal::InitializationFlag::InitializeAndLoad;

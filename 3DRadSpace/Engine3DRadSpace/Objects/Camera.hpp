@@ -67,7 +67,7 @@ namespace Engine3DRadSpace::Objects
 
 		virtual Reflection::UUID GetUUID() override;
 
-		virtual ~Camera() = default;
+		~Camera();
 	};
 }
 

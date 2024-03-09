@@ -80,7 +80,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 							auto path = std::filesystem::path(filename);
 							auto relativePath = path.relative_path();
 
-							auto tryLoadAsset = []<AssetType T>(Tag<T> dummy,ContentManager * content, const char *file, HWND current_window) -> std::optional<std::string>
+							auto tryLoadAsset = []<AssetType T>(Tag<T> dummy, ContentManager *content, const char *file, HWND current_window) -> std::optional<std::string>
 							{
 								try
 								{

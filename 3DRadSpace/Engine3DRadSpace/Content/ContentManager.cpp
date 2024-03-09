@@ -12,11 +12,11 @@ ContentManager::ContentManager(GraphicsDevice *device):
 	_assets.emplace_back(nullptr);
 }
 
-Asset* ContentManager::Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID)
+IAsset* ContentManager::Load(Reflection::UUID uuid, const std::filesystem::path& path, unsigned* refID)
 {
 	auto asset = CreateAssetInstance(uuid, _device, path);
 	
-	std::unique_ptr<Asset> ptrAsset;
+	std::unique_ptr<IAsset> ptrAsset;
 	ptrAsset.reset(asset);
 
 	_assets.emplace_back(std::move(ptrAsset), path);

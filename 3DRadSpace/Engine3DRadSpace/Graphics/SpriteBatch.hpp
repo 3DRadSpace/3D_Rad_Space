@@ -7,6 +7,11 @@
 
 namespace Engine3DRadSpace::Graphics
 {
+	namespace Fonts
+	{
+		class FontRenderer;
+	}
+
 	enum class SpriteBatchSortMode
 	{
 		/// <summary>
@@ -109,5 +114,7 @@ namespace Engine3DRadSpace::Graphics
 		void End();
 
 		~SpriteBatch() = default;
+
+		friend class ::Engine3DRadSpace::Graphics::Fonts::FontRenderer;
 	};
 }

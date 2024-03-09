@@ -16,16 +16,19 @@ namespace Engine3DRadSpace::Reflection
 
 	class DLLEXPORT ReflectedEnum
 	{
+		std::string _enumName;
 		Algorithms::FixedArray<EnumEntry> _entries;
 		size_t _typeHash;
 	public:
 		template<typename E> requires std::is_enum_v<E>
-		ReflectedEnum(Tag<E> dummy, std::initializer_list<EnumEntry> entries) :
+		ReflectedEnum(Tag<E> dummy, const std::string& name, std::initializer_list<EnumEntry> entries) :
+			_enumName(name),
 			_entries(entries),
 			_typeHash(typeid(E).hash_code())
 		{
 		}
 
+		const std::string EnumName() const;
 		const size_t NumberOfEntries() const;
 		const EnumEntry operator[](unsigned entryId) const;
 		const size_t TypeHashCode() const;

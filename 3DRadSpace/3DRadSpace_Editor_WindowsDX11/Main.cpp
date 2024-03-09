@@ -81,7 +81,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	CoUninitialize();
 
 	//Manually release the stored shaders inside the ShaderManager class. 
-	//This is necessary to avoid reports of live objects when the debug layer detects the application process being terminated, even if the dtor is called when the program terminates.
+	//This is necessary to avoid reports of live objects when the debug layer detects the application process being terminated, even if the destructors are called when the program terminates.
 	Engine3DRadSpace::Content::ShaderManager::ReleaseAll();
 
 	return 0;

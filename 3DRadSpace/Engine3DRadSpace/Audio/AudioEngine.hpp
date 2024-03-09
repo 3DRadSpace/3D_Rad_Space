@@ -1,5 +1,5 @@
 #pragma once
-#include "../Math/Vector3.hpp"
+#include "AudioSource.hpp"
 
 struct ALCdevice;
 struct ALCcontext;
@@ -18,7 +18,10 @@ namespace Engine3DRadSpace::Audio
 		AudioEngine& operator=(AudioEngine&) = delete;
 		AudioEngine& operator=(AudioEngine&&) = delete;
 
+		std::vector<std::string> ListAudioDevices();
+
 		void SetListener(const Math::Vector3& vector);
+		void CreateAudioSource(AudioSource& source);
 
 		~AudioEngine();
 	};

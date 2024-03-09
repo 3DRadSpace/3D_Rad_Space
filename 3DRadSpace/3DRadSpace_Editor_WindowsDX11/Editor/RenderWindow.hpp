@@ -53,6 +53,8 @@ public:
 		Engine3DRadSpace::Math::Matrix4x4 &projection,
 		double dt) override;
 
+	void Draw(Engine3DRadSpace::Graphics::SpriteBatch* spriteBatch, double dt) override;
+
 	bool IsFocused();
 	void Reset3DCursor();
 };

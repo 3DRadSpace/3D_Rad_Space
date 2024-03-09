@@ -23,7 +23,7 @@ unsigned ObjectList::Add(IObject* obj, InitializationFlag flag)
 	obj->Initialize();
 	obj->Load(_game->Content.get());
 
-	std::shared_ptr<IObject> ptr;
+	std::unique_ptr<IObject> ptr;
 	ptr.reset(obj);
 
 	_objects.emplace_back(std::move(ptr));
@@ -49,7 +49,7 @@ IObject* ObjectList::Find(const std::string& name)
 {
 	for (auto& [object, id] : _objects)
 	{
-		if (object->Name == name)
+		if (object->Name == name) 
 			return object.get();
 	}
 	return nullptr;
@@ -94,7 +94,7 @@ void ObjectList::Clear()
 	_objects.clear();
 }
 
-IObject* Engine3DRadSpace::ObjectList::operator[](unsigned i) const
+IObject* Engine3DRadSpace::ObjectList::operator[](size_t i) const
 {
 	return _objects[i].Object.get();
 }
@@ -115,7 +115,7 @@ std::vector<ObjectList::ObjectInstance>::iterator ObjectList::end()
 }
 
 template<>
-ObjectList::ObjectInstance::ObjectInstance(std::shared_ptr<IObject>&& obj) : 
+ObjectList::ObjectInstance::ObjectInstance(std::unique_ptr<IObject>&& obj) : 
 	Object(std::move(obj))
 {
 	auto ptr = Object.get();

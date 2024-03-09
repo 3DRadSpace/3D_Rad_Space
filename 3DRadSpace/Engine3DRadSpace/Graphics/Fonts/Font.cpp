@@ -51,7 +51,7 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 
 	for(auto c : _supportedCharacters)
 	{
-		if (FT_Load_Char(_font, c, FT_LOAD_RENDER))
+		if (FT_Load_Char(_font, c, FT_LOAD_RENDER) != 0)
 			continue;
 
 		auto width = _font->glyph->bitmap.width;
@@ -69,7 +69,18 @@ Font::Font(GraphicsDevice* device, const std::string& path, unsigned size, const
 		//TODO: Use a font "megatexture" instead of one texture for each character for performance reasons.
 		[[likely]] if(fontBitmapBuffer != nullptr)
 		{
-			_characters.emplace_back(glyph, std::make_unique<Texture2D>(_device, fontBitmapBuffer, width, height, PixelFormat::R8_SignedInt));
+			std::unique_ptr<float[]> glyphBuffer = std::make_unique<float[]>(width * height);
+
+			for (size_t j = 0; j < height; j++)
+			{
+				for (size_t i = 0; i < width; i++)
+				{
+					auto p = (j * width) + i;
+					glyphBuffer[p] = static_cast<float>(*(_font->glyph->bitmap.buffer)) / 255.0f;
+				}
+			}
+
+			_characters.emplace_back(glyph, std::make_unique<Texture2D>(_device, glyphBuffer.get(), width, height, PixelFormat::R32_Float));
 		}
 		else
 		{
@@ -107,19 +118,24 @@ Font& Font::operator=(Font&& font) noexcept
 	return* this;
 }
 
-unsigned Engine3DRadSpace::Graphics::Fonts::Font::Size() const
+unsigned Font::Size() const
 {
 	return _size;
 }
 
-const std::string Engine3DRadSpace::Graphics::Fonts::Font::SupportedCharacters() const
+const std::string Font::SupportedCharacters() const
 {
 	return _supportedCharacters;
 }
 
-Texture2D* Engine3DRadSpace::Graphics::Fonts::Font::operator[](int index)
+Texture2D* Font::operator[](char chr)
 {
-	return _characters[index].second.get();
+	for (auto& [glyph, ptr] : this->_characters)
+	{
+		if (glyph.Character == chr) 
+			return ptr.get();
+	}
+	return nullptr;
 }
 
 Font::~Font()

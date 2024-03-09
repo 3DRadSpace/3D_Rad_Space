@@ -25,22 +25,22 @@ std::span<InputLayoutElement> FontShader::VertexShader::InputLayout()
 	return font_input_layout;
 }
 
-Engine3DRadSpace::Graphics::Fonts::FontShader::FontShader(GraphicsDevice* device) :
+FontShader::FontShader(GraphicsDevice* device) :
 	Effect(device, new VertexShader(device), new PixelShader(device))
 {
 }
 
-void Engine3DRadSpace::Graphics::Fonts::FontShader::SetTexture(Texture2D* texture)
+void FontShader::SetTexture(Texture2D* texture)
 {
 	_pixel->SetTexture(0, texture);
 }
 
-void Engine3DRadSpace::Graphics::Fonts::FontShader::SetSampler(SamplerState* sampler)
+void FontShader::SetSampler(SamplerState* sampler)
 {
 	_pixel->SetSampler(0, sampler);
 }
 
-void Engine3DRadSpace::Graphics::Fonts::FontShader::SetTintColor(const Color& color)
+void FontShader::SetTintColor(const Color& color)
 {
 	_pixel->SetData(0, &color, sizeof(Color));
 }

@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Internal
 
 namespace Engine3DRadSpace::Graphics
 {
-	class DLLEXPORT Model3D : public Content::Asset
+	class DLLEXPORT Model3D : public Content::IAsset
 	{
 		GraphicsDevice* _device;
 		std::vector<std::unique_ptr<ModelMesh>> _meshes;
@@ -42,8 +42,8 @@ namespace Engine3DRadSpace::Graphics
 		iterator end();
 		size_t NumMeshes();
 
-		Math::BoundingBox GetBoundingBox();
-		Math::BoundingSphere GetBoundingSphere();
+		Math::BoundingBox GetBoundingBox() const;
+		Math::BoundingSphere GetBoundingSphere() const;
 
 		void SetShader(std::shared_ptr<Shaders::Effect> effect);
 		void SetShaders(std::span<std::shared_ptr<Shaders::Effect>> effects);
@@ -57,4 +57,3 @@ namespace Engine3DRadSpace::Graphics
 		friend struct Internal::AssetUUIDReader;
 	};
 }
-

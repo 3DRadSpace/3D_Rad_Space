@@ -278,6 +278,11 @@
     <ClInclude Include="Content\AssetTypeRegistration.hpp" />
     <ClInclude Include="Internal\AssetUUIDReader.hpp" />
     <ClInclude Include="Content\AssetID.hpp" />
+    <ClInclude Include="Audio\AudioSource.hpp" />
+    <ClInclude Include="Audio\Sound.hpp" />
+    <ClInclude Include="Physics\StaticRigidbody.hpp" />
+    <ClInclude Include="Graphics\Fonts\FontRenderer.hpp" />
+    <ClInclude Include="Content\AssetFactory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
@@ -463,5 +468,7 @@
     <ClCompile Include="Objects\SkyColor.cpp" />
     <ClCompile Include="Graphics\FlipMode.cpp" />
     <ClCompile Include="Content\AssetTypeRegistration.cpp" />
+    <ClCompile Include="Graphics\Fonts\FontRenderer.cpp" />
+    <ClCompile Include="Content\AssetFactory.cpp" />
   </ItemGroup>
 </Project>
