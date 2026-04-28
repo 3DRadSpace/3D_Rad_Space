@@ -85,13 +85,13 @@ void EventControl::HandleClick(HWND clickedWindow)
 	{
 		std::thread openFnFinderWindow([this]()
 		{
-			auto pObj = static_cast<Engine3DRadSpace::Objects::IObject*>(this->event->GetObj());
-			if (pObj == nullptr) return;
+			AddFunctionDialog dialog(this->window, this->instance);
+			auto event = dialog.ShowDialog();
 
-			auto refl = Engine3DRadSpace::Internal::GetReflDataFromUUID(pObj->GetUUID());
-			if (refl == nullptr) return;
+			if (event.has_value())
+			{
 
-			AddFunctionDialog dialog(this->window, this->instance, refl);
+			}
 		});
 	}
 

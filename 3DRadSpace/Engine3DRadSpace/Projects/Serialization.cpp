@@ -465,6 +465,10 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 					offset += sizeof(Color);
 					break;
 				}
+				case FieldRepresentationType::Event:
+				{
+					break;
+				}
 				case FieldRepresentationType::Custom:
 				{
 					break;
@@ -480,7 +484,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 	return static_cast<IObject*>(r);
 }
 
-bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, ContentManager *content, const std::filesystem::path& projectPath) //Internal::InitializationFlag f )
+bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, ContentManager *content, const std::filesystem::path& projectPath)
 {
 	std::ifstream file(projectPath);
 

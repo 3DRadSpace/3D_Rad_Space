@@ -23,6 +23,8 @@ namespace Engine3DRadSpace::Reflection
 
 		FieldRepresentation Representation() const override;
 
+		std::unique_ptr<IReflectedField> Clone() const override;
+
 		~UnknownVariable() override = default;
 	};
 }

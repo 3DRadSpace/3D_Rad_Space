@@ -73,6 +73,11 @@ namespace Engine3DRadSpace::Reflection
 			return GetFieldRepresentation<T>();
 		}
 
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedField<T>>(_offset, _name, _desc, _defaultVal);
+		}
+
 		~ReflectedField() override = default;
 	};
 
@@ -143,6 +148,11 @@ namespace Engine3DRadSpace::Reflection
 			return GetFieldRepresentation<T>();
 		}
 
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedFieldGS<T, C>>(_name, _desc, _getter, _setter, _defaultVal);
+		}
+
 		~ReflectedFieldGS() override = default;
 	};
 
@@ -172,6 +182,11 @@ namespace Engine3DRadSpace::Reflection
 		FieldRepresentation Representation() const noexcept override
 		{
 			return GetFieldRepresentation<void>();
+		}
+
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedField<void>>(*this);
 		}
 	};
 
@@ -249,6 +264,11 @@ namespace Engine3DRadSpace::Reflection
 		FieldRepresentation Representation() const noexcept override
 		{
 			return GetFieldRepresentation<T>();
+		}
+
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedField<std::optional<T>>>(_offset, _name, _desc, _defaultVal);
 		}
 
 		~ReflectedField() override = default;

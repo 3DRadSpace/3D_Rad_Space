@@ -33,3 +33,8 @@ FieldRepresentation UnknownVariable::Representation() const
 {
 	return { {FieldRepresentationType::None, ""} };
 }
+
+std::unique_ptr<IReflectedField> UnknownVariable::Clone() const
+{
+	return std::make_unique<UnknownVariable>(*this);
+}

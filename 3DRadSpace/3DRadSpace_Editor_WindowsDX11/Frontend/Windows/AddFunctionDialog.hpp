@@ -10,7 +10,7 @@ class AddFunctionDialog : public Dialog
 	HWND _cancelBtn;
 	HWND _okBtn;
 public:
-	AddFunctionDialog(HWND owner, HINSTANCE hInstance, Engine3DRadSpace::Reflection::ReflectedObject* reflectedObject);
+	AddFunctionDialog(HWND owner, HINSTANCE hInstance);
 
 	std::optional<Engine3DRadSpace::Reflection::Event> ShowDialog();
 };

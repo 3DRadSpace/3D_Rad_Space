@@ -7,36 +7,62 @@ using namespace Engine3DRadSpace::Projects;
 using namespace Engine3DRadSpace::Reflection;
 using namespace Engine3DRadSpace::Objects;
 
-std::optional<Event> EventRepresentation::Reconstruct(ObjectList* list) const
+std::any EventInvocationRepresentation::Invoke(ObjectList* list)
 {
-	Event e;
 	auto obj = list->operator[](OwnerObject);
-	auto reflObject = Internal::GetReflDataFromUUID(obj->GetUUID());
-	size_t id = 0;
-	bool assigned = false;
+	return Invoke(obj);
+}
 
-	if(IsMethod)
-	{
-		e.SetObject(obj);
-	}
+IReflectedFunction* EventInvocationRepresentation::FindFunction(IObject* object, size_t idxFn)
+{
+	auto reflObject = Internal::GetReflDataFromUUID(object->GetUUID());
+	if (reflObject == nullptr) return nullptr;
+
+	size_t id = 0;
 
 	for (auto& f : *reflObject)
 	{
 		auto fn = dynamic_cast<IReflectedFunction*>(f);
 		if (fn == nullptr) continue;
 
-		if (id++ == FunctionID)
+		if (id++ == idxFn)
 		{
-			e.Bind(fn);
-			assigned = true;
-			break;
+			return fn;
 		}
 	}
 
-	if (!assigned)
+	return nullptr;
+}
+
+std::any EventInvocationRepresentation::Invoke(IObject* obj)
+{
+	auto fn = FindFunction(obj, FunctionID);
+	if (fn != nullptr) return fn->Invoke(obj, Args);
+
+	return std::any();
+}
+
+std::optional<Event> EventRepresentation::Reconstruct(ObjectList* list) const
+{
+	Event e;
+
+	for (auto& fn : BoundFunctions)
 	{
-		return std::nullopt;
+		auto fnRelPtr = fn.FindFunction(list->operator[](fn.OwnerObject), fn.FunctionID)->Clone().release();
+		if(!fnRelPtr) continue;
+
+		auto fnPtr = dynamic_cast<IReflectedFunction*>(fnRelPtr);
+		if (!fnPtr)
+		{
+			delete fnRelPtr;
+			continue;
+		}
+
+		std::unique_ptr<IReflectedFunction> boundFn;
+		boundFn.reset(fnPtr);
+
+		e.Bind(std::move(boundFn));
 	}
 
-	return e;
+	return std::nullopt;
 }

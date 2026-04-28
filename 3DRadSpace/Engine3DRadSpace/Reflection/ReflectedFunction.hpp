@@ -83,5 +83,10 @@ namespace Engine3DRadSpace::Reflection
 		{
 			return static_cast<void*>(_fn);
 		}
+
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedFunction<R, Args...>>(*this);
+		}
 	};
 }

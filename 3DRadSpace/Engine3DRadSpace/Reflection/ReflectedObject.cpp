@@ -56,6 +56,16 @@ std::vector<IReflectedField *>::iterator ReflectedObject::end()
 	return std::prev(_fields.end()); //do not return the last element, it is a ReflectedField<void>.
 }
 
+std::unique_ptr<ReflectedObject> ReflectedObject::Clone() const
+{
+	std::vector<IReflectedField*> clonedFields;
+	for (auto& field : _fields)
+	{
+		clonedFields.push_back(field->Clone().release());
+	}
+	return std::make_unique<ReflectedObject>(Name, Category, Description, clonedFields, ObjectUUID);
+}
+
 ReflectedObject::~ReflectedObject()
 {
 	for (auto& field : *this)

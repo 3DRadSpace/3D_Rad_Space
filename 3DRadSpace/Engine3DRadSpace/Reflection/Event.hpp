@@ -7,42 +7,29 @@ namespace Engine3DRadSpace::Reflection
 {
 	class E3DRSP_REFLECTION_EXPORT Event
 	{
-		std::vector<std::unique_ptr<Reflection::IReflectedFunction>> _fns;
-		std::type_index _returnType;
-		void* _object;
+		struct MemberFunctionInvoker
+		{
+			void* Object;
+			std::unique_ptr<IReflectedFunction> Fn;
+			std::type_index ReturnType;
+
+			MemberFunctionInvoker() = default;
+			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType);
+			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
+
+			MemberFunctionInvoker& operator=(MemberFunctionInvoker&& other) noexcept = default;
+		};
+
+		std::vector<MemberFunctionInvoker> _fns;
 		bool _empty;
 
 		void _reset();
-
-		template<typename R>
-		void _setReturnType()
-		{
-			if(_empty)
-			{
-				_returnType = typeid(R);
-				_empty = false;
-			}
-			else
-			{
-				if(_returnType != typeid(R))
-				{
-					throw std::invalid_argument(std::format("return type is required to be {}, as set by the first binding.", _returnType.name()));
-				}
-			}
-		}
 	public:
 		Event();
-
-		template<typename R, typename F, typename ...Args>
-		Event(F fn) : Event()
-		{
-			(*this) += fn;
-		}
 
 		template<typename R, typename O, typename F, typename ...Args>
 		Event(O* object, O::F fn)
 		{
-			_object = static_cast<void*>(object);
 			(*this) += fn;
 		}
 
@@ -53,59 +40,25 @@ namespace Engine3DRadSpace::Reflection
 		Event& operator=(Event&&) = default;
 
 		template<typename R, typename F, typename ...Args>
-		Event& operator +=(F fn)
-		{
-			_setReturnType<R>();
-			_fns.emplace_back(
-				std::make_unique<Reflection::ReflectedFunction<R, Args...>>(
-					std::format("Function {} idx {}", typeid(F).name(), _fns.size()),
-					fn
-				)
-			);
-
-			return *this;
-		}
-
-		template<typename R, typename O, typename F, typename ...Args>
-		Event& operator+=(O::F fn)
-		{
-			_setReturnType<R>();
-			_fns.emplace_back(
-				std::make_unique<Reflection::ReflectedMemberFunction<R, O, Args...>>(
-					std::format("Class {} Member function {} idx {}", typeid(O).name(), typeid(F).name(), _fns.size()),
-					fn
-				)
-			);
-
-			return *this;
-		}
-
-		template<typename O>
-		void SetObject(O* object)
-		{
-			_object = static_cast<void*>(object);
-		}
-
-		void* GetObj() const noexcept;
-
-		template<typename R, typename F, typename ...Args>
 		void Bind(F fn)
 		{
-			this->operator+=<R, F, Args...>(fn);
+			MemberFunctionInvoker invoker(nullptr, std::make_unique<ReflectedFunction<R, Args...>>(typeid(F).name(), fn), typeid(R));
+			_fns.emplace_back(std::move(invoker));
 		}
 
 		template<typename R, typename O, typename F, typename ...Args>
-		void Bind(O::F fn)
+		void Bind(O* object, F fn)
 		{
-			this->operator+=<R, O, F, Args...>(fn);
+			MemberFunctionInvoker invoker(object, std::make_unique<ReflectedFunction<R, Args...>>(typeid(F).name(), fn), typeid(R));
+			_fns.emplace_back(std::move(invoker));
 		}
 
-		void Bind(IReflectedFunction* fn);
+		void Bind(std::unique_ptr<IReflectedFunction> &&fn);
 
 		template<typename R, typename ...Args>
 		R operator()(int index, Args&& ...args)
 		{
-			auto fn = dynamic_cast<Reflection::ReflectedFunction<R, Args...>*>(_fns[index].get());
+			auto fn = dynamic_cast<Reflection::ReflectedFunction<R, Args...>*>(_fns[index].Fn.get());
 			return fn(std::forward<Args>(args)...);
 		}
 
@@ -113,9 +66,9 @@ namespace Engine3DRadSpace::Reflection
 		std::vector<R> InvokeAll(std::span<std::any> args)
 		{
 			std::vector<R> ret;
-			for(auto&& fn : _fns)
+			for(auto& fn : _fns)
 			{
-				ret.emplace_back(std::any_cast<R>(fn->Invoke(_object, args)));
+				ret.emplace_back(std::any_cast<R>(fn.Fn->Invoke(fn.Object, args)));
 			}
 			return ret;
 		}
@@ -131,10 +84,9 @@ namespace Engine3DRadSpace::Reflection
 
 		class ConstIterator
 		{
-			using internal_iterator = std::vector<std::unique_ptr<Reflection::IReflectedFunction>>::const_iterator;
+			using internal_iterator = std::vector<MemberFunctionInvoker>::const_iterator;
 			internal_iterator _iterator;
 		public:
-
 			using iterator_category = std::input_iterator_tag;
 			using difference_type = ptrdiff_t;
 			using value_type = const void*;
@@ -156,7 +108,7 @@ namespace Engine3DRadSpace::Reflection
 		ConstIterator cend() const;
 
 		// could use an other custom operator class that exposes the function pointer only, and not the entire details.
-		using Iterator = std::vector<std::unique_ptr<Reflection::IReflectedFunction>>::iterator;
+		using Iterator = std::vector<MemberFunctionInvoker>::iterator;
 
 		Iterator begin();
 		Iterator end();

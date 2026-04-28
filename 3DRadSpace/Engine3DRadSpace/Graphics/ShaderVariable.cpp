@@ -46,3 +46,8 @@ int ShaderVariable::ConstantBuffer() const noexcept
 {
 	return _idxCbuffer;
 }
+
+std::unique_ptr<IReflectedField> ShaderVariable::Clone() const
+{
+	return std::make_unique<ShaderVariable>(*this);
+}

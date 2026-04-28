@@ -42,6 +42,8 @@ namespace Engine3DRadSpace::Reflection
 
 		virtual FieldRepresentation Representation() const = 0;
 
+		virtual std::unique_ptr<IReflectedField> Clone() const = 0;
+
 		virtual ~IReflectedField() = default;
 	};
 }

@@ -192,5 +192,22 @@ namespace Engine3DRadSpace::Reflection
 			//Could be useless - this can't be used to call _fn, instead this is used for comparisions inside Engine3DRadSpace::Event.
 			return _fn.vptr;
 		}
+
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			switch(_fnType)
+			{
+				case 0: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn);
+				case 1: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_c);
+				case 2: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_v);
+				case 3: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_cv);
+				case 4: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_n);
+				case 5: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_cn);
+				case 6: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_vn);
+				case 7: return std::make_unique<ReflectedMemberFunction<R, O, Args...>>(_name, _fn.fn_cvn);
+				default:
+					std::unreachable();
+			}
+		}
 	};
 }

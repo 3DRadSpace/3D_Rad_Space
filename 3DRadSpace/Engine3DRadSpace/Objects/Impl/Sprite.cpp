@@ -67,9 +67,6 @@ Sprite::Sprite(
 
 void Sprite::_initEvents()
 {
-	OnClick.SetObject(this);
-	OnMouseEnter.SetObject(this);
-	OnMouseLeave.SetObject(this);
 }
 
 ITexture2D* Sprite::GetSpriteImage()

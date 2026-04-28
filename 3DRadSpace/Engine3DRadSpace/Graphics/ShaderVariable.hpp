@@ -22,6 +22,8 @@ namespace Engine3DRadSpace::Graphics
 
 		int ConstantBuffer() const noexcept;
 
+		std::unique_ptr<Reflection::IReflectedField> Clone() const override;
+
 		~ShaderVariable() override = default;
 	};
 }

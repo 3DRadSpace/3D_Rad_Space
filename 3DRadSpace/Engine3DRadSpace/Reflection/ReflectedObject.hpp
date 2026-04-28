@@ -50,6 +50,12 @@ namespace Engine3DRadSpace::Reflection
 			const UUID& uuid
 		);
 
+		ReflectedObject(const ReflectedObject& other) = default;
+		ReflectedObject(ReflectedObject&& other) noexcept = default;
+
+		ReflectedObject& operator=(const ReflectedObject& other) = default;
+		ReflectedObject& operator=(ReflectedObject&& other) noexcept = default;
+
 		std::string Name;
 		std::string Category;
 		std::string Description;
@@ -63,6 +69,8 @@ namespace Engine3DRadSpace::Reflection
 		std::vector<IReflectedField *>::iterator end();
 
 		std::function<void*()> CreateBlankObject;
+
+		std::unique_ptr<ReflectedObject> Clone() const;
 
 		~ReflectedObject();
 	};

@@ -3,37 +3,31 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 
+Event::MemberFunctionInvoker::MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType) :
+	Object(object), Fn(std::move(fn)), ReturnType(returnType)
+{
+}
+
 void Event::_reset()
 {
 	_empty = true;
-	_returnType = typeid(void);
+	_fns.clear();
 }
 
 Event::Event() :
-	_returnType(typeid(void)),
-	_empty(true),
-	_object(nullptr)
+	_empty(true)
 {
 }
 
-void Event::Bind(IReflectedFunction* fn)
+void Event::Bind(std::unique_ptr<IReflectedFunction> &&fn)
 {
-	if(fn == nullptr)
-	{
-		throw std::invalid_argument("Cannot bind a null function.");
-	}
+	if (!fn) return;
 	if(_empty)
 	{
-		_returnType = typeid(void);
 		_empty = false;
 	}
 
-	_fns.emplace_back(fn);
-}
-
-void* Event::GetObj() const noexcept
-{
-	return _object;
+	_fns.emplace_back(nullptr, std::move(fn), typeid(void));
 }
 
 void Event::InvokeAllReturnless(std::span<std::span<void*>> args)
@@ -41,7 +35,7 @@ void Event::InvokeAllReturnless(std::span<std::span<void*>> args)
 	int i = 0;
 	for(auto argPack : args)
 	{
-		_fns[i++]->Invoke(nullptr, _object, argPack);
+		_fns[i++].Fn->Invoke(nullptr, _fns[i - 1].Object, argPack);
 	}
 }
 
@@ -50,24 +44,24 @@ void Event::InvokeAllReturnless(std::span<std::span<std::any>> args)
 	int i = 0;
 	for(auto argPack : args)
 	{
-		std::ignore = _fns[i++]->Invoke(_object, argPack);
+		std::ignore = _fns[i++].Fn->Invoke(_fns[i - 1].Object, argPack);
 	}
 }
 
 void Event::InvokeAllReturnless()
 {
-	for(auto&& fn : _fns)
+	for(auto& fn : _fns)
 	{
-		std::ignore = fn->Invoke(_object, std::span<std::any>{});
+		std::ignore = fn.Fn->Invoke(fn.Object, std::span<std::any>{});
 	}
 }
 
 void Event::Unbind(void* fnPtr)
 {
 	std::erase_if(_fns, 
-		[fnPtr](std::unique_ptr<IReflectedFunction> &fn) -> bool
+		[fnPtr](Event::MemberFunctionInvoker &fn) -> bool
 		{
-			return fn->Get(nullptr) == fnPtr;
+			return fn.Fn->Get(nullptr) == fnPtr;
 		}
 	);
 
@@ -85,7 +79,7 @@ void Event::UnbindAll()
 
 const void* Event::operator[](size_t i) const 
 {
-	return _fns.at(i).get()->Get(nullptr);
+	return _fns.at(i).Fn->Get(nullptr);
 }
 
 Event::ConstIterator Event::cbegin() const
@@ -100,7 +94,7 @@ Event::ConstIterator Event::cend() const
 
 const IReflectedFunction* Event::ReflFnAt(size_t index)
 {
-	return _fns[index].get();
+	return _fns[index].Fn.get();
 }
 
 Event::ConstIterator::ConstIterator(internal_iterator it) : _iterator(it)
@@ -109,12 +103,12 @@ Event::ConstIterator::ConstIterator(internal_iterator it) : _iterator(it)
 
 Event::ConstIterator::reference Event::ConstIterator::operator*()
 {
-	return _iterator.operator*()->Get(nullptr);
+	return _iterator.operator*().Fn->Get(nullptr);
 }
 
 Event::ConstIterator::pointer Event::ConstIterator::operator->()
 {
-	return _iterator.operator->()->get()->Get(nullptr);
+	return _iterator.operator->()->Fn->Get(nullptr);
 }
 
 Event::ConstIterator& Event::ConstIterator::operator++()
