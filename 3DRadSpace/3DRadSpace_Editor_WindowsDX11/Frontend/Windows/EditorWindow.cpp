@@ -56,8 +56,15 @@ void EditorWindow::_openProject(const std::filesystem::path& filename)
 		++i;
 	}
 
+	PopulateObjectList(editor->Objects.get(), _treeView);
+
+	_addRecentProject(filename);
+}
+
+void EditorWindow::PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* list, HWND treeView)
+{
 	std::unordered_map<IObject*, HTREEITEM> objectToTreeItem;
-	for (int i = 0; auto& instance : *(editor->Objects))
+	for (int i = 0; auto& instance : *(list))
 	{
 		auto object = instance.Object.get();
 
@@ -84,14 +91,12 @@ void EditorWindow::_openProject(const std::filesystem::path& filename)
 				insertStruct.hParent = TVI_ROOT; // fallback if parent not found
 		}
 
-		HTREEITEM hItem = reinterpret_cast<HTREEITEM>(SendMessageA(_treeView, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct)));
-		SendMessageA(_treeView, TVM_EXPAND, TVE_EXPAND, reinterpret_cast<LPARAM>(insertStruct.hParent));
+		HTREEITEM hItem = reinterpret_cast<HTREEITEM>(SendMessageA(treeView, TVM_INSERTITEMA, 0, reinterpret_cast<LPARAM>(&insertStruct)));
+		SendMessageA(treeView, TVM_EXPAND, TVE_EXPAND, reinterpret_cast<LPARAM>(insertStruct.hParent));
 		objectToTreeItem[object] = hItem;
 
 		++i;
 	}
-
-	_addRecentProject(filename);
 }
 
 void EditorWindow::_saveProject(const std::filesystem::path &filename)

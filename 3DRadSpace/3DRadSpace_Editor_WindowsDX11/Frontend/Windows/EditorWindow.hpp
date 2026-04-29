@@ -95,6 +95,8 @@ public:
 	bool WarnNotSaved();
 	void OpenRecentProject(uint8_t id);
 
+	static void PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* list, HWND treeView);
+
 	friend LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	friend class Engine3DRadSpace::Game;
 };

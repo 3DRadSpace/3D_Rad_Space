@@ -85,7 +85,7 @@ void EventControl::HandleClick(HWND clickedWindow)
 	{
 		std::thread openFnFinderWindow([this]()
 		{
-			AddFunctionDialog dialog(this->window, this->instance);
+			AddFunctionDialog dialog(this->window, this->instance, nullptr);
 			auto event = dialog.ShowDialog();
 
 			if (event.has_value())
