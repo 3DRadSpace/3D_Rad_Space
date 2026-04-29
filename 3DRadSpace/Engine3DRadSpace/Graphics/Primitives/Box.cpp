@@ -1,23 +1,67 @@
 #include "Box.hpp"
 #include "../IShaderCompiler.hpp"
+#include "../../Math/Vector4.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Math;
 
-std::array<VertexPositionColor, 8> Box::CreateVertices(const BoundingBox&b, const Color& color)
+std::array<VertexPositionNormalColor, 24> Box::CreateVertices(const BoundingBox& b, const Color& color)
 {
-    return std::array<VertexPositionColor, 8>
+    const Vector3 nNegY(0, -1,  0);
+    const Vector3 nPosY(0,  1,  0);
+    const Vector3 nNegX(-1, 0,  0);
+    const Vector3 nPosX( 1, 0,  0);
+    const Vector3 nNegZ(0,  0, -1);
+    const Vector3 nPosZ(0,  0,  1);
+
+    const Vector3 p   = b.Position;
+    const Vector3 pX  = b.Position + Vector3(b.Scale.X, 0,          0         );
+    const Vector3 pY  = b.Position + Vector3(0,          b.Scale.Y, 0         );
+    const Vector3 pZ  = b.Position + Vector3(0,          0,          b.Scale.Z);
+    const Vector3 pXY = b.Position + Vector3(b.Scale.X,  b.Scale.Y, 0         );
+    const Vector3 pYZ = b.Position + Vector3(0,          b.Scale.Y,  b.Scale.Z);
+    const Vector3 pXZ = b.Position + Vector3(b.Scale.X,  0,          b.Scale.Z);
+    const Vector3 pXYZ = b.Position + b.Scale;
+
+    return
     {
-        VertexPositionColor{ b.Position, color }, // 0
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X, 0, 0), color }, // 1
-        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y, 0), color }, // 2
-        VertexPositionColor{ b.Position + Vector3(0, 0, b.Scale.Z), color }, // 3
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X, b.Scale.Y, 0), color }, // 4
-        VertexPositionColor{ b.Position + Vector3(0, b.Scale.Y, b.Scale.Z), color }, // 5
-        VertexPositionColor{ b.Position + Vector3(b.Scale.X, 0, b.Scale.Z), color }, // 6
-        VertexPositionColor{ b.Position + b.Scale, color }, // 7
+        // -Y face (bottom), normal = (0,-1,0)
+        VertexPositionNormalColor{ p,   nNegY, color }, // V0
+        VertexPositionNormalColor{ pX,  nNegY, color }, // V1
+        VertexPositionNormalColor{ pZ,  nNegY, color }, // V2
+        VertexPositionNormalColor{ pXZ, nNegY, color }, // V3
+
+        // +Y face (top), normal = (0,1,0)
+        VertexPositionNormalColor{ pY,   nPosY, color }, // V4
+        VertexPositionNormalColor{ pXY,  nPosY, color }, // V5
+        VertexPositionNormalColor{ pYZ,  nPosY, color }, // V6
+        VertexPositionNormalColor{ pXYZ, nPosY, color }, // V7
+
+        // -X face (left), normal = (-1,0,0)
+        VertexPositionNormalColor{ p,   nNegX, color }, // V8
+        VertexPositionNormalColor{ pY,  nNegX, color }, // V9
+        VertexPositionNormalColor{ pZ,  nNegX, color }, // V10
+        VertexPositionNormalColor{ pYZ, nNegX, color }, // V11
+
+        // +X face (right), normal = (1,0,0)
+        VertexPositionNormalColor{ pX,   nPosX, color }, // V12
+        VertexPositionNormalColor{ pXY,  nPosX, color }, // V13
+        VertexPositionNormalColor{ pXZ,  nPosX, color }, // V14
+        VertexPositionNormalColor{ pXYZ, nPosX, color }, // V15
+
+        // -Z face (front), normal = (0,0,-1)
+        VertexPositionNormalColor{ p,   nNegZ, color }, // V16
+        VertexPositionNormalColor{ pX,  nNegZ, color }, // V17
+        VertexPositionNormalColor{ pY,  nNegZ, color }, // V18
+        VertexPositionNormalColor{ pXY, nNegZ, color }, // V19
+
+        // +Z face (back), normal = (0,0,1)
+        VertexPositionNormalColor{ pZ,   nPosZ, color }, // V20
+        VertexPositionNormalColor{ pXZ,  nPosZ, color }, // V21
+        VertexPositionNormalColor{ pYZ,  nPosZ, color }, // V22
+        VertexPositionNormalColor{ pXYZ, nPosZ, color }, // V23
     };
 }
 
@@ -25,36 +69,60 @@ std::array<unsigned, 36> Box::CreateIndices()
 {
     return
     {
-        //-Y face
-        0, 3, 6,
-        0, 6, 1,
-        //+Y face
-        7, 5, 2,
-        4, 7, 2,
+        // -Y face
+        0, 2, 3,
+        0, 3, 1,
+        // +Y face
+        7, 6, 4,
+        5, 7, 4,
         // -X face
-        0, 2, 5,
-        0, 5, 3,
-        //+X face
-        7, 4, 1,
-        6, 7, 1,
-        //-Z face
-        1, 4, 2,
-        1, 2, 0,
-        //+Z face
-        3, 5, 7,
-        3, 7, 6
+        8, 9, 11,
+        8, 11, 10,
+        // +X face
+        15, 13, 12,
+        14, 15, 12,
+        // -Z face
+        17, 19, 18,
+        17, 18, 16,
+        // +Z face
+        20, 22, 23,
+        20, 23, 21,
     };
 }
 
 Box::Box(IGraphicsDevice *device, const BoundingBox&b, Color color) :
-    IPrimitive(device),
-    _box(b)
+    IPrimitive(device, nullptr),
+    _box(b),
+    _color(color)
 {
     auto box_vertices = CreateVertices(b, color);
-    _vertices = device->CreateVertexBuffer<VertexPositionColor>(box_vertices, BufferUsage::ReadOnlyGPU);
-   
+    _vertices = device->CreateVertexBuffer<VertexPositionNormalColor>(box_vertices, BufferUsage::ReadOnlyGPU);
+
     std::array<unsigned, 36> indices = CreateIndices();
     _indices = device->CreateIndexBuffer(indices);
+
+    // Set Lambertian shader with color
+    constexpr const char* lambertShader = "Data\\Shaders\\Lambert_PositionNormal.hlsl";
+    auto vsLambertShader = ShaderDescFile(
+        lambertShader,
+        "VS_Main",
+        ShaderType::Vertex
+    );
+    auto psLambertShader = ShaderDescFile(
+        lambertShader,
+        "PS_Main",
+        ShaderType::Fragment
+    );
+    std::array<ShaderDesc*, 2> lambertShaderDesc =
+    {
+        &vsLambertShader,
+        &psLambertShader
+    };
+    auto [lambertEffect, result] = device->ShaderCompiler()->CompileEffect(lambertShaderDesc);
+    if (result.Succeded)
+    {
+        _shader = lambertEffect;
+    }
 }
 
 BoundingBox Box::GetBoundingBox() const noexcept
@@ -67,7 +135,7 @@ void Box::SetBoundingBox(const BoundingBox&b)
     _box = b;
 
     auto box_vertices = CreateVertices(b, _color);
-    _vertices->SetData<VertexPositionColor>(box_vertices);
+    _vertices->SetData<VertexPositionNormalColor>(box_vertices);
 }
 
 Color Box::GetColor() const noexcept
@@ -80,5 +148,11 @@ void Box::SetColor(const Color&color)
     _color = color;
 
     auto verts = CreateVertices(_box, color);
-    _vertices->SetData<VertexPositionColor>(verts);
+    _vertices->SetData<VertexPositionNormalColor>(verts);
+}
+
+void Box::Draw3D()
+{
+    _shader->operator[](1)->SetData(0, &Light, sizeof(Light));
+    IPrimitive::Draw3D();
 }

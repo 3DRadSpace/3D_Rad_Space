@@ -2,6 +2,7 @@
 
 #include "../../Math/BoundingBox.hpp"
 #include "IPrimitive.hpp"
+#include "../Rendering/DirectionalLight.hpp"
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
@@ -36,8 +37,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		/// </summary>
 		/// <param name="b">Bounding box.</param>
 		/// <param name="color">Color.</param>
-		/// <returns>8 position-color vertices.</returns>
-		static std::array<VertexPositionColor, 8> CreateVertices(const Math::BoundingBox &b, const Math::Color &color);
+       /// <returns>24 position-normal-color vertices.</returns>
+		static std::array<VertexPositionNormalColor, 24> CreateVertices(const Math::BoundingBox &b, const Math::Color &color);
 		/// <summary>
 		/// Creates the indices of the box mesh.
 		/// </summary>
@@ -67,5 +68,11 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		/// </summary>
 		/// <param name="color">New color</param>
 		void SetColor(const Math::Color& color);
+      /// <summary>
+		/// Draws the box with default lighting parameters.
+		/// </summary>
+		void Draw3D() override;
+
+		Rendering::DirectionalLight Light;
 	};
 }
