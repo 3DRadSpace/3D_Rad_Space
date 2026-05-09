@@ -91,9 +91,10 @@ std::array<unsigned, 36> Box::CreateIndices()
 }
 
 Box::Box(IGraphicsDevice *device, const BoundingBox&b, Color color) :
-    IPrimitive(device, nullptr),
-    _box(b),
-    _color(color)
+	IPrimitive(device, nullptr),
+	_box(b),
+	_color(color),
+	Light{ Colors::White, Color(color.R * 0.15f, color.G * 0.15f, color.B * 0.15f, 1.0f), Vector3(0,-1,0), 1.0f }
 {
     auto box_vertices = CreateVertices(b, color);
     _vertices = device->CreateVertexBuffer<VertexPositionNormalColor>(box_vertices, BufferUsage::ReadOnlyGPU);
@@ -153,6 +154,35 @@ void Box::SetColor(const Color&color)
 
 void Box::Draw3D()
 {
-    _shader->operator[](1)->SetData(0, &Light, sizeof(Light));
-    IPrimitive::Draw3D();
+    struct alignas(16) AllDataBuffer
+    {
+        Matrix4x4 MatWorldViewProj;
+        Matrix4x4 MatWorldInverseTranspose;
+        Vector4   LightColor;
+        Vector4   AmbientColor;
+        Vector3   LightDirection;
+        float     Intensity;
+    };
+
+    Matrix4x4 mvp = _mvp();
+    Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Invert(Transform));
+
+    AllDataBuffer data =
+    {
+        mvp,
+        worldInverseTranspose,
+        Vector4(Light.LightColor.R,   Light.LightColor.G,   Light.LightColor.B,   Light.LightColor.A),
+        Vector4(Light.AmbientColor.R, Light.AmbientColor.G, Light.AmbientColor.B, Light.AmbientColor.A),
+        Light.LightDirection,
+        Light.Intensity
+    };
+
+    // Upload to cbuffer slot 0 on every shader stage before binding
+    _shader->SetData(&data, 0);
+
+    _shader->SetAll();
+
+    auto cmd = _device->ImmediateContext();
+    cmd->SetTopology(VertexTopology::TriangleList);
+    cmd->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }

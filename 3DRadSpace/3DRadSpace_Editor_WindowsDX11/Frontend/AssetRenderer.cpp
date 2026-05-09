@@ -27,15 +27,12 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 
 	if(device && model)
 	{
-		//std::shared_ptr<BasicTextured> shader = std::make_shared<BasicTextured>(device);
-
 		auto boundingSphere = model->GetBoundingSphere();
 		auto cmd = device->ImmediateContext();
 
 		for (auto&& n : iota(0, 3))
 		{
 			cmd->Clear(Colors::Gray);
-			//model->SetShader(shader);
 			model->Draw(
 				Matrix4x4() *
 				Matrix4x4::CreateLookAtView(
@@ -82,8 +79,31 @@ bool AssetRenderer(IGraphicsDevice* device, const std::string& imagePath, FontAs
 }
 
 template<>
-bool AssetRenderer(IGraphicsDevice* device, const std::string& imagePath, Engine3DRadSpace::Content::Assets::SkyboxAsset* path)
+bool AssetRenderer(IGraphicsDevice* device, const std::string& imagePath, SkyboxAsset* skyboxAsset)
 {
-	//TODO.
-	return true;
+	auto skybox = skyboxAsset->Get();
+
+	skybox->View = Matrix4x4::CreateLookAtView(
+		Vector3(-1, 0, -1),
+		Vector3::Zero(),
+		Vector3::UnitY()
+	);
+
+	skybox->Projection = Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f);
+
+	if (device && skybox)
+	{
+		auto cmd = device->ImmediateContext();
+		 
+		for (auto&& n : std::ranges::views::iota(0, 3))
+		{
+			cmd->Clear();
+			skybox->Draw3D();
+			cmd->Present();
+		}
+
+		cmd->SaveBackBufferToFile(imagePath);
+		return true;
+	}
+	return false;
 }

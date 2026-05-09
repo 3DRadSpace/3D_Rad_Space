@@ -1,12 +1,9 @@
-cbuffer Data : register(b0)
+cbuffer AllData : register(b0)
 {
-    row_major matrix matWorldViewProj; // MVP transformation
+    row_major matrix matWorldViewProj;        // MVP transformation
     row_major matrix matWorldInverseTranspose;
-}
-
-cbuffer DirectionalLight : register(b1)
-{
     float4 LightColor;
+    float4 AmbientColor;
     float3 LightDirection;
     float Intensity;
 }
@@ -36,5 +33,6 @@ VertexOut VS_Main(VertexIn v)
 
 float4 PS_Main(VertexOut v) : SV_TARGET
 {
-    return v.Color * LightColor * Intensity * max(0, dot(normalize(v.Normal), -LightDirection));
+    float diffuse = max(0, dot(normalize(v.Normal), -LightDirection));
+    return v.Color * (AmbientColor + LightColor * Intensity * diffuse);
 }
