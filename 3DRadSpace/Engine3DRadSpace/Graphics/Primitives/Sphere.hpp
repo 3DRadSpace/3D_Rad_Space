@@ -2,6 +2,7 @@
 #include "IPrimitive.hpp"
 #include "../IVertexBuffer.hpp"
 #include "../IIndexBuffer.hpp"
+#include "../Rendering/DirectionalLight.hpp"
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
@@ -30,7 +31,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Sphere &operator=(const Sphere &) = delete;
 		Sphere &operator=(Sphere &&) noexcept = default;
 
-		[[nodiscard]] std::vector<VertexPositionColor> CreateSphereVertices(
+		[[nodiscard]] std::vector<VertexPositionNormalColor> CreateSphereVertices(
 			float radius,
 			unsigned resolution,
 			const Math::Color& color
@@ -39,5 +40,12 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		[[nodiscard]] std::vector<unsigned> CreateSphereIndices(unsigned resolution);
 
 		float GetRadius() const noexcept;
+
+		/// <summary>
+		/// Draws the sphere with default lighting parameters.
+		/// </summary>
+		void Draw3D() override;
+
+		Rendering::DirectionalLight Light;
 	};
 }

@@ -1,4 +1,6 @@
 #include "Sphere.hpp"
+#include "../IShaderCompiler.hpp"
+#include "../../Math/Vector4.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -6,14 +8,38 @@ using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Math;
 
 Sphere::Sphere(IGraphicsDevice *device, float radius, Color color, unsigned resolution):
-	IPrimitive(device),
-	_radius(radius)
+	IPrimitive(device, nullptr),
+	_radius(radius),
+	Light{ Colors::White, Color(color.R * 0.15f, color.G * 0.15f, color.B * 0.15f, 1.0f), Vector3(0,-1,0), 1.0f }
 {
 	auto sphere_points = CreateSphereVertices(radius, resolution, color);
-	_vertices = device->CreateVertexBuffer<VertexPositionColor>(sphere_points, BufferUsage::ReadOnlyGPU);
+	_vertices = device->CreateVertexBuffer<VertexPositionNormalColor>(sphere_points, BufferUsage::ReadOnlyGPU);
 
 	auto sphere_indices = CreateSphereIndices(resolution);
 	_indices = device->CreateIndexBuffer(sphere_indices);
+
+	// Set Lambertian shader with color
+	constexpr const char* lambertShader = "Data\\Shaders\\Lambert_PositionNormal.hlsl";
+	auto vsLambertShader = ShaderDescFile(
+		lambertShader,
+		"VS_Main",
+		ShaderType::Vertex
+	);
+	auto psLambertShader = ShaderDescFile(
+		lambertShader,
+		"PS_Main",
+		ShaderType::Fragment
+	);
+	std::array<ShaderDesc*, 2> lambertShaderDesc =
+	{
+		&vsLambertShader,
+		&psLambertShader
+	};
+	auto [lambertEffect, result] = device->ShaderCompiler()->CompileEffect(lambertShaderDesc);
+	if (result.Succeded)
+	{
+		_shader = lambertEffect;
+	}
 }
 
 float Sphere::GetRadius() const noexcept
@@ -21,16 +47,18 @@ float Sphere::GetRadius() const noexcept
 	return _radius;
 }
 
-[[nodiscard]] std::vector<VertexPositionColor> Sphere::CreateSphereVertices(float radius, unsigned resolution, const Math::Color& color)
+[[nodiscard]] std::vector<VertexPositionNormalColor> Sphere::CreateSphereVertices(float radius, unsigned resolution, const Math::Color& color)
 {
 	auto slices = resolution;
 	auto stacks = resolution;
 
-	std::vector<VertexPositionColor> v;
+	std::vector<VertexPositionNormalColor> v;
 	v.reserve(2 + slices * (stacks - 1));
 
 	// top pole
-	v.emplace_back(Vector3(0, radius, 0), color);
+	Vector3 topPos(0, radius, 0);
+	Vector3 topNormal = Vector3::Normalize(topPos);
+	v.emplace_back(topPos, topNormal, color);
 
 	float dphi = std::numbers::pi_v<float> / stacks;
 	float dtheta = 2 * std::numbers::pi_v<float> / slices;
@@ -50,12 +78,18 @@ float Sphere::GetRadius() const noexcept
 			float x = r * cosf(theta);
 			float z = r * sinf(theta);
 
-			v.emplace_back(Vector3(x, y, z), color);
+			Vector3 position(x, y, z);
+			// For a sphere centered at origin, the normal is the normalized position vector
+			Vector3 normal = Vector3::Normalize(position);
+
+			v.emplace_back(position, normal, color);
 		}
 	}
 
 	// bottom pole
-	v.emplace_back(Vector3(0, -radius, 0), color);
+	Vector3 bottomPos(0, -radius, 0);
+	Vector3 bottomNormal = Vector3::Normalize(bottomPos);
+	v.emplace_back(bottomPos, bottomNormal, color);
 
 	return v;
 }
@@ -102,7 +136,7 @@ float Sphere::GetRadius() const noexcept
 				a, c, d,
 				a, d, b
 			};
-			
+
 			indices.insert(indices.end(), quad);
 		}
 	}
@@ -119,4 +153,39 @@ float Sphere::GetRadius() const noexcept
 	}
 
 	return indices;
+}
+
+void Sphere::Draw3D()
+{
+	struct alignas(16) AllDataBuffer
+	{
+		Matrix4x4 MatWorldViewProj;
+		Matrix4x4 MatWorldInverseTranspose;
+		Vector4   LightColor;
+		Vector4   AmbientColor;
+		Vector3   LightDirection;
+		float     Intensity;
+	};
+
+	Matrix4x4 mvp = _mvp();
+	Matrix4x4 worldInverseTranspose = Matrix4x4::Transpose(Matrix4x4::Invert(Transform));
+
+	AllDataBuffer data =
+	{
+		mvp,
+		worldInverseTranspose,
+		Vector4(Light.LightColor.R,   Light.LightColor.G,   Light.LightColor.B,   Light.LightColor.A),
+		Vector4(Light.AmbientColor.R, Light.AmbientColor.G, Light.AmbientColor.B, Light.AmbientColor.A),
+		Light.LightDirection,
+		Light.Intensity
+	};
+
+	// Upload to cbuffer slot 0 on every shader stage before binding
+	_shader->SetData(&data, 0);
+
+	_shader->SetAll();
+
+	auto cmd = _device->ImmediateContext();
+	cmd->SetTopology(VertexTopology::TriangleList);
+	cmd->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }
