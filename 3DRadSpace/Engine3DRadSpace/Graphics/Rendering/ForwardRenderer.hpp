@@ -14,8 +14,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Constructs a forward renderer pipeline.
 		/// </summary>
 		/// <param name="device"></param>
-		/// <param name="pipeline"></param>
-		ForwardRenderer(IGraphicsDevice* device, Effect* pipeline);
+		ForwardRenderer(IGraphicsDevice* device);
 
 		/// <summary>
 		/// Begins drawing.
@@ -25,5 +24,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Ends drawing.
 		/// </summary>
 		void End() override;
+
+		~ForwardRenderer() override = default;
 	};
 }

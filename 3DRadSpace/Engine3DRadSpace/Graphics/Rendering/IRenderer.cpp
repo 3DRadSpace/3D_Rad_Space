@@ -1,5 +1,7 @@
 #include "IRenderer.hpp"
+#include "../Effect.hpp"
 
+using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 IRenderer::IRenderer(IGraphicsDevice* device):
@@ -16,4 +18,9 @@ void IRenderer::Draw(IVertexBuffer* vertices, IIndexBuffer* indices, Effect* eff
 {
 	effect->SetAll();
 	_device->ImmediateContext()->DrawVertexBufferWithindices(vertices, indices);
+}
+
+IGraphicsDevice* IRenderer::GetDevice() const noexcept
+{
+	return _device;
 }

@@ -3,13 +3,20 @@ cmake_minimum_required(VERSION 3.21)
 project("3DRadSpace.Graphics.Rendering")
 
 add_library(3DRadSpace.Graphics.Rendering STATIC 
+	"ForwardRenderer.hpp"	
 	"ForwardRenderer.cpp"
-	"IEffectOutline.hpp"
+	"IRenderer.hpp"
 	"IRenderer.cpp"
-	"IRenderingEffect.hpp"
+	"LinearPixelFogEffect.hpp"
 	"LinearPixelFogEffect.cpp"
+	"NullRenderer.hpp"
+	"NullRenderer.cpp"
+	"PostProcessCollection.hpp"
 	"PostProcessCollection.cpp"
+	"PostProcessEffect.hpp"
 	"PostProcessEffect.cpp"
+	"RenderingManager.hpp"
+	"RenderingManager.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
