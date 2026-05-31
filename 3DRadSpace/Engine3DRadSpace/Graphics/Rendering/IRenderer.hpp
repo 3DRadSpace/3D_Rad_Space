@@ -1,17 +1,15 @@
 #pragma once
 #include "../ModelMeshPart.hpp"
-#include "IRenderingEffect.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	/// <summary>
 	/// Represents a rendering pipeline that allows multiple rendering effects.
 	/// </summary>
-	class E3DRSP_GRAPHICS_RENDERING_EXPORT IRenderer : IService
+	class E3DRSP_GRAPHICS_RENDERING_EXPORT IRenderer
 	{
 	protected:
 		IGraphicsDevice* _device;
-		std::vector<std::unique_ptr<IRenderingEffect>> _effects;
 
 		IRenderer(IGraphicsDevice* device);
 	public:
@@ -40,6 +38,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Restores the previous states, and depending on the effect, draws all submited meshes. (Unless meshes are not batched).
 		/// </summary>
 		virtual void End() = 0;
+
+		IGraphicsDevice* GetDevice() const noexcept;
 
 		virtual ~IRenderer() = default;
 	};

@@ -44,7 +44,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const std::filesystem::path &path):
 		0u,
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_SHADER_RESOURCE,
-		D3D11_CPU_ACCESS_WRITE,
+		0,
 		0,
 		DirectX::DX11::WIC_LOADER_FORCE_SRGB,
 		resource,
@@ -59,7 +59,7 @@ Texture2D::Texture2D(GraphicsDevice* device, const std::filesystem::path &path):
 			0,
 			D3D11_USAGE_DEFAULT,
 			D3D11_BIND_SHADER_RESOURCE,
-			D3D11_CPU_ACCESS_WRITE,
+			0,
 			0,
 			DirectX::DX11::DDS_LOADER_FLAGS::DDS_LOADER_FORCE_SRGB,
 			resource,
@@ -209,7 +209,7 @@ Texture2D::Texture2D(GraphicsDevice *device, size_t x, size_t y, bool bindRender
 	desc.Width = x;
 	desc.Height = y;
 	desc.ArraySize = 1;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.CPUAccessFlags = 0;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | (bindRenderTarget ? D3D11_BIND_RENDER_TARGET : 0);
 	desc.MipLevels = 1;
@@ -235,7 +235,7 @@ Texture2D::Texture2D(GraphicsDevice *device, std::monostate dummy, bool bindRend
 	desc.Width = device->_resolution.X;
 	desc.Height = device->_resolution.Y;
 	desc.ArraySize = 1;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	desc.CPUAccessFlags = 0;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | (bindRenderTarget ? D3D11_BIND_RENDER_TARGET : 0);
 	desc.MipLevels = 1;

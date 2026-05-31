@@ -1,5 +1,6 @@
 #pragma once
 #include "IPrimitive.hpp"
+#include "../Rendering/DirectionalLight.hpp"
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
@@ -11,7 +12,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 	public:
 		Cylinder(IGraphicsDevice* device, float radius = 1.0f, float height = 1.0f, unsigned tessellation = 64u, Math::Color color = Math::Colors::White);
 
-		[[nodiscard]] static std::vector<VertexPositionColor> CreateCylinderVertices(
+		[[nodiscard]] static std::vector<VertexPositionNormalColor> CreateCylinderVertices(
 			float radius,
 			float height,
 			unsigned resolution, 
@@ -19,6 +20,13 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		);
 
 		[[nodiscard]] static std::vector<unsigned> CreateCylinderIndices(unsigned resolution);
+
+		/// <summary>
+		/// Draws the cylinder with default lighting parameters.
+		/// </summary>
+		void Draw3D() override;
+
+		Rendering::DirectionalLight Light;
 
 		~Cylinder() override = default;
 	};

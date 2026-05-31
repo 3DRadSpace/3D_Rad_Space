@@ -2,7 +2,7 @@
 
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-ForwardRenderer::ForwardRenderer(IGraphicsDevice* device, Effect* pipeline):
+ForwardRenderer::ForwardRenderer(IGraphicsDevice* device):
 	IRenderer(device)
 {
 }
