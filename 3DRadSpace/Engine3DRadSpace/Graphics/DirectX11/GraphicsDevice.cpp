@@ -22,6 +22,7 @@
 #include <dxgidebug.h>
 #include <dxgi.h>
 #include <dxgi1_3.h>
+#include <dxgi1_6.h>
 
 #undef min
 #undef max
@@ -38,10 +39,8 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 	Logging::SetLastMessage("Creating DirectX11::GraphicsDevice");
 
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
-	swapChainDesc.BufferCount = 2;
 	swapChainDesc.BufferDesc.Width = width;
 	swapChainDesc.BufferDesc.Height = height;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	swapChainDesc.BufferDesc.RefreshRate = { 1,60 }; // 1/60
 	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
 	
@@ -58,8 +57,6 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 	swapChainDesc.SampleDesc = { 1, 0 }; //count, quality
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT ;
 	swapChainDesc.OutputWindow = static_cast<HWND>(nativeWindowHandle);
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	UINT flags = 0;
 
@@ -156,6 +153,55 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 
 	Logging::SetLastMessage(std::format("Selected GPU adapter {} Mem {}", bestAdapterName, bestVideoMemory));
 
+	//Check for HDR support
+	bool hdrSupported = false;
+	if(bestAdapter != nullptr)
+	{
+		Microsoft::WRL::ComPtr<IDXGIFactory1> factory1;
+		r = factory->QueryInterface(__uuidof(IDXGIFactory1), &factory1);
+		if(SUCCEEDED(r))
+		{
+			Microsoft::WRL::ComPtr<IDXGIOutput> output;
+			r = bestAdapter->EnumOutputs(0, &output);
+			if(SUCCEEDED(r))
+			{
+				Microsoft::WRL::ComPtr<IDXGIOutput6> output6;
+				r = output->QueryInterface(__uuidof(IDXGIOutput6), &output6);
+				if(SUCCEEDED(r))
+				{
+					DXGI_OUTPUT_DESC1 outputDesc{};
+					r = output6->GetDesc1(&outputDesc);
+					if(SUCCEEDED(r))
+					{
+						hdrSupported = (outputDesc.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020);
+						Logging::SetLastMessage(std::format("HDR Support: {} (ColorSpace: {})", 
+							hdrSupported ? "Yes" : "No", 
+							static_cast<int>(outputDesc.ColorSpace)));
+					}
+				}
+			}
+		}
+	}
+
+	//Set swap chain format based on HDR support
+	_hasHDR = hdrSupported;
+	if(_hasHDR)
+	{
+		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		swapChainDesc.BufferCount = 2;
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+		Logging::SetLastMessage("Using HDR format: DXGI_FORMAT_R16G16B16A16_FLOAT (scRGB) with flip model");
+	}
+	else
+	{
+		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		swapChainDesc.BufferCount = 1;
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.Flags = 0;
+		Logging::SetLastMessage("Using SDR format: DXGI_FORMAT_B8G8R8A8_UNORM with legacy swap effect");
+	}
+
 	//DirectX11 Device creation.
 	r = D3D11CreateDeviceAndSwapChain(
 		bestAdapter.Get(),
@@ -191,6 +237,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 
 		if(FAILED(r)) throw Exception("D3D11CreateDeviceAndSwapChain failure!");
 	}
+
 	_createBackBuffer();
 
 	if(disallowAltEnter)
@@ -302,7 +349,7 @@ void GraphicsDevice::_createBackBuffer()
 
 	//Create shader resource view for back buffer
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	srvDesc.Format = _hasHDR ? DXGI_FORMAT_R16G16B16A16_FLOAT : DXGI_FORMAT_B8G8R8A8_UNORM;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = -1;
 	srvDesc.Texture2D.MostDetailedMip = 0;

@@ -52,6 +52,7 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 
 		Math::Point _resolution;
 		bool _fullscreen = false;
+		bool _hasHDR = false;
 
 		std::unique_ptr<DepthStencilBuffer> _stencilBuffer;
 		std::unique_ptr<DepthStencilState> _stencilState;

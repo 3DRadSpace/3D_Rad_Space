@@ -1,6 +1,6 @@
 cbuffer AllData : register(b0)
 {
-    row_major matrix matWorldViewProj;        // MVP transformation
+    row_major matrix matWorldViewProj;
     row_major matrix matWorldInverseTranspose;
     float4 LightColor;
     float4 AmbientColor;
