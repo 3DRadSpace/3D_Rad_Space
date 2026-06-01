@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Games/Game.hpp>
 #include <Engine3DRadSpace/Graphics/IVertexBuffer.hpp>
 #include <Engine3DRadSpace/Graphics/IShaderCompiler.hpp>
+#include "PerceptualHash.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -70,12 +71,35 @@ void TriangleTest::Draw3D()
 	cmd->SetTopology(VertexTopology::TriangleList);
 	cmd->DrawVertexBuffer(_triangleBuffer.get());
 	cmd->SaveBackBufferToFile("Triangle.png");
-	//TODO: Check if the saved image is matching with a expected image
 }
 
 TEST(EngineCoreTests, HelloTriangle)
 {
 	TriangleTest t;
 	t.Run();
-	EXPECT_TRUE(true);
+
+	std::filesystem::path renderedImage = "Triangle.png";
+	std::filesystem::path expectedImage = "Testing/Triangle.png";
+
+	ASSERT_TRUE(std::filesystem::exists(renderedImage)) 
+		<< "Rendered image was not saved";
+
+	if (std::filesystem::exists(expectedImage))
+	{
+		// Compare using perceptual hash with threshold of 5 bits difference
+		// Threshold can be adjusted: 0 = identical, 5-10 = very similar, >15 = different
+		bool similar = Testing::PerceptualHash::AreImagesSimilar(
+			renderedImage, 
+			expectedImage, 
+			5
+		);
+
+		EXPECT_TRUE(similar) << "Rendered image does not match expected image. ";
+	}
+	else
+	{
+		GTEST_SKIP() << "Reference image not found at: " << expectedImage;
+	}
+
+	std::filesystem::remove(renderedImage);
 }

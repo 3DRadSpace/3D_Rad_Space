@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project("3DRadSpace.Tests")
 
 file(GLOB 3DRadSpace_tests_src CONFIGURE_DEPENDS "*.cpp")
+#list(REMOVE_ITEM 3DRadSpace_tests_src "${CMAKE_CURRENT_SOURCE_DIR}/Main.cpp")
 add_executable(3DRadSpace.Tests ${3DRadSpace_tests_src})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
@@ -40,6 +41,14 @@ find_package(GTest CONFIG REQUIRED)
 target_link_libraries(3DRadSpace.Tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 
 add_dependencies(3DRadSpace.Tests e3drsp_copy_assets)
+
+add_custom_target(e3drsp_copy_testing ALL
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${CMAKE_SOURCE_DIR}/Testing
+			${CMAKE_BINARY_DIR}/Testing
+)
+
+add_dependencies(3DRadSpace.Tests e3drsp_copy_testing)
 
 include(GoogleTest)
 gtest_discover_tests(3DRadSpace.Tests
