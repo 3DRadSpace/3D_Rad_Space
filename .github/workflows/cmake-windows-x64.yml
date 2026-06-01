@@ -42,7 +42,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=cl
         -DCMAKE_C_COMPILER=$cl
         -DCMAKE_BUILD_TYPE=Release
-        -DCMAKE_TOOLCHAIN_FILE=D:/Dev/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
         -DVCPKG_TARGET_TRIPLET=x64-windows-release
         -DVCPKG_MANIFEST_MODE=OFF
         -S ${{ github.workspace }}/3DRadSpace
