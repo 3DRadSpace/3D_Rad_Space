@@ -1,6 +1,11 @@
 #pragma once
 #include "../ModelMeshPart.hpp"
 
+namespace Engine3DRadSpace
+{
+	class IGame;
+}
+
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	/// <summary>
@@ -10,6 +15,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 	protected:
 		IGraphicsDevice* _device;
+		IGame* _owner = nullptr;
 
 		IRenderer(IGraphicsDevice* device);
 	public:
@@ -18,6 +24,9 @@ namespace Engine3DRadSpace::Graphics::Rendering
 
 		IRenderer(IRenderer&&) noexcept = default;
 		IRenderer& operator=(IRenderer&&) noexcept = default;
+
+		void SetOwner(IGame* owner) noexcept;
+		IGame* GetOwner() const noexcept;
 
 		/// <summary>
 		/// Prepares the graphics pipeline for this effect.

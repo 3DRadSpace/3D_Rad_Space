@@ -19,6 +19,10 @@ jobs:
       shell: cmd
       working-directory: ${{ github.workspace }}
       run: xcopy 3DRadSpace\Data\ build\Release\Data\ /s /e /h /y
+    - name: Copy Test folders
+      shell: cmd
+      working-directory: ${{ github.workspace }}
+      run: xcopy 3DRadSpace\Testing\ build\Release\Testing\ /s /e /h /y
     - name: Run tests
       shell: cmd
       working-directory: ${{ github.workspace }}\build\Release\

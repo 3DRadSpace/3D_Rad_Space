@@ -1,6 +1,8 @@
 #include "IRenderer.hpp"
 #include "../Effect.hpp"
+#include "../../Core/IGame.hpp"
 
+using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
@@ -23,4 +25,14 @@ void IRenderer::Draw(IVertexBuffer* vertices, IIndexBuffer* indices, Effect* eff
 IGraphicsDevice* IRenderer::GetDevice() const noexcept
 {
 	return _device;
+}
+
+void IRenderer::SetOwner(IGame* owner) noexcept
+{
+	_owner = owner;
+}
+
+IGame* IRenderer::GetOwner() const noexcept
+{
+	return _owner;
 }

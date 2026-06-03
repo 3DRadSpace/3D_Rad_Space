@@ -5,13 +5,15 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-RenderingManager::RenderingManager(IGraphicsDevice* device)
+RenderingManager::RenderingManager(IGraphicsDevice* device) : 
+	_device(device)
 {
 	_renderers.push_back(std::make_unique<ForwardRenderer>(device));
 }
 
 void RenderingManager::Add(std::unique_ptr<IRenderer>&& renderPass)
 {
+	renderPass->SetOwner(_owner);
 	_renderers.push_back(std::move(renderPass));
 }
 

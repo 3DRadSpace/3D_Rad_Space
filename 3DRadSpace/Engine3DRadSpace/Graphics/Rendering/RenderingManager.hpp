@@ -15,11 +15,13 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::vector<std::unique_ptr<IRenderer>> _renderers;
 	public:
 		RenderingManager(IGraphicsDevice* device);
-		
+
 		template<typename R, typename... Args>
 		void Add(Args&&... args)
 		{
-			_renderers.push_back(std::make_unique<R>(_device, std::forward<Args>(args)...));
+			auto renderer = std::make_unique<R>(_device, std::forward<Args>(args)...);
+			renderer->SetOwner(_owner);
+			_renderers.push_back(std::move(renderer));
 		}
 
 		void Add(std::unique_ptr<IRenderer>&& renderPass);
