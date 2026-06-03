@@ -24,6 +24,8 @@ namespace Engine3DRadSpace::Objects
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
 	
+		Graphics::Primitives::Box* GetPrimitive() const noexcept;
+
 		~Box() override = default;
 	};
 }

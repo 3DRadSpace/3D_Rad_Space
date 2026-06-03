@@ -59,6 +59,11 @@ Reflection::UUID Box::GetUUID() const noexcept
 	return {0x70ce72a2, 0xc, 0x4440, { 0x8d, 0xa9, 0xc1, 0xf2, 0x40, 0xc7, 0x69, 0xe5 }};
 }
 
+Graphics::Primitives::Box* Box::GetPrimitive() const noexcept
+{
+	return _box.get();
+}
+
 REFL_BEGIN(Box, "Box", "3D Primitives", "3D box")
 	REFL_FIELD(Box, std::string, Name, "Name", "Skinmesh", "Object's name")
 	REFL_FIELD(Box, bool, Visible, "Visible", true, "Is the object visible?")

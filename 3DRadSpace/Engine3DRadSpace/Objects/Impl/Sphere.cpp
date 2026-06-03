@@ -50,7 +50,7 @@ float Sphere::Intersects(const Math::Ray& r)
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Sphere::GetModelMatrix()
+Math::Matrix4x4 Sphere::GetLocalMatrix()
 {
 	return Matrix4x4::CreateScale({Radius, Radius, Radius}) * Matrix4x4::CreateTranslation(Position);
 }
@@ -64,6 +64,11 @@ Reflection::UUID Sphere::GetUUID() const noexcept
 {
 	// {F7A76B8D-A2C4-47BE-8625-3B845507B979}
 	return {0xf7a76b8d, 0xa2c4, 0x47be, { 0x86, 0x25, 0x3b, 0x84, 0x55, 0x7, 0xb9, 0x79 }};
+}
+
+Graphics::Primitives::Sphere* Sphere::GetPrimitive() const noexcept
+{
+	return _sphere.get();
 }
 
 REFL_BEGIN(Sphere, "Sphere", "3D Primitives", "3D box")

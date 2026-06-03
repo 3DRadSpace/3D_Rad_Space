@@ -50,6 +50,8 @@ namespace Engine3DRadSpace::Objects
 		Reflection::UUID GetUUID() const noexcept override;
 		void Draw2D() override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
+		
+		Graphics::Font* GetFont() const noexcept;
 	};
 }
 

@@ -48,7 +48,7 @@ float Cylinder::Intersects(const Math::Ray& r)
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Cylinder::GetModelMatrix()
+Math::Matrix4x4 Cylinder::GetLocalMatrix()
 {
 	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateTranslation(Position);
 }
@@ -62,6 +62,11 @@ Reflection::UUID Cylinder::GetUUID() const noexcept
 {
 	// {1260D6C2-FDD3-41A3-949E-AC2FD647253C}
 	return {0x1260d6c2, 0xfdd3, 0x41a3, { 0x94, 0x9e, 0xac, 0x2f, 0xd6, 0x47, 0x25, 0x3c }};
+}
+
+Graphics::Primitives::Cylinder* Cylinder::GetPrimitive() const noexcept
+{
+	return _cylinder.get();
 }
 
 REFL_BEGIN(Cylinder, "Cylinder", "3D Primitives", "3D box")

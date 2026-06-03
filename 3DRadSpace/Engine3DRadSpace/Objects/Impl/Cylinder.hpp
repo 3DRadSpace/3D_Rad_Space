@@ -23,11 +23,13 @@ namespace Engine3DRadSpace::Objects
 
 		void Draw3D() override;
 		float Intersects(const Math::Ray& r);
-		Math::Matrix4x4 GetModelMatrix();
+		Math::Matrix4x4 GetLocalMatrix() override;
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
-	
+
+		Graphics::Primitives::Cylinder* GetPrimitive() const noexcept;
+
 		~Cylinder() override = default;
 	};
 }

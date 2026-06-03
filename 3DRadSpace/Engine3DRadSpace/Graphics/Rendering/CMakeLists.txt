@@ -17,6 +17,8 @@ add_library(3DRadSpace.Graphics.Rendering STATIC
 	"PostProcessEffect.cpp"
 	"RenderingManager.hpp"
 	"RenderingManager.cpp"
+	"ShadowMapRenderer.hpp"
+	"ShadowMapRenderer.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

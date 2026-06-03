@@ -97,6 +97,11 @@ Gizmos::IGizmo* TextPrint::GetGizmo() const noexcept
     return Internal::GizmoOf<TextPrint>(this);
 }
 
+Graphics::Font* TextPrint::GetFont() const noexcept
+{
+	return _font;
+}
+
 REFL_BEGIN(TextPrint, "TextPrint", "2D Objects", "Text element on the screen")
     REFL_FIELD(TextPrint, std::string, Name, "Name", "TextPrint", "Object name")
     REFL_FIELD(TextPrint, bool, Visible, "Visible", true, "Is the text visible?")
