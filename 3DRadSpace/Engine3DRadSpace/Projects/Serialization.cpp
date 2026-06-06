@@ -255,6 +255,13 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 					offset += sizeof(Color);
 					break;
 				}
+				case FieldRepresentationType::ObjectID:
+				{
+					size_t id = field->GetAtOffset<size_t>(objPtr, offset);
+					jsonField[subFieldName][str_i] = id;
+					offset += sizeof(size_t);
+					break;
+				}
 				default:
 					break;
 			}
@@ -467,6 +474,13 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Event:
 				{
+					break;
+				}
+				case FieldRepresentationType::ObjectID:
+				{
+					size_t value = jsonField.get<size_t>();
+					memcpy_s(newStruct.get() + offset, sizeof(size_t), &value, sizeof(size_t));
+					offset += sizeof(size_t);
 					break;
 				}
 				case FieldRepresentationType::Custom:

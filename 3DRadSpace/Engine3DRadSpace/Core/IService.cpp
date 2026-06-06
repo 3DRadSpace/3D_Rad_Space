@@ -3,9 +3,12 @@
 
 using namespace Engine3DRadSpace;
 
-void IService::SetOwner(IGame* owner) noexcept
+IService::IService() : _owner(nullptr)
 {
-	_owner = owner;
+}
+
+IService::IService(IGame* owner) : _owner(owner)
+{
 }
 
 IGame* IService::GetOwner() const noexcept

@@ -4,8 +4,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Internal;
 
-ObjectList::ObjectList(IGame* owner):
-	_game(owner),
+ObjectList::ObjectList(IGame* owner) : IService(owner),
 	_camera(nullptr)
 {
 }
@@ -13,14 +12,14 @@ ObjectList::ObjectList(IGame* owner):
 
 void ObjectList::_validate(ObjectInstance& instance)
 {
-	instance.Object->InternalInitialize(_game);
+	instance.Object->InternalInitialize(_owner);
 	
-	if (_game->WasInitialized())
+	if (_owner->WasInitialized())
 	{
 		instance.Object->Initialize();
 	}
 
-	if (_game->WasLoaded())
+	if (_owner->WasLoaded())
 	{
 		instance.Object->Load();
 	}
@@ -28,13 +27,13 @@ void ObjectList::_validate(ObjectInstance& instance)
 
 void ObjectList::_validate(IObject* instance)
 {
-	if (_game->WasInitialized())
+	if (_owner->WasInitialized())
 	{
-		instance->InternalInitialize(_game);
+		instance->InternalInitialize(_owner);
 		instance->Initialize();
 	}
 
-	if (_game->WasLoaded())
+	if (_owner->WasLoaded())
 	{
 		instance->Load();
 	}
@@ -43,7 +42,7 @@ void ObjectList::_validate(IObject* instance)
 
 unsigned ObjectList::Add(IObject* obj)
 {
-	obj->InternalInitialize(_game);
+	obj->InternalInitialize(_owner);
 
 	std::unique_ptr<IObject> ptr;
 	ptr.reset(obj);
@@ -178,9 +177,4 @@ ICamera* ObjectList::GetRenderingCamera() const noexcept
 void ObjectList::SetRenderingCamera(ICamera* cam) noexcept
 {
 	_camera = cam;
-}
-
-IGame* ObjectList::GetGame() const noexcept
-{
-	return _game;
 }

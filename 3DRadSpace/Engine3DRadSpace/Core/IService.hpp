@@ -13,7 +13,8 @@ namespace Engine3DRadSpace
 	protected:
 		IGame* _owner = nullptr;
 
-		IService() = default;
+		IService();
+		IService(IGame* owner);
 		
 		IService(const IService&) = delete;
 		IService& operator=(const IService&) = delete;
@@ -21,7 +22,6 @@ namespace Engine3DRadSpace
 		IService(IService&&) noexcept = default;
 		IService& operator=(IService&&) noexcept = default;
 	public:
-		void SetOwner(IGame* owner) noexcept;
 		IGame* GetOwner() const noexcept;
 
 		virtual ~IService() = default;

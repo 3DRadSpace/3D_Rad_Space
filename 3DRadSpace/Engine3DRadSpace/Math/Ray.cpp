@@ -65,25 +65,25 @@ float Ray::Intersects(const BoundingBox &box) const
 	float tmax = std::numeric_limits<float>::infinity();
 
 	//x coord
-	float tx1 = box.Position.X - Origin.X * invD.X;
-	float tx2 = (box.Position.X + box.Scale.X) - Origin.X * invD.X;
+	float tx1 = (box.Position.X - Origin.X) * invD.X;
+	float tx2 = (box.Position.X + box.Scale.X - Origin.X) * invD.X;
 
-	tmin = std::max(tmin, std::min(std::min(tx1, tx2), tmax));
-	tmax = std::min(tmax, std::max(std::max(tx1, tx2), tmin));
+	tmin = std::max(tmin, std::min(tx1, tx2));
+	tmax = std::min(tmax, std::max(tx1, tx2));
 
 	//y coord
-	float ty1 = box.Position.Y - Origin.Y * invD.Y;
-	float ty2 = (box.Position.Y + box.Scale.Y) - Origin.Y * invD.Y;
+	float ty1 = (box.Position.Y - Origin.Y) * invD.Y;
+	float ty2 = (box.Position.Y + box.Scale.Y - Origin.Y) * invD.Y;
 
-	tmin = std::max(tmin, std::min(std::min(ty1, ty2), tmax));
-	tmax = std::min(tmax, std::max(std::max(ty1, ty2), tmin));
+	tmin = std::max(tmin, std::min(ty1, ty2));
+	tmax = std::min(tmax, std::max(ty1, ty2));
 
 	//z coord
-	float tz1 = box.Position.Z - Origin.Z * invD.Z;
-	float tz2 = (box.Position.Z + box.Scale.Z) - Origin.Z * invD.Z;
+	float tz1 = (box.Position.Z - Origin.Z) * invD.Z;
+	float tz2 = (box.Position.Z + box.Scale.Z - Origin.Z) * invD.Z;
 
-	tmin = std::max(tmin, std::min(std::min(tz1, tz2), tmax));
-	tmax = std::min(tmax, std::max(std::max(tz1, tz2), tmin));
+	tmin = std::max(tmin, std::min(tz1, tz2));
+	tmax = std::min(tmax, std::max(tz1, tz2));
 
 	if(tmin <= tmax)
 		return tmin;

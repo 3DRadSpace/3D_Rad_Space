@@ -69,6 +69,11 @@ Reflection::UUID Timer::GetUUID() const noexcept
 	return { 0x2a1521ae, 0xa905, 0x48a0, { 0x86, 0x71, 0xd2, 0xac, 0x6b, 0x9, 0xb3, 0xd } };
 }
 
+Gizmos::IGizmo* Timer::GetGizmo() const noexcept
+{
+	return nullptr;
+}
+
 void Timer::Load()
 {
 }

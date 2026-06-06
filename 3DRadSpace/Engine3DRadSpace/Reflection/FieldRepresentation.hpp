@@ -18,6 +18,7 @@
 #include "../Core/Concepts.hpp"
 #include "../Content/AssetID.hpp"
 #include "../Audio/Sound.hpp"
+#include "../Objects/ObjectID.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -62,6 +63,7 @@ namespace Engine3DRadSpace::Reflection
 		Sound,
 		Function,
 		Event,
+		ObjectID,
 		Custom,
 	};
 
@@ -270,6 +272,8 @@ namespace Engine3DRadSpace::Reflection
 		{FieldRepresentationType::Unsigned, "Z"},
 		{FieldRepresentationType::Unsigned, "W"}
 	}));
+
+	E3DRSP_DEFINE_FLDREPR(Objects::ObjectID, ({ {FieldRepresentationType::ObjectID, ""} }));
 
 	template<typename T>
 	concept ReflectableType = std::is_same_v<typename FieldRepresentationInstance<T>::Type, T>;

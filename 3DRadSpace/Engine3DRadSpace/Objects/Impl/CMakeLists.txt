@@ -19,6 +19,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"Empty.cpp"
 	"EventOnKey.hpp"
 	"EventOnKey.cpp"
+	"EventOnLocation.hpp"
+	"EventOnLocation.cpp"
 	"ExitFade.hpp"
 	"ExitFade.cpp"
 	"Fog.hpp"

@@ -3,8 +3,7 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 
-EffectManager::EffectManager() :
-	_game(nullptr)
+EffectManager::EffectManager() : IService(nullptr)
 {
 }
 

@@ -16,6 +16,8 @@ add_library(3DRadSpace.Objects SHARED
 	"IObject3D.cpp"
 	"ObjectCollection.hpp"
 	"ObjectCollection.cpp"
+	"ObjectID.hpp"
+	"ObjectID.cpp"
 	"ObjectList.hpp"
 	"ObjectList.cpp"
 )

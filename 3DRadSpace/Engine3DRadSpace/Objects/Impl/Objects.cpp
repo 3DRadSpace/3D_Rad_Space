@@ -26,6 +26,8 @@ REFL_FWD(FPCharacter)
 REFL_FWD(SettingsManager)
 REFL_FWD(Force)
 REFL_FWD(EventOnKey)
+REFL_FWD(EventOnLocation)
+REFL_FWD(Timer)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -45,14 +47,12 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&CounterReflInstance, //Counter
 		&EmptyReflInstance, //Empty
 		&EventOnKeyReflInstance, //Event On Key
-		/*
-		CameraReflInstance, //EventOnLocation
-		*/
+		&EventOnLocationReflInstance, //Event On Location
 		&ExitFadeReflInstance, //ExitFade
 		&FogReflInstance, //Fog
 		&ForceReflInstance, //Force
 		&SettingsManagerReflInstance, //SettingsManager
-		&GForceReflInstance, //G-Force
+		&GForceReflInstance, //G-Force 
 		/*
 		CameraReflInstance, //Group
 		CameraReflInstance, //Network chat
@@ -73,6 +73,7 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&ConeReflInstance,
 		&CylinderReflInstance,
 		&FreeCamReflInstance,
+		&TimerReflInstance,
 		&FPCharacterReflInstance
 	};
 

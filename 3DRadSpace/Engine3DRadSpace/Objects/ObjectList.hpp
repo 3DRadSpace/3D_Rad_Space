@@ -43,7 +43,6 @@ namespace Engine3DRadSpace::Objects
 		};
 	private:
 		std::vector<ObjectInstance> _objects;
-		IGame* _game;
 		Objects::ICamera* _camera;
 
 		void _validate(ObjectInstance& instance);
@@ -77,8 +76,6 @@ namespace Engine3DRadSpace::Objects
 
 		ICamera* GetRenderingCamera() const noexcept;
 		void SetRenderingCamera(ICamera* cam) noexcept;
-
-		IGame* GetGame() const noexcept;
 
 		void Remove(unsigned id);
 		void Remove(const std::string& name);

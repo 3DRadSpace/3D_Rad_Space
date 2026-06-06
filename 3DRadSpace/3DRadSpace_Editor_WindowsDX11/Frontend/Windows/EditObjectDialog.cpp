@@ -502,6 +502,22 @@ void EditObjectDialog::createForms()
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
+			case FieldRepresentationType::ObjectID:
+			{
+				int sx;
+				createLabel(fieldName, sx);
+				px += sx + 5;
+
+				auto value = *reinterpret_cast<const size_t*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
+				fOffset += sizeof(size_t);
+
+				NumericTextbox* ctrl = new NumericTextbox(window, hInstance, px, y, 75, textboxHeight, std::to_string(value).c_str());
+				windows.push_back(ctrl);
+				px += 80;
+
+				setMax(inc_y, textboxHeight + 5);
+				break;
+			}
 			case FieldRepresentationType::Custom:
 			{
 				break;
@@ -833,6 +849,15 @@ void EditObjectDialog::setObject()
 
 					memcpy_s(newStruct.get() + j, sizeof(AssetID<Sound>), &soundCtrl->AssetReference, sizeof(AssetID<Sound>));
 					j += sizeof(AssetID<Sound>);
+					break;
+				}
+				case FieldRepresentationType::ObjectID:
+				{
+					auto numericTextbox = static_cast<NumericTextbox*>(std::get<IControl*>(windows[i++]));
+					GetWindowTextA(*numericTextbox, text, 255);
+					size_t value = std::stoull(text);
+					memcpy_s(newStruct.get() + j, sizeof(size_t), &value, sizeof(size_t));
+					j += sizeof(size_t);
 					break;
 				}
 				case FieldRepresentationType::Custom:

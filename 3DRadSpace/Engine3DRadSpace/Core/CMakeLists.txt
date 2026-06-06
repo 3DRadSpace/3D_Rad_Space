@@ -12,6 +12,7 @@ add_library(3DRadSpace.Core SHARED
 	"IInitializable.hpp"
 	"ILoadable.hpp"
 	"IService.hpp"
+	"IService.cpp"
 	"IUpdateable.hpp"
 	"Libs.hpp"
 	"Libs.h"

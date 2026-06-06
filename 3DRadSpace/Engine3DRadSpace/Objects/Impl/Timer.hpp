@@ -89,3 +89,5 @@ namespace Engine3DRadSpace::Objects
 		~Timer() override = default;
 	};
 }
+
+REFL_FWD(Timer)
