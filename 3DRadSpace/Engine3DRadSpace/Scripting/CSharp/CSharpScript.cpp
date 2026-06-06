@@ -75,7 +75,7 @@ CSharpScript::~CSharpScript()
 	}
 }
 
-REFL_BEGIN(CSharpScript, "C# Script", "Scripting", "AngelScript script")
+REFL_BEGIN(CSharpScript, "C# Script", "Scripting", "C# script")
 REFL_FIELD(CSharpScript, std::string, ScriptPath, "Script path", "", "Path to script file")
 REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Path to script file")
 REFL_END

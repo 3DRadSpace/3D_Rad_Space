@@ -18,13 +18,13 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IShader() = default;
-	public:
+
 		IShader(const IShader&) = delete;
 		IShader(IShader&&) noexcept = default;
 
 		IShader& operator=(const IShader&) = delete;
 		IShader& operator=(IShader&&) noexcept = default;
-
+	public:
 		///<summary>
 		/// Sets an entire uniform buffer to the shader.
 		/// </summary>

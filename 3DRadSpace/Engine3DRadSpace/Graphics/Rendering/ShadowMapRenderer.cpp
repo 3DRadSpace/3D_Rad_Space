@@ -4,6 +4,7 @@
 #include "../ShaderDesc.hpp"
 #include "../../Math/Rectangle.hpp"
 #include "../../Math/Vector3.hpp"
+#include "../../Games/Game.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -19,14 +20,13 @@ ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device
 	_shadowMap = _device->CreateDepthStencilBuffer(shadowMapWidth, shadowMapHeight);
 	_createShadowStates();
 
-	// Create shadow composite post-process effect
 	ShaderDescFile compositeDesc(
 		"Data\\Shaders\\ShadowComposite.hlsl",
 		"PS_Main",
 		ShaderType::Fragment
 	);
 	_shadowCompositeEffect = std::make_unique<PostProcessEffect>(device, compositeDesc);
-	_shadowCompositeEffect->NotDepthAware = false; // We need the depth buffer
+	_shadowCompositeEffect->NotDepthAware = false;
 }
 
 void ShadowMapRenderer::_createShadowStates()
@@ -123,8 +123,6 @@ void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, cons
 	if (_shadowCompositeEffect == nullptr || _owner == nullptr)
 		return;
 
-	auto context = _device->ImmediateContext();
-
 	// Set up shader constants
 	struct ShadowCompositeData
 	{
@@ -136,9 +134,11 @@ void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, cons
 		Math::Vector3 Padding;
 	} data;
 
+	auto game = static_cast<Game*>(_owner);
+	if (game == nullptr) return;
+
 	data.LightViewProj = lightViewProj;
-	// TODO: Compute inverse view-projection from game's View/Projection matrices
-	// data.InvViewProj = Math::Matrix4x4::Invert(_owner->GetViewMatrix() * _owner->GetProjectionMatrix());
+	data.InvViewProj = Math::Matrix4x4::Invert(game->View * game->Projection);
 	data.LightDirection = lightDir;
 	data.ShadowBias = ShadowBias;
 	data.ShadowIntensity = ShadowIntensity;

@@ -11,8 +11,20 @@ namespace Engine3DRadSpace::Objects
 		Content::Assets::SkyboxAsset *_skybox;
 		std::unique_ptr<std::string> _path;
 	public:
-		Skybox(const std::string& name = "Skybox", bool visible = false, RefSkybox skybox = 0);
-		Skybox(const std::string& name, bool visible, const std::filesystem::path& path);
+		Skybox(
+			const std::string& name = "Skybox",
+			bool visible = false,
+			RefSkybox skybox = 0
+		);
+
+		Skybox(
+			const std::string& name,
+			bool visible,
+			const std::filesystem::path& path
+		);
+
+		Skybox(Skybox&&) noexcept = default;
+		Skybox& operator=(Skybox&&) noexcept = default;
 
 		RefSkybox SkyboxID;
 

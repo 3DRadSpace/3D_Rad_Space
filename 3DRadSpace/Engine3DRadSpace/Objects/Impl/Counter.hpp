@@ -20,6 +20,9 @@ namespace Engine3DRadSpace::Objects
 		Counter();
 		Counter(const std::string& name, double vaulue, double increment);
 
+		Counter(Counter&&) noexcept = default;
+		Counter& operator=(Counter&&) noexcept = default;
+
 		double Value;
 		double Increment;
 

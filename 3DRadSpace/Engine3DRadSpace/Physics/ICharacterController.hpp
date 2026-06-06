@@ -8,8 +8,11 @@ namespace Engine3DRadSpace::Physics
 	protected:
 		ICharacterController(IPhysicsEngine *physics);
 
-		ICharacterController(ICharacterController&&) noexcept;
-		ICharacterController& operator=(ICharacterController&&) noexcept;
+		ICharacterController(ICharacterController&&) noexcept = default;
+		ICharacterController& operator=(ICharacterController&&) noexcept = default;
+
+		ICharacterController(const ICharacterController&) = delete;
+		ICharacterController& operator=(const ICharacterController&) = delete;
 
 		float _height;
 		float _radius;

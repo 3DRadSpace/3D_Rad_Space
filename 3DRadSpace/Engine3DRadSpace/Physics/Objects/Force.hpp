@@ -18,6 +18,9 @@ namespace Engine3DRadSpace::Physics::Objects
 			bool torque = false
 		);
 
+		Force(Force&&) noexcept = default;
+		Force& operator=(Force&&) noexcept = default;
+
 		float Magnitude;
 		float Timer;
 		bool Torque;

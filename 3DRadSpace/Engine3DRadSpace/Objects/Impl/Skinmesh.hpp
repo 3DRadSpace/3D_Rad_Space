@@ -20,10 +20,10 @@ namespace Engine3DRadSpace::Objects
 			const std::string &name,
 			bool visible, 
 			RefModel3D model,
-			const Math::Vector3 &pos,
-			const Math::Quaternion &rot,
-			const Math::Vector3 &pivot, 
-			const Math::Vector3 &scale
+			const Math::Vector3 &pos = Math::Vector3::Zero(),
+			const Math::Quaternion &rot = Math::Quaternion(),
+			const Math::Vector3 &pivot = Math::Vector3::Zero(),
+			const Math::Vector3 &scale = Math::Vector3::One()
 		);
 
 		Skinmesh(
@@ -35,6 +35,9 @@ namespace Engine3DRadSpace::Objects
 			const Math::Vector3 &pivot = Math::Vector3::Zero(),
 			const Math::Vector3 &scale = Math::Vector3::One()
 		);
+
+		Skinmesh(Skinmesh&&) noexcept = default;
+		Skinmesh& operator=(Skinmesh&&) noexcept = default;
 
 		RefModel3D Model;
 
@@ -48,6 +51,12 @@ namespace Engine3DRadSpace::Objects
 		void Draw3D() override;
 		float Intersects(const Math::Ray &r) override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
+
+		bool HasShadows = true;
+		/// <summary>
+		/// If true, the skinmesh will be rendered after all opaque objects.
+		/// </summary>
+		bool Transparent = false;
 
 		~Skinmesh() override = default;
 	};

@@ -39,6 +39,9 @@ namespace Engine3DRadSpace::Objects
 			float depth
 		);
 
+		TextPrint(TextPrint&&) noexcept = default;
+		TextPrint& operator=(TextPrint&&) noexcept = default;
+
 		RefFont Font = 0;
 		Math::Color Colour;
 		std::string Text;

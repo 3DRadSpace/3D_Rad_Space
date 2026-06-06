@@ -9,6 +9,14 @@ namespace Engine3DRadSpace::Graphics
 	/// </summary>
 	class E3DRSP_GRAPHICS_EXPORT ITextureCube : public IGPUMultiBuffer
 	{
+	protected:
+		ITextureCube() = default;
+
+		ITextureCube(const ITextureCube&) = delete;
+		ITextureCube& operator=(const ITextureCube&) = delete;
+
+		ITextureCube(ITextureCube&&) noexcept = default;
+		ITextureCube& operator=(ITextureCube&&) noexcept = default;
 	public:
 		virtual Math::UPoint Size() const noexcept = 0;
 

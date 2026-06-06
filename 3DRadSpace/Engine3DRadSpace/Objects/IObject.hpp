@@ -41,10 +41,13 @@ namespace Engine3DRadSpace
 			/// <param name="enabled"></param>
 			/// <param name="visible"></param>
 			explicit IObject(const std::string& name = "Empty", bool enabled = false, bool visible = false);
-		public:
-			//IObject(IObject&&) noexcept = default;
-			//IObject& operator=(IObject&&) noexcept = default;
 
+			IObject(const IObject&) noexcept = delete;
+			IObject& operator=(const IObject&) noexcept = delete;
+
+			IObject(IObject&&) noexcept = default;
+			IObject& operator=(IObject&&) noexcept = default;
+		public:
 			std::string Name;
 			bool Enabled;
 			bool Visible;

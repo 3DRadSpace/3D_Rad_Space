@@ -21,6 +21,14 @@ namespace Engine3DRadSpace::Content
 	/// </summary>
 	class E3DRSP_CONTENT_EXPORT IAsset
 	{
+	protected:
+		IAsset() = default;
+
+		IAsset(const IAsset&) = default;
+		IAsset& operator=(const IAsset&) = default;
+
+		IAsset(IAsset&&) noexcept = default;
+		IAsset& operator=(IAsset&&) noexcept = default;
 	public:
 		/// <summary>
 		/// Represents a unique identifier for the asset type.

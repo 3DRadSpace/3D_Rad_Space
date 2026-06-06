@@ -21,6 +21,12 @@ namespace Engine3DRadSpace::Physics::Objects
 			const Math::Quaternion& rotation,
 			const Math::Vector3& scale
 		);
+
+		IPhysicsObject(const IPhysicsObject&) = delete;
+		IPhysicsObject& operator=(const IPhysicsObject&) = delete;
+
+		IPhysicsObject(IPhysicsObject&&) noexcept = default;
+		IPhysicsObject& operator=(IPhysicsObject&&) noexcept = default;
 	public:
 		void Initialize() override;
 

@@ -6,6 +6,14 @@ namespace Engine3DRadSpace::Graphics
 {
 	class E3DRSP_GRAPHICS_EXPORT ITexture3D : public IGPUMultiBuffer
 	{
+	protected:
+		ITexture3D() = default;
+
+		ITexture3D(const ITexture3D&) = delete;
+		ITexture3D& operator=(const ITexture3D&) = delete;
+
+		ITexture3D(ITexture3D&&) noexcept = default;
+		ITexture3D& operator=(ITexture3D&&) noexcept = default;
 	public:
 		virtual Math::UPoint3 Size() const noexcept = 0;
 

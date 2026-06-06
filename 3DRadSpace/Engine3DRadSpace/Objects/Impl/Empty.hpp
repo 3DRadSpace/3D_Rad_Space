@@ -18,6 +18,9 @@ namespace Engine3DRadSpace::Objects
 			const Math::Vector3& scale = {1,1,1}
 		);
 
+		Empty(Empty&&) noexcept = default;
+		Empty& operator=(Empty&&) noexcept = default;
+
 		// Inherited via IObject3D
 		void Initialize() override;
 		void Update() override;

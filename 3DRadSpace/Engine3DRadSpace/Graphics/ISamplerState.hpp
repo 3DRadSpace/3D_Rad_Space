@@ -8,6 +8,14 @@ namespace Engine3DRadSpace::Graphics
 	/// </summary>
 	class E3DRSP_GRAPHICS_EXPORT ISamplerState : public IGPUResource	
 	{
+	protected:
+		ISamplerState() = default;
+
+		ISamplerState(const ISamplerState&) = delete;
+		ISamplerState& operator=(const ISamplerState&) = delete;
+
+		ISamplerState(ISamplerState&&) noexcept = default;
+		ISamplerState& operator=(ISamplerState&&) noexcept = default;
 	public:
 		virtual ~ISamplerState() override = default;
 	};

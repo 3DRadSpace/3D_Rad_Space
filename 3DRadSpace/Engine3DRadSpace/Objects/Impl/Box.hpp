@@ -9,7 +9,17 @@ namespace Engine3DRadSpace::Objects
 	{
 		std::unique_ptr<Graphics::Primitives::Box> _box;
 	public:
-		Box();
+		Box(
+			const std::string& name = "Box",
+			bool visible = true,
+			const Math::Vector3& pos = Math::Vector3::Zero(),
+			const Math::Quaternion& rotation = Math::Quaternion(),
+			const Math::Vector3& scale = Math::Vector3::One(),
+			const Math::Color& colour = Math::Color(1.0f, 1.0f, 1.0f, 1.0f)
+		);
+		
+		Box(Box&&) noexcept = default;
+		Box& operator=(Box&&) noexcept = default;
 
 		Math::Color Colour;
 

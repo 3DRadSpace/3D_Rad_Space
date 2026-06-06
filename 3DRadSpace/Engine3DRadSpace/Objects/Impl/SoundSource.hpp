@@ -38,6 +38,9 @@ namespace Engine3DRadSpace::Objects
 			const Math::Vector3 &position
 		);
 
+		SoundSource(SoundSource&&) noexcept = default;
+		SoundSource& operator=(SoundSource&&) noexcept = default;
+
 		void Draw3D() override;
 		float Intersects(const Math::Ray &r) override;
 

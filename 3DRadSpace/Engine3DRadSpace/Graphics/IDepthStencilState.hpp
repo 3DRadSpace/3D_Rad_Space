@@ -9,6 +9,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IDepthStencilState() = default;
+
+		IDepthStencilState(const IDepthStencilState&) = delete;
+		IDepthStencilState& operator=(const IDepthStencilState&) = delete;
+
+		IDepthStencilState(IDepthStencilState&&) noexcept = default;
+		IDepthStencilState& operator=(IDepthStencilState&&) noexcept = default;
 	public:
 		virtual unsigned int StencilRef() const noexcept = 0;
 

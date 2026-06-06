@@ -17,6 +17,12 @@ namespace Engine3DRadSpace::Objects
 			float npd,
 			float fpd
 		);
+
+		ICamera(const ICamera&) = delete;
+		ICamera& operator=(const ICamera&) = delete;
+
+		ICamera(ICamera&&) noexcept = default;
+		ICamera& operator=(ICamera&&) noexcept = default;
 	public:
 		Math::Vector3 Normal;
 

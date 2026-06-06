@@ -7,6 +7,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IGPUBuffer() = default;
+
+		IGPUBuffer(const IGPUBuffer&) = delete;
+		IGPUBuffer& operator=(const IGPUBuffer&) = delete;
+
+		IGPUBuffer(IGPUBuffer&&) noexcept = default;
+		IGPUBuffer& operator=(IGPUBuffer&&) noexcept = default;
 	public:
 		virtual size_t ReadData(void **data) = 0;
 		virtual void SetData(void *data, size_t buffSize) = 0;

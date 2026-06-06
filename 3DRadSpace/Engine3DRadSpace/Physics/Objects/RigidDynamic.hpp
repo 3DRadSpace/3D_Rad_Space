@@ -38,6 +38,10 @@ namespace Engine3DRadSpace::Physics::Objects
 			const Math::Quaternion& rotation = Math::Quaternion(),
 			const Math::Vector3& scale = Math::Vector3::One()
 		);
+
+		RigidDynamic(RigidDynamic&&) noexcept = default;
+		RigidDynamic& operator=(RigidDynamic&&) noexcept = default;
+
 		void Initialize() override;
 		void Load() override;
 		void Load(const std::filesystem::path& path) override;

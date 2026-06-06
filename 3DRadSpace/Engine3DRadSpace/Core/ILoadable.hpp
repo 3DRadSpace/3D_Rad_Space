@@ -5,6 +5,14 @@ namespace Engine3DRadSpace
 {
 	class E3DRSP_CORE_EXPORT ILoadable
 	{
+	protected:
+		ILoadable() = default;
+
+		ILoadable(const ILoadable&) noexcept = default;
+		ILoadable& operator=(const ILoadable&) noexcept = default;
+
+		ILoadable(ILoadable&&) noexcept = default;
+		ILoadable& operator=(ILoadable&&) noexcept = default;
 	public:
 		/// <summary>
 		/// Loads object's assets.

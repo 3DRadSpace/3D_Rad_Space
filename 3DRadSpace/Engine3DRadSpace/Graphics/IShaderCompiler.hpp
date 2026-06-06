@@ -13,6 +13,12 @@ namespace Engine3DRadSpace::Graphics
 	protected:
 		IShaderCompiler();
 
+		IShaderCompiler(const IShaderCompiler&) = delete;
+		IShaderCompiler& operator=(const IShaderCompiler&) = delete;
+
+		IShaderCompiler(IShaderCompiler&&) noexcept = default;
+		IShaderCompiler& operator=(IShaderCompiler&&) noexcept = default;
+
 		std::unique_ptr<EffectManager> _manager;
 	public:
 		using CompileOutput = std::pair<IShader*, ShaderCompilationResult>;

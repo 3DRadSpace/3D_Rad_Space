@@ -25,6 +25,7 @@ REFL_FWD(RigidStatic)
 REFL_FWD(FPCharacter)
 REFL_FWD(SettingsManager)
 REFL_FWD(Force)
+REFL_FWD(EventOnKey)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -43,8 +44,8 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&CameraReflInstance, //Camera
 		&CounterReflInstance, //Counter
 		&EmptyReflInstance, //Empty
+		&EventOnKeyReflInstance, //Event On Key
 		/*
-		CameraReflInstance, //Event On Key
 		CameraReflInstance, //EventOnLocation
 		*/
 		&ExitFadeReflInstance, //ExitFade

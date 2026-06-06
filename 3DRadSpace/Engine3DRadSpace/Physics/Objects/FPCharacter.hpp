@@ -23,6 +23,9 @@ namespace Engine3DRadSpace::Physics::Objects
 			float fpd = 500.0f
 		);
 
+		FPCharacter(FPCharacter&&) noexcept = default;
+		FPCharacter& operator=(FPCharacter&&) noexcept = default;
+
 		float Radius = 0.5f;
 		float Height = 1.8f;
 

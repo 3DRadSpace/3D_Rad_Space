@@ -1,27 +1,23 @@
-// Screen-Space Shadow Application Shader
-// Applied as a fullscreen pass to composite shadows onto the rendered scene
-
 #include "PostProcessBase.hlsl"
 
 cbuffer ShadowData : register(b0)
 {
-    row_major matrix matLightViewProj;     // Light space transformation
-    row_major matrix matInvViewProj;       // Inverse of camera view-projection (for position reconstruction)
+    row_major matrix matLightViewProj;     // Light space VP
+    row_major matrix matInvViewProj;     //Camera Inv(VP)
     float3 LightDirection;
     float ShadowBias;
-    float ShadowIntensity;                  // How dark shadows are (0 = black, 1 = no shadow)
+    float ShadowIntensity;                 
     float2 padding;
 }
 
-Texture2D colorTexture : register(t0);      // Scene color (backbuffer)
-Texture2D depthTexture : register(t1);      // Scene depth
-Texture2D shadowMap : register(t2);         // Shadow map from light
+Texture2D colorTexture : register(t0);      
+Texture2D depthTexture : register(t1);      
+Texture2D shadowMap : register(t2);         
 
 SamplerState colorSampler : register(s0);
 SamplerState depthSampler : register(s1);
 SamplerState shadowSampler : register(s2);
 
-// Reconstruct world position from depth buffer
 float3 ReconstructWorldPosition(float2 uv, float depth)
 {
     // Convert UV and depth to NDC coordinates
@@ -70,22 +66,15 @@ float CalculateShadow(float3 worldPos)
 
 float4 PS_Main(VertexOut v) : SV_TARGET
 {
-    // Sample scene color
     float4 color = colorTexture.Sample(colorSampler, v.UV);
-
-    // Sample depth
     float depth = depthTexture.Sample(depthSampler, v.UV).r;
 
     // Skip skybox (depth = 1.0 or 0.0 depending on depth configuration)
     if (depth >= 0.9999)
         return color;
 
-    // Reconstruct world position from depth
     float3 worldPos = ReconstructWorldPosition(v.UV, depth);
-
-    // Calculate shadow factor
     float shadowFactor = CalculateShadow(worldPos);
 
-    // Apply shadow to color
     return color * shadowFactor;
 }

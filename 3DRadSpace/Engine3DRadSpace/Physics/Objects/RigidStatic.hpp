@@ -37,6 +37,9 @@ namespace Engine3DRadSpace::Physics::Objects
 			const Math::Vector3& scale = Math::Vector3::One()
 		);
 
+		RigidStatic(RigidStatic&&) noexcept = default;
+		RigidStatic& operator=(RigidStatic&&) noexcept = default;
+
 		Engine3DRadSpace::Objects::RefModel3D Model;
 
 		float GetLinearDamping() const noexcept;

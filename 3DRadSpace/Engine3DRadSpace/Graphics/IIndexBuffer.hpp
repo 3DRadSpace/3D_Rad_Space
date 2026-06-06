@@ -7,6 +7,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IIndexBuffer() = default;
+
+		IIndexBuffer(const IIndexBuffer&) = delete;
+		IIndexBuffer& operator=(const IIndexBuffer&) = delete;
+
+		IIndexBuffer(IIndexBuffer&&) noexcept = default;
+		IIndexBuffer& operator=(IIndexBuffer&&) noexcept = default;
 	public:
 		virtual void Set(unsigned index) = 0;
 		virtual unsigned NumIndices() const noexcept = 0;

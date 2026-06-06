@@ -149,6 +149,8 @@ Gizmos::IGizmo* Skinmesh::GetGizmo() const noexcept
 REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")
 	REFL_FIELD(Skinmesh, std::string, Name, "Name","Skinmesh","Object's name")
 	REFL_FIELD(Skinmesh, bool, Visible, "Visible", true, "Is the object visible?")
+	REFL_FIELD(Skinmesh, bool, HasShadows, "Has Shadows", true, "Does the skinmesh cast shadows?")
+	REFL_FIELD(Skinmesh, bool, Transparent, "Transparent", false, "Is the skinmesh transparent?")
 	REFL_FIELD(Skinmesh, RefModel3D, Model, "Model", 0, "The skinmesh model")
 	REFL_FIELD(Skinmesh, Vector3, Position, "Position", Vector3::Zero(), "Object's position in world space")
 	REFL_FIELD(Skinmesh, Quaternion, Rotation, "Rotation", Quaternion(), "Object's rotation")

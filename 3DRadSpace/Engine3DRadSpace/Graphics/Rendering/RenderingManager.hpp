@@ -2,6 +2,7 @@
 #include "IRenderer.hpp"
 #include "../../Core/IService.hpp"
 #include "../IGraphicsDevice.hpp"
+#include "MeshBatcher.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
@@ -15,6 +16,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::vector<std::unique_ptr<IRenderer>> _renderers;
 	public:
 		RenderingManager(IGraphicsDevice* device);
+
+		MeshBatcher Batcher;
 
 		template<typename R, typename... Args>
 		void Add(Args&&... args)

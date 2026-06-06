@@ -15,6 +15,9 @@ namespace Engine3DRadSpace::Objects
 			bool fullscreenEnabled = false
 		);
 
+		SettingsManager(SettingsManager&&) noexcept = default;
+		SettingsManager& operator=(SettingsManager&&) noexcept = default;
+
 		Math::Point Resolution;
 		bool VSyncEnabled;
 		bool FullscreenEnabled;

@@ -4,7 +4,9 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 
 Event::MemberFunctionInvoker::MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType) :
-	Object(object), Fn(std::move(fn)), ReturnType(returnType)
+	Object(object),
+	Fn(std::move(fn)),
+	ReturnType(returnType)
 {
 }
 
@@ -17,6 +19,32 @@ void Event::_reset()
 Event::Event() :
 	_empty(true)
 {
+}
+
+Event::Event(const Event& other) :
+	_empty(other._empty)
+{
+	for (const auto& fn : other._fns)
+	{
+		auto cloned = fn.Fn->Clone();
+		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
+		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType);
+	}
+}
+
+Event& Event::operator=(const Event& other)
+{
+	if (this == &other) return *this;
+
+	_empty = other._empty;
+	_fns.clear();
+	for (const auto& fn : other._fns)
+	{
+		auto cloned = fn.Fn->Clone();
+		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
+		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType);
+	}
+	return *this;
 }
 
 void Event::Bind(std::unique_ptr<IReflectedFunction> &&fn)
@@ -142,4 +170,9 @@ bool Event::ConstIterator::operator==(const Event::ConstIterator& e) const
 bool Event::ConstIterator::operator!=(const Event::ConstIterator& e) const
 {
 	return _iterator != e._iterator;
+}
+
+Event Event::Clone() const
+{
+	return Event(*this);
 }

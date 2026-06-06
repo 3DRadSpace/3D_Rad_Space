@@ -8,6 +8,12 @@ namespace Engine3DRadSpace::Physics
 protected:
 	IStaticCollider(IPhysicsEngine* physics);
 
+	IStaticCollider(const IStaticCollider&) = delete;
+	IStaticCollider& operator=(const IStaticCollider&) = delete;
+
+	IStaticCollider(IStaticCollider&&) noexcept = default;
+	IStaticCollider& operator=(IStaticCollider&&) noexcept = default;
+
 	float _linearDamping = 0.01f;
 	float _staticFriction = 0.5f;
 	float _dynamicFriction = 0.5f;

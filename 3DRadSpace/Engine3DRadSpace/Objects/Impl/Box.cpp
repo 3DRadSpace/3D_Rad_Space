@@ -8,7 +8,15 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Objects;
 
-Box::Box() : IObject3D("Box", false, true, Vector3::Zero(), Vector3::Zero(), Quaternion(), Vector3::One())
+Box::Box(
+	const std::string& name,
+	bool visible,
+	const Math::Vector3& pos ,
+	const Math::Quaternion& rotation,
+	const Math::Vector3& scale,
+	const Math::Color& colour
+) : IObject3D(name, false, visible, pos, Vector3::Zero(), rotation, scale),
+	Colour(colour)
 {
 }
 

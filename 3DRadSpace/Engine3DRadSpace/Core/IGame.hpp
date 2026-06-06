@@ -12,6 +12,14 @@ namespace Engine3DRadSpace
 	{
 	protected:
 		std::unordered_map<std::type_index, IService*> _services;
+
+		IGame() = default;
+
+		IGame(const IGame&) = delete;
+		IGame& operator=(const IGame&) = delete;
+
+		IGame(IGame&&) noexcept = default;
+		IGame& operator=(IGame&&) noexcept = default;
 	public:
 		template<typename T>
 		void AddService(T* service)

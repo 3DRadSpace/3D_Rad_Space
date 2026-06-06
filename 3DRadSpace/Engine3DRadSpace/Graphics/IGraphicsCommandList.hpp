@@ -21,6 +21,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IGraphicsCommandList() = default;
+
+		IGraphicsCommandList(const IGraphicsCommandList&) = delete;
+		IGraphicsCommandList& operator=(const IGraphicsCommandList&) = delete;
+
+		IGraphicsCommandList(IGraphicsCommandList&&) noexcept = default;
+		IGraphicsCommandList& operator=(IGraphicsCommandList&&) noexcept = default;
 	public:
 		virtual void Clear(const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) = 0;
 		virtual void ClearRenderTarget(IRenderTarget* rt, const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) = 0;

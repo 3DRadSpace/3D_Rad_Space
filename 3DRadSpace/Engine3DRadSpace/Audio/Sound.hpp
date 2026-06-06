@@ -32,7 +32,7 @@ namespace Engine3DRadSpace::Audio
 		const char* FileExtension() const noexcept override;
 		std::type_index InitializationService() const noexcept override;
 
-		~Sound();
+		~Sound() override;
 
 		friend class SoundInstance;
 		friend struct Internal::AssetUUIDReader;

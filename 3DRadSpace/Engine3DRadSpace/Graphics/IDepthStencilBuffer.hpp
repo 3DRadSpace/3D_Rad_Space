@@ -7,6 +7,14 @@ namespace Engine3DRadSpace::Graphics
 
 	class IDepthStencilBuffer : public IGPUResource
 	{
+	protected:
+		IDepthStencilBuffer() = default;
+
+		IDepthStencilBuffer(const IDepthStencilBuffer&) = delete;
+		IDepthStencilBuffer& operator=(const IDepthStencilBuffer&) = delete;
+
+		IDepthStencilBuffer(IDepthStencilBuffer&&) noexcept = default;
+		IDepthStencilBuffer& operator=(IDepthStencilBuffer&&) noexcept = default;
 	public:
 		virtual void* GetDepthTextureHandle() const noexcept = 0;
 		virtual ITexture2D* GetDepthTexture() const noexcept = 0;

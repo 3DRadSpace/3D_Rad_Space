@@ -12,8 +12,13 @@ namespace Engine3DRadSpace::Physics
 		Math::Vector3 _angularVelocity = Math::Vector3::Zero();
 		Math::Vector3 _maxAngularVelocity = Math::Vector3(100.0f, 100.0f, 100.0f);
 		
-
 		IDynamicCollider(IPhysicsEngine* physics);
+
+		IDynamicCollider(const IDynamicCollider&) = delete;
+		IDynamicCollider& operator=(const IDynamicCollider&) = delete;
+
+		IDynamicCollider(IDynamicCollider&&) noexcept = default;
+		IDynamicCollider& operator=(IDynamicCollider&&) noexcept = default;
 	public:
 		virtual float GetAngularDamping() const = 0;
 		virtual void SetAngularDamping(float angularDamping) = 0;

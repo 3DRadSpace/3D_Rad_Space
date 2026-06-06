@@ -3,12 +3,15 @@ cmake_minimum_required(VERSION 3.21)
 project("3DRadSpace.Graphics.Rendering")
 
 add_library(3DRadSpace.Graphics.Rendering STATIC 
+	"DirectionalLight.hpp"
 	"ForwardRenderer.hpp"	
 	"ForwardRenderer.cpp"
 	"IRenderer.hpp"
 	"IRenderer.cpp"
 	"LinearPixelFogEffect.hpp"
 	"LinearPixelFogEffect.cpp"
+	"MeshBatcher.hpp"
+	"MeshBatcher.cpp"
 	"NullRenderer.hpp"
 	"NullRenderer.cpp"
 	"PostProcessCollection.hpp"
@@ -17,6 +20,7 @@ add_library(3DRadSpace.Graphics.Rendering STATIC
 	"PostProcessEffect.cpp"
 	"RenderingManager.hpp"
 	"RenderingManager.cpp"
+	"RenderPassType.hpp"
 	"ShadowMapRenderer.hpp"
 	"ShadowMapRenderer.cpp"
 )

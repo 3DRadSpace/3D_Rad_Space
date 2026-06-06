@@ -11,6 +11,9 @@ namespace Engine3DRadSpace::Objects
 	public:
 		Cone();
 
+		Cone(Cone&&) noexcept = default;
+		Cone& operator=(Cone&&) noexcept = default;
+
 		Math::Color Colour;
 		float Radius;
 		float Height;

@@ -12,6 +12,14 @@ namespace Engine3DRadSpace
 	{
 	protected:
 		IGame* _owner = nullptr;
+
+		IService() = default;
+		
+		IService(const IService&) = delete;
+		IService& operator=(const IService&) = delete;
+
+		IService(IService&&) noexcept = default;
+		IService& operator=(IService&&) noexcept = default;
 	public:
 		void SetOwner(IGame* owner) noexcept;
 		IGame* GetOwner() const noexcept;

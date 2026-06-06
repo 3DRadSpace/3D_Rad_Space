@@ -27,8 +27,8 @@ namespace Engine3DRadSpace::Objects
 			float fpd = 500.0f
 		);
 
-		//Camera(Camera&&) noexcept = default;
-		//Camera& operator=(Camera&&) noexcept = default;
+		Camera(Camera&&) noexcept = default;
+		Camera& operator=(Camera&&) noexcept = default;
 
 		void Initialize() override;
 		void Load() override;

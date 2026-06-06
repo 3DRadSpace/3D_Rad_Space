@@ -18,13 +18,13 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		IGame* _owner = nullptr;
 
 		IRenderer(IGraphicsDevice* device);
-	public:
+
 		IRenderer(const IRenderer&) = delete;
 		IRenderer& operator=(const IRenderer&) = delete;
 
 		IRenderer(IRenderer&&) noexcept = default;
 		IRenderer& operator=(IRenderer&&) noexcept = default;
-
+	public:
 		void SetOwner(IGame* owner) noexcept;
 		IGame* GetOwner() const noexcept;
 

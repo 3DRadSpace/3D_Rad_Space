@@ -39,6 +39,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IGraphicsDevice() = default;
+
+		IGraphicsDevice(const IGraphicsDevice&) = delete;
+		IGraphicsDevice& operator=(const IGraphicsDevice&) = delete;
+
+		IGraphicsDevice(IGraphicsDevice&&) noexcept = default;
+		IGraphicsDevice& operator=(IGraphicsDevice&&) noexcept = default;
 	public:
 		bool EnableVSync = true;
 

@@ -5,6 +5,9 @@
 
 namespace Engine3DRadSpace::Reflection
 {
+	/// <summary>
+	/// An Event is an collection of function pointers that can be invoked together.
+	/// </summary>
 	class E3DRSP_REFLECTION_EXPORT Event
 	{
 		struct MemberFunctionInvoker
@@ -33,10 +36,19 @@ namespace Engine3DRadSpace::Reflection
 			(*this) += fn;
 		}
 
-		Event(const Event&) = delete;
+		/// <summary>
+		/// Deep clone Event ctor.
+		/// </summary>
+		/// <param name="other">From</param>
+		Event(const Event& other);
 		Event(Event&&) = default;
 
-		Event& operator=(const Event&) = delete;
+		/// <summary>
+		/// Creates a deep clone of the Event.
+		/// </summary>
+		/// <param name="other">From</param>
+		/// <returns>Cloned event</returns>
+		Event& operator=(const Event& other);
 		Event& operator=(Event&&) = default;
 
 		template<typename R, typename F, typename ...Args>
@@ -113,6 +125,18 @@ namespace Engine3DRadSpace::Reflection
 		Iterator begin();
 		Iterator end();
 
+		/// <summary>
+		/// Returns the metadata of the index-th function bound in this Event instance.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
 		const Reflection::IReflectedFunction* ReflFnAt(size_t index);
+		/// <summary>
+		/// Same as <c>Event e = other.</c>
+		/// </summary>
+		/// <returns>Deep clone</returns>
+		Event Clone() const;
+
+		~Event() = default;
 	};
 }

@@ -33,6 +33,9 @@ namespace Engine3DRadSpace::Objects
 			const std::filesystem::path& path
 		);
 
+		SoundEffect(SoundEffect&&) noexcept = default;
+		SoundEffect& operator=(SoundEffect&&) noexcept = default;
+
 		RefSound Sound;
 
 		Audio::Sound* GetSound() const noexcept;
@@ -72,6 +75,6 @@ namespace Engine3DRadSpace::Objects
 
 		~SoundEffect() = default;
 	};
-
-	REFL_FWD(SoundEffect)
 }
+
+REFL_FWD(SoundEffect)

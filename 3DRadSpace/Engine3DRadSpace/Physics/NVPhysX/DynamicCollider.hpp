@@ -50,6 +50,9 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 	public:
 		DynamicCollider(IPhysicsEngine* physics);
 
+		DynamicCollider(DynamicCollider&&) noexcept = default;
+		DynamicCollider& operator=(DynamicCollider&&) noexcept = default;
+
 		void ApplyForce(const Math::Vector3& force) override;
 		void ApplyForce(const Math::Vector3& force, const Math::Vector3& center) override;
 		void ApplyTorque(const Math::Vector3& force) override;

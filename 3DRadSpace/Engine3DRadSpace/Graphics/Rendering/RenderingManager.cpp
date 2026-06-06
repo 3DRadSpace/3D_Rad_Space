@@ -1,20 +1,23 @@
 #include "RenderingManager.hpp"
 #include "ForwardRenderer.hpp"
+#include "ShadowMapRenderer.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 RenderingManager::RenderingManager(IGraphicsDevice* device) : 
-	_device(device)
+	_device(device),
+	Batcher(device)
 {
-	_renderers.push_back(std::make_unique<ForwardRenderer>(device));
+	_renderers.emplace_back(std::make_unique<ForwardRenderer>(device));
+	_renderers.emplace_back(std::make_unique<ShadowMapRenderer>(device));
 }
 
 void RenderingManager::Add(std::unique_ptr<IRenderer>&& renderPass)
 {
 	renderPass->SetOwner(_owner);
-	_renderers.push_back(std::move(renderPass));
+	_renderers.emplace_back(std::move(renderPass));
 }
 
 IRenderer* RenderingManager::operator[](size_t idx) const

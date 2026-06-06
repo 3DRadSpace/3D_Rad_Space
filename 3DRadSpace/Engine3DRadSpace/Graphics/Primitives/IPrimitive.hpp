@@ -20,6 +20,9 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		IPrimitive(IGraphicsDevice* device, std::nullptr_t nullShader);
 		IPrimitive(IGraphicsDevice* device);
 
+		IPrimitive(const IPrimitive&) noexcept = default;
+		IPrimitive& operator=(const IPrimitive&) noexcept = default;
+
 		IPrimitive(IPrimitive&&) noexcept = default;
 		IPrimitive& operator=(IPrimitive&&) noexcept = default;
 

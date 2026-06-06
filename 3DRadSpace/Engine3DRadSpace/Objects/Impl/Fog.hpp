@@ -25,10 +25,7 @@ namespace Engine3DRadSpace::Objects
 			Math::Color color = Math::Colors::White
 		);
 
-		Fog(const Fog&) = default;
 		Fog(Fog&&) = default;
-
-		Fog& operator=(const Fog&) = default;
 		Fog& operator=(Fog&&) = default;
 
 		float FogBegin;

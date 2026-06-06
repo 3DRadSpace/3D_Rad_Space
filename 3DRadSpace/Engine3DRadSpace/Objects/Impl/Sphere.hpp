@@ -11,6 +11,9 @@ namespace Engine3DRadSpace::Objects
 	public:
 		Sphere();
 
+		Sphere(Sphere&&) noexcept = default;
+		Sphere& operator=(Sphere&&) noexcept = default;
+
 		Math::Color Colour;
 		float Radius;
 		unsigned Resolution;

@@ -46,6 +46,9 @@ namespace Engine3DRadSpace::Objects
 			const Math::Color &tintColor = Math::Colors::White
 		);
 
+		Sprite(Sprite&&) noexcept = default;
+		Sprite& operator=(Sprite&&) noexcept = default;
+
 		bool FlipU;
 		bool FlipV;
 

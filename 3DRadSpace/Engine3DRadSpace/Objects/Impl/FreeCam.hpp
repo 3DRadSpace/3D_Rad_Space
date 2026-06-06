@@ -23,6 +23,9 @@ namespace Engine3DRadSpace::Objects
 			float fpd = 500.0f
 		);
 
+		FreeCam(FreeCam&&) noexcept = default;
+		FreeCam& operator=(FreeCam&&) noexcept = default;
+
 		float Sensitivity = 0.01f;
 		float MovementSpeed = 1.0f;
 		bool InvertX = false;

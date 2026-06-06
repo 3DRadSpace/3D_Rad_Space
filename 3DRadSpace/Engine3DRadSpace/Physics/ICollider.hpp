@@ -18,6 +18,12 @@ namespace Engine3DRadSpace::Physics
 		Math::Quaternion _rotation;
 
 		ICollider(IPhysicsEngine* physics);
+
+		ICollider(const ICollider&) = delete;
+		ICollider& operator=(const ICollider&) = delete;
+
+		ICollider(ICollider&&) noexcept = default;
+		ICollider& operator=(ICollider&&) noexcept = default;
 	public:
 		virtual float GetMass() const = 0;
 		virtual void SetMass(float mass) = 0;

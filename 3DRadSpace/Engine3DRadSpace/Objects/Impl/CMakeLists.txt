@@ -17,6 +17,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"Cylinder.cpp"
 	"Empty.hpp"
 	"Empty.cpp"
+	"EventOnKey.hpp"
+	"EventOnKey.cpp"
 	"ExitFade.hpp"
 	"ExitFade.cpp"
 	"Fog.hpp"

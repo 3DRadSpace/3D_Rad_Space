@@ -14,6 +14,9 @@ namespace Engine3DRadSpace::Objects
 	public:
 		Button();
 
+		Button(Button&&) noexcept = default;
+		Button& operator=(Button&&) noexcept = default;
+
 		Math::RectangleF IdleTextureRect = Math::RectangleF(0, 0, 1, 1);
 		Math::Color IdleClickColor = Math::Colors::White;
 

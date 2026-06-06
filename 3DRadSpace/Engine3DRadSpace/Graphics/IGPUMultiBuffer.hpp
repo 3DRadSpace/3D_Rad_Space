@@ -10,6 +10,12 @@ namespace Engine3DRadSpace::Graphics
 	{
 	protected:
 		IGPUMultiBuffer() = default;
+
+		IGPUMultiBuffer(const IGPUMultiBuffer&) = delete;
+		IGPUMultiBuffer& operator=(const IGPUMultiBuffer&) = delete;
+
+		IGPUMultiBuffer(IGPUMultiBuffer&&) noexcept = default;
+		IGPUMultiBuffer& operator=(IGPUMultiBuffer&&) noexcept = default;
 	public:
 		virtual size_t ReadData(size_t subResource, void** data) = 0;
 		virtual void SetData(size_t subResource, void* data, size_t buffSize) = 0;
