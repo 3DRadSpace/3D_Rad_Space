@@ -3,11 +3,17 @@ cmake_minimum_required(VERSION 3.21)
 project("3DRadSpace.Content.Assets")
 
 add_library(3DRadSpace.Content.Assets STATIC 
+	"NullAsset.hpp"
 	"NullAsset.cpp"
+	"SkyboxAsset.hpp"
 	"SkyboxAsset.cpp"
+	"TextureAsset.hpp"
 	"TextureAsset.cpp"
+	"FontAsset.hpp"
 	"FontAsset.cpp"
+	"ModelAsset.hpp"
 	"ModelAsset.cpp"
+	"Assets.hpp"
 	"Assets.cpp"
 )
 

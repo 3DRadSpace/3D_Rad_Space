@@ -47,17 +47,43 @@ namespace Engine3DRadSpace::Audio
 			OutOfMemory
 		};
 
+		/// <summary>
+		/// Loads a WAV file from the given path and returns an AudioBuffer instance.
+		/// </summary>
 		static std::expected<AudioBuffer, WAVLoadError> FromWAV(const std::filesystem::path& path);
 		
+		/// <summary>
+		/// Type of loading error that could occur when loading an OGG file.
+		/// </summary>
 		enum class OGGLoadError
 		{
+			/// <summary>
+			/// No error, loading succeeded.
+			/// </summary>
 			None,
+			/// <summary>
+			/// File is unreadable or does not exist.
+			/// </summary>
 			CannotOpen,
+			/// <summary>
+			/// File is not a valid OGG file.
+			/// </summary>
 			Invalid,
+			/// <summary>
+			/// OGG file is missing the "vorbis" info header.
+			///	</summary>
 			InfoFail,
+			/// <summary>
+			/// Not enough memory to allocate the PCM buffer.
+			/// </summary>
 			OutOfMemory,
 		};
 		
+		/// <summary>
+		/// Loads an OGG file from the given path and returns an AudioBuffer instance.
+		/// </summary>
+		/// <param name="path">Path to the OGG file</param>
+		/// <returns>AudioBuffer instance or OGGLoadError</returns>
 		static std::expected<AudioBuffer, OGGLoadError> FromOGG(const std::filesystem::path& path);
 
 		~AudioBuffer() = default;

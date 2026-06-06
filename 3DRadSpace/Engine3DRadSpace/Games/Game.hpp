@@ -14,6 +14,7 @@
 #include "../Physics/IPhysicsEngine.hpp"
 #include "../Audio/IAudioEngine.hpp"
 #include "../Graphics/Rendering/PostProcessCollection.hpp"
+#include "../Graphics/Rendering/RenderingManager.hpp"
 #include "../Core/IGame.hpp"
 
 namespace Engine3DRadSpace
@@ -49,6 +50,7 @@ namespace Engine3DRadSpace
 		std::unique_ptr<Content::ContentManager> Content;
 
 		std::unique_ptr<Graphics::SpriteBatch> SpriteBatch;
+		std::unique_ptr<Graphics::Rendering::RenderingManager> RenderingManager;
 
 		Math::Color ClearColor = Math::Colors::Black;
 

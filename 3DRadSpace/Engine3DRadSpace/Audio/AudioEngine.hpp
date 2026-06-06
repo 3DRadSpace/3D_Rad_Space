@@ -18,7 +18,17 @@ namespace Engine3DRadSpace::Audio
 
 		void _initializeContext();
 	public:
+		/// <summary>
+		/// Creates an AudioEngine with the default audio device.
+		/// </summary>
+		/// <remarks>
+		/// Copy and move destructors are removed, as this class is expected to have only one instance per Game instance.
+		/// </remarks>
 		AudioEngine();
+		/// <summary>
+		/// Creates an AudioEngine with given device name.
+		/// </summary>
+		/// <param name="deviceName">Audio device name.</param>
 		AudioEngine(const std::string& deviceName);
 
 		AudioEngine(const AudioEngine&) = delete;
@@ -27,14 +37,31 @@ namespace Engine3DRadSpace::Audio
 		AudioEngine& operator=(const AudioEngine&) = delete;
 		AudioEngine& operator=(AudioEngine&&) = delete;
 
+		/// <summary>
+		/// Specifies the listener for this audio engine.
+		/// </summary>
 		class Listener Listener;
 
+		/// <summary>
+		/// Returns an list of all available audio devices on the machine.
+		/// </summary>
+		/// <returns>Vec<string> audio devices</returns>
 		static std::vector<std::string> ListAudioDevices();
 
+		/// <summary>
+		/// Recreates this AudioEngine with the given audio device name.
+		/// </summary>
 		void SwitchAudioDevice(const std::string& deviceName) override;
 
+		/// <summary>
+		/// Updates the listener.
+		/// </summary>
 		void Update() noexcept override;
 
+		/// <summary>
+		/// Returns the last error.
+		/// </summary>
+		/// <returns>Last audio error. std::nullopt if no audio errors were raised.</returns>
 		std::optional<AudioError> CheckErrors() override;
 
 		~AudioEngine() override;

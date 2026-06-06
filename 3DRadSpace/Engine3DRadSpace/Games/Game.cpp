@@ -27,6 +27,8 @@ void Game::_initialize()
 
 	RequireService(typeid(Graphics::SpriteBatch));
 	RequireService(typeid(PostProcessCollection));
+	RequireService(typeid(Physics::IPhysicsEngine));
+	RequireService(typeid(Rendering::RenderingManager));
 
 	Internal::RegisterDefaultTypes(Content.get());
 
@@ -73,7 +75,16 @@ IService* Game::RequireService(const std::type_index& type)
 			.TimeStep = 1.0f / 60.0f
 			}
 		);
+		AddService(Physics.get());
 		return Physics.get();
+	}
+	if (typeid(Rendering::RenderingManager) == type)
+	{
+		if (RenderingManager) return RenderingManager.get();
+
+		RenderingManager = std::make_unique<Graphics::Rendering::RenderingManager>(Device.get());
+		AddService(RenderingManager.get());
+		return RenderingManager.get();
 	}
 	return nullptr;
 }
@@ -142,6 +153,8 @@ void Game::RunOneFrame()
 	auto cmd = Device->ImmediateContext();
 	cmd->SetViewport();
 	cmd->Clear(ClearColor);
+
+	RenderingManager->Batcher.Begin();
 
 	Draw3D();
 
