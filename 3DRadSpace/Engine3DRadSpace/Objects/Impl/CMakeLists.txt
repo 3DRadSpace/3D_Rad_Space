@@ -45,6 +45,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"Sphere.cpp"
 	"TextPrint.hpp"
 	"TextPrint.cpp"
+	"Timer.hpp"
+	"Timer.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
