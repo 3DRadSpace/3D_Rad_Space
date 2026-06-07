@@ -1,10 +1,10 @@
 #pragma once
 #include "AssetRenderer.hpp"
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
-#include <Engine3DRadSpace/Core/NullGame.hpp>
+#include <Engine3DRadSpace/Games/Game.hpp>
 #include "Controls\Dialog.hpp"
 
-class AssetListRenderer : public Engine3DRadSpace::Games::NullGame
+class AssetListRenderer
 {
 	std::unique_ptr<Engine3DRadSpace::Graphics::IGraphicsDevice> _device;
 	HWND _renderWindow;

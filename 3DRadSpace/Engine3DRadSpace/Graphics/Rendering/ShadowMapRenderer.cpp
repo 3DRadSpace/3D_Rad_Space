@@ -11,7 +11,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 using namespace Engine3DRadSpace::Math;
 
-ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device, RenderingManager* owner) : IRenderer(device, owner)
+ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device)
 {
 	auto resolution = _device->Resolution();
 	unsigned int shadowMapWidth = static_cast<unsigned int>(resolution.X * ShadowMapSize);
@@ -134,7 +134,7 @@ void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, cons
 		Math::Vector3 Padding;
 	} data;
 
-	auto game = static_cast<Game*>(_owner->GetOwner());
+	auto game = static_cast<Game*>(_owner);
 	if (game == nullptr) return;
 
 	data.LightViewProj = lightViewProj;
@@ -178,9 +178,4 @@ void ShadowMapRenderer::End()
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
 {
 	return _shadowMap.get();
-}
-
-void ShadowMapRenderer::Draw(ModelMeshPart* part, Effect* effect)
-{
-	_owner->Batcher.Draw(part, effect, RenderPassType::ShadowMap);
 }

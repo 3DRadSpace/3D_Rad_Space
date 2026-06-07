@@ -49,8 +49,8 @@ namespace Engine3DRadSpace::Graphics
 		virtual void SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget) = 0;
 
 		virtual void DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned startSlot = 0) = 0;
-		virtual void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) = 0;
-		virtual void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) = 0;
+		virtual void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) = 0;
+		virtual void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) = 0;
 
 		virtual void SetShader(IShader* shader) = 0;
 

@@ -34,7 +34,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		void Add(Args&&... args)
 		{
 			auto renderer = std::make_unique<R>(_device, std::forward<Args>(args)...);
-			renderer->SetOwner(this);
+			renderer->SetOwner(_owner);
 			_renderers.push_back(std::move(renderer));
 		}
 
@@ -69,9 +69,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// A directional light used for the main light source in the scene. This is used for forward rendering and shadow mapping.
 		/// </summary>
 		DirectionalLight MainLight;
-
-		void Prepare();
-		void Draw();
 
 		~RenderingManager() override = default;
 	};

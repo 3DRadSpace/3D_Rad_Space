@@ -71,7 +71,7 @@ void Gizmo<Camera>::Draw3D()
 	auto view = game->View;
 	auto proj = game->Projection;
 
-	game->RenderingManager->Batcher.Draw(cameraModel, nullptr, Rendering::RenderPassType::OpaqueNoShadow);
+	cameraModel->Draw(model * view * proj);
 }
 
 void Gizmo<Camera>::Draw2D()

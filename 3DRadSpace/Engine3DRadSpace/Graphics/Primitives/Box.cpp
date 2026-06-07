@@ -184,5 +184,5 @@ void Box::Draw3D()
 
     auto cmd = _device->ImmediateContext();
     cmd->SetTopology(VertexTopology::TriangleList);
-    cmd->DrawVertexBufferWithIndices(_vertices.get(), _indices.get());
+    cmd->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }

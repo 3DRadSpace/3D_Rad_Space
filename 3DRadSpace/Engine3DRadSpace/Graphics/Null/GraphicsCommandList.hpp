@@ -35,8 +35,8 @@ namespace Engine3DRadSpace::Graphics::Null
 		virtual void SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget) override;
 
 		virtual void DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned startSlot = 0) override;
-		virtual void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) override;
-		virtual void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) override;
+		virtual void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) override;
+		virtual void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) override;
 
 		virtual void SetShader(IShader* shader) override;
 

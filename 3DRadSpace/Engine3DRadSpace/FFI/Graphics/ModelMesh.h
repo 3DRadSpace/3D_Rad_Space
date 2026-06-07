@@ -14,6 +14,7 @@ extern "C"
 	E3DRSP_FFI_EXPORT void E3DRSP_ModelMesh_AddMeshPart(E3DRSP_ModelMesh mesh, E3DRSP_ModelMeshPart part);
 	E3DRSP_FFI_EXPORT E3DRSP_ModelMeshPart E3DRSP_ModelMesh_GetMeshPart(E3DRSP_ModelMesh mesh, unsigned index);
 	E3DRSP_FFI_EXPORT size_t E3DRSP_ModelMesh_NumMeshParts(E3DRSP_ModelMesh mesh);
+	E3DRSP_FFI_EXPORT void E3DRSP_ModelMesh_Draw(E3DRSP_ModelMesh mesh);
 
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingBox E3DRSP_ModelMesh_GetBoundingBox(E3DRSP_ModelMesh mesh);
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingSphere E3DRSP_ModelMesh_GetBoundingSphere(E3DRSP_ModelMesh mesh);

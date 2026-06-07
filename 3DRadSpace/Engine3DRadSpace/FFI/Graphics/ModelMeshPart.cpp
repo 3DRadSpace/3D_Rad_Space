@@ -37,6 +37,16 @@ E3DRSP_ModelMeshPart E3DRSP_ModelMeshPart_Create2(
 	);
 }
 
+void E3DRSP_ModelMeshPart_Draw(E3DRSP_ModelMeshPart meshPart)
+{
+	static_cast<ModelMeshPart*>(meshPart)->Draw();
+}
+
+void E3DRSP_ModelMeshPart_DrawEffect(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effect effect)
+{
+	static_cast<ModelMeshPart*>(meshPart)->Draw(reinterpret_cast<Effect*>(effect));
+}
+
 E3DRSP_BoundingBox E3DRSP_ModelMeshPart_GetBoundingBox(E3DRSP_ModelMeshPart meshPart)
 {
 	auto boundingBox = static_cast<ModelMeshPart*>(meshPart)->GetBoundingBox();

@@ -32,6 +32,12 @@ namespace Engine3DRadSpace::Graphics
 
 		void SetTransform(const Math::Matrix4x4 &m);
 
+		void Draw();
+		void Draw(const Math::Matrix4x4 &mvp);
+		
+		void DrawEffect(Effect *effect);
+		void DrawEffect(Effect *effect, const Math::Matrix4x4 &mvp);
+
 		using iterator = std::vector<std::unique_ptr<ModelMesh>>::iterator;
 		iterator begin();
 		iterator end();

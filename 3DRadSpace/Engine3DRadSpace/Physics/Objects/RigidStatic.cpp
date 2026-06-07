@@ -139,10 +139,8 @@ void RigidStatic::Draw3D()
 {
 	auto game = static_cast<Game*>(_game);
 
-	if (Visible && _model)
-	{
-		game->RenderingManager->Batcher.Draw(_model, nullptr, Rendering::RenderPassType::Opaque);
-	}
+	if(Visible && _model)
+		_model->Draw(GetModelMatrix() * game->View * game->Projection);
 }
 
 float RigidStatic::Intersects(const Math::Ray& r)

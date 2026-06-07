@@ -14,8 +14,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Constructs a forward renderer pipeline.
 		/// </summary>
 		/// <param name="device"></param>
-		/// <param name="owner"></param>
-		ForwardRenderer(IGraphicsDevice* device, RenderingManager* owner);
+		ForwardRenderer(IGraphicsDevice* device);
 
 		/// <summary>
 		/// Begins drawing.

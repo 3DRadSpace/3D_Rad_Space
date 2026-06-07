@@ -24,7 +24,6 @@ namespace Engine3DRadSpace
 		template<typename T>
 		void AddService(T* service)
 		{
-			service->_owner = this;
 			_services[typeid(T)] = service;
 		}
 
