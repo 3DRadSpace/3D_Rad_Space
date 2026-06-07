@@ -76,12 +76,12 @@ void GraphicsCommandList::DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned
 	(void)startSlot;
 }
 
-void GraphicsCommandList::DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer)
+void GraphicsCommandList::DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer)
 {
 	(void)vertexBuffer;
 	(void)indexBuffer;
 }
-void GraphicsCommandList::DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices)
+void GraphicsCommandList::DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices)
 {
 	(void)vertexBuffer;
 	(void)indexBuffer;

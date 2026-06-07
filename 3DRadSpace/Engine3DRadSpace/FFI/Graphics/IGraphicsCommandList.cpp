@@ -103,7 +103,7 @@ void E3DRSP_IGraphicsCommandList_DrawVertexBufferWithindices(
 	E3DRSP_IIndexBuffer indexBuffer
 )
 {
-	reinterpret_cast<IGraphicsCommandList*>(cmd)->DrawVertexBufferWithindices(
+	reinterpret_cast<IGraphicsCommandList*>(cmd)->DrawVertexBufferWithIndices(
 		reinterpret_cast<IVertexBuffer*>(vertexBuffer),
 		reinterpret_cast<IIndexBuffer*>(indexBuffer)
 	);
@@ -115,7 +115,7 @@ void E3DRSP_IGraphicsCommandList_DrawVertexBufferWithindices2(
 	unsigned numIndices
 )
 {
-	reinterpret_cast<IGraphicsCommandList*>(cmd)->DrawVertexBufferWithindices(
+	reinterpret_cast<IGraphicsCommandList*>(cmd)->DrawVertexBufferWithIndices(
 		reinterpret_cast<IVertexBuffer*>(vertexBuffer),
 		reinterpret_cast<IIndexBuffer*>(indexBuffer),
 		numIndices

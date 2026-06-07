@@ -57,5 +57,5 @@ void IPrimitive::Draw3D()
     auto cmd = _device->ImmediateContext();
 
     cmd->SetTopology(VertexTopology::TriangleList);
-    cmd->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
+    cmd->DrawVertexBufferWithIndices(_vertices.get(), _indices.get());
 }

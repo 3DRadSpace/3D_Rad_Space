@@ -122,10 +122,10 @@ void Gizmo<Skinmesh>::Draw3D()
 			auto highlightColor = Color(1.0f, 0.5f, 0.0f, 1.0f);
 			_highlightEffect->SetData<Color>(&highlightColor, 1);
 
-			skinmesh->GetModel()->DrawEffect(
-				_highlightEffect,
+			skinmesh->GetModel()->SetTransform(
 				skinmesh->GetModelMatrix() * game->View * game->Projection
 			);
+			game->RenderingManager->Batcher.Draw(skinmesh->GetModel(), _highlightEffect);
 
 			//cmd->SetRenderTargetAndDepth(nullptr, nullptr);
 			cmd->SetRasterizerState(oldRasterizerState.get());

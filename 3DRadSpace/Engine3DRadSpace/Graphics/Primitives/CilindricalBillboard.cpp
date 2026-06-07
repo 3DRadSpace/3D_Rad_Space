@@ -57,6 +57,6 @@ void CilindricalBillboard::Draw3D()
 	_shader->SetAll();
 	_shader->operator[](0)->SetData(0, &mat, sizeof(mat));
 	_shader->operator[](1)->SetTexture(0, Texture);
-	_device->ImmediateContext()->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
+	_device->ImmediateContext()->DrawVertexBufferWithIndices(_vertices.get(), _indices.get());
 }
 

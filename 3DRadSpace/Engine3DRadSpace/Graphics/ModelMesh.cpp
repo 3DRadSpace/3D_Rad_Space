@@ -58,14 +58,6 @@ size_t ModelMesh::NumMeshParts() const noexcept
 	return _meshParts.size();
 }
 
-void ModelMesh::Draw()
-{
-	for (auto& mesh : *this)
-	{
-		mesh->Draw();
-	}
-}
-
 BoundingBox ModelMesh::GetBoundingBox() const noexcept
 {
 	return _box;

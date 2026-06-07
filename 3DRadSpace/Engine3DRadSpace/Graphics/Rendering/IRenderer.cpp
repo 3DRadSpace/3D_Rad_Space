@@ -1,38 +1,29 @@
 #include "IRenderer.hpp"
 #include "../Effect.hpp"
 #include "../../Core/IGame.hpp"
+#include "RenderingManager.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-IRenderer::IRenderer(IGraphicsDevice* device):
-	_device(device)
+IRenderer::IRenderer(IGraphicsDevice* device, RenderingManager* owner) :
+	_device(device),
+	_owner(owner)
 {
 }
 
-void IRenderer::Draw(ModelMeshPart* part)
+void IRenderer::Draw(ModelMeshPart* part, Effect* effect)
 {
-	part->Draw();
+	this->_owner->Batcher.Draw(part, effect);
 }
 
-void IRenderer::Draw(IVertexBuffer* vertices, IIndexBuffer* indices, Effect* effect)
-{
-	effect->SetAll();
-	_device->ImmediateContext()->DrawVertexBufferWithindices(vertices, indices);
-}
-
-IGraphicsDevice* IRenderer::GetDevice() const noexcept
-{
-	return _device;
-}
-
-void IRenderer::SetOwner(IGame* owner) noexcept
-{
-	_owner = owner;
-}
-
-IGame* IRenderer::GetOwner() const noexcept
+RenderingManager* IRenderer::GetOwner() const noexcept
 {
 	return _owner;
+}
+
+IGraphicsDevice* IRenderer::GetGraphicsDevice() const noexcept
+{
+	return _device;
 }

@@ -154,7 +154,7 @@ void SpriteBatch::_drawEntry(const spriteBatchEntry &entry)
 
 	_spriteShader->SetTexture(_textures[entry.textureID], 0);
 
-	_device->ImmediateContext()->DrawVertexBufferWithindices(_vertexBuffer.get(), _indexBuffer.get());
+	_device->ImmediateContext()->DrawVertexBufferWithIndices(_vertexBuffer.get(), _indexBuffer.get());
 	_restoreGraphicsDevice();
 }
 
@@ -173,7 +173,7 @@ void SpriteBatch::_drawAllEntries_SortByTexture()
 		if (currentVertices.empty()) return;
 		_vertexBuffer->SetData<VertexPointUVColor>(currentVertices);
 		_indexBuffer->SetData<unsigned>(currentIndices);
-		cmd->DrawVertexBufferWithindices(_vertexBuffer.get(), _indexBuffer.get());
+		cmd->DrawVertexBufferWithIndices(_vertexBuffer.get(), _indexBuffer.get());
 	};
 
 	unsigned i = 0;

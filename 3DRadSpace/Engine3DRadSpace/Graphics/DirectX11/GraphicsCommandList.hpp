@@ -81,8 +81,8 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		/// </summary>
 		/// <param name="vertexBuffer">Vertex buffer.</param>
 		/// <param name="indexBuffer">Index buffer.</param>
-		void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) override;
-		void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) override;
+		void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) override;
+		void DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices) override;
 
 		/// <summary>
 		/// Sets a shader for the graphics pipeline.

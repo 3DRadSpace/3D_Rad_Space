@@ -25,5 +25,7 @@ namespace Engine3DRadSpace
 		IGame* GetOwner() const noexcept;
 
 		virtual ~IService() = default;
+
+		friend class IGame;
 	};
 }

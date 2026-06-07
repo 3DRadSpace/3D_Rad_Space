@@ -87,9 +87,19 @@ Reflection::UUID Skinmesh::GetUUID() const noexcept
 void Skinmesh::Draw3D()
 {
 	auto game = static_cast<Game*>(_game);
-
-	if(Visible && _model)
-		_model->Draw(GetModelMatrix() * game->View * game->Projection);
+	_model->SetTransform(GetModelMatrix() * game->View * game->Projection);
+	
+	if (Visible && _model)
+	{
+		if (Transparent)
+		{
+			game->RenderingManager->Batcher.Draw(_model, nullptr, HasShadows ? Rendering::RenderPassType::Transparent : Rendering::RenderPassType::TransparentNoShadow);
+		}
+		else
+		{
+			game->RenderingManager->Batcher.Draw(_model, nullptr, HasShadows ? Rendering::RenderPassType::Opaque : Rendering::RenderPassType::OpaqueNoShadow);
+		}
+	}
 }
 
 float Skinmesh::Intersects(const Ray&r)

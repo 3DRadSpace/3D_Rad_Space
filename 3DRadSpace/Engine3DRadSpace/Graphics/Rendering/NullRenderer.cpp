@@ -2,7 +2,7 @@
 
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-NullRenderer::NullRenderer(IGraphicsDevice* device) : IRenderer(device)
+NullRenderer::NullRenderer(IGraphicsDevice* device, RenderingManager* owner) : IRenderer(device, owner)
 {
 }
 

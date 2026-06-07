@@ -95,6 +95,7 @@ void FragmentShader::SetTextures(std::span<ITexture2D*> textures)
 
 	for(decltype(len) i = 0; i < len; i++)
 	{
+		if (textures[i] == nullptr) continue;
 		srvs[i] = static_cast<Texture2D*>(textures[i])->_resourceView.Get();
 	}
 

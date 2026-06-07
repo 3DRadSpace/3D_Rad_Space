@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace\Graphics\Model3D.hpp>
 #include <Engine3DRadSpace\Math\Matrix4x4.hpp>
 #include <Engine3DRadSpace\Graphics\SpriteBatch.hpp>
+#include <Engine3DRadSpace/Games/Game.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -33,8 +34,11 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 		for (auto&& n : iota(0, 3))
 		{
 			cmd->Clear(Colors::Gray);
-			model->Draw(
-				Matrix4x4() *
+
+			//device->GetOwner()->RequireService<Graphics::Rendering::RenderingManager>({})->Batcher.Draw(model);
+
+			// Idendity * View * Projection
+			model->SetTransform(
 				Matrix4x4::CreateLookAtView(
 					boundingSphere.Center + ((boundingSphere.Radius + 0.5f) *
 						Vector3(
@@ -47,6 +51,15 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 				) *
 				Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f)
 			);
+			
+			for (auto& mesh : *model)
+			{
+				for(auto& part : *mesh)
+				{
+					part->GetShaders()->SetAll();
+					cmd->DrawVertexBufferWithIndices(part->GetVertexBuffer(), part->GetIndexBuffer());
+				}
+			}
 
 			cmd->Present();
 		}

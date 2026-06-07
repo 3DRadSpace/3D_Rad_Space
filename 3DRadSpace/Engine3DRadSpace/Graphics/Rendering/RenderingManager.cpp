@@ -10,13 +10,13 @@ RenderingManager::RenderingManager(IGraphicsDevice* device) :
 	_device(device),
 	Batcher(device)
 {
-	_renderers.emplace_back(std::make_unique<ForwardRenderer>(device));
-	_renderers.emplace_back(std::make_unique<ShadowMapRenderer>(device));
+	_renderers.emplace_back(std::make_unique<ForwardRenderer>(device, this));
+	_renderers.emplace_back(std::make_unique<ShadowMapRenderer>(device, this));
 }
 
 void RenderingManager::Add(std::unique_ptr<IRenderer>&& renderPass)
 {
-	renderPass->SetOwner(_owner);
+	renderPass->_owner = this;
 	_renderers.emplace_back(std::move(renderPass));
 }
 
@@ -42,4 +42,21 @@ void RenderingManager::Remove(size_t idx)
 void RenderingManager::Clear() noexcept
 {
 	_renderers.clear();
+}
+
+void RenderingManager::Prepare()
+{
+	Batcher.Begin();
+}
+
+void RenderingManager::Draw()
+{
+	for (auto& renderer : _renderers)
+	{
+		renderer->Begin();
+		Batcher.DrawAll();
+		renderer->End();
+	};
+
+	Batcher.End();
 }

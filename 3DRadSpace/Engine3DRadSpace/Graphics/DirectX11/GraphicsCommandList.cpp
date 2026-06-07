@@ -151,7 +151,7 @@ void GraphicsCommandList::DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned
 	_context->Draw(UINT(dxvb->_numVerts), UINT(startSlot));
 }
 
-void GraphicsCommandList::DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer)
+void GraphicsCommandList::DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer)
 {
 	auto dxvb = static_cast<VertexBuffer*>(vertexBuffer);
 	auto dxib = static_cast<IndexBuffer*>(indexBuffer);
@@ -163,7 +163,7 @@ void GraphicsCommandList::DrawVertexBufferWithindices(IVertexBuffer* vertexBuffe
 	_context->DrawIndexed(UINT(dxib->_numIndices), 0u, 0u);
 }
 
-void GraphicsCommandList::DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices)
+void GraphicsCommandList::DrawVertexBufferWithIndices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer, unsigned numIndices)
 {
 	auto dxvb = static_cast<VertexBuffer*>(vertexBuffer);
 	auto dxib = static_cast<IndexBuffer*>(indexBuffer);

@@ -1,13 +1,10 @@
 #pragma once
 #include "../ModelMeshPart.hpp"
 
-namespace Engine3DRadSpace
-{
-	class IGame;
-}
-
 namespace Engine3DRadSpace::Graphics::Rendering
 {
+	class RenderingManager;
+
 	/// <summary>
 	/// Represents a rendering pipeline that allows multiple rendering effects.
 	/// </summary>
@@ -15,9 +12,9 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 	protected:
 		IGraphicsDevice* _device;
-		IGame* _owner = nullptr;
+		RenderingManager* _owner;
 
-		IRenderer(IGraphicsDevice* device);
+		IRenderer(IGraphicsDevice* device, RenderingManager* owner);
 
 		IRenderer(const IRenderer&) = delete;
 		IRenderer& operator=(const IRenderer&) = delete;
@@ -25,8 +22,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		IRenderer(IRenderer&&) noexcept = default;
 		IRenderer& operator=(IRenderer&&) noexcept = default;
 	public:
-		void SetOwner(IGame* owner) noexcept;
-		IGame* GetOwner() const noexcept;
+		RenderingManager* GetOwner() const noexcept;
+		IGraphicsDevice* GetGraphicsDevice() const noexcept;
 
 		/// <summary>
 		/// Prepares the graphics pipeline for this effect.
@@ -36,20 +33,14 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Submits a mesh part to this effect.
 		/// </summary>
 		/// <param name="part">Mesh</param>
-		virtual void Draw(ModelMeshPart* part);
-		/// <summary>
-		/// Submits a mesh made of a index and vertex buffer to this effect.
-		/// </summary>
-		/// <param name="vertices">Vertices</param>
-		/// <param name="indices">Incides</param>
-		virtual void Draw(IVertexBuffer* vertices, IIndexBuffer* indices, Effect* effect);
+		virtual void Draw(ModelMeshPart* part, Effect* effect = nullptr);
 		/// <summary>
 		/// Restores the previous states, and depending on the effect, draws all submited meshes. (Unless meshes are not batched).
 		/// </summary>
 		virtual void End() = 0;
 
-		IGraphicsDevice* GetDevice() const noexcept;
-
 		virtual ~IRenderer() = default;
+
+		friend class RenderingManager;
 	};
 }

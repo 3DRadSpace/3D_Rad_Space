@@ -19,7 +19,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		void _createShadowStates();
 		void _applyShadows(const Math::Matrix4x4& lightViewProj, const Math::Vector3& lightDirection);
 	public:
-		ShadowMapRenderer(IGraphicsDevice* device);
+		ShadowMapRenderer(IGraphicsDevice* device, RenderingManager* owner);
 
 		/// <summary>
 		/// Defines the size of the shadow map as a multiplier of the screen resolution.
@@ -56,6 +56,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		/// <returns>Light projection matrix</returns>
 		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
+
+		void Draw(ModelMeshPart* part, Effect* effect = nullptr) override;
 
 		void Begin() override;
 		void End() override;

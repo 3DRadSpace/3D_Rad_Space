@@ -2,8 +2,8 @@
 
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-ForwardRenderer::ForwardRenderer(IGraphicsDevice* device):
-	IRenderer(device)
+ForwardRenderer::ForwardRenderer(IGraphicsDevice* device, RenderingManager* owner):
+	IRenderer(device, owner)
 {
 }
 

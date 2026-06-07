@@ -588,7 +588,10 @@ void EditorWindow::Run()
 
 		cmd->SetViewport();
 		cmd->Clear(editor->ClearColor);
+
+		this->editor->RenderingManager->Prepare();
 		this->editor->Draw3D();
+		this->editor->RenderingManager->Draw();
 		this->editor->PostProcesses->ApplyAll();
 		this->editor->Draw2D();
 		cmd->Present();
