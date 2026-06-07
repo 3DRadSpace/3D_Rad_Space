@@ -1,6 +1,5 @@
 #pragma once
 #include "../ModelMeshPart.hpp"
-#include "RenderPassType.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
@@ -25,12 +24,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	public:
 		RenderingManager* GetOwner() const noexcept;
 		IGraphicsDevice* GetGraphicsDevice() const noexcept;
-
-		/// <summary>
-		/// Gets the render pass type this renderer handles. Default is Opaque.
-		/// Override this to specify which batched meshes this renderer should draw.
-		/// </summary>
-		virtual RenderPassType GetRenderPassType() const noexcept;
 
 		/// <summary>
 		/// Prepares the graphics pipeline for this effect.

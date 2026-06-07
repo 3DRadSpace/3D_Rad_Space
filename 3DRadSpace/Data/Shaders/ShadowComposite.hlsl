@@ -2,13 +2,13 @@
 
 cbuffer ShadowData : register(b0)
 {
-    row_major matrix matLightViewProj;  // Light space VP
-    row_major matrix matInvViewProj;    // Camera Inv(VP) 
-    float3 LightDirection;              
-    float ShadowBias;                   
-    float ShadowIntensity;              
-    float3 padding;                     
-};
+    row_major matrix matLightViewProj;     // Light space VP
+    row_major matrix matInvViewProj;     //Camera Inv(VP)
+    float3 LightDirection;
+    float ShadowBias;
+    float ShadowIntensity;                 
+    float2 padding;
+}
 
 Texture2D colorTexture : register(t0);      
 Texture2D depthTexture : register(t1);      

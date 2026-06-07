@@ -3,9 +3,8 @@
 
 cbuffer ShadowData : register(b0)
 {
-    row_major matrix matWorld;              // World transformation
-    row_major matrix matLightViewProj;      // Light space VP
-};
+    row_major matrix matLightViewProj; // Light space transformation matrix
+}
 
 struct VertexIn
 {
@@ -21,9 +20,7 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
     VertexOut r;
-    // Transform vertex to world space, then to light space
-    float4 worldPos = mul(float4(v.Position.xyz, 1), matWorld);
-    r.Position = mul(worldPos, matLightViewProj);
+    r.Position = mul(float4(v.Position.xyz, 1), matLightViewProj);
     r.Depth = r.Position.z / r.Position.w;
     return r;
 }

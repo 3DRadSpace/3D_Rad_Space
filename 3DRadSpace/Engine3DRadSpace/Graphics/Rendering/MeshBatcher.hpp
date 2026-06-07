@@ -19,8 +19,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	class E3DRSP_GRAPHICS_RENDERING_EXPORT MeshBatcher
 	{
 		IGraphicsDevice* _device;
-		Effect* _shadowDepthEffect; // Shadow-specific shader override
-		Math::Matrix4x4 _lightViewProj; // Light view-projection for shadow pass
 
 		struct InstanceDataEntry
 		{
@@ -74,18 +72,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Draws all meshes.
 		/// </summary>
 		void DrawAll();
-		/// <summary>
-		/// Draws only meshes matching the specified render pass type.
-		/// </summary>
-		/// <param name="passType">The render pass type to filter by</param>
-		void DrawAll(RenderPassType passType);
-
-		/// <summary>
-		/// Sets the shadow depth shader and light view-projection matrix to use for ShadowMap pass rendering.
-		/// </summary>
-		/// <param name="effect">Shadow depth effect</param>
-		/// <param name="lightViewProj">Light view-projection matrix</param>
-		void SetShadowDepthEffect(Effect* effect, const Math::Matrix4x4& lightViewProj);
 
 		/// <summary>
 		/// Erases the internal mesh list.

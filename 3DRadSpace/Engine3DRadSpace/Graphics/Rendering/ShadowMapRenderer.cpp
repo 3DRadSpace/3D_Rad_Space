@@ -1,9 +1,7 @@
 #include "ShadowMapRenderer.hpp"
 #include "../../Core/IGame.hpp"
 #include "../IGraphicsCommandList.hpp"
-#include "../IShaderCompiler.hpp"
 #include "../ShaderDesc.hpp"
-#include "../Effect.hpp"
 #include "../../Math/Rectangle.hpp"
 #include "../../Math/Vector3.hpp"
 #include "../../Games/Game.hpp"
@@ -21,7 +19,6 @@ ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device, RenderingManager* 
 
 	_shadowMap = _device->CreateDepthStencilBuffer(shadowMapWidth, shadowMapHeight);
 	_createShadowStates();
-	_createShadowDepthShader();
 
 	ShaderDescFile compositeDesc(
 		"Data\\Shaders\\ShadowComposite.hlsl",
@@ -30,34 +27,6 @@ ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device, RenderingManager* 
 	);
 	_shadowCompositeEffect = std::make_unique<PostProcessEffect>(device, compositeDesc);
 	_shadowCompositeEffect->NotDepthAware = false;
-}
-
-void ShadowMapRenderer::_createShadowDepthShader()
-{
-	auto compiler = _device->ShaderCompiler();
-
-	ShaderDescFile vertexDesc(
-		"Data\\Shaders\\ShadowMapDepth.hlsl",
-		"VS_Main",
-		ShaderType::Vertex
-	);
-	ShaderDescFile pixelDesc(
-		"Data\\Shaders\\ShadowMapDepth.hlsl",
-		"PS_Main",
-		ShaderType::Fragment
-	);
-
-	auto vsResult = compiler->Compile(&vertexDesc);
-	auto psResult = compiler->Compile(&pixelDesc);
-
-	if (!vsResult.second.Succeded || !psResult.second.Succeded)
-	{
-		// Log error or throw
-		return;
-	}
-
-	std::array<IShader*, 2> shaders = { vsResult.first, psResult.first };
-	_shadowDepthEffect = std::make_unique<Effect>(_device, shaders);
 }
 
 void ShadowMapRenderer::_createShadowStates()
@@ -147,10 +116,6 @@ void ShadowMapRenderer::Begin()
 	// Set shadow states
 	context->SetRasterizerState(_shadowRasterizerState.get());
 	context->SetDepthStencilState(_shadowDepthState.get(), 0);
-
-	// Configure batcher to use shadow depth shader for this pass with light view-projection
-	Math::Matrix4x4 lightViewProj = ComputeLightViewMatrix(LightDirection) * ComputeLightProjectionMatrix();
-	_owner->Batcher.SetShadowDepthEffect(_shadowDepthEffect.get(), lightViewProj);
 }
 
 void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, const Math::Vector3& lightDir)
@@ -159,15 +124,14 @@ void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, cons
 		return;
 
 	// Set up shader constants
-	// IMPORTANT: Must match HLSL packing rules (16-byte alignment)
-	struct alignas(16) ShadowCompositeData
+	struct ShadowCompositeData
 	{
-		Math::Matrix4x4 LightViewProj;      // 64 bytes
-		Math::Matrix4x4 InvViewProj;        // 64 bytes
-		Math::Vector3 LightDirection;       // 12 bytes
-		float ShadowBias;                   // 4 bytes (same register as LightDirection.w)
-		float ShadowIntensity;              // 4 bytes
-		float Padding[3];                   // 12 bytes (complete the register)
+		Math::Matrix4x4 LightViewProj;
+		Math::Matrix4x4 InvViewProj;
+		Math::Vector3 LightDirection;
+		float ShadowBias;
+		float ShadowIntensity;
+		Math::Vector3 Padding;
 	} data;
 
 	auto game = static_cast<Game*>(_owner->GetOwner());
@@ -178,9 +142,6 @@ void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, cons
 	data.LightDirection = lightDir;
 	data.ShadowBias = ShadowBias;
 	data.ShadowIntensity = ShadowIntensity;
-	data.Padding[0] = 0.0f;
-	data.Padding[1] = 0.0f;
-	data.Padding[2] = 0.0f;
 
 	_shadowCompositeEffect->SetData(0, &data, sizeof(data));
 
@@ -207,14 +168,11 @@ void ShadowMapRenderer::End()
 
 	// Unbind the shadow map depth buffer
 	context->UnbindDepthBuffer();
-	context->SetRenderTarget(nullptr);
 
 	// Apply shadows as a screen-space composite
 	// This requires the light view-projection matrix
 	Math::Matrix4x4 lightViewProj = ComputeLightViewMatrix(LightDirection) * ComputeLightProjectionMatrix();
 	_applyShadows(lightViewProj, LightDirection);
-
-	context->SetRenderTargetAndDepth(nullptr, nullptr);
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
@@ -222,7 +180,7 @@ IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
 	return _shadowMap.get();
 }
 
-RenderPassType ShadowMapRenderer::GetRenderPassType() const noexcept
+void ShadowMapRenderer::Draw(ModelMeshPart* part, Effect* effect)
 {
-	return RenderPassType::ShadowMap;
+	_owner->Batcher.Draw(part, effect, RenderPassType::ShadowMap);
 }

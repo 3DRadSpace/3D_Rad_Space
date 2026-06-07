@@ -24,13 +24,11 @@ void MeshBatcher::DrawCall::Draw(IGraphicsCommandList* context, Effect* effect, 
 {
 	if (!context) return;
 	if (!MeshPart) return;
-
+	
 	effect = effect ? effect : MeshPart->GetShaders();
 	if (!effect) return;
 
 	effect->SetAll();
-
-	// Set the world transform matrix
 	if (Transforms.size() > 0 && idxTransform < Transforms.size())
 	{
 		effect->SetData<Math::Matrix4x4>(&Transforms[idxTransform], 0, 0);
@@ -57,8 +55,7 @@ void MeshBatcher::DrawCall::Draw(IGraphicsCommandList* context, Effect* effect, 
 
 MeshBatcher::MeshBatcher(IGraphicsDevice* device) :
 	_device(device),
-	_beginCalled(false),
-	_shadowDepthEffect(nullptr)
+	_beginCalled(false)
 {
 }
 
@@ -73,31 +70,6 @@ void MeshBatcher::Draw(ModelMeshPart* meshPart, Effect* effect, RenderPassType p
 	if (!_beginCalled)
 		throw std::logic_error("Begin() must be called before Draw().");
 
-	// For opaque objects, also submit to shadow map pass
-	// This ensures shadow-casting geometry is rendered in both passes
-	if (passType == RenderPassType::Opaque)
-	{
-		// Add to shadow map pass
-		auto shadowIt = std::find_if(_drawCalls.begin(), _drawCalls.end(),
-			[meshPart](const DrawCall& dc) {
-				return dc.MeshPart == meshPart && dc.PassType == RenderPassType::ShadowMap;
-			});
-		if (shadowIt != _drawCalls.end())
-		{
-			shadowIt->Transforms.push_back(meshPart->Transform);
-		}
-		else
-		{
-			DrawCall shadowCall;
-			shadowCall.MeshPart = meshPart;
-			shadowCall.PassType = RenderPassType::ShadowMap;
-			shadowCall.BoundEffect = effect;
-			shadowCall.Transforms.push_back(meshPart->Transform);
-			_drawCalls.push_back(std::move(shadowCall));
-		}
-	}
-
-	// Add to requested pass type
 	auto it = std::find_if(_drawCalls.begin(), _drawCalls.end(),
 		[meshPart, passType](const DrawCall& dc) {
 			return dc.MeshPart == meshPart && dc.PassType == passType;
@@ -111,7 +83,6 @@ void MeshBatcher::Draw(ModelMeshPart* meshPart, Effect* effect, RenderPassType p
 		DrawCall newCall;
 		newCall.MeshPart = meshPart;
 		newCall.PassType = passType;
-		newCall.BoundEffect = effect;
 		newCall.Transforms.push_back(meshPart->Transform);
 		_drawCalls.push_back(std::move(newCall));
 	}
@@ -147,48 +118,6 @@ void MeshBatcher::DrawAll()
 		}
 	}
 	_beginCalled = false;
-}
-
-void MeshBatcher::DrawAll(RenderPassType passType)
-{
-	for (auto& drawCall : _drawCalls)
-	{
-		if (drawCall.PassType == passType)
-		{
-			// Use shadow depth shader for shadow map pass
-			Effect* effectOverride = (passType == RenderPassType::ShadowMap && _shadowDepthEffect) 
-				? _shadowDepthEffect 
-				: nullptr;
-
-			for (size_t i = 0; i < drawCall.Transforms.size(); i++)
-			{
-				if (effectOverride)
-				{
-					// For shadow pass, set both world and light matrices
-					struct ShadowMatrices
-					{
-						Math::Matrix4x4 World;
-						Math::Matrix4x4 LightViewProj;
-					} matrices;
-					matrices.World = drawCall.Transforms[i];
-					matrices.LightViewProj = _lightViewProj;
-					effectOverride->SetData(&matrices, 0);
-
-					drawCall.Draw(_device->ImmediateContext(), effectOverride, i);
-				}
-				else
-				{
-					drawCall.Draw(_device->ImmediateContext(), i);
-				}
-			}
-		}
-	}
-}
-
-void MeshBatcher::SetShadowDepthEffect(Effect* effect, const Math::Matrix4x4& lightViewProj)
-{
-	_shadowDepthEffect = effect;
-	_lightViewProj = lightViewProj;
 }
 
 void MeshBatcher::End()
