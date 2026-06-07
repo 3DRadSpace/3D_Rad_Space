@@ -4,6 +4,7 @@
 #include "../IDepthStencilBuffer.hpp"
 #include "../IRasterizerState.hpp"
 #include "../IDepthStencilState.hpp"
+#include "../Effect.hpp"
 #include "../Viewport.hpp"
 #include "../../Math/Matrix4x4.hpp"
 
@@ -15,8 +16,10 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
 		std::unique_ptr<PostProcessEffect> _shadowCompositeEffect;
+		std::unique_ptr<Effect> _shadowDepthEffect;
 
 		void _createShadowStates();
+		void _createShadowDepthShader();
 		void _applyShadows(const Math::Matrix4x4& lightViewProj, const Math::Vector3& lightDirection);
 	public:
 		ShadowMapRenderer(IGraphicsDevice* device, RenderingManager* owner);
@@ -57,7 +60,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// <returns>Light projection matrix</returns>
 		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
 
-		void Draw(ModelMeshPart* part, Effect* effect = nullptr) override;
+		RenderPassType GetRenderPassType() const noexcept override;
 
 		void Begin() override;
 		void End() override;

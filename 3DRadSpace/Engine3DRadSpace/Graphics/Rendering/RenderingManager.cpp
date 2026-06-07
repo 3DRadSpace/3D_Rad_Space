@@ -54,7 +54,7 @@ void RenderingManager::Draw()
 	for (auto& renderer : _renderers)
 	{
 		renderer->Begin();
-		Batcher.DrawAll();
+		Batcher.DrawAll(renderer->GetRenderPassType());
 		renderer->End();
 	};
 

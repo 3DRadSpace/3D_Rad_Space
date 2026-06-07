@@ -13,9 +13,14 @@ IRenderer::IRenderer(IGraphicsDevice* device, RenderingManager* owner) :
 {
 }
 
+RenderPassType IRenderer::GetRenderPassType() const noexcept
+{
+	return RenderPassType::Opaque;
+}
+
 void IRenderer::Draw(ModelMeshPart* part, Effect* effect)
 {
-	this->_owner->Batcher.Draw(part, effect);
+	this->_owner->Batcher.Draw(part, effect, GetRenderPassType());
 }
 
 RenderingManager* IRenderer::GetOwner() const noexcept
