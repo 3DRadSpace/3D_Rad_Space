@@ -13,6 +13,8 @@ namespace Engine3DRadSpace::Physics
 	class IStaticCollider;
 	class IDynamicCollider;
 	class ICharacterController;
+	class IJoint;
+	enum class JointType;
 
 	class E3DRSP_PHYSICS_EXPORT IPhysicsEngine : public IService
 	{
@@ -28,6 +30,7 @@ namespace Engine3DRadSpace::Physics
 		) = 0;
 		virtual std::unique_ptr<IDynamicCollider> CreateDynamicCollider() = 0;
 		virtual std::unique_ptr<ICharacterController> CreateCharacterController(float radius, float height, const Math::Vector3& position = Math::Vector3::Zero()) = 0;
+		virtual std::unique_ptr<IJoint> CreateJoint(JointType type) = 0;
 		virtual double dt() const noexcept = 0;
 
 		virtual void SetGravity(const Math::Vector3& gravity) = 0;

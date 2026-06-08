@@ -4,6 +4,7 @@
 #include "StaticMeshCollider.hpp"
 #include "DynamicCollider.hpp"
 #include "CharacterController.hpp"
+#include "Joint.hpp"
 #include "ErrorCallback.hpp"
 #include <extensions/PxDefaultCpuDispatcher.h>
 #include <extensions/PxDefaultAllocator.h>
@@ -134,6 +135,11 @@ std::unique_ptr<IDynamicCollider> PhysicsEngine::CreateDynamicCollider()
 std::unique_ptr<ICharacterController> PhysicsEngine::CreateCharacterController(float radius, float height, const Math::Vector3& position)
 {
 	return std::make_unique<CharacterController>(this, height, radius, position);
+}
+
+std::unique_ptr<IJoint> PhysicsEngine::CreateJoint(JointType type)
+{
+	return std::make_unique<Joint>(this, type);
 }
 
 double PhysicsEngine::dt() const noexcept

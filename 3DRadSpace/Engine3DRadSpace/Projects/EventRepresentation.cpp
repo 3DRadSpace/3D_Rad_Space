@@ -7,6 +7,12 @@ using namespace Engine3DRadSpace::Projects;
 using namespace Engine3DRadSpace::Reflection;
 using namespace Engine3DRadSpace::Objects;
 
+EventInvocationRepresentation::EventInvocationRepresentation() : 
+	OwnerObject(std::numeric_limits<size_t>::max()), 
+	FunctionID(std::numeric_limits<size_t>::max())
+{
+}
+
 std::any EventInvocationRepresentation::Invoke(ObjectList* list)
 {
 	auto obj = list->operator[](OwnerObject);
@@ -48,18 +54,13 @@ std::optional<Event> EventRepresentation::Reconstruct(ObjectList* list) const
 
 	for (auto& fn : BoundFunctions)
 	{
-		auto fnRelPtr = fn.FindFunction(list->operator[](fn.OwnerObject), fn.FunctionID)->Clone().release();
+		auto fnRelPtr = fn.FindFunction(list->operator[](fn.OwnerObject), fn.FunctionID);
 		if(!fnRelPtr) continue;
 
-		auto fnPtr = dynamic_cast<IReflectedFunction*>(fnRelPtr);
-		if (!fnPtr)
-		{
-			delete fnRelPtr;
-			continue;
-		}
+		auto clonedFn = static_cast<IReflectedFunction*>(fnRelPtr->Clone().release());
 
 		std::unique_ptr<IReflectedFunction> boundFn;
-		boundFn.reset(fnPtr);
+		boundFn.reset(clonedFn);
 
 		e.Bind(std::move(boundFn));
 	}

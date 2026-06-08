@@ -22,6 +22,8 @@ REFL_FWD(Cone)
 REFL_FWD(Cylinder)
 REFL_FWD(FreeCam)
 REFL_FWD(RigidStatic)
+REFL_FWD(RigidDynamic)
+REFL_FWD(Joint)
 REFL_FWD(FPCharacter)
 REFL_FWD(SettingsManager)
 REFL_FWD(Force)
@@ -51,13 +53,12 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&ExitFadeReflInstance, //ExitFade
 		&FogReflInstance, //Fog
 		&ForceReflInstance, //Force
+		&FPCharacterReflInstance,
 		&SettingsManagerReflInstance, //SettingsManager
 		&GForceReflInstance, //G-Force 
-		/*
-		CameraReflInstance, //Group
-		CameraReflInstance, //Network chat
-		*/
+		&JointReflInstance,
 		&RigidStaticReflInstance, //RigidStatic
+		&RigidDynamicReflInstance, //RigidDynamic
 		&SkinmeshReflInstance, //Skinmesh
 		&SkyboxReflInstance, //Skybox
 		&SkyColorReflInstance,
@@ -74,7 +75,6 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&CylinderReflInstance,
 		&FreeCamReflInstance,
 		&TimerReflInstance,
-		&FPCharacterReflInstance
 	};
 
 	e3drsp_internal_objects_list.insert_range(e3drsp_internal_objects_list.begin(), ppDefaultObjects);

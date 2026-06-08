@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Projects
 	/// <summary>
 	/// Serializable representation of a member function call.
 	/// </summary>
-	struct EventInvocationRepresentation
+	struct E3DRSP_PROJECTS_EXPORT EventInvocationRepresentation
 	{
 		/// <summary>
 		/// ID of the object in the ObjectList.
@@ -26,6 +26,8 @@ namespace Engine3DRadSpace::Projects
 		/// </summary>
 		std::vector<std::any> Args;
 
+		EventInvocationRepresentation();
+
 		std::any Invoke(Objects::ObjectList* list);
 		std::any Invoke(Objects::IObject* obj);
 
@@ -35,7 +37,7 @@ namespace Engine3DRadSpace::Projects
 	/// <summary>
 	/// Serializable representation of an <see cref="Event"/>.
 	/// </summary>
-	struct EventRepresentation
+	struct E3DRSP_PROJECTS_EXPORT EventRepresentation
 	{
 		std::vector<EventInvocationRepresentation> BoundFunctions;
 

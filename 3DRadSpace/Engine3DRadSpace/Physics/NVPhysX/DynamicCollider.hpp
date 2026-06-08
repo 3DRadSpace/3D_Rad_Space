@@ -7,6 +7,7 @@
 
 namespace Engine3DRadSpace::Physics::NVPhysX
 {
+	class Joint;
 	class E3DRSP_PHYSICS_OBJ_EXPORT DynamicCollider : public IDynamicCollider
 	{
 	protected:
@@ -72,6 +73,7 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 		void AddAngularVelocity(const Math::Vector3& v) override;
 
 		friend class PhysicsEngine;
+		friend class Joint;
 
 		~DynamicCollider() override = default;
 	};

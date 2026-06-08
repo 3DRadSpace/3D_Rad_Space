@@ -3,6 +3,7 @@
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
 #include <Engine3DRadSpace/Objects/IObject.hpp>
 #include <Engine3DRadSpace/Reflection/Event.hpp>
+#include <Engine3DRadSpace/Projects/EventRepresentation.hpp>
 
 EventControl::EventControl(
 	HWND owner, 
@@ -10,7 +11,8 @@ EventControl::EventControl(
 	int x,
 	int y, 
 	Engine3DRadSpace::Reflection::Event* event
-) : IControl(owner, hInstance)
+) : IControl(owner, hInstance),
+	_event(event)
 {
 	HDC hdc = GetDC(owner);
 
@@ -90,14 +92,14 @@ void EventControl::HandleClick(HWND clickedWindow)
 
 			if (event.has_value())
 			{
-
+				
 			}
 		});
 	}
 
 	if(clickedWindow == _btnRemoveCall)
 	{
-
+		
 	}
 }
 

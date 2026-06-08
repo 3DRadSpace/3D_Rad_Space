@@ -68,9 +68,11 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 		std::unique_ptr<IDynamicCollider> CreateDynamicCollider() override;
 
 		std::unique_ptr<ICharacterController> CreateCharacterController(float radius, float height, const Math::Vector3& position = Math::Vector3::Zero()) override;
+		std::unique_ptr<IJoint> CreateJoint(JointType type) override;
 		double dt() const noexcept override;
 
 		friend class CharacterController;
+		friend class Joint;
 
 		~PhysicsEngine() override;
 	};

@@ -135,10 +135,17 @@ void AddObjectDialog::createForms()
 	std::unordered_map<std::string, int> categories;
 
 	//populate the dictionaries
-	for ( int i = IDB_PNG1, j = 0, k = 1 ; i <= IDB_PNG24 && j < Objects.size(); i++, j++, k++)
+	int k = 1;
+	for (size_t j = 0; j < Objects.size(); j++)
 	{
-		auto image = MAKEINTRESOURCEW(i);
-		
+		int pngResourceID = IDB_PNG1 + static_cast<int>(j);
+		if (pngResourceID > IDB_PNG24)
+		{
+			pngResourceID = IDB_PNG24;
+		}
+
+		auto image = MAKEINTRESOURCEW(pngResourceID);
+
 		int categoryID = 0;
 
 		if(categories.find(Objects[j]->Category) == categories.end())
@@ -146,12 +153,13 @@ void AddObjectDialog::createForms()
 			categories[Objects[j]->Category] = k;
 			categoryID = k;
 			addCategory(Objects[j]->Category, categoryID);
+			k++;
 		}
 		else
 		{
 			categoryID = categories[Objects[j]->Category];
 		}
-		
+
 		objects.emplace_back(std::string(Objects[j]->Name), objectItem{image, categoryID});
 	}
 

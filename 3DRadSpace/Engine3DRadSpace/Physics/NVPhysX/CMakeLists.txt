@@ -9,6 +9,8 @@ add_library(3DRadSpace.Physics.NVPhysX STATIC
 	"DynamicCollider.cpp"
 	"ErrorCallback.hpp"
 	"ErrorCallback.cpp"
+	"Joint.hpp"
+	"Joint.cpp"
 	"PhysicsEngine.hpp"
 	"PhysicsEngine.cpp"
 	"StaticMeshCollider.hpp"

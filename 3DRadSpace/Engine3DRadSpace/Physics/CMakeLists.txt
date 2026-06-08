@@ -9,9 +9,13 @@ add_library(3DRadSpace.Physics SHARED
 	"ICollider.cpp"
 	"IDynamicCollider.hpp"
 	"IDynamicCollider.cpp"
+	"IJoint.hpp"
+	"IJoint.cpp"
 	"IPhysicsEngine.hpp"
 	"IStaticCollider.hpp"
 	"IStaticCollider.cpp"
+	"JointType.hpp"
+	"JointType.refl.cpp"
 	"PhysicsSettings.hpp"
 )
 

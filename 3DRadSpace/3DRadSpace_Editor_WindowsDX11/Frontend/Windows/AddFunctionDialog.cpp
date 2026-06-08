@@ -3,6 +3,7 @@
 #include "EditorWindow.hpp"
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
 #include <tchar.h>
+#undef max
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -85,7 +86,11 @@ AddFunctionDialog::AddFunctionDialog(
 
 std::optional<EventInvocationRepresentation> AddFunctionDialog::ShowDialog()
 {
-	return std::nullopt;
+	if (_value.FunctionID == std::numeric_limits<size_t>::max() || _value.OwnerObject == std::numeric_limits<size_t>::max())
+	{
+		return std::nullopt;
+	}
+	return std::make_optional<EventInvocationRepresentation>(_value);
 }
 
 void AddFunctionDialog::createForms()
