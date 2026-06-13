@@ -5,6 +5,8 @@ project("Engine3DRadSpace.Reflection")
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "*.cpp" "*.hpp" )
 
 add_library(3DRadSpace.Reflection SHARED
+	"Any.hpp"
+	"Any.cpp"
 	"EnumEntry.hpp"
 	"Event.hpp"
 	"Event.cpp"

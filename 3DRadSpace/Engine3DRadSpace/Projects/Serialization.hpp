@@ -1,6 +1,7 @@
 #pragma once
 #include "../Reflection/Reflection.hpp"
 #include "../Games/Game.hpp"
+#include "EventRepresentation.hpp"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -56,4 +57,7 @@ namespace Engine3DRadSpace::Projects
 		/// <returns>True if succeded.</returns>
 		static bool SaveProject(Objects::ObjectList* lst, Content::ContentManager* content, const std::filesystem::path& projectPath);
 	};
+
+	void to_json(json& j, const EventRepresentation& event);
+	void from_json(const json& j, EventRepresentation& event);
 }

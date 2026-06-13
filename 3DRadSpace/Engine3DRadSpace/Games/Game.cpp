@@ -29,6 +29,7 @@ void Game::_initialize()
 	RequireService(typeid(PostProcessCollection));
 	RequireService(typeid(Physics::IPhysicsEngine));
 	RequireService(typeid(Rendering::RenderingManager));
+	RequireService(typeid(ObjectList));
 
 	Internal::RegisterDefaultTypes(Content.get());
 
@@ -86,6 +87,14 @@ IService* Game::RequireService(const std::type_index& type)
 		AddService(RenderingManager.get());
 		return RenderingManager.get();
 	}
+	if (typeid(ObjectList) == type)
+	{
+		if (Objects) return Objects.get();
+		Objects = std::make_unique<Objects::ObjectList>(this);
+		AddService(Objects.get());
+		return Objects.get();
+	}
+
 	return nullptr;
 }
 

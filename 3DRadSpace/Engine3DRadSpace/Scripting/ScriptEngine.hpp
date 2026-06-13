@@ -1,5 +1,6 @@
 #pragma once
 #include "IScript.hpp"
+#include "../Core/IService.hpp"
 
 namespace Engine3DRadSpace::Scripting
 {
@@ -9,7 +10,7 @@ namespace Engine3DRadSpace::Scripting
 	/// <remarks>
 	/// This class is non-copyable, non-moveable, as one instance per application is expected, usually owned by a Game class.
 	/// </remarks>
-	class E3DRSP_SCRIPTING_EXPORT ScriptEngine
+	class E3DRSP_SCRIPTING_EXPORT ScriptEngine : public IService
 	{
 	public:
 		ScriptEngine() = default;
