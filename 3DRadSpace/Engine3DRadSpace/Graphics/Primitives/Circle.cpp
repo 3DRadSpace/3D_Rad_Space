@@ -25,7 +25,7 @@ Circle::Circle(IGraphicsDevice* device, float radius, Color color, unsigned reso
 	for(; i < resolution - 1; ++i, phi += dp)
 	{
 		vertices[i] = VertexPositionColor(
-			Vector3(cos(phi), 0, sin(phi)),
+			Vector3(radius * cos(phi), 0, radius * sin(phi)),
 			color
 		);
 	}

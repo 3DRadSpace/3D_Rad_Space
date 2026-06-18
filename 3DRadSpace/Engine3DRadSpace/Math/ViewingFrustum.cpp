@@ -59,11 +59,11 @@ namespace Engine3DRadSpace::Math
 		// Calculate frustum corners
 		Matrix4x4 invViewProj = Matrix4x4::Invert(viewProj);
 
-		// Near plane corners (z = -1 in NDC)
-		_corners[0] = Vector3::Transform(Vector3(-1, -1, -1), invViewProj);
-		_corners[1] = Vector3::Transform(Vector3(1, -1, -1), invViewProj);
-		_corners[2] = Vector3::Transform(Vector3(-1, 1, -1), invViewProj);
-		_corners[3] = Vector3::Transform(Vector3(1, 1, -1), invViewProj);
+		// Near plane corners (z = 0 in NDC for DirectX-style [0,1] depth range)
+		_corners[0] = Vector3::Transform(Vector3(-1, -1, 0), invViewProj);
+		_corners[1] = Vector3::Transform(Vector3(1, -1, 0), invViewProj);
+		_corners[2] = Vector3::Transform(Vector3(-1, 1, 0), invViewProj);
+		_corners[3] = Vector3::Transform(Vector3(1, 1, 0), invViewProj);
 
 		// Far plane corners (z = 1 in NDC)
 		_corners[4] = Vector3::Transform(Vector3(-1, -1, 1), invViewProj);
