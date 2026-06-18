@@ -19,10 +19,24 @@ namespace Engine3DRadSpace::Reflection
 		std::type_index _type;
 		void(*_destroyFn)(void*);
 
+		FieldRepresentation (*_fldRepr)();
+
 		template<typename T>
 		void _setDestroyFn(Tag<T> dummy)
 		{
 			(void)dummy;
+
+			_fldRepr = []() -> FieldRepresentation
+				{
+					if constexpr (requires { ReflectableType<T>; })
+					{
+						return FieldRepresentationInstance<T>{};
+					}
+					else
+					{
+						return FieldRepresentation({});
+					}
+				};
 
 			_destroyFn = [](void* storage)
 			{
@@ -138,6 +152,8 @@ namespace Engine3DRadSpace::Reflection
 		
 		void Reset() noexcept;
 	
+		FieldRepresentation GetRepresentation() const;
+
 		~Any();
 	};
 }

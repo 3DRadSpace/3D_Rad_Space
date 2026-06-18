@@ -2,6 +2,7 @@
 #include "../../Core/IGame.hpp"
 #include "../../Games/Game.hpp"
 #include "../Gizmos.hpp"
+#include "../Gizmos/SphereGizmo.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;

@@ -58,7 +58,9 @@ float Box::Intersects(const Math::Ray& r)
 
 Gizmos::IGizmo* Box::GetGizmo() const noexcept
 {
-	return Internal::GizmoOf<Box>(this);
+	auto gizmo =  Internal::GizmoOf<Box>(this);
+	gizmo->AllowRotating = false;
+	return gizmo;
 }
 
 Reflection::UUID Box::GetUUID() const noexcept

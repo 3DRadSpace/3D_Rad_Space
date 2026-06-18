@@ -50,12 +50,14 @@ float Cylinder::Intersects(const Math::Ray& r)
 
 Math::Matrix4x4 Cylinder::GetLocalMatrix()
 {
-	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateTranslation(Position);
+	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
 Gizmos::IGizmo* Cylinder::GetGizmo() const noexcept
 {
-	return Internal::GizmoOf<Cylinder>(this);
+	auto gizmo =  Internal::GizmoOf<Cylinder>(this);
+	gizmo->AllowScaling = false;
+	return gizmo;
 }
 
 Reflection::UUID Cylinder::GetUUID() const noexcept
@@ -73,6 +75,7 @@ REFL_BEGIN(Cylinder, "Cylinder", "3D Primitives", "3D box")
 	REFL_FIELD(Cylinder, std::string, Name, "Name", "Cylinder", "Object's name")
 	REFL_FIELD(Cylinder, bool, Visible, "Visible", true, "Is the object visible?")
 	REFL_FIELD(Cylinder, Vector3, Position, "Position", Vector3::Zero(), "Object's position in world space")
+	REFL_FIELD(Cylinder, Quaternion, Rotation, "Rotation", Quaternion(), "Object's rotation in world space")
 	REFL_FIELD(Cylinder, float, Radius, "Radius", 1.0f, "Scale")
 	REFL_FIELD(Cylinder, float, Height, "Height", 1.0f, "Scale")
 	REFL_FIELD(Cylinder, Color, Colour, "Color", Colors::White, "Color")

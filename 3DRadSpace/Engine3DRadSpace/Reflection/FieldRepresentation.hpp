@@ -125,7 +125,7 @@ namespace Engine3DRadSpace::Reflection
 	};
 
 	template<typename T>
-	class FieldRepresentationInstance : FieldRepresentation
+	class FieldRepresentationInstance : public FieldRepresentation
 	{
 	};
 

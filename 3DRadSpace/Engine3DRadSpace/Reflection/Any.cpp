@@ -6,6 +6,7 @@ using namespace Engine3DRadSpace::Reflection;
 Any::Any() :
 	_type(typeid(void)),
 	_destroyFn(nullptr),
+	_fldRepr(nullptr),
 	_storage()
 {
 }
@@ -13,6 +14,7 @@ Any::Any() :
 Any::Any(const Any& other) :
 	_type(other._type),
 	_destroyFn(other._destroyFn),
+	_fldRepr(other._fldRepr),
 	_storage()
 {
 }
@@ -23,6 +25,7 @@ Any& Any::operator=(const Any& other)
 	Reset();
 	_type = other._type;
 	_destroyFn = other._destroyFn;
+	_fldRepr = other._fldRepr;
 	if (other.HasValue())
 	{
 		if (sizeof(other) <= smallObjectSize)
@@ -45,6 +48,7 @@ Any& Any::operator=(Any&& other) noexcept
 	Reset();
 	_type = other._type;
 	_destroyFn = other._destroyFn;
+	_fldRepr = other._fldRepr;
 	if (other.HasValue())
 	{
 		if (sizeof(other) <= smallObjectSize)
@@ -95,4 +99,13 @@ void Any::Reset() noexcept
 Any::~Any()
 {
 	Reset();
+}
+
+FieldRepresentation Any::GetRepresentation() const
+{
+	if (_fldRepr)
+	{
+		return _fldRepr();
+	}
+	return FieldRepresentation({});
 }

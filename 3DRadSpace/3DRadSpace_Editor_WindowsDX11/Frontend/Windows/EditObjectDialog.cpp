@@ -828,7 +828,7 @@ void EditObjectDialog::setObject()
 
 					ColorBox *cb = static_cast<ColorBox *>(std::get<IControl *>(windows[i++]));
 					Color color = cb->GetColor();
-					color.A = alpha / 255.0f;
+					color.A = alpha;
 					color.A = std::clamp(color.A, 0.0f, 1.0f);
 
 					memcpy_s(newStruct.get() + j, sizeof(Color), &color, sizeof(Color));

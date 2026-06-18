@@ -24,7 +24,7 @@ namespace Engine3DRadSpace::Objects::Gizmos
 		bool Selected = false;
 
 		bool Allow3DRendering = true;
-		bool Allow2DRendering = true;
+		bool Allow2DRendering = false;
 		bool AllowUpdating = false;
 
 		bool AllowTranslating = true;

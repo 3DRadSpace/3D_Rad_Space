@@ -53,12 +53,18 @@ float Cone::Intersects(const Math::Ray& r)
 
 Math::Matrix4x4 Cone::GetLocalMatrix()
 {
-	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateTranslation(Position);
+	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
 Gizmos::IGizmo* Cone::GetGizmo() const noexcept
 {
-	return Internal::GizmoOf<Cone>(this);
+	auto gizmo =  Internal::GizmoOf<Cone>(this);
+	gizmo->Allow3DRendering = true;
+	gizmo->AllowScaling = false;
+	gizmo->AllowRotating = true;
+	gizmo->AllowTranslating = true;
+
+	return gizmo;
 }
 
 Reflection::UUID Cone::GetUUID() const noexcept
@@ -76,6 +82,7 @@ REFL_BEGIN(Cone, "Cone", "3D Primitives", "3D box")
 	REFL_FIELD(Cone, std::string, Name, "Name", "Cone", "Object's name")
 	REFL_FIELD(Cone, bool, Visible, "Visible", true, "Is the object visible?")
 	REFL_FIELD(Cone, Vector3, Position, "Position", Vector3::Zero(), "Object's position in world space")
+	REFL_FIELD(Cone, Quaternion, Rotation, "Rotation", Quaternion(), "Object's rotation in world space")
 	REFL_FIELD(Cone, float, Radius, "Radius", 1.0f, "Scale")
 	REFL_FIELD(Cone, float, Height, "Height", 1.0f, "Scale")
 	REFL_FIELD(Cone, Color, Colour, "Color", Colors::White, "Color")
