@@ -19,6 +19,11 @@ void DynamicCollider::_generateRigidbody()
 {
 	auto nvPhysics = static_cast<physx::PxPhysics*>(static_cast<PhysicsEngine*>(_physics)->GetPhysics());
 
+	if(nvPhysics == nullptr)
+	{
+		throw std::runtime_error("PhysX physics object is null");
+	}
+
 	auto material = nvPhysics->createMaterial(_staticFriction, _dynamicFriction, _restitution);
 	_material.reset(material);
 
@@ -29,17 +34,46 @@ void DynamicCollider::_generateRigidbody()
 	transform.p = physx::PxVec3(p.X, p.Y, p.Z);
 	transform.q = physx::PxQuat(-q.X, -q.Y, -q.Z, q.W);
 
+	// Validate transform
+	if(!transform.isValid())
+	{
+		throw std::runtime_error("Invalid transform for dynamic rigidbody creation");
+	}
+
 	auto rigidDynamic = nvPhysics->createRigidDynamic(transform);
+	if(rigidDynamic == nullptr)
+	{
+		throw std::runtime_error("Failed to create PhysX dynamic rigidbody");
+	}
+
 	rigidDynamic->setMass(_mass);
 	rigidDynamic->setLinearDamping(_linearDamping);
 	rigidDynamic->setAngularDamping(_angularDamping);
 	rigidDynamic->setMaxAngularVelocity(_maxAngularVelocity.X);
 	rigidDynamic->setLinearVelocity(physx::PxVec3(_linearVelocity.X, _linearVelocity.Y, _linearVelocity.Z));
 	rigidDynamic->setAngularVelocity(physx::PxVec3(_angularVelocity.X, _angularVelocity.Y, _angularVelocity.Z));
+
+	// Enable CCD (Continuous Collision Detection) to prevent tunneling
+	rigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
+
+	// Disable sleeping to ensure the rigidbody stays active
+	rigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+	rigidDynamic->setSleepThreshold(0.0f);
+	//rigidDynamic->wakeUp();
+
 	_rigidbody.reset(rigidDynamic);
 
 	auto scene = static_cast<physx::PxScene*>(_physics->GetScene());
-	scene->addActor(*_rigidbody);
+	if(scene == nullptr)
+	{
+		throw std::runtime_error("PhysX scene is null");
+	}
+
+	bool success = scene->addActor(*_rigidbody);
+	if(!success)
+	{
+		throw std::runtime_error("Failed to add dynamic rigidbody to PhysX scene");
+	}
 }
 
 float DynamicCollider::GetMass() const
@@ -271,12 +305,23 @@ void DynamicCollider::AttachShape(const Math::BoundingBox & box)
 	physx::PxBoxGeometry boxGeom(box.Scale.X / 2, box.Scale.Y / 2, box.Scale.Z / 2);
 
 	auto shape = nvPhysics->createShape(boxGeom, *_material);
+
+	// Enable simulation and scene query flags
+	shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+	shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
 	shape->setLocalPose(physx::PxTransform(physx::PxVec3(
 		box.Position.X - (box.Scale.X / 2),
 		box.Position.Y - (box.Scale.Y / 2),
 		box.Position.Z - (box.Scale.Z / 2)
 	)));
 	_rigidbody->attachShape(*shape);
+
+	// Update mass and inertia based on attached shapes
+	if(_mass > 0.0f)
+	{
+		physx::PxRigidBodyExt::updateMassAndInertia(*_rigidbody, _mass);
+	}
 }
 
 void DynamicCollider::AttachShape(const Math::BoundingSphere & sphere)
@@ -286,8 +331,19 @@ void DynamicCollider::AttachShape(const Math::BoundingSphere & sphere)
 
 	physx::PxSphereGeometry sphereGeom(sphere.Radius);
 	auto shape = nvPhysics->createShape(sphereGeom, *_material);
+
+	// Enable simulation and scene query flags
+	shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+	shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
 	shape->setLocalPose(physx::PxTransform(physx::PxVec3(sphere.Center.X, sphere.Center.Y, sphere.Center.Z)));
 	_rigidbody->attachShape(*shape);
+
+	// Update mass and inertia based on attached shapes
+	if(_mass > 0.0f)
+	{
+		physx::PxRigidBodyExt::updateMassAndInertia(*_rigidbody, _mass);
+	}
 }
 
 void DynamicCollider::SetKinematic(bool isKinematic)

@@ -46,6 +46,9 @@ PhysicsEngine::PhysicsEngine(const PhysicsSettings& settings) :
 	sceneDesc.cpuDispatcher = _cpuDispatcher;
 	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 
+	// Enable CCD (Continuous Collision Detection) at scene level
+	sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
+
 	_scene = _physics->createScene(sceneDesc);
 	if (_scene == nullptr) throw Exception("Failed to create PxScene!");
 

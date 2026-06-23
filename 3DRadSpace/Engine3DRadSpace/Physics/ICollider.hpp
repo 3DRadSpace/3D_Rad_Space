@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Physics
 	protected:
 		IPhysicsEngine* _physics;
 
-		float _mass = 0;
+		float _mass = 1.0f;
 		Math::Vector3 _position;
 		Math::Quaternion _rotation;
 

@@ -197,8 +197,11 @@ void RigidDynamic::Load(const std::filesystem::path& path)
 
 void RigidDynamic::Update()
 {
-	if(_collider)
-		_collider->UpdateTransform();
+	if (_collider)
+	{
+		Position = _collider->GetPosition();
+		Rotation = _collider->GetRotation();
+	}
 }
 
 void RigidDynamic::Draw3D()

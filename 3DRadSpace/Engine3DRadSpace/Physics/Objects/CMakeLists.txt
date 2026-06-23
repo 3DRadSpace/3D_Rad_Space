@@ -35,7 +35,7 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		target_compile_options(3DRadSpace.Physics.Objects PRIVATE "/fsanitize=address")
+		#target_compile_options(3DRadSpace.Physics.Objects PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Physics.Objects PRIVATE [[E3DRSP_PHYSICS_OBJ_EXPORT=__declspec(dllexport)]])

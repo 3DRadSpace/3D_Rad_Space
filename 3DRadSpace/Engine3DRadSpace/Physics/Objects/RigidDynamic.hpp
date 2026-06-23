@@ -15,12 +15,12 @@ namespace Engine3DRadSpace::Physics::Objects
 
 		struct physicsProperties
 		{
-			float mass = 0.0f;
+			float mass = 1.0f;
 			float linearDamping = 0.0f;
-			float angularDamping = 0.0f;
-			float staticFriction = 0.0f;
-			float dynamicFriction = 0.0f;
-			float restitution = 0.0f;
+			float angularDamping = 0.05f;
+			float staticFriction = 0.5f;
+			float dynamicFriction = 0.5f;
+			float restitution = 0.5f;
 			Math::Vector3 linearVelocity = Math::Vector3::Zero();
 			Math::Vector3 angularVelocity = Math::Vector3::Zero();
 			Math::Vector3 maxAngularVelocity = Math::Vector3(100.0f, 100.0f, 100.0f);
