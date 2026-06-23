@@ -74,8 +74,8 @@ Graphics::Primitives::Box* Box::GetPrimitive() const noexcept
 	return _box.get();
 }
 
-REFL_BEGIN(Box, "Box", "3D Primitives", "3D box")
-	REFL_FIELD(Box, std::string, Name, "Name", "Skinmesh", "Object's name")
+REFL_BEGIN(Box, "Box (AABB)", "3D Primitives", "3D box")
+	REFL_FIELD(Box, std::string, Name, "Name", "Box", "Object's name")
 	REFL_FIELD(Box, bool, Visible, "Visible", true, "Is the object visible?")
 	REFL_FIELD(Box, Vector3, Position, "Position", Vector3::Zero(), "Object's position in world space")
 	REFL_FIELD(Box, Vector3, Scale, "Scale", Vector3::One(), "Scale")

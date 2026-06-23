@@ -97,6 +97,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		json jsonField;
 		intptr_t offset = 0;
 		auto repr = field->Representation();
+		bool useDirectGet = (field->FieldOffset() == 0 && repr.Size() == 1);
 		for (int i = 0; auto &[reprType, sFieldName] : repr)
 		{
 			if(reprType == FieldRepresentationType::None) continue;
@@ -110,94 +111,140 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 			{
 				case FieldRepresentationType::Boolean:
 				{
-					jsonField[subFieldName][str_i] = field->GetAtOffset<bool>(objPtr, offset);
+					if (useDirectGet)
+						jsonField[subFieldName][str_i] = *static_cast<const bool*>(field->Get(objPtr));
+					else
+						jsonField[subFieldName][str_i] = field->GetAtOffset<bool>(objPtr, offset);
 					offset += sizeof(bool);
 					break;
 				}
 				case FieldRepresentationType::Integer:
 				{
-					switch (numSubFields)
+					if (useDirectGet)
 					{
-						case sizeof(int8_t) :
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<int8_t>(objPtr, offset);
-							offset += sizeof(int8_t);
-							break;
+							case sizeof(int8_t): jsonField[subFieldName][str_i] = *static_cast<const int8_t*>(field->Get(objPtr)); break;
+							case sizeof(int16_t): jsonField[subFieldName][str_i] = *static_cast<const int16_t*>(field->Get(objPtr)); break;
+							case sizeof(int32_t): jsonField[subFieldName][str_i] = *static_cast<const int32_t*>(field->Get(objPtr)); break;
+							case sizeof(int64_t): jsonField[subFieldName][str_i] = *static_cast<const int64_t*>(field->Get(objPtr)); break;
+							default: throw std::logic_error("Unknown integer type!");
 						}
-						case sizeof(int16_t) :
+						offset += numSubFields;
+					}
+					else
+					{
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<int16_t>(objPtr, offset);
-							offset += sizeof(int16_t);
-							break;
+							case sizeof(int8_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<int8_t>(objPtr, offset);
+								offset += sizeof(int8_t);
+								break;
+							}
+							case sizeof(int16_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<int16_t>(objPtr, offset);
+								offset += sizeof(int16_t);
+								break;
+							}
+							case sizeof(int32_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<int32_t>(objPtr, offset);
+								offset += sizeof(int32_t);
+								break;
+							}
+							case sizeof(int64_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<int64_t>(objPtr, offset);
+								offset += sizeof(int64_t);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown integer type!");
 						}
-						case sizeof(int32_t) :
-						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<int32_t>(objPtr, offset);
-							offset += sizeof(int32_t);
-							break;
-						}
-						case sizeof(int64_t) :
-						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<int64_t>(objPtr, offset);
-							offset += sizeof(int64_t);
-							break;
-						}
-						default:
-							throw std::logic_error("Unknown integer type!");
 					}
 					break;
 				}
 				case FieldRepresentationType::Unsigned:
 				{
-					switch (numSubFields)
+					if (useDirectGet)
 					{
-						case sizeof(uint8_t) :
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<uint8_t>(objPtr, offset);
-							offset += sizeof(uint8_t);
-							break;
+							case sizeof(uint8_t): jsonField[subFieldName][str_i] = *static_cast<const uint8_t*>(field->Get(objPtr)); break;
+							case sizeof(uint16_t): jsonField[subFieldName][str_i] = *static_cast<const uint16_t*>(field->Get(objPtr)); break;
+							case sizeof(uint32_t): jsonField[subFieldName][str_i] = *static_cast<const uint32_t*>(field->Get(objPtr)); break;
+							case sizeof(uint64_t): jsonField[subFieldName][str_i] = *static_cast<const uint64_t*>(field->Get(objPtr)); break;
+							default: throw std::logic_error("Unknown unsigned type!");
 						}
-						case sizeof(uint16_t) :
+						offset += numSubFields;
+					}
+					else
+					{
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<uint16_t>(objPtr, offset);
-							offset += sizeof(uint16_t);
-							break;
+							case sizeof(uint8_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<uint8_t>(objPtr, offset);
+								offset += sizeof(uint8_t);
+								break;
+							}
+							case sizeof(uint16_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<uint16_t>(objPtr, offset);
+								offset += sizeof(uint16_t);
+								break;
+							}
+							case sizeof(uint32_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<uint32_t>(objPtr, offset);
+								offset += sizeof(uint32_t);
+								break;
+							}
+							case sizeof(uint64_t) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<uint64_t>(objPtr, offset);
+								offset += sizeof(uint64_t);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown integer type!");
 						}
-						case sizeof(uint32_t) :
-						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<uint32_t>(objPtr, offset);
-							offset += sizeof(uint32_t);
-							break;
-						}
-						case sizeof(uint64_t) :
-						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<uint64_t>(objPtr, offset);
-							offset += sizeof(uint64_t);
-							break;
-						}
-						default:
-							throw std::logic_error("Unknown integer type!");
 					}
 					break;
 				}
 				case FieldRepresentationType::Float:
 				{
-					switch (numSubFields)
+					if (useDirectGet)
 					{
-						case sizeof(float) :
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<float>(objPtr, offset);
-							offset += sizeof(float);
-							break;
+							case sizeof(float): jsonField[subFieldName][str_i] = *static_cast<const float*>(field->Get(objPtr)); break;
+							case sizeof(double): jsonField[subFieldName][str_i] = *static_cast<const double*>(field->Get(objPtr)); break;
+							default: throw std::logic_error("Unknown floating point type!");
 						}
-						case sizeof(double) :
+						offset += numSubFields;
+					}
+					else
+					{
+						switch (numSubFields)
 						{
-							jsonField[subFieldName][str_i] = field->GetAtOffset<double>(objPtr, offset);
-							offset += sizeof(double);
-							break;
+							case sizeof(float) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<float>(objPtr, offset);
+								offset += sizeof(float);
+								break;
+							}
+							case sizeof(double) :
+							{
+								jsonField[subFieldName][str_i] = field->GetAtOffset<double>(objPtr, offset);
+								offset += sizeof(double);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown floating point type!");
 						}
-						default:
-							throw std::logic_error("Unknown floating point type!");
 					}
 					break;
 				}
@@ -303,6 +350,8 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int offset = 0;
 
+		bool useDirectSet = (field->FieldOffset() == 0 && repr.Size() == 1);
+
 		for (int i = 0; auto & [reprType, sFieldName] : repr)
 		{
 			if(reprType == FieldRepresentationType::None) continue;
@@ -318,108 +367,206 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				{
 					bool value = jsonField.get<bool>();
 
-					memcpy_s(newStruct.get() + offset, sizeof(bool), &value, sizeof(bool));
-					offset += sizeof(bool);
+					if (useDirectSet)
+						field->Set(r, &value);
+					else
+					{
+						memcpy_s(newStruct.get() + offset, sizeof(bool), &value, sizeof(bool));
+						offset += sizeof(bool);
+					}
 					break;
 				}
 				case FieldRepresentationType::Integer:
 				{
-					switch (structSize / field->Representation().Size())
+					if (useDirectSet)
 					{
-						case sizeof(int8_t) :
+						switch (structSize / field->Representation().Size())
 						{
-							int8_t value = jsonField.get<uint8_t>();
-
-							memcpy_s(newStruct.get() + offset, sizeof(int8_t), &value, sizeof(int8_t));
-							offset += sizeof(int8_t);
-							break;
+							case sizeof(int8_t):
+							{
+								int8_t value = jsonField.get<int8_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(int16_t):
+							{
+								int16_t value = jsonField.get<int16_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(int32_t):
+							{
+								int32_t value = jsonField.get<int32_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(int64_t):
+							{
+								int64_t value = jsonField.get<int64_t>();
+								field->Set(r, &value);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown signed type");
 						}
-						case sizeof(int16_t) :
+					}
+					else
+					{
+						switch (structSize / field->Representation().Size())
 						{
-							int16_t value = jsonField.get<uint16_t>();
+							case sizeof(int8_t) :
+							{
+								int8_t value = jsonField.get<uint8_t>();
 
-							memcpy_s(newStruct.get() + offset, sizeof(int16_t), &value, sizeof(int16_t));
-							offset += sizeof(int16_t);
-							break;
-						}
-						case sizeof(int32_t) :
-						{
-							int32_t value = jsonField.get<uint32_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(int8_t), &value, sizeof(int8_t));
+								offset += sizeof(int8_t);
+								break;
+							}
+							case sizeof(int16_t) :
+							{
+								int16_t value = jsonField.get<uint16_t>();
 
-							memcpy_s(newStruct.get() + offset, sizeof(int32_t), &value, sizeof(int32_t));
-							offset += sizeof(int32_t);
-							break;
-						}
-						case sizeof(int64_t) :
-						{
-							int64_t value = jsonField.get<uint64_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(int16_t), &value, sizeof(int16_t));
+								offset += sizeof(int16_t);
+								break;
+							}
+							case sizeof(int32_t) :
+							{
+								int32_t value = jsonField.get<uint32_t>();
 
-							memcpy_s(newStruct.get() + offset, sizeof(int64_t), &value, sizeof(int64_t));
-							offset += sizeof(int64_t);
-							break;
+								memcpy_s(newStruct.get() + offset, sizeof(int32_t), &value, sizeof(int32_t));
+								offset += sizeof(int32_t);
+								break;
+							}
+							case sizeof(int64_t) :
+							{
+								int64_t value = jsonField.get<uint64_t>();
+
+								memcpy_s(newStruct.get() + offset, sizeof(int64_t), &value, sizeof(int64_t));
+								offset += sizeof(int64_t);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown signed type");
 						}
-						default:
-							throw std::logic_error("Unknown signed type");
 					}
 					break;
 				}
 				case FieldRepresentationType::Unsigned:
 				{
-					switch (structSize / field->Representation().Size())
+					if (useDirectSet)
 					{
-						case sizeof(uint8_t) :
+						switch (structSize / field->Representation().Size())
 						{
-							uint8_t value = jsonField.get<uint8_t>();
-							memcpy_s(newStruct.get() + offset, sizeof(uint8_t), &value, sizeof(uint8_t));
-							offset += sizeof(uint8_t);
-							break;
+							case sizeof(uint8_t):
+							{
+								uint8_t value = jsonField.get<uint8_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(uint16_t):
+							{
+								uint16_t value = jsonField.get<uint16_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(uint32_t):
+							{
+								uint32_t value = jsonField.get<uint32_t>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(uint64_t):
+							{
+								uint64_t value = jsonField.get<uint64_t>();
+								field->Set(r, &value);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown unsigned type");
 						}
-						case sizeof(uint16_t) :
+					}
+					else
+					{
+						switch (structSize / field->Representation().Size())
 						{
-							uint16_t value = jsonField.get<uint16_t>();
-							memcpy_s(newStruct.get() + offset, sizeof(uint16_t), &value, sizeof(uint16_t));
-							offset += sizeof(uint16_t);
-							break;
+							case sizeof(uint8_t) :
+							{
+								uint8_t value = jsonField.get<uint8_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(uint8_t), &value, sizeof(uint8_t));
+								offset += sizeof(uint8_t);
+								break;
+							}
+							case sizeof(uint16_t) :
+							{
+								uint16_t value = jsonField.get<uint16_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(uint16_t), &value, sizeof(uint16_t));
+								offset += sizeof(uint16_t);
+								break;
+							}
+							case sizeof(uint32_t) :
+							{
+								uint32_t value = jsonField.get<uint32_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(uint32_t), &value, sizeof(uint32_t));
+								offset += sizeof(uint32_t);
+								break;
+							}
+							case sizeof(uint64_t) :
+							{
+								uint64_t value = jsonField.get<uint64_t>();
+								memcpy_s(newStruct.get() + offset, sizeof(uint64_t), &value, sizeof(uint64_t));
+								offset += sizeof(uint64_t);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown unsigned type");
 						}
-						case sizeof(uint32_t) :
-						{
-							uint32_t value = jsonField.get<uint32_t>();
-							memcpy_s(newStruct.get() + offset, sizeof(uint32_t), &value, sizeof(uint32_t));
-							offset += sizeof(uint32_t);
-							break;
-						}
-						case sizeof(uint64_t) :
-						{
-							uint64_t value = jsonField.get<uint64_t>();
-							memcpy_s(newStruct.get() + offset, sizeof(uint64_t), &value, sizeof(uint64_t));
-							offset += sizeof(uint64_t);
-							break;
-						}
-						default:
-							throw std::logic_error("Unknown unsigned type");
 					}
 					break;
 				}
 				case FieldRepresentationType::Float:
 				{
-					switch (structSize / field->Representation().Size())
+					if (useDirectSet)
 					{
-						case sizeof(float) :
+						switch (structSize / field->Representation().Size())
 						{
-							float value = jsonField.get<float>();
-							memcpy_s(newStruct.get() + offset, sizeof(float), &value, sizeof(float));
-							offset += sizeof(float);
-							break;
+							case sizeof(float):
+							{
+								float value = jsonField.get<float>();
+								field->Set(r, &value);
+								break;
+							}
+							case sizeof(double):
+							{
+								double value = jsonField.get<double>();
+								field->Set(r, &value);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown floating point type");
 						}
-						case sizeof(double) :
+					}
+					else
+					{
+						switch (structSize / field->Representation().Size())
 						{
-							double value = jsonField.get<double>();
-							memcpy_s(newStruct.get() + offset, sizeof(double), &value, sizeof(double));
-							offset += sizeof(double);
-							break;
+							case sizeof(float) :
+							{
+								float value = jsonField.get<float>();
+								memcpy_s(newStruct.get() + offset, sizeof(float), &value, sizeof(float));
+								offset += sizeof(float);
+								break;
+							}
+							case sizeof(double) :
+							{
+								double value = jsonField.get<double>();
+								memcpy_s(newStruct.get() + offset, sizeof(double), &value, sizeof(double));
+								offset += sizeof(double);
+								break;
+							}
+							default:
+								throw std::logic_error("Unknown floating point type");
 						}
-						default:
-							throw std::logic_error("Unknown floating point type");
 					}
 					break;
 				}
@@ -510,7 +657,8 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 			}
 			i++;
 		}
-		field->Set(r, newStruct.get());
+		if (!useDirectSet)
+			field->Set(r, newStruct.get());
 	}
 
 	return static_cast<IObject*>(r);

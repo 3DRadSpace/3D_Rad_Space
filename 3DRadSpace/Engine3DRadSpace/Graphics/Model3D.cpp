@@ -213,7 +213,8 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 		}
 
 		mesh->Textures.push_back(std::move(diffuseTexture));
-		mesh->TextureSamplers.push_back(Device->CreateSamplerState());
+		mesh->TextureSamplers.push_back(Device->CreateSamplerState_AnisotropicWrap());
+		mesh->GetShaders()->operator[](0)->SetSampler(0, mesh->TextureSamplers[0].get());
 		meshParts.push_back(std::move(mesh));
 	}
 

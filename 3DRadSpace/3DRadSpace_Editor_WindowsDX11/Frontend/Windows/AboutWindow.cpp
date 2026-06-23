@@ -75,7 +75,7 @@ void AboutWindow::_createControls()
 	_label = CreateWindowExA(
 		0,
 		"Static",
-		"3DRadSpace Editor\nVersion 0.1.0Alpha\n\nhttps:\\3dradspace.github.io\n\n\n\nThis software is licensed under MIT.",
+		"3DRadSpace Editor\nVersion 0.1.0Alpha\n\nhttps://3dradspace.github.io\n\n\n\nThis software is licensed under MIT.",
 		WS_VISIBLE | WS_CHILD | SS_CENTER,
 		220, 10, 200, 200,
 		window,
