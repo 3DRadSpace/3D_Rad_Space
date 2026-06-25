@@ -7,12 +7,12 @@ namespace Engine3DRadSpace::Objects
 	/// <summary>
 	/// Represents a collection of objects. Unlike <see cref="ObjectList"/>, this doesn't revalidate the container objects nor has ownership.
 	/// </summary>
-	class E3DRSP_OBJECTS_EXPORT ObjectCollection
+	class E3DRSP_OBJECTS_EXPORT ChildObjectCollection
 	{
 		std::vector<IObject*> _objects;
 		IObject* _owner = nullptr;
 	public:
-		ObjectCollection(IObject* owner);
+		ChildObjectCollection(IObject* owner);
 		/// <summary>
 		/// Adds an IObject pointer reference to this list.
 		/// </summary>

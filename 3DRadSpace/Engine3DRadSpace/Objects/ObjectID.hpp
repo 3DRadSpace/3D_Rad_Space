@@ -4,7 +4,7 @@
 namespace Engine3DRadSpace::Objects
 {
 	class ObjectList;
-	class ObjectCollection;
+	class ChildObjectCollection;
 	class IObject;
 	struct E3DRSP_OBJECTS_EXPORT ObjectID
 	{
@@ -22,6 +22,6 @@ namespace Engine3DRadSpace::Objects
 		operator size_t() const noexcept;
 
 		IObject* Get(ObjectList* list) const noexcept;
-		IObject* Get(ObjectCollection* collection) const noexcept;
+		IObject* Get(ChildObjectCollection* collection) const noexcept;
 	};
 }

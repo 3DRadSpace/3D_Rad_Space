@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.21)
 project("Engine3DRadSpace.Objects")
 
 add_library(3DRadSpace.Objects SHARED 
+	"ChildObjectCollection.hpp"
+	"ChildObjectCollection.cpp"	
 	"Gizmos.hpp"
 	"Gizmos.cpp"
 	"ICamera.hpp"
@@ -14,8 +16,6 @@ add_library(3DRadSpace.Objects SHARED
 	"IObject2D.cpp"
 	"IObject3D.hpp"
 	"IObject3D.cpp"
-	"ObjectCollection.hpp"
-	"ObjectCollection.cpp"
 	"ObjectID.hpp"
 	"ObjectID.cpp"
 	"ObjectList.hpp"

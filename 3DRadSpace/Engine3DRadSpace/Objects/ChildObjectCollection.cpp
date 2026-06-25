@@ -4,11 +4,11 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
 
-ObjectCollection::ObjectCollection(IObject* owner) : _owner(owner)
+ChildObjectCollection::ChildObjectCollection(IObject* owner) : _owner(owner)
 {
 }
 
-void ObjectCollection::Add(IObject* ptr)
+void ChildObjectCollection::Add(IObject* ptr)
 {
 	if(ptr == nullptr) return;
 
@@ -16,7 +16,7 @@ void ObjectCollection::Add(IObject* ptr)
 	_objects.push_back(ptr);
 }
 
-void ObjectCollection::Remove(IObject* ptr)
+void ChildObjectCollection::Remove(IObject* ptr)
 {
 	if(ptr == nullptr) return;
 
@@ -28,7 +28,7 @@ void ObjectCollection::Remove(IObject* ptr)
 	}
 }
 
-void ObjectCollection::Remove(size_t index)
+void ChildObjectCollection::Remove(size_t index)
 {
 	if (index >= _objects.size()) return;
 
@@ -36,23 +36,23 @@ void ObjectCollection::Remove(size_t index)
 	_objects.erase(_objects.begin() + index);
 }
 
-IObject* ObjectCollection::operator[](size_t index) const
+IObject* ChildObjectCollection::operator[](size_t index) const
 {
 	if(index > _objects.size()) return nullptr;
 	return _objects.at(index);
 }
 
-IObject*& ObjectCollection::operator[](size_t index)
+IObject*& ChildObjectCollection::operator[](size_t index)
 {
 	return _objects.at(index);
 }
 
-size_t ObjectCollection::Count() const noexcept
+size_t ChildObjectCollection::Count() const noexcept
 {
 	return _objects.size();
 }
 
-void ObjectCollection::Clear()
+void ChildObjectCollection::Clear()
 {
 	auto detachedList = std::move(_objects);
 
@@ -62,7 +62,7 @@ void ObjectCollection::Clear()
 	}
 }
 
-std::vector<IObject*> ObjectCollection::Find(std::function<bool(IObject*)> predicate) const noexcept
+std::vector<IObject*> ChildObjectCollection::Find(std::function<bool(IObject*)> predicate) const noexcept
 {
 	std::vector<IObject*> r;
 
@@ -72,22 +72,22 @@ std::vector<IObject*> ObjectCollection::Find(std::function<bool(IObject*)> predi
 	return r;
 }
 
-std::vector<IObject*>::iterator ObjectCollection::begin() noexcept
+std::vector<IObject*>::iterator ChildObjectCollection::begin() noexcept
 {
 	return _objects.begin();
 }
 
-std::vector<IObject*>::const_iterator ObjectCollection::begin() const noexcept
+std::vector<IObject*>::const_iterator ChildObjectCollection::begin() const noexcept
 {
 	return _objects.begin();
 }
 
-std::vector<IObject*>::iterator ObjectCollection::end() noexcept
+std::vector<IObject*>::iterator ChildObjectCollection::end() noexcept
 {
 	return _objects.end();
 }
 
-std::vector<IObject*>::const_iterator ObjectCollection::end() const noexcept
+std::vector<IObject*>::const_iterator ChildObjectCollection::end() const noexcept
 {
 	return _objects.cend();
 }

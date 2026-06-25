@@ -14,7 +14,7 @@ IObject* ObjectID::Get(ObjectList* list) const noexcept
 	return list->operator[](ID);
 }
 
-IObject* ObjectID::Get(ObjectCollection* collection) const noexcept
+IObject* ObjectID::Get(ChildObjectCollection* collection) const noexcept
 {
 	return collection->operator[](ID);
 }
