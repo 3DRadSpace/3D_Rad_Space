@@ -14,10 +14,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
-		std::unique_ptr<PostProcessEffect> _shadowCompositeEffect;
 
 		void _createShadowStates();
-		void _applyShadows(const Math::Matrix4x4& lightViewProj, const Math::Vector3& lightDirection);
 	public:
 		ShadowMapRenderer(IGraphicsDevice* device);
 

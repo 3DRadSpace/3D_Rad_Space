@@ -5,7 +5,7 @@
 #include "../Core/ILoadable.hpp"
 #include "../Reflection/UUID.hpp"
 #include "../Core/IService.hpp"
-#include "ObjectCollection.hpp"
+#include "ChildObjectCollection.hpp"
 
 namespace Engine3DRadSpace
 {

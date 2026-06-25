@@ -15,6 +15,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"Counter.cpp"
 	"Cylinder.hpp"
 	"Cylinder.cpp"
+	"DirectionalLight.hpp"
+	"DirectionalLight.cpp"
 	"Empty.hpp"
 	"Empty.cpp"
 	"EventOnKey.hpp"

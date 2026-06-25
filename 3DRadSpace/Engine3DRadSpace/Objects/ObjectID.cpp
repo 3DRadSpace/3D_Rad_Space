@@ -1,6 +1,6 @@
 #include "ObjectID.hpp"
 #include "ObjectList.hpp"
-#include "ObjectCollection.hpp"
+#include "ChildObjectCollection.hpp"
 
 using namespace Engine3DRadSpace::Objects;
 

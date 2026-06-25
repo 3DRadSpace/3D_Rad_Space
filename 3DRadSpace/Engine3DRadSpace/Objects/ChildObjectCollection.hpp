@@ -5,7 +5,7 @@ namespace Engine3DRadSpace::Objects
 {
 	class IObject;
 	/// <summary>
-	/// Represents a collection of objects. Unlike <see cref="ObjectList"/>, this doesn't revalidate the container objects nor has ownership.
+	/// Represents a collection of child objects owned by a parent object. Unlike <see cref="ObjectList"/>, this doesn't (re)initialize the container objects nor has ownership.
 	/// </summary>
 	class E3DRSP_OBJECTS_EXPORT ChildObjectCollection
 	{

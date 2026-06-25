@@ -30,6 +30,7 @@ REFL_FWD(Force)
 REFL_FWD(EventOnKey)
 REFL_FWD(EventOnLocation)
 REFL_FWD(Timer)
+REFL_FWD(DirectionalLight)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;

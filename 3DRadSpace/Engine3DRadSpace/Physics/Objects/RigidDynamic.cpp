@@ -127,23 +127,20 @@ void RigidDynamic::SetMaxAngularVelocity(const Math::Vector3& maxAngularVelocity
 	else _properties->maxAngularVelocity = maxAngularVelocity;
 }
 
-void RigidDynamic::Initialize()
+void RigidDynamic::ValidateChildren()
 {
-	IPhysicsObject::Initialize();
-	_collider = _physics->CreateDynamicCollider();
-	
-	if(Children.Count() == 0)
+	if (Children.Count() == 0)
 	{
 		Enabled = false;
 	}
 
-	for(auto& child : Children)
+	for (auto& child : Children)
 	{
-		if(child == nullptr) continue;
+		if (child == nullptr) continue;
 
 		bool isShape = false;
 
-		if(dynamic_cast<Engine3DRadSpace::Objects::Box*>(child) != nullptr)
+		if (dynamic_cast<Engine3DRadSpace::Objects::Box*>(child) != nullptr)
 		{
 			isShape = true;
 
@@ -153,7 +150,7 @@ void RigidDynamic::Initialize()
 			_collider->AttachShape(bbox);
 		}
 
-		if(dynamic_cast<Engine3DRadSpace::Objects::Sphere*>(child) != nullptr)
+		if (dynamic_cast<Engine3DRadSpace::Objects::Sphere*>(child) != nullptr)
 		{
 			isShape = true;
 			auto sphere = dynamic_cast<Engine3DRadSpace::Objects::Sphere*>(child);
@@ -162,12 +159,20 @@ void RigidDynamic::Initialize()
 			_collider->AttachShape(sph);
 		}
 
-		if(isShape)
+		if (isShape)
 		{
 			child->Visible = false;
 			child->Enabled = false;
 		}
 	}
+}
+
+void RigidDynamic::Initialize()
+{
+	IPhysicsObject::Initialize();
+	_collider = _physics->CreateDynamicCollider();
+	
+	ValidateChildren();
 
 	if(_properties)
 	{

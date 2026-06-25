@@ -19,14 +19,6 @@ ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device
 
 	_shadowMap = _device->CreateDepthStencilBuffer(shadowMapWidth, shadowMapHeight);
 	_createShadowStates();
-
-	ShaderDescFile compositeDesc(
-		"Data\\Shaders\\ShadowComposite.hlsl",
-		"PS_Main",
-		ShaderType::Fragment
-	);
-	_shadowCompositeEffect = std::make_unique<PostProcessEffect>(device, compositeDesc);
-	_shadowCompositeEffect->NotDepthAware = false;
 }
 
 void ShadowMapRenderer::_createShadowStates()
@@ -118,41 +110,6 @@ void ShadowMapRenderer::Begin()
 	context->SetDepthStencilState(_shadowDepthState.get(), 0);
 }
 
-void ShadowMapRenderer::_applyShadows(const Math::Matrix4x4& lightViewProj, const Math::Vector3& lightDir)
-{
-	if (_shadowCompositeEffect == nullptr || _owner == nullptr)
-		return;
-
-	// Set up shader constants
-	struct ShadowCompositeData
-	{
-		Math::Matrix4x4 LightViewProj;
-		Math::Matrix4x4 InvViewProj;
-		Math::Vector3 LightDirection;
-		float ShadowBias;
-		float ShadowIntensity;
-		Math::Vector3 Padding;
-	} data;
-
-	auto game = static_cast<Game*>(_owner);
-	if (game == nullptr) return;
-
-	data.LightViewProj = lightViewProj;
-	data.InvViewProj = Math::Matrix4x4::Invert(game->View * game->Projection);
-	data.LightDirection = lightDir;
-	data.ShadowBias = ShadowBias;
-	data.ShadowIntensity = ShadowIntensity;
-
-	_shadowCompositeEffect->SetData(0, &data, sizeof(data));
-
-	// Bind shadow map as additional texture (slot 2, since 0 and 1 are backbuffer and depth)
-	_shadowCompositeEffect->SetTexture(2, _shadowMap->GetDepthTexture());
-
-	// Apply the post-process effect (automatically copies backbuffer and depth, binds textures)
-	_shadowCompositeEffect->Apply();
-	_shadowCompositeEffect->Draw();
-}
-
 void ShadowMapRenderer::End()
 {
 	auto context = _device->ImmediateContext();
@@ -172,7 +129,6 @@ void ShadowMapRenderer::End()
 	// Apply shadows as a screen-space composite
 	// This requires the light view-projection matrix
 	Math::Matrix4x4 lightViewProj = ComputeLightViewMatrix(LightDirection) * ComputeLightProjectionMatrix();
-	_applyShadows(lightViewProj, LightDirection);
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept

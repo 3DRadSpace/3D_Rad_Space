@@ -84,6 +84,8 @@ namespace Engine3DRadSpace::Physics::Objects
 		bool IsKinematic() const noexcept;
 		void SetKinematic(bool isKinematic);
 
+		void ValidateChildren();
+
 		IDynamicCollider* GetCollider() const noexcept;
 	};
 }

@@ -1,4 +1,4 @@
-#include "ObjectCollection.hpp"
+#include "ChildObjectCollection.hpp"
 #include "IObject.hpp"
 
 using namespace Engine3DRadSpace;
