@@ -32,7 +32,7 @@ namespace Engine3DRadSpace
 			IGame* _game = nullptr;
 			Graphics::IGraphicsDevice* _device = nullptr;
 
-			IObject* _parent;
+			IObject* _parent = nullptr;
 			/// <summary>
 			/// Default constructor used for reflection. Objects created with this constructor are initially invalid, until internalInitialize() is called.
 			/// </summary>

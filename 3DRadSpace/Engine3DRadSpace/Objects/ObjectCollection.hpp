@@ -66,5 +66,7 @@ namespace Engine3DRadSpace::Objects
 		std::vector<IObject*>::const_iterator begin() const noexcept;
 		std::vector<IObject*>::iterator end() noexcept;
 		std::vector<IObject*>::const_iterator end() const noexcept;
+
+		friend class IObject;
 	};
 }

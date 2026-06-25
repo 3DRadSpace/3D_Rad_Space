@@ -68,6 +68,8 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 		void AttachShape(const Math::BoundingBox& box) override;
 		void AttachShape(const Math::BoundingSphere& sphere) override;
 
+		void UpdateMassAndInertia() override;
+
 		void SetKinematic(bool isKinematic) override;
 		void AddLinearVelocity(const Math::Vector3& v) override;
 		void AddAngularVelocity(const Math::Vector3& v) override;

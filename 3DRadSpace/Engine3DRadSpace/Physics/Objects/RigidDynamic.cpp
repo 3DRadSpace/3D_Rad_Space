@@ -180,9 +180,12 @@ void RigidDynamic::Initialize()
 		_collider->SetLinearVelocity(_properties->linearVelocity);
 		_collider->SetAngularVelocity(_properties->angularVelocity);
 		_collider->SetMaxAngularVelocity(_properties->maxAngularVelocity);
-	
+
 		_properties.reset();
 	}
+
+	// Update mass and inertia after all shapes are attached
+	_collider->UpdateMassAndInertia();
 
 	_collider->UpdateTransform(Position, Rotation);
 }

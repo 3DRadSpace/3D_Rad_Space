@@ -35,6 +35,8 @@ namespace Engine3DRadSpace::Physics
 		virtual void AttachShape(const Math::BoundingBox& box) = 0;
 		virtual void AttachShape(const Math::BoundingSphere& sphere) = 0;
 
+		virtual void UpdateMassAndInertia() = 0;
+
 		virtual void ApplyForce(const Math::Vector3& force) = 0;
 		virtual void ApplyForce(const Math::Vector3& force, const Math::Vector3& center) = 0;
 		virtual void ApplyTorque(const Math::Vector3& force) = 0;

@@ -310,18 +310,14 @@ void DynamicCollider::AttachShape(const Math::BoundingBox & box)
 	shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
 	shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 
+	// BoundingBox.Position is the minimum corner, so we need to offset to the center
 	shape->setLocalPose(physx::PxTransform(physx::PxVec3(
-		box.Position.X - (box.Scale.X / 2),
-		box.Position.Y - (box.Scale.Y / 2),
-		box.Position.Z - (box.Scale.Z / 2)
+		box.Position.X + (box.Scale.X / 2),
+		box.Position.Y + (box.Scale.Y / 2),
+		box.Position.Z + (box.Scale.Z / 2)
 	)));
 	_rigidbody->attachShape(*shape);
-
-	// Update mass and inertia based on attached shapes
-	if(_mass > 0.0f)
-	{
-		physx::PxRigidBodyExt::updateMassAndInertia(*_rigidbody, _mass);
-	}
+	shape->release();
 }
 
 void DynamicCollider::AttachShape(const Math::BoundingSphere & sphere)
@@ -338,8 +334,12 @@ void DynamicCollider::AttachShape(const Math::BoundingSphere & sphere)
 
 	shape->setLocalPose(physx::PxTransform(physx::PxVec3(sphere.Center.X, sphere.Center.Y, sphere.Center.Z)));
 	_rigidbody->attachShape(*shape);
+	shape->release();
+}
 
-	// Update mass and inertia based on attached shapes
+void DynamicCollider::UpdateMassAndInertia()
+{
+	if(_rigidbody == nullptr) return;
 	if(_mass > 0.0f)
 	{
 		physx::PxRigidBodyExt::updateMassAndInertia(*_rigidbody, _mass);
