@@ -22,7 +22,7 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Audio PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Audio PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Audio PRIVATE [[E3DRSP_AUDIO_EXPORT=__declspec(dllexport)]])

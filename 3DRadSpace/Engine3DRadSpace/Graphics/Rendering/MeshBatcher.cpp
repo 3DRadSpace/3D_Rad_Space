@@ -1,55 +1,71 @@
 #include "MeshBatcher.hpp"
+#include "../Effect.hpp"
+#include "../../Math/MVP.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 MeshBatcher::MeshBatcher(IGraphicsDevice* device) :
-	_device(device),
-	_beginCalled(false)
+	_device(device)
 {
 }
 
-void MeshBatcher::Begin()
+void MeshBatcher::Clear()
 {
 	_drawCalls.clear();
-	_beginCalled = true;
+
+	OutputDebugStringA("[MeshBatcher] Cleared draw calls.\n");
 }
 
-void MeshBatcher::Draw(ModelMeshPart* meshPart, RenderPassType passType)
+void MeshBatcher::Submit(ModelMeshPart* meshPart, RenderPassType passType, std::vector<std::unique_ptr<std::byte[]>> &&instanceData)
 {
-	if (!_beginCalled)
-		throw std::logic_error("Begin() must be called before Draw().");
+	OutputDebugStringA("[MeshBatcher] Recieved draw call.\n");
 
+	//Find existing drawcall from the list that matches the meshPart pointer+passType.
 	auto it = std::find_if(_drawCalls.begin(), _drawCalls.end(),
 		[meshPart, passType](const DrawCall& dc) {
 			return dc.MeshPart == meshPart && dc.PassType == passType;
 		});
 	if (it != _drawCalls.end())
 	{
-		it->Transforms.push_back(meshPart->Transform);
+		it->InstanceWorlds.push_back(meshPart->ParentTransform * meshPart->World);
+		it->View = meshPart->View;
+		it->Projection = meshPart->Projection;
 	}
 	else
 	{
+		//Add new draw call into the list:
 		DrawCall newCall;
 		newCall.MeshPart = meshPart;
 		newCall.PassType = passType;
-		newCall.Transforms.push_back(meshPart->Transform);
+		newCall.InstanceWorlds.push_back(meshPart->ParentTransform * meshPart->World);
+		newCall.View = meshPart->View;
+		newCall.Projection = meshPart->Projection;
+		newCall.InstanceData = std::move(instanceData);
+		newCall.IsInstanced = !newCall.InstanceData.empty();
 		_drawCalls.push_back(std::move(newCall));
 	}
 }
 
-void MeshBatcher::End()
+std::pair<DrawCall*, size_t> MeshBatcher::GetDrawCalls()
 {
-	if (!_beginCalled)
-		throw std::logic_error("Begin() must be called before End().");
-	for (const auto& drawCall : _drawCalls)
+	OutputDebugStringA("[MeshBatcher] Num draw call.\n");
+	return {_drawCalls.data(), _drawCalls.size()};
+}
+
+std::vector<DrawCall*> MeshBatcher::GetDrawCalls(RenderPassType passType)
+{
+	OutputDebugStringA("[MeshBatcher] Num draw call.\n");
+	std::vector<DrawCall*> result;
+
+	for (auto& drawCall : _drawCalls)
 	{
-		// For simplicity, we are not implementing instancing here. Just draw each mesh part separately.
-		for (const auto& transform : drawCall.Transforms)
+		if (drawCall.PassType == passType)
 		{
-			drawCall.MeshPart->Draw();
-		}
+			result.push_back(&drawCall);
+		}	
 	}
-	_beginCalled = false;
+
+	return result;
 }

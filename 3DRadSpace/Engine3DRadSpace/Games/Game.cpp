@@ -163,9 +163,11 @@ void Game::RunOneFrame()
 	cmd->SetViewport();
 	cmd->Clear(ClearColor);
 
-	RenderingManager->Batcher.Begin();
+	RenderingManager->Batcher.Clear();
 
 	Draw3D();
+
+	RenderingManager->DrawAll();
 
 	PostProcesses->ApplyAll();
 

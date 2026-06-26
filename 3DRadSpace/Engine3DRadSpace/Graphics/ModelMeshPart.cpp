@@ -33,31 +33,6 @@ ModelMeshPart::ModelMeshPart(
 	IndexBuffer = Device->CreateIndexBuffer(indices);
 }
 
-void ModelMeshPart::Draw()
-{
-	Draw(_shaders);
-}
-
-void ModelMeshPart::Draw(Effect* effect)
-{
-	if(_device == nullptr) return;
-	if(effect == nullptr) return;
-
-	effect->SetAll();
-	effect->SetData<Math::Matrix4x4>(&Transform, 0, 0);
-
-	for(int i = 0; i < Textures.size(); i++)
-	{
-		effect->SetTexture(Textures[i].get(), i);
-		effect->SetSampler(TextureSamplers[i].get(), i);
-	}
-
-	auto cmdList = _device->ImmediateContext();
-
-	cmdList->SetTopology(VertexTopology::TriangleList);
-	cmdList->DrawVertexBufferWithindices(VertexBuffer.get(), IndexBuffer.get());
-}
-
 BoundingSphere ModelMeshPart::GetBoundingSphere() const noexcept
 {
 	return _sphere;

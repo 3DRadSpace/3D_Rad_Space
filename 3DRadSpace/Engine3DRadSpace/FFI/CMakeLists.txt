@@ -23,7 +23,7 @@ if(MSVC)
 	add_compile_options(3DRadSpace.FFI PRIVATE "/MP")
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.FFI PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.FFI PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.FFI PRIVATE [[E3DRSP_FFI_EXPORT=__declspec(dllexport)]])

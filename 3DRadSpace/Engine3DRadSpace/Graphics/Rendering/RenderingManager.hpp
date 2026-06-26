@@ -1,5 +1,5 @@
 #pragma once
-#include "IRenderer.hpp"
+#include "IRenderPass.hpp"
 #include "../../Core/IService.hpp"
 #include "../IGraphicsDevice.hpp"
 #include "MeshBatcher.hpp"
@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 		IGraphicsDevice* _device;
 
-		std::vector<std::unique_ptr<IRenderer>> _renderers;
+		std::vector<std::unique_ptr<IRenderPass>> _renderers;
 	public:
 		/// <summary>
 		/// Creates an RenderingManager with classical forward rendering and shadow mapping passes.
@@ -42,21 +42,21 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Transfers ownership of the given renderer named "renderPass" to this instance.
 		/// </summary>
 		/// <param name="renderPass">RenderPass to have ownership transferred.</param>
-		void Add(std::unique_ptr<IRenderer>&& renderPass);
+		void Add(std::unique_ptr<IRenderPass>&& renderPass);
 		/// <summary>
-		/// Gets the idx-th IRenderer instance owned by this instance.
+		/// Gets the idx-th IRenderPass instance owned by this instance.
 		/// If idx is out of range, an std::out_of_range exception is thrown.
 		/// </summary>
-		/// <param name="idx">Index of the IRenderer class</param>
-		/// <returns>idx-th IRenderer instance.</returns>
-		IRenderer* operator[](size_t idx) const;
+		/// <param name="idx">Index of the IRenderPass class</param>
+		/// <returns>idx-th IRenderPass instance.</returns>
+		IRenderPass* operator[](size_t idx) const;
 		/// <summary>
-		/// Returns the number of IRenderer instances owned by this RenderingManager instance.
+		/// Returns the number of IRenderPass instances owned by this RenderingManager instance.
 		/// </summary>
-		/// <returns>Number of IRenderer instances.</returns>
+		/// <returns>Number of IRenderPass instances.</returns>
 		size_t NumPasses() const noexcept;
 		/// <summary>
-		/// Removes the idx-th IRenderer instance.
+		/// Removes the idx-th IRenderPass instance.
 		/// </summary>
 		/// <param name="idx">Index</param>
 		void Remove(size_t idx);
@@ -64,6 +64,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Clears the internal list of render passes.
 		/// </summary>
 		void Clear() noexcept;
+
+		void DrawAll();
 
 		/// <summary>
 		/// A directional light used for the main light source in the scene. This is used for forward rendering and shadow mapping.

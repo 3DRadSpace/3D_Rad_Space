@@ -71,7 +71,17 @@ void Gizmo<Camera>::Draw3D()
 	auto view = game->View;
 	auto proj = game->Projection;
 
-	cameraModel->Draw(model * view * proj);
+	for (auto& modelMeshPart : *cameraModel)
+	{
+		for (auto& meshPart : *modelMeshPart)
+		{
+			meshPart->View = view;
+			meshPart->Projection = proj;
+			meshPart->World = model;
+
+			game->RenderingManager->Batcher.Submit(meshPart.get(), Rendering::RenderPassType::OpaqueNoShadow);
+		}
+	}
 }
 
 void Gizmo<Camera>::Draw2D()

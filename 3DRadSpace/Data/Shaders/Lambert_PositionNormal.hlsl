@@ -1,6 +1,12 @@
-cbuffer AllData : register(b0)
+cbuffer MatrixData : register(b0)
 {
-    row_major matrix matWorldViewProj;
+    row_major matrix matWorld;
+    row_major matrix matView;
+    row_major matrix matProjection;
+}
+
+cbuffer LightData : register(b1)
+{
     row_major matrix matWorldInverseTranspose;
     float4 LightColor;
     float4 AmbientColor;
@@ -25,7 +31,9 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
     VertexOut r;
-    r.Position = mul(float4(v.Position.xyz, 1), matWorldViewProj);
+    r.Position = mul(float4(v.Position.xyz, 1), matWorld);
+    r.Position = mul(r.Position, matView);
+    r.Position = mul(r.Position, matProjection);
     r.Normal = mul(float4(v.Normal.xyz, 0), matWorldInverseTranspose).xyz;
     r.Color = v.Color;
     return r;

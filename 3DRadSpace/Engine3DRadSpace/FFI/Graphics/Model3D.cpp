@@ -10,26 +10,6 @@ E3DRSP_Model3D EDRSP_Model3D_Create(E3DRSP_IGraphicsDevice device, const char* p
 	return new Model3D(static_cast<IGraphicsDevice*>(device), std::filesystem::path(path));
 }
 
-void EDRSP_Model3D_Draw(E3DRSP_Model3D model)
-{
-	static_cast<Model3D*>(model)->Draw();
-}
-
-void EDRSP_Model3D_Draw2(E3DRSP_Model3D model, const E3DRSP_Matrix4x4* transform)
-{
-	static_cast<Model3D*>(model)->Draw(*reinterpret_cast<const Math::Matrix4x4*>(transform));
-}
-
-void EDRSP_Model3D_DrawEffect(E3DRSP_Model3D model, E3DRSP_Effect effect)
-{
-	static_cast<Model3D*>(model)->DrawEffect(static_cast<Effect*>(effect));
-}
-
-void EDRSP_Model3D_DrawEffect2(E3DRSP_Model3D model, E3DRSP_Effect effect, const E3DRSP_Matrix4x4* transform)
-{
-	static_cast<Model3D*>(model)->DrawEffect(static_cast<Effect*>(effect), *reinterpret_cast<const Math::Matrix4x4*>(transform));
-}
-
 size_t EDRSP_Model3D_NumMeshes(E3DRSP_Model3D model)
 {
 	return static_cast<Model3D*>(model)->NumMeshes();
@@ -75,11 +55,6 @@ void EDRSP_Model3D_SetShaders(E3DRSP_Model3D model, E3DRSP_Effect* effects, size
 		effectVec.push_back(static_cast<Effect*>(effects[i]));
 	}
 	static_cast<Model3D*>(model)->SetShaders(effectVec);
-}
-
-void EDRSP_Model3D_SetTransform(E3DRSP_Model3D model, const E3DRSP_Matrix4x4* matrix4x4)
-{
-	static_cast<Model3D*>(model)->SetTransform(*reinterpret_cast<const Math::Matrix4x4*>(matrix4x4));
 }
 
 void EDRSP_Model3D_Destroy(E3DRSP_Model3D model)

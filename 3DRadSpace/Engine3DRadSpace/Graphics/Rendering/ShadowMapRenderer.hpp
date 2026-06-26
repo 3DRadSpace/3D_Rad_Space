@@ -1,15 +1,16 @@
 #pragma once
-#include "IRenderer.hpp"
+#include "IRenderPass.hpp"
 #include "PostProcessEffect.hpp"
 #include "../IDepthStencilBuffer.hpp"
 #include "../IRasterizerState.hpp"
 #include "../IDepthStencilState.hpp"
 #include "../Viewport.hpp"
+#include "../../Math/Vector3.hpp"
 #include "../../Math/Matrix4x4.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
-	class E3DRSP_GRAPHICS_RENDERING_EXPORT ShadowMapRenderer : public IRenderer
+	class E3DRSP_GRAPHICS_RENDERING_EXPORT ShadowMapRenderer : public IRenderPass
 	{
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
@@ -54,6 +55,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		/// <returns>Light projection matrix</returns>
 		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
+
+		void Draw(DrawCall* drawCall) override;
 
 		void Begin() override;
 		void End() override;

@@ -29,7 +29,7 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Logging PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Logging PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Logging PRIVATE [[E3DRSP_LOGGING_EXPORT=__declspec(dllexport)]])

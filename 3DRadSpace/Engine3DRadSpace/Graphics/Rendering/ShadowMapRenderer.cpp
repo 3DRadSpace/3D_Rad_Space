@@ -3,15 +3,16 @@
 #include "../IGraphicsCommandList.hpp"
 #include "../ShaderDesc.hpp"
 #include "../../Math/Rectangle.hpp"
-#include "../../Math/Vector3.hpp"
+#include "../../Math/MVP.hpp"
 #include "../../Games/Game.hpp"
+#include "../../Objects/ObjectList.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 using namespace Engine3DRadSpace::Math;
 
-ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device)
+ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderPass(device)
 {
 	auto resolution = _device->Resolution();
 	unsigned int shadowMapWidth = static_cast<unsigned int>(resolution.X * ShadowMapSize);
@@ -51,10 +52,23 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 		return Math::Matrix4x4();
 	}
 
-	// For a directional light, position it far along the light direction
-	// from the center of the camera frustum
-	Math::Vector3 lightPos = lightDirection * -100.0f; // Position light far away
-	Math::Vector3 target = Math::Vector3::Zero(); // Look at origin for now
+	// Get the camera from the ObjectList service
+	auto objectList = _owner->RequireService<Objects::ObjectList>({});
+	auto camera = objectList->GetRenderingCamera();
+
+	if (camera == nullptr)
+	{
+		return Math::Matrix4x4();
+	}
+
+	Math::Matrix4x4 viewMatrix = camera->GetViewMatrix();
+
+	// The camera position is the translation component of the inverse view matrix
+	Math::Matrix4x4 invViewMatrix = Math::Matrix4x4::Invert(viewMatrix);
+	Math::Vector3 cameraPos(invViewMatrix.M41, invViewMatrix.M42, invViewMatrix.M43);
+
+	Math::Vector3 lightPos = cameraPos + (lightDirection * -100.0f); // Position light far away
+	Math::Vector3 target = cameraPos; // Look at camera position
 	Math::Vector3 up = Math::Vector3(0.0f, 1.0f, 0.0f);
 
 	// Adjust up vector if light direction is parallel to it
@@ -114,24 +128,40 @@ void ShadowMapRenderer::End()
 {
 	auto context = _device->ImmediateContext();
 
-	// Restore default viewport (screen resolution)
-	auto resolution = _device->Resolution();
-	Viewport defaultViewport(
-		Math::RectangleF(0.0f, 0.0f, static_cast<float>(resolution.X), static_cast<float>(resolution.Y)),
-		0.0f,
-		1.0f
-	);
-	context->SetViewport(defaultViewport);
-
-	// Unbind the shadow map depth buffer
+	context->SetViewport();
 	context->UnbindDepthBuffer();
-
-	// Apply shadows as a screen-space composite
-	// This requires the light view-projection matrix
-	Math::Matrix4x4 lightViewProj = ComputeLightViewMatrix(LightDirection) * ComputeLightProjectionMatrix();
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
 {
 	return _shadowMap.get();
+}
+
+void ShadowMapRenderer::Draw(DrawCall* drawCall)
+{
+	if (!drawCall || !drawCall->MeshPart)
+		return;
+
+	auto material = drawCall->MeshPart->GetShaders();
+
+	if (!drawCall->MeshPart || !material)
+		return;
+
+	auto context = _device->ImmediateContext();
+	material->SetAll();
+	
+	if (!drawCall->IsInstanced)
+	{
+		for (auto idxInstance = 0; idxInstance < drawCall->InstanceWorlds.size(); ++idxInstance)
+		{
+			Math::MVP lvp
+			{
+				.World = drawCall->InstanceWorlds[idxInstance],
+				.View = ComputeLightViewMatrix(LightDirection),
+				.Projection = ComputeLightProjectionMatrix()
+			};
+			material->SetData<Math::MVP>(&lvp, 0);
+			context->DrawVertexBufferWithindices(drawCall->MeshPart->VertexBuffer.get(), drawCall->MeshPart->IndexBuffer.get());
+		}
+	}
 }

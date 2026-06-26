@@ -37,7 +37,7 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Core PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Core PRIVATE "/fsanitize=address")
 	endif()
 
 	#Define library specific library export macro

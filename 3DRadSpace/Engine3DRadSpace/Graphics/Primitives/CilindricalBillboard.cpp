@@ -1,6 +1,8 @@
 #include "CilindricalBillboard.hpp"
 #include "Plane.hpp"
 #include "../IGraphicsCommandList.hpp"
+#include "../../Math/MVP.hpp"
+#include "../IShaderCompiler.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -16,22 +18,49 @@ CilindricalBillboard::CilindricalBillboard(IGraphicsDevice *device) :
 	
 	auto indices = Plane::CreateIndices();
 	_indices = device->CreateIndexBuffer(indices);
+
+	constexpr const char* effectPath = "Data\\Shaders\\PositionUV.hlsl";
+
+	auto vsBasicEffect = ShaderDescFile(
+		effectPath,
+		"VS_Main",
+		ShaderType::Vertex
+	);
+
+	auto psBasicEffect = ShaderDescFile(
+		effectPath,
+		"PS_Main",
+		ShaderType::Fragment
+	);
+
+	std::array<ShaderDesc*, 2> positionUVShader =
+	{
+		&vsBasicEffect,
+		&psBasicEffect
+	};
+
+	auto compiledEffect = device->ShaderCompiler()->CompileEffect(positionUVShader);
+	if (compiledEffect.first != nullptr)
+	{
+		_shader = compiledEffect.first;
+	}
+	else
+	{
+		throw std::exception("Failed to compile PositionUV shader.");
+	}
 }
 
-Matrix4x4 CilindricalBillboard::_mvp() const noexcept
+Matrix4x4 CilindricalBillboard::billboardMatrix() const noexcept
 {
 	auto v = View;
 
-	Vector3 cam_pos(v.M41, v.M42, v.M43);
 	Vector3 x_axis(v.M11, v.M21, v.M31);
-	Vector3 y_axis(v.M11, v.M21, v.M31);
-	Vector3 z_axis(v.M11, v.M21, v.M31);
-	
-	Vector3 fwd = cam_pos + z_axis;
-	Vector3 up = cam_pos + y_axis;
-	Vector3 right = cam_pos + x_axis;
+	Vector3 y_axis(v.M12, v.M22, v.M32);
+	Vector3 z_axis(v.M13, v.M23, v.M33);
 
-	auto model = Matrix4x4::CreateCylindricalBillboard(Position, cam_pos, up, fwd, Axis, std::nullopt);
+	Vector3 cam_pos = -(x_axis * v.M41 + y_axis * v.M42 + z_axis * v.M43);
+
+	auto model = Matrix4x4::CreateCylindricalBillboard(Position, cam_pos, y_axis, z_axis, Axis, std::nullopt);
 	return model * View * Projection;
 }
 
@@ -52,11 +81,20 @@ std::array<VertexPositionUV, 4> CilindricalBillboard::CreateVertices()
 
 void CilindricalBillboard::Draw3D()
 {
-	auto mat = _mvp();
+	auto mat = billboardMatrix();
+
+	MVP mvp{
+		.World = mat,
+		.View = Matrix4x4(),
+		.Projection = Matrix4x4()
+	};
 
 	_shader->SetAll();
-	_shader->operator[](0)->SetData(0, &mat, sizeof(mat));
+	_shader->operator[](0)->SetData(0, &mvp, sizeof(mvp));
 	_shader->operator[](1)->SetTexture(0, Texture);
-	_device->ImmediateContext()->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
+
+	auto context = _device->ImmediateContext();
+	context->SetTopology(VertexTopology::TriangleList);
+	context->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }
 

@@ -37,16 +37,6 @@ E3DRSP_ModelMeshPart E3DRSP_ModelMeshPart_Create2(
 	);
 }
 
-void E3DRSP_ModelMeshPart_Draw(E3DRSP_ModelMeshPart meshPart)
-{
-	static_cast<ModelMeshPart*>(meshPart)->Draw();
-}
-
-void E3DRSP_ModelMeshPart_DrawEffect(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effect effect)
-{
-	static_cast<ModelMeshPart*>(meshPart)->Draw(reinterpret_cast<Effect*>(effect));
-}
-
 E3DRSP_BoundingBox E3DRSP_ModelMeshPart_GetBoundingBox(E3DRSP_ModelMeshPart meshPart)
 {
 	auto boundingBox = static_cast<ModelMeshPart*>(meshPart)->GetBoundingBox();
@@ -88,7 +78,7 @@ void E3DRSP_ModelMeshPart_SetShaders(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effec
 E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetTransform(E3DRSP_ModelMeshPart meshPart)
 {
 	E3DRSP_Matrix4x4 result;
-	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->Transform;
+	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->World;
 	memcpy_s(&result, sizeof(float) * 16, &transform, sizeof(Math::Matrix4x4));
 
 	return result;
@@ -96,7 +86,7 @@ E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetTransform(E3DRSP_ModelMeshPart meshPart
 
 void E3DRSP_ModelMeshPart_SetTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform)
 {
-	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->Transform, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
+	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->World, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
 }
 
 void E3DRSP_ModelMeshPart_Destroy(E3DRSP_ModelMeshPart meshPart)

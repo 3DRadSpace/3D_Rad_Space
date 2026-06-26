@@ -1,4 +1,5 @@
 #include "LineStrip.hpp"
+#include "../../Math/MVP.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -12,7 +13,11 @@ LineStrip::LineStrip(IGraphicsDevice* device, const std::vector<VertexPositionCo
 
 void LineStrip::Draw3D()
 {
-	auto mvp = _mvp();
+	auto mvp = MVP{
+		.World = Transform,
+		.View = View,
+		.Projection = Projection
+	};
 
 	_swapRasterizer();
 	_shader->SetAll();

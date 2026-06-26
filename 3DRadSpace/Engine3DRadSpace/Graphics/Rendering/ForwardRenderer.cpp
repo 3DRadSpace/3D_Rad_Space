@@ -1,9 +1,11 @@
 #include "ForwardRenderer.hpp"
+#include "../IGraphicsDevice.hpp"
+#include "../IGraphicsCommandList.hpp"
 
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 ForwardRenderer::ForwardRenderer(IGraphicsDevice* device):
-	IRenderer(device)
+	IRenderPass(device)
 {
 }
 

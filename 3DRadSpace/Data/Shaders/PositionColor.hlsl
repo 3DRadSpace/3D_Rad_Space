@@ -1,6 +1,8 @@
 cbuffer Data : register(b0)
 {
-    row_major matrix matWorldViewProj; // MVP transformation
+    row_major matrix matWorld; // World transformation
+    row_major matrix matView; // View transformation
+    row_major matrix matProj; // Projection transformation
 }
 
 struct VertexIn
@@ -18,7 +20,9 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
     VertexOut r;
-    r.Position = mul(float4(v.Position.xyz,1), matWorldViewProj);
+    r.Position = mul(float4(v.Position.xyz,1), matWorld);
+    r.Position = mul(r.Position, matView);
+    r.Position = mul(r.Position, matProj);
     r.Color = v.Color;
     return r;
 }
