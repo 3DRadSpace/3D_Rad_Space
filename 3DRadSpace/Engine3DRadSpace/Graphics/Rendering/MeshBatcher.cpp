@@ -14,14 +14,10 @@ MeshBatcher::MeshBatcher(IGraphicsDevice* device) :
 void MeshBatcher::Clear()
 {
 	_drawCalls.clear();
-
-	OutputDebugStringA("[MeshBatcher] Cleared draw calls.\n");
 }
 
 void MeshBatcher::Submit(ModelMeshPart* meshPart, RenderPassType passType, std::vector<std::unique_ptr<std::byte[]>> &&instanceData)
 {
-	OutputDebugStringA("[MeshBatcher] Recieved draw call.\n");
-
 	//Find existing drawcall from the list that matches the meshPart pointer+passType.
 	auto it = std::find_if(_drawCalls.begin(), _drawCalls.end(),
 		[meshPart, passType](const DrawCall& dc) {
@@ -50,13 +46,11 @@ void MeshBatcher::Submit(ModelMeshPart* meshPart, RenderPassType passType, std::
 
 std::pair<DrawCall*, size_t> MeshBatcher::GetDrawCalls()
 {
-	OutputDebugStringA("[MeshBatcher] Num draw call.\n");
 	return {_drawCalls.data(), _drawCalls.size()};
 }
 
 std::vector<DrawCall*> MeshBatcher::GetDrawCalls(RenderPassType passType)
 {
-	OutputDebugStringA("[MeshBatcher] Num draw call.\n");
 	std::vector<DrawCall*> result;
 
 	for (auto& drawCall : _drawCalls)

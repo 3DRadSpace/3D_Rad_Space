@@ -4,6 +4,7 @@
 #include "../IDepthStencilBuffer.hpp"
 #include "../IRasterizerState.hpp"
 #include "../IDepthStencilState.hpp"
+#include "../Effect.hpp"
 #include "../Viewport.hpp"
 #include "../../Math/Vector3.hpp"
 #include "../../Math/Matrix4x4.hpp"
@@ -15,6 +16,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
+		Effect* _shadowEffect;
 
 		void _createShadowStates();
 	public:
