@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {

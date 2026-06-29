@@ -89,33 +89,7 @@ void Skinmesh::Draw3D()
 	auto game = static_cast<Game*>(_game);
 
 	if(Visible && _model)
-	{
-		for (auto& meshPart : *_model)
-		{
-			if (meshPart == nullptr) continue;
-
-			for (auto& mesh : *meshPart)
-			{
-				mesh->World = GetModelMatrix();
-				mesh->View = game->View;
-				mesh->Projection = game->Projection;
-
-				if (HasShadows)
-				{
-					game->RenderingManager->Batcher.Submit(
-						mesh.get(),
-						Graphics::Rendering::RenderPassType::ShadowMap
-					);
-				}
-				{
-					game->RenderingManager->Batcher.Submit(
-						mesh.get(),
-						Transparent ? Graphics::Rendering::RenderPassType::Transparent : Graphics::Rendering::RenderPassType::Opaque
-					);
-				}
-			}
-		}
-	}
+		_model->Draw(GetModelMatrix() * game->View * game->Projection);
 }
 
 float Skinmesh::Intersects(const Ray&r)

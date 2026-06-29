@@ -588,9 +588,7 @@ void EditorWindow::Run()
 
 		cmd->SetViewport();
 		cmd->Clear(editor->ClearColor);
-		this->editor->RenderingManager->Batcher.Clear();
 		this->editor->Draw3D();
-		this->editor->RenderingManager->DrawAll();
 		this->editor->PostProcesses->ApplyAll();
 		this->editor->Draw2D();
 		cmd->Present();

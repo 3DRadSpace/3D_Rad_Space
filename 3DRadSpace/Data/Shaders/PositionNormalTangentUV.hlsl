@@ -1,8 +1,6 @@
 cbuffer Data : register(b0)
 {
-    row_major matrix matWorld; // World transformation
-    row_major matrix matView; // View transformation
-    row_major matrix matProj; // Projection transformation
+    row_major matrix matWorldViewProj; // MVP transformation
 }
 
 Texture2D TextureModel : register(t0);
@@ -26,9 +24,7 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
     VertexOut r;
-    r.Position = mul(float4(v.Position.xyz,1), matWorld);
-    r.Position = mul(r.Position, matView);
-    r.Position = mul(r.Position, matProj);
+    r.Position = mul(float4(v.Position.xyz,1), matWorldViewProj);
 	r.UV = v.UV;
     return r;
 }

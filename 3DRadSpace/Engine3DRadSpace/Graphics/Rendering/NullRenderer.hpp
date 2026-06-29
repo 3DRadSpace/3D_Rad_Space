@@ -1,12 +1,12 @@
 #pragma once
-#include "IRenderPass.hpp"
+#include "IRenderer.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	/// <summary>
 	/// A renderer that does nothing. Useful for testing.
 	/// </summary>
-	class E3DRSP_GRAPHICS_RENDERING_EXPORT NullRenderer : public IRenderPass
+	class E3DRSP_GRAPHICS_RENDERING_EXPORT NullRenderer : public IRenderer
 	{
 	public:
 		NullRenderer(IGraphicsDevice* device);

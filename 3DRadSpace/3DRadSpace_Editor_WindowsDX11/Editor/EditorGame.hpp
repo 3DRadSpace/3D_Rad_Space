@@ -6,7 +6,7 @@
 #include <Engine3DRadSpace/Graphics/Model3D.hpp>
 #include <Engine3DRadSpace/Graphics/SpriteBatch.hpp>
 #include <Engine3DRadSpace/Graphics/Primitives/LineList.hpp>
-#include <Engine3DRadSpace/Graphics/Primitives/SphericalBillboard.hpp>
+#include <Engine3DRadSpace/Graphics/Primitives/Arrow.hpp>
 #include <Engine3DRadSpace/Graphics/Font.hpp>
 
 //Despite using namespaces are ill-advised to be used in headers, this header is not meant to be included in other files.
@@ -33,7 +33,6 @@ class EditorGame : public Engine3DRadSpace::Game
 	std::unique_ptr<LineList> axis;
 	std::unique_ptr<LineList> grid;
 	std::unique_ptr<LineList> grid_center;
-	std::unique_ptr<SphericalBillboard> billboard;
 
 	float zoom = 5.0f;
 	float timer = 0;

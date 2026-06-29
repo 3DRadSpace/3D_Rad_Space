@@ -67,9 +67,8 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 
 	std::unordered_map<std::string, int> backends =
 	{
-		{"Null", 0},
-		{"DirectX9", 1},
-		{"DirectX10", 1},
+	/*	{"DirectX9", 1},
+		{"DirectX10", 1},*/
 		{"DirectX11", 1},
 		{"DirectX12", 1},
 	};
@@ -191,8 +190,6 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 			{
 				aiColor3D color;
 				r = scene->mMaterials[materialindex]->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-				
-				//TODO: Find settings for sampler state(s)
 
 				auto createBlankTexture = [&](const Color& c)
 				{
@@ -270,13 +267,44 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 		if(parts[node->mMeshes[i]] == nullptr) continue;
 
 		lparts.push_back(std::move(parts[node->mMeshes[i]]));
-		lparts[i]->ParentTransform = Matrix4x4(reinterpret_cast<float*>(&node->mTransformation));
+		lparts[i]->Transform = Matrix4x4(reinterpret_cast<float*>(&node->mTransformation));
 	}
 	_meshes.push_back(std::make_unique<ModelMesh>(lparts));
 
 	for (unsigned i = 0; i < node->mNumChildren; i++)
 	{
 		_processNode(parts, node->mChildren[i]);
+	}
+}
+
+void Model3D::SetTransform(const Matrix4x4&m)
+{
+	for(const auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = m;
+		}
+	}
+}
+
+void Model3D::Draw()
+{
+	for (auto& mesh :_meshes)
+	{
+		mesh->Draw();
+	}
+}
+
+void Model3D::Draw(const Matrix4x4&m)
+{
+	for(auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = m;
+			meshPart->Draw();
+		}
 	}
 }
 
@@ -328,6 +356,29 @@ void Model3D::SetShaders(std::span<Effect*> effects)
 			if (i < len)
 				meshPart->SetShaders(effects[i++]);
 			else return;
+		}
+	}
+}
+
+void Model3D::DrawEffect(Effect *effect)
+{
+	for (auto& mesh : _meshes)
+	{
+		for (auto& meshPart : *mesh.get())
+		{
+			meshPart->Draw(effect);
+		}
+	}
+}
+
+void Model3D::DrawEffect(Effect* effect, const Math::Matrix4x4& mvp)
+{
+	for(auto &mesh : _meshes)
+	{
+		for(auto &meshPart : *mesh.get())
+		{
+			meshPart->Transform = mvp;
+			meshPart->Draw(effect);
 		}
 	}
 }

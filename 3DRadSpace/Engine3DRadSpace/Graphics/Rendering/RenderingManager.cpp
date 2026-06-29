@@ -10,17 +10,17 @@ RenderingManager::RenderingManager(IGraphicsDevice* device) :
 	_device(device),
 	Batcher(device)
 {
-	_renderers.emplace_back(std::make_unique<ShadowMapRenderer>(device));
 	_renderers.emplace_back(std::make_unique<ForwardRenderer>(device));
+	_renderers.emplace_back(std::make_unique<ShadowMapRenderer>(device));
 }
 
-void RenderingManager::Add(std::unique_ptr<IRenderPass>&& renderPass)
+void RenderingManager::Add(std::unique_ptr<IRenderer>&& renderPass)
 {
 	renderPass->SetOwner(_owner);
 	_renderers.emplace_back(std::move(renderPass));
 }
 
-IRenderPass* RenderingManager::operator[](size_t idx) const
+IRenderer* RenderingManager::operator[](size_t idx) const
 {
 	if (idx >= _renderers.size())
 		throw std::out_of_range("Index out of range.");
@@ -42,21 +42,4 @@ void RenderingManager::Remove(size_t idx)
 void RenderingManager::Clear() noexcept
 {
 	_renderers.clear();
-}
-
-void RenderingManager::DrawAll()
-{
-	for (auto& renderer : _renderers)
-	{
-		renderer->Begin();
-		auto [drawCalls, numDrawCalls] = Batcher.GetDrawCalls();
-		
-		for (int i = 0; i < numDrawCalls; ++i)
-		{
-			auto& drawCall = drawCalls[i];
-			renderer->Draw(&drawCall);
-		}
-
-		renderer->End();
-	}
 }

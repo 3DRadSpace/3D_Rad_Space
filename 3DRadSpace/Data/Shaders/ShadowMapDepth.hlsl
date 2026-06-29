@@ -3,9 +3,7 @@
 
 cbuffer ShadowData : register(b0)
 {
-    row_major matrix matLight; // Light space transformation matrix
-    row_major matrix matView; // View matrix for the light
-    row_major matrix matProj; // Projection matrix for the light
+    row_major matrix matLightViewProj; // Light space transformation matrix
 }
 
 struct VertexIn
@@ -22,14 +20,14 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
     VertexOut r;
-    r.Position = mul(float4(v.Position.xyz, 1), matLight);
-    r.Position = mul(r.Position, matView);
-    r.Position = mul(r.Position, matProj);
+    r.Position = mul(float4(v.Position.xyz, 1), matLightViewProj);
     r.Depth = r.Position.z / r.Position.w;
     return r;
 }
 
+// Pixel shader can be empty for depth-only rendering
+// The depth buffer is automatically written by the hardware
 void PS_Main(VertexOut v)
 {
-    //Depth is written automatically
+    // No output needed - depth is written automatically
 }

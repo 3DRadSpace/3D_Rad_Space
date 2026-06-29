@@ -25,6 +25,11 @@ size_t E3DRSP_ModelMesh_NumMeshParts(E3DRSP_ModelMesh mesh)
 	return reinterpret_cast<ModelMesh*>(mesh)->NumMeshParts();
 }
 
+void E3DRSP_ModelMesh_Draw(E3DRSP_ModelMesh mesh)
+{
+	reinterpret_cast<ModelMesh*>(mesh)->Draw();
+}
+
 E3DRSP_BoundingBox E3DRSP_ModelMesh_GetBoundingBox(E3DRSP_ModelMesh mesh)
 {
 	BoundingBox box = reinterpret_cast<ModelMesh*>(mesh)->GetBoundingBox();

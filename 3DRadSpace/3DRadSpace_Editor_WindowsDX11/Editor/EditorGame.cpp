@@ -152,9 +152,6 @@ void EditorGame::Load()
 		RectangleF(btnSize * 8, 0.0f, btnSize, btnSize),
 		RectangleF(0.0f, 0.5f, 0.25f, 0.25f)
 	);
-
-	billboard = std::make_unique<Primitives::SphericalBillboard>(Device.get());
-	billboard->Texture = _btnSpritesheet.get();
 }
 
 void EditorGame::_controlCamera()
@@ -403,11 +400,6 @@ void EditorGame::Draw3D()
 	axis->View = View;
 	axis->Projection = Projection;
 	axis->Draw3D();
-
-	billboard->Transform = Matrix4x4::CreateTranslation(Vector3());
-	billboard->View = View;
-	billboard->Projection = Projection;
-	billboard->Draw3D();
 
 	if (Settings::ShowGrid.Value)
 	{

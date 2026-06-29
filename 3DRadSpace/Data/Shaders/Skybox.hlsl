@@ -1,8 +1,6 @@
 cbuffer Data : register(b0)
 {
-	row_major matrix matWorld; // World transformation
-	row_major matrix matView; // View transformation
-	row_major matrix matProj; // Projection transformation
+	row_major matrix matWorldViewProj; // MVP transformation
 }
 
 TextureCube CubeMapTexture : register(t0);
@@ -32,10 +30,8 @@ struct VertexOut
 VertexOut VS_Main(VertexIn v)
 {
 	VertexOut output;
-	output.Position = mul(float4(v.Position, 1.0f), matWorld);
-	output.Position = mul(output.Position, matView);
-	output.Position = mul(output.Position, matProj);
-    output.Position.z = output.Position.w;
+	output.Position = mul(float4(v.Position, 1.0f), matWorldViewProj);
+	output.Position.z = output.Position.w;
 	output.UVW = v.Position;
 	return output;
 }

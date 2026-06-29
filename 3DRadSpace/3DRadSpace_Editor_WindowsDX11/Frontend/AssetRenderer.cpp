@@ -2,8 +2,6 @@
 #include <Engine3DRadSpace\Graphics\Model3D.hpp>
 #include <Engine3DRadSpace\Math\Matrix4x4.hpp>
 #include <Engine3DRadSpace\Graphics\SpriteBatch.hpp>
-#include <Engine3DRadSpace\Core\IGame.hpp>
-#include <Engine3DRadSpace\Graphics\Rendering\RenderingManager.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -35,8 +33,8 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 		for (auto&& n : iota(0, 3))
 		{
 			cmd->Clear(Colors::Gray);
-			
-			auto view =
+			model->Draw(
+				Matrix4x4() *
 				Matrix4x4::CreateLookAtView(
 					boundingSphere.Center + ((boundingSphere.Radius + 0.5f) *
 						Vector3(
@@ -46,23 +44,11 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 						)),
 					Vector3::Zero(),
 					Vector3::UnitY()
-				);
+				) *
+				Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f)
+			);
 
-			auto projection = Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f);
-
-			auto renderingManager = device->GetOwner()->GetService<Rendering::RenderingManager>({});
-			
-			for (auto& modelMesh : *model)
-			{
-				for (auto& modelMeshPart : *modelMesh)
-				{
-					modelMeshPart->View = view;
-					modelMeshPart->Projection = projection;
-
-					renderingManager->Batcher.Submit(modelMeshPart.get(), Rendering::RenderPassType::Opaque);
-				}
-			}
-			
+			cmd->Present();
 		}
 
 		cmd->SaveBackBufferToFile(imagePath);

@@ -5,7 +5,6 @@
 #include "../../Graphics/IShaderCompiler.hpp"
 #include "../../Graphics/IGraphicsCommandList.hpp"
 #include "../../Logging/Exception.hpp"
-#include "../../Graphics/Rendering/RenderingManager.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -123,26 +122,10 @@ void Gizmo<Skinmesh>::Draw3D()
 			auto highlightColor = Color(1.0f, 0.5f, 0.0f, 1.0f);
 			_highlightEffect->SetData<Color>(&highlightColor, 1);
 
-			for (auto& meshPart : *skinmesh->GetModel())
-			{
-				if (meshPart == nullptr) continue;
-
-				for (auto& mesh : *meshPart)
-				{
-					auto oldEffect = mesh->GetShaders();
-
-					mesh->SetShaders(_highlightEffect);
-					mesh->World = skinmesh->GetModelMatrix();
-					mesh->View = game->View;
-					mesh->Projection = game->Projection;
-
-					game->RenderingManager->Batcher.Submit(
-						mesh.get()
-					);
-
-					mesh->SetShaders(oldEffect);
-				}
-			}
+			skinmesh->GetModel()->DrawEffect(
+				_highlightEffect,
+				skinmesh->GetModelMatrix() * game->View * game->Projection
+			);
 
 			//cmd->SetRenderTargetAndDepth(nullptr, nullptr);
 			cmd->SetRasterizerState(oldRasterizerState.get());

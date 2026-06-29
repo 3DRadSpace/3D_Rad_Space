@@ -78,7 +78,7 @@
 
 //Engine3DRadSpace::Graphics::Rendering
 #include "Graphics\Rendering\ForwardRenderer.hpp"
-#include "Graphics\Rendering\IRenderPass.hpp"
+#include "Graphics\Rendering\IRenderer.hpp"
 #include "Graphics\Rendering\LinearPixelFogEffect.hpp"
 #include "Graphics\Rendering\PostProcessCollection.hpp"
 #include "Graphics\Rendering\PostProcessEffect.hpp"

@@ -52,6 +52,11 @@ namespace Engine3DRadSpace::Graphics
 		size_t NumMeshParts() const noexcept;
 
 		/// <summary>
+		/// Draw each ModelMeshPart.
+		/// </summary>
+		void Draw();
+
+		/// <summary>
 		/// Gets the bounding box of all ModelMeshParts.
 		/// </summary>
 		/// <returns></returns>

@@ -1,12 +1,12 @@
 #pragma once
-#include "IRenderPass.hpp"
+#include "IRenderer.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	/// <summary>
 	/// A trivial forward renderer.
 	/// </summary>
-	class E3DRSP_GRAPHICS_RENDERING_EXPORT ForwardRenderer : public IRenderPass
+	class E3DRSP_GRAPHICS_RENDERING_EXPORT ForwardRenderer : public IRenderer
 	{
 		bool _beginCalled = false;
 	public:

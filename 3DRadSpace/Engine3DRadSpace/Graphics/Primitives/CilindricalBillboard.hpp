@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 	class E3DRSP_GRAPHICS_PRIMITIVES_EXPORT CilindricalBillboard : public IPrimitive
 	{
 	protected:
-		virtual Math::Matrix4x4 billboardMatrix() const noexcept;
+		Math::Matrix4x4 _mvp() const noexcept override;
 	public:
 		CilindricalBillboard(IGraphicsDevice* device);
 

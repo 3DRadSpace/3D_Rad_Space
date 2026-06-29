@@ -1,6 +1,5 @@
 #include "IPrimitive.hpp"
 #include "../IShaderCompiler.hpp"
-#include "../../Math/MVP.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -43,14 +42,14 @@ IPrimitive::IPrimitive(IGraphicsDevice* device) :
     }
 }
 
+Math::Matrix4x4 IPrimitive::_mvp() const noexcept
+{
+	return Transform * View * Projection;
+}
+
 void IPrimitive::Draw3D()
 {
-    Math::MVP mvp
-    {
-        .World = Transform,
-        .View = View,
-        .Projection = Projection
-    };
+    auto mvp = _mvp();
 
     _shader->SetAll();
     _shader->operator[](0)->SetData(0, &mvp, sizeof(mvp));

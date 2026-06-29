@@ -61,31 +61,12 @@ namespace Engine3DRadSpace::Graphics
 			Effect *shaders
 		);
 
-		/// <summary>
-		/// Represents an transform matrix applied before the world matrix, usually set by the importer.
-		/// </summary>
-		Math::Matrix4x4 ParentTransform = Math::Matrix4x4();
-		/// <summary>
-		/// Represents the transform matrix of this mesh part.
-		/// </summary>
-		Math::Matrix4x4 World = Math::Matrix4x4();
-		/// <summary>
-		/// Represents the View matrix set by the camera.
-		/// </summary>
-		Math::Matrix4x4 View = Math::Matrix4x4();
-		/// <summary>
-		/// Represents the Projection matrix set by the camera.
-		/// </summary>
-		Math::Matrix4x4 Projection = Math::Matrix4x4();
-
-		/// <summary>
-		/// Represents material textures.
-		/// </summary>
+		Math::Matrix4x4 Transform = Math::Matrix4x4();
 		std::vector<std::unique_ptr<ITexture2D>> Textures;
-		/// <summary>
-		/// Represents material sampler states.
-		/// </summary>
 		std::vector<std::unique_ptr<ISamplerState>> TextureSamplers;
+
+		void Draw();
+		void Draw(Effect* effect);
 
 		Math::BoundingBox GetBoundingBox() const noexcept;
 		Math::BoundingSphere GetBoundingSphere() const noexcept;

@@ -1,7 +1,6 @@
 #include "LineList.hpp"
 #include "../IGraphicsCommandList.hpp"
 #include "../IRasterizerState.hpp"
-#include "../../Math/MVP.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -33,11 +32,7 @@ IRasterizerState* LineList::GetLineRasterizer() const noexcept
 
 void LineList::Draw3D()
 {
-	auto mvp = MVP{
-		.World = Transform,
-		.View = View,
-		.Projection = Projection
-	};
+	auto mvp = _mvp();
 
 	_swapRasterizer();
 	_shader->SetAll();

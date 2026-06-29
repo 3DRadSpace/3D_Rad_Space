@@ -31,6 +31,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		std::unique_ptr<IIndexBuffer> _indices;
 
 		Effect* _shader;
+
+		virtual Math::Matrix4x4 _mvp() const noexcept;
 	public:
 		/// <summary>
 		/// Camera view matrix.

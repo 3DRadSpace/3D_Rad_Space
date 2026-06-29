@@ -34,6 +34,8 @@ extern "C"
 		E3DRSP_Effect shaders
 	);
 
+	E3DRSP_FFI_EXPORT void E3DRSP_ModelMeshPart_Draw(E3DRSP_ModelMeshPart meshPart);
+	E3DRSP_FFI_EXPORT void E3DRSP_ModelMeshPart_DrawEffect(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effect effect);
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingBox E3DRSP_ModelMeshPart_GetBoundingBox(E3DRSP_ModelMeshPart meshPart);
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingSphere E3DRSP_ModelMeshPart_GetBoundingSphere(E3DRSP_ModelMeshPart meshPart);
 
