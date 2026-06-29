@@ -407,7 +407,7 @@ void EditorGame::Draw3D()
 	billboard->Transform = Matrix4x4::CreateTranslation(Vector3());
 	billboard->View = View;
 	billboard->Projection = Projection;
-	//billboard->Draw3D();
+	billboard->Draw3D();
 
 	if (Settings::ShowGrid.Value)
 	{

@@ -1,7 +1,6 @@
 #include "ShadowMapRenderer.hpp"
 #include "../../Core/IGame.hpp"
 #include "../IGraphicsCommandList.hpp"
-#include "../IShaderCompiler.hpp"
 #include "../ShaderDesc.hpp"
 #include "../../Math/Rectangle.hpp"
 #include "../../Math/MVP.hpp"
@@ -41,18 +40,6 @@ void ShadowMapRenderer::_createShadowStates()
 
 	// Create depth stencil state for shadow map rendering
 	_shadowDepthState = _device->CreateDepthStencilState_DepthDefault();
-
-	ShaderDescFile vertexShaderDesc("Data/Shaders/ShadowMapDepth.hlsl", "VS_Main", ShaderType::Vertex);
-	ShaderDescFile pixelShaderDesc("Data/Shaders/ShadowMapDepth.hlsl", "PS_Main", ShaderType::Fragment);
-
-	std::array<ShaderDesc*,2> shaderDescs = { &vertexShaderDesc, &pixelShaderDesc };
-
-	auto vtxShadow = _device->ShaderCompiler()->CompileEffect(shaderDescs);
-	if (vtxShadow.first != nullptr)
-	{
-		_shadowEffect = vtxShadow.first;
-	}
-	else throw std::exception("Failed to load shadow map depth shader!");
 }
 
 Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection) const
@@ -155,13 +142,13 @@ void ShadowMapRenderer::Draw(DrawCall* drawCall)
 	if (!drawCall || !drawCall->MeshPart)
 		return;
 
-	//auto material = drawCall->MeshPart->GetShaders();
+	auto material = drawCall->MeshPart->GetShaders();
 
-	if (!drawCall->MeshPart)
+	if (!drawCall->MeshPart || !material)
 		return;
 
 	auto context = _device->ImmediateContext();
-	_shadowEffect->SetAll();
+	material->SetAll();
 	
 	if (!drawCall->IsInstanced)
 	{
@@ -173,8 +160,7 @@ void ShadowMapRenderer::Draw(DrawCall* drawCall)
 				.View = ComputeLightViewMatrix(LightDirection),
 				.Projection = ComputeLightProjectionMatrix()
 			};
-			
-			_shadowEffect->SetData<Math::MVP>(&lvp, 0);
+			material->SetData<Math::MVP>(&lvp, 0);
 			context->DrawVertexBufferWithindices(drawCall->MeshPart->VertexBuffer.get(), drawCall->MeshPart->IndexBuffer.get());
 		}
 	}

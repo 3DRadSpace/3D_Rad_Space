@@ -9,7 +9,7 @@
 #include <Engine3DRadSpace/Graphics/Primitives/SphericalBillboard.hpp>
 #include <Engine3DRadSpace/Graphics/Font.hpp>
 
-//Despite using namespaces being ill-advised to be used in headers, this header is not meant to be included in other files.
+//Despite using namespaces are ill-advised to be used in headers, this header is not meant to be included in other files.
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Content::Assets;

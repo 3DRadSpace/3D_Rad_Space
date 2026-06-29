@@ -579,7 +579,7 @@ void EditorWindow::Run()
 		}
 		_lastFrameTime = now;
 
-		//editor->PostProcesses->DisableAll();
+		editor->PostProcesses->DisableAll();
 		editor->Update();
 
 		auto ts_d1 = std::chrono::steady_clock::now();
