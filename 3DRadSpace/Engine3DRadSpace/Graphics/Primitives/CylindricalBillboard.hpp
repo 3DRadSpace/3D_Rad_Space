@@ -4,12 +4,12 @@
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
-	class E3DRSP_GRAPHICS_PRIMITIVES_EXPORT CilindricalBillboard : public IPrimitive
+	class E3DRSP_GRAPHICS_PRIMITIVES_EXPORT CylindricalBillboard : public IPrimitive
 	{
 	protected:
 		Math::Matrix4x4 _mvp() const noexcept override;
 	public:
-		CilindricalBillboard(IGraphicsDevice* device);
+		CylindricalBillboard(IGraphicsDevice* device);
 
 		/// <summary>
 		/// Camera view matrix.
@@ -31,6 +31,6 @@ namespace Engine3DRadSpace::Graphics::Primitives
 
 		void Draw3D() override;
 
-		~CilindricalBillboard() override = default;
+		~CylindricalBillboard() override = default;
 	};
 }

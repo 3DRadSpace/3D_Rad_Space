@@ -103,6 +103,11 @@ Reflection::UUID DirectionalLight::GetUUID() const noexcept
 	return { 0x5f23c116, 0xbb90, 0x4246, { 0x91, 0x37, 0x26, 0xb5, 0x54, 0x28, 0x9b, 0x4d } };
 }
 
+Gizmos::IGizmo* DirectionalLight::GetGizmo() const noexcept
+{
+	return nullptr;
+}
+
 static void dl_setlightdir(DirectionalLight& dl, const Math::Vector3& dir) { dl.SetLightDir(dir); }
 static Math::Vector3 dl_getlightdir(DirectionalLight& dl) { return dl.GetLightDir(); }
 

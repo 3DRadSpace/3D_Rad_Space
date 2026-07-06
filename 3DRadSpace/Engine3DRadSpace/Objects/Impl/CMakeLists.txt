@@ -45,6 +45,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"SoundSource.cpp"
 	"Sprite.hpp"
 	"Sprite.cpp"
+	"SpriteBillboard.hpp"
+	"SpriteBillboard.cpp"
 	"Sphere.hpp"
 	"Sphere.cpp"
 	"TextPrint.hpp"

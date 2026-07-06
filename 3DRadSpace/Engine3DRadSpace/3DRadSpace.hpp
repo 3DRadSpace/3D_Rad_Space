@@ -67,7 +67,7 @@
 //Engine3DRadSpace::Graphics::Primitives
 #include "Graphics\Primitives\Arrow.hpp"
 #include "Graphics\Primitives\Box.hpp"
-#include "Graphics\Primitives\CilindricalBillboard.hpp"
+#include "Graphics\Primitives\CylindricalBillboard.hpp"
 #include "Graphics\Primitives\Circle.hpp"
 #include "Graphics\Primitives\CubeMapSkybox.hpp"
 #include "Graphics\Primitives\IPrimitive.hpp"

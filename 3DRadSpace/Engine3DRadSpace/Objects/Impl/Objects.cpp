@@ -31,6 +31,7 @@ REFL_FWD(EventOnKey)
 REFL_FWD(EventOnLocation)
 REFL_FWD(Timer)
 REFL_FWD(DirectionalLight)
+REFL_FWD(SpriteBillboard)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -76,6 +77,8 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&CylinderReflInstance,
 		&FreeCamReflInstance,
 		&TimerReflInstance,
+		&DirectionalLightReflInstance,
+		&SpriteBillboardReflInstance
 	};
 
 	e3drsp_internal_objects_list.insert_range(e3drsp_internal_objects_list.begin(), ppDefaultObjects);

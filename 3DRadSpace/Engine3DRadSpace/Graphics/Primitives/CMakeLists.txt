@@ -8,7 +8,7 @@ add_library(3DRadSpace.Graphics.Primitives STATIC
 	"Box.hpp"
 	"Box.cpp"
 	"CilindricalBillboard.hpp"
-	"CilindricalBillboard.cpp"
+	"CylindricalBillboard.cpp"
 	"Circle.hpp"
 	"Circle.cpp"
 	"Cone.hpp"

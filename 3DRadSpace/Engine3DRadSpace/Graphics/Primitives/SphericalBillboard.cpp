@@ -5,7 +5,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Math;
 
-SphericalBillboard::SphericalBillboard(IGraphicsDevice* device) : CilindricalBillboard(device)
+SphericalBillboard::SphericalBillboard(IGraphicsDevice* device) : CylindricalBillboard(device)
 {
 }
 

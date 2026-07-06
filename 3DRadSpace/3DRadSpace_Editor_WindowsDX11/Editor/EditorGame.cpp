@@ -152,12 +152,6 @@ void EditorGame::Load()
 		RectangleF(btnSize * 8, 0.0f, btnSize, btnSize),
 		RectangleF(0.0f, 0.5f, 0.25f, 0.25f)
 	);
-
-	billboard = std::make_unique<CilindricalBillboard>(Device.get());
-	billboard->Texture = _btnSpritesheet.get();
-	billboard->Axis = Vector3::UnitY();
-	billboard->Scale = Vector2(1.0f, 1.0f);
-	billboard->Transform = Matrix4x4::CreateScale(1.5f) * Matrix4x4::CreateTranslation(Vector3(2, 2, 0));
 }
 
 void EditorGame::_controlCamera()
@@ -406,10 +400,6 @@ void EditorGame::Draw3D()
 	axis->View = View;
 	axis->Projection = Projection;
 	axis->Draw3D();
-
-	billboard->View = View;
-	billboard->Projection = Projection;
-	billboard->Draw3D();
 
 	if (Settings::ShowGrid.Value)
 	{

@@ -1,4 +1,4 @@
-#include "CilindricalBillboard.hpp"
+#include "CylindricalBillboard.hpp"
 #include "Plane.hpp"
 #include "../IGraphicsCommandList.hpp"
 #include "../IShaderCompiler.hpp"
@@ -9,7 +9,7 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Primitives;
 using namespace Engine3DRadSpace::Math;
 
-CilindricalBillboard::CilindricalBillboard(IGraphicsDevice *device) :
+CylindricalBillboard::CylindricalBillboard(IGraphicsDevice *device) :
 	IPrimitive(device),
 	Texture(nullptr)
 {
@@ -31,11 +31,11 @@ CilindricalBillboard::CilindricalBillboard(IGraphicsDevice *device) :
 	}
 	else
 	{
-		throw Logging::Exception(std::format("Failed to compile effect for CilindricalBillboard: {}", effect.second.Log));
+		throw Logging::Exception(std::format("Failed to compile effect for CylindricalBillboard: {}", effect.second.Log));
 	}
 }
 
-Matrix4x4 CilindricalBillboard::_mvp() const noexcept
+Matrix4x4 CylindricalBillboard::_mvp() const noexcept
 {
 	auto v = View;
 	auto v_inv = v;
@@ -47,7 +47,7 @@ Matrix4x4 CilindricalBillboard::_mvp() const noexcept
 	Vector3 z_axis(v.M13, v.M23, v.M33);
 
 	Vector3 up = cam_pos + y_axis;
-	Vector3 fwd = cam_pos - z_axis;
+	Vector3 fwd = cam_pos + z_axis;
 
 	// Use Position field if set, otherwise extract from Transform
 	Vector3 objectPos = (Position != Vector3::Zero()) ? Position : Vector3(Transform.M41, Transform.M42, Transform.M43);
@@ -55,7 +55,7 @@ Matrix4x4 CilindricalBillboard::_mvp() const noexcept
 	return model * v * Projection;
 }
 
-std::array<VertexPositionUV, 4> CilindricalBillboard::CreateVertices()
+std::array<VertexPositionUV, 4> CylindricalBillboard::CreateVertices()
 {
 	std::array<VertexPositionUV, 4> plane;
 
@@ -70,13 +70,13 @@ std::array<VertexPositionUV, 4> CilindricalBillboard::CreateVertices()
 	return plane;
 }
 
-std::array<unsigned, 6> CilindricalBillboard::CreateIndices()
+std::array<unsigned, 6> CylindricalBillboard::CreateIndices()
 {
 	//Counter-clockwise winding for camera-facing billboard (reversed from Plane for proper facing).
 	return { 0, 2, 1, 0, 3, 2 };
 }
 
-void CilindricalBillboard::Draw3D()
+void CylindricalBillboard::Draw3D()
 {
 	auto mat = _mvp();
 
