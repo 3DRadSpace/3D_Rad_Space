@@ -19,14 +19,15 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		/// Camera projection matrix.
 		/// </summary>
 		Math::Matrix4x4 Projection;
-	
-		Math::Vector3 Position;
+
+		Math::Vector3 Position = Math::Vector3::Zero();
 		Math::Vector2 Scale = Math::Vector2::One();
 		Math::Vector3 Axis = Math::Vector3::UnitY();
-	
+
 		ITexture2D* Texture;
 
 		static std::array<VertexPositionUV, 4> CreateVertices();
+		static std::array<unsigned, 6> CreateIndices();
 
 		void Draw3D() override;
 

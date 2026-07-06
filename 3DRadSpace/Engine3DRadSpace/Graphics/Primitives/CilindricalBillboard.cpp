@@ -1,6 +1,8 @@
 #include "CilindricalBillboard.hpp"
 #include "Plane.hpp"
 #include "../IGraphicsCommandList.hpp"
+#include "../IShaderCompiler.hpp"
+#include "../../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -13,41 +15,65 @@ CilindricalBillboard::CilindricalBillboard(IGraphicsDevice *device) :
 {
 	auto vertices = CreateVertices();
 	_vertices = device->CreateVertexBuffer<VertexPositionUV>(vertices, BufferUsage::ReadOnlyGPU);
-	
-	auto indices = Plane::CreateIndices();
+
+	auto indices = CreateIndices();
 	_indices = device->CreateIndexBuffer(indices);
+
+	ShaderDescFile vtx("Data\\Shaders\\PositionUV.hlsl", "VS_Main", ShaderType::Vertex);
+	ShaderDescFile frg("Data\\Shaders\\PositionUV.hlsl", "PS_Main", ShaderType::Fragment);
+
+	std::array<ShaderDesc*, 2> shaders = { &vtx, &frg };
+
+	auto effect = device->ShaderCompiler()->CompileEffect(shaders);
+	if (effect.first)
+	{
+		_shader = effect.first;
+	}
+	else
+	{
+		throw Logging::Exception(std::format("Failed to compile effect for CilindricalBillboard: {}", effect.second.Log));
+	}
 }
 
 Matrix4x4 CilindricalBillboard::_mvp() const noexcept
 {
 	auto v = View;
+	auto v_inv = v;
+	v_inv.Invert();
 
-	Vector3 cam_pos(v.M41, v.M42, v.M43);
+	Vector3 cam_pos(v_inv.M41, v_inv.M42, v_inv.M43);
 	Vector3 x_axis(v.M11, v.M21, v.M31);
-	Vector3 y_axis(v.M11, v.M21, v.M31);
-	Vector3 z_axis(v.M11, v.M21, v.M31);
-	
-	Vector3 fwd = cam_pos + z_axis;
-	Vector3 up = cam_pos + y_axis;
-	Vector3 right = cam_pos + x_axis;
+	Vector3 y_axis(v.M12, v.M22, v.M32);
+	Vector3 z_axis(v.M13, v.M23, v.M33);
 
-	auto model = Matrix4x4::CreateCylindricalBillboard(Position, cam_pos, up, fwd, Axis, std::nullopt);
-	return model * View * Projection;
+	Vector3 up = cam_pos + y_axis;
+	Vector3 fwd = cam_pos - z_axis;
+
+	// Use Position field if set, otherwise extract from Transform
+	Vector3 objectPos = (Position != Vector3::Zero()) ? Position : Vector3(Transform.M41, Transform.M42, Transform.M43);
+	auto model = Matrix4x4::CreateCylindricalBillboard(objectPos, cam_pos, up, fwd, Axis, std::nullopt);
+	return model * v * Projection;
 }
 
 std::array<VertexPositionUV, 4> CilindricalBillboard::CreateVertices()
 {
 	std::array<VertexPositionUV, 4> plane;
 
-	Vector2 s(0.5f);
+	Vector2 s(0.5f, 0.5f);
 
-	//See Plane.cpp
-	plane[0] = VertexPositionUV(Vector3(-s.X, 0, -s.Y), Vector2(0,1));
-	plane[1] = VertexPositionUV(Vector3(-s.X, 0, +s.Y), Vector2(0,0));
-	plane[2] = VertexPositionUV(Vector3(+s.X, 0, +s.Y), Vector2(0,1));
-	plane[3] = VertexPositionUV(Vector3(+s.X, 0, -s.Y), Vector2(1,1));
+	//Billboard in XY plane, will be rotated by cylindrical billboard matrix
+	plane[0] = VertexPositionUV(Vector3(-s.X, -s.Y, 0), Vector2(0, 1));
+	plane[1] = VertexPositionUV(Vector3(-s.X, +s.Y, 0), Vector2(0, 0));
+	plane[2] = VertexPositionUV(Vector3(+s.X, +s.Y, 0), Vector2(1, 0));
+	plane[3] = VertexPositionUV(Vector3(+s.X, -s.Y, 0), Vector2(1, 1));
 
 	return plane;
+}
+
+std::array<unsigned, 6> CilindricalBillboard::CreateIndices()
+{
+	//Counter-clockwise winding for camera-facing billboard (reversed from Plane for proper facing).
+	return { 0, 2, 1, 0, 3, 2 };
 }
 
 void CilindricalBillboard::Draw3D()
@@ -57,6 +83,8 @@ void CilindricalBillboard::Draw3D()
 	_shader->SetAll();
 	_shader->operator[](0)->SetData(0, &mat, sizeof(mat));
 	_shader->operator[](1)->SetTexture(0, Texture);
-	_device->ImmediateContext()->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
+	auto cmdList = _device->ImmediateContext();
+	cmdList->SetTopology(VertexTopology::TriangleList);
+	cmdList->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }
 

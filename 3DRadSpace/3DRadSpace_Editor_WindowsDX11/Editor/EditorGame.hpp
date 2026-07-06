@@ -8,6 +8,7 @@
 #include <Engine3DRadSpace/Graphics/Primitives/LineList.hpp>
 #include <Engine3DRadSpace/Graphics/Primitives/Arrow.hpp>
 #include <Engine3DRadSpace/Graphics/Font.hpp>
+#include <Engine3DRadSpace/Graphics/Primitives/CilindricalBillboard.hpp>
 
 //Despite using namespaces are ill-advised to be used in headers, this header is not meant to be included in other files.
 using namespace Engine3DRadSpace;
@@ -42,7 +43,7 @@ class EditorGame : public Engine3DRadSpace::Game
 	IObject* _selectedObject = nullptr;
 
 	std::unique_ptr<ITexture2D> _btnSpritesheet;
-	//std::unique_ptr<CilindricalBillboard> billboard;
+	std::unique_ptr<CilindricalBillboard> billboard;
 
 	Button btnMvX;
 	Button btnMvY;
