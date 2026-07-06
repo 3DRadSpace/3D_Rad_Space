@@ -1,6 +1,7 @@
 #pragma once
 #include "IPrimitive.hpp"
 #include "../../Core/IDrawable3D.hpp"
+#include "../IBlendState.hpp"
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
@@ -8,6 +9,8 @@ namespace Engine3DRadSpace::Graphics::Primitives
 	{
 	protected:
 		Math::Matrix4x4 _mvp() const noexcept override;
+
+		std::unique_ptr<IBlendState> _blendState;
 	public:
 		CylindricalBillboard(IGraphicsDevice* device);
 

@@ -26,5 +26,6 @@ Matrix4x4 SphericalBillboard::_mvp() const noexcept
 	// Use Position field if set, otherwise extract from Transform
 	Vector3 objectPos = (Position != Vector3::Zero()) ? Position : Vector3(Transform.M41, Transform.M42, Transform.M43);
 	auto model = Matrix4x4::CreateSphericalBillboard(objectPos, cam_pos, up, fwd);
-	return model * View * Projection;
+	auto scale = Matrix4x4::CreateScale(Vector3(Scale.X, Scale.Y, 1.0f));
+	return scale * model * View * Projection;
 }

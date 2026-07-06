@@ -33,6 +33,8 @@ CylindricalBillboard::CylindricalBillboard(IGraphicsDevice *device) :
 	{
 		throw Logging::Exception(std::format("Failed to compile effect for CylindricalBillboard: {}", effect.second.Log));
 	}
+
+	_blendState = device->CreateBlendState_AlphaBlend();
 }
 
 Matrix4x4 CylindricalBillboard::_mvp() const noexcept
@@ -52,7 +54,11 @@ Matrix4x4 CylindricalBillboard::_mvp() const noexcept
 	// Use Position field if set, otherwise extract from Transform
 	Vector3 objectPos = (Position != Vector3::Zero()) ? Position : Vector3(Transform.M41, Transform.M42, Transform.M43);
 	auto model = Matrix4x4::CreateCylindricalBillboard(objectPos, cam_pos, up, fwd, Axis, std::nullopt);
-	return model * v * Projection;
+
+	// Apply scale transformation
+	auto scale = Matrix4x4::CreateScale(Vector3(Scale.X, Scale.Y, 1.0f));
+
+	return scale * model * v * Projection;
 }
 
 std::array<VertexPositionUV, 4> CylindricalBillboard::CreateVertices()
@@ -85,6 +91,7 @@ void CylindricalBillboard::Draw3D()
 	_shader->operator[](1)->SetTexture(0, Texture);
 	auto cmdList = _device->ImmediateContext();
 	cmdList->SetTopology(VertexTopology::TriangleList);
+	cmdList->SetBlendState(_blendState.get());
 	cmdList->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
 }
 
