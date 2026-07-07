@@ -105,6 +105,16 @@ void Event::UnbindAll()
 	_reset();
 }
 
+const Event::MemberFunctionInvoker& Event::At(size_t i) const
+{
+	return _fns.at(i);
+}
+
+size_t Event::Count() const noexcept
+{
+	return _fns.size();
+}
+
 const void* Event::operator[](size_t i) const 
 {
 	return _fns.at(i).Fn->Get(nullptr);

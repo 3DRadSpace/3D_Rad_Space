@@ -28,5 +28,7 @@ public:
 	int AccX() const noexcept;
 	int AccY() const noexcept;
 
+	Engine3DRadSpace::Reflection::Event& GetEvent() const noexcept;
+
 	~EventControl() override = default;
 };

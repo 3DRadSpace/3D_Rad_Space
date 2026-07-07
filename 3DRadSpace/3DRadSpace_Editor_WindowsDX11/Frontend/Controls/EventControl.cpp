@@ -112,3 +112,8 @@ int EventControl::AccY() const noexcept
 {
 	return _cy;
 }
+
+Engine3DRadSpace::Reflection::Event& EventControl::GetEvent() const noexcept
+{
+	return *_event;
+}

@@ -10,6 +10,8 @@
 #include "..\Controls\SkyboxControl.hpp"
 #include <Engine3DRadSpace/Objects/Impl/SoundEffect.hpp>
 #include "..\Controls\SoundControl.hpp"
+#include <Engine3DRadSpace/Projects/EventInvocationRepresentation.hpp>
+#include "../Controls/EventControl.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Audio;
@@ -105,6 +107,8 @@ void EditObjectDialog::createForms()
 
 	for (auto field : (*objRefl))
 	{
+		if (field == nullptr) continue;
+
 		//Skip functions.
 		if(dynamic_cast<IReflectedFunction*>(field) != nullptr)
 			continue;
@@ -158,7 +162,7 @@ void EditObjectDialog::createForms()
 			if(repr.Type == FieldRepresentationType::None) continue;
 			if(repr.Type == FieldRepresentationType::Function) continue;
 
-			auto fieldName = repr.Name.empty() ? field->FieldName() : repr.Name;
+			auto& fieldName = repr.Name.empty() ? field->FieldName() : repr.Name;
 
 			//creates a Static control (aka Label)
 			auto createLabel = [&](const std::string_view &text, int &size_x) -> HWND
@@ -502,6 +506,17 @@ void EditObjectDialog::createForms()
 				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
 				break;
 			}
+			case FieldRepresentationType::Event:
+			{
+				const Event* value = reinterpret_cast<const Event*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
+
+				EventControl* ctrl = new EventControl(window, hInstance, x, y, const_cast<Event*>(value));
+				windows.push_back(ctrl);
+
+				setMax(inc_y, ctrl->AccY() + 5 + textboxHeight);
+				px = ctrl->AccX() > 205 ? ctrl->AccX() : 205;
+				break;
+			}
 			case FieldRepresentationType::ObjectID:
 			{
 				int sx;
@@ -606,8 +621,6 @@ void EditObjectDialog::setObject()
 		int j = 0;
 		char text[256] = {0};
 
-		auto graphicsDevice = object != nullptr ? object->GetGraphicsDeviceHandle() : gEditorWindow->GetGraphicsDevice();
-		
 		if(object == nullptr)
 			object = static_cast<IObject*>(objRefl->CreateBlankObject());
 
@@ -851,6 +864,14 @@ void EditObjectDialog::setObject()
 					j += sizeof(AssetID<Sound>);
 					break;
 				}
+				case FieldRepresentationType::Event:
+				{
+					auto eventCtrl = static_cast<EventControl*>(std::get<IControl*>(windows[i++]));
+					
+					memcpy_s(newStruct.get() + j, sizeof(Event), &eventCtrl->GetEvent(), sizeof(Event));
+					j += sizeof(Event);
+					break;
+				}
 				case FieldRepresentationType::ObjectID:
 				{
 					auto numericTextbox = static_cast<NumericTextbox*>(std::get<IControl*>(windows[i++]));
@@ -864,6 +885,8 @@ void EditObjectDialog::setObject()
 				{
 					break;
 				}
+				default:
+					break;
 			}
 		}
 

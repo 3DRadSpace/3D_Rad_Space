@@ -93,6 +93,9 @@ namespace Engine3DRadSpace::Reflection
 		void UnbindAll();
 
 		const void* operator[](size_t i) const;
+		const MemberFunctionInvoker& At(size_t i) const;
+
+		size_t Count() const noexcept;
 
 		class ConstIterator
 		{

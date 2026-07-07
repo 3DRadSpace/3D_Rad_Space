@@ -142,7 +142,7 @@ REFL_FIELD(SpriteBillboard, std::string, Name, "Name", "SpriteBillboard", "Name 
 REFL_FIELD(SpriteBillboard, bool, Visible, "Enabled", true, "Whether the object is enabled or not")
 REFL_FIELD(SpriteBillboard, RefTexture2D, Texture, "Texture", 0, "Reference to the texture resource")
 REFL_FIELD(SpriteBillboard, Math::Vector3, Position, "Position", Math::Vector3::Zero(), "Position of the object in world space")
-REFL_FIELD(SpriteBillboard, Math::Vector3, RotationCenter, "Axis", Math::Vector3::Zero(), "Axis of rotation for the object")
+REFL_FIELD(SpriteBillboard, Math::Vector3, RotationCenter, "Axis", Math::Vector3::UnitY(), "Axis of rotation for the object")
 REFL_FIELD(SpriteBillboard, Math::Vector3, Scale, "Scale", Math::Vector3::One(), "Scale of the object in world space")
 REFL_FIELD(SpriteBillboard, bool, IsSpherical, "Spherical", false, "Whether the billboard is spherical or cylindrical")
 REFL_END

@@ -68,10 +68,10 @@ std::array<VertexPositionUV, 4> CylindricalBillboard::CreateVertices()
 	Vector2 s(0.5f, 0.5f);
 
 	//Billboard in XY plane, will be rotated by cylindrical billboard matrix
-	plane[0] = VertexPositionUV(Vector3(-s.X, -s.Y, 0), Vector2(0, 1));
-	plane[1] = VertexPositionUV(Vector3(-s.X, +s.Y, 0), Vector2(0, 0));
-	plane[2] = VertexPositionUV(Vector3(+s.X, +s.Y, 0), Vector2(1, 0));
-	plane[3] = VertexPositionUV(Vector3(+s.X, -s.Y, 0), Vector2(1, 1));
+	plane[0] = VertexPositionUV(Vector3(-s.X, -s.Y, 0), Vector2(1, 1));
+	plane[1] = VertexPositionUV(Vector3(-s.X, +s.Y, 0), Vector2(1, 0));
+	plane[2] = VertexPositionUV(Vector3(+s.X, +s.Y, 0), Vector2(0, 0));
+	plane[3] = VertexPositionUV(Vector3(+s.X, -s.Y, 0), Vector2(0, 1));
 
 	return plane;
 }

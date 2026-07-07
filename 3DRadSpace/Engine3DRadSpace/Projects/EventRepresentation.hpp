@@ -10,6 +10,9 @@ namespace Engine3DRadSpace::Projects
 	{
 		std::vector<EventInvocationRepresentation> BoundFunctions;
 
+		EventRepresentation() = default;
+		EventRepresentation(const Reflection::Event& event, const Reflection::UUID& uuid);
+
 		std::optional<Reflection::Event> Reconstruct(const Reflection::UUID &uuid) const;
 	};
 }

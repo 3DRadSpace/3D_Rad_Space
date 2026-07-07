@@ -24,3 +24,15 @@ std::optional<Event> EventRepresentation::Reconstruct(const Reflection::UUID& uu
 
 	return e;
 }
+
+EventRepresentation::EventRepresentation(const Reflection::Event& event, const Reflection::UUID& uuid)
+{
+	for (size_t i = 0; i < event.Count(); i++)
+	{
+		EventInvocationRepresentation fnRepr;
+		fnRepr.FunctionID = i;
+		//fnRepr.OwnerObject = event.At(i).Object;
+
+
+	}
+}
