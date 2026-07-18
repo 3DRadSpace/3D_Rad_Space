@@ -64,7 +64,7 @@ void EditorWindow::_openProject(const std::filesystem::path& filename)
 void EditorWindow::PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* list, HWND treeView)
 {
 	std::unordered_map<IObject*, HTREEITEM> objectToTreeItem;
-	for (int i = 0; auto& instance : *(list))
+	for (int i = 0; auto& instance : *list)
 	{
 		auto object = instance.Object.get();
 
@@ -185,7 +185,7 @@ void EditorWindow::_findUpdate()
 	//Check version
 	if (version == EngineVersion)
 	{
-		MessageBoxA(_mainWindow, "No new updates were found.", "Update information", MB_ICONINFORMATION | MB_OK);
+		//MessageBoxA(_mainWindow, "No new updates were found.", "Update information", MB_ICONINFORMATION | MB_OK);
 		return;
 	}
 

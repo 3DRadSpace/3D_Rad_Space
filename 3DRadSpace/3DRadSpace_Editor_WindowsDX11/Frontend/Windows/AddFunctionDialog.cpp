@@ -79,13 +79,15 @@ AddFunctionDialog::AddFunctionDialog(
 	HWND owner, 
 	HINSTANCE hInstance,
 	ObjectList* list
-) : Dialog(owner, hInstance, nullptr, "Find object method"),
+) : Dialog(owner, hInstance, AddFunctionDialog_DlgProc, "Find object method"),
 	_list(list)
 {
 }
 
 std::optional<EventInvocationRepresentation> AddFunctionDialog::ShowDialog()
 {
+	Dialog::ShowDialog(this);
+
 	if (_value.FunctionID == std::numeric_limits<size_t>::max() || _value.OwnerObject == std::numeric_limits<size_t>::max())
 	{
 		return std::nullopt;

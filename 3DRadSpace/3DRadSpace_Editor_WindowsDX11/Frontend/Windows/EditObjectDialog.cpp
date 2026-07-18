@@ -12,6 +12,7 @@
 #include "..\Controls\SoundControl.hpp"
 #include <Engine3DRadSpace/Projects/EventInvocationRepresentation.hpp>
 #include "../Controls/EventControl.hpp"
+#include <Engine3DRadSpace/Objects/ObjectList.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Audio;
@@ -510,7 +511,9 @@ void EditObjectDialog::createForms()
 			{
 				const Event* value = reinterpret_cast<const Event*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
 
-				EventControl* ctrl = new EventControl(window, hInstance, x, y, const_cast<Event*>(value));
+				auto objList = _content->GetOwner()->RequireService<Objects::ObjectList>({});
+
+				EventControl* ctrl = new EventControl(window, hInstance, x, y, const_cast<Event*>(value), objList);
 				windows.push_back(ctrl);
 
 				setMax(inc_y, ctrl->AccY() + 5 + textboxHeight);

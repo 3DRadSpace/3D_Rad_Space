@@ -26,10 +26,9 @@ IAsset* ContentManager::AssetFactory::Create(const Reflection::UUID& uuid, const
 	return nullptr;
 }
 
-ContentManager::ContentManager(IGame* owner) :
+ContentManager::ContentManager(IGame* owner) : IService(owner),
 	_lastID(1),
-	_factory(owner),
-	_owner(owner)
+	_factory(owner)
 {
 	//We add a null asset at index 0 because reference IDs are unsigned integers.
 	_assets.emplace_back(nullptr);

@@ -121,7 +121,6 @@ namespace Engine3DRadSpace::Content
 
 		unsigned _lastID;
 		std::vector<AssetEntry> _assets;
-		IGame* _owner;
 	public:
 		/// <summary>
 		/// Constructs an instance of ContentManager.

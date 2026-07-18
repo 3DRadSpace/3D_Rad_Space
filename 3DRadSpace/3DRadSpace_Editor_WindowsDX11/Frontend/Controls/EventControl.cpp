@@ -10,9 +10,11 @@ EventControl::EventControl(
 	HINSTANCE hInstance, 
 	int x,
 	int y, 
-	Engine3DRadSpace::Reflection::Event* event
+	Engine3DRadSpace::Reflection::Event* event,
+	Engine3DRadSpace::Objects::ObjectList* list
 ) : IControl(owner, hInstance),
-	_event(event)
+	_event(event),
+	_list(list)
 {
 	HDC hdc = GetDC(owner);
 
@@ -40,7 +42,7 @@ EventControl::EventControl(
 		x + 10,
 		y + textSize.cy + 10,
 		260 - sgnTextSize.cx,
-		480,
+		370,
 		owner,
 		nullptr,
 		hInstance,
@@ -55,8 +57,8 @@ EventControl::EventControl(
 		WS_VISIBLE | WS_CHILD,
 		btnPosX,
 		y + textSize.cy + 10,
-		textSize.cx + 5,
-		textSize.cy + 5,
+		(2 * sgnTextSize.cx) + 5,
+		sgnTextSize.cy + 5,
 		owner,
 		nullptr,
 		hInstance,
@@ -65,12 +67,12 @@ EventControl::EventControl(
 
 	_btnRemoveCall = CreateWindowExA(0,
 		"Button",
-		"-",
+		"-", 
 		WS_VISIBLE | WS_CHILD,
 		btnPosX,
 		y + textSize.cy + 10 + sgnTextSize.cy + 5,
-		textSize.cx + 5,
-		textSize.cy + 5,
+		(2 * sgnTextSize.cx) + 5,
+		sgnTextSize.cy + 5,
 		owner,
 		nullptr,
 		hInstance,
@@ -87,7 +89,7 @@ void EventControl::HandleClick(HWND clickedWindow)
 	{
 		std::thread openFnFinderWindow([this]()
 		{
-			AddFunctionDialog dialog(this->window, this->instance, nullptr);
+			AddFunctionDialog dialog(this->window, this->instance, this->_list);
 			auto event = dialog.ShowDialog();
 
 			if (event.has_value())
@@ -95,6 +97,7 @@ void EventControl::HandleClick(HWND clickedWindow)
 				
 			}
 		});
+		openFnFinderWindow.detach();
 	}
 
 	if(clickedWindow == _btnRemoveCall)

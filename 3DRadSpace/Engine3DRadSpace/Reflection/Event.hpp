@@ -18,8 +18,8 @@ namespace Engine3DRadSpace::Reflection
 
 			MemberFunctionInvoker() = default;
 			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType);
-			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
 
+			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
 			MemberFunctionInvoker& operator=(MemberFunctionInvoker&& other) noexcept = default;
 		};
 
