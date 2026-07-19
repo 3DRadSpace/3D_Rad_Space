@@ -35,7 +35,7 @@ void Timer::Update()
 
 	if (_elapsedTime > Interval)
 	{
-		Event.InvokeAllReturnless();
+		Event.InvokeAll(std::span<Reflection::Any>());
 		_elapsedTime = 0.0;
 		_ticks++;
 

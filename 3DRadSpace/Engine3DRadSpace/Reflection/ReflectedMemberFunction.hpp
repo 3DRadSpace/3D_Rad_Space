@@ -47,43 +47,21 @@ namespace Engine3DRadSpace::Reflection
 		/// <param name="ptr">Object ptr.</param>
 		/// <param name="args">arguments.</param>
 		/// <returns>A value of type R.</returns>
-		R InvokeImpl(O* ptr, std::span<std::any> args) const
+		R InvokeImpl(O* ptr, std::span<Any> args) const
 		{
 			return [&]<std::size_t... Is>(std::index_sequence<Is...>)
 			{
 				switch(_fnType)
 				{
-					case 0: return std::invoke(_fn.fn, ptr, std::any_cast<Args>(args[Is])...);
-					case 1: return std::invoke(_fn.fn_c, ptr, std::any_cast<Args>(args[Is])...);
-					case 2: return std::invoke(_fn.fn_v, ptr, std::any_cast<Args>(args[Is])...);
-					case 3: return std::invoke(_fn.fn_cv, ptr, std::any_cast<Args>(args[Is])...);
+					case 0: return std::invoke(_fn.fn, ptr, args[Is].Get<Args>()...);
+					case 1: return std::invoke(_fn.fn_c, ptr, args[Is].Get<Args>()...);
+					case 2: return std::invoke(_fn.fn_v, ptr, args[Is].Get<Args>()...);
+					case 3: return std::invoke(_fn.fn_cv, ptr, args[Is].Get<Args>()...);
 
-					case 4: return std::invoke(_fn.fn_n, ptr, std::any_cast<Args>(args[Is])...);
-					case 5: return std::invoke(_fn.fn_cn, ptr, std::any_cast<Args>(args[Is])...);
-					case 6: return std::invoke(_fn.fn_vn, ptr, std::any_cast<Args>(args[Is])...);
-					case 7: return std::invoke(_fn.fn_cvn, ptr, std::any_cast<Args>(args[Is])...);
-					default:
-						std::unreachable();
-				}
-			}(std::make_index_sequence<sizeof...(Args)>());
-		}
-
-		R InvokeImpl(O* ptr, std::span<void*> args) const
-		{
-			return [&]<std::size_t... Is>(std::index_sequence<Is...>) 
-			{
-				switch(_fnType)
-				{
-					//return (ptr::_fn*)(*std::any_cast<Args*>(args[Is])...);
-					case 0: return std::invoke(_fn.fn, ptr, *static_cast<Args*>(args[Is])...);
-					case 1: return std::invoke(_fn.fn_c, ptr, *static_cast<Args*>(args[Is])...);
-					case 2: return std::invoke(_fn.fn_v, ptr, *static_cast<Args*>(args[Is])...);
-					case 3: return std::invoke(_fn.fn_cv, ptr, *static_cast<Args*>(args[Is])...);
-
-					case 4: return std::invoke(_fn.fn_n, ptr, *static_cast<Args*>(args[Is])...);
-					case 5: return std::invoke(_fn.fn_cn, ptr, *static_cast<Args*>(args[Is])...);
-					case 6: return std::invoke(_fn.fn_vn, ptr, *static_cast<Args*>(args[Is])...);
-					case 7: return std::invoke(_fn.fn_cvn, ptr, *static_cast<Args*>(args[Is])...);
+					case 4: return std::invoke(_fn.fn_n, ptr, args[Is].Get<Args>()...);
+					case 5: return std::invoke(_fn.fn_cn, ptr, args[Is].Get<Args>()...);
+					case 6: return std::invoke(_fn.fn_vn, ptr, args[Is].Get<Args>()...);
+					case 7: return std::invoke(_fn.fn_cvn, ptr, args[Is].Get<Args>()...);
 					default:
 						std::unreachable();
 				}
@@ -161,7 +139,7 @@ namespace Engine3DRadSpace::Reflection
 		}
 #undef IRLFN_CTOR
 
-		std::any Invoke(void* self, std::span<std::any> args) const override
+		Any Invoke(void* self, std::span<Any> args) const override
 		{
 			if constexpr(std::is_void_v<R>)
 			{
@@ -169,22 +147,6 @@ namespace Engine3DRadSpace::Reflection
 				return {}; //std::any 
 			}
 			else return InvokeImpl(static_cast<O*>(self), args);
-		}
-
-		void Invoke(void* ptrOut, void* self, std::span<void*> args) const override
-		{
-			if constexpr(std::is_void_v<R>)
-			{
-				return InvokeImpl(static_cast<O*>(self), args); //return void
-			}
-			else
-			{
-				if(ptrOut != nullptr)
-				{
-					*(static_cast<R*>(ptrOut)) = std::move(InvokeImpl(static_cast<O*>(self), args));
-				}
-				else std::ignore = InvokeImpl(static_cast<O*>(self), args);
-			}
 		}
 
 		const void* Get(void* objPtr) const override

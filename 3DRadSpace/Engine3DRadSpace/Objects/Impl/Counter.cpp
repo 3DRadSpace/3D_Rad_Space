@@ -79,4 +79,6 @@ REFL_BEGIN(Counter, "Counter", "Events", "Counter")
 	REFL_FIELD(Counter, double, Increment, "Increment", 1, "The increment of the counter")
 	REFL_FIELD(Counter, bool, LoadFromFile, "Use file?", false, "Load the counter value from a file?")
 	REFL_FIELD(Counter, std::string, FilePath, "File path", "", "The path of the file to load the counter value from")
+	REFL_METHOD(Counter, void, &Counter::Enable, "Increment")
+	REFL_METHOD(Counter, void, &Counter::Save, "Save")
 REFL_END

@@ -54,7 +54,7 @@ void EventOnLocation::Update()
 	bool intersects = IsSphere ? sphere.Intersects(objSph) : box.Intersects(objSph);
 	if (intersects)
 	{
-		Event.InvokeAllReturnless();
+		Event.InvokeAll();
 	}
 }
 

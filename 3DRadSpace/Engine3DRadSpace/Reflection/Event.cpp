@@ -3,17 +3,19 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 
-Event::MemberFunctionInvoker::MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType) :
+Event::MemberFunctionInvoker::MemberFunctionInvoker(
+	void* object, 
+	std::unique_ptr<IReflectedFunction> &&fn,
+	std::type_index returnType,
+	size_t objID,
+	size_t fnID
+) :
 	Object(object),
 	Fn(std::move(fn)),
-	ReturnType(returnType)
+	ReturnType(returnType),
+	ObjectID(objID),
+	FunctionID(objID)
 {
-}
-
-void Event::_reset()
-{
-	_empty = true;
-	_fns.clear();
 }
 
 Event::Event() :
@@ -28,7 +30,7 @@ Event::Event(const Event& other) :
 	{
 		auto cloned = fn.Fn->Clone();
 		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
-		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType);
+		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
 	}
 }
 
@@ -42,12 +44,12 @@ Event& Event::operator=(const Event& other)
 	{
 		auto cloned = fn.Fn->Clone();
 		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
-		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType);
+		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
 	}
 	return *this;
 }
 
-void Event::Bind(std::unique_ptr<IReflectedFunction> &&fn)
+void Event::Bind(std::unique_ptr<IReflectedFunction> &&fn, size_t objID, size_t fnID)
 {
 	if (!fn) return;
 	if(_empty)
@@ -55,54 +57,33 @@ void Event::Bind(std::unique_ptr<IReflectedFunction> &&fn)
 		_empty = false;
 	}
 
-	_fns.emplace_back(nullptr, std::move(fn), typeid(void));
-}
-
-void Event::InvokeAllReturnless(std::span<std::span<void*>> args)
-{
-	int i = 0;
-	for(auto argPack : args)
-	{
-		_fns[i++].Fn->Invoke(nullptr, _fns[i - 1].Object, argPack);
-	}
-}
-
-void Event::InvokeAllReturnless(std::span<std::span<std::any>> args)
-{
-	int i = 0;
-	for(auto argPack : args)
-	{
-		std::ignore = _fns[i++].Fn->Invoke(_fns[i - 1].Object, argPack);
-	}
-}
-
-void Event::InvokeAllReturnless()
-{
-	for(auto& fn : _fns)
-	{
-		std::ignore = fn.Fn->Invoke(fn.Object, std::span<std::any>{});
-	}
+	_fns.emplace_back(nullptr, std::move(fn), typeid(void), objID, fnID);
 }
 
 void Event::Unbind(void* fnPtr)
 {
-	std::erase_if(_fns, 
+	std::erase_if(_fns,
 		[fnPtr](Event::MemberFunctionInvoker &fn) -> bool
 		{
 			return fn.Fn->Get(nullptr) == fnPtr;
 		}
 	);
+}
+
+void Event::Unbind(size_t idx)
+{
+	_fns.erase(_fns.begin() + idx);
 
 	if(_fns.empty())
 	{
-		_reset();
+		Reset();
 	}
 }
 
-void Event::UnbindAll()
+void Event::Reset() noexcept
 {
+	_empty = true;
 	_fns.clear();
-	_reset();
 }
 
 const Event::MemberFunctionInvoker& Event::At(size_t i) const
@@ -185,4 +166,21 @@ bool Event::ConstIterator::operator!=(const Event::ConstIterator& e) const
 Event Event::Clone() const
 {
 	return Event(*this);
+}
+
+Any Event::operator()(std::vector<Any> &args)
+{
+	std::vector<Any> r;
+
+	for (auto& fn : _fns)
+	{
+		r.emplace_back(fn.Fn->Invoke(fn.Object, args));
+	}
+
+	return r;
+}
+
+void Event::Bind(std::function<Any(std::vector<Any>)> fnargs)
+{
+	
 }

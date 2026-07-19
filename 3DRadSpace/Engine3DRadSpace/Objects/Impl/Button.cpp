@@ -28,7 +28,7 @@ void Button::Update()
 	{
 		if(!_hover)
 		{
-			OnMouseEnter.InvokeAllReturnless();
+			OnMouseEnter.InvokeAll(std::span<Reflection::Any>());
 			UVCoordinates = HoverTextureRect;
 			TintColor = HoverTintColor;
 			_hover = true;
@@ -36,7 +36,7 @@ void Button::Update()
 
 		if(game->Mouse.LeftButton() == ButtonState::Pressed && !_click)
 		{
-			OnClick.InvokeAllReturnless();
+			OnClick.InvokeAll(std::span<Reflection::Any>());
 			UVCoordinates = ClickTextureRect;
 			TintColor = ClickTintColor;
 			_click = true;
@@ -52,7 +52,7 @@ void Button::Update()
 	{
 		if(_hover)
 		{
-			OnMouseLeave.InvokeAllReturnless();
+			OnMouseLeave.InvokeAll(std::span<Reflection::Any>());
 			_hover = false;
 			_click = false;
 		

@@ -1,5 +1,6 @@
 #pragma once
 #include "IReflectedField.hpp"
+#include "Any.hpp"
 
 namespace Engine3DRadSpace::Reflection
 {
@@ -32,8 +33,7 @@ namespace Engine3DRadSpace::Reflection
 		const FieldRepresentation& ReturnedTypeInfo() const noexcept ;
 		const std::string& Signature() const noexcept;
 
-		virtual std::any Invoke(void* self, std::span<std::any> args) const = 0;
-		virtual void Invoke(void* outReturn, void* self, std::span<void*> args) const = 0;
+		virtual Any Invoke(void* self, std::span<Any> args) const = 0;
 
 		virtual ~IReflectedFunction() = default;
 

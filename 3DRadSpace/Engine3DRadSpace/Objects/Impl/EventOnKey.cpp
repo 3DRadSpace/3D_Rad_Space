@@ -26,7 +26,7 @@ void EventOnKey::Update()
 	auto game = static_cast<Game*>(_game);
 	
 	if (game->Keyboard.IsKeyDown(Key))
-		Event.InvokeAllReturnless();
+		Event.InvokeAll();
 }
 
 void EventOnKey::Load()

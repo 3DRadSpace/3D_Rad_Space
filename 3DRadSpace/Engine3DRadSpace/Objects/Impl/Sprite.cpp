@@ -118,13 +118,13 @@ void Sprite::Update()
 	{
 		if(!_hover)
 		{
-			OnMouseEnter.InvokeAllReturnless();
+			OnMouseEnter.InvokeAll(std::span<Any>{});
 			_hover = true;
 		}
 
 		if(game->Mouse.LeftButton() == ButtonState::Pressed && !_click)
 		{
-			OnClick.InvokeAllReturnless();
+			OnClick.InvokeAll(std::span<Any>{});
 			_click = true;
 		}
 		else if(game->Mouse.LeftButton() == ButtonState::Released) _click = false;
@@ -133,7 +133,7 @@ void Sprite::Update()
 	{
 		if(_hover)
 		{
-			OnMouseLeave.InvokeAllReturnless();
+			OnMouseLeave.InvokeAll(std::span<Any>{});
 			_hover = false;
 			_click = false;
 		}

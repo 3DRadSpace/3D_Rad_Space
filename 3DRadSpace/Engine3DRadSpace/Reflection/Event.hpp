@@ -2,22 +2,47 @@
 #include "IReflectedFunction.hpp"
 #include "Reflection.hpp"
 #include "../Core/AssetUUIDReader.hpp"
+#include "IEvent.hpp"
 
 namespace Engine3DRadSpace::Reflection
 {
 	/// <summary>
-	/// An Event is an collection of function pointers that can be invoked together.
+	/// Like MultiEvent, an Event can be bound to multiple function, but this class is also serializable in the editor.
 	/// </summary>
-	class E3DRSP_REFLECTION_EXPORT Event
+	class E3DRSP_REFLECTION_EXPORT Event : public IEvent
 	{
 		struct MemberFunctionInvoker
 		{
+			/// <summary>
+			/// Pointer to object.
+			/// </summary>
 			void* Object;
+			/// <summary>
+			/// Function reflection data.
+			/// </summary>
 			std::unique_ptr<IReflectedFunction> Fn;
+			/// <summary>
+			/// RTTI informations of the return type of Fn.
+			/// </summary>
 			std::type_index ReturnType;
 
+			/// <summary>
+			/// If this->Object is null then ObjectID is used to determine the object reference.
+			/// </summary>
+			size_t ObjectID;
+			/// <summary>
+			/// FunctionID is the index of the function in the reflected data of the object.
+			/// </summary>
+			/// <remarks>
+			/// The function ID can also be identified at runtime, but that requires an O(n) search.
+			/// </remarks>
+			size_t FunctionID;
+
+			/// <summary>
+			/// Initializes ObjectID and FunctionID to integer maximum values to represent this struct as invalid.
+			/// </summary>
 			MemberFunctionInvoker() = default;
-			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType);
+			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType, size_t objID, size_t fnID);
 
 			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
 			MemberFunctionInvoker& operator=(MemberFunctionInvoker&& other) noexcept = default;
@@ -25,15 +50,13 @@ namespace Engine3DRadSpace::Reflection
 
 		std::vector<MemberFunctionInvoker> _fns;
 		bool _empty;
-
-		void _reset();
 	public:
 		Event();
 
 		template<typename R, typename O, typename F, typename ...Args>
 		Event(O* object, O::F fn)
 		{
-			(*this) += fn;
+			(*this).Bind<R, F, O, Args...>(object ,fn);
 		}
 
 		/// <summary>
@@ -65,7 +88,7 @@ namespace Engine3DRadSpace::Reflection
 			_fns.emplace_back(std::move(invoker));
 		}
 
-		void Bind(std::unique_ptr<IReflectedFunction> &&fn);
+		void Bind(std::unique_ptr<IReflectedFunction> &&fn, size_t objID, size_t fnID);
 
 		template<typename R, typename ...Args>
 		R operator()(int index, Args&& ...args)
@@ -75,22 +98,39 @@ namespace Engine3DRadSpace::Reflection
 		}
 
 		template<typename R>
-		std::vector<R> InvokeAll(std::span<std::any> args)
+		std::vector<R> InvokeAll(std::span<Any> args)
 		{
 			std::vector<R> ret;
 			for(auto& fn : _fns)
 			{
-				ret.emplace_back(std::any_cast<R>(fn.Fn->Invoke(fn.Object, args)));
+				ret.emplace_back(fn.Fn->Invoke(fn.Object, args));
 			}
 			return ret;
 		}
 
-		void InvokeAllReturnless(std::span<std::span<std::any>> allArgs);
-		void InvokeAllReturnless(std::span<std::span<void*>> allArgs);
-		void InvokeAllReturnless();
+		void InvokeAll(std::span<Any> args = std::span<Any>())
+		{
+			for (auto& fn : _fns)
+			{
+				fn.Fn->Invoke(fn.Object, args);
+			}
+		}
 
+		/// <summary>
+		/// Unbinds the given function pointer.
+		/// </summary>
+		/// <param name="fnPtr">Function pointer.</param>
 		void Unbind(void* fnPtr);
-		void UnbindAll();
+
+		/// <summary>
+		/// Unbinds the idx-th function.
+		/// </summary>
+		/// <param name="idx">0 < idx < Count().</param>
+		void Unbind(size_t idx);
+
+		void Bind(std::function<Any(std::vector<Any>)> fn) override;
+		Any operator()(std::vector<Any> &args) override;
+		void Reset() noexcept override;
 
 		const void* operator[](size_t i) const;
 		const MemberFunctionInvoker& At(size_t i) const;

@@ -4,6 +4,8 @@
 #include <Engine3DRadSpace/Objects/IObject.hpp>
 #include <Engine3DRadSpace/Reflection/Event.hpp>
 #include <Engine3DRadSpace/Projects/EventRepresentation.hpp>
+#include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
+#include <Engine3DRadSpace/Reflection/IReflectedFunction.hpp>
 
 EventControl::EventControl(
 	HWND owner, 
@@ -94,7 +96,19 @@ void EventControl::HandleClick(HWND clickedWindow)
 
 			if (event.has_value())
 			{
-				
+				SendMessageA(this->window, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(std::format("Object ID: {}, Function ID: {}", event->OwnerObject, event->FunctionID).c_str()));
+
+				auto obj = _list->operator[](event->OwnerObject);
+				auto refl = Engine3DRadSpace::Internal::GetReflDataFromUUID(obj->GetUUID());
+
+				for (auto& fnMember : *refl)
+				{
+					if (dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fnMember) != nullptr)
+					{
+						auto fn = fnMember->Clone().release();
+						this->_event->Bind(std::unique_ptr<Engine3DRadSpace::Reflection::IReflectedFunction>(dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fn)),0,0);
+					}
+				}
 			}
 		});
 		openFnFinderWindow.detach();
@@ -102,7 +116,12 @@ void EventControl::HandleClick(HWND clickedWindow)
 
 	if(clickedWindow == _btnRemoveCall)
 	{
+		size_t selectedIndex = SendMessageA(window, LB_GETCURSEL, 0, 0);
 		
+		SendMessageA(window, LB_SETCURSEL, (WPARAM)-1, 0);
+		SendMessageA(window, LB_DELETESTRING, selectedIndex, 0);
+	
+		_event->Unbind(selectedIndex);
 	}
 }
 

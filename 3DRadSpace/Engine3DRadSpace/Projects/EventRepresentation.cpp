@@ -19,7 +19,7 @@ std::optional<Event> EventRepresentation::Reconstruct(const Reflection::UUID& uu
 		std::unique_ptr<IReflectedFunction> boundFn;
 		boundFn.reset(clonedFn);
 		
-		e.Bind(std::move(boundFn));
+		e.Bind(std::move(boundFn), 0, 0); //todo
 	}
 
 	return e;
@@ -31,8 +31,6 @@ EventRepresentation::EventRepresentation(const Reflection::Event& event, const R
 	{
 		EventInvocationRepresentation fnRepr;
 		fnRepr.FunctionID = i;
-		//fnRepr.OwnerObject = event.At(i).Object;
-
-
+		
 	}
 }

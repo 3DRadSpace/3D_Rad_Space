@@ -14,11 +14,11 @@ namespace Engine3DRadSpace::Reflection
 	private:
 		Fn _fn; 
 
-		R InvokeImpl(std::span<std::any> args) const
+		R InvokeImpl(std::span<Any> args) const
 		{
 			return [&]<std::size_t... Is>(std::index_sequence<Is...>)
 			{
-				return _fn(std::any_cast<Args>(args[Is])...);
+				return _fn(args[Is].Get<Args>()...);
 			}(std::make_index_sequence<sizeof...(Args)>());
 		}
 
@@ -49,7 +49,7 @@ namespace Engine3DRadSpace::Reflection
 			return _fn(std::forward<Args>(args)...);
 		}
 
-		std::any Invoke(void* self, std::span<std::any> args) const override
+		Any Invoke(void* self, std::span<Any> args) const override
 		{
 			(void)self;
 
@@ -58,25 +58,7 @@ namespace Engine3DRadSpace::Reflection
 				InvokeImpl(args);
 				return {}; //std::any 
 			}
-			else return std::make_any<R>(InvokeImpl(args));
-		}
-
-		void Invoke(void* outReturn, void* self, std::span<void*> args) const override
-		{
-			(void)self;
-
-			if constexpr(std::is_void_v<R>)
-			{
-				return InvokeImpl(args); //return void
-			}
-			else
-			{
-				if(outReturn != nullptr)
-				{
-					*(static_cast<R*>(outReturn)) = std::move(InvokeImpl(args));
-				}
-				else std::ignore = InvokeImpl(args);
-			}
+			else return InvokeImpl(args);
 		}
 
 		const void* Get(void* objPtr) const override

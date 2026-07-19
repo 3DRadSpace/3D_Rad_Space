@@ -48,6 +48,48 @@ INT_PTR WINAPI AddFunctionDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
 	}
 	case WM_COMMAND:
 	{
+		switch (HIWORD(wParam))
+		{
+		case BN_CLICKED:
+		{
+			if (lParam == reinterpret_cast<LPARAM>(fndlg->_cancelBtn))
+			{
+				EndDialog(hwnd, IDCANCEL);
+				return 1;
+			}
+			if (lParam == reinterpret_cast<LPARAM>(fndlg->_okBtn))
+			{
+				EndDialog(hwnd, IDOK);
+				return 1;
+			}
+			break;
+		}
+		case LBN_DBLCLK:
+		{
+			HWND hListBox = (HWND)lParam;
+
+			int idxSelectedFn = SendMessage(hListBox, LB_GETCURSEL, 0, 0);
+
+			HTREEITEM hItem = TreeView_GetSelection(fndlg->_listObjects);
+
+			TVITEM tvi{};
+			tvi.hItem = hItem;
+			tvi.mask = TVIF_PARAM;
+			TreeView_GetItem(fndlg->_listObjects, &tvi);
+
+			auto idxSelectedObj = tvi.lParam;
+
+			auto obj = fndlg->_list->operator[](idxSelectedObj);
+			if (obj == nullptr) break;
+			
+			fndlg->_value = EventInvocationRepresentation();
+			fndlg->_value.FunctionID = idxSelectedFn;
+			fndlg->_value.OwnerObject = idxSelectedObj;
+			break;
+		}
+		default:
+			break;
+		}
 		return 1;
 	}
 	case WM_NOTIFY:
@@ -56,14 +98,25 @@ INT_PTR WINAPI AddFunctionDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
 		{
 		case NM_DBLCLK:
 		{
-			LPNMITEMACTIVATE item = reinterpret_cast<LPNMITEMACTIVATE>(lParam);
+			LPNMHDR lpnmh = (LPNMHDR)lParam;
 
-			if (item->iItem >= 0)
+			if (lpnmh->code == NM_DBLCLK)
 			{
-				//EditObjectDialog dialog(hwnd, aod->hInstance, e3drsp_internal_objects_list[item->iItem], aod->_content);
-				//EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
+				HTREEITEM hItem = TreeView_GetSelection(lpnmh->hwndFrom);
+
+				if (hItem != NULL)
+				{
+					TVITEM tvi{};
+					tvi.hItem = hItem;
+					tvi.mask = TVIF_PARAM;
+					TreeView_GetItem(lpnmh->hwndFrom, &tvi);
+
+					auto obj = fndlg->_list->operator[](tvi.lParam);
+					if (obj == nullptr) break;
+					fndlg->selectObject(tvi.lParam);
+				}
+				break;
 			}
-			break;
 		}
 		default:
 			break;
@@ -79,7 +132,7 @@ AddFunctionDialog::AddFunctionDialog(
 	HWND owner, 
 	HINSTANCE hInstance,
 	ObjectList* list
-) : Dialog(owner, hInstance, AddFunctionDialog_DlgProc, "Find object method"),
+) : Dialog(owner, hInstance, AddFunctionDialog_DlgProc, "Find object method", 400, 230),
 	_list(list)
 {
 }
@@ -99,9 +152,9 @@ void AddFunctionDialog::createForms()
 {
 	_listObjects = CreateWindowExA(
 		0,
-		WC_LISTVIEWA,
+		WC_TREEVIEWA,
 		nullptr,
-		WS_CHILD | WS_VISIBLE | LVS_REPORT | LVS_SINGLESEL,
+		WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER,
 		10, 10, 200, 400,
 		window,
 		(HMENU)AFND_LIST_OBJECTS,
@@ -115,7 +168,7 @@ void AddFunctionDialog::createForms()
 		0,
 		WC_LISTBOXA,
 		nullptr,
-		WS_CHILD | WS_VISIBLE | LVS_REPORT | LVS_SINGLESEL,
+		WS_CHILD | WS_VISIBLE | WS_BORDER | LBS_NOTIFY,
 		220, 10, 200, 400,
 		window,
 		(HMENU)AFND_LIST_FUNCTIONS,
@@ -131,7 +184,16 @@ void AddFunctionDialog::createForms()
 	argsGridCoords.right = 780;
 	argsGridCoords.bottom = 400;
 
-	GetWindowRect(_argsPropertyGrid, &argsGridCoords);
+	SetWindowPos(
+		_argsPropertyGrid, 
+		nullptr,
+		argsGridCoords.left,
+		argsGridCoords.top,
+		argsGridCoords.right - argsGridCoords.left,
+		argsGridCoords.bottom - argsGridCoords.top,
+		SWP_NOZORDER
+	);
+
 	ShowWindow(_argsPropertyGrid, SW_SHOW);
 
 	_cancelBtn = CreateWindowExA(
@@ -139,7 +201,7 @@ void AddFunctionDialog::createForms()
 		"Button",
 		"Cancel",
 		WS_CHILD | WS_VISIBLE,
-		430, 420, 80, 30,
+		600, 420, 80, 30,
 		window,
 		(HMENU)AFND_CANCEL_BTN,
 		hInstance,
@@ -151,7 +213,7 @@ void AddFunctionDialog::createForms()
 		"Button",
 		"OK",
 		WS_CHILD | WS_VISIBLE,
-		530, 420, 80, 30,
+		710, 420, 80, 30,
 		window,
 		(HMENU)AFND_OK_BTN,
 		hInstance,

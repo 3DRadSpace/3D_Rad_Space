@@ -6,6 +6,7 @@ using namespace Engine3DRadSpace::Reflection;
 Any::Any() :
 	_type(typeid(void)),
 	_destroyFn(nullptr),
+	_copyFn(nullptr),
 	_fldRepr(nullptr),
 	_storage()
 {
@@ -14,31 +15,43 @@ Any::Any() :
 Any::Any(const Any& other) :
 	_type(other._type),
 	_destroyFn(other._destroyFn),
+	_copyFn(other._copyFn),
 	_fldRepr(other._fldRepr),
-	_storage()
+	_storage{}
 {
+	if (this == &other) return;
+
+	if (_copyFn)
+		_copyFn(_storage, reinterpret_cast<const void*>((other._storage)));
+}
+
+Any::Any(Any&& other) noexcept :
+	_type(std::move(other._type)),
+	_destroyFn(other._destroyFn),
+	_copyFn(other._copyFn),
+	_fldRepr(other._fldRepr)
+{
+	if (this == &other) return;
+
+	std::memcpy(_storage, other._storage, smallObjectSize);
+	
+	std::memset(other._storage, 0, smallObjectSize);
+	other._type = typeid(void);
 }
 
 Any& Any::operator=(const Any& other)
 {
 	if (this == &other) return *this;
 	Reset();
+
 	_type = other._type;
 	_destroyFn = other._destroyFn;
+	_copyFn = other._copyFn;
 	_fldRepr = other._fldRepr;
-	if (other.HasValue())
-	{
-		if (sizeof(other) <= smallObjectSize)
-		{
-			new (_storage) std::byte[smallObjectSize];
-			std::memcpy(_storage, other._storage, smallObjectSize);
-		}
-		else
-		{
-			const void* heapObj = *reinterpret_cast<const void* const*>(other._storage);
-			new (_storage) void* (const_cast<void*>(heapObj));
-		}
-	}
+
+	if(_copyFn)
+		_copyFn(_storage, other._storage);
+
 	return *this;
 }
 
@@ -48,6 +61,7 @@ Any& Any::operator=(Any&& other) noexcept
 	Reset();
 	_type = other._type;
 	_destroyFn = other._destroyFn;
+	_copyFn = other._copyFn;
 	_fldRepr = other._fldRepr;
 	if (other.HasValue())
 	{
@@ -92,6 +106,7 @@ void Any::Reset() noexcept
 	{
 		_destroyFn(_storage);
 	}
+	memset(_storage, 0, smallObjectSize);
 	_type = typeid(void);
 	_destroyFn = nullptr;
 }

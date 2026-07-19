@@ -17,7 +17,8 @@ namespace Engine3DRadSpace::Reflection
 		alignas(std::max_align_t) unsigned char _storage[smallObjectSize];
 		
 		std::type_index _type;
-		void(*_destroyFn)(void*);
+		void (*_destroyFn)(void*);
+		void (*_copyFn)(void*, const void*);
 
 		FieldRepresentation (*_fldRepr)();
 
@@ -26,11 +27,13 @@ namespace Engine3DRadSpace::Reflection
 		{
 			(void)dummy;
 
+			using U = std::remove_reference_t<T>;
+
 			_fldRepr = []() -> FieldRepresentation
 				{
-					if constexpr (requires { ReflectableType<T>; })
+					if constexpr (requires { ReflectableType<U>; })
 					{
-						return FieldRepresentationInstance<T>{};
+						return FieldRepresentationInstance<U>{};
 					}
 					else
 					{
@@ -40,16 +43,58 @@ namespace Engine3DRadSpace::Reflection
 
 			_destroyFn = [](void* storage)
 			{
-				if (sizeof(T) <= smallObjectSize)
+				if (sizeof(U) <= smallObjectSize)
 				{
-					reinterpret_cast<T*>(storage)->~T();
+					reinterpret_cast<U*>(storage)->~U();
 				}
 				else
 				{
-					T* heapObj = *reinterpret_cast<T**>(storage);
-					delete heapObj;
+					using U = std::remove_reference_t<T>;
+					U* heapObj = *reinterpret_cast<U**>(storage);
+					
+					if(heapObj != nullptr) delete heapObj;
+					heapObj = nullptr;
 				}
 			};
+
+			if constexpr (std::is_copy_assignable_v<T>)
+			{
+				_copyFn = [](void* dst, const void* src)
+				{
+					using U = std::remove_reference_t<T>;
+					if (sizeof(U) <= smallObjectSize)
+					{
+						auto left = std::launder<U>(reinterpret_cast<U*>(dst));
+						const auto right = reinterpret_cast<const U*>(src);
+
+						*left = *right;
+					}
+					else
+					{
+						auto pLeft = reinterpret_cast<U**>(dst);
+						auto pRight = reinterpret_cast<const U* const*>(src);
+
+						auto left = std::launder<U>(*pLeft);
+						auto right = *pRight;
+
+						if (!right) return;
+
+						if (!pLeft)
+						{
+							pLeft = new U* ();
+						}
+
+						if (*pLeft == nullptr)
+						{
+							*pLeft = new U(*right);
+						}
+					}
+				};
+			}
+			else
+			{
+				_copyFn = nullptr;
+			}
 		}
 
 	public:
@@ -59,21 +104,53 @@ namespace Engine3DRadSpace::Reflection
 		Any();
 
 		/// <summary>
-		/// Constructs an nothrow move constructible object of type T.
+		/// Constructs an object of type T from an rvalue reference (move constructor).
 		/// </summary>
 		/// <typeparam name="T">Type of the object being constructed.</typeparam>
 		/// <param name="value">The value to be stored in the Any container.</param>
-		template<typename T> requires std::is_nothrow_move_constructible_v<T>
+		template<typename T> 
+		requires std::is_nothrow_move_constructible_v<T> && !std::is_same_v<std::remove_cvref_t<T>, Any>
 		Any(T&& value) :
-			_type(typeid(T))
+			_type(typeid(T)),
+			_destroyFn(nullptr),
+			_copyFn(nullptr),
+			_fldRepr(nullptr)
 		{
-			if (sizeof(T) <= smallObjectSize)
+			if constexpr (sizeof(T) <= smallObjectSize)
 			{
-				new (_storage) T(std::forward<T>(value));
+				using U = std::remove_reference_t<T>;
+				new (_storage) U(std::forward<T>(value));
 			}
 			else
 			{
-				T* heapObj = new T(std::forward<T>(value));
+				using U = std::remove_reference_t<T>;
+				U* heapObj = new U(std::forward<U>(value));
+				new (_storage) U* (heapObj);
+			}
+
+			_setDestroyFn<T>({});
+		}
+
+		/// <summary>
+		/// Constructs an object of type T from a const lvalue reference.
+		/// </summary>
+		/// <typeparam name="T">Type of the object being constructed.</typeparam>
+		/// <param name="value">The value to be stored in the Any container.</param>
+		template<typename T>
+		requires !std::is_same_v<std::remove_cvref_t<T>, Any>
+		Any(const T& value) :
+			_type(typeid(T)),
+			_destroyFn(nullptr),
+			_copyFn(nullptr),
+			_fldRepr(nullptr)
+		{
+			if (sizeof(T) <= smallObjectSize)
+			{
+				new (_storage) T(value);
+			}
+			else
+			{
+				T* heapObj = new T(value);
 				new (_storage) T* (heapObj);
 			}
 
@@ -81,19 +158,37 @@ namespace Engine3DRadSpace::Reflection
 		}
 
 		/// <summary>
-		/// Constructs an object of type T that is not nothrow move constructible.
+		/// Constructs an object of type T from a non-const lvalue reference.
 		/// </summary>
 		/// <typeparam name="T">Type of the object being constructed.</typeparam>
 		/// <param name="value">The value to be stored in the Any container.</param>
 		template<typename T>
-		Any(T&& value) :
-			_type(typeid(T))
+		requires !std::is_same_v<std::remove_cvref_t<T>, Any>
+		Any(T& value) :
+			_type(typeid(T)),
+			_destroyFn(nullptr),
+			_copyFn(nullptr),
+			_fldRepr(nullptr)
 		{
-			T* heapObj = new T(std::forward<T>(value));
-			new (_storage) T* (heapObj);
+			if (sizeof(T) <= smallObjectSize)
+			{
+				new (_storage) T(value);
+			}
+			else
+			{
+				T* heapObj = new T(value);
+				new (_storage) T* (heapObj);
+			}
 
 			_setDestroyFn<T>({});
 		}
+
+
+		/// <summary>
+		/// Move constructor. Moves the stored object from the other Any, leaving it empty.
+		/// </summary>
+		/// <param name="other">The Any object to move from.</param>
+		Any(Any&& other) noexcept;
 
 		/// <summary>
 		/// Copy constructor. Performs a deep copy of the stored object, if any.
@@ -118,12 +213,12 @@ namespace Engine3DRadSpace::Reflection
 			}
 			if (sizeof(T) <= smallObjectSize)
 			{
-				return *reinterpret_cast<T*>(_storage);
+				return *reinterpret_cast<const T*>(_storage);
 			}
 			else
 			{
-				T* heapObj = *reinterpret_cast<T**>(_storage);
-				return *heapObj;
+				auto heapPtrPtr = std::launder(reinterpret_cast<const T* const*>(static_cast<const void*>(_storage)));
+				return *(*heapPtrPtr);
 			}
 		}
 
@@ -140,7 +235,8 @@ namespace Engine3DRadSpace::Reflection
 			}
 			else
 			{
-				T* heapObj = *reinterpret_cast<T**>(_storage);
+				auto heapPtrPtr = std::launder(reinterpret_cast<T**>(static_cast<void*>(_storage)));
+				T* heapObj = *heapPtrPtr;
 				return *heapObj;
 			}
 		}
