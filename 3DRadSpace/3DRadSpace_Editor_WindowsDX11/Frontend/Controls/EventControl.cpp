@@ -4,7 +4,6 @@
 #include <Engine3DRadSpace/Objects/IObject.hpp>
 #include <Engine3DRadSpace/Reflection/Event.hpp>
 #include <Engine3DRadSpace/Projects/EventRepresentation.hpp>
-#include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
 #include <Engine3DRadSpace/Reflection/IReflectedFunction.hpp>
 
 EventControl::EventControl(
@@ -106,7 +105,7 @@ void EventControl::HandleClick(HWND clickedWindow)
 					if (dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fnMember) != nullptr)
 					{
 						auto fn = fnMember->Clone().release();
-						this->_event->Bind(std::unique_ptr<Engine3DRadSpace::Reflection::IReflectedFunction>(dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fn)),0,0);
+						this->_event->Bind(std::unique_ptr<Engine3DRadSpace::Reflection::IReflectedFunction>(dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fn)), event->OwnerObject, event->FunctionID);
 					}
 				}
 			}

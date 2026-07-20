@@ -13,6 +13,7 @@
 #include <Engine3DRadSpace/Projects/EventInvocationRepresentation.hpp>
 #include "../Controls/EventControl.hpp"
 #include <Engine3DRadSpace/Objects/ObjectList.hpp>
+#include "../Controls/ObjectIDControl.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Audio;
@@ -105,6 +106,8 @@ void EditObjectDialog::createForms()
 
 	HDC hdc = GetDC(window);
 	int windowWidth = x;
+
+	auto objList = _content->GetOwner()->RequireService<Objects::ObjectList>({});
 
 	for (auto field : (*objRefl))
 	{
@@ -511,8 +514,6 @@ void EditObjectDialog::createForms()
 			{
 				const Event* value = reinterpret_cast<const Event*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
 
-				auto objList = _content->GetOwner()->RequireService<Objects::ObjectList>({});
-
 				EventControl* ctrl = new EventControl(window, hInstance, x, y, const_cast<Event*>(value), objList);
 				windows.push_back(ctrl);
 
@@ -529,9 +530,9 @@ void EditObjectDialog::createForms()
 				auto value = *reinterpret_cast<const size_t*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
 				fOffset += sizeof(size_t);
 
-				NumericTextbox* ctrl = new NumericTextbox(window, hInstance, px, y, 75, textboxHeight, std::to_string(value).c_str());
+				ObjectIDControl* ctrl = new ObjectIDControl(window, hInstance, px, y, 75, textboxHeight, std::to_string(value).c_str(), objList);
 				windows.push_back(ctrl);
-				px += 80;
+				px += 80 + ctrl->AccX() - px;
 
 				setMax(inc_y, textboxHeight + 5);
 				break;

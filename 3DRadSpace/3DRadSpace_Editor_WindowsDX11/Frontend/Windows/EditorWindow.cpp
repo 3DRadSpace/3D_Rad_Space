@@ -449,6 +449,9 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(optionsMenu), "Options");
 	AppendMenuA(mainMenu, MF_POPUP, reinterpret_cast<UINT_PTR>(helpMenu), "Help");
 
+	int screenX = GetSystemMetrics(SM_CXSCREEN);
+	int screenY = GetSystemMetrics(SM_CYSCREEN);
+
 	//Create window
 	_mainWindow = CreateWindowExA(
 		WS_EX_ACCEPTFILES,
@@ -457,8 +460,8 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		800,
-		600,
+		screenX,
+		screenY,
 		nullptr,
 		mainMenu,
 		hInstance,
@@ -534,7 +537,10 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		nullptr
 	);
 
-	this->editor = std::make_unique<EditorGame>(_mainWindow,_hInstance);
+	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+	this->editor = std::make_unique<EditorGame>(_mainWindow, _hInstance);
 
 	_handleRenderWindow = static_cast<HWND>(this->editor->Window->NativeHandle());
 

@@ -7,6 +7,8 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "*.cpp" "*.hpp" )
 add_library(3DRadSpace.Reflection SHARED
 	"Any.hpp"
 	"Any.cpp"
+	"Attribute.hpp"
+	"Attribute.cpp"
 	"CallbackEvent.hpp"
 	"CallbackEvent.cpp"
 	"EnumEntry.hpp"
