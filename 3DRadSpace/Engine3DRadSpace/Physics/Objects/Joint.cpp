@@ -632,4 +632,5 @@ REFL_FIELD_GS(Joint, Math::Vector3, joint_getlocalframe1pos, joint_setlocalframe
 REFL_FIELD_GS(Joint, Math::Quaternion, joint_getlocalframe1rot, joint_setlocalframe1rot, "Frame 1 Rotation", Math::Quaternion(), "Local frame rotation for actor 1")
 REFL_FIELD_GS(Joint, float, joint_getbreakforce, joint_setbreakforce, "Break Force", 3.402823466e+38f, "Maximum force before joint breaks")
 REFL_FIELD_GS(Joint, float, joint_getbreaktorque, joint_setbreaktorque, "Break Torque", 3.402823466e+38f, "Maximum torque before joint breaks")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Joint.html")
 REFL_END

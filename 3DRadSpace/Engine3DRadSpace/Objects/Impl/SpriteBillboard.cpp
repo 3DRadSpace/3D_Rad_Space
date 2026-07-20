@@ -145,4 +145,8 @@ REFL_FIELD(SpriteBillboard, Math::Vector3, Position, "Position", Math::Vector3::
 REFL_FIELD(SpriteBillboard, Math::Vector3, RotationCenter, "Axis", Math::Vector3::UnitY(), "Axis of rotation for the object")
 REFL_FIELD(SpriteBillboard, Math::Vector3, Scale, "Scale", Math::Vector3::One(), "Scale of the object in world space")
 REFL_FIELD(SpriteBillboard, bool, IsSpherical, "Spherical", false, "Whether the billboard is spherical or cylindrical")
+REFL_METHOD(SpriteBillboard, void, &SpriteBillboard::Show, "Show")
+REFL_METHOD(SpriteBillboard, void, &SpriteBillboard::Hide, "Hide")
+REFL_METHOD(SpriteBillboard, bool, &SpriteBillboard::SwitchVisibility, "Switch visibility")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SpriteBillboard.html")
 REFL_END

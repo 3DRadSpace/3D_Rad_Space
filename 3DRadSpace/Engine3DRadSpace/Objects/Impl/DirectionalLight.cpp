@@ -127,4 +127,5 @@ REFL_FIELD_GS(DirectionalLight, Math::Vector3, dl_getlightdir, dl_setlightdir, "
 REFL_FIELD_GS(DirectionalLight, Math::Color, dl_getlightcolor, dl_setlightcolor, "Light Color", Math::Color(1.0f, 1.0f, 1.0f), "Color of the light")
 REFL_FIELD_GS(DirectionalLight, Math::Color, dl_getambientcolor, dl_setambientcolor, "Ambient Color", Math::Color(0.1f, 0.1f, 0.1f), "Ambient color of the light")
 REFL_FIELD_GS(DirectionalLight, float, dl_getintensity, dl_setintensity, "Intensity", 1.0f, "Intensity of the light")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/DirectionalLight.html")
 REFL_END

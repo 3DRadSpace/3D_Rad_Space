@@ -81,4 +81,5 @@ REFL_BEGIN(Counter, "Counter", "Events", "Counter")
 	REFL_FIELD(Counter, std::string, FilePath, "File path", "", "The path of the file to load the counter value from")
 	REFL_METHOD(Counter, void, &Counter::Enable, "Increment")
 	REFL_METHOD(Counter, void, &Counter::Save, "Save")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Counter.html")
 REFL_END

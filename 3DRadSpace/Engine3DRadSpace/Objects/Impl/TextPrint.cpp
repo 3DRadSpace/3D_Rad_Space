@@ -112,4 +112,8 @@ REFL_BEGIN(TextPrint, "TextPrint", "2D Objects", "Text element on the screen")
     REFL_FIELD(TextPrint, Vector2, Scale, "Scale", Vector2::One(), "Text scale, Y coordinate is ignored.")
     REFL_FIELD(TextPrint, Color, Colour, "Color", Colors::White, "Text color")
     REFL_FIELD(TextPrint, float, Depth, "Depth", 0.0f, "2D Depth")
+    REFL_METHOD(TextPrint, void, &TextPrint::Show, "Show")
+    REFL_METHOD(TextPrint, void, &TextPrint::Hide, "Hide")
+    REFL_METHOD(TextPrint, bool, &TextPrint::SwitchVisibility, "Switch visibility")
+    REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/TextPrint.html")
 REFL_END

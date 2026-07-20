@@ -196,4 +196,7 @@ REFL_FIELD(SoundEffect, RefSound, Sound, "Sound", 0, "Sound asset")
 REFL_FIELD_GS(SoundEffect, bool, ss_getlooping, ss_setlooping, "Looping", false, "Is the sound looping")
 REFL_FIELD_GS(SoundEffect, float, ss_getvolume, ss_setvolume, "Volume", 1.0f, "Volume (0-1 range)")
 REFL_FIELD_GS(SoundEffect, float, ss_getpitch, ss_setpitch, "Pitch", 0.5f, "Pitch (??-?? range), ?? default")
+REFL_METHOD(SoundEffect, void, &SoundEffect::Enable, "Play")
+REFL_METHOD(SoundEffect, void, &SoundEffect::Disable, "Pause")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SoundEffect.html")
 REFL_END

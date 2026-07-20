@@ -102,4 +102,5 @@ REFL_BEGIN(EventOnLocation, "EventOnLocation", "Events", "An object that trigger
 	REFL_FIELD(EventOnLocation, Reflection::Event, Event, "Event", {}, "Executes each time the tracked object enters the area. Return value is ignored.")
 	REFL_METHOD(EventOnLocation, void, &EventOnLocation::Enable, "Enable")
 	REFL_METHOD(EventOnLocation, void, &EventOnLocation::Disable, "Disable")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/EventOnLocation.html")
 REFL_END

@@ -87,4 +87,8 @@ REFL_BEGIN(Cone, "Cone", "3D Primitives", "3D box")
 	REFL_FIELD(Cone, float, Height, "Height", 1.0f, "Scale")
 	REFL_FIELD(Cone, Color, Colour, "Color", Colors::White, "Color")
 	REFL_FIELD(Cone, unsigned, Resolution, "Resolution", 64, "Sphere model tesselation")
+	REFL_METHOD(Cone, void, &Cone::Show, "Show")
+	REFL_METHOD(Cone, void, &Cone::Hide, "Hide")
+	REFL_METHOD(Cone, bool, &Cone::SwitchVisibility, "Switch Visibility")
+	REFL_ATTR("HelpURL","https://3dradspace.github.io/docs/Cone.html")
 REFL_END

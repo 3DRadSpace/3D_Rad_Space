@@ -89,4 +89,8 @@ REFL_BEGIN(Timer, "Timer", "Events", "Event object that executes an event at a s
 	REFL_FIELD(Timer, double, Interval, "Interval", 1.0, "Timer interval expressed in seconds")
 	REFL_FIELD(Timer, unsigned, RepeatCount, "RepeatCount", 0, "How many times the timer executes. 0 = infinite counts.")
 	REFL_FIELD(Timer, Reflection::Event, Event, "Event", {}, "Executes each time the timer reaches the interval. Return value is ignored.")
+	REFL_METHOD(Timer, void, &Timer::Enable, "Start")
+	REFL_METHOD(Timer, void, &Timer::Disable, "Pause")
+	REFL_METHOD(Timer, void, &Timer::ResetTimer, "Reset")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Timer.html")
 REFL_END

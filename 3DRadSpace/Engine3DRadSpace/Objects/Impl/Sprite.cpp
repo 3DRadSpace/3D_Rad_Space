@@ -196,4 +196,8 @@ REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")
 	REFL_FIELD(Sprite, bool, FlipU, "Flip horizontally", false, "Is the sprite image flipped horizontally?")
 	REFL_FIELD(Sprite, bool, FlipV, "Flip vertically", false, "Is the sprite image flipped vertically?")
 	REFL_FIELD(Sprite, Color, TintColor, "Tint Color", Colors::White, "Tint color")
+	REFL_METHOD(Sprite, void, &Sprite::Show, "Show")
+	REFL_METHOD(Sprite, void, &Sprite::Hide, "Hide")
+	REFL_METHOD(Sprite, bool, &Sprite::SwitchVisibility, "Switch visibility")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Sprite.html")
 REFL_END

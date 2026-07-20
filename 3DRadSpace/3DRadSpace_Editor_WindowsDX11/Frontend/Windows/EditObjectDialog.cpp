@@ -63,6 +63,11 @@ INT_PTR __stdcall EditObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, L
 					return 1;
 				}
 
+				if (lParam == reinterpret_cast<LPARAM>(eod->helpButton))
+				{
+					ShellExecuteA(hwnd, "open", eod->_helpUrl.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+				}
+
 				for(auto &c : eod->windows)
 				{
 					auto control = std::get_if<IControl *>(&c);
@@ -116,6 +121,25 @@ void EditObjectDialog::createForms()
 		//Skip functions.
 		if(dynamic_cast<IReflectedFunction*>(field) != nullptr)
 			continue;
+
+		if(auto attribute = dynamic_cast<Attribute*>(field); attribute != nullptr)	
+		{
+			auto name = attribute->FieldName();
+
+			std::unordered_map<std::string, int> attribMap=
+			{
+				{"HelpURL", 1}
+			};
+
+			switch (attribMap[name])
+			{
+			case 1:
+				_helpUrl = attribute->FieldDesc();
+				break;
+			default:
+				break;
+			}
+		}
 
 		auto setMax = [](int& v, int newValue)
 		{

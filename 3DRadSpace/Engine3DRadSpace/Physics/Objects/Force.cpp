@@ -170,4 +170,5 @@ REFL_FIELD(Force, float, Timer, "Time", 1.0f, "Duration of the force in seconds"
 REFL_FIELD(Force, bool, Torque, "Torque", false, "Whether the force is a torque (applies rotation) or a linear force")
 REFL_METHOD(Force, void, &Force::Enable, "Enable")
 REFL_METHOD(Force, void, &Force::Disable, "Disable")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Force.html")
 REFL_END

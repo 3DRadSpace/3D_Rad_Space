@@ -49,4 +49,8 @@ REFL_BEGIN(SkyColor,"SkyColor", "Rendering", "Sets the backbuffer clear color")
 	REFL_FIELD(SkyColor, std::string, Name, "Name", "SkyColor", "Object of the name")
 	REFL_FIELD(SkyColor, bool, Enabled, "Enabled", true, "Does the backround color get set every frame?")
 	REFL_FIELD(SkyColor, Color, Colour, "Color", Colors::Black, "Back buffer clear color")
+	REFL_METHOD(SkyColor, void, &SkyColor::Enable, "Enable")
+	REFL_METHOD(SkyColor, void, &SkyColor::Disable, "Disable")
+	REFL_METHOD(SkyColor, bool, &SkyColor::Switch, "Switch")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SkyColor.html")
 REFL_END

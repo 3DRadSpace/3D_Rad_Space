@@ -79,4 +79,8 @@ REFL_BEGIN(Sphere, "Sphere", "3D Primitives", "3D box")
 	REFL_FIELD(Sphere, float, Radius, "Radius", 1.0f, "Radius")
 	REFL_FIELD(Sphere, Color, Colour, "Color", Colors::White, "Color")
 	REFL_FIELD(Sphere, unsigned, Resolution, "Resolution", 64, "Sphere model tesselation")
+	REFL_METHOD(Sphere, void, &Sphere::Show, "Show")
+	REFL_METHOD(Sphere, void, &Sphere::Hide, "Hide")
+	REFL_METHOD(Sphere, bool, &Sphere::SwitchVisibility, "Switch visibility")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Sphere.html")
 REFL_END

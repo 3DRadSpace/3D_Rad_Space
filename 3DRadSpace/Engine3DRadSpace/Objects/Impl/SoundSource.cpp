@@ -311,4 +311,7 @@ REFL_FIELD(SoundSource, Vector3, Position, "Position", Vector3::Zero(), "Sound p
 REFL_FIELD_GS(SoundSource, float, ss_getvolume, ss_setvolume, "Volume", 1.0f, "Sound gain")
 REFL_FIELD_GS(SoundSource, float, ss_getpitch, ss_setpitch, "Pitch", 0.5f, "Sound pitch")
 REFL_FIELD_GS(SoundSource, bool, ss_getlooping, ss_setlooping, "Is looping", true, "Is the sound looping?")
+REFL_METHOD(SoundSource, void, &SoundSource::Enable, "Play")
+REFL_METHOD(SoundSource, void, &SoundSource::Disable, "Pause")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SoundSource.html")
 REFL_END

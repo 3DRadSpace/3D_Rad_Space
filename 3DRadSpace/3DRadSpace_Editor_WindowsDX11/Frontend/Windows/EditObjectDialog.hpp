@@ -18,6 +18,8 @@ class EditObjectDialog : public Dialog
 	HWND okButton;
 	HWND cancelButton;
 
+	std::string _helpUrl = "https://3dradspace.github.io/docs/objects.html";
+
 	void createForms();
 	void setObject();
 public:

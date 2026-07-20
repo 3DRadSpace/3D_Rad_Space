@@ -65,4 +65,6 @@ REFL_BEGIN(ExitFade, "ExitFade", "Events", "Loads an other scene, or exits the g
 	REFL_FIELD(ExitFade, std::string, ProjectPath, "Path to new project", "", "Project to load, empty if closing the game")
 	REFL_FIELD(ExitFade, Color, FadeColor, "Fade color", Colors::Black, "Fade out color")
 	REFL_FIELD(ExitFade, float, FadeTime, "Fade time", 5.0f, "Fade out time")
+	REFL_METHOD(ExitFade, void, &ExitFade::Enable, "Activate")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/ExitFade.html")
 REFL_END

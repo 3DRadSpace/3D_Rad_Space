@@ -50,4 +50,5 @@ REFL_BEGIN(GForce, "G-Force", "Physics", "Enables physics and sets gravity")
     REFL_FIELD(GForce, std::string, Name, "Name", "G-Force", "Object name")
     REFL_FIELD(GForce, bool, Enabled, "Enabled", true, "Enables physics")
     REFL_FIELD(GForce, Vector3, Gravity, "Gravity", Vector3(0, -9.81f, 0), "Gravity value")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/GForce.html")
 REFL_END

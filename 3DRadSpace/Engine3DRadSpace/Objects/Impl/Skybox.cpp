@@ -92,4 +92,8 @@ REFL_BEGIN(Skybox, "Skybox", "3D Objects", "3D sky box")
 	REFL_FIELD(Skybox, std::string, Name, "Name", "Skybox", "Name of the object")
 	REFL_FIELD(Skybox, bool, Visible, "Visible", true, "Is the object visible")
 	REFL_FIELD(Skybox, RefSkybox, SkyboxID, "Skybox ID", 0, "ID of the skybox asset")
+	REFL_METHOD(Skybox, void, &Skybox::Show, "Show")
+	REFL_METHOD(Skybox, void, &Skybox::Hide, "Hide")
+	REFL_METHOD(Skybox, bool, &Skybox::SwitchVisibility, "Switch Visibility")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Skybox.html")
 REFL_END

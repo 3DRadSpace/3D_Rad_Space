@@ -53,4 +53,5 @@ REFL_BEGIN(EventOnKey, "EventOnKey", "Events", "Invokes an event when a key is p
 	REFL_FIELD(EventOnKey, bool, Enabled, "Enabled", true, "Whether the object is enabled or not.")
 	REFL_FIELD(EventOnKey, Input::Key, Key, "Key", Input::Key::Space, "Key that triggers the event when pressed.")
 	REFL_FIELD(EventOnKey, Reflection::Event, Event, "Event", {}, "Event to invoke when the key is pressed.")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/EventOnKey.html")
 REFL_END

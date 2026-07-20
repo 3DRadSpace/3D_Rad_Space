@@ -82,4 +82,8 @@ REFL_BEGIN(Fog, "Fog", "Post effects", "Post process linear fog")
 	REFL_FIELD(Fog, float, FogBegin, "Fog Begin (m)", 100.0f, "Fog start distance (meters)")
 	REFL_FIELD(Fog, float, FogEnd, "Fog End (m)", 200.0f, "Fog end distance(meters)")
 	REFL_FIELD(Fog, Color, FogColor, "Fog Color", Colors::White, "Fog color")
+	REFL_METHOD(Fog, void, &Fog::Enable, "Enable")
+	REFL_METHOD(Fog, void, &Fog::Disable, "Disable")
+	REFL_METHOD(Fog, bool, &Fog::Switch, "Switch")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Fog.html")
 REFL_END

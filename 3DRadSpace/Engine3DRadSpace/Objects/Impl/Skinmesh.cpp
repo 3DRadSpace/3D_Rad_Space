@@ -156,4 +156,8 @@ REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")
 	REFL_FIELD(Skinmesh, Quaternion, Rotation, "Rotation", Quaternion(), "Object's rotation")
 	REFL_FIELD(Skinmesh, Vector3, RotationCenter, "Rotation Center", Vector3::Zero(), "The rotation pivot")
 	REFL_FIELD(Skinmesh, Vector3, Scale, "Scale", Vector3::One(), "The skinmesh scale")
+	REFL_METHOD(Skinmesh, void, &Skinmesh::Show, "Show")
+	REFL_METHOD(Skinmesh, void, &Skinmesh::Hide, "Hide")
+	REFL_METHOD(Skinmesh, bool, &Skinmesh::SwitchVisibility, "Switch Visibility")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Skinmesh.html")
 REFL_END

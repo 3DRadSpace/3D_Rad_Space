@@ -80,4 +80,8 @@ REFL_BEGIN(Cylinder, "Cylinder", "3D Primitives", "3D box")
 	REFL_FIELD(Cylinder, float, Height, "Height", 1.0f, "Scale")
 	REFL_FIELD(Cylinder, Color, Colour, "Color", Colors::White, "Color")
 	REFL_FIELD(Cylinder, unsigned, Resolution, "Resolution", 64, "Sphere model tesselation")
+	REFL_METHOD(Cylinder, void, &Cylinder::Show, "Show")
+	REFL_METHOD(Cylinder, void, &Cylinder::Hide, "Hide")
+	REFL_METHOD(Cylinder, bool, &Cylinder::SwitchVisibility, "Switch Visibility")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/docs/Cylinder.html")
 REFL_END

@@ -63,4 +63,5 @@ REFL_FIELD(SettingsManager, Point, Resolution, "Resolution", Point(800, 600), "B
 REFL_FIELD(SettingsManager, bool, VSyncEnabled, "VSyncEnabled", true, "Whether to enable VSync or not")
 REFL_FIELD(SettingsManager, bool, FullscreenEnabled, "FullscreenEnabled", false, "Whether to enable fullscreen mode or not")
 REFL_METHOD(SettingsManager, void, &SettingsManager::Initialize, "Apply")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SettingsManager.html")
 REFL_END

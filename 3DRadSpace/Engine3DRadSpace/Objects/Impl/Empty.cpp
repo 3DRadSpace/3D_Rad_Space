@@ -51,4 +51,5 @@ REFL_BEGIN(Empty, "Empty", "Physics", "Represents a point")
 	REFL_FIELD(Empty, Quaternion, Rotation, "Rotation", Quaternion(), "Object rotation in world space")
 	REFL_FIELD(Empty, Vector3, RotationCenter, "Rotation Center", Vector3::Zero(), "Rotation center/pivot")
 	REFL_FIELD(Empty, Vector3, Scale, "Scale", Vector3::One(), "Object scale. 1 = original size")
+	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Empty.html")
 REFL_END

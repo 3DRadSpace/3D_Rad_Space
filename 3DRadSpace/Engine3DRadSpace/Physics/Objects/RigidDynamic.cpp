@@ -321,4 +321,5 @@ REFL_FIELD_GS(RigidDynamic, float, rigiddyn_getangulardamping, rigiddyn_setangul
 REFL_FIELD_GS(RigidDynamic, float, rigiddyn_getstaticfriction, rigiddyn_setstaticfriction, "Static Friction", 0.5f, "Static friction of the material")
 REFL_FIELD_GS(RigidDynamic, float, rigiddyn_getdynamicfriction, rigiddyn_setdynamicfriction, "Dynamic Friction", 0.5f, "Dynamic friction of the material")
 REFL_FIELD_GS(RigidDynamic, float, rigiddyn_getrestitution, rigiddyn_setrestitution, "Restitution", 0.5f, "Bounciness of the material")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/RigidDynamic.html")
 REFL_END
