@@ -68,6 +68,7 @@ static void validateEvents(IObject* obj, ObjectList* lst)
 
 					auto fn2 = dynamic_cast<IReflectedFunction*>(fn->Clone().release());
 					event->Bind(std::move(std::unique_ptr<IReflectedFunction>(fn2)), invocRepr.OwnerObject, invocRepr.FunctionID);
+					(event->end() - 1)->Object = objPtr;
 				}
 			}
 		}
@@ -321,6 +322,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				case FieldRepresentationType::Model:
 				case FieldRepresentationType::Font:
 				case FieldRepresentationType::Skybox:
+				case FieldRepresentationType::Sound:
 				{
 					unsigned texture = field->GetAtOffset<unsigned>(objPtr, offset);
 					jsonField[subFieldName][str_i] = texture;
@@ -658,6 +660,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				case FieldRepresentationType::Model:
 				case FieldRepresentationType::Font:
 				case FieldRepresentationType::Skybox:
+				case FieldRepresentationType::Sound:
 				{
 					unsigned value = jsonField.get<unsigned>();
 

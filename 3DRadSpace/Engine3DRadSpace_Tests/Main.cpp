@@ -14,7 +14,7 @@ class MyGame : public Engine3DRadSpace::Game
 public:
 	MyGame() : Game("MyGame")
 	{
-		this->AppendScene("D:\\Projects\\3D_Rad_Space\\3DRadSpace\\out\\build\\x64-Release\\Projects\\SpriteBillboard Demo.3drsp");
+		this->AppendScene("D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Projects\\SoundEffect + EventOnKey demo.3drsp");
 	}
 
 	void Update() override
