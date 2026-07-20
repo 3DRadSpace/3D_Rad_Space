@@ -1,6 +1,7 @@
 #include "TextPrint.hpp"
 #include "../Games/Game.hpp"
 #include "Gizmos.hpp"
+#include "../Gizmos/TextPrintGizmo.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;

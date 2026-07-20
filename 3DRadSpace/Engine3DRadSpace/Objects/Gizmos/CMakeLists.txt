@@ -16,6 +16,8 @@ add_library(3DRadSpace.Objects.Gizmos STATIC
 	"SphereGizmo.cpp"
 	"SpriteGizmo.hpp"
 	"SpriteGizmo.cpp"
+	"TextPrintGizmo.hpp"
+	"TextPrintGizmo.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
