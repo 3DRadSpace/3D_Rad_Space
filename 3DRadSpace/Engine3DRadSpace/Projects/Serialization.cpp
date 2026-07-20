@@ -1,10 +1,10 @@
 #include "Serialization.hpp"
-#include "Serialization.hpp"
-#include "Serialization.hpp"
 #include "../Content/AssetID.hpp"
 #include "../Objects/Impl/Objects.hpp"
 #include "../Objects/ObjectList.hpp"
+#include "../Reflection/Event.hpp"
 #include <fstream>
+#include "EventInvocationRepresentation.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
@@ -30,6 +30,48 @@ static void deserializeObjectHierarchy(ObjectList* lst, IObject* obj, const json
 	if(parent != -1)
 	{
 		obj->SetParent(lst->operator[](parent));
+	}
+}
+
+static void validateEvents(IObject* obj, ObjectList* lst)
+{
+	auto refl = GetReflDataFromUUID(obj->GetUUID());
+
+	std::vector<std::pair<EventInvocationRepresentation, IReflectedFunction*>> invocations;
+
+	for (auto& field : *refl)
+	{
+		auto repr = field->Representation();
+
+		for (auto& [reprType, sFieldName] : repr)
+		{
+			if (reprType == FieldRepresentationType::Event)
+			{
+				auto event = std::launder<Event>(reinterpret_cast<Event*>(reinterpret_cast<std::byte*>(obj) + field->FieldOffset()));
+				
+				for (auto& binding : *event)
+				{
+					EventInvocationRepresentation invocRepr;
+					invocRepr.FunctionID = binding.FunctionID;
+					invocRepr.OwnerObject = binding.ObjectID;
+
+					auto reflObj = GetReflDataFromUUID(lst->operator[](binding.ObjectID)->GetUUID());
+					invocations.emplace_back(invocRepr, invocRepr.FindFunction(reflObj, binding.FunctionID));
+				}
+
+				event->Reset();
+
+				for (auto& [invocRepr, fn] : invocations)
+				{
+					if (fn == nullptr) continue;
+					auto objPtr = lst->operator[](invocRepr.OwnerObject);
+
+					auto fn2 = dynamic_cast<IReflectedFunction*>(fn->Clone().release());
+					event->Bind(std::move(std::unique_ptr<IReflectedFunction>(fn2)), invocRepr.OwnerObject, invocRepr.FunctionID);
+				}
+			}
+		}
+
 	}
 }
 
@@ -98,10 +140,18 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		intptr_t offset = 0;
 		auto repr = field->Representation();
 		bool useDirectGet = (field->FieldOffset() == 0 && repr.Size() == 1);
+	
+		if (field->TypeSize() == 0 || repr.Size() == 0)
+			continue;
+
 		for (int i = 0; auto &[reprType, sFieldName] : repr)
 		{
-			if(reprType == FieldRepresentationType::None) continue;
-			if(reprType == FieldRepresentationType::Function) continue;
+			if ((reprType == FieldRepresentationType::None) ||
+				(reprType == FieldRepresentationType::Function))
+			{
+				++i;
+				continue;
+			}
 
 			auto subFieldName = !sFieldName.empty() ? sFieldName : "f";
 
@@ -307,10 +357,17 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Event:
 				{
-					//Projects::EventRepresentation e;
-					//jsonField[subFieldName][str_i] = e;
+					auto event = std::launder<Event>(reinterpret_cast<Event*>(static_cast<std::byte*>(objPtr) + field->FieldOffset() + offset));
 
-					//offset += sizeof(Event);
+					jsonField[subFieldName][str_i]["NumInvocations"] = event->Count();
+					
+					for (auto k = 0; k < event->Count(); k++)
+					{
+						jsonField[subFieldName][str_i]["Invocations"][std::to_string(k)]["OwnerObject"] = event->At(k).ObjectID;
+						jsonField[subFieldName][str_i]["Invocations"][std::to_string(k)]["FunctionID"] = event->At(k).FunctionID;	
+					}
+
+					offset += sizeof(Event);
 					break;
 				}
 				case FieldRepresentationType::ObjectID:
@@ -349,6 +406,9 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		int structSize = static_cast<int>(field->TypeSize());
 		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int offset = 0;
+
+		if (field->TypeSize() == 0 || repr.Size() == 0)
+			continue;
 
 		bool useDirectSet = (field->FieldOffset() == 0 && repr.Size() == 1);
 
@@ -632,13 +692,29 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Event:
 				{
-					//EventRepresentation eventData = jsonField.get<EventRepresentation>();
-					//Event event = eventData.Reconstruct(uuid).value();
+					auto numInvocations = jsonField["NumInvocations"].get<size_t>();
 
-					//void* dest = newStruct.get() + offset;
-					//new (dest) Event();
-					//offset += sizeof(Event);
+					Event event;
 
+					for (auto i = 0; i < numInvocations; i++)
+					{
+						auto invocation = jsonField["Invocations"][std::to_string(i)];
+
+						EventInvocationRepresentation repr;
+
+						repr.OwnerObject = invocation["OwnerObject"].get<size_t>();
+						repr.FunctionID = invocation["FunctionID"].get<size_t>();
+								
+						//TODO: Support arguments.
+
+						event.BindIncomplete(
+							repr.OwnerObject,
+							repr.FunctionID
+						);
+					}
+
+					new (newStruct.get() + offset) Event(std::move(event));
+					offset += sizeof(Event);
 					break;
 				}
 				case FieldRepresentationType::ObjectID:
@@ -696,6 +772,7 @@ bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, Conten
 	{
 		auto obj = lst->operator[](i);
 		deserializeObjectHierarchy(lst, obj, j["objects"][std::to_string(i)]);
+		validateEvents(obj, lst);
 	}
 
 	return true;

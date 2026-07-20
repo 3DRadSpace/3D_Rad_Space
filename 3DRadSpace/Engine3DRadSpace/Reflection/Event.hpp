@@ -43,6 +43,7 @@ namespace Engine3DRadSpace::Reflection
 			/// </summary>
 			MemberFunctionInvoker();
 			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType, size_t objID, size_t fnID);
+			MemberFunctionInvoker(size_t objID, size_t fnID);
 
 			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
 			MemberFunctionInvoker& operator=(MemberFunctionInvoker&& other) noexcept = default;
@@ -89,6 +90,7 @@ namespace Engine3DRadSpace::Reflection
 		}
 
 		void Bind(std::unique_ptr<IReflectedFunction> &&fn, size_t objID, size_t fnID);
+		void BindIncomplete(size_t objID, size_t fnID);
 
 		template<typename R, typename ...Args>
 		R operator()(int index, Args&& ...args)

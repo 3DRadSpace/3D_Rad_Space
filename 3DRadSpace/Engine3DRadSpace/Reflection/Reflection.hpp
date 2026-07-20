@@ -3,8 +3,6 @@
 /// ---------------------------------------------------------------------------
 ///								Reflecting objects:
 /// ---------------------------------------------------------------------------
-
-///Reflecting IObject types:
 #include "ReflectedObject.hpp"
 
 ///Reflects a class that inherits IObject.
@@ -60,3 +58,14 @@
 
 #include "ReflectedFunction.hpp"
 #define REFL_FUNCTION(ReturnType, Function, Name, ...) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedFunction<ReturnType, __VA_ARGS__>(Name, Function)),
+
+/// ---------------------------------------------------------------------------
+///								Metadata
+/// ---------------------------------------------------------------------------
+/// Supported attributes are:
+/// - "HelpURL": Provides a URL to the help documentation for the object being reflected.
+/// - "CustomWindow": Specifies that the given object doesn't use the default editor window, but an custom one instead. The value is the name of the function that creates the custom window.
+///                   Refer to CustomEditObjectWindow inside the Plugin library for more details.
+//#include "Attribute.hpp"
+
+#define REFL_ATTR(Name, Value) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::Attribute(Name, Value)),

@@ -18,6 +18,15 @@ Event::MemberFunctionInvoker::MemberFunctionInvoker(
 {
 }
 
+Event::MemberFunctionInvoker::MemberFunctionInvoker(size_t objID, size_t fnID) :
+	Object(nullptr),
+	Fn(nullptr),
+	ReturnType(typeid(void)),
+	ObjectID(objID),
+	FunctionID(fnID)
+{
+}
+
 Event::Event() :
 	_empty(true)
 {
@@ -42,9 +51,16 @@ Event& Event::operator=(const Event& other)
 	_fns.clear();
 	for (const auto& fn : other._fns)
 	{
-		auto cloned = fn.Fn->Clone();
-		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
-		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		if (fn.Fn)
+		{
+			auto cloned = fn.Fn->Clone();
+			std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
+			_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		}
+		else
+		{
+			_fns.emplace_back(fn.Object, nullptr, fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		}
 	}
 	return *this;
 }
@@ -183,4 +199,9 @@ Any Event::operator()(std::vector<Any> &args)
 void Event::Bind(std::function<Any(std::vector<Any>)> fnargs)
 {
 	
+}
+
+void Event::BindIncomplete(size_t objID, size_t fnID)
+{
+	_fns.emplace_back(objID, fnID);
 }

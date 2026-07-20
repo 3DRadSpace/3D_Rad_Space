@@ -490,7 +490,7 @@ void EditObjectDialog::createForms()
 			}
 			case FieldRepresentationType::Skybox:
 			{
-				auto value = *static_cast<const AssetID<SkyboxAsset>*>(valuePtr);
+				auto value = *reinterpret_cast<const AssetID<SkyboxAsset>*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
 				
 				SkyboxControl *ctrl = new SkyboxControl(window, hInstance, _content, value, fieldName.data(), x, y);
 				windows.push_back(ctrl);
@@ -501,7 +501,7 @@ void EditObjectDialog::createForms()
 			}
 			case FieldRepresentationType::Sound:
 			{
-				auto value = *static_cast<const AssetID<Sound>*>(valuePtr);
+				auto value = *reinterpret_cast<const AssetID<Sound>*>(reinterpret_cast<const char*>(valuePtr) + fOffset);
 
 				SoundControl *ctrl = new SoundControl(window, hInstance, _content, value, fieldName.data(), x, y);
 				windows.push_back(ctrl);
