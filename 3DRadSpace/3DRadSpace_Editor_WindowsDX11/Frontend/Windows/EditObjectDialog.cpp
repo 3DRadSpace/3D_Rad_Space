@@ -871,8 +871,9 @@ void EditObjectDialog::setObject()
 				case FieldRepresentationType::Event:
 				{
 					auto eventCtrl = static_cast<EventControl*>(std::get<IControl*>(windows[i++]));
-					
-					memcpy_s(newStruct.get() + j, sizeof(Event), &eventCtrl->GetEvent(), sizeof(Event));
+					auto& event = eventCtrl->GetEvent();
+
+					new (newStruct.get() + j) Event(std::move(event));
 					j += sizeof(Event);
 					break;
 				}

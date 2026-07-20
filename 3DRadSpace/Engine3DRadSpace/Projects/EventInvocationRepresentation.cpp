@@ -11,13 +11,11 @@ EventInvocationRepresentation::EventInvocationRepresentation() :
 {
 }
 
-IReflectedFunction* EventInvocationRepresentation::FindFunction(const Reflection::UUID& uuid, size_t idxFn)
+IReflectedFunction* EventInvocationRepresentation::FindFunction(Reflection::ReflectedObject* reflObject, size_t idxFn)
 {
-	auto reflObject = Internal::GetReflDataFromUUID(uuid);
 	if (reflObject == nullptr) return nullptr;
 
 	size_t id = 0;
-
 	for (auto& f : *reflObject)
 	{
 		auto fn = dynamic_cast<IReflectedFunction*>(f);

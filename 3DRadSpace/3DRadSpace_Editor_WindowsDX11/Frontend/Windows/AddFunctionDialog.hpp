@@ -4,7 +4,7 @@
 #include <Engine3DRadSpace/Objects/ObjectList.hpp>
 #include <Engine3DRadSpace/Reflection/ReflectedObject.hpp>
 #include <Engine3DRadSpace/Reflection/ReflectedMemberFunction.hpp>
-#include <Engine3DRadSpace/Projects/EventRepresentation.hpp>
+#include <Engine3DRadSpace/Projects/EventInvocationRepresentation.hpp>
 
 class AddFunctionDialog : public Dialog
 {

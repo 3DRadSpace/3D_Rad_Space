@@ -307,10 +307,10 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Event:
 				{
-					Projects::EventRepresentation e;
-					jsonField[subFieldName][str_i] = e;
+					//Projects::EventRepresentation e;
+					//jsonField[subFieldName][str_i] = e;
 
-					offset += sizeof(Event);
+					//offset += sizeof(Event);
 					break;
 				}
 				case FieldRepresentationType::ObjectID:
@@ -632,12 +632,12 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				}
 				case FieldRepresentationType::Event:
 				{
-					EventRepresentation eventData = jsonField.get<EventRepresentation>();
-					Event event = eventData.Reconstruct(uuid).value();
+					//EventRepresentation eventData = jsonField.get<EventRepresentation>();
+					//Event event = eventData.Reconstruct(uuid).value();
 
-					void* dest = newStruct.get() + offset;
-					new (dest) Event();
-					offset += sizeof(Event);
+					//void* dest = newStruct.get() + offset;
+					//new (dest) Event();
+					//offset += sizeof(Event);
 
 					break;
 				}
@@ -749,49 +749,4 @@ bool Engine3DRadSpace::Projects::Serializer::SaveProject(ObjectList* lst, Conten
 
 	file << std::setw(4) << j;
 	return true;
-}
-
-void Engine3DRadSpace::Projects::to_json(json& j, const EventRepresentation& event)
-{
-	auto size = event.BoundFunctions.size();
-	j["numFn"] = size;
-
-	for (auto i = 0; i < size; i++)
-	{
-		auto& fn = event.BoundFunctions[i];
-		json jFn;
-
-		jFn["OwnerObject"] = fn.OwnerObject;
-		jFn["FunctionID"] = fn.FunctionID;
-		
-		json jArgs = json::array();
-		for (auto& arg : fn.Args)
-		{
-			jArgs.push_back(arg.type().name());
-		}
-
-		jFn["Args"] = jArgs;
-		j["BoundFunctions"].push_back(jFn);
-	}
-}
-
-void Engine3DRadSpace::Projects::from_json(const json& j, EventRepresentation& event)
-{
-	auto size = j["numFn"].get<size_t>();
-	
-	for (auto i = 0; i < size; i++)
-	{
-		auto& jFn = j["BoundFunctions"][i];
-		EventInvocationRepresentation fn;
-
-		fn.OwnerObject = jFn["OwnerObject"].get<size_t>();
-		fn.FunctionID = jFn["FunctionID"].get<size_t>();
-		for (auto& jArg : jFn["Args"])
-		{
-			std::string typeName = jArg.get<std::string>();
-			fn.Args.push_back(std::any(typeName));
-		}
-
-		event.BoundFunctions.push_back(fn);
-	}
 }

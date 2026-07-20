@@ -3,7 +3,6 @@
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
 #include <Engine3DRadSpace/Objects/IObject.hpp>
 #include <Engine3DRadSpace/Reflection/Event.hpp>
-#include <Engine3DRadSpace/Projects/EventRepresentation.hpp>
 #include <Engine3DRadSpace/Reflection/IReflectedFunction.hpp>
 
 EventControl::EventControl(
@@ -80,6 +79,11 @@ EventControl::EventControl(
 		nullptr
 	);
 
+	for (auto& invocation : *event)
+	{
+		SendMessageA(this->window, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(std::format("Object ID: {}, Function ID: {}", invocation.ObjectID, invocation.FunctionID).c_str()));
+	}
+
 	_cx = 300;
 	_cy = 400;
 }
@@ -88,27 +92,39 @@ void EventControl::HandleClick(HWND clickedWindow)
 {
 	if(clickedWindow == _btnAddCall)
 	{
+		if (_findFunction) return;
+
 		std::thread openFnFinderWindow([this]()
 		{
+			_findFunction = true;
+
 			AddFunctionDialog dialog(this->window, this->instance, this->_list);
-			auto event = dialog.ShowDialog();
+			auto invocation = dialog.ShowDialog();
 
-			if (event.has_value())
+			if (invocation.has_value())
 			{
-				SendMessageA(this->window, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(std::format("Object ID: {}, Function ID: {}", event->OwnerObject, event->FunctionID).c_str()));
+				SendMessageA(
+					this->window, 
+					LB_ADDSTRING, 
+					0, 
+					reinterpret_cast<LPARAM>(std::format("Object ID: {}, Function ID: {}", invocation->OwnerObject, invocation->FunctionID).c_str())
+				);
 
-				auto obj = _list->operator[](event->OwnerObject);
+				auto obj = _list->operator[](invocation->OwnerObject);
 				auto refl = Engine3DRadSpace::Internal::GetReflDataFromUUID(obj->GetUUID());
 
-				for (auto& fnMember : *refl)
-				{
-					if (dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fnMember) != nullptr)
-					{
-						auto fn = fnMember->Clone().release();
-						this->_event->Bind(std::unique_ptr<Engine3DRadSpace::Reflection::IReflectedFunction>(dynamic_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fn)), event->OwnerObject, event->FunctionID);
-					}
-				}
+				auto fn = invocation->FindFunction(refl, invocation->FunctionID);
+
+				this->_event->Bind(
+					std::move(std::unique_ptr<Engine3DRadSpace::Reflection::IReflectedFunction>(
+						static_cast<Engine3DRadSpace::Reflection::IReflectedFunction*>(fn->Clone().release())
+					)),
+					invocation->OwnerObject,
+					invocation->FunctionID
+				);
 			}
+
+			_findFunction = false;
 		});
 		openFnFinderWindow.detach();
 	}

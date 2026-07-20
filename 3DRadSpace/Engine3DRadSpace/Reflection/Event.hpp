@@ -41,7 +41,7 @@ namespace Engine3DRadSpace::Reflection
 			/// <summary>
 			/// Initializes ObjectID and FunctionID to integer maximum values to represent this struct as invalid.
 			/// </summary>
-			MemberFunctionInvoker() = default;
+			MemberFunctionInvoker();
 			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType, size_t objID, size_t fnID);
 
 			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;

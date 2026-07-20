@@ -28,6 +28,6 @@ namespace Engine3DRadSpace::Projects
 
 		EventInvocationRepresentation();
 
-		static Reflection::IReflectedFunction* FindFunction(const Reflection::UUID& uuid, size_t idxFn);
+		static Reflection::IReflectedFunction* FindFunction(Reflection::ReflectedObject* reflObject, size_t idxFn);
 	};
 }
