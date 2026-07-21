@@ -3,30 +3,6 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 
-Event::MemberFunctionInvoker::MemberFunctionInvoker(
-	void* object, 
-	std::unique_ptr<IReflectedFunction> &&fn,
-	std::type_index returnType,
-	size_t objID,
-	size_t fnID
-) :
-	Object(object),
-	Fn(std::move(fn)),
-	ReturnType(returnType),
-	ObjectID(objID),
-	FunctionID(objID)
-{
-}
-
-Event::MemberFunctionInvoker::MemberFunctionInvoker(size_t objID, size_t fnID) :
-	Object(nullptr),
-	Fn(nullptr),
-	ReturnType(typeid(void)),
-	ObjectID(objID),
-	FunctionID(fnID)
-{
-}
-
 Event::Event() :
 	_empty(true)
 {
@@ -37,9 +13,16 @@ Event::Event(const Event& other) :
 {
 	for (const auto& fn : other._fns)
 	{
-		auto cloned = fn.Fn->Clone();
-		std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
-		_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		if (fn.Fn)
+		{
+			auto cloned = fn.Fn->Clone();
+			std::unique_ptr<IReflectedFunction> clonedFn(static_cast<IReflectedFunction*>(cloned.release()));
+			_fns.emplace_back(fn.Object, std::move(clonedFn), fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		}
+		else
+		{
+			_fns.emplace_back(fn.Object, nullptr, fn.ReturnType, fn.ObjectID, fn.FunctionID);
+		}
 	}
 }
 

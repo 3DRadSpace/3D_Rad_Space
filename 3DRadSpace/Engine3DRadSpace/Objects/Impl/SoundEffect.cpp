@@ -116,7 +116,7 @@ void SoundEffect::Load(const std::filesystem::path& path)
 {
 	auto game = static_cast<Game*>(_game);
 
-	_sound = game->Content->Load<class Sound>(*_path);
+	_sound = game->Content->Load<class Sound>(path);
 	if(_sound) _instance = std::make_unique<SoundInstance>(_sound);
 
 	SE_SETPARAM;
@@ -129,19 +129,20 @@ void SoundEffect::Update()
 void SoundEffect::Enable()
 {
 	IObject::Enable();
-	_instance->Play();
+	if(_instance) _instance->Play();
 }
 
 void SoundEffect::Disable()
 {
 	IObject::Disable();
-	_instance->Pause();
+	if(_instance) _instance->Pause();
 }
 
 bool SoundEffect::Switch()
 {
 	auto r = IObject::Switch();
-	_instance->GetState() == Audio::SoundState::Playing ? _instance->Pause() : _instance->Play();
+	if(_instance)
+		_instance->GetState() == Audio::SoundState::Playing ? _instance->Pause() : _instance->Play();
 	return r;
 }
 
@@ -195,7 +196,7 @@ REFL_FIELD(SoundEffect, bool, Enabled, "Play at start", true, "If playing when i
 REFL_FIELD(SoundEffect, RefSound, Sound, "Sound", 0, "Sound asset")
 REFL_FIELD_GS(SoundEffect, bool, ss_getlooping, ss_setlooping, "Looping", false, "Is the sound looping")
 REFL_FIELD_GS(SoundEffect, float, ss_getvolume, ss_setvolume, "Volume", 1.0f, "Volume (0-1 range)")
-REFL_FIELD_GS(SoundEffect, float, ss_getpitch, ss_setpitch, "Pitch", 0.5f, "Pitch (??-?? range), ?? default")
+REFL_FIELD_GS(SoundEffect, float, ss_getpitch, ss_setpitch, "Pitch", 1.0f, "Pitch (??-?? range), ?? default")
 REFL_METHOD(SoundEffect, void, &SoundEffect::Enable, "Play")
 REFL_METHOD(SoundEffect, void, &SoundEffect::Disable, "Pause")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SoundEffect.html")

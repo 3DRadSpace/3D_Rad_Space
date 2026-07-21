@@ -255,7 +255,7 @@ void SoundSource::Load()
 void SoundSource::Load(const std::filesystem::path &path)
 {
 	_underlying.Load(path);
-	//SS_SETPARAM;
+	//SS_SETPARAM
 }
 
 Objects::Gizmos::IGizmo *SoundSource::GetGizmo() const noexcept
@@ -309,7 +309,7 @@ REFL_FIELD(SoundSource, bool, Enabled, "Playing at start",true, "Playing at star
 REFL_FIELD_GS(SoundSource, RefSound, ss_getsoundasset, ss_setsoundasset, "Sound asset", 0, "Sound asset")
 REFL_FIELD(SoundSource, Vector3, Position, "Position", Vector3::Zero(), "Sound position")
 REFL_FIELD_GS(SoundSource, float, ss_getvolume, ss_setvolume, "Volume", 1.0f, "Sound gain")
-REFL_FIELD_GS(SoundSource, float, ss_getpitch, ss_setpitch, "Pitch", 0.5f, "Sound pitch")
+REFL_FIELD_GS(SoundSource, float, ss_getpitch, ss_setpitch, "Pitch", 1.0f, "Sound pitch")
 REFL_FIELD_GS(SoundSource, bool, ss_getlooping, ss_setlooping, "Is looping", true, "Is the sound looping?")
 REFL_METHOD(SoundSource, void, &SoundSource::Enable, "Play")
 REFL_METHOD(SoundSource, void, &SoundSource::Disable, "Pause")

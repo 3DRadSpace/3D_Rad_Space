@@ -648,6 +648,7 @@ void EditObjectDialog::setObject()
 		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int j = 0;
 		char text[256] = {0};
+		std::vector<Event*> placedEvents;
 
 		if(object == nullptr)
 			object = static_cast<IObject*>(objRefl->CreateBlankObject());
@@ -897,7 +898,7 @@ void EditObjectDialog::setObject()
 					auto eventCtrl = static_cast<EventControl*>(std::get<IControl*>(windows[i++]));
 					auto& event = eventCtrl->GetEvent();
 
-					new (newStruct.get() + j) Event(std::move(event));
+					placedEvents.push_back(new (newStruct.get() + j) Event(std::move(event)));
 					j += sizeof(Event);
 					break;
 				}
@@ -920,6 +921,9 @@ void EditObjectDialog::setObject()
 		}
 
 		field->Set(object, newStruct.get());
+
+		for (Event* e : placedEvents)
+			e->~Event();
 	}
 }
 

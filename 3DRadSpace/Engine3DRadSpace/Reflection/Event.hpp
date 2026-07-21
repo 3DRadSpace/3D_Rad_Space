@@ -41,9 +41,32 @@ namespace Engine3DRadSpace::Reflection
 			/// <summary>
 			/// Initializes ObjectID and FunctionID to integer maximum values to represent this struct as invalid.
 			/// </summary>
-			MemberFunctionInvoker();
-			MemberFunctionInvoker(void* object, std::unique_ptr<IReflectedFunction> &&fn, std::type_index returnType, size_t objID, size_t fnID);
-			MemberFunctionInvoker(size_t objID, size_t fnID);
+			MemberFunctionInvoker() :
+				Object(nullptr),
+				Fn(nullptr),
+				ReturnType(typeid(void)),
+				ObjectID(static_cast<size_t>(-1)),
+				FunctionID(static_cast<size_t>(-1))
+			{
+			}
+			MemberFunctionInvoker(
+				void* object,
+				std::unique_ptr<IReflectedFunction> &&fn,
+				std::type_index returnType,
+				size_t objID = static_cast<size_t>(-1),
+				size_t fnID = static_cast<size_t>(-1)
+			) :
+				Object(object),
+				Fn(std::move(fn)),
+				ReturnType(returnType),
+				ObjectID(objID),
+				FunctionID(fnID)
+			{
+			}
+			MemberFunctionInvoker(size_t objID, size_t fnID) :
+				MemberFunctionInvoker(nullptr, nullptr, typeid(void), objID, fnID)
+			{
+			}
 
 			MemberFunctionInvoker(MemberFunctionInvoker&& other) noexcept = default;
 			MemberFunctionInvoker& operator=(MemberFunctionInvoker&& other) noexcept = default;
@@ -78,7 +101,7 @@ namespace Engine3DRadSpace::Reflection
 		template<typename R, typename F, typename ...Args>
 		void Bind(F fn)
 		{
-			MemberFunctionInvoker invoker(nullptr, std::make_unique<ReflectedFunction<R, Args...>>(typeid(F).name(), fn), typeid(R));
+			MemberFunctionInvoker invoker(nullptr, std::make_unique<ReflectedFunction<R, Args...>>(typeid(F).name(), fn), typeid(R), -1, -1);
 			_fns.emplace_back(std::move(invoker));
 		}
 

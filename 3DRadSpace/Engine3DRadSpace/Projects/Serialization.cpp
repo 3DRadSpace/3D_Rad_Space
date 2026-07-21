@@ -37,8 +37,6 @@ static void validateEvents(IObject* obj, ObjectList* lst)
 {
 	auto refl = GetReflDataFromUUID(obj->GetUUID());
 
-	std::vector<std::pair<EventInvocationRepresentation, IReflectedFunction*>> invocations;
-
 	for (auto& field : *refl)
 	{
 		auto repr = field->Representation();
@@ -48,7 +46,9 @@ static void validateEvents(IObject* obj, ObjectList* lst)
 			if (reprType == FieldRepresentationType::Event)
 			{
 				auto event = std::launder<Event>(reinterpret_cast<Event*>(reinterpret_cast<std::byte*>(obj) + field->FieldOffset()));
-				
+
+				std::vector<std::pair<EventInvocationRepresentation, IReflectedFunction*>> invocations;
+
 				for (auto& binding : *event)
 				{
 					EventInvocationRepresentation invocRepr;
@@ -72,7 +72,6 @@ static void validateEvents(IObject* obj, ObjectList* lst)
 				}
 			}
 		}
-
 	}
 }
 
@@ -413,6 +412,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 			continue;
 
 		bool useDirectSet = (field->FieldOffset() == 0 && repr.Size() == 1);
+		std::vector<Event*> placedEvents;
 
 		for (int i = 0; auto & [reprType, sFieldName] : repr)
 		{
@@ -716,7 +716,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 						);
 					}
 
-					new (newStruct.get() + offset) Event(std::move(event));
+					placedEvents.push_back(new (newStruct.get() + offset) Event(std::move(event)));
 					offset += sizeof(Event);
 					break;
 				}
@@ -738,6 +738,9 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		}
 		if (!useDirectSet)
 			field->Set(r, newStruct.get());
+
+		for (Event* e : placedEvents)
+			e->~Event();
 	}
 
 	return static_cast<IObject*>(r);

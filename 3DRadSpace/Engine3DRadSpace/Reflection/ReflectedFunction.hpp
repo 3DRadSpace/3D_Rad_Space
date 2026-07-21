@@ -6,7 +6,7 @@ namespace Engine3DRadSpace::Reflection
 	/// <summary>
 	/// "Reflects" a non-member function.
 	/// </summary>
-	template<std::movable R, ReflectableType ...Args>
+	template<typename R, ReflectableType ...Args>
 	class ReflectedFunction final : public IReflectedFunction
 	{
 	public:
