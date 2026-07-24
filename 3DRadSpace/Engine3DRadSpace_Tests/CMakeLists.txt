@@ -40,15 +40,17 @@ option(3DRadSpace.Tests "Build unit tests" ON)
 find_package(GTest CONFIG REQUIRED)
 target_link_libraries(3DRadSpace.Tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 
-add_dependencies(3DRadSpace.Tests e3drsp_copy_assets)
+if(PROJECT_IS_TOP_LEVEL)
+	add_dependencies(3DRadSpace.Tests e3drsp_copy_assets)
 
-add_custom_target(e3drsp_copy_testing ALL
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_SOURCE_DIR}/Testing
-			${CMAKE_BINARY_DIR}/Testing
-)
+	add_custom_target(e3drsp_copy_testing ALL
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+				${CMAKE_SOURCE_DIR}/Testing
+				${CMAKE_BINARY_DIR}/Testing
+	)
 
-add_dependencies(3DRadSpace.Tests e3drsp_copy_testing)
+	add_dependencies(3DRadSpace.Tests e3drsp_copy_testing)
+endif()
 
 include(GoogleTest)
 gtest_discover_tests(3DRadSpace.Tests
