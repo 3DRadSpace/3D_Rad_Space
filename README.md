@@ -4,7 +4,7 @@
 
 ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?logo=cmake&logoColor=white)
 [![Github all releases](https://img.shields.io/github/downloads/3DRadSpace/3D_Rad_Space/total.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/releases/)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fb1763ca6663456f934c96ad109aefd8)](https://www.codacy.com/gh/NicusorN5/3D_Rad_Space/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=NicusorN5/3D_Rad_Space&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fb1763ca6663456f934c96ad109aefd8)](https://www.codacy.com/gh/3DRadSpace/3D_Rad_Space/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=3DRadSpace/3D_Rad_Space&amp;utm_campaign=Badge_Grade)
 [![Discord](https://img.shields.io/discord/319515587263070209.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/9BcQQyu)
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/3dradspace.github.io.svg)](http://3dradspace.github.io/)
 [![GitHub issues](https://img.shields.io/github/issues/3DRadSpace/3D_Rad_Space.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/issues/)
@@ -25,19 +25,19 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
     <tr>
         <td rowspan="4">Windows-x64</td>
         <td>C++ Build (CMake)</td>
-        <td align="center"><img src="https://github.com/NicusorN5/3D_Rad_Space/actions/workflows/cmake-windows-x64.yml/badge.svg" alt="Windows-x64"></td>
+        <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/cmake-windows-x64.yml/badge.svg" alt="Windows-x64"></td>
     </tr>
     <tr>
         <td>C++ Tests (GTest)</td>
-        <td align="center"><img src="https://github.com/NicusorN5/3D_Rad_Space/actions/workflows/cpp-test-windows-x64.yml/badge.svg" alt="C++-Tests"></td>
+        <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/cpp-test-windows-x64.yml/badge.svg" alt="C++-Tests"></td>
     </tr>
     <tr>
      <td>C# (MSBuild)</td>
-     <td align="center"><img src="https://github.com/NicusorN5/3D_Rad_Space/actions/workflows/msbuild.yml/badge.svg" alt="CSharp-Windows-x64"></td>
+     <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/msbuild.yml/badge.svg" alt="CSharp-Windows-x64"></td>
     </tr>
     <tr>
      <td>Visual Studio plugin</td>
-     <td align="center"><img src="https://github.com/NicusorN5/3D_Rad_Space/actions/workflows/vsplugin.yml/badge.svg" alt="Visual-Studio-Plugin"></td>
+     <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/vsplugin.yml/badge.svg" alt="Visual-Studio-Plugin"></td>
     </tr>
 </table>
 
