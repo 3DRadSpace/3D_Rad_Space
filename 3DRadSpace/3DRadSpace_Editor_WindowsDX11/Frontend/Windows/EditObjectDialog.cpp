@@ -105,6 +105,13 @@ EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObj
 	assert(data != nullptr);
 }
 
+static std::unordered_map<std::string, int> attribMap =
+{
+	{"HelpURL", 1},
+	{"Title", 2 },
+	{"CustomWindow", 3}
+};
+
 void EditObjectDialog::createForms()
 {
 	int x = 5;
@@ -126,13 +133,6 @@ void EditObjectDialog::createForms()
 		if(auto attribute = dynamic_cast<Attribute*>(field); attribute != nullptr)	
 		{
 			auto name = attribute->FieldName();
-
-			std::unordered_map<std::string, int> attribMap =
-			{
-				{"HelpURL", 1},
-				{"Title", 2 },
-				{"CustomWindow", 3}
-			};
 
 			switch (attribMap[name])
 			{

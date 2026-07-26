@@ -31,6 +31,12 @@ namespace Engine3DRadSpace::Scripting::CSharp
 			CSharpScript* object
 		);
 
+		CSharpScriptEditor(const CSharpScriptEditor&) = delete;
+		CSharpScriptEditor& operator=(const CSharpScriptEditor&) = delete;
+
+		CSharpScriptEditor(CSharpScriptEditor&&) = delete;
+		CSharpScriptEditor& operator=(CSharpScriptEditor&&) = delete;
+
 		CSharpScript* ShowDialog();
 
 		friend INT_PTR CALLBACK ::CSharpEditorDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);

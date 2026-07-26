@@ -53,7 +53,7 @@ int WinMain(
 int main(int argc, char** argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	
-	WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWDEFAULT);
+	//WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWDEFAULT);
 
 	return RUN_ALL_TESTS();
 }

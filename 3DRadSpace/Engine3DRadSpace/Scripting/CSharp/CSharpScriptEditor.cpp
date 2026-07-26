@@ -1,7 +1,13 @@
 #include "CSharpScriptEditor.hpp"
 #include "../../Logging/Warning.hpp"
+#include <scintilla/Scintilla.h>
+#include <scintilla/ILexer.h>
+#include <lexilla/SciLexer.h>
+#include <lexilla/Lexilla.h>
 
 using namespace Engine3DRadSpace::Scripting::CSharp;
+
+static Scintilla::ILexer5* cpplexer = nullptr;
 
 INT_PTR CALLBACK CSharpEditorDlgProc(
 	HWND hwndDlg,
@@ -92,10 +98,11 @@ CSharpScriptEditor::CSharpScriptEditor(
 	_wasAllocated(false)
 {
 	static bool wasScintillaModuleLoaded = false;
+	static bool wasLexillaModuleLoaded = false;
 
 	if (!wasScintillaModuleLoaded)
 	{
-		auto scintillaModule = LoadLibrary("Scintilla.dll");
+		auto scintillaModule = LoadLibraryA("Scintilla.dll");
 		if (scintillaModule == NULL)
 		{
 			WNDCLASSA scintillaClass{};
@@ -109,6 +116,25 @@ CSharpScriptEditor::CSharpScriptEditor(
 		}
 
 		wasScintillaModuleLoaded = true;
+	}
+
+	if (!wasLexillaModuleLoaded && !cpplexer)
+	{
+		wasLexillaModuleLoaded = true;
+
+		auto lexillaModule = LoadLibraryA("Lexilla.dll");
+		if (lexillaModule == nullptr)
+		{
+			Logging::SetLastWarning("Lexilla wasn't loaded, syntax highlighting will not work.");
+		}
+
+		Lexilla::CreateLexerFn createLexer = reinterpret_cast<Lexilla::CreateLexerFn>(GetProcAddress(lexillaModule, "CreateLexer"));
+		if (createLexer == nullptr)
+		{
+			Logging::SetLastWarning("Lexilla CreateLexer function not found, syntax highlighting will not work.");
+		}
+
+		cpplexer = createLexer("cpp");
 	}
 
 	if (object == nullptr)
@@ -133,6 +159,53 @@ void CSharpScriptEditor::initForms()
 
 	HWND classNameTextbox = GetDlgItem(_window, IDC_EDIT2);
 	SetWindowTextA(classNameTextbox, _script->Class.c_str());
+
+	HWND scintilla = GetDlgItem(_window, IDC_CUSTOM1);
+	if (!scintilla)
+	{
+
+	}
+
+	SendMessageA(scintilla, SCI_SETILEXER, 0, reinterpret_cast<LPARAM>(cpplexer));
+
+	// Reset and clear styles
+	SendMessageA(scintilla, SCI_STYLERESETDEFAULT, 0, 0);
+	SendMessageA(scintilla, SCI_STYLECLEARALL, 0, 0);
+
+	// Set default font and size
+	SendMessageA(scintilla, SCI_STYLESETFONT, SCE_C_DEFAULT, reinterpret_cast<LPARAM>("Consolas"));
+	SendMessageA(scintilla, SCI_STYLESETSIZE, SCE_C_DEFAULT, 10);
+
+	// Configure the CPP (C#) lexer styles
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_DEFAULT, RGB(192, 192, 192)); // Silver
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENT, RGB(0, 128, 0)); // Green
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENTLINE, RGB(0, 128, 0)); // Green
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENTDOC, RGB(128, 128, 128)); // Gray
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_NUMBER, RGB(128, 128, 0)); // Olive
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_WORD, RGB(0, 0, 255)); // Blue
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_WORD2, RGB(0, 0, 255)); // Blue
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_STRING, RGB(163, 21, 21)); // Red
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_CHARACTER, RGB(163, 21, 21)); // Red
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_VERBATIM, RGB(163, 21, 21)); // Red
+	SendMessageA(scintilla, SCI_STYLESETBACK, SCE_C_STRINGEOL, RGB(255, 192, 203)); // Pink
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_OPERATOR, RGB(128, 0, 128)); // Purple
+	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_PREPROCESSOR, RGB(128, 0, 0)); // Maroon
+
+	SendMessageA(scintilla, SCI_SETKEYWORDS, 0, reinterpret_cast<WPARAM>(
+		"abstract as base break case catch checked continue default delegate do else event explicit extern false finally "
+		"fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override "
+		"params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof "
+		" unchecked unsafe using virtual while"
+	));
+
+	SendMessageA(scintilla, SCI_SETKEYWORDS, 1, reinterpret_cast<WPARAM>(
+		"bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void"
+		));
+
+	SendMessageA(scintilla, SCI_SETKEYWORDS, 2, reinterpret_cast<WPARAM>(
+		"add alias ascending async await by descending dynamic equals from get global group into join let nameof on orderby partial "
+		"remove select set value var when where yield"
+	));
 }
 
 CSharpScript* CSharpScriptEditor::ShowDialog()

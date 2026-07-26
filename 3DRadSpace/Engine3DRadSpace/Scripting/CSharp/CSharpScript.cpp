@@ -79,6 +79,6 @@ REFL_BEGIN(CSharpScript, "C# Script", "Scripting", "C# script")
 REFL_FIELD(CSharpScript, std::string, Name, "Name", "C# Script", "Name of the script object")
 REFL_FIELD(CSharpScript, bool, Enabled, "Enabled", true, "Whether the script is enabled or not")
 REFL_FIELD(CSharpScript, std::string, ScriptPath, "Script path", "", "Path to script file")
-REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Path to script file")
+REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Name of the class being constructed")
 REFL_ATTR("CustomWindow", "CreateCSharpEditorWindow")
 REFL_END
