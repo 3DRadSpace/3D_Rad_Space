@@ -1,4 +1,5 @@
 #include "CallbackEvent.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace::Reflection;
 
@@ -20,7 +21,7 @@ Any CallbackEvent::operator()(std::vector<Any> &args)
 	}
 	else
 	{
-		throw std::runtime_error("Callback not bound.");
+		throw Logging::Exception("Callback not bound.");
 	}
 }
 

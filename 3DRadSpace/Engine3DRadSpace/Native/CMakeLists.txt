@@ -29,5 +29,6 @@ if(MSVC)
 endif()
 
 target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Math)
+target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Logging)
 target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Input)
 target_include_directories(3DRadSpace.Native PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

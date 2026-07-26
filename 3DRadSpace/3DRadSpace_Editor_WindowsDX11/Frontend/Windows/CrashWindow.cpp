@@ -42,11 +42,10 @@ CrashWindow::CrashWindow(HWND owner, HINSTANCE hInstance, const std::exception& 
 	_exceptionMessage(std::format("An exception of type {} was thrown\r\nException message:{}\r\nStacktrace:\r\n\r\n",
 		typeid(e).name(), e.what()))
 {
-	//std::stacktrace::from_current_exception would be needed...
 	for (auto& line : stacktrace)
 	{
-		//_exceptionMessage += std::to_string(line);
-		//_exceptionMessage += "\r\n";
+		_exceptionMessage += std::to_string(line);
+		_exceptionMessage += "\r\n";
 	}
 }
 
@@ -68,7 +67,7 @@ void CrashWindow::_createControls()
 		WS_EX_CLIENTEDGE,
 		"Edit",
 		_exceptionMessage.c_str(),
-		WS_VISIBLE | WS_CHILD | WS_VSCROLL | ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | ES_AUTOHSCROLL,
+		WS_VISIBLE | WS_CHILD | WS_VSCROLL | ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_HSCROLL,
 		10, 35, 390, 110,
 		window,
 		nullptr,

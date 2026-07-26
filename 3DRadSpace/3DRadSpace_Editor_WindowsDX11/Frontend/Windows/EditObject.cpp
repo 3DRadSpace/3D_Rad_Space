@@ -2,6 +2,7 @@
 #include "..\..\resource.h"
 #include <CommCtrl.h>
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
+#include <Engine3DRadSpace/Logging/Exception.hpp>
 #include <psapi.h>
 
 using namespace Engine3DRadSpace;
@@ -57,7 +58,7 @@ void* EditObject(HWND hwnd, HINSTANCE hInstance, void* pRefl, void* pContent, vo
 
 		auto r = EnumProcessModules(GetCurrentProcess(), modules.data(), neededSize, &neededSize);
 
-		if (!r) throw std::runtime_error("Failed to enumerate process modules!");
+		if (!r) throw Logging::Exception("Failed to enumerate process modules!");
 
 		for (auto module : modules)
 		{
@@ -71,5 +72,5 @@ void* EditObject(HWND hwnd, HINSTANCE hInstance, void* pRefl, void* pContent, vo
 		}
 	}
 
-	throw std::runtime_error("Custom window procedure not found: " + customWindowFnName);
+	throw Logging::Exception("Custom window procedure not found: " + customWindowFnName);
 }	

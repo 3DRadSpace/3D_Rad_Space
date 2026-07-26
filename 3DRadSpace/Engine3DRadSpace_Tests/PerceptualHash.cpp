@@ -6,6 +6,7 @@
 #include <directxtk/WICTextureLoader.h>
 #include <wincodec.h>
 #include <cmath>
+#include <Engine3DRadSpace/Logging/Exception.hpp>
 
 using Microsoft::WRL::ComPtr;
 
@@ -44,7 +45,7 @@ namespace Engine3DRadSpace::Testing
 			CLSCTX_INPROC_SERVER,
 			IID_PPV_ARGS(&wicFactory)
 		);
-		if (FAILED(hr)) throw std::runtime_error("Failed to create WIC factory");
+		if (FAILED(hr)) throw Logging::Exception("Failed to create WIC factory");
 
 		// Load the image
 		ComPtr<IWICBitmapDecoder> decoder;
@@ -55,16 +56,16 @@ namespace Engine3DRadSpace::Testing
 			WICDecodeMetadataCacheOnDemand,
 			&decoder
 		);
-		if (FAILED(hr)) throw std::runtime_error("Failed to load image: " + imagePath.string());
+		if (FAILED(hr)) throw Logging::Exception("Failed to load image: " + imagePath.string());
 
 		ComPtr<IWICBitmapFrameDecode> frame;
 		hr = decoder->GetFrame(0, &frame);
-		if (FAILED(hr)) throw std::runtime_error("Failed to get image frame");
+		if (FAILED(hr)) throw Logging::Exception("Failed to get image frame");
 
 		// Convert to RGBA format
 		ComPtr<IWICFormatConverter> converter;
 		hr = wicFactory->CreateFormatConverter(&converter);
-		if (FAILED(hr)) throw std::runtime_error("Failed to create format converter");
+		if (FAILED(hr)) throw Logging::Exception("Failed to create format converter");
 
 		hr = converter->Initialize(
 			frame.Get(),
@@ -74,12 +75,12 @@ namespace Engine3DRadSpace::Testing
 			0.0,
 			WICBitmapPaletteTypeCustom
 		);
-		if (FAILED(hr)) throw std::runtime_error("Failed to initialize format converter");
+		if (FAILED(hr)) throw Logging::Exception("Failed to initialize format converter");
 
 		// Get original dimensions
 		UINT srcWidth, srcHeight;
 		hr = converter->GetSize(&srcWidth, &srcHeight);
-		if (FAILED(hr)) throw std::runtime_error("Failed to get image size");
+		if (FAILED(hr)) throw Logging::Exception("Failed to get image size");
 
 		// Read original image data
 		size_t srcRowPitch = srcWidth * 4; // 4 bytes per pixel (RGBA)
@@ -92,7 +93,7 @@ namespace Engine3DRadSpace::Testing
 			static_cast<UINT>(srcImageSize),
 			srcPixels.get()
 		);
-		if (FAILED(hr)) throw std::runtime_error("Failed to copy pixels");
+		if (FAILED(hr)) throw Logging::Exception("Failed to copy pixels");
 
 		// Resize to target dimensions
 		size_t dstRowPitch = targetWidth * 4;
@@ -157,7 +158,7 @@ namespace Engine3DRadSpace::Testing
 		// dHash algorithm: compare adjacent pixels in each row
 		// Image should be 9x8 pixels (9 wide for 8 comparisons per row)
 		if (resizedImage.width != 9 || resizedImage.height != 8)
-			throw std::runtime_error("Image must be 9x8 for dHash computation");
+			throw Logging::Exception("Image must be 9x8 for dHash computation");
 
 		Hash hash = 0;
 		const uint8_t* pixels = resizedImage.pixels.get();

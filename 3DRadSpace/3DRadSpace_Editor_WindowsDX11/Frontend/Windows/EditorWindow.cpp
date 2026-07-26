@@ -1098,7 +1098,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 						if(listBox_check_selectedItem() == nullptr) return 0;
 
 						HMENU objectMenu = CreatePopupMenu();
-						if(objectMenu == nullptr) throw std::exception("Failed to create a popup menu!");
+						if(objectMenu == nullptr) throw Logging::Exception("Failed to create a popup menu!");
 						
 						AppendMenuA(objectMenu, MF_STRING, CMD_AddChildObject, "Add child object");
 						AppendMenuA(objectMenu, MF_STRING, CMD_EditObject, "Edit object");
@@ -1109,7 +1109,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 						GetCursorPos(&mousePos);
 
 						BOOL r = TrackPopupMenu(objectMenu, TPM_LEFTALIGN, mousePos.x, mousePos.y, 0, gEditorWindow->_mainWindow, nullptr);
-						if(!r) throw std::exception("Failed to open a popup menu!");
+						if(!r) throw Logging::Exception("Failed to open a popup menu!");
 
 						return 1;
 					}

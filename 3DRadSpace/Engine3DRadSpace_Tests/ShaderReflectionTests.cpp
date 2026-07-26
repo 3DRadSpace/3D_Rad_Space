@@ -2,6 +2,7 @@
 #include <Engine3DRadSpace/Games/Game.hpp>
 #include <Engine3DRadSpace/Graphics/IGraphicsDevice.hpp>
 #include <Engine3DRadSpace/Graphics/IShaderCompiler.hpp>
+#include <Engine3DRadSpace/Logging/Exception.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -28,7 +29,7 @@ public:
 
 		_effect = Device->ShaderCompiler()->CompileEffect(shaderOne).first; //If failed, should throw an exception
 
-		if (_effect == nullptr) throw std::exception(); //Or this...
+		if (_effect == nullptr) throw Logging::Exception("Failed to compile the effect."); //Or this...
 	}
 
 	Effect* Get()
