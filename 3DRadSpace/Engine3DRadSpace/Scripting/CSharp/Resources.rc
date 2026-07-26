@@ -1,0 +1,118 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+#include <Windows.h>
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ID_CSHARPDIALOG DIALOGEX 0, 0, 527, 277
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_ACCEPTFILES
+CAPTION "C# Script object"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,11,155,94,14
+    PUSHBUTTON      "Cancel",IDCANCEL,11,174,93,14
+    GROUPBOX        "Common settings",IDC_STATIC,5,6,110,46
+    LTEXT           "Name",IDC_STATIC,14,18,19,8
+    EDITTEXT        IDC_EDIT1,36,18,72,14,ES_AUTOHSCROLL
+    CONTROL         "Enabled?",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,35,45,10
+    GROUPBOX        "Script",IDC_STATIC,8,57,108,75
+    LTEXT           "Class name",IDC_STATIC,11,66,37,8
+    EDITTEXT        IDC_EDIT2,12,76,91,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Check for errors",IDC_BUTTON1,11,94,92,14
+    PUSHBUTTON      "Load",IDC_BUTTON2,13,110,40,14
+    PUSHBUTTON      "Save",IDC_BUTTON3,62,111,40,14
+    PUSHBUTTON      "Help",IDC_BUTTON4,9,137,95,14
+    CONTROL         " ", IDC_CUSTOM1, "Scintilla", WS_CLIPCHILDREN | WS_TABSTOP, 119, 6, 401, 264
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    ID_CSHARPDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 520
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 270
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+ID_CSHARPDIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "OBJ_Script.ico"
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

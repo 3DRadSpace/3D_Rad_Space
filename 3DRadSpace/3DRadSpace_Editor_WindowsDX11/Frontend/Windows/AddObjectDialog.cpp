@@ -2,6 +2,9 @@
 #include "..\..\resource.h"
 #include <CommCtrl.h>
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
+#include <psapi.h>
+#include <Engine3DRadSpace/Plugins/CustomObject.hpp>
+#include "EditObject.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -51,8 +54,8 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(item->iItem >= 0)
 					{
-						EditObjectDialog dialog(hwnd, aod->hInstance, e3drsp_internal_objects_list[item->iItem], aod->_content);
-						EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
+						auto obj = EditObject(hwnd, aod->hInstance, e3drsp_internal_objects_list[item->iItem], aod->_content);
+						EndDialog(hwnd, reinterpret_cast<INT_PTR>(obj));
 					}
 					break;
 				}

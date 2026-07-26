@@ -964,16 +964,13 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					{
 						IObject *obj = gEditorWindow->editor->Objects->operator[](objID.second.value());
 
-						EditObjectDialog eod(
-							gEditorWindow->_mainWindow,
+						//update the list view.
+						IObject* new_obj = static_cast<IObject*>(EditObject(gEditorWindow->_mainWindow,
 							gEditorWindow->_hInstance,
 							Internal::GetReflDataFromUUID(obj->GetUUID()),
 							gEditorWindow->GetContentManager(),
 							obj
-						);
-
-						//update the list view.
-						auto new_obj = eod.ShowDialog();
+						));
 						if(new_obj != reinterpret_cast<void *>(IDCANCEL) && new_obj != nullptr)
 						{
 							TVITEMA item{};

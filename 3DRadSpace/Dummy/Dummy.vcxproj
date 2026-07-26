@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D87F5240-7A4A-FB1F-F513-330B76252C7E}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <EnableASAN>true</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Include; %(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Debug; %(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>3DRadSpace.Core.lib;3DRadSpace.Math.lib;3DRadSpace.Audio.lib;3DRadSpace.Content.lib;3DRadSpace.Content.Assets.lib;3DRadSpace.Games.lib;3DRadSpace.Graphics.lib;3DRadSpace.Graphics.DirectX11.lib;3DRadSpace.Graphics.Null.lib;3DRadSpace.Graphics.Primitives.lib;3DRadSpace.Graphics.Rendering.lib;3DRadSpace.Input.lib;3DRadSpace.Logging.lib;3DRadSpace.Native.lib;3DRadSpace.Objects.lib;3DRadSpace.Objects.Impl.lib;3DRadSpace.Physics.lib;3DRadSpace.Physics.NVPhysX.lib;3DRadSpace.Physics.Objects.lib;3DRadSpace.Projects.lib;3DRadSpace.Reflection.lib;3DRadSpace.Scripting.lib; %(AdditionalDependencies) </AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Debug\*.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Include\; %(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>3DRadSpace.Core.lib;3DRadSpace.Math.lib;3DRadSpace.Audio.lib;3DRadSpace.Content.lib;3DRadSpace.Content.Assets.lib;3DRadSpace.Games.lib;3DRadSpace.Graphics.lib;3DRadSpace.Graphics.DirectX11.lib;3DRadSpace.Graphics.Null.lib;3DRadSpace.Graphics.Primitives.lib;3DRadSpace.Graphics.Rendering.lib;3DRadSpace.Input.lib;3DRadSpace.Logging.lib;3DRadSpace.Native.lib;3DRadSpace.Objects.lib;3DRadSpace.Objects.Impl.lib;3DRadSpace.Physics.lib;3DRadSpace.Physics.NVPhysX.lib;3DRadSpace.Physics.Objects.lib;3DRadSpace.Projects.lib;3DRadSpace.Reflection.lib;3DRadSpace.Scripting.lib; %(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Release; %(AdditionalLibraryDirectories) </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Release\*.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\3DRadSpace_Compiler\3DRadSpace_Compiler.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="..\3DRadSpace_Editor_WindowsDX11\3DRadSpace_Editor_WindowsDX11.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="..\Engine3DRadSpace\Scripting\CSharp\Resources.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Engine3DRadSpace\Scripting\CSharp\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Engine3DRadSpace\Scripting\CSharp\OBJ_Script.ico" />
+    <Image Include="OBJ_Script.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
+</Project>

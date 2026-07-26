@@ -5,10 +5,14 @@ project("Engine3DRadSpace.Scripting.CSharp")
 add_library(3DRadSpace.Scripting.CSharp SHARED 
 	"CSharpScript.hpp"
 	"CSharpScript.cpp"	
+	"CSharpScriptEditor.hpp"
+	"CSharpScriptEditor.cpp"
 	"Main.cpp"
 	"NETCOREHost.hpp"
 	"NETCOREHost.cpp"
 )
+
+target_sources(3DRadSpace.Scripting.CSharp PRIVATE "Resources.rc")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 3DRadSpace.Scripting.CSharp PROPERTY CXX_STANDARD 23)
