@@ -27,29 +27,31 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Include; %(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Debug; %(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>3DRadSpace.Core.lib;3DRadSpace.Math.lib;3DRadSpace.Audio.lib;3DRadSpace.Content.lib;3DRadSpace.Content.Assets.lib;3DRadSpace.Games.lib;3DRadSpace.Graphics.lib;3DRadSpace.Graphics.DirectX11.lib;3DRadSpace.Graphics.Null.lib;3DRadSpace.Graphics.Primitives.lib;3DRadSpace.Graphics.Rendering.lib;3DRadSpace.Input.lib;3DRadSpace.Logging.lib;3DRadSpace.Native.lib;3DRadSpace.Objects.lib;3DRadSpace.Objects.Impl.lib;3DRadSpace.Physics.lib;3DRadSpace.Physics.NVPhysX.lib;3DRadSpace.Physics.Objects.lib;3DRadSpace.Projects.lib;3DRadSpace.Reflection.lib;3DRadSpace.Scripting.lib; %(AdditionalDependencies) </AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Debug\*.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Include\; %(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>3DRadSpace.Core.lib;3DRadSpace.Math.lib;3DRadSpace.Audio.lib;3DRadSpace.Content.lib;3DRadSpace.Content.Assets.lib;3DRadSpace.Games.lib;3DRadSpace.Graphics.lib;3DRadSpace.Graphics.DirectX11.lib;3DRadSpace.Graphics.Null.lib;3DRadSpace.Graphics.Primitives.lib;3DRadSpace.Graphics.Rendering.lib;3DRadSpace.Input.lib;3DRadSpace.Logging.lib;3DRadSpace.Native.lib;3DRadSpace.Objects.lib;3DRadSpace.Objects.Impl.lib;3DRadSpace.Physics.lib;3DRadSpace.Physics.NVPhysX.lib;3DRadSpace.Physics.Objects.lib;3DRadSpace.Projects.lib;3DRadSpace.Reflection.lib;3DRadSpace.Scripting.lib; %(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Release; %(AdditionalLibraryDirectories) </AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "D:\Projects\3D_Rad_Space\3DRadSpace\out\build\x64-Release\Bin\Windows-x64\Release\*.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />

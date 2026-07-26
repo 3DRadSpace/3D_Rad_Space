@@ -6,6 +6,7 @@
 #include "../../Logging/Exception.hpp"
 #include "../../Plugins/EditorPlugin.hpp"
 #include "../../Native/LibraryLoader.hpp"
+#include <scintilla/ILexer.h>
 
 //https://github.com/dotnet/samples/blob/main/core/hosting/src/NativeHost/nativehost.cpp
 
@@ -130,8 +131,15 @@ bool PluginMain()
 	return true;
 }
 
+extern Scintilla::ILexer5* cpplexer;
+
 bool PluginUnload()
 {
+	if (cpplexer != nullptr)
+	{
+		cpplexer->Release();
+		cpplexer = nullptr;
+	}
 	return true;
 }
 

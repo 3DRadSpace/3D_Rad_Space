@@ -22,11 +22,21 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		HWND _owner;
 		CSharpScript* _script;
 		bool _wasAllocated;
+		bool _wasScintillaModuleLoaded;
+		bool _wasLexillaModuleLoaded;
 		int _maxLineNumberCharLength;
+		HWND _codeControl;
 
 		void initForms();
 		void handleCharAdded(HWND scintilla, int ch);
 		void handleTextChanged(HWND scintilla);
+
+		void load(const std::filesystem::path& path);
+		void save(const std::filesystem::path& path);
+
+		std::filesystem::path saveFileDialog();
+		std::filesystem::path openFileDialog();
+		void openFile();
 	public:
 		CSharpScriptEditor(
 			HWND dlgOwner, 

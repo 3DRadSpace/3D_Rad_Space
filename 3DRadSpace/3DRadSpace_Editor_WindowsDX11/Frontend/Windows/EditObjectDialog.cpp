@@ -134,7 +134,7 @@ void EditObjectDialog::createForms()
 		{
 			auto name = attribute->FieldName();
 
-			switch (attribMap[name])
+			switch (attribMap.find(name) != attribMap.end() ? attribMap[name] : 0)
 			{
 			case 1:
 				_helpUrl = attribute->FieldDesc();

@@ -57,7 +57,7 @@ void* EditObject(HWND hwnd, HINSTANCE hInstance, void* pRefl, void* pContent, vo
 
 		auto r = EnumProcessModules(GetCurrentProcess(), modules.data(), neededSize, &neededSize);
 
-		if (!r) throw std::exception("Failed to enumerate process modules!");
+		if (!r) throw std::runtime_error("Failed to enumerate process modules!");
 
 		for (auto module : modules)
 		{

@@ -8,7 +8,7 @@
 
 using namespace Engine3DRadSpace::Scripting::CSharp;
 
-static Scintilla::ILexer5* cpplexer = nullptr;
+Scintilla::ILexer5* cpplexer = nullptr;
 
 INT_PTR CALLBACK CSharpEditorDlgProc(
 	HWND hwndDlg,
@@ -89,6 +89,13 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 				editor->_script = nullptr;
 			}
 			return TRUE;
+		case IDC_BUTTON2:
+			editor->openFile();
+			break;
+		case IDC_BUTTON3:
+			editor->_script->ScriptPath = editor->saveFileDialog().string();
+			editor->save(editor->_script->ScriptPath);
+			break;
 		case IDC_BUTTON4:
 			ShellExecuteA(nullptr, "open", "https://3dradspace.github.io/docs/scripting/csharp.html", nullptr, nullptr, SW_SHOWNORMAL);
 			break;
@@ -123,32 +130,28 @@ CSharpScriptEditor::CSharpScriptEditor(
 	_owner(dlgOwner),
 	_script(object),
 	_wasAllocated(false),
-	_maxLineNumberCharLength(0)
+	_wasScintillaModuleLoaded(false),
+	_wasLexillaModuleLoaded(false),
+	_maxLineNumberCharLength(0),
+	_codeControl(nullptr)
 {
-	static bool wasScintillaModuleLoaded = false;
-	static bool wasLexillaModuleLoaded = false;
+	_wasScintillaModuleLoaded = false;
+	_wasLexillaModuleLoaded = false;
 
-	if (!wasScintillaModuleLoaded)
+	if (!_wasScintillaModuleLoaded)
 	{
 		auto scintillaModule = LoadLibraryA("Scintilla.dll");
 		if (scintillaModule == NULL)
 		{
-			WNDCLASSA scintillaClass{};
-			scintillaClass.lpszClassName = "Scintilla";
-			scintillaClass.lpfnWndProc = DefWindowProcA;
-			scintillaClass.hInstance = _hInstance;
-
-			RegisterClassA(&scintillaClass);
-
 			Logging::SetLastWarning("Scintilla wasn't loaded, using an EDIT control.");
 		}
 
-		wasScintillaModuleLoaded = true;
+		_wasScintillaModuleLoaded = true;
 	}
 
-	if (!wasLexillaModuleLoaded && !cpplexer)
+	if (!_wasLexillaModuleLoaded && !cpplexer)
 	{
-		wasLexillaModuleLoaded = true;
+		_wasLexillaModuleLoaded = true;
 
 		auto lexillaModule = LoadLibraryA("Lexilla.dll");
 		if (lexillaModule == nullptr)
@@ -163,6 +166,11 @@ CSharpScriptEditor::CSharpScriptEditor(
 		}
 
 		cpplexer = createLexer("cpp");
+
+		if (cpplexer == nullptr)
+		{
+			Logging::SetLastWarning("Failed to create C++ lexer, syntax highlighting will not work.");
+		}
 	}
 
 	if (object == nullptr)
@@ -183,52 +191,70 @@ void CSharpScriptEditor::initForms()
 	HWND classNameTextbox = GetDlgItem(_window, IDC_EDIT2);
 	SetWindowTextA(classNameTextbox, _script->Class.c_str());
 
-	HWND scintilla = GetDlgItem(_window, IDC_CUSTOM1);
-	if (!scintilla)
+	_codeControl = GetDlgItem(_window, IDC_CUSTOM1);
+	if (!_codeControl || !_wasScintillaModuleLoaded)
 	{
+		_codeControl = CreateWindowExA(0, "Edit", "", WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN, 10, 100, 400, 200, _window, nullptr, _hInstance, nullptr);
 
+		return;
 	}
 
-	SendMessageA(scintilla, SCI_SETILEXER, 0, reinterpret_cast<LPARAM>(cpplexer));
+	if (_wasLexillaModuleLoaded && cpplexer)
+	{
+		SendMessageA(_codeControl, SCI_SETILEXER, 0, reinterpret_cast<LPARAM>(cpplexer));
+		// Scintilla takes ownership after SCI_SETILEXER and will call Release() itself.
+		// Clear the pointer so PluginUnload does not double-release the object.
+		cpplexer = nullptr;
+	}
 
 	// Reset and clear styles
-	SendMessageA(scintilla, SCI_STYLERESETDEFAULT, 0, 0);
-	SendMessageA(scintilla, SCI_STYLECLEARALL, 0, 0);
+	SendMessageA(_codeControl, SCI_STYLERESETDEFAULT, 0, 0);
+	SendMessageA(_codeControl, SCI_STYLECLEARALL, 0, 0);
 
 	// Set default font and size
-	SendMessageA(scintilla, SCI_STYLESETFONT, SCE_C_DEFAULT, reinterpret_cast<LPARAM>("Consolas"));
-	SendMessageA(scintilla, SCI_STYLESETSIZE, SCE_C_DEFAULT, 10);
+	SendMessageA(_codeControl, SCI_STYLESETFONT, SCE_C_DEFAULT, reinterpret_cast<LPARAM>("Consolas"));
+	SendMessageA(_codeControl, SCI_STYLESETSIZE, SCE_C_DEFAULT, 10);
 
 	// Configure the CPP (C#) lexer styles
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_DEFAULT, RGB(192, 192, 192)); // Silver
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENT, RGB(0, 128, 0)); // Green
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENTLINE, RGB(0, 128, 0)); // Green
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_COMMENTDOC, RGB(128, 128, 128)); // Gray
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_NUMBER, RGB(128, 128, 0)); // Olive
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_WORD, RGB(0, 0, 255)); // Blue
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_WORD2, RGB(0, 0, 255)); // Blue
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_STRING, RGB(163, 21, 21)); // Red
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_CHARACTER, RGB(163, 21, 21)); // Red
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_VERBATIM, RGB(163, 21, 21)); // Red
-	SendMessageA(scintilla, SCI_STYLESETBACK, SCE_C_STRINGEOL, RGB(255, 192, 203)); // Pink
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_OPERATOR, RGB(128, 0, 128)); // Purple
-	SendMessageA(scintilla, SCI_STYLESETFORE, SCE_C_PREPROCESSOR, RGB(128, 0, 0)); // Maroon
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_DEFAULT, RGB(192, 192, 192)); // Silver
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_COMMENT, RGB(0, 128, 0)); // Green
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_COMMENTLINE, RGB(0, 128, 0)); // Green
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_COMMENTDOC, RGB(128, 128, 128)); // Gray
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_NUMBER, RGB(128, 128, 0)); // Olive
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_WORD, RGB(0, 0, 255)); // Blue
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_WORD2, RGB(0, 0, 255)); // Blue
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_STRING, RGB(163, 21, 21)); // Red
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_CHARACTER, RGB(163, 21, 21)); // Red
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_VERBATIM, RGB(163, 21, 21)); // Red
+	SendMessageA(_codeControl, SCI_STYLESETBACK, SCE_C_STRINGEOL, RGB(255, 192, 203)); // Pink
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_OPERATOR, RGB(128, 0, 128)); // Purple
+	SendMessageA(_codeControl, SCI_STYLESETFORE, SCE_C_PREPROCESSOR, RGB(128, 0, 0)); // Maroon
 
-	SendMessageA(scintilla, SCI_SETKEYWORDS, 0, reinterpret_cast<WPARAM>(
+	SendMessageA(_codeControl, SCI_SETKEYWORDS, 0, reinterpret_cast<WPARAM>(
 		"abstract as base break case catch checked continue default delegate do else event explicit extern false finally "
 		"fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override "
 		"params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof "
 		" unchecked unsafe using virtual while"
-	));
+		));
 
-	SendMessageA(scintilla, SCI_SETKEYWORDS, 1, reinterpret_cast<WPARAM>(
+	SendMessageA(_codeControl, SCI_SETKEYWORDS, 1, reinterpret_cast<WPARAM>(
 		"bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void"
 		));
 
-	SendMessageA(scintilla, SCI_SETKEYWORDS, 2, reinterpret_cast<WPARAM>(
+	SendMessageA(_codeControl, SCI_SETKEYWORDS, 2, reinterpret_cast<WPARAM>(
 		"add alias ascending async await by descending dynamic equals from get global group into join let nameof on orderby partial "
 		"remove select set value var when where yield"
-	));
+		));
+
+	if (std::filesystem::exists(_script->ScriptPath))
+	{
+		std::ifstream file(_script->ScriptPath);
+		if (file.is_open())
+		{
+			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
+		}
+	}
 }
 
 void CSharpScriptEditor::handleCharAdded(HWND scintilla, int ch)
@@ -302,7 +328,77 @@ CSharpScript* CSharpScriptEditor::ShowDialog()
 	);
 	if (dlg == IDOK)
 	{
+		if (_script->ScriptPath.empty())
+		{
+			auto path = saveFileDialog().string();
+			if (!path.empty())
+			{
+				_script->ScriptPath = path;
+				save(path);
+			}
+			else return nullptr;
+		}
 		return _script;
 	}
 	return nullptr;
+}
+
+std::filesystem::path CSharpScriptEditor::saveFileDialog()
+{
+	OPENFILENAMEA ofn{};
+	char fileName[MAX_PATH] = { 0 };	
+	ofn.lStructSize = sizeof(ofn);
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;;
+	ofn.hwndOwner = _window;
+	ofn.lpstrFile = fileName;
+	ofn.nMaxFile = sizeof(fileName);
+
+	if (GetSaveFileNameA(&ofn))
+	{
+		return std::filesystem::path(fileName);
+	}
+	else return {};
+}
+
+std::filesystem::path CSharpScriptEditor::openFileDialog()
+{
+	OPENFILENAMEA ofn{};
+	char fileName[MAX_PATH] = { 0 };
+	ofn.lStructSize = sizeof(ofn);
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+	ofn.hwndOwner = _window;
+	ofn.lpstrFile = fileName;
+	ofn.nMaxFile = sizeof(fileName);
+	if (GetOpenFileNameA(&ofn))
+	{
+		return std::filesystem::path(fileName);
+	}
+	else return {};
+}
+
+void CSharpScriptEditor::openFile()
+{
+	std::filesystem::path path = openFileDialog();
+	if (!path.empty())
+	{
+		_script->ScriptPath = path.string();
+		std::ifstream file(_script->ScriptPath);
+		if (file.is_open())
+		{
+			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
+		}
+	}
+}
+
+void CSharpScriptEditor::save(const std::filesystem::path& path)
+{
+	std::ofstream file(path, std::ios::binary);
+	if (file.is_open())
+	{
+		sptr_t length = SendMessageA(_codeControl, SCI_GETLENGTH, 0, 0);
+		std::unique_ptr<char[]> buffer = std::make_unique<char[]>(length + 1);
+		SendMessageA(_codeControl, SCI_GETTEXT, length + 1, reinterpret_cast<LPARAM>(buffer.get()));
+		file.write(buffer.get(), length);
+	}
 }

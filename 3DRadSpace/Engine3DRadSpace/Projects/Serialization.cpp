@@ -771,6 +771,8 @@ bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, Conten
 	for (size_t i = 0; i < numObjects; ++i)
 	{
 		auto obj = DeserializeObject(j["objects"][std::to_string(i)]);
+		if (obj == nullptr) throw std::runtime_error("Failed to deserialize object with index " + std::to_string(i));
+
 		lst->Add(obj);
 	}
 
