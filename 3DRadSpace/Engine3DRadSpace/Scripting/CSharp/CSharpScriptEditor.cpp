@@ -4,6 +4,7 @@
 #include <scintilla/ILexer.h>
 #include <lexilla/SciLexer.h>
 #include <lexilla/Lexilla.h>
+#include <string>
 
 using namespace Engine3DRadSpace::Scripting::CSharp;
 
@@ -31,6 +32,32 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 
 	switch (message)
 	{
+	case WM_NOTIFY:
+	{
+		LPNMHDR pnmhdr = reinterpret_cast<LPNMHDR>(lParam);
+
+		// Check if the notification is from the Scintilla control
+		HWND scintilla = GetDlgItem(hwndDlg, IDC_CUSTOM1);
+		if (pnmhdr->hwndFrom == scintilla && editor != nullptr)
+		{
+			if (pnmhdr->code == SCN_CHARADDED)
+			{
+				SCNotification* scn = reinterpret_cast<SCNotification*>(pnmhdr);
+				editor->handleCharAdded(scintilla, scn->ch);
+			}
+			else if (pnmhdr->code == SCN_MODIFIED)
+			{
+				SCNotification* scn = reinterpret_cast<SCNotification*>(pnmhdr);
+				// Only update line number margin if the text was actually modified
+				// Check for SC_MOD_INSERTTEXT or SC_MOD_DELETETEXT flags
+				if (scn->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
+				{
+					editor->handleTextChanged(scintilla);
+				}
+			}
+		}
+		break;
+	}
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
@@ -95,7 +122,8 @@ CSharpScriptEditor::CSharpScriptEditor(
 	_hInstance(hInstance),
 	_owner(dlgOwner),
 	_script(object),
-	_wasAllocated(false)
+	_wasAllocated(false),
+	_maxLineNumberCharLength(0)
 {
 	static bool wasScintillaModuleLoaded = false;
 	static bool wasLexillaModuleLoaded = false;
@@ -146,11 +174,6 @@ CSharpScriptEditor::CSharpScriptEditor(
 
 void CSharpScriptEditor::initForms()
 {
-	//SetClassLongPtr(_window,          // window handle 
-	//	GCLP_HICON,              // changes icon 
-	//	(LONG_PTR)LoadIcon(_hInstance, MAKEINTRESOURCE(IDI_ICON1))
-	//);
-
 	HWND nameTextbox = GetDlgItem(_window, IDC_EDIT1);
 	SetWindowTextA(nameTextbox, _script->Name.c_str());
 
@@ -206,6 +229,66 @@ void CSharpScriptEditor::initForms()
 		"add alias ascending async await by descending dynamic equals from get global group into join let nameof on orderby partial "
 		"remove select set value var when where yield"
 	));
+}
+
+void CSharpScriptEditor::handleCharAdded(HWND scintilla, int ch)
+{
+	// Get the current position
+	sptr_t currentPos = SendMessageA(scintilla, SCI_GETCURRENTPOS, 0, 0);
+
+	// Find the word start position
+	sptr_t wordStartPos = SendMessageA(scintilla, SCI_WORDSTARTPOSITION, currentPos, 1);
+
+	// Calculate the length of entered characters
+	sptr_t lenEntered = currentPos - wordStartPos;
+
+	if (lenEntered > 0)
+	{
+		// Check if autocomplete is already active
+		sptr_t autoCActive = SendMessageA(scintilla, SCI_AUTOCACTIVE, 0, 0);
+		if (!autoCActive)
+		{
+			// Display the autocompletion list
+			const char* keywordList = 
+				"abstract as base break case catch checked continue default delegate do else event explicit extern false finally "
+				"fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override "
+				"params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof "
+				"unchecked unsafe using virtual while "
+				"bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void "
+				"add alias ascending async await by descending dynamic equals from get global group into join let nameof on orderby partial "
+				"remove select set value var when where yield";
+
+			SendMessageA(scintilla, SCI_AUTOCSHOW, lenEntered, reinterpret_cast<LPARAM>(keywordList));
+		}
+	}
+}
+
+void CSharpScriptEditor::handleTextChanged(HWND scintilla)
+{
+	// Get the number of lines
+	sptr_t lineCount = SendMessageA(scintilla, SCI_GETLINECOUNT, 0, 0);
+
+	// Convert line count to string to get its character length
+	const int maxLineNumberCharLength = static_cast<int>(std::to_string(lineCount).length());
+
+	// If the character length hasn't changed, return early
+	if (maxLineNumberCharLength == _maxLineNumberCharLength)
+		return;
+
+	// Calculate the width required to display the line numbers
+	// We use '9' characters as a measure since they're typically the widest digits
+	const int padding = 2;
+	std::string measureStr(maxLineNumberCharLength + 1, '9');
+
+	// Use SCI_TEXTWIDTH to get the pixel width of the line number string
+	// STYLE_LINENUMBER is the style used for line numbers
+	sptr_t width = SendMessageA(scintilla, SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<LPARAM>(measureStr.c_str()));
+
+	// Set the margin width (margin 0 is the line number margin)
+	SendMessageA(scintilla, SCI_SETMARGINWIDTHN, 0, width + padding);
+
+	// Update the stored line number character length
+	_maxLineNumberCharLength = maxLineNumberCharLength;
 }
 
 CSharpScript* CSharpScriptEditor::ShowDialog()

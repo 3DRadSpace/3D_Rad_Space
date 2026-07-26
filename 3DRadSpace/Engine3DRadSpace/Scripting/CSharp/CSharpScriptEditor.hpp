@@ -22,8 +22,11 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		HWND _owner;
 		CSharpScript* _script;
 		bool _wasAllocated;
+		int _maxLineNumberCharLength;
 
 		void initForms();
+		void handleCharAdded(HWND scintilla, int ch);
+		void handleTextChanged(HWND scintilla);
 	public:
 		CSharpScriptEditor(
 			HWND dlgOwner, 
