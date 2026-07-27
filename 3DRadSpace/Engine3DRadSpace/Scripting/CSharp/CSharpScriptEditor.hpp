@@ -22,8 +22,8 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		HWND _owner;
 		CSharpScript* _script;
 		bool _wasAllocated;
-		bool _wasScintillaModuleLoaded;
-		bool _wasLexillaModuleLoaded;
+		static bool _wasScintillaModuleLoaded;
+		static bool _wasLexillaModuleLoaded;
 		int _maxLineNumberCharLength;
 		HWND _codeControl;
 

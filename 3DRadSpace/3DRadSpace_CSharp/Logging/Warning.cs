@@ -19,6 +19,6 @@ public struct Warning
 		Extra = extra;
 	}
 
-	[DllImport("3DRadSpace.FFI.dll", CharSet = CharSet.Ansi, EntryPoint = "E3DRSP_SetLastWarning")]
-	public extern static void SetLastWarning(ref Warning wrn);
+	[DllImport("3DRadSpace.FFI.dll", CharSet = CharSet.Ansi, EntryPoint = "E3DRSP_PrintWarning")]
+	public extern static void PrintWarning(ref Warning wrn);
 }

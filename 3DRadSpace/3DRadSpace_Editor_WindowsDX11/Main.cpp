@@ -91,7 +91,7 @@ void LoadAllPlugins()
 		}
 	}
 
-	Logging::SetLastMessage(std::format("Found {} plugins:", numPlugins));
+	Logging::PrintMessage(std::format("Found {} plugins:", numPlugins));
 
 	dirIterator = std::filesystem::directory_iterator("Plugins");
 
@@ -109,10 +109,10 @@ void LoadAllPlugins()
 					auto& [info, handle] = plugin;
 					plugins.push_back(handle);
 
-					Logging::SetLastMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
+					Logging::PrintMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
 
 					auto numLoadedObjects = Plugins::LoadCustomObjectsFromLibHandle(handle);
-					Logging::SetLastMessage(std::format("Loaded {} custom object types from plugin {}", numLoadedObjects, info.Name));
+					Logging::PrintMessage(std::format("Loaded {} custom object types from plugin {}", numLoadedObjects, info.Name));
 
 					return plugin;
 				}
@@ -134,7 +134,7 @@ void LoadAllPlugins()
 						break;
 					}
 
-					Logging::SetLastWarning(std::format("Failed to load plugin at {}!\r\n{}", file.string(), msg));
+					Logging::PrintWarning(std::format("Failed to load plugin at {}!\r\n{}", file.string(), msg));
 					return std::unexpected(err);
 				}
 			);
@@ -205,7 +205,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		auto f = Native::GetFunctionFromLibrary<Plugins::PluginUnload>(plugin, "PluginUnload");
 		if (f != nullptr)
 		{
-			if (!f()) Logging::SetLastMessage(std::format("PluginUnload() returned false! Handle {:x}", reinterpret_cast<intptr_t>(plugin)));
+			if (!f()) Logging::PrintMessage(std::format("PluginUnload() returned false! Handle {:x}", reinterpret_cast<intptr_t>(plugin)));
 		}
 	}
 	

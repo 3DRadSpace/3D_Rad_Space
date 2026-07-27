@@ -12,12 +12,12 @@ Message::Message(const int32_t code, const std::string& details, const void* ext
 {
 }
 
-inline void Engine3DRadSpace::Logging::SetLastMessage(const Message &msg)
+inline void Engine3DRadSpace::Logging::PrintMessage(const Message &msg)
 {
 	MessageHandler(msg);
 }
 
-inline void Engine3DRadSpace::Logging::SetLastMessage(const std::string& msg)
+inline void Engine3DRadSpace::Logging::PrintMessage(const std::string& msg)
 {
 	MessageHandler(Message(0, msg, nullptr));
 }

@@ -55,7 +55,7 @@ PhysicsEngine::PhysicsEngine(const PhysicsSettings& settings) :
 	auto chrMan = PxCreateControllerManager(*_scene);
 	_controllerManager.reset(chrMan);
 
-	Logging::SetLastMessage("Initialized PhysX");
+	Logging::PrintMessage("Initialized PhysX");
 }
 
 void PhysicsEngine::SetGravity(const Math::Vector3& gravity)

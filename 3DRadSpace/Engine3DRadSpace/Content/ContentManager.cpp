@@ -57,7 +57,7 @@ void ContentManager::Reload(unsigned id)
 	auto uuid = _assets[id].Entry->GetUUID();
 	auto path = _assets[id].Path;
 
-	Logging::SetLastMessage(std::format("Loaded asset ID {} path {} UUID {}", id, path.string(), uuid));
+	Logging::PrintMessage(std::format("Loaded asset ID {} path {} UUID {}", id, path.string(), uuid));
 	auto asset = _factory.Create(uuid, path);
 	_assets[id].Entry.reset(asset);
 }

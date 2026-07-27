@@ -36,7 +36,7 @@ using namespace Engine3DRadSpace::Math;
 GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t height, GraphicsDeviceCreationOptions opt) :
 	_resolution(width, height)
 {
-	Logging::SetLastMessage("Creating DirectX11::GraphicsDevice");
+	Logging::PrintMessage("Creating DirectX11::GraphicsDevice");
 
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferDesc.Width = width;
@@ -118,7 +118,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 			bestAdapter = adapter;
 		};
 
-		Logging::SetLastMessage(std::format("GPU Adapter {} Memory {} MB", adapterName, memory));
+		Logging::PrintMessage(std::format("GPU Adapter {} Memory {} MB", adapterName, memory));
 		
 		if(memory == 0)
 		{
@@ -151,7 +151,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 		}
 	}
 
-	Logging::SetLastMessage(std::format("Selected GPU adapter {} Mem {}", bestAdapterName, bestVideoMemory));
+	Logging::PrintMessage(std::format("Selected GPU adapter {} Mem {}", bestAdapterName, bestVideoMemory));
 
 	//Check for HDR support
 	bool hdrSupported = false;
@@ -174,7 +174,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 					if(SUCCEEDED(r))
 					{
 						hdrSupported = (outputDesc.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020);
-						Logging::SetLastMessage(std::format("HDR Support: {} (ColorSpace: {})", 
+						Logging::PrintMessage(std::format("HDR Support: {} (ColorSpace: {})", 
 							hdrSupported ? "Yes" : "No", 
 							static_cast<int>(outputDesc.ColorSpace)));
 					}
@@ -191,7 +191,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 		swapChainDesc.BufferCount = 2;
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 		swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		Logging::SetLastMessage("Using HDR format: DXGI_FORMAT_R16G16B16A16_FLOAT (scRGB) with flip model");
+		Logging::PrintMessage("Using HDR format: DXGI_FORMAT_R16G16B16A16_FLOAT (scRGB) with flip model");
 	}
 	else
 	{
@@ -199,7 +199,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 		swapChainDesc.BufferCount = 1;
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		swapChainDesc.Flags = 0;
-		Logging::SetLastMessage("Using SDR format: DXGI_FORMAT_B8G8R8A8_UNORM with legacy swap effect");
+		Logging::PrintMessage("Using SDR format: DXGI_FORMAT_B8G8R8A8_UNORM with legacy swap effect");
 	}
 
 	//DirectX11 Device creation.
@@ -219,7 +219,7 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 	);
 	if(FAILED(r))
 	{
-		Logging::SetLastWarning("Failed to create device with specified criteria. Creating default device");
+		Logging::PrintWarning("Failed to create device with specified criteria. Creating default device");
 		r = D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
@@ -332,8 +332,8 @@ GraphicsDevice::GraphicsDevice(void* nativeWindowHandle, size_t width, size_t he
 		2
 	);
 
-	Logging::SetLastMessage("Created D3D11 backend");
-	Logging::SetLastMessage(std::format("Backbuffer {} {} fullscreen {} Nat Window Handle 0x{:x}", width, height, _fullscreen, reinterpret_cast<intptr_t>(nativeWindowHandle)));
+	Logging::PrintMessage("Created D3D11 backend");
+	Logging::PrintMessage(std::format("Backbuffer {} {} fullscreen {} Nat Window Handle 0x{:x}", width, height, _fullscreen, reinterpret_cast<intptr_t>(nativeWindowHandle)));
 }
 
 void GraphicsDevice::_createBackBuffer()

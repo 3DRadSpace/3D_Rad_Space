@@ -167,10 +167,10 @@ public static class ScriptManager
 	/// <summary>
 	/// Sets a warning message in the engine's logging system.
 	/// </summary>
-	private static void SetWarning(string message)
+	private static void PrintWarning(string message)
 	{
 		var warning = new Warning(message, 0, 1, IntPtr.Zero);
-		Warning.SetLastWarning(ref warning);
+		Warning.PrintWarning(ref warning);
 	}
 
 	private class ScriptInstance

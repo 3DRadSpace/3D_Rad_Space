@@ -10,6 +10,9 @@ using namespace Engine3DRadSpace::Scripting::CSharp;
 
 Scintilla::ILexer5* cpplexer = nullptr;
 
+bool CSharpScriptEditor::_wasScintillaModuleLoaded = false;
+bool CSharpScriptEditor::_wasLexillaModuleLoaded = false;
+
 INT_PTR CALLBACK CSharpEditorDlgProc(
 	HWND hwndDlg,
 	UINT message,
@@ -130,20 +133,15 @@ CSharpScriptEditor::CSharpScriptEditor(
 	_owner(dlgOwner),
 	_script(object),
 	_wasAllocated(false),
-	_wasScintillaModuleLoaded(false),
-	_wasLexillaModuleLoaded(false),
 	_maxLineNumberCharLength(0),
 	_codeControl(nullptr)
 {
-	_wasScintillaModuleLoaded = false;
-	_wasLexillaModuleLoaded = false;
-
 	if (!_wasScintillaModuleLoaded)
 	{
 		auto scintillaModule = LoadLibraryA("Scintilla.dll");
 		if (scintillaModule == NULL)
 		{
-			Logging::SetLastWarning("Scintilla wasn't loaded, using an EDIT control.");
+			Logging::PrintWarning("Scintilla wasn't loaded, using an EDIT control.");
 		}
 
 		_wasScintillaModuleLoaded = true;
@@ -151,26 +149,26 @@ CSharpScriptEditor::CSharpScriptEditor(
 
 	if (!_wasLexillaModuleLoaded && !cpplexer)
 	{
-		_wasLexillaModuleLoaded = true;
-
 		auto lexillaModule = LoadLibraryA("Lexilla.dll");
 		if (lexillaModule == nullptr)
 		{
-			Logging::SetLastWarning("Lexilla wasn't loaded, syntax highlighting will not work.");
+			Logging::PrintWarning("Lexilla wasn't loaded, syntax highlighting will not work.");
 		}
 
 		Lexilla::CreateLexerFn createLexer = reinterpret_cast<Lexilla::CreateLexerFn>(GetProcAddress(lexillaModule, "CreateLexer"));
 		if (createLexer == nullptr)
 		{
-			Logging::SetLastWarning("Lexilla CreateLexer function not found, syntax highlighting will not work.");
+			Logging::PrintWarning("Lexilla CreateLexer function not found, syntax highlighting will not work.");
 		}
 
 		cpplexer = createLexer("cpp");
 
 		if (cpplexer == nullptr)
 		{
-			Logging::SetLastWarning("Failed to create C++ lexer, syntax highlighting will not work.");
+			Logging::PrintWarning("Failed to create C++ lexer, syntax highlighting will not work.");
 		}
+
+		_wasLexillaModuleLoaded = true;
 	}
 
 	if (object == nullptr)

@@ -57,7 +57,7 @@ void ShaderBase::_compileShader(const std::string_view& source, const std::strin
 			throw Exception(std::string("Shader compilation failure! \r\n") + static_cast<char*>(_errorBlob->GetBufferPointer()));
 		}
 	}
-	else SetLastWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
+	else PrintWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
 #endif
 }
 
@@ -85,7 +85,7 @@ void ShaderBase::_compileShaderFromFile(const std::filesystem::path& path, const
 	{
 		if (_errorBlob.Get() != nullptr)
 		{
-			SetLastWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
+			PrintWarning(Warning(r, (char*)_errorBlob->GetBufferPointer(), 2, nullptr));
 		}
 
 		if(FAILED(r))

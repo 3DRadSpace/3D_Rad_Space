@@ -217,7 +217,7 @@ void GraphicsCommandList::SaveBackBufferToFile(const std::filesystem::path& path
 
 	SetRenderTargetAndDepth(nullptr, nullptr);
 
-	Logging::SetLastMessage(std::format("Saved backbuffer image to {}", path.string()));
+	Logging::PrintMessage(std::format("Saved backbuffer image to {}", path.string()));
 }
 
 void GraphicsCommandList::SetShader(IShader* shader)

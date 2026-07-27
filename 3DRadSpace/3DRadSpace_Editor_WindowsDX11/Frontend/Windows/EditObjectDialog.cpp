@@ -143,7 +143,7 @@ void EditObjectDialog::createForms()
 				SetWindowTextA(window, attribute->FieldDesc().c_str());	
 				break;
 			case 3:
-				Logging::SetLastWarning("CustomWindow attribute is not supported in EditObjectDialog. Ignoring.");
+				Logging::PrintWarning("CustomWindow attribute is not supported in EditObjectDialog. Ignoring.");
 				break;
 			default:
 				break;

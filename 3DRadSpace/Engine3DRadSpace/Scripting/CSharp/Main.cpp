@@ -77,7 +77,7 @@ auto CallCSFunction(
 
 	if(r != 0 || fn == nullptr)
 	{
-		Logging::SetLastWarning(std::format("load_assembly_and_get_function_pointer(RTTI {}) failed: rc {:x}", typeid(Fn).name(), r));
+		Logging::PrintWarning(std::format("load_assembly_and_get_function_pointer(RTTI {}) failed: rc {:x}", typeid(Fn).name(), r));
 		return false;
 	}
 
@@ -105,13 +105,13 @@ bool PluginMain()
 {
 	if (!load_hostfxr())
 	{
-		Logging::SetLastWarning("load_hostfxr() failed!");
+		Logging::PrintWarning("load_hostfxr() failed!");
 		return false;
 	}
 
 	if(!std::filesystem::exists(runtimeConfigPath))
 	{
-		Logging::SetLastWarning("C# Runtime config is not found. It should be located at \"<root>\\3DRadSpace_CSharp.runtimeconfig.json\"");
+		Logging::PrintWarning("C# Runtime config is not found. It should be located at \"<root>\\3DRadSpace_CSharp.runtimeconfig.json\"");
 		return false;
 	}
 
@@ -119,7 +119,7 @@ bool PluginMain()
 
 	if (load_assembly_and_get_function_pointer == nullptr)
 	{
-		Logging::SetLastWarning("get_dotnet_load_assembly() is null!");
+		Logging::PrintWarning("get_dotnet_load_assembly() is null!");
 		return false;
 	}
 

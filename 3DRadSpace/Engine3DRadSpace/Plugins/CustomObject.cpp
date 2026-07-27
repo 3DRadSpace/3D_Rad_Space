@@ -30,7 +30,7 @@ size_t Engine3DRadSpace::Plugins::LoadCustomObjectsFromLibHandle(void* libraryHa
 				//if UUIDs are in conflicting throw an exception. We can't guarantee serialization when saving or loading... Skip this object...
 				if(internalObject->ObjectUUID == object->ObjectUUID)
 				{					
-					Logging::SetLastWarning(std::format("Conflicting UUIDs for {} and {}. ", object->Name, internalObject->Name));
+					Logging::PrintWarning(std::format("Conflicting UUIDs for {} and {}. ", object->Name, internalObject->Name));
 					ok = false;
 					break;
 				}
@@ -39,7 +39,7 @@ size_t Engine3DRadSpace::Plugins::LoadCustomObjectsFromLibHandle(void* libraryHa
 			if(!ok) continue;
 
 			e3drsp_internal_objects_list.push_back(object);
-			Logging::SetLastMessage(Logging::Message(1000, "Loaded custom object " + object->Name, nullptr));
+			Logging::PrintMessage(Logging::Message(1000, "Loaded custom object " + object->Name, nullptr));
 		}
 		return rawObjects.Size;
 	}
