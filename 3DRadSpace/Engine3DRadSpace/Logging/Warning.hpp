@@ -21,3 +21,4 @@ namespace Engine3DRadSpace::Logging
 	inline void E3DRSP_LOGGING_EXPORT PrintWarning(const std::string &warning_text);
 	inline void E3DRSP_LOGGING_EXPORT DefaultWarningHandler(const Warning &warning);
 }
+ 

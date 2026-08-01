@@ -29,7 +29,7 @@ public static class ScriptManager
 
 			if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(classNameStr))
 			{
-				SetWarning("Invalid script path or class name");
+				PrintWarning("Invalid script path or class name");
 				return -1;
 			}
 
@@ -38,7 +38,7 @@ public static class ScriptManager
 			if (!result.Success)
 			{
 				string errors = string.Join("\n", result.Errors);
-				SetWarning($"Script compilation failed:\n{errors}");
+                PrintWarning($"Script compilation failed:\n{errors}");
 				return -1;
 			}
 
@@ -50,14 +50,14 @@ public static class ScriptManager
 			}
 			catch (Exception ex)
 			{
-				SetWarning($"Failed to create instance: {ex.Message}");
+                PrintWarning($"Failed to create instance: {ex.Message}");
 				result.Unload();
 				return -1;
 			}
 
 			if (instance == null)
 			{
-				SetWarning("Failed to create script instance");
+                PrintWarning("Failed to create script instance");
 				result.Unload();
 				return -1;
 			}
@@ -82,7 +82,7 @@ public static class ScriptManager
 		}
 		catch (Exception ex)
 		{
-			SetWarning($"Exception in LoadScript: {ex.Message}");
+            PrintWarning($"Exception in LoadScript: {ex.Message}");
 			return -1;
 		}
 	}
@@ -105,7 +105,7 @@ public static class ScriptManager
 		}
 		catch(Exception ex)
 		{
-			SetWarning($"Exception in UpdateScript: {ex.Message}");
+            PrintWarning($"Exception in UpdateScript: {ex.Message}");
 			return 0;
 		}
 	}
