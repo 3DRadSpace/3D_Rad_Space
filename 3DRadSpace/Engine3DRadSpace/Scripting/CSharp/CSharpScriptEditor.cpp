@@ -92,6 +92,49 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 				editor->_script = nullptr;
 			}
 			return TRUE;
+		case IDC_BUTTON1:
+		{
+			if (editor->_script->ScriptPath.empty())
+			{
+				editor->_script->ScriptPath = editor->saveFileDialog().string();
+				editor->save(editor->_script->ScriptPath);
+			}
+			if (editor->_script->Class.empty())
+			{
+				HWND classNameTextbox = GetDlgItem(editor->_window, IDC_EDIT2);
+				int lenClass = GetWindowTextLengthA(classNameTextbox);
+				std::unique_ptr<char[]> classBuffer = std::make_unique<char[]>(lenClass + 1);
+				GetWindowTextA(classNameTextbox, classBuffer.get(), lenClass + 1);
+				editor->_script->Class = classBuffer.get();
+
+				if (editor->_script->Class.empty())
+				{
+					MessageBoxA(hwndDlg, "Please specify a class name before compiling.", "Compilation Error", MB_OK | MB_ICONWARNING);
+					break;
+				}
+			}
+			try
+			{
+				auto startTime = std::chrono::high_resolution_clock::now();
+
+				if (!editor->_script->Compile())
+				{
+					MessageBoxA(hwndDlg, "Script failed to compile. Check the log for details.", "Compilation Result", MB_OK | MB_ICONERROR);
+				}
+
+				auto endTime = std::chrono::high_resolution_clock::now();
+				auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+
+				std::string message = "Script compiled successfully in " + std::to_string(duration) + " ms.";
+
+				MessageBoxA(hwndDlg, message.c_str(), "Compilation Result", MB_OK | MB_ICONINFORMATION);
+			}
+			catch (const std::exception& e)
+			{
+				Engine3DRadSpace::Logging::PrintWarning(std::string("Exception caught: ") + e.what());
+			}
+			break;
+		}
 		case IDC_BUTTON2:
 			editor->openFile();
 			break;

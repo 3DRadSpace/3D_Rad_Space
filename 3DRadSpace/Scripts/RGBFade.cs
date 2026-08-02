@@ -9,8 +9,8 @@ class MyClass : Script
 
 	public override void Start()
 	{
-		skycolor = new SkyColor((Object.Parent) as InstIObject).Handle);
-		skyColor.Color = new Color(1, 0, 0, 1);
+		skycolor = new SkyColor(((Object.Parent) as InstIObject).Handle);
+		skycolor.Color = new Color(1, 0, 0, 1);
 	}
 	void RGBFade(ref byte r, ref byte g, ref byte b)
 	{

@@ -13,6 +13,7 @@ typedef void (*CsCompiler_InitializeFn)();
 typedef int (*ScriptManager_LoadScript)(const char* scriptPath, const char* fnName, const void* ownerObject);
 typedef bool (*ScriptManager_UpdateScript)(int scriptID);
 typedef void (*ScriptManager_UnloadScript)(int scriptID);
+typedef bool (*ScriptManager_CompileScript)(const char* scriptPath, const char* className);
 
 constexpr auto csharpAssemblyPath = STR("3DRadSpace_CSharp.dll");
 

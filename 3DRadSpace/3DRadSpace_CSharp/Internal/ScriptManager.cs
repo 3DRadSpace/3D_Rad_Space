@@ -216,10 +216,62 @@ public static class ScriptManager
 		return scriptId;
 	}
 
-	/// <summary>
-	/// Gets the script instance by ID (for use from managed code).
-	/// </summary>
-	public static object? GetScriptInstance(int scriptId)
+    [UnmanagedCallersOnly]
+    public static byte CompileScript(IntPtr scriptPath, IntPtr className)
+    {
+        try
+        {
+            string? path = Marshal.PtrToStringUTF8(scriptPath);
+            string? classNameStr = Marshal.PtrToStringUTF8(className);
+
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(classNameStr))
+            {
+                PrintWarning("Invalid script path or class name");
+                return 0;
+            }
+
+            var result = CsCompiler.CompileFromFile(path);
+
+            if (!result.Success)
+            {
+                string errors = string.Join("\n", result.Errors);
+                PrintWarning($"Script compilation failed:\n{errors}");
+                return 0;
+            }
+
+            // Try to create an instance
+            object? instance;
+            try
+            {
+                instance = result.CreateInstance(classNameStr);
+            }
+            catch (Exception ex)
+            {
+                PrintWarning($"Failed to create instance: {ex.Message}");
+                result.Unload();
+                return 0;
+            }
+
+            if (instance == null)
+            {
+                PrintWarning("Failed to create script instance");
+                result.Unload();
+                return 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            PrintWarning($"Exception in LoadScript: {ex.Message}");
+            return 0;
+        }
+
+		return 1;
+    }
+
+    /// <summary>
+    /// Gets the script instance by ID (for use from managed code).
+    /// </summary>
+    public static object? GetScriptInstance(int scriptId)
 	{
 		return _loadedScripts.TryGetValue(scriptId, out var instance) ? instance.Instance : null;
 	}

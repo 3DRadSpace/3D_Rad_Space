@@ -9,6 +9,7 @@ using namespace Engine3DRadSpace::Scripting::CSharp;
 extern ScriptManager_LoadScript csmgr_loadScript;
 extern ScriptManager_UpdateScript csmgr_updateScript;
 extern ScriptManager_UnloadScript csmgr_unloadScript;
+extern ScriptManager_CompileScript csmgr_compileScript;
 
 CSharpScript::CSharpScript(
 	const std::string& name,
@@ -64,6 +65,13 @@ int CSharpScript::GetID() const noexcept
 bool CSharpScript::WasInitialized() const noexcept
 {
 	return _initialized;
+}
+
+bool CSharpScript::Compile() const
+{
+	if (csmgr_compileScript == nullptr) throw Logging::Exception("Script manager is improperly initialized!");
+
+	return csmgr_compileScript(ScriptPath.c_str(), Class.c_str());
 }
 
 CSharpScript::~CSharpScript()

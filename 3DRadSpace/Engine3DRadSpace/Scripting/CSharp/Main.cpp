@@ -31,6 +31,7 @@ constexpr auto runtimeConfigPath = STR("3DRadSpace_CSharp.runtimeconfig.json");
 ScriptManager_LoadScript csmgr_loadScript;
 ScriptManager_UpdateScript csmgr_updateScript;
 ScriptManager_UnloadScript csmgr_unloadScript;
+ScriptManager_CompileScript csmgr_compileScript;
 
 template<typename Fn>
 auto CallCSFunction(
@@ -127,6 +128,7 @@ bool PluginMain()
 	csmgr_loadScript = LoadCSFunction<ScriptManager_LoadScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("LoadScript"));
 	csmgr_updateScript = LoadCSFunction<ScriptManager_UpdateScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("UpdateScript"));
 	csmgr_unloadScript = LoadCSFunction<ScriptManager_UnloadScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("UnloadScript"));
+	csmgr_compileScript = LoadCSFunction<ScriptManager_CompileScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("CompileScript"));
 
 	return true;
 }
