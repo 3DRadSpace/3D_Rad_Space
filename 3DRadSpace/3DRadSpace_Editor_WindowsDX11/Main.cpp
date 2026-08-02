@@ -180,22 +180,18 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 	catch (const Logging::Exception& e)
 	{
-		std::stacktrace st = std::stacktrace::current();
 		CrashWindow crash(GetActiveWindow(), hInstance, dynamic_cast<const std::exception&>(e), e.GetStacktrace());
 		crash.ShowDialog();
 	}
 	catch(const std::exception &e)
 	{
-		std::stacktrace st = std::stacktrace::current();
-
-		CrashWindow crash(GetActiveWindow(), hInstance, e, st);
+		CrashWindow crash(GetActiveWindow(), hInstance, e, std::stacktrace::current());
 		crash.ShowDialog();
 	}
 	catch(...)
 	{
-		std::runtime_error unknownError("An unknown error occurred.");
-		std::stacktrace st = std::stacktrace::current();
-		CrashWindow crash(nullptr, hInstance, unknownError, st);
+		std::runtime_error unknownError("An unknown error occurred. (exception type doesn't inherit from std::exception)");
+		CrashWindow crash(nullptr, hInstance, unknownError, std::stacktrace::current());
 		crash.ShowDialog();
 	}
 

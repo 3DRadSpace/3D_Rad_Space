@@ -296,6 +296,15 @@ void CSharpScriptEditor::initForms()
 			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
 		}
 	}
+	else
+	{
+		std::ifstream file("Scripts\\Empty.cs");
+		if (file.is_open())
+		{
+			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
+		}
+	}
 }
 
 void CSharpScriptEditor::handleCharAdded(HWND scintilla, int ch)
