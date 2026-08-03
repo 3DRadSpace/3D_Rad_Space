@@ -79,7 +79,9 @@ void IObject::SetParent(IObject* newParent) noexcept
 {
 	auto oldParent = _parent;
 	_parent = newParent;
-	newParent->Children._objects.push_back(this);
+
+	if (newParent != nullptr)
+		newParent->Children._objects.push_back(this);
 
 	if(oldParent != nullptr) 
 	{

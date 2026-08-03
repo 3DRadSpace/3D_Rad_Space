@@ -17,14 +17,6 @@ using namespace Engine3DRadSpace::Reflection;
 
 static void deserializeObjectHierarchy(ObjectList* lst, IObject* obj, const json& j)
 {
-	auto numChildren = j["Children"].size();
-	
-	for(size_t i = 0; i < numChildren; i++)
-	{
-		auto child = j["Children"][i];
-		obj->Children.Add(lst->operator[](child.get<int>()));
-	}
-
 	auto parent = j["Parent"].get<int>();
 
 	if(parent != -1)

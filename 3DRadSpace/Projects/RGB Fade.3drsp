@@ -12,7 +12,7 @@
                         "A": 1.0,
                         "B": 0.0,
                         "G": 0.0,
-                        "R": 0.0
+                        "R": 1.0
                     }
                 }
             },
@@ -45,7 +45,27 @@
         },
         "1": {
             "Children": [],
+            "Enabled": {
+                "f": {
+                    "0": true
+                }
+            },
+            "Entry classname": {
+                "f": {
+                    "0": "MyClass"
+                }
+            },
+            "Name": {
+                "f": {
+                    "0": "C# Script"
+                }
+            },
             "Parent": 0,
+            "Script path": {
+                "f": {
+                    "0": "D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Scripts\\RGBFade.cs"
+                }
+            },
             "UUID": {
                 "Data1": 2338353927,
                 "Data2": 24563,

@@ -89,4 +89,5 @@ target_link_libraries(3DRadSpace.Objects.Impl PRIVATE 3DRadSpace.Physics.Objects
 target_link_libraries(3DRadSpace.Objects.Impl PRIVATE 3DRadSpace.Reflection)
 target_link_libraries(3DRadSpace.Objects.Impl PRIVATE 3DRadSpace.Native)
 target_link_libraries(3DRadSpace.Objects.Impl PRIVATE 3DRadSpace.Objects.Gizmos)
+target_link_libraries(3DRadSpace.Objects.Impl PUBLIC 3DRadSpace.Objects.ObjectRegistry)
 target_include_directories(3DRadSpace.Objects.Impl PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

@@ -24,18 +24,19 @@ std::expected<std::pair<PluginInfo, void*>, PluginLoadingError> Engine3DRadSpace
 	auto load_objects_fn = GetFunctionFromLibrary<LoadCustomObjectsFn>(plugin, "LoadCustomObjects");
 	if(load_objects_fn)
 	{
+		auto& list = Engine3DRadSpace::Internal::GetInternalObjectsList();
 		auto span = load_objects_fn();
 		auto begin = static_cast<Engine3DRadSpace::Reflection::ReflectedObject*>(span.Ptr);
 		for(size_t i = 0; i < span.Size; ++i)
 		{
 			auto* obj = &begin[i];
 			bool duplicate = std::any_of(
-				e3drsp_internal_objects_list.begin(),
-				e3drsp_internal_objects_list.end(),
+				list.begin(),
+				list.end(),
 				[obj](Engine3DRadSpace::Reflection::ReflectedObject* existing) { return existing->ObjectUUID == obj->ObjectUUID; }
 			);
 			if(!duplicate)
-				e3drsp_internal_objects_list.push_back(obj);
+				list.push_back(obj);
 		}
 	}
 

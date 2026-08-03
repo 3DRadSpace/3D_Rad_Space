@@ -32,6 +32,7 @@ target_link_libraries(3DRadSpace.Tests PRIVATE 3DRadSpace.Objects)
 target_link_libraries(3DRadSpace.Tests PRIVATE 3DRadSpace.Objects.Impl)
 target_link_libraries(3DRadSpace.Tests PRIVATE 3DRadSpace.Objects.Gizmos)
 target_link_libraries(3DRadSpace.Tests PRIVATE 3DRadSpace.Games)
+target_link_libraries(3DRadSpace.Tests PRIVATE 3DRadSpace.Plugins)
 target_include_directories(3DRadSpace.Tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
 enable_testing()

@@ -1,6 +1,7 @@
 #include "Objects.hpp"
 #include "../Reflection/Reflection.hpp"
 #include "../../Logging/Exception.hpp"
+#include "../../Logging/Message.hpp"
 
 //Forward declarations of object reflection data
 REFL_FWD(Camera)
@@ -36,8 +37,7 @@ REFL_FWD(SpriteBillboard)
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
 
-std::vector<ReflectedObject*> e3drsp_internal_objects_list;
-bool e3drsp_internal_objects_list_initialized = false;
+static bool e3drsp_internal_objects_list_initialized = false;
 
 void Engine3DRadSpace::Internal::LoadDefaultObjects()
 {
@@ -81,14 +81,16 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&SpriteBillboardReflInstance
 	};
 
-	e3drsp_internal_objects_list.insert_range(e3drsp_internal_objects_list.begin(), ppDefaultObjects);
+	GetInternalObjectsList().insert_range(GetInternalObjectsList().begin(), ppDefaultObjects);
 }
 
 ReflectedObject* Engine3DRadSpace::Internal::GetReflDataFromUUID(const Reflection::UUID& uuid)
 {
-	if(e3drsp_internal_objects_list.empty()) throw Logging::Exception("LoadDefaultObjects() must be called first!");
+	auto& list = GetInternalObjectsList();
 
-	for(auto &refl : e3drsp_internal_objects_list)
+	if(list.empty()) throw Logging::Exception("LoadDefaultObjects() must be called first!");
+
+	for(auto &refl : list)
 	{
 		if(uuid == refl->ObjectUUID)
 			return refl;

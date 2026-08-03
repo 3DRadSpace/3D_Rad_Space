@@ -6,6 +6,7 @@
 #include <Engine3DRadSpace/Plugins/CustomObject.hpp>
 #include "EditObject.hpp"
 #include <Engine3DRadSpace/Logging/Exception.hpp>
+#include <Engine3DRadSpace/Logging/Message.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -55,7 +56,9 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(item->iItem >= 0)
 					{
-						auto obj = EditObject(hwnd, aod->hInstance, e3drsp_internal_objects_list[item->iItem], aod->_content);
+						auto& list = Engine3DRadSpace::Internal::GetInternalObjectsList();
+						Logging::PrintMessage(std::format("AddObj: e3drsp_internal_objects_list 0x{:x}", reinterpret_cast<uintptr_t>(list.data())));
+						auto obj = EditObject(hwnd, aod->hInstance, list[item->iItem], aod->_content);
 						EndDialog(hwnd, reinterpret_cast<INT_PTR>(obj));
 					}
 					break;
@@ -120,7 +123,7 @@ struct objectItem
 
 void AddObjectDialog::createForms()
 {
-	auto& Objects = e3drsp_internal_objects_list;
+	auto& Objects = Engine3DRadSpace::Internal::GetInternalObjectsList();
 
 	//Create the list view control
 	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 800, 600, window, nullptr, hInstance, nullptr);
