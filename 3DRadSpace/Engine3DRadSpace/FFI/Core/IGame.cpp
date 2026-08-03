@@ -32,3 +32,9 @@ void E3DRSP_IGame_Destroy(E3DRSP_IGame game)
 	assert(game != nullptr);
 	delete static_cast<IGame*>(game);
 }
+
+bool E3DRSP_IGame_IsEditor(E3DRSP_IGame game)
+{
+	if (game == nullptr) return false;
+	return static_cast<IGame*>(game)->IsEditor();
+}

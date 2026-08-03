@@ -197,3 +197,16 @@ void E3DRSP_IGraphicsCommandList_Copy(E3DRSP_IGraphicsCommandList cmd, E3DRSP_IG
 		reinterpret_cast<IGPUBuffer*>(src)
 	);
 }
+
+bool E3DRSP_IGraphicsCommandList_IsFullScreen(E3DRSP_IGraphicsCommandList cmd)
+{
+	return reinterpret_cast<IGraphicsCommandList*>(cmd)->IsFullScreen();
+}
+
+void E3DRSP_IGraphicsCommandList_CopyMulti(E3DRSP_IGraphicsCommandList cmd, E3DRSP_IGPUMultiBuffer* dest, E3DRSP_IGPUMultiBuffer* src)
+{
+	reinterpret_cast<IGraphicsCommandList*>(cmd)->Copy(
+		reinterpret_cast<IGPUMultiBuffer*>(dest),
+		reinterpret_cast<IGPUMultiBuffer*>(src)
+	);
+}

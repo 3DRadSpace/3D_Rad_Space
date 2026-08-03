@@ -86,6 +86,12 @@ public class ICollider : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_Intersects")]
 	private static extern float _intersects(IntPtr collider, ref Ray r);
 
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_UpdateTransform")]
+	private static extern void _updateTransform(IntPtr collider);
+
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_UpdateTransform2")]
+	private static extern void _updateTransform2(IntPtr collider, ref Vector3 position, ref Quaternion rotation);
+
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_Destroy")]
 	private static extern void _destroy(IntPtr collider);
 
@@ -93,6 +99,18 @@ public class ICollider : NatPtrWrapper
 	{
 		get => _getMass(_handle);
 		set => _setMass(_handle, value);
+	}
+
+	public Vector3 Position
+	{
+		get => _getPosition(_handle);
+		set => _setPosition(_handle, ref value);
+	}
+
+	public Quaternion Rotation
+	{
+		get => _getRotation(_handle);
+		set => _setRotation(_handle, ref value);
 	}
 
 	public float LinearDamping
@@ -177,6 +195,16 @@ public class ICollider : NatPtrWrapper
 	{
 		float result = _intersects(_handle, ref r);
 		return float.IsNaN(result) ? null : result;
+	}
+
+	public void UpdateTransform()
+	{
+		_updateTransform(_handle);
+	}
+
+	public void UpdateTransform(Vector3 position, Quaternion rotation)
+	{
+		_updateTransform2(_handle, ref position, ref rotation);
 	}
 
 	public ICollider(IntPtr natPtr) : base(natPtr, _destroy)
