@@ -6,6 +6,9 @@
 #include "resource.h"
 #include <Windows.h>
 
+namespace Scintilla { class ILexer5; }
+namespace Lexilla { using CreateLexerFn = Scintilla::ILexer5* (*)(const char* name); }
+
 extern "C"
 {
 	__declspec(dllexport) void* CreateCSharpEditorWindow(HWND dlgOwner, HINSTANCE hInstance, void* reflectionData, void* contentManager, void* object);
@@ -24,19 +27,24 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		bool _wasAllocated;
 		static bool _wasScintillaModuleLoaded;
 		static bool _wasLexillaModuleLoaded;
+		static Lexilla::CreateLexerFn _createLexer;
 		int _maxLineNumberCharLength;
 		HWND _codeControl;
+		Scintilla::ILexer5* _lexer;
 
 		void initForms();
 		void handleCharAdded(HWND scintilla, int ch);
 		void handleTextChanged(HWND scintilla);
 
+		void _loadCodeFromFile(const std::filesystem::path& path);
 		void load(const std::filesystem::path& path);
 		void save(const std::filesystem::path& path);
 
 		std::filesystem::path saveFileDialog();
 		std::filesystem::path openFileDialog();
 		void openFile();
+
+		void _createNewObject(CSharpScript* object);
 	public:
 		CSharpScriptEditor(
 			HWND dlgOwner, 
@@ -51,6 +59,8 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		CSharpScriptEditor& operator=(CSharpScriptEditor&&) = delete;
 
 		CSharpScript* ShowDialog();
+
+		~CSharpScriptEditor();
 
 		friend INT_PTR CALLBACK ::CSharpEditorDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	};

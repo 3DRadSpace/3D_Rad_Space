@@ -107,3 +107,8 @@ IGraphicsDevice* ContentManager::GetDevice() const noexcept
 {
 	return _owner->GetService<IGraphicsDevice>({});
 }
+
+IAsset* ContentManager::At(unsigned id) const
+{
+	return _assets[id].Entry.get();
+}

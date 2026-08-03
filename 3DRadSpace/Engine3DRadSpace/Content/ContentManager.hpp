@@ -186,7 +186,14 @@ namespace Engine3DRadSpace::Content
 		/// <param name="ref">Asset reference ID</param>
 		/// <returns>Pointer to the asset of type T</returns>
 		template<AssetType T>
-		T *operator[](AssetID<T> ref);
+		T *operator[](AssetID<T> ref) const;
+
+		/// <summary>
+		/// Returns an pointer to the asset associated with the given reference ID.
+		/// </summary>
+		/// <param name="ref">Asset reference ID</param>
+		/// <returns>Pointer to the asset</returns>
+		IAsset* At(unsigned ref) const;
 
 		/// <summary>
 		/// Returns the path an asset with the specified ID was loaded from.
@@ -284,7 +291,7 @@ namespace Engine3DRadSpace::Content
 	}
 
 	template<AssetType T>
-	inline T* ContentManager::operator[](AssetID<T> ref)
+	inline T* ContentManager::operator[](AssetID<T> ref) const
 	{
 		return dynamic_cast<T*>(_assets[ref].Entry.get());
 	}

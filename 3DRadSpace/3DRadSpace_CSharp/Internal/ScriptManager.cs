@@ -230,40 +230,43 @@ public static class ScriptManager
                 return 0;
             }
 
-            var result = CsCompiler.CompileFromFile(path);
+			var result = CsCompiler.CompileFromFile(path);
 
-            if (!result.Success)
-            {
-                string errors = string.Join("\n", result.Errors);
-                PrintWarning($"Script compilation failed:\n{errors}");
-                return 0;
-            }
+			if (!result.Success)
+			{
+				string errors = string.Join("\n", result.Errors);
+				PrintWarning($"Script compilation failed:\n{errors}");
+				result.Unload();
+				return 0;
+			}
 
-            // Try to create an instance
-            object? instance;
-            try
-            {
-                instance = result.CreateInstance(classNameStr);
-            }
-            catch (Exception ex)
-            {
-                PrintWarning($"Failed to create instance: {ex.Message}");
-                result.Unload();
-                return 0;
-            }
+			// Try to create an instance
+			object? instance;
+			try
+			{
+				instance = result.CreateInstance(classNameStr);
+			}
+			catch (Exception ex)
+			{
+				PrintWarning($"Failed to create instance: {ex.Message}");
+				result.Unload();
+				return 0;
+			}
 
-            if (instance == null)
-            {
-                PrintWarning("Failed to create script instance");
-                result.Unload();
-                return 0;
-            }
-        }
-        catch (Exception ex)
-        {
-            PrintWarning($"Exception in LoadScript: {ex.Message}");
-            return 0;
-        }
+			if (instance == null)
+			{
+				PrintWarning("Failed to create script instance");
+				result.Unload();
+				return 0;
+			}
+
+			result.Unload();
+		}
+		catch (Exception ex)
+		{
+			PrintWarning($"Exception in CompileScript: {ex.Message}");
+			return 0;
+		}
 
 		return 1;
     }

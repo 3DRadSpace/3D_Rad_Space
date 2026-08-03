@@ -78,6 +78,10 @@ IObject* IObject::GetParent() const noexcept
 void IObject::SetParent(IObject* newParent) noexcept
 {
 	auto oldParent = _parent;
+
+	if (_parent == newParent)
+		return;
+
 	_parent = newParent;
 
 	if (newParent != nullptr)

@@ -1,5 +1,6 @@
 #pragma once
 #include "IAudioEngine.h"
+#include "AudioError.h"
 
 #ifdef __cplusplus
 extern "C"

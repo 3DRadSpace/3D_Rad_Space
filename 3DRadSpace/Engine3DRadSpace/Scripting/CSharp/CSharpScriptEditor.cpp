@@ -8,10 +8,11 @@
 
 using namespace Engine3DRadSpace::Scripting::CSharp;
 
-Scintilla::ILexer5* cpplexer = nullptr;
-
 bool CSharpScriptEditor::_wasScintillaModuleLoaded = false;
 bool CSharpScriptEditor::_wasLexillaModuleLoaded = false;
+Lexilla::CreateLexerFn CSharpScriptEditor::_createLexer = nullptr;
+
+
 
 INT_PTR CALLBACK CSharpEditorDlgProc(
 	HWND hwndDlg,
@@ -177,7 +178,8 @@ CSharpScriptEditor::CSharpScriptEditor(
 	_script(object),
 	_wasAllocated(false),
 	_maxLineNumberCharLength(0),
-	_codeControl(nullptr)
+	_codeControl(nullptr),
+	_lexer(nullptr)
 {
 	if (!_wasScintillaModuleLoaded)
 	{
@@ -185,39 +187,60 @@ CSharpScriptEditor::CSharpScriptEditor(
 		if (scintillaModule == NULL)
 		{
 			Logging::PrintWarning("Scintilla wasn't loaded, using an EDIT control.");
+			_createNewObject(object);
+			return;
 		}
 
 		_wasScintillaModuleLoaded = true;
 	}
 
-	if (!_wasLexillaModuleLoaded && !cpplexer)
+	if (!_wasLexillaModuleLoaded)
 	{
 		auto lexillaModule = LoadLibraryA("Lexilla.dll");
 		if (lexillaModule == nullptr)
 		{
 			Logging::PrintWarning("Lexilla wasn't loaded, syntax highlighting will not work.");
 		}
-
-		Lexilla::CreateLexerFn createLexer = reinterpret_cast<Lexilla::CreateLexerFn>(GetProcAddress(lexillaModule, "CreateLexer"));
-		if (createLexer == nullptr)
+		else
 		{
-			Logging::PrintWarning("Lexilla CreateLexer function not found, syntax highlighting will not work.");
-		}
-
-		cpplexer = createLexer("cpp");
-
-		if (cpplexer == nullptr)
-		{
-			Logging::PrintWarning("Failed to create C++ lexer, syntax highlighting will not work.");
+			_createLexer = reinterpret_cast<Lexilla::CreateLexerFn>(GetProcAddress(lexillaModule, "CreateLexer"));
+			if (_createLexer == nullptr)
+			{
+				Logging::PrintWarning("Lexilla CreateLexer function not found, syntax highlighting will not work.");
+			}
 		}
 
 		_wasLexillaModuleLoaded = true;
 	}
 
+	// Create a new lexer instance for this editor window
+	if (_createLexer != nullptr)
+	{
+		_lexer = _createLexer("cpp");
+		if (_lexer == nullptr)
+		{
+			Logging::PrintWarning("Failed to create C++ lexer, syntax highlighting will not work.");
+		}
+	}
+
+	_createNewObject(object);
+}
+
+void CSharpScriptEditor::_createNewObject(CSharpScript* object)
+{
 	if (object == nullptr)
 	{
 		_script = new CSharpScript();
 		_wasAllocated = true;
+	}
+}
+
+CSharpScriptEditor::~CSharpScriptEditor()
+{
+	if (_lexer != nullptr)
+	{
+		_lexer->Release();
+		_lexer = nullptr;
 	}
 }
 
@@ -240,12 +263,12 @@ void CSharpScriptEditor::initForms()
 		return;
 	}
 
-	if (_wasLexillaModuleLoaded && cpplexer)
+	if (_lexer)
 	{
-		SendMessageA(_codeControl, SCI_SETILEXER, 0, reinterpret_cast<LPARAM>(cpplexer));
+		SendMessageA(_codeControl, SCI_SETILEXER, 0, reinterpret_cast<LPARAM>(_lexer));
 		// Scintilla takes ownership after SCI_SETILEXER and will call Release() itself.
-		// Clear the pointer so PluginUnload does not double-release the object.
-		cpplexer = nullptr;
+		// Clear the pointer so we don't double-release the object.
+		_lexer = nullptr;
 	}
 
 	// Reset and clear styles
@@ -289,21 +312,11 @@ void CSharpScriptEditor::initForms()
 
 	if (std::filesystem::exists(_script->ScriptPath))
 	{
-		std::ifstream file(_script->ScriptPath);
-		if (file.is_open())
-		{
-			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
-		}
+		_loadCodeFromFile(_script->ScriptPath);
 	}
 	else
 	{
-		std::ifstream file("Scripts\\Empty.cs");
-		if (file.is_open())
-		{
-			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
-		}
+		_loadCodeFromFile("Scripts\\Empty.cs");
 	}
 }
 
@@ -426,18 +439,23 @@ std::filesystem::path CSharpScriptEditor::openFileDialog()
 	else return {};
 }
 
+void CSharpScriptEditor::_loadCodeFromFile(const std::filesystem::path& path)
+{
+	std::ifstream file(path);
+	if (file.is_open())
+	{
+		std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
+	}
+}
+
 void CSharpScriptEditor::openFile()
 {
 	std::filesystem::path path = openFileDialog();
 	if (!path.empty())
 	{
 		_script->ScriptPath = path.string();
-		std::ifstream file(_script->ScriptPath);
-		if (file.is_open())
-		{
-			std::string scriptText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-			SendMessageA(_codeControl, SCI_SETTEXT, 0, reinterpret_cast<LPARAM>(scriptText.c_str()));
-		}
+		_loadCodeFromFile(_script->ScriptPath);
 	}
 }
 

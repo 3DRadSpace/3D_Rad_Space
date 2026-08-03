@@ -133,15 +133,8 @@ bool PluginMain()
 	return true;
 }
 
-extern Scintilla::ILexer5* cpplexer;
-
 bool PluginUnload()
 {
-	if (cpplexer != nullptr)
-	{
-		cpplexer->Release();
-		cpplexer = nullptr;
-	}
 	return true;
 }
 
