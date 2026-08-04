@@ -224,6 +224,10 @@ public class InstIGraphicsDevice : NatPtrWrapper, IGraphicsDevice
 	{
 	}
 
+	internal InstIGraphicsDevice(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	{
+	}
+
 	public string BackendName()
 	{
 		return _backendName(_handle);
@@ -484,27 +488,27 @@ public class InstIGraphicsDevice : NatPtrWrapper, IGraphicsDevice
 
 	public IRenderTarget GetBackBuffer()
 	{
-		return new InstIRenderTarget(_getbackBuffer(_handle));
+		return new InstIRenderTarget(_getbackBuffer(_handle), ownsHandle: false);
 	}
 
 	public ITexture2D GetBackBufferTexture()
 	{
-		return new InstITexture2D(_getbackBuffer(_handle));
+		return new InstITexture2D(_getbackBuffer(_handle), ownsHandle: false);
 	}
 
 	public IDepthStencilBuffer GetDepthBuffer()
 	{
-		return new InstIDepthStencilBuffer(_getDepthBuffer(_handle));
+		return new InstIDepthStencilBuffer(_getDepthBuffer(_handle), ownsHandle: false);
 	}
 
 	public IDepthStencilState GetDepthStencilState()
 	{
-		return new InstIDepthStencilState(_getdepthStencilState(_handle));
+		return new InstIDepthStencilState(_getdepthStencilState(_handle), ownsHandle: false);
 	}
 
 	public IRasterizerState GetRasterizerState()
 	{
-		return new InstIRasterizerState(_getRasterizerState(_handle));
+		return new InstIRasterizerState(_getRasterizerState(_handle), ownsHandle: false);
 	}
 
 	public Point GetResolution()

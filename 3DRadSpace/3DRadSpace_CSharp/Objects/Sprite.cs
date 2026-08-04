@@ -61,7 +61,7 @@ namespace Engine3DRadSpace.Objects
 
 		public ITexture2D GetTexture()  
 		{
-			return new InstITexture2D(_getTexture(_handle));
+			return new InstITexture2D(_getTexture(_handle), ownsHandle: false);
 		}
 
 		public unsafe Color TintColor

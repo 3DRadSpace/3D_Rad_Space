@@ -100,13 +100,13 @@ public class IJoint : NatPtrWrapper
     public IDynamicCollider GetActor0()
     {
         var ptr = _getActor0(_handle);
-        return ptr != IntPtr.Zero ? new IDynamicCollider(ptr) : null;
+        return ptr != IntPtr.Zero ? new IDynamicCollider(ptr, ownsHandle: false) : null;
     }
 
     public IDynamicCollider GetActor1()
     {
         var ptr = _getActor1(_handle);
-        return ptr != IntPtr.Zero ? new IDynamicCollider(ptr) : null;
+        return ptr != IntPtr.Zero ? new IDynamicCollider(ptr, ownsHandle: false) : null;
     }
 
     public void SetLocalFrame0(Vector3 position, Quaternion rotation)

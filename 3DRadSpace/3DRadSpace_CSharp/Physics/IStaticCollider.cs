@@ -55,7 +55,11 @@ public class IStaticCollider : ICollider
         set => _setRestitution(_handle, value);
     }
 
-    public IStaticCollider(IntPtr natPtr) : base(natPtr, _destroy)
+    public IStaticCollider(IntPtr natPtr) : base(natPtr)
+    {
+    }
+
+    protected IStaticCollider(IntPtr natPtr, bool ownsHandle) : base(natPtr, ownsHandle)
     {
     }
 }

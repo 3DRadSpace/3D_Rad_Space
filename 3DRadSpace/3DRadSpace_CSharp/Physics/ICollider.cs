@@ -12,6 +12,18 @@ public class ICollider : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_SetMass")]
 	private static extern void _setMass(IntPtr collider, float mass);
 
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_GetPosition")]
+	private static extern Vector3 _getPosition(IntPtr collider);
+
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_SetPosition")]
+	private static extern void _setPosition(IntPtr collider, ref Vector3 position);
+
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_GetRotation")]
+	private static extern Quaternion _getRotation(IntPtr collider);
+
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_SetRotation")]
+	private static extern void _setRotation(IntPtr collider, ref Quaternion rotation);
+
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ICollider_GetLinearDamping")]
 	private static extern float _getLinearDamping(IntPtr collider);
 
@@ -163,7 +175,7 @@ public class ICollider : NatPtrWrapper
 
 	public IPhysicsEngine GetPhysics()
 	{
-		return new IPhysicsEngine(_getPhysics(_handle));
+		return new IPhysicsEngine(_getPhysics(_handle), ownsHandle: false);
 	}
 
 	public bool ApplyForce(Vector3 force)
@@ -208,6 +220,10 @@ public class ICollider : NatPtrWrapper
 	}
 
 	public ICollider(IntPtr natPtr) : base(natPtr, _destroy)
+	{
+	}
+
+	protected ICollider(IntPtr natPtr, bool ownsHandle) : base(natPtr, ownsHandle ? _destroy : null)
 	{
 	}
 }

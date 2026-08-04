@@ -14,6 +14,10 @@ public class InstIRenderTarget : NatPtrWrapper, IRenderTarget
 	{
 	}
 
+	internal InstIRenderTarget(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	{
+	}
+
 	public IntPtr RenderTargetHandle
 	{
 		get

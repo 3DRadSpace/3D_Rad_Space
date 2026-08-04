@@ -79,4 +79,8 @@ public class IPhysicsEngine : InstIService
 	public IPhysicsEngine(IntPtr natPtr) : base(natPtr)
 	{
 	}
+
+	internal IPhysicsEngine(IntPtr natPtr, bool ownsHandle) : base(natPtr, ownsHandle)
+	{
+	}
 }

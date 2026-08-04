@@ -148,4 +148,8 @@ public class IDynamicCollider : IStaticCollider
     public IDynamicCollider(IntPtr natPtr) : base(natPtr)
     {
     }
+
+    internal IDynamicCollider(IntPtr natPtr, bool ownsHandle) : base(natPtr, ownsHandle)
+    {
+    }
 }

@@ -14,6 +14,10 @@ public abstract class InstIUpdateable : NatPtrWrapper, IUpdateable
     {
     }
 
+    protected InstIUpdateable(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+    {
+    }
+
     public void Update()
     {
         _update(_handle);

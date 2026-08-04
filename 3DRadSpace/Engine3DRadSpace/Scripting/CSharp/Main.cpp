@@ -63,7 +63,7 @@ auto CallCSFunction(
 	const char_t *static_class_and_assembly_name,
 	const char_t *fnName,
 	Args&& ...args
-) -> std::invoke_result_t<Fn>
+) -> std::invoke_result_t<std::optional<Fn>>
 {
 	Fn fn;
 
@@ -79,10 +79,10 @@ auto CallCSFunction(
 	if(r != 0 || fn == nullptr)
 	{
 		Logging::PrintWarning(std::format("load_assembly_and_get_function_pointer(RTTI {}) failed: rc {:x}", typeid(Fn).name(), r));
-		return false;
+		return std::nullopt;
 	}
 
-	fn(std::forward<Args&&>(args)...);
+	return fn(std::forward<Args&&>(args)...);
 }
 
 template<typename Fn>

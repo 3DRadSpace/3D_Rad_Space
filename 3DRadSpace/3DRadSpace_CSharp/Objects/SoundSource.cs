@@ -99,12 +99,12 @@ namespace Engine3DRadSpace.Objects
 
 		public Sound GetSound()
 		{
-			return new Sound(_getSound(_handle));
+			return new Sound(_getSound(_handle), ownsHandle: false);
 		}
 
 		public SoundInstance GetSoundInstance()
 		{
-			return new SoundInstance(_getSoundInstance(_handle));
+			return new SoundInstance(_getSoundInstance(_handle), ownsHandle: false);
 		}
 
 		public float Volume

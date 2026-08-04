@@ -99,17 +99,17 @@ public class ModelMeshPart : NatPtrWrapper
 
 	public IVertexBuffer VertexBuffer
 	{
-		get => new InstIVertexBuffer(_vbuff(_handle));
+		get => new InstIVertexBuffer(_vbuff(_handle), ownsHandle: false);
 	}
 
 	public IIndexBuffer IndexBuffer
 	{
-		get => new InstIIndexBuffer(_ibuff(_handle));
+		get => new InstIIndexBuffer(_ibuff(_handle), ownsHandle: false);
 	}
 
 	public Effect Shaders
 	{
-		get => new Effect(_getEffect(_handle));
+		get => new Effect(_getEffect(_handle), ownsHandle: false);
 		set => _setEffect(_handle, value.Handle);
 	}
 

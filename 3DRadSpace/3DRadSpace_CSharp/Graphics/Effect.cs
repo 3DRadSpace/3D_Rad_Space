@@ -57,6 +57,10 @@ public class Effect : NatPtrWrapper
 	{
 	}
 
+	internal Effect(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	{
+	}
+
 	public void SetAll()
 	{
 		_setAll(_handle);
@@ -99,6 +103,6 @@ public class Effect : NatPtrWrapper
 
 	public IShader GetShader(int shaderID)
 	{
-		return new InstIShader(_getShader(_handle, shaderID));
+		return new InstIShader(_getShader(_handle, shaderID), ownsHandle: false);
 	}
 }

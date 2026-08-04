@@ -81,7 +81,7 @@ public class ICharacterController : ICollider
         return _isGrounded(_handle);
     }
 
-    public ICharacterController(IntPtr natPtr) : base(natPtr, _destroy)
+    public ICharacterController(IntPtr natPtr) : base(natPtr)
     {
     }
 }

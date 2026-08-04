@@ -20,6 +20,10 @@ public class InstIVertexBuffer : InstGPUBuffer, IVertexBuffer
 	{
 	}
 
+	internal InstIVertexBuffer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public ulong TotalSize
 	{
 		get => _totalSize(_handle);
