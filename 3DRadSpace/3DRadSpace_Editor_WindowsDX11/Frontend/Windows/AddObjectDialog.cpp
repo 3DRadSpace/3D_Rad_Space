@@ -58,8 +58,8 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 					{
 						auto& list = Engine3DRadSpace::Internal::GetInternalObjectsList();
 						Logging::PrintMessage(std::format("AddObj: e3drsp_internal_objects_list 0x{:x}", reinterpret_cast<uintptr_t>(list.data())));
-						auto obj = EditObject(hwnd, aod->hInstance, list[item->iItem], aod->_content);
-						EndDialog(hwnd, reinterpret_cast<INT_PTR>(obj));
+						aod->Result = EditObject(hwnd, aod->hInstance, list[item->iItem], aod->_content);
+						EndDialog(hwnd, IDOK);
 					}
 					break;
 				}
@@ -112,7 +112,8 @@ AddObjectDialog::AddObjectDialog(HWND owner_window, HINSTANCE instance, Content:
 
 IObject* AddObjectDialog::ShowDialog()
 {
-	return reinterpret_cast<IObject*>(Dialog::ShowDialog(static_cast<void *>(this)));
+	auto r = Dialog::ShowDialog(static_cast<void *>(this));
+	return r == IDOK ? static_cast<IObject*>(Result) : nullptr;
 }
 
 struct objectItem

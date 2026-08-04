@@ -20,6 +20,8 @@ class AddObjectDialog : public Dialog
 public:
 	AddObjectDialog(HWND owner, HINSTANCE hInstance, Engine3DRadSpace::Content::ContentManager *content);
 
+	void* Result = nullptr;
+
 	[[nodiscard]] Engine3DRadSpace::Objects::IObject* ShowDialog();
 
 	friend INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
