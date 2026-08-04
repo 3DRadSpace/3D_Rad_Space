@@ -121,6 +121,7 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 				if (!editor->_script->Compile())
 				{
 					MessageBoxA(hwndDlg, "Script failed to compile. Check the log for details.", "Compilation Result", MB_OK | MB_ICONERROR);
+					break;
 				}
 
 				auto endTime = std::chrono::high_resolution_clock::now();
@@ -129,23 +130,24 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 				std::string message = "Script compiled successfully in " + std::to_string(duration) + " ms.";
 
 				MessageBoxA(hwndDlg, message.c_str(), "Compilation Result", MB_OK | MB_ICONINFORMATION);
+
 			}
 			catch (const std::exception& e)
 			{
 				Engine3DRadSpace::Logging::PrintWarning(std::string("Exception caught: ") + e.what());
 			}
-			break;
+			return TRUE;
 		}
 		case IDC_BUTTON2:
 			editor->openFile();
-			break;
+			return TRUE;
 		case IDC_BUTTON3:
 			editor->_script->ScriptPath = editor->saveFileDialog().string();
 			editor->save(editor->_script->ScriptPath);
-			break;
+			return TRUE;
 		case IDC_BUTTON4:
 			ShellExecuteA(nullptr, "open", "https://3dradspace.github.io/docs/scripting/csharp.html", nullptr, nullptr, SW_SHOWNORMAL);
-			break;
+			return TRUE;
 		}
 		break;
 	}
