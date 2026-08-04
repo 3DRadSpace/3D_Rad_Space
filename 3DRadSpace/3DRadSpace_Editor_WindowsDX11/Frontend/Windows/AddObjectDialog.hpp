@@ -1,9 +1,8 @@
 #pragma once
-
 #include <Engine3DRadSpace/Reflection/Reflection.hpp>
 #include <Engine3DRadSpace/Content/ContentManager.hpp>
 #include "..\Controls\Dialog.hpp"
-#include "EditObjectDialog.hpp"
+#include "EditObject.hpp"
 
 class AddObjectDialog : public Dialog
 {

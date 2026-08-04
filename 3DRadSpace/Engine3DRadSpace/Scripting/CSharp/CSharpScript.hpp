@@ -33,6 +33,8 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		int GetID() const noexcept;
 		bool WasInitialized() const noexcept;
 
+		bool Compile() const;
+
 		~CSharpScript() override;
 	};
 }

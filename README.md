@@ -59,6 +59,8 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 - *AngelScript* (Optional, for the AngelScript plugin) `.\vcpkg install angelscript:x64-windows`
 - *Google test* (Optional, for test units.) `vcpkg install gtest:x64-windows`
 - *nethost* (Optional, for C# plugin) `vcpkg install nethost:x64-windows`
+- *scintilla* (Optional, for C# and AngelScript plugins) `vcpkg install scintilla:x64-windows`
+- *lexilla* (Optional, for C# and AngelScript plugins) `vcpkg install lexilla:x64-windows`
 
 2.) Open the folder as a CMake project (preferably using Visual Studio 2022 / other IDEs were not tested yet).
 

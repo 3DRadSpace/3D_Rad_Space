@@ -3,9 +3,9 @@
 
 using namespace Engine3DRadSpace::Logging;
 
-void E3DRSP_SetLastMessage(const E3DRSP_Message* message)
+void E3DRSP_PrintMessage(const E3DRSP_Message* message)
 {
-	SetLastMessage(Message(
+	PrintMessage(Message(
 		message->Code,
 		message->Details,
 		message->Extra

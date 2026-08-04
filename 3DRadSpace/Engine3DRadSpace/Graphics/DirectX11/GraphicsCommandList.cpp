@@ -213,11 +213,11 @@ void GraphicsCommandList::SaveBackBufferToFile(const std::filesystem::path& path
 	UnbindRenderTargetAndDepth();
 
 	HRESULT r = DirectX::SaveWICTextureToFile(_context, _device->_backbufferRT->_texture.Get(), GUID_ContainerFormatPng, path.wstring().c_str(), nullptr, nullptr, true);
-	if(FAILED(r)) throw std::exception("Failed to save file!");
+	if(FAILED(r)) throw Logging::Exception("Failed to save file!");
 
 	SetRenderTargetAndDepth(nullptr, nullptr);
 
-	Logging::SetLastMessage(std::format("Saved backbuffer image to {}", path.string()));
+	Logging::PrintMessage(std::format("Saved backbuffer image to {}", path.string()));
 }
 
 void GraphicsCommandList::SetShader(IShader* shader)
@@ -333,7 +333,7 @@ void GraphicsCommandList::ResizeBackBuffer(const Math::Point& newResolution)
 	HRESULT r = _device->_swapChain->ResizeBuffers(0, newResolution.X, newResolution.Y, DXGI_FORMAT_UNKNOWN, 0);
 	if (FAILED(r))
 	{
-		throw std::exception("Failed to resize buffers!");
+		throw Logging::Exception("Failed to resize buffers!");
 	}
 
 	_device->_createBackBuffer();

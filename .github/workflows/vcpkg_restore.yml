@@ -54,3 +54,10 @@ jobs:
 
     - name: Install nethost 
       run: vcpkg install nethost:x64-windows-release
+
+    - name: Install scintilla 
+      run: vcpkg install scintilla:x64-windows-release
+
+    - name: Install lexilla 
+      run: vcpkg install lexilla:x64-windows-release
+

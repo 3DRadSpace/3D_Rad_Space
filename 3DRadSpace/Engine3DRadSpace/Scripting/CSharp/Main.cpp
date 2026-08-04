@@ -6,6 +6,7 @@
 #include "../../Logging/Exception.hpp"
 #include "../../Plugins/EditorPlugin.hpp"
 #include "../../Native/LibraryLoader.hpp"
+#include <scintilla/ILexer.h>
 
 //https://github.com/dotnet/samples/blob/main/core/hosting/src/NativeHost/nativehost.cpp
 
@@ -30,6 +31,7 @@ constexpr auto runtimeConfigPath = STR("3DRadSpace_CSharp.runtimeconfig.json");
 ScriptManager_LoadScript csmgr_loadScript;
 ScriptManager_UpdateScript csmgr_updateScript;
 ScriptManager_UnloadScript csmgr_unloadScript;
+ScriptManager_CompileScript csmgr_compileScript;
 
 template<typename Fn>
 auto CallCSFunction(
@@ -61,7 +63,7 @@ auto CallCSFunction(
 	const char_t *static_class_and_assembly_name,
 	const char_t *fnName,
 	Args&& ...args
-) -> std::invoke_result_t<Fn>
+) -> std::invoke_result_t<std::optional<Fn>>
 {
 	Fn fn;
 
@@ -76,11 +78,11 @@ auto CallCSFunction(
 
 	if(r != 0 || fn == nullptr)
 	{
-		Logging::SetLastWarning(std::format("load_assembly_and_get_function_pointer(RTTI {}) failed: rc {:x}", typeid(Fn).name(), r));
-		return false;
+		Logging::PrintWarning(std::format("load_assembly_and_get_function_pointer(RTTI {}) failed: rc {:x}", typeid(Fn).name(), r));
+		return std::nullopt;
 	}
 
-	fn(std::forward<Args&&>(args)...);
+	return fn(std::forward<Args&&>(args)...);
 }
 
 template<typename Fn>
@@ -104,13 +106,13 @@ bool PluginMain()
 {
 	if (!load_hostfxr())
 	{
-		Logging::SetLastWarning("load_hostfxr() failed!");
+		Logging::PrintWarning("load_hostfxr() failed!");
 		return false;
 	}
 
 	if(!std::filesystem::exists(runtimeConfigPath))
 	{
-		Logging::SetLastWarning("C# Runtime config is not found. It should be located at \"<root>\\3DRadSpace_CSharp.runtimeconfig.json\"");
+		Logging::PrintWarning("C# Runtime config is not found. It should be located at \"<root>\\3DRadSpace_CSharp.runtimeconfig.json\"");
 		return false;
 	}
 
@@ -118,7 +120,7 @@ bool PluginMain()
 
 	if (load_assembly_and_get_function_pointer == nullptr)
 	{
-		Logging::SetLastWarning("get_dotnet_load_assembly() is null!");
+		Logging::PrintWarning("get_dotnet_load_assembly() is null!");
 		return false;
 	}
 
@@ -126,6 +128,7 @@ bool PluginMain()
 	csmgr_loadScript = LoadCSFunction<ScriptManager_LoadScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("LoadScript"));
 	csmgr_updateScript = LoadCSFunction<ScriptManager_UpdateScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("UpdateScript"));
 	csmgr_unloadScript = LoadCSFunction<ScriptManager_UnloadScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("UnloadScript"));
+	csmgr_compileScript = LoadCSFunction<ScriptManager_CompileScript>(STR("Engine3DRadSpace.Internal.ScriptManager, 3DRadSpace_CSharp"), STR("CompileScript"));
 
 	return true;
 }

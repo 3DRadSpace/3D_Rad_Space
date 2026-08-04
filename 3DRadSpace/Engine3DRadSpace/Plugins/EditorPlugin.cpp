@@ -1,5 +1,7 @@
 #include "EditorPlugin.hpp"
 #include "../Native/LibraryLoader.hpp"
+#include "../Objects/Impl/Objects.hpp"
+#include "../FFI/Core/RawSpan.h"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Plugins;
@@ -17,6 +19,26 @@ std::expected<std::pair<PluginInfo, void*>, PluginLoadingError> Engine3DRadSpace
 	if(!get_info) return std::unexpected(PluginLoadingError::NotA3DRadSpacePlugin);
 
 	if(!initialize_fn()) return std::unexpected(PluginLoadingError::InitializationFunctionFailure);
+
+	typedef E3DRSP_RawSpan (*LoadCustomObjectsFn)();
+	auto load_objects_fn = GetFunctionFromLibrary<LoadCustomObjectsFn>(plugin, "LoadCustomObjects");
+	if(load_objects_fn)
+	{
+		auto& list = Engine3DRadSpace::Internal::GetInternalObjectsList();
+		auto span = load_objects_fn();
+		auto begin = static_cast<Engine3DRadSpace::Reflection::ReflectedObject*>(span.Ptr);
+		for(size_t i = 0; i < span.Size; ++i)
+		{
+			auto* obj = &begin[i];
+			bool duplicate = std::any_of(
+				list.begin(),
+				list.end(),
+				[obj](Engine3DRadSpace::Reflection::ReflectedObject* existing) { return existing->ObjectUUID == obj->ObjectUUID; }
+			);
+			if(!duplicate)
+				list.push_back(obj);
+		}
+	}
 
 	return std::make_pair<PluginInfo, void*>(get_info(), static_cast<void*>(plugin));
 }

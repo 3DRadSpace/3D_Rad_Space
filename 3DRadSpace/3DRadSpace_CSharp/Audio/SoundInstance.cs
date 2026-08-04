@@ -112,6 +112,10 @@ public class SoundInstance : NatPtrWrapper
 	{
 	}
 
+	internal SoundInstance(IntPtr ptrSI, bool ownsHandle) : base(ptrSI, ownsHandle ? destroy : null)
+	{
+	}
+
 	public float Pitch
 	{
 		get => getPitch(_handle);

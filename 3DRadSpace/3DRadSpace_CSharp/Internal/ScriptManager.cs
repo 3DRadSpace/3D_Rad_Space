@@ -29,7 +29,7 @@ public static class ScriptManager
 
 			if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(classNameStr))
 			{
-				SetWarning("Invalid script path or class name");
+				PrintWarning("Invalid script path or class name");
 				return -1;
 			}
 
@@ -38,7 +38,7 @@ public static class ScriptManager
 			if (!result.Success)
 			{
 				string errors = string.Join("\n", result.Errors);
-				SetWarning($"Script compilation failed:\n{errors}");
+                PrintWarning($"Script compilation failed:\n{errors}");
 				return -1;
 			}
 
@@ -50,14 +50,14 @@ public static class ScriptManager
 			}
 			catch (Exception ex)
 			{
-				SetWarning($"Failed to create instance: {ex.Message}");
+                PrintWarning($"Failed to create instance: {ex.Message}");
 				result.Unload();
 				return -1;
 			}
 
 			if (instance == null)
 			{
-				SetWarning("Failed to create script instance");
+                PrintWarning("Failed to create script instance");
 				result.Unload();
 				return -1;
 			}
@@ -82,7 +82,7 @@ public static class ScriptManager
 		}
 		catch (Exception ex)
 		{
-			SetWarning($"Exception in LoadScript: {ex.Message}");
+            PrintWarning($"Exception in LoadScript: {ex.Message}");
 			return -1;
 		}
 	}
@@ -105,7 +105,7 @@ public static class ScriptManager
 		}
 		catch(Exception ex)
 		{
-			SetWarning($"Exception in UpdateScript: {ex.Message}");
+            PrintWarning($"Exception in UpdateScript: {ex.Message}");
 			return 0;
 		}
 	}
@@ -167,10 +167,10 @@ public static class ScriptManager
 	/// <summary>
 	/// Sets a warning message in the engine's logging system.
 	/// </summary>
-	private static void SetWarning(string message)
+	private static void PrintWarning(string message)
 	{
 		var warning = new Warning(message, 0, 1, IntPtr.Zero);
-		Warning.SetLastWarning(ref warning);
+		Warning.PrintWarning(ref warning);
 	}
 
 	private class ScriptInstance
@@ -216,10 +216,65 @@ public static class ScriptManager
 		return scriptId;
 	}
 
-	/// <summary>
-	/// Gets the script instance by ID (for use from managed code).
-	/// </summary>
-	public static object? GetScriptInstance(int scriptId)
+    [UnmanagedCallersOnly]
+    public static byte CompileScript(IntPtr scriptPath, IntPtr className)
+    {
+        try
+        {
+            string? path = Marshal.PtrToStringUTF8(scriptPath);
+            string? classNameStr = Marshal.PtrToStringUTF8(className);
+
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(classNameStr))
+            {
+                PrintWarning("Invalid script path or class name");
+                return 0;
+            }
+
+			var result = CsCompiler.CompileFromFile(path);
+
+			if (!result.Success)
+			{
+				string errors = string.Join("\n", result.Errors);
+				PrintWarning($"Script compilation failed:\n{errors}");
+				result.Unload();
+				return 0;
+			}
+
+			// Try to create an instance
+			object? instance;
+			try
+			{
+				instance = result.CreateInstance(classNameStr);
+			}
+			catch (Exception ex)
+			{
+				PrintWarning($"Failed to create instance: {ex.Message}");
+				result.Unload();
+				return 0;
+			}
+
+			if (instance == null)
+			{
+				PrintWarning("Failed to create script instance");
+				result.Unload();
+				return 0;
+			}
+
+			result.Unload();
+		}
+		catch (Exception ex)
+		{
+			PrintWarning($"Exception in CompileScript: {ex.Message}");
+			return 0;
+		}
+
+		return 1;
+    }
+
+    /// <summary>
+    /// Gets the script instance by ID (for use from managed code).
+    /// </summary>
+    public static object? GetScriptInstance(int scriptId)
 	{
 		return _loadedScripts.TryGetValue(scriptId, out var instance) ? instance.Instance : null;
 	}

@@ -49,7 +49,7 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Graphics.Primitives PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Graphics.Primitives PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Graphics.Primitives PRIVATE [[E3DRSP_GRAPHICS_PRIMITIVES_EXPORT=__declspec(dllexport)]])

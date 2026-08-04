@@ -14,6 +14,7 @@
 #include "../Controls/EventControl.hpp"
 #include <Engine3DRadSpace/Objects/ObjectList.hpp>
 #include "../Controls/ObjectIDControl.hpp"
+#include <Engine3DRadSpace/Logging/Warning.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Audio;
@@ -104,6 +105,13 @@ EditObjectDialog::EditObjectDialog(HWND owner, HINSTANCE hInstance, ReflectedObj
 	assert(data != nullptr);
 }
 
+static std::unordered_map<std::string, int> attribMap =
+{
+	{"HelpURL", 1},
+	{"Title", 2 },
+	{"CustomWindow", 3}
+};
+
 void EditObjectDialog::createForms()
 {
 	int x = 5;
@@ -126,15 +134,16 @@ void EditObjectDialog::createForms()
 		{
 			auto name = attribute->FieldName();
 
-			std::unordered_map<std::string, int> attribMap=
-			{
-				{"HelpURL", 1}
-			};
-
-			switch (attribMap[name])
+			switch (attribMap.find(name) != attribMap.end() ? attribMap[name] : 0)
 			{
 			case 1:
 				_helpUrl = attribute->FieldDesc();
+				break;
+			case 2:
+				SetWindowTextA(window, attribute->FieldDesc().c_str());	
+				break;
+			case 3:
+				Logging::PrintWarning("CustomWindow attribute is not supported in EditObjectDialog. Ignoring.");
 				break;
 			default:
 				break;

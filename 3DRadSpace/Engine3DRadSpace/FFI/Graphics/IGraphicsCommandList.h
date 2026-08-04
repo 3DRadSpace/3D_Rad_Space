@@ -16,6 +16,7 @@ typedef void* E3DRSP_IShader;
 typedef void* E3DRSP_IRasterizerState;
 typedef void* E3DRSP_IBlendState;
 typedef void* E3DRSP_IGPUBuffer;
+typedef void* E3DRSP_IGPUMultiBuffer;
 
 #ifdef __cplusplus
 extern "C"
@@ -92,8 +93,10 @@ extern "C"
 
 	E3DRSP_FFI_EXPORT void E3DRSP_IGraphicsCommandList_ResizeBackBuffer(E3DRSP_IGraphicsCommandList cmd, const E3DRSP_Point* newResolution);
 	E3DRSP_FFI_EXPORT void E3DRSP_IGraphicsCommandList_SetFullScreen(E3DRSP_IGraphicsCommandList cmd, bool fullscreen);
+	E3DRSP_FFI_EXPORT bool E3DRSP_IGraphicsCommandList_IsFullScreen(E3DRSP_IGraphicsCommandList cmd);
 
 	E3DRSP_FFI_EXPORT void E3DRSP_IGraphicsCommandList_Copy(E3DRSP_IGraphicsCommandList cmd, E3DRSP_IGPUBuffer* dest, E3DRSP_IGPUBuffer* src);
+	E3DRSP_FFI_EXPORT void E3DRSP_IGraphicsCommandList_CopyMulti(E3DRSP_IGraphicsCommandList cmd, E3DRSP_IGPUMultiBuffer* dest, E3DRSP_IGPUMultiBuffer* src);
 #ifdef __cplusplus
 }
 #endif

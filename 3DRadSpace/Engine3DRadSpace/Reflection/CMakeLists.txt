@@ -55,13 +55,14 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Reflection PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Reflection PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Reflection PRIVATE [[E3DRSP_REFLECTION_EXPORT=__declspec(dllexport)]])
 endif()
 
 target_link_libraries(3DRadSpace.Reflection PRIVATE 3DRadSpace.Math)
+target_link_libraries(3DRadSpace.Reflection PRIVATE 3DRadSpace.Logging)
 target_include_directories(3DRadSpace.Reflection PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
 #Nlohmann JSON

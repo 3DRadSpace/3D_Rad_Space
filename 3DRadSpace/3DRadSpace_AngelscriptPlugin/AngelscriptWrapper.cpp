@@ -19,11 +19,11 @@ using namespace Engine3DRadSpace::Math;
 void AngelScriptWrapper_MessageCallback(const asSMessageInfo* msg, void* param)
 {
 	if(msg->type == asMSGTYPE_WARNING)
-		SetLastWarning(std::format("({}, {}) : Warning {}", msg->section, msg->row, msg->col, msg->message));
+		PrintWarning(std::format("({}, {}) : Warning {}", msg->section, msg->row, msg->col, msg->message));
 	else if(msg->type == asMSGTYPE_INFORMATION)
-		SetLastMessage(std::format("({}, {}) : Information {}", msg->section, msg->row, msg->col, msg->message));
+		PrintMessage(std::format("({}, {}) : Information {}", msg->section, msg->row, msg->col, msg->message));
 	if(msg->type == asMSGTYPE_ERROR)
-		SetLastWarning(std::format("({}, {}) : Error {}", msg->section, msg->row, msg->col, msg->message));
+		PrintWarning(std::format("({}, {}) : Error {}", msg->section, msg->row, msg->col, msg->message));
 }
 
 static void v2ctor_def(Vector2* self)

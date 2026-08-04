@@ -21,12 +21,12 @@ Warning::Warning(const int32_t code, const std::string& details, const int sever
 {
 }
 
-void Engine3DRadSpace::Logging::SetLastWarning(const Warning &warning)
+void Engine3DRadSpace::Logging::PrintWarning(const Warning &warning)
 {
 	WarningHandler(warning);
 }
 
-void Engine3DRadSpace::Logging::SetLastWarning(const std::string& warning_text)
+void Engine3DRadSpace::Logging::PrintWarning(const std::string& warning_text)
 {
 	WarningHandler(Warning(0, warning_text, 0, nullptr));
 }

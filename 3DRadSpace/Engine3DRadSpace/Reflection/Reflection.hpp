@@ -64,8 +64,10 @@
 /// ---------------------------------------------------------------------------
 /// Supported attributes are:
 /// - "HelpURL": Provides a URL to the help documentation for the object being reflected.
+/// - "Title" : Custom title for the editor object window. Default is "{Object name} object"
 /// - "CustomWindow": Specifies that the given object doesn't use the default editor window, but an custom one instead. The value is the name of the function that creates the custom window.
 ///                   Refer to CustomEditObjectWindow inside the Plugin library for more details.
+///                   WARNING: The function name must be unique across all loaded modules.
 #include "Attribute.hpp"
 
 #define REFL_ATTR(Name, Value) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::Attribute(Name, Value)),

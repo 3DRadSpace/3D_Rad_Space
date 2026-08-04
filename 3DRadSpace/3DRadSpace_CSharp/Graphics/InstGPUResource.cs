@@ -17,7 +17,11 @@ public class InstGPUResource : NatPtrWrapper, IGPUResource
 	{
 	}
 
-	public IGraphicsDevice GraphicsDevice => new InstIGraphicsDevice(_device(_handle));
+	protected InstGPUResource(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	{
+	}
+
+	public IGraphicsDevice GraphicsDevice => new InstIGraphicsDevice(_device(_handle), ownsHandle: false);
 
 	public IntPtr GPUHandle => _natHandle(_handle);
 }

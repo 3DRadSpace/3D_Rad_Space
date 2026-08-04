@@ -42,11 +42,11 @@ public class EffectManager : NatPtrWrapper
 
 	public Effect GetEffect(string name)
 	{
-		return new Effect(_getEffect(_handle, name));
+		return new Effect(_getEffect(_handle, name), ownsHandle: false);
 	}
 
 	public IShader GetShader(string name)
 	{
-		return new InstIShader(_getShader(_handle, name));
+		return new InstIShader(_getShader(_handle, name), ownsHandle: false);
 	}
 }

@@ -9,12 +9,13 @@ using namespace Engine3DRadSpace::Scripting::CSharp;
 extern ScriptManager_LoadScript csmgr_loadScript;
 extern ScriptManager_UpdateScript csmgr_updateScript;
 extern ScriptManager_UnloadScript csmgr_unloadScript;
+extern ScriptManager_CompileScript csmgr_compileScript;
 
 CSharpScript::CSharpScript(
 	const std::string& name,
 	bool enabled,
 	const std::string& src
-)
+) : IObject(name, enabled)
 {
 }
 
@@ -66,6 +67,13 @@ bool CSharpScript::WasInitialized() const noexcept
 	return _initialized;
 }
 
+bool CSharpScript::Compile() const
+{
+	if (csmgr_compileScript == nullptr) throw Logging::Exception("Script manager is improperly initialized!");
+
+	return csmgr_compileScript(ScriptPath.c_str(), Class.c_str());
+}
+
 CSharpScript::~CSharpScript()
 {
 	//This check is necessary, as an object is created when this object type is being reflected.
@@ -76,6 +84,9 @@ CSharpScript::~CSharpScript()
 }
 
 REFL_BEGIN(CSharpScript, "C# Script", "Scripting", "C# script")
+REFL_FIELD(CSharpScript, std::string, Name, "Name", "C# Script", "Name of the script object")
+REFL_FIELD(CSharpScript, bool, Enabled, "Enabled", true, "Whether the script is enabled or not")
 REFL_FIELD(CSharpScript, std::string, ScriptPath, "Script path", "", "Path to script file")
-REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Path to script file")
+REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Name of the class being constructed")
+REFL_ATTR("CustomWindow", "CreateCSharpEditorWindow")
 REFL_END

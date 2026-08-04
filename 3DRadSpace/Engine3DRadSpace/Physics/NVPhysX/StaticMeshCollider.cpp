@@ -74,7 +74,7 @@ void StaticMeshCollider::_generateRigidbody()
 
 #if _DEBUG
 		   if(!PxValidateTriangleMesh(cookParams, meshDesc))
-			   Logging::SetLastWarning("PhysX: PxValidateTriangleMesh failed!");
+			   Logging::PrintWarning("PhysX: PxValidateTriangleMesh failed!");
 #endif
 			auto cookedMesh = PxCreateTriangleMesh(
 				cookParams,
@@ -88,7 +88,7 @@ void StaticMeshCollider::_generateRigidbody()
 			if(cookedMesh != nullptr)
 				meshes.push_back(cookedMesh);
 			else
-				Logging::SetLastWarning("PhysX: PxCreateTriangleMesh failed!");
+				Logging::PrintWarning("PhysX: PxCreateTriangleMesh failed!");
 		}
 	}
 
@@ -110,7 +110,7 @@ void StaticMeshCollider::_generateRigidbody()
 	bool success = scene->addActor(*_rigidbody);
 	if(!success)
 	{
-		Logging::SetLastWarning("PhysX: StaticMeshCollider::_generateRigidbody - failed to add actor to scene.");
+		Logging::PrintWarning("PhysX: StaticMeshCollider::_generateRigidbody - failed to add actor to scene.");
 	}
 }
 
@@ -220,7 +220,7 @@ std::optional<float> StaticMeshCollider::Intersects(const Math::Ray &r)
 	physx::PxU32 numShapes = actor->getNbShapes();
 	if(numShapes == 0)
 	{
-		Logging::SetLastWarning("PhysX: StaticMeshCollider::Intersects - no shapes attached (mesh cooking may have failed).");
+		Logging::PrintWarning("PhysX: StaticMeshCollider::Intersects - no shapes attached (mesh cooking may have failed).");
 		return std::nullopt;
 	}
 

@@ -27,6 +27,10 @@ public class InstITexture2D : InstGPUMultiBuffer, ITexture2D
 	{
 	}
 
+	internal InstITexture2D(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public Point Size
 	{
 		get

@@ -17,6 +17,10 @@ public class InstIIndexBuffer : InstGPUBuffer, IIndexBuffer
 	{
 	}
 
+	internal InstIIndexBuffer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public void Set(uint index)
 	{
 		_set(_handle, index);

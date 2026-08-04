@@ -27,6 +27,7 @@
 #include <expected>
 #include <concepts>
 #include <typeinfo>
+#include <stacktrace>
 #pragma endregion
 
 #pragma region WIN32 imports

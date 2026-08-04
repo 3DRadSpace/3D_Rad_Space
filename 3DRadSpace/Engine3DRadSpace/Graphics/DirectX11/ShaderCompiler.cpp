@@ -237,7 +237,7 @@ ShaderCompiler::CompileOutput ShaderCompiler::Compile(const ShaderDesc* desc)
 	}
 	catch (const Exception& e)
 	{
-		Logging::SetLastWarning(e.What());
+		Logging::PrintWarning(e.What());
 		return return_fail(e.what());
 	}
 }

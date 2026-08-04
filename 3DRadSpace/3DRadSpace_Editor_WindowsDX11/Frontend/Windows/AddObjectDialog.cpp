@@ -2,6 +2,11 @@
 #include "..\..\resource.h"
 #include <CommCtrl.h>
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
+#include <psapi.h>
+#include <Engine3DRadSpace/Plugins/CustomObject.hpp>
+#include "EditObject.hpp"
+#include <Engine3DRadSpace/Logging/Exception.hpp>
+#include <Engine3DRadSpace/Logging/Message.hpp>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -51,8 +56,10 @@ INT_PTR WINAPI AddObjectDialog_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(item->iItem >= 0)
 					{
-						EditObjectDialog dialog(hwnd, aod->hInstance, e3drsp_internal_objects_list[item->iItem], aod->_content);
-						EndDialog(hwnd, reinterpret_cast<INT_PTR>(dialog.ShowDialog()));
+						auto& list = Engine3DRadSpace::Internal::GetInternalObjectsList();
+						Logging::PrintMessage(std::format("AddObj: e3drsp_internal_objects_list 0x{:x}", reinterpret_cast<uintptr_t>(list.data())));
+						auto obj = EditObject(hwnd, aod->hInstance, list[item->iItem], aod->_content);
+						EndDialog(hwnd, reinterpret_cast<INT_PTR>(obj));
 					}
 					break;
 				}
@@ -116,17 +123,17 @@ struct objectItem
 
 void AddObjectDialog::createForms()
 {
-	auto& Objects = e3drsp_internal_objects_list;
+	auto& Objects = Engine3DRadSpace::Internal::GetInternalObjectsList();
 
 	//Create the list view control
 	listView = CreateWindowExA(0, "SysListView32", "", WS_VISIBLE | WS_CHILD | LVS_ALIGNTOP, 0, 0, 800, 600, window, nullptr, hInstance, nullptr);
-	if (listView == nullptr) throw std::exception("Failed to create a list view control!");
+	if (listView == nullptr) throw Engine3DRadSpace::Logging::Exception("Failed to create a list view control!");
 	SendMessageA(listView, LVM_ENABLEGROUPVIEW, true, 0);
 	SendMessageA(listView, LVM_SETITEMCOUNT, Objects.size(), LVSICF_NOSCROLL);
 
 	//Create the image list
 	imageList = ImageList_Create(64, 64, ILC_COLOR32, 20, 5);
-	if (imageList == nullptr) throw std::exception("Failed to create a image list!");
+	if (imageList == nullptr) throw Engine3DRadSpace::Logging::Exception("Failed to create a image list!");
 
 	//Assign the image list to the list view
 	SendMessageA(listView, LVM_SETIMAGELIST, LVSIL_NORMAL, reinterpret_cast<LPARAM>(imageList));

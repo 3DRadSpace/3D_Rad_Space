@@ -7,5 +7,5 @@ using namespace Engine3DRadSpace::Logging;
 
 void ErrorCallback::reportError(physx::PxErrorCode::Enum code, const char* message, const char* file, int line)
 {
-	Logging::SetLastWarning(std::format("PhysX {} in file: {} at line: {}", message, file, line));
+	Logging::PrintWarning(std::format("PhysX {} in file: {} at line: {}", message, file, line));
 }

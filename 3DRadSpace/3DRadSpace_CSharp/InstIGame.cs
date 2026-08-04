@@ -29,6 +29,10 @@ namespace Engine3DRadSpace
 		{
 		}
 
+		internal InstIGame(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+		{
+		}
+
 		public void Exit()
 		{
 			_exit(_handle);

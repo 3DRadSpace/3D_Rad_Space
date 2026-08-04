@@ -13,7 +13,7 @@ typedef struct E3DRSP_Warning
 extern "C"
 {
 #endif
-	void E3DRSP_FFI_EXPORT E3DRSP_SetLastWarning(const E3DRSP_Warning* warning);
+	void E3DRSP_FFI_EXPORT E3DRSP_PrintWarning(const E3DRSP_Warning* warning);
 #ifdef __cplusplus
 }
 #endif

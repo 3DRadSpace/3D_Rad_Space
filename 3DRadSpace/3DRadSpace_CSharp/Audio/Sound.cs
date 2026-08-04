@@ -12,17 +12,27 @@ public class Sound : IDisposable
 
     IntPtr _sound;
     bool _disposed;
+    bool _ownsHandle;
 
     public Sound(AudioEngine audio, string path)
     {
         _sound = create(audio, path);
         _disposed = false;
+        _ownsHandle = true;
     }
 
     public Sound(IntPtr ptrSound)
     {
         _sound = ptrSound;
         _disposed = false;
+        _ownsHandle = true;
+    }
+
+    internal Sound(IntPtr ptrSound, bool ownsHandle)
+    {
+        _sound = ptrSound;
+        _disposed = false;
+        _ownsHandle = ownsHandle;
     }
 
     public nint Handle
@@ -43,7 +53,7 @@ public class Sound : IDisposable
             return;
         }
 
-        if (_sound != 0)
+        if (_sound != 0 && _ownsHandle)
         {
             destroy(_sound);
             _sound = 0;

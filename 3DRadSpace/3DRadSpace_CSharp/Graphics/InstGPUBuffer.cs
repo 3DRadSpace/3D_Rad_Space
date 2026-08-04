@@ -17,6 +17,10 @@ public class InstGPUBuffer : InstGPUResource, IGPUBuffer
 	{
 	}
 
+	protected InstGPUBuffer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public void EndRead()
 	{
 		_end(_handle);

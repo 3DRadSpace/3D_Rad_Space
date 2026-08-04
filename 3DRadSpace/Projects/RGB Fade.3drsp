@@ -1,0 +1,86 @@
+{
+    "numAssets": 1,
+    "numObjects": 2,
+    "objects": {
+        "0": {
+            "Children": [
+                1
+            ],
+            "Color": {
+                "f": {
+                    "0": {
+                        "A": 1.0,
+                        "B": 0.0,
+                        "G": 0.0,
+                        "R": 1.0
+                    }
+                }
+            },
+            "Enabled": {
+                "f": {
+                    "0": true
+                }
+            },
+            "Name": {
+                "f": {
+                    "0": "SkyColor"
+                }
+            },
+            "Parent": -1,
+            "UUID": {
+                "Data1": 4003611077,
+                "Data2": 39365,
+                "Data3": 19009,
+                "Data4": {
+                    "0": 158,
+                    "1": 101,
+                    "2": 246,
+                    "3": 115,
+                    "4": 136,
+                    "5": 140,
+                    "6": 235,
+                    "7": 196
+                }
+            }
+        },
+        "1": {
+            "Children": [],
+            "Enabled": {
+                "f": {
+                    "0": true
+                }
+            },
+            "Entry classname": {
+                "f": {
+                    "0": "MyClass"
+                }
+            },
+            "Name": {
+                "f": {
+                    "0": "C# Script"
+                }
+            },
+            "Parent": 0,
+            "Script path": {
+                "f": {
+                    "0": "D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Scripts\\RGBFade.cs"
+                }
+            },
+            "UUID": {
+                "Data1": 2338353927,
+                "Data2": 24563,
+                "Data3": 16409,
+                "Data4": {
+                    "0": 148,
+                    "1": 22,
+                    "2": 73,
+                    "3": 62,
+                    "4": 161,
+                    "5": 0,
+                    "6": 224,
+                    "7": 178
+                }
+            }
+        }
+    }
+}

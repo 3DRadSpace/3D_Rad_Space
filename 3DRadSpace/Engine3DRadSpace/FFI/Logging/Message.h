@@ -12,7 +12,7 @@ typedef struct E3DRSP_Message
 extern "C"
 {
 #endif
-	void E3DRSP_FFI_EXPORT E3DRSP_SetLastMessage(const E3DRSP_Message* message);
+	void E3DRSP_FFI_EXPORT E3DRSP_PrintMessage(const E3DRSP_Message* message);
 #ifdef __cplusplus
 }
 #endif

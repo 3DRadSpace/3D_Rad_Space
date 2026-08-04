@@ -4,6 +4,7 @@
 #include <extensions/PxRigidBodyExt.h>
 #include <geometry/PxGeometryQuery.h>
 #include <PxScene.h>
+#include "../../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
@@ -21,7 +22,7 @@ void DynamicCollider::_generateRigidbody()
 
 	if(nvPhysics == nullptr)
 	{
-		throw std::runtime_error("PhysX physics object is null");
+		throw Logging::Exception("PhysX physics object is null");
 	}
 
 	auto material = nvPhysics->createMaterial(_staticFriction, _dynamicFriction, _restitution);
@@ -37,13 +38,13 @@ void DynamicCollider::_generateRigidbody()
 	// Validate transform
 	if(!transform.isValid())
 	{
-		throw std::runtime_error("Invalid transform for dynamic rigidbody creation");
+		throw Logging::Exception("Invalid transform for dynamic rigidbody creation");
 	}
 
 	auto rigidDynamic = nvPhysics->createRigidDynamic(transform);
 	if(rigidDynamic == nullptr)
 	{
-		throw std::runtime_error("Failed to create PhysX dynamic rigidbody");
+		throw Logging::Exception("Failed to create PhysX dynamic rigidbody");
 	}
 
 	rigidDynamic->setMass(_mass);
@@ -66,13 +67,13 @@ void DynamicCollider::_generateRigidbody()
 	auto scene = static_cast<physx::PxScene*>(_physics->GetScene());
 	if(scene == nullptr)
 	{
-		throw std::runtime_error("PhysX scene is null");
+		throw Logging::Exception("PhysX scene is null");
 	}
 
 	bool success = scene->addActor(*_rigidbody);
 	if(!success)
 	{
-		throw std::runtime_error("Failed to add dynamic rigidbody to PhysX scene");
+		throw Logging::Exception("Failed to add dynamic rigidbody to PhysX scene");
 	}
 }
 

@@ -17,6 +17,10 @@ namespace Engine3DRadSpace.Graphics
 		{
 		}
 
+		protected InstGPUMultiBuffer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+		{
+		}
+
 		public void EndRead(ulong subresource)
 		{
 			_endRead(_handle, subresource);

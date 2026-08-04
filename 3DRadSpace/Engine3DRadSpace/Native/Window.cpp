@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "../Logging/Exception.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Math;
@@ -256,7 +257,7 @@ Window::Window(void* hInstance,void* parentWindow)
 		static_cast<HINSTANCE>(hInstance),
 		this
 	);
-	if (_window == nullptr) throw std::runtime_error("Failed to create a Windows window instance!");
+	if (_window == nullptr) throw Engine3DRadSpace::Logging::Exception("Failed to create a Windows window instance!");
 
 	ShowWindow(static_cast<HWND>(_window),SW_NORMAL);
 	SetForegroundWindow(static_cast<HWND>(_window));

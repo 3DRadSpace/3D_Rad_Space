@@ -20,13 +20,17 @@ public class InstIDepthStencilBuffer : InstGPUBuffer, IDepthStencilBuffer
 	{
 	}
 
+	internal InstIDepthStencilBuffer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public IntPtr GetDepthTextureHandle()
 	{
 		return _depthHandle(_handle);
 	}
 	public ITexture2D GetDepthTexture()
 	{
-		return new InstITexture2D(_depthTexture(_handle));
+		return new InstITexture2D(_depthTexture(_handle), ownsHandle: false);
 	}
 
 	public ITexture2D CloneDepthTexture()

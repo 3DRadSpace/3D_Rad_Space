@@ -2,6 +2,7 @@
 #include "PostProcessEffect.hpp"
 #include "../IRenderTarget.hpp"
 #include "../../Core/IService.hpp"
+#include "../../Logging/Exception.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
@@ -100,7 +101,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 			}
 			else
 			{
-				throw std::exception("Effect not found!");
+				throw Logging::Exception("Effect not found!");
 			}
 		}
 
@@ -145,7 +146,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 				}
 			}
 
-			throw std::exception("Effect not found!");
+			throw Logging::Exception("Effect not found!");
 		}
 
 		/// <summary>

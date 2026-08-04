@@ -38,3 +38,24 @@ size_t E3DRSP_ContentManager_Count(E3DRSP_ContentManager content)
 	if(content == nullptr) return 0;
 	return static_cast<ContentManager*>(content)->Count();
 }
+
+E3DRSP_IAsset E3DRSP_ContentManager_At(E3DRSP_ContentManager content, unsigned id)
+{
+	if (content == nullptr) return nullptr;
+	return static_cast<ContentManager*>(content)->At(id);
+}
+
+const char* E3DRSP_ContentManager_GetAssetPath(E3DRSP_ContentManager content, unsigned id)
+{
+	if (content == nullptr) return nullptr;
+	static thread_local std::string pathBuffer;
+	pathBuffer = static_cast<ContentManager*>(content)->GetAssetPath(id).generic_string();
+	return pathBuffer.c_str();
+}
+
+E3DRSP_UUID E3DRSP_ContentManager_GetAssetType(E3DRSP_ContentManager content, unsigned id)
+{
+	if (content == nullptr) return E3DRSP_UUID();
+	auto uuid = static_cast<ContentManager*>(content)->GetAssetType(id);
+	return *reinterpret_cast<const E3DRSP_UUID*>(&uuid);
+}

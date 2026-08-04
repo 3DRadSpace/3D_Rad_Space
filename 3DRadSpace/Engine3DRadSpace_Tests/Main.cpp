@@ -9,13 +9,15 @@
 #include <Engine3DRadSpace/Objects/Impl/Skybox.hpp>
 #include <Engine3DRadSpace/Objects/Impl/SoundEffect.hpp>
 #include <Engine3DRadSpace/Objects/ObjectList.hpp>
+#include <Engine3DRadSpace/Plugins/EditorPlugin.hpp>
+#include <Engine3DRadSpace/Plugins/CustomObject.hpp>
 
 class MyGame : public Engine3DRadSpace::Game
 {
 public:
 	MyGame() : Game("MyGame")
 	{
-		this->AppendScene("D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Projects\\SoundEffect + EventOnKey demo.3drsp");
+		this->AppendScene("D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Projects\\RGB Fade.3drsp");
 		//this->AppendScene("D:\\Projects\\3D_Rad_Space\\3DRadSpace\\Data\\Sounds\\memleaktest.3drsp");
 	}
 
@@ -46,13 +48,15 @@ int WinMain(
 	(void)lpCmdLine;
 	(void)nShowCmd;
 
+	Engine3DRadSpace::Plugins::LoadPlugin("Plugins\\3DRadSpace.Scripting.CSharp.dll");
+
 	MyGame game;
 	game.Run();
 }
 
 int main(int argc, char** argv) {
 	::testing::InitGoogleTest(&argc, argv);
-	
+
 	//WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWDEFAULT);
 
 	return RUN_ALL_TESTS();

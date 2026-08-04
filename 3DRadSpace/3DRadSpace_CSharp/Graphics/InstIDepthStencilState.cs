@@ -11,6 +11,10 @@ public class InstIDepthStencilState : InstGPUResource, IDepthStencilState
 	{
 	}
 
+	internal InstIDepthStencilState(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public uint StencilRef()
 	{
 		return _ref(_handle);

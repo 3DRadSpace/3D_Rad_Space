@@ -22,12 +22,13 @@ if(MSVC)
 
 	#enable address sanitizer if using a debug configuration
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		#target_compile_options(3DRadSpace.Native PRIVATE "/fsanitize=address")
+		target_compile_options(3DRadSpace.Native PRIVATE "/fsanitize=address")
 	endif()
 
 	target_compile_definitions(3DRadSpace.Native PRIVATE [[E3DRSP_NATIVE_EXPORT=__declspec(dllexport)]])
 endif()
 
 target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Math)
+target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Logging)
 target_link_libraries(3DRadSpace.Native PRIVATE 3DRadSpace.Input)
 target_include_directories(3DRadSpace.Native PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

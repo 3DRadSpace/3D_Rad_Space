@@ -17,6 +17,6 @@ public struct Message
 		Extra = extra;
 	}
 
-	[DllImport("3DRadSpace.FFI.dll", CharSet = CharSet.Ansi, EntryPoint = "E3DRSP_SetLastMessage")]
-	public extern static void SetLastMessage(ref Message msg);
+	[DllImport("3DRadSpace.FFI.dll", CharSet = CharSet.Ansi, EntryPoint = "E3DRSP_PrintMessage")]
+	public extern static void PrintMessage(ref Message msg);
 }

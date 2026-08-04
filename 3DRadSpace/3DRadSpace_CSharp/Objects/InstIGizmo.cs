@@ -35,9 +35,13 @@ public class InstIGizmo : InstIUpdateable, IGizmo
 	{
 	}
 
+	internal InstIGizmo(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+	}
+
 	public IObject Object
 	{
-		get => new InstIObject(_getObject(_handle));
+		get => new InstIObject(_getObject(_handle), ownsHandle: false);
 		set
 		{
 			var instIobj = value as InstIObject;

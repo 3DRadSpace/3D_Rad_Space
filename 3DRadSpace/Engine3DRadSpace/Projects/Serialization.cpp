@@ -17,14 +17,6 @@ using namespace Engine3DRadSpace::Reflection;
 
 static void deserializeObjectHierarchy(ObjectList* lst, IObject* obj, const json& j)
 {
-	auto numChildren = j["Children"].size();
-	
-	for(size_t i = 0; i < numChildren; i++)
-	{
-		auto child = j["Children"][i];
-		obj->Children.Add(lst->operator[](child.get<int>()));
-	}
-
 	auto parent = j["Parent"].get<int>();
 
 	if(parent != -1)
@@ -771,6 +763,8 @@ bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, Conten
 	for (size_t i = 0; i < numObjects; ++i)
 	{
 		auto obj = DeserializeObject(j["objects"][std::to_string(i)]);
+		if (obj == nullptr) throw Logging::Exception("Failed to deserialize object with index " + std::to_string(i));
+
 		lst->Add(obj);
 	}
 

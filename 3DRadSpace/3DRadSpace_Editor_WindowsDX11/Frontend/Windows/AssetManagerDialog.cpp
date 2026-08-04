@@ -222,7 +222,7 @@ void AssetManagerDialog::_loadAssetIcons()
 
 				if (!std::filesystem::exists(asset.Path))
 				{
-					throw std::exception("Asset is not located in the executable root directory!");
+					throw Logging::Exception("Asset is not located in the executable root directory!");
 				}
 
 				imagePath = appdataPath + (R"(\3DRadSpace\AssetImages\)" + assetPath.string()) + ".png";
@@ -271,7 +271,7 @@ void AssetManagerDialog::_loadAssetIcons()
 				image = loadImageFromFile("Data//NoAsset.png", w, h);
 
 			if (image == nullptr)
-				throw std::exception("default image not found!");
+				throw Logging::Exception("default image not found!");
 
 			//resize image to 64x64 using GDI
 			HDC screenDC = GetDC(nullptr);

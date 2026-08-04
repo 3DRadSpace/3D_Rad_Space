@@ -43,7 +43,7 @@ void VertexShader::_createShader()
 		_shader.ReleaseAndGetAddressOf()
 	);
 
-	if(FAILED(r)) throw std::exception("Failed to compile the shader!");
+	if(FAILED(r)) throw Logging::Exception("Failed to compile the shader!");
 #ifdef _DEBUG
 	const char shaderName[] = "IVertexShader::_shader";
 	_shader->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(shaderName) - 1, shaderName);

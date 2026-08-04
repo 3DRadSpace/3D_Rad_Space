@@ -1,5 +1,5 @@
 #include "NumericTextbox.hpp"
-#include <exception>
+#include <Engine3DRadSpace/Logging/Exception.hpp>
 
 WNDPROC NumericTextbox::editProc = nullptr;
 
@@ -76,7 +76,7 @@ NumericTextbox::NumericTextbox(HWND owner, HINSTANCE hInstance, int x, int y, in
 		hInstance,
 		nullptr
 	);
-	if (window == nullptr) throw std::exception("Failed to create a edit/textbox control for a NumericTextbox!");
+	if (window == nullptr) throw Engine3DRadSpace::Logging::Exception("Failed to create a edit/textbox control for a NumericTextbox!");
 
 	editProc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NumericTextBoxProc)));
 }

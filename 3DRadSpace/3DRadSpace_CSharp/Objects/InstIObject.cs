@@ -73,11 +73,18 @@ public class InstIObject : InstIUpdateable, IObject
 		_children = new ObjectCollection(_getChildren(handle));
 	}
 
+	internal InstIObject(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+	{
+		_initializable = new InstIInitializable(handle);
+		_loadable = new InstILoadable(handle);
+		_children = new ObjectCollection(_getChildren(handle));
+	}
+
 	public IObject GetChild(int idx)
 	{
 		var ptr = _getChild(_handle, (UIntPtr)idx);
 		if (ptr == IntPtr.Zero) return null;
-		return new InstIObject(ptr);
+		return new InstIObject(ptr, ownsHandle: false);
 	}
 
 	public int GetChildrenCount()
@@ -174,9 +181,9 @@ public class InstIObject : InstIUpdateable, IObject
 
 	public Reflection.UUID UUID => _getUUID(_handle);
 
-	public IGame Game => new InstIGame(_getGame(_handle));
-	public IGraphicsDevice GraphicsDevice => new InstIGraphicsDevice(_getGDevice(_handle));
-	public IGizmo Gizmo => new InstIGizmo(_getGizmo(_handle));
+	public IGame Game => new InstIGame(_getGame(_handle), ownsHandle: false);
+	public IGraphicsDevice GraphicsDevice => new InstIGraphicsDevice(_getGDevice(_handle), ownsHandle: false);
+	public IGizmo Gizmo => new InstIGizmo(_getGizmo(_handle), ownsHandle: false);
 
 	public void Initialize()
 	{

@@ -16,7 +16,7 @@ TextureCube::TextureCube(GraphicsDevice *device, const std::filesystem::path &fi
 		reinterpret_cast<ID3D11Resource**>(_texture.GetAddressOf()),
 		&_resourceView
 	);
-	if(FAILED(r)) throw std::exception("Failed to load the cube texture from the specified file!");
+	if(FAILED(r)) throw Logging::Exception("Failed to load the cube texture from the specified file!");
 
 	_setDebugInfo();
 }
@@ -43,7 +43,7 @@ TextureCube::TextureCube(GraphicsDevice *device, std::array<ITexture2D*, 6> cube
 		nullptr,
 		_texture.ReleaseAndGetAddressOf()
 	);
-	if(FAILED(r)) throw std::exception("Failed to create the cube texture!");
+	if(FAILED(r)) throw Logging::Exception("Failed to create the cube texture!");
 
 	for(UINT face = 0; face < 6; ++face)
 	{
@@ -82,7 +82,7 @@ void TextureCube::_createSRV()
 		nullptr,
 		_resourceView.ReleaseAndGetAddressOf()
 	);
-	if(FAILED(r)) throw std::exception("Failed to create shader resource view for the cube texture!");
+	if(FAILED(r)) throw Logging::Exception("Failed to create shader resource view for the cube texture!");
 }
 
 void TextureCube::_setDebugInfo()

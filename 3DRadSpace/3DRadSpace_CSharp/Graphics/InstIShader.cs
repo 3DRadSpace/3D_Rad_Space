@@ -40,6 +40,10 @@ public class InstIShader : NatPtrWrapper, IShader
 
 	}
 
+	internal InstIShader(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	{
+	}
+
 	public string EntryName
 	{
 		get => Marshal.PtrToStringAnsi(_entryName(_handle));

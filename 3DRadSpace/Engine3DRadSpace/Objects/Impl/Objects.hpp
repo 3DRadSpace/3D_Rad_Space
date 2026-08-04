@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Reflection/ReflectedObject.hpp"
+#include "../ObjectRegistry/ObjectRegistry.hpp"
 
 /// ------------------------------------------------------------------------------------------------
 ///
@@ -13,7 +14,5 @@
 namespace Engine3DRadSpace::Internal
 {
 	void E3DRSP_OBJECTS_IMPL_EXPORT LoadDefaultObjects();
-	Reflection::ReflectedObject E3DRSP_OBJECTS_IMPL_EXPORT*GetReflDataFromUUID(const Reflection::UUID &uuid);
+	E3DRSP_OBJECTS_IMPL_EXPORT Reflection::ReflectedObject* GetReflDataFromUUID(const Reflection::UUID &uuid);
 }
-
-extern E3DRSP_OBJECTS_IMPL_EXPORT std::vector<Engine3DRadSpace::Reflection::ReflectedObject*> e3drsp_internal_objects_list;

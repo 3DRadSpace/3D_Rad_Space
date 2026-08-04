@@ -17,7 +17,8 @@ namespace Engine3DRadSpace::Logging
 	typedef void (*FuncWarningHandler)(const Warning& warning);
 	extern FuncWarningHandler WarningHandler;
 
-	inline void E3DRSP_LOGGING_EXPORT SetLastWarning(const Warning &warning);
-	inline void E3DRSP_LOGGING_EXPORT SetLastWarning(const std::string &warning_text);
+	inline void E3DRSP_LOGGING_EXPORT PrintWarning(const Warning &warning);
+	inline void E3DRSP_LOGGING_EXPORT PrintWarning(const std::string &warning_text);
 	inline void E3DRSP_LOGGING_EXPORT DefaultWarningHandler(const Warning &warning);
 }
+ 
