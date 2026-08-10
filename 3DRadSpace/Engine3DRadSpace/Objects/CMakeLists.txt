@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.21)
 project("Engine3DRadSpace.Objects")
 
 add_library(3DRadSpace.Objects SHARED 
+	"CameraProvider.hpp"
+	"CameraProvider.cpp"
 	"ChildObjectCollection.hpp"
 	"ChildObjectCollection.cpp"	
 	"Gizmos.hpp"
@@ -20,7 +22,7 @@ add_library(3DRadSpace.Objects SHARED
 	"ObjectID.cpp"
 	"ObjectList.hpp"
 	"ObjectList.cpp"
- "CameraProvider.cpp")
+)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 3DRadSpace.Objects PROPERTY CXX_STANDARD 23)

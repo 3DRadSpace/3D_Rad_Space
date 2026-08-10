@@ -64,7 +64,7 @@ Reflection::UUID Fog::GetUUID() const noexcept
 Gizmos::IGizmo* Fog::GetGizmo() const noexcept
 {
 	auto gizmo = Internal::GizmoOf<Fog>(this);
-
+	gizmo->AllowUpdating = true;
 	return gizmo;
 }
 
