@@ -48,8 +48,8 @@ void Fog::Update()
 
 	auto game = static_cast<Game*>(_game);
 
-	_effect->NearPlaneDistance = game->Objects->GetRenderingCamera()->NearPlaneDistance;
-	_effect->FarPlaneDistance = game->Objects->GetRenderingCamera()->FarPlaneDistance;
+	_effect->NearPlaneDistance = game->Cameras->GetActiveCamera()->NearPlaneDistance;
+	_effect->FarPlaneDistance = game->Cameras->GetActiveCamera()->FarPlaneDistance;
 
 	_effect->FogBegin = FogBegin / _effect->FarPlaneDistance;
 	_effect->FogEnd = FogEnd / _effect->FarPlaneDistance;

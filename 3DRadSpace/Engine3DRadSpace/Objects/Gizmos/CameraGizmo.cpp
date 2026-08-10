@@ -68,8 +68,8 @@ void Gizmo<Camera>::Draw3D()
 		camera->Rotation * Quaternion::FromYawPitchRoll(std::numbers::pi_v<float>, 0, 0)
 	) * Matrix4x4::CreateTranslation(camera->Position);
 
-	auto view = game->View;
-	auto proj = game->Projection;
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 	cameraModel->Draw(model * view * proj);
 }
@@ -80,18 +80,16 @@ void Gizmo<Camera>::Draw2D()
 
 	auto camera = static_cast<Camera*>(Object);
 	auto game = static_cast<Game*>(Object->GetGame());
-	auto view = game->View;
-	auto proj = game->Projection;
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 	if(Selected)
 	{
 		auto oldView = view;
 		auto oldProjection = proj;
-		auto oldCamera = game->Objects->GetRenderingCamera();
+		auto oldCamera = game->Cameras->GetActiveCamera();
 
-		game->View = camera->GetViewMatrix();
-		game->Projection = camera->GetProjectionMatrix();
-		game->Objects->SetRenderingCamera(camera);
+		game->Cameras->SetActiveCamera(camera);
 
 		auto cameraPreview = dynamic_cast<ITexture2D*>(_cameraPreview.get());
 		auto cameraRT = static_cast<IRenderTarget*>(_cameraPreview.get());
@@ -138,9 +136,7 @@ void Gizmo<Camera>::Draw2D()
 		);
 		game->SpriteBatch->End();
 
-		game->View = oldView;
-		game->Projection = oldProjection;
-		game->Objects->SetRenderingCamera(oldCamera);
+		game->Cameras->SetActiveCamera(oldCamera);
 	}
 }
 

@@ -4,8 +4,7 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Internal;
 
-ObjectList::ObjectList(IGame* owner) : IService(owner),
-	_camera(nullptr)
+ObjectList::ObjectList(IGame* owner) : IService(owner)
 {
 }
 
@@ -167,14 +166,4 @@ ObjectList::ObjectInstance::ObjectInstance(IObject* obj)
 IObject* ObjectList::ObjectInstance::operator->() const noexcept
 {
 	return Object.get();
-}
-
-ICamera* ObjectList::GetRenderingCamera() const noexcept
-{
-	return _camera;
-}
-
-void ObjectList::SetRenderingCamera(ICamera* cam) noexcept
-{
-	_camera = cam;
 }

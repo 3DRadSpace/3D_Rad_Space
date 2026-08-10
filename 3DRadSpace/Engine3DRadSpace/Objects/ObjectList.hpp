@@ -1,5 +1,4 @@
 #pragma once
-#include "ICamera.hpp"
 #include "IObject3D.hpp"
 #include "IObject2D.hpp"
 #include "ObjectType.hpp"
@@ -43,7 +42,6 @@ namespace Engine3DRadSpace::Objects
 		};
 	private:
 		std::vector<ObjectInstance> _objects;
-		Objects::ICamera* _camera;
 
 		void _validate(ObjectInstance& instance);
 		void _validate(IObject* instance);
@@ -73,9 +71,6 @@ namespace Engine3DRadSpace::Objects
 		/// <returns>Returns the i-th object of the type O.</returns>
 		template<GameObject O>
 		O* Find(unsigned i = 0) const;
-
-		ICamera* GetRenderingCamera() const noexcept;
-		void SetRenderingCamera(ICamera* cam) noexcept;
 
 		void Remove(unsigned id);
 		void Remove(const std::string& name);

@@ -40,8 +40,8 @@ void Sphere::Draw3D()
 	{
 		auto game = static_cast<Game*>(_game);
 		_sphere->Transform = this->GetModelMatrix();
-		_sphere->View = game->View;
-		_sphere->Projection = game->Projection;
+		_sphere->View = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		_sphere->Projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 		_sphere->Draw3D();
 	}
 }

@@ -63,7 +63,7 @@ namespace Engine3DRadSpace::Objects
 		Reflection::UUID GetUUID() const noexcept override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
 
-		~Camera();
+		~Camera() override;
 	};
 }
 

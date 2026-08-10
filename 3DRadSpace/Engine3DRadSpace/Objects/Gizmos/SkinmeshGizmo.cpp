@@ -122,9 +122,12 @@ void Gizmo<Skinmesh>::Draw3D()
 			auto highlightColor = Color(1.0f, 0.5f, 0.0f, 1.0f);
 			_highlightEffect->SetData<Color>(&highlightColor, 1);
 
+			auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+			auto projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+
 			skinmesh->GetModel()->DrawEffect(
 				_highlightEffect,
-				skinmesh->GetModelMatrix() * game->View * game->Projection
+				skinmesh->GetModelMatrix() * view * projection
 			);
 
 			//cmd->SetRenderTargetAndDepth(nullptr, nullptr);

@@ -86,10 +86,14 @@ Reflection::UUID Skinmesh::GetUUID() const noexcept
 
 void Skinmesh::Draw3D()
 {
+	if (!Visible || !_model) return;
+
 	auto game = static_cast<Game*>(_game);
 
-	if(Visible && _model)
-		_model->Draw(GetModelMatrix() * game->View * game->Projection);
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+	
+	_model->Draw(GetModelMatrix() * view * proj);
 }
 
 float Skinmesh::Intersects(const Ray&r)

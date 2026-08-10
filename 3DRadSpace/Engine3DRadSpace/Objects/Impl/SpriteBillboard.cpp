@@ -94,8 +94,8 @@ void SpriteBillboard::Draw3D()
 		_cylindricalBillboard->Scale = Vector2(Scale.X, Scale.Y);
 
 		auto game = static_cast<Game*>(GetGame());
-		_cylindricalBillboard->View = game->View;
-		_cylindricalBillboard->Projection = game->Projection;
+		_cylindricalBillboard->View = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		_cylindricalBillboard->Projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 		_cylindricalBillboard->Draw3D();
 	}

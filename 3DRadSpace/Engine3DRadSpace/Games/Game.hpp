@@ -15,6 +15,7 @@
 #include "../Audio/IAudioEngine.hpp"
 #include "../Graphics/Rendering/PostProcessCollection.hpp"
 #include "../Graphics/Rendering/RenderingManager.hpp"
+#include "../Objects/CameraProvider.hpp"
 #include "../Core/IGame.hpp"
 
 namespace Engine3DRadSpace
@@ -38,14 +39,11 @@ namespace Engine3DRadSpace
 
 		Game(Game&) = delete;
 		Game(Game&&) = delete;
-		Game& operator=(const Game&) = default;
-		Game& operator=(Game&&) = default;
+		Game& operator=(const Game&) = delete;
+		Game& operator=(Game&&) = delete;
 
 		std::unique_ptr<Native::Window> Window;
 		std::unique_ptr<Graphics::IGraphicsDevice> Device;
-
-		Math::Matrix4x4 View;
-		Math::Matrix4x4 Projection;
 
 		std::unique_ptr<Content::ContentManager> Content;
 
@@ -62,6 +60,7 @@ namespace Engine3DRadSpace
 		std::unique_ptr<Graphics::Rendering::PostProcessCollection> PostProcesses;
 
 		std::unique_ptr<Objects::ObjectList> Objects;
+		std::unique_ptr<Objects::CameraProvider> Cameras;
 
 		IService* RequireService(const std::type_index& type);
 

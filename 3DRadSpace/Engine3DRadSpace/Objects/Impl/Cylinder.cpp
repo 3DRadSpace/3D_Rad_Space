@@ -37,8 +37,10 @@ void Cylinder::Draw3D()
 	{
 		auto game = static_cast<Game*>(_game);
 		_cylinder->Transform = this->GetModelMatrix();
-		_cylinder->View = game->View;
-		_cylinder->Projection = game->Projection;
+		auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+		_cylinder->View = view;
+		_cylinder->Projection = proj;
 		_cylinder->Draw3D();
 	}
 }

@@ -20,7 +20,7 @@ add_library(3DRadSpace.Objects SHARED
 	"ObjectID.cpp"
 	"ObjectList.hpp"
 	"ObjectList.cpp"
-)
+ "CameraProvider.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 3DRadSpace.Objects PROPERTY CXX_STANDARD 23)
@@ -49,5 +49,6 @@ target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Math)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Audio)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Graphics)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Content)
+target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Logging)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Reflection)
 target_include_directories(3DRadSpace.Objects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

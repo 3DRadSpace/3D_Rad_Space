@@ -91,8 +91,8 @@ void Gizmo<EventOnLocation>::Draw3D()
 	auto transform = eol->GetModelMatrix();
 
 	auto game = static_cast<Game*>(eol->GetGame());
-	auto view = game->View;
-	auto projection = game->Projection;
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 	if (!eol->IsSphere)
 	{

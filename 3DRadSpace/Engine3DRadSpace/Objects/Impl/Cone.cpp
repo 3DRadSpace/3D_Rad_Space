@@ -40,8 +40,8 @@ void Cone::Draw3D()
 	{
 		auto game = static_cast<Game*>(_game);
 		_cone->Transform = this->GetModelMatrix();
-		_cone->View = game->View;
-		_cone->Projection = game->Projection;
+		_cone->View = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		_cone->Projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 		_cone->Draw3D();
 	}
 }

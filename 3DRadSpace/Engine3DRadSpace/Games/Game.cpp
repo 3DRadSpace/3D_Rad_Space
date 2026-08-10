@@ -31,6 +31,7 @@ void Game::_initialize()
 	RequireService(typeid(Rendering::RenderingManager));
 	RequireService(typeid(ObjectList));
 	RequireService(typeid(Content::ContentManager));
+	RequireService(typeid(Objects::CameraProvider));
 
 	Internal::RegisterDefaultTypes(Content.get());
 
@@ -101,6 +102,13 @@ IService* Game::RequireService(const std::type_index& type)
 		Content = std::make_unique<ContentManager>(this);
 		AddService(Content.get());
 		return Content.get();
+	}
+	if (typeid(CameraProvider) == type)
+	{
+		if (Cameras) return Cameras.get();
+		Cameras = std::make_unique<CameraProvider>(this);
+		AddService(Cameras.get());
+		return Cameras.get();
 	}
 
 	return nullptr;

@@ -122,8 +122,8 @@ public:
 		_arrow->Transform = f->GetModelMatrix();
 		
 		auto g = static_cast<Game*>(Object->GetGame());
-		_arrow->View = g->View;
-		_arrow->Projection = g->Projection;
+		_arrow->View = g->Cameras->GetActiveCamera()->GetViewMatrix();
+		_arrow->Projection = g->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 		_arrow->Draw3D();
 	}

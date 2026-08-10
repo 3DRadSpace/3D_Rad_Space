@@ -37,7 +37,7 @@ void* EditObject(HWND hwnd, HINSTANCE hInstance, void* pRefl, void* pContent, vo
 
 	if (useDefaultWindow)
 	{
-		EditObjectDialog dialog(hwnd, hInstance, refl, content);
+		EditObjectDialog dialog(hwnd, hInstance, refl, content, obj);
 		return dialog.ShowDialog();
 	}
 	else

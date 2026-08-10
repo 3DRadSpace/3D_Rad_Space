@@ -212,7 +212,9 @@ void EditorGame::_picking()
 			static_cast<int>(mousePos.Y * scaleY)
 		);
 
-		auto ray = GetMouseRay(scaledMousePos, View, Projection);
+		auto activeCamera = Cameras->GetActiveCamera();
+
+		auto ray = GetMouseRay(scaledMousePos, activeCamera->GetViewMatrix(), activeCamera->GetProjectionMatrix());
 
 		float closestDistance = std::numeric_limits<float>::infinity();
 		Vector3 closestIntersection = cursor3D;
@@ -390,6 +392,8 @@ void EditorGame::Update()
 
 	Camera.Rotation = Quaternion::FromYawPitchRoll(cameraPos.X, cameraPos.Y, 0);
 	Camera.Position = cursor3D + Vector3::UnitZ().Transform(Camera.Rotation) * (zoom + 5);
+
+	Cameras->SetActiveCamera(&Camera);
 }
 
 void EditorGame::Draw3D()
@@ -397,20 +401,22 @@ void EditorGame::Draw3D()
 	Camera.Draw3D();
 
 	axis->Transform = Matrix4x4::CreateTranslation(cursor3D);
-	axis->View = View;
-	axis->Projection = Projection;
+	auto activeCamera = Cameras->GetActiveCamera();
+
+	axis->View = activeCamera->GetViewMatrix();
+	axis->Projection = activeCamera->GetProjectionMatrix();
 	axis->Draw3D();
 
 	if (Settings::ShowGrid.Value)
 	{
-		grid->View = View;
-		grid->Projection = Projection;
+		grid->View = activeCamera->GetViewMatrix();
+		grid->Projection = activeCamera->GetProjectionMatrix();
 		grid->Draw3D();
 
 		if (!Math::WithinEpsilon(cursor3D.X, 0) || !Math::WithinEpsilon(cursor3D.Y, 0) || !Math::WithinEpsilon(cursor3D.Z, 0))
 		{
-			grid_center->View = View;
-			grid_center->Projection = Projection;
+			grid_center->View = activeCamera->GetViewMatrix();
+			grid_center->Projection = activeCamera->GetProjectionMatrix();
 			grid_center->Draw3D();
 		}
 	}

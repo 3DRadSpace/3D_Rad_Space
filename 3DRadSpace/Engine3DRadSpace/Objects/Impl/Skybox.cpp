@@ -66,7 +66,7 @@ void Skybox::Draw3D()
 
 	if(_skybox && Visible)
 	{
-		auto camera = game->Objects->GetRenderingCamera();
+		auto camera = game->Cameras->GetActiveCamera();
 
 		auto viewMatrix = camera->GetViewMatrix();
 		viewMatrix.M41 = 0;

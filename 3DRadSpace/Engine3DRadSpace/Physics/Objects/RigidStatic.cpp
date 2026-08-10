@@ -139,8 +139,11 @@ void RigidStatic::Draw3D()
 {
 	auto game = static_cast<Game*>(_game);
 
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+
 	if(Visible && _model)
-		_model->Draw(GetModelMatrix() * game->View * game->Projection);
+		_model->Draw(GetModelMatrix() * view * proj);
 }
 
 float RigidStatic::Intersects(const Math::Ray& r)
