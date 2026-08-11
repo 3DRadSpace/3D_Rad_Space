@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Constructs a transparent forward renderer pipeline.
 		/// </summary>
 		/// <param name="owner">The rendering manager that owns this renderer.</param>
-		TransparentForwardRenderer(RenderingManager* owner);
+		explicit TransparentForwardRenderer(RenderingManager* owner);
 
 		bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept override;
 

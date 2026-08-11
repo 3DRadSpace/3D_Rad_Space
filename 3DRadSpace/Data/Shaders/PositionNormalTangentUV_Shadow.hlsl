@@ -17,7 +17,7 @@ cbuffer ShadowData : register(b1)
 Texture2D TextureModel : register(t0);
 SamplerState TextureSampler : register(s0);
 
-Texture2D ShadowMap : register(t1);
+Texture2D<float> ShadowMap : register(t1);
 SamplerState ShadowSampler : register(s1);
 
 struct VertexIn

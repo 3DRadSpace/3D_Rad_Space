@@ -9,7 +9,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	class E3DRSP_GRAPHICS_RENDERING_EXPORT NullRenderer : public IRenderer
 	{
 	public:
-		NullRenderer(RenderingManager* owner);
+		explicit NullRenderer(RenderingManager* owner);
 		void Begin() override;
 		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = 0) override;
 		void End() override;

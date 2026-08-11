@@ -21,7 +21,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Constructs a forward renderer pipeline.
 		/// </summary>
 		/// <param name="owner">The rendering manager that owns this renderer.</param>
-		ForwardRenderer(RenderingManager* owner);
+		explicit ForwardRenderer(RenderingManager* owner);
 
 		/// <summary>
 		/// Begins drawing.
