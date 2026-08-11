@@ -257,6 +257,19 @@ void Model3D::SetTransform(const Matrix4x4& v, const Matrix4x4& p)
 	}
 }
 
+void Model3D::SetTransform(const Matrix4x4& m, const Matrix4x4& v, const Matrix4x4& p)
+{
+	for (size_t i = 0; i < _meshes.size(); i++)
+	{
+		for (auto& meshPart : *_meshes[i].get())
+		{
+			meshPart->World = m;
+			meshPart->View = v;
+			meshPart->Projection = p;
+		}
+	}
+}
+
 std::vector<std::unique_ptr<ModelMesh>>::iterator Model3D::begin()
 {
 	return _meshes.begin();

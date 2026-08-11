@@ -40,11 +40,6 @@ E3DRSP_BoundingSphere EDRSP_Model3D_GetBoundingSphere(E3DRSP_Model3D model)
 	};
 }
 
-void EDRSP_Model3D_SetTransform(E3DRSP_Model3D model, const E3DRSP_Matrix4x4* matrix4x4)
-{
-	static_cast<Model3D*>(model)->SetTransform(*reinterpret_cast<const Math::Matrix4x4*>(matrix4x4));
-}
-
 void EDRSP_Model3D_Destroy(E3DRSP_Model3D model)
 {
 	delete static_cast<Model3D*>(model);

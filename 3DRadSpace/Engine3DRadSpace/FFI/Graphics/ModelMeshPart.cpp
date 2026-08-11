@@ -62,18 +62,18 @@ E3DRSP_IIndexBuffer E3DRSP_ModelMeshPart_GetIndexBuffer(E3DRSP_ModelMeshPart mes
 	return static_cast<ModelMeshPart*>(meshPart)->GetIndexBuffer();
 }
 
-E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetTransform(E3DRSP_ModelMeshPart meshPart)
+E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetWorldTransform(E3DRSP_ModelMeshPart meshPart)
 {
 	E3DRSP_Matrix4x4 result;
-	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->Transform;
+	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->World;
 	memcpy_s(&result, sizeof(float) * 16, &transform, sizeof(Math::Matrix4x4));
 
 	return result;
 }
 
-void E3DRSP_ModelMeshPart_SetTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform)
+void E3DRSP_ModelMeshPart_SetWorldTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform)
 {
-	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->Transform, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
+	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->World, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
 }
 
 void E3DRSP_ModelMeshPart_Destroy(E3DRSP_ModelMeshPart meshPart)

@@ -2,6 +2,7 @@
 #include "IPhysicsObject.hpp"
 #include "../IStaticCollider.hpp"
 #include "../../Objects/Impl/Skinmesh.hpp"
+#include "../../Graphics/Rendering/RenderingManager.hpp"
 
 namespace Engine3DRadSpace::Physics::Objects
 {
@@ -25,6 +26,7 @@ namespace Engine3DRadSpace::Physics::Objects
 		};
 
 		std::unique_ptr<physicsProperties> _properties = std::make_unique<physicsProperties>();
+		Graphics::Rendering::RenderingManager* _renderingManager = nullptr;
 	public:
 		RigidStatic();
 		RigidStatic(

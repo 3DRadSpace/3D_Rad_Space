@@ -38,8 +38,8 @@ extern "C"
 	E3DRSP_FFI_EXPORT E3DRSP_IVertexBuffer E3DRSP_ModelMeshPart_GetVertexBuffer(E3DRSP_ModelMeshPart meshPart);
 	E3DRSP_FFI_EXPORT E3DRSP_IIndexBuffer E3DRSP_ModelMeshPart_GetIndexBuffer(E3DRSP_ModelMeshPart meshPart);
 
-	E3DRSP_FFI_EXPORT E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetTransform(E3DRSP_ModelMeshPart meshPart);
-	E3DRSP_FFI_EXPORT void E3DRSP_ModelMeshPart_SetTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform);
+	E3DRSP_FFI_EXPORT E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetWorldTransform(E3DRSP_ModelMeshPart meshPart);
+	E3DRSP_FFI_EXPORT void E3DRSP_ModelMeshPart_SetWorldTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform);
 
 	E3DRSP_FFI_EXPORT void E3DRSP_ModelMeshPart_Destroy(E3DRSP_ModelMeshPart meshPart);
 #ifdef __cplusplus

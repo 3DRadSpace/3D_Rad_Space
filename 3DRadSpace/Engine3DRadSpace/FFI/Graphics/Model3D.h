@@ -19,7 +19,6 @@ extern "C"
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingSphere EDRSP_Model3D_GetBoundingSphere(E3DRSP_Model3D model);
 	E3DRSP_FFI_EXPORT void EDRSP_Model3D_SetShader(E3DRSP_Model3D model, E3DRSP_Effect effect);
 	E3DRSP_FFI_EXPORT void EDRSP_Model3D_SetShaders(E3DRSP_Model3D model, E3DRSP_Effect* effects, size_t numEffects);
-	E3DRSP_FFI_EXPORT void EDRSP_Model3D_SetTransform(E3DRSP_Model3D model, const E3DRSP_Matrix4x4* matrix4x4);
 	E3DRSP_FFI_EXPORT void EDRSP_Model3D_Destroy(E3DRSP_Model3D model);
 #ifdef __cplusplus
 }

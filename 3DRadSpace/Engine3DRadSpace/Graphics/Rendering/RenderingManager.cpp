@@ -82,15 +82,20 @@ void RenderingManager::Draw(ModelMeshPart* part, RenderPassType passType)
 std::unique_ptr<RenderingManager> RenderingManager::CreateForward(IGraphicsDevice* device)
 {
 	RenderingManager manager(device);
-	manager.Add<ShadowMapRenderer>(device);
-	manager.Add<ForwardRenderer>(device);
-	manager.Add<TransparentForwardRenderer>(device);
+	manager.Add<ShadowMapRenderer>();
+	manager.Add<ForwardRenderer>();
+	manager.Add<TransparentForwardRenderer>();
 	return std::make_unique<RenderingManager>(std::move(manager));
 }
 
 std::unique_ptr<RenderingManager> RenderingManager::CreateNull(IGraphicsDevice* device)
 {
 	RenderingManager manager(device);
-	manager.Add<NullRenderer>(device);
+	manager.Add<NullRenderer>();
 	return std::make_unique<RenderingManager>(std::move(manager));
+}
+
+IGraphicsDevice* RenderingManager::GetDevice() const noexcept
+{
+	return _device;
 }

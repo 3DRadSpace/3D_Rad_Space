@@ -31,6 +31,9 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		///	<param name="device">Graphics device to use for rendering.</param>
 		RenderingManager(IGraphicsDevice* device);
 
+		RenderingManager(RenderingManager&&) = default;
+		RenderingManager& operator=(RenderingManager&&) = default;
+
 		/// <summary>
 		/// Emplaces a new renderer of type R with the given arguments.
 		/// </summary>
@@ -40,9 +43,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		template<typename R, typename... Args>
 		void Add(Args&&... args)
 		{
-			auto renderer = std::make_unique<R>(_device, std::forward<Args>(args)...);
-			renderer->SetOwner(_owner);
-			_renderers.push_back(std::move(renderer));
+			_renderers.emplace_back(std::make_unique<R>(this, std::forward<Args>(args)...));
 		}
 
 		/// <summary>
@@ -106,6 +107,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 			}
 			return nullptr;
 		}
+
+		IGraphicsDevice* GetDevice() const noexcept;
 
 		~RenderingManager() override = default;
 	};

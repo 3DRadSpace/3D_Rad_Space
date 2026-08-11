@@ -95,7 +95,7 @@ void Skinmesh::Draw3D()
 	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
 	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 	
-	_model->SetTransform(view, proj);
+	_model->SetTransform(GetModelMatrix(), view, proj);
 
 	Rendering::RenderPassType passType = Transparent ? Rendering::RenderPassType::Transparent : Rendering::RenderPassType::Opaque;
 	passType = HasShadows ? passType : (Transparent ? Rendering::RenderPassType::TransparentNoShadow : Rendering::RenderPassType::OpaqueNoShadow);
