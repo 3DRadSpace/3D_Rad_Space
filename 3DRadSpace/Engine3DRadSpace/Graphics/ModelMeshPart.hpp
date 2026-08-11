@@ -8,6 +8,7 @@
 #include "../Math/BoundingSphere.hpp"
 #include "../Math/BoundingBox.hpp"
 #include "IGraphicsCommandList.hpp"
+#include "Rendering/MaterialDescriptor.hpp"
 
 namespace Engine3DRadSpace::Graphics
 {
@@ -21,8 +22,6 @@ namespace Engine3DRadSpace::Graphics
 	{
 		IGraphicsDevice* _device;
 
-		Effect* _shaders;
-
 		Math::BoundingBox _box;
 		Math::BoundingSphere _sphere;
 
@@ -34,8 +33,7 @@ namespace Engine3DRadSpace::Graphics
 
 		ModelMeshPart(
 			Graphics::IVertexBuffer* vert, 
-			Graphics::IIndexBuffer* index,
-			Effect* shaders
+			Graphics::IIndexBuffer* index
 		);
 
 		ModelMeshPart(
@@ -43,8 +41,7 @@ namespace Engine3DRadSpace::Graphics
 			void* vertices, 
 			size_t numVerts,
 			size_t structSize, 
-			std::span<unsigned> indices,
-			Effect* shaders
+			std::span<unsigned> indices
 		);
 
 		ModelMeshPart(ModelMeshPart&& meshPart) noexcept = default;
@@ -57,25 +54,26 @@ namespace Engine3DRadSpace::Graphics
 		ModelMeshPart(
 			IGraphicsDevice* Device,
 			std::span<V> vertices,
-			std::span<unsigned> indices,
-			Effect *shaders
+			std::span<unsigned> indices
 		);
 
-		Math::Matrix4x4 Transform = Math::Matrix4x4();
+		Math::Matrix4x4 ImportOffset = Math::Matrix4x4();
+		Math::Matrix4x4 World = Math::Matrix4x4();
+		Math::Matrix4x4 View = Math::Matrix4x4();
+		Math::Matrix4x4 Projection = Math::Matrix4x4();
+
+		Rendering::MaterialDescriptor Material;
+
+		Math::Matrix4x4 MVP() const noexcept;
+
 		std::vector<std::unique_ptr<ITexture2D>> Textures;
 		std::vector<std::unique_ptr<ISamplerState>> TextureSamplers;
-
-		void Draw();
-		void Draw(Effect* effect);
 
 		Math::BoundingBox GetBoundingBox() const noexcept;
 		Math::BoundingSphere GetBoundingSphere() const noexcept;
 
 		Graphics::IVertexBuffer* GetVertexBuffer() const noexcept;
 		Graphics::IIndexBuffer* GetIndexBuffer() const noexcept;
-
-		Effect* GetShaders() const noexcept;
-		void SetShaders(Effect *shaders);
 
 		/// <summary>
 		/// Creates staging vertex and index buffers available for CPU reading if they don't exist. If they already exist, returns the already created buffers.
@@ -92,11 +90,9 @@ namespace Engine3DRadSpace::Graphics
 	inline ModelMeshPart::ModelMeshPart(
 		IGraphicsDevice* Device,
 		std::span<V> vertices, 
-		std::span<unsigned> indices,
-		Effect *shaders
+		std::span<unsigned> indices
 	):
-		_device(Device),
-		_shaders(shaders)
+		_device(Device)
 	{
 		VertexBuffer = _device->CreateVertexBuffer<V>(vertices, BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
 		IndexBuffer = _device->CreateIndexBuffer(indices);

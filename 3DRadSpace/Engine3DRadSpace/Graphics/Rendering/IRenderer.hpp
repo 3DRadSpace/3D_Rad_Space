@@ -1,5 +1,7 @@
 #pragma once
 #include "../ModelMeshPart.hpp"
+#include "RenderPassType.hpp"
+#include "MaterialDescriptor.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -8,6 +10,8 @@ namespace Engine3DRadSpace
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
+	class RenderingManager;
+
 	/// <summary>
 	/// Represents a rendering pipeline that allows multiple rendering effects.
 	/// </summary>
@@ -15,9 +19,10 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 	protected:
 		IGraphicsDevice* _device;
-		IGame* _owner = nullptr;
+		IGraphicsCommandList* _context;
+		RenderingManager* _owner;
 
-		IRenderer(IGraphicsDevice* device);
+		IRenderer(RenderingManager* owner);
 
 		IRenderer(const IRenderer&) = delete;
 		IRenderer& operator=(const IRenderer&) = delete;
@@ -25,9 +30,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		IRenderer(IRenderer&&) noexcept = default;
 		IRenderer& operator=(IRenderer&&) noexcept = default;
 	public:
-		void SetOwner(IGame* owner) noexcept;
-		IGame* GetOwner() const noexcept;
-
 		/// <summary>
 		/// Prepares the graphics pipeline for this effect.
 		/// </summary>
@@ -36,19 +38,13 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Submits a mesh part to this effect.
 		/// </summary>
 		/// <param name="part">Mesh</param>
-		virtual void Draw(ModelMeshPart* part);
+		virtual void Draw(ModelMeshPart* part, const MaterialDescriptor* material) = 0;
 		/// <summary>
-		/// Submits a mesh made of a index and vertex buffer to this effect.
-		/// </summary>
-		/// <param name="vertices">Vertices</param>
-		/// <param name="indices">Incides</param>
-		virtual void Draw(IVertexBuffer* vertices, IIndexBuffer* indices, Effect* effect);
-		/// <summary>
-		/// Restores the previous states, and depending on the effect, draws all submited meshes. (Unless meshes are not batched).
+		/// Draws all supported mesh parts.
 		/// </summary>
 		virtual void End() = 0;
 
-		IGraphicsDevice* GetDevice() const noexcept;
+		virtual bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept = 0;
 
 		virtual ~IRenderer() = default;
 	};

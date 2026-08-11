@@ -16,7 +16,7 @@ namespace Engine3DRadSpace::Objects
 		///	Constructs a new instance.
 		/// </summary>
 		/// <param name="owner">Owner</param>
-		CameraProvider(IGame* owner);
+		explicit CameraProvider(IGame* owner);
 
 		/// <summary>
 		/// Returns the idx-th ICamera instance in the scene.

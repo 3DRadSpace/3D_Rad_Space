@@ -2,6 +2,7 @@
 #include "../Games/Game.hpp"
 #include "Gizmos/SkinmeshGizmo.hpp"
 #include "Gizmos.hpp"
+#include "../../Graphics/Rendering/RenderingManager.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content::Assets;
@@ -51,6 +52,7 @@ Model3D* Skinmesh::GetModel()
 
 void Skinmesh::Initialize()
 {
+	_renderingManager = static_cast<Graphics::Rendering::RenderingManager*>(_game->RequireService(typeid(Graphics::Rendering::RenderingManager)));
 }
 
 void Skinmesh::Load()
@@ -93,7 +95,12 @@ void Skinmesh::Draw3D()
 	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
 	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 	
-	_model->Draw(GetModelMatrix() * view * proj);
+	_model->SetTransform(view, proj);
+
+	Rendering::RenderPassType passType = Transparent ? Rendering::RenderPassType::Transparent : Rendering::RenderPassType::Opaque;
+	passType = HasShadows ? passType : (Transparent ? Rendering::RenderPassType::TransparentNoShadow : Rendering::RenderPassType::OpaqueNoShadow);
+
+	_renderingManager->Draw(_model, passType);
 }
 
 float Skinmesh::Intersects(const Ray&r)

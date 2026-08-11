@@ -5,13 +5,15 @@
 #include "../../Math/Rectangle.hpp"
 #include "../../Math/Vector3.hpp"
 #include "../../Games/Game.hpp"
+#include "../IShaderCompiler.hpp"
+#include "RenderingManager.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 using namespace Engine3DRadSpace::Math;
 
-ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device)
+ShadowMapRenderer::ShadowMapRenderer(RenderingManager* owner) : IRenderer(owner)
 {
 	auto resolution = _device->Resolution();
 	unsigned int shadowMapWidth = static_cast<unsigned int>(resolution.X * ShadowMapSize);
@@ -19,6 +21,7 @@ ShadowMapRenderer::ShadowMapRenderer(IGraphicsDevice* device) : IRenderer(device
 
 	_shadowMap = _device->CreateDepthStencilBuffer(shadowMapWidth, shadowMapHeight);
 	_createShadowStates();
+	_loadEffect();
 }
 
 void ShadowMapRenderer::_createShadowStates()
@@ -41,16 +44,37 @@ void ShadowMapRenderer::_createShadowStates()
 	_shadowDepthState = _device->CreateDepthStencilState_DepthDefault();
 }
 
-Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection) const
+void ShadowMapRenderer::_loadEffect()
 {
-	// Use the camera frustum center as the light look-at point
-	// This requires access to the game's View matrix
-	if (_owner == nullptr)
-	{
-		// Return identity if no owner
-		return Math::Matrix4x4();
-	}
+	auto compiler = _device->ShaderCompiler();
 
+	ShaderDescFile vsShadowEffect(
+		"Data\\Shaders\\ShadowMapDepth.hlsl",
+		"VS_Main",
+		ShaderType::Vertex
+	);
+
+	ShaderDescFile psShadowEffect(
+		"Data\\Shaders\\ShadowMapDepth.hlsl",
+		"PS_Main",
+		ShaderType::Fragment
+	);
+
+	ShaderDesc* descs[2] = {&vsShadowEffect, &psShadowEffect};
+	auto result = compiler->CompileEffect(descs);
+
+	if (result.second.Succeded)
+	{
+		_shadowMapEffect = result.first;
+	}
+	else
+	{
+		throw Logging::Exception("Failed to compile shadow map effect: " + result.second.Log);
+	}
+}
+
+Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection)
+{
 	// For a directional light, position it far along the light direction
 	// from the center of the camera frustum
 	Math::Vector3 lightPos = lightDirection * -100.0f; // Position light far away
@@ -66,20 +90,11 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 	return Math::Matrix4x4::CreateLookAtView(lightPos, target, up);
 }
 
-Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix() const
+Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix(const Math::Point& screenSize)
 {
-	// Use an orthographic projection for directional light shadows
-	// The size should encompass the camera frustum
-	if (_owner == nullptr)
-	{
-		// Return identity if no owner
-		return Math::Matrix4x4();
-	}
-
 	// For now, use a fixed-size orthographic projection
 	// In a full implementation, you would calculate this based on the camera frustum
-	Math::Point size(_device->Resolution().X, _device->Resolution().Y);
-	return Math::Matrix4x4::CreateOrthographicProjection(size, 1.0f, 1000.0f);
+	return Math::Matrix4x4::CreateOrthographicProjection(screenSize, 1.0f, 1000.0f);
 }
 
 void ShadowMapRenderer::Begin()
@@ -112,8 +127,6 @@ void ShadowMapRenderer::Begin()
 
 void ShadowMapRenderer::End()
 {
-	auto context = _device->ImmediateContext();
-
 	// Restore default viewport (screen resolution)
 	auto resolution = _device->Resolution();
 	Viewport defaultViewport(
@@ -121,17 +134,44 @@ void ShadowMapRenderer::End()
 		0.0f,
 		1.0f
 	);
-	context->SetViewport(defaultViewport);
+	_context->SetViewport(defaultViewport);
 
 	// Unbind the shadow map depth buffer
-	context->UnbindDepthBuffer();
-
-	// Apply shadows as a screen-space composite
-	// This requires the light view-projection matrix
-	Math::Matrix4x4 lightViewProj = ComputeLightViewMatrix(LightDirection) * ComputeLightProjectionMatrix();
+	_context->UnbindDepthBuffer();
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
 {
 	return _shadowMap.get();
+}
+
+void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor)
+{
+	if (!part) return;
+	if (materialDescriptor && !materialDescriptor->HasShadows) return;
+
+	_shadowMapEffect->SetAll();
+	
+	auto lvp = ComputeLightViewMatrix(_owner->MainLight.LightDirection) * ComputeLightProjectionMatrix(_device->Resolution());
+
+	_shadowMapEffect->SetData<Math::Matrix4x4>(&lvp, 0);
+
+	_context->DrawVertexBufferWithindices(
+		part->GetVertexBuffer(),
+		part->GetIndexBuffer()
+	);
+}
+
+bool ShadowMapRenderer::IsRenderPassTypeSupported(RenderPassType passType) const noexcept
+{
+	switch (passType)
+	{
+	case RenderPassType::Opaque:
+	case RenderPassType::Transparent:
+	case RenderPassType::ShadowMap:
+	case RenderPassType::DepthPrePass:
+		return true;
+	default:
+		return false;
+	}
 }

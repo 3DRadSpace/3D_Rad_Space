@@ -85,7 +85,7 @@ IService* Game::RequireService(const std::type_index& type)
 	{
 		if (RenderingManager) return RenderingManager.get();
 
-		RenderingManager = std::make_unique<Graphics::Rendering::RenderingManager>(Device.get());
+		RenderingManager = Graphics::Rendering::RenderingManager::CreateForward(Device.get());
 		AddService(RenderingManager.get());
 		return RenderingManager.get();
 	}
@@ -179,9 +179,8 @@ void Game::RunOneFrame()
 	cmd->SetViewport();
 	cmd->Clear(ClearColor);
 
-	RenderingManager->Batcher.Begin();
-
 	Draw3D();
+	RenderingManager->Execute();
 
 	PostProcesses->ApplyAll();
 

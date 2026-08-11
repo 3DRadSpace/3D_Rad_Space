@@ -13,10 +13,6 @@ extern "C"
 {
 #endif
 	E3DRSP_FFI_EXPORT E3DRSP_Model3D EDRSP_Model3D_Create(E3DRSP_IGraphicsDevice device, const char* path);
-	E3DRSP_FFI_EXPORT void EDRSP_Model3D_Draw(E3DRSP_Model3D model);
-	E3DRSP_FFI_EXPORT void EDRSP_Model3D_Draw2(E3DRSP_Model3D model, const E3DRSP_Matrix4x4* transform);
-	E3DRSP_FFI_EXPORT void EDRSP_Model3D_DrawEffect(E3DRSP_Model3D model, E3DRSP_Effect effect);
-	E3DRSP_FFI_EXPORT void EDRSP_Model3D_DrawEffect2(E3DRSP_Model3D model, E3DRSP_Effect effect, const E3DRSP_Matrix4x4* transform);
 	E3DRSP_FFI_EXPORT size_t EDRSP_Model3D_NumMeshes(E3DRSP_Model3D model);
 	E3DRSP_FFI_EXPORT E3DRSP_ModelMesh EDRSP_Model3D_GetMesh(E3DRSP_Model3D model, size_t index);
 	E3DRSP_FFI_EXPORT E3DRSP_BoundingBox EDRSP_Model3D_GetBoundingBox(E3DRSP_Model3D model);

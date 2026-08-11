@@ -9,15 +9,18 @@
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {
+	class RenderingManager;
 	class E3DRSP_GRAPHICS_RENDERING_EXPORT ShadowMapRenderer : public IRenderer
 	{
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
+		Effect* _shadowMapEffect = nullptr;
 
 		void _createShadowStates();
+		void _loadEffect();
 	public:
-		ShadowMapRenderer(IGraphicsDevice* device);
+		ShadowMapRenderer(RenderingManager* owner);
 
 		/// <summary>
 		/// Defines the size of the shadow map as a multiplier of the screen resolution.
@@ -33,11 +36,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		float ShadowIntensity = 0.3f;
 
 		/// <summary>
-		/// Light direction for shadow calculation (set before End())
-		/// </summary>
-		Math::Vector3 LightDirection = Math::Vector3(0.0f, -1.0f, 0.0f);
-
-		/// <summary>
 		/// Gets the shadow map depth texture.
 		/// </summary>
 		IDepthStencilBuffer* GetShadowMap() const noexcept;
@@ -47,16 +45,18 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		/// <param name="lightDirection">Direction of the light</param>
 		/// <returns>Light view matrix</returns>
-		Math::Matrix4x4 ComputeLightViewMatrix(const Math::Vector3& lightDirection) const;
+		static Math::Matrix4x4 ComputeLightViewMatrix(const Math::Vector3& lightDirection);
 
 		/// <summary>
 		/// Computes the light projection matrix for shadow mapping based on camera frustum.
 		/// </summary>
 		/// <returns>Light projection matrix</returns>
-		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
+		static Math::Matrix4x4 ComputeLightProjectionMatrix(const Math::Point& screenSize);
 
 		void Begin() override;
+		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
 		void End() override;
+		bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept override;
 
 		~ShadowMapRenderer() override = default;
 	};

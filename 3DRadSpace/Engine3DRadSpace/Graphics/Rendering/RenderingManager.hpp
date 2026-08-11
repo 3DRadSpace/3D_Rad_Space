@@ -2,7 +2,7 @@
 #include "IRenderer.hpp"
 #include "../../Core/IService.hpp"
 #include "../IGraphicsDevice.hpp"
-#include "MeshBatcher.hpp"
+#include "RenderPassType.hpp"
 #include "DirectionalLight.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
@@ -12,17 +12,24 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	/// </summary>
 	class RenderingManager : public IService
 	{
+		struct MeshPartDrawInfo
+		{
+			ModelMeshPart* Part;
+			RenderPassType PassType;
+		};
+
 		IGraphicsDevice* _device;
 
 		std::vector<std::unique_ptr<IRenderer>> _renderers;
+		std::vector<MeshPartDrawInfo> _meshParts;
+
+		RenderingManager(IGraphicsDevice* device, std::nullptr_t dummy);
 	public:
 		/// <summary>
 		/// Creates an RenderingManager with classical forward rendering and shadow mapping passes.
 		/// </summary>
 		///	<param name="device">Graphics device to use for rendering.</param>
 		RenderingManager(IGraphicsDevice* device);
-
-		MeshBatcher Batcher;
 
 		/// <summary>
 		/// Emplaces a new renderer of type R with the given arguments.
@@ -65,10 +72,40 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		void Clear() noexcept;
 
+		void Draw(Model3D* model, RenderPassType passType = RenderPassType::Opaque);
+		void Draw(ModelMeshPart* part, RenderPassType passType = RenderPassType::Opaque);
+
 		/// <summary>
-		/// A directional light used for the main light source in the scene. This is used for forward rendering and shadow mapping.
+		/// Executes all render passes in order, drawing all submitted meshes.
 		/// </summary>
+		void Execute();
+
+		static std::unique_ptr<RenderingManager> CreateForward(IGraphicsDevice* device);
+		static std::unique_ptr<RenderingManager> CreateNull(IGraphicsDevice* device);
+
 		DirectionalLight MainLight;
+
+		/// <summary>
+		///	Returns the idx-th renderer of type T, or nullptr if not found.
+		/// </summary>
+		/// <typeparam name="T">Type of the renderer to retrieve.</typeparam>
+		/// <param name="idx">Index of the renderer of type T to retrieve.</param>
+		/// <returns>Pointer to the idx-th renderer of type T, or nullptr if not found.</returns>
+		template<typename T>
+		T* Get(size_t idx = 0)
+		{
+			size_t count = 0;
+			for (auto& renderer : _renderers)
+			{
+				if (dynamic_cast<T*>(renderer.get()) != nullptr)
+				{
+					if (count == idx)
+						return static_cast<T*>(renderer.get());
+					count++;
+				}
+			}
+			return nullptr;
+		}
 
 		~RenderingManager() override = default;
 	};
