@@ -18,7 +18,7 @@ namespace Engine3DRadSpace::Objects
 	{
 		Graphics::Model3D *_model;
 		std::unique_ptr<std::string> _path;
-		Graphics::Rendering::RenderingManager* _renderingManager;
+		Graphics::Rendering::RenderingManager* _renderingManager = nullptr;
 	public:
 		Skinmesh();
 

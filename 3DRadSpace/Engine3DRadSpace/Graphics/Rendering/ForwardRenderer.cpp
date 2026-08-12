@@ -157,6 +157,7 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			effect->SetSampler(samplerState.get(), idTexture++);
 	}
 
+	_context->SetTopology(VertexTopology::TriangleList);
 	_context->DrawVertexBufferWithindices(
 		part->GetVertexBuffer(),
 		part->GetIndexBuffer()

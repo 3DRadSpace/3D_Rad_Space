@@ -20,7 +20,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		void _createShadowStates();
 		void _loadEffect();
 	public:
-		ShadowMapRenderer(RenderingManager* owner);
+		explicit ShadowMapRenderer(RenderingManager* owner);
 
 		/// <summary>
 		/// Defines the size of the shadow map as a multiplier of the screen resolution.

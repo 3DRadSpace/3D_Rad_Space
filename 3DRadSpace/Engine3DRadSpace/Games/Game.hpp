@@ -59,8 +59,8 @@ namespace Engine3DRadSpace
 		std::unique_ptr<Audio::IAudioEngine> Audio;
 		std::unique_ptr<Graphics::Rendering::PostProcessCollection> PostProcesses;
 
-		std::unique_ptr<Objects::ObjectList> Objects;
 		std::unique_ptr<Objects::CameraProvider> Cameras;
+		std::unique_ptr<Objects::ObjectList> Objects;
 
 		IService* RequireService(const std::type_index& type);
 

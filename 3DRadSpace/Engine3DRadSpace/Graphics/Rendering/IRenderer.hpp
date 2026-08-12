@@ -47,5 +47,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		virtual bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept = 0;
 
 		virtual ~IRenderer() = default;
+
+		friend class RenderingManager;
 	};
 }

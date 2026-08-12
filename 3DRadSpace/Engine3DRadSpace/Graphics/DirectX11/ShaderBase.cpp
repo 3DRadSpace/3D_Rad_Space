@@ -126,9 +126,10 @@ void ShaderBase::SetData(unsigned index, const void* data, size_t dataSize)
 	if (ptr == nullptr)
 	{
 		constantBuff.Buffer = std::make_unique<std::byte[]>(dataSize);
+		constantBuff.Size = dataSize;
 		ptr = constantBuff.Buffer.get();
 	}
-	memcpy_s(ptr, dataSize, data, dataSize);
+	memcpy_s(ptr, constantBuff.Size, data, dataSize);
 
 	if (handle == nullptr)
 	{

@@ -86,6 +86,7 @@ void Gizmo<Skinmesh>::Load()
 
 	if(_wasLoaded) return;
 
+	Object->Initialize();
 	Object->Load();
 }
 
@@ -98,7 +99,7 @@ void Gizmo<Skinmesh>::Draw3D()
 	if(Object != nullptr)
 	{
 		auto skinmesh = static_cast<Skinmesh*>(Object);
-		
+
 		if (Selected)
 		{
 			if (skinmesh->GetModel() == nullptr) return;
@@ -109,7 +110,6 @@ void Gizmo<Skinmesh>::Draw3D()
 			auto wireframe = static_cast<IRasterizerState*>(_wireframe_RasterizerState.get());
 			auto cmd = device->ImmediateContext();
 
-			cmd->UnbindDepthBuffer();
 			cmd->SetRasterizerState(wireframe);
 			cmd->SetDepthStencilState(_depthStencilState.get(), 0);
 
@@ -126,7 +126,7 @@ void Gizmo<Skinmesh>::Draw3D()
 				for (auto &part : *meshPart)
 				{
 					auto mvp = part->MVP();
-					_highlightEffect->SetData<Math::Matrix4x4>(&mvp, 0);
+					_highlightEffect->operator[](0)->SetData<Math::Matrix4x4>(&mvp, 0);
 					_highlightEffect->SetAll();
 
 					cmd->SetTopology(VertexTopology::TriangleList);
@@ -137,15 +137,11 @@ void Gizmo<Skinmesh>::Draw3D()
 				}
 			}
 
-			cmd->SetRenderTargetAndDepth(nullptr, nullptr);
 			cmd->SetRasterizerState(oldRasterizerState.get());
 			cmd->SetDepthStencilState(oldDepthState.get(), 0);
 		}
 
-		if(skinmesh != nullptr)
-		{
-			skinmesh->Draw3D();
-		}
+		skinmesh->Draw3D();
 	}
 }
 

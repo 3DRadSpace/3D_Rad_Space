@@ -31,8 +31,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		///	<param name="device">Graphics device to use for rendering.</param>
 		RenderingManager(IGraphicsDevice* device);
 
-		RenderingManager(RenderingManager&&) = default;
-		RenderingManager& operator=(RenderingManager&&) = default;
+		RenderingManager(RenderingManager&&) noexcept;
+		RenderingManager& operator=(RenderingManager&&) noexcept;
 
 		/// <summary>
 		/// Emplaces a new renderer of type R with the given arguments.

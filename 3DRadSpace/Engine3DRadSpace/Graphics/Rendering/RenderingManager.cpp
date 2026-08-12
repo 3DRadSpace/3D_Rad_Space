@@ -14,6 +14,35 @@ RenderingManager::RenderingManager(IGraphicsDevice* device) :
 {
 }
 
+RenderingManager::RenderingManager(RenderingManager&& other) noexcept :
+	_device(other._device),
+	_renderers(std::move(other._renderers)),
+	_meshParts(std::move(other._meshParts))
+{
+	for (auto& renderer : _renderers)
+	{
+		renderer->_owner = this;
+	}
+
+	other._device = nullptr;
+}
+
+RenderingManager& RenderingManager::operator=(RenderingManager&& other) noexcept
+{
+	if (this != &other)
+	{
+		_device = other._device;
+		_renderers = std::move(other._renderers);
+		_meshParts = std::move(other._meshParts);
+		for (auto& renderer : _renderers)
+		{
+			renderer->_owner = this;
+		}
+		other._device = nullptr;
+	}
+	return *this;
+}
+
 void RenderingManager::Add(std::unique_ptr<IRenderer>&& renderPass)
 {
 	_renderers.emplace_back(std::move(renderPass));
@@ -57,6 +86,8 @@ void RenderingManager::Execute()
 
 		renderer->End();
 	}
+
+	_meshParts.clear();
 }
 
 void RenderingManager::Draw(Model3D* model, RenderPassType passType)

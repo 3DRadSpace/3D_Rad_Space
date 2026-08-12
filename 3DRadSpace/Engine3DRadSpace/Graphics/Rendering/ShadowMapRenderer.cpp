@@ -156,6 +156,7 @@ void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* mate
 
 	_shadowMapEffect->SetData<Math::Matrix4x4>(&lvp, 0);
 
+	_context->SetTopology(VertexTopology::TriangleList);
 	_context->DrawVertexBufferWithindices(
 		part->GetVertexBuffer(),
 		part->GetIndexBuffer()
