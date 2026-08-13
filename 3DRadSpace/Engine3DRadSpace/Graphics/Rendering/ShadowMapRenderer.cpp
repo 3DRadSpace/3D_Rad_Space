@@ -7,6 +7,7 @@
 #include "../../Games/Game.hpp"
 #include "../IShaderCompiler.hpp"
 #include "RenderingManager.hpp"
+#include "../../Objects/CameraProvider.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -40,8 +41,8 @@ void ShadowMapRenderer::_createShadowStates()
 		false  // antialiasedLine
 	);
 
-	// Create depth stencil state for shadow map rendering
 	_shadowDepthState = _device->CreateDepthStencilState_DepthDefault();
+	_shadowSampler = _device->CreateSamplerState_LinearClamp();
 }
 
 void ShadowMapRenderer::_loadEffect()
@@ -73,12 +74,31 @@ void ShadowMapRenderer::_loadEffect()
 	}
 }
 
+namespace
+{
+	// Distance the light is offset from the camera frustum center along the light direction.
+	constexpr float LightOffsetDistance = 100.0f;
+}
+
 Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection)
 {
 	// For a directional light, position it far along the light direction
-	// from the center of the camera frustum
-	Math::Vector3 lightPos = lightDirection * -100.0f; // Position light far away
-	Math::Vector3 target = Math::Vector3::Zero(); // Look at origin for now
+	// from the center of the camera's viewing frustum
+	Math::Vector3 target = Math::Vector3::Zero();
+
+	auto camera = _owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera();
+	if (camera)
+	{
+		auto corners = camera->GetViewingFrustum().Corners();
+		Math::Vector3 center = Math::Vector3::Zero();
+		for (auto& corner : corners)
+		{
+			center += corner;
+		}
+		target = center / static_cast<float>(corners.size());
+	}
+
+	Math::Vector3 lightPos = target - lightDirection * LightOffsetDistance; // Position light far away
 	Math::Vector3 up = Math::Vector3(0.0f, 1.0f, 0.0f);
 
 	// Adjust up vector if light direction is parallel to it
@@ -92,9 +112,43 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 
 Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix(const Math::Point& screenSize)
 {
-	// For now, use a fixed-size orthographic projection
-	// In a full implementation, you would calculate this based on the camera frustum
-	return Math::Matrix4x4::CreateOrthographicProjection(screenSize, 1.0f, 1000.0f);
+	// Size the orthographic projection to encompass the camera's viewing frustum
+	float radius = 500.0f;
+
+	auto camera = _owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera();
+	if (camera)
+	{
+		auto corners = camera->GetViewingFrustum().Corners();
+		Math::Vector3 center = Math::Vector3::Zero();
+		for (auto& corner : corners)
+		{
+			center += corner;
+		}
+		center = center / static_cast<float>(corners.size());
+
+		radius = 0.0f;
+		for (auto& corner : corners)
+		{
+			float distance = (corner - center).Length();
+			if (distance > radius)
+			{
+				radius = distance;
+			}
+		}
+	}
+
+	Math::Point size(screenSize.X, screenSize.Y);
+	if (radius > 0.0f)
+	{
+		int diameter = static_cast<int>(radius * 2.0f);
+		size = Math::Point(diameter, diameter);
+	}
+
+	// Far plane must cover the distance from the light's position (offset from the frustum
+	// center) to the far side of the bounding sphere encompassing the camera frustum.
+	float farPlane = radius > 0.0f ? LightOffsetDistance + radius : 1000.0f;
+
+	return Math::Matrix4x4::CreateOrthographicProjection(size, 1.0f, farPlane);
 }
 
 void ShadowMapRenderer::Begin()
@@ -143,6 +197,11 @@ void ShadowMapRenderer::End()
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
 {
 	return _shadowMap.get();
+}
+
+ISamplerState* ShadowMapRenderer::GetShadowSampler() const noexcept
+{
+	return _shadowSampler.get();
 }
 
 void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor)

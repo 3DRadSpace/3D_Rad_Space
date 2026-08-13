@@ -198,7 +198,8 @@ void Window::_resetKeyboard()
 	_keyboard._erase();
 }
 
-Window::Window(const std::string &title, size_t width, size_t height)
+Window::Window(const std::string &title, size_t width, size_t height) :
+	_window(nullptr)
 {
 #ifdef _WIN32
 	WNDCLASSA wndclass{};

@@ -25,5 +25,10 @@ namespace Engine3DRadSpace
 		IGame* GetOwner() const noexcept;
 
 		virtual ~IService() = default;
+
+		friend class IGame;
 	};
+
+	template<typename S>
+	concept Service = std::is_base_of_v<IService, S>;
 }

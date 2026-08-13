@@ -190,7 +190,14 @@ Matrix4x4 Matrix4x4::CreateSphericalBillboard(const Vector3 &objectPos,const Vec
 	return r;
 }
 
-Matrix4x4 Matrix4x4::CreateCylindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward)
+Matrix4x4 Matrix4x4::CreateCylindricalBillboard(
+	const Vector3& objectPos,
+	const Vector3& cameraPos,
+	const Vector3& cameraUp,
+	const Vector3& cameraForward, 
+	const Vector3& axis, 
+	std::optional<Vector3> objectForward
+)
 {
 	Matrix4x4 result;
 

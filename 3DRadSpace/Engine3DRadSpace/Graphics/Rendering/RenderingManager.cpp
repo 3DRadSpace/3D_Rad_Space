@@ -9,15 +9,17 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
-RenderingManager::RenderingManager(IGraphicsDevice* device) : 
+RenderingManager::RenderingManager(IGraphicsDevice* device) : IService(device->GetOwner()),
 	_device(device)
 {
 }
 
 RenderingManager::RenderingManager(RenderingManager&& other) noexcept :
+	IService(std::move(other)),
 	_device(other._device),
 	_renderers(std::move(other._renderers)),
-	_meshParts(std::move(other._meshParts))
+	_meshParts(std::move(other._meshParts)),
+	MainLight(std::move(other.MainLight))
 {
 	for (auto& renderer : _renderers)
 	{
@@ -31,9 +33,12 @@ RenderingManager& RenderingManager::operator=(RenderingManager&& other) noexcept
 {
 	if (this != &other)
 	{
+		IService::operator=(std::move(other));
+
 		_device = other._device;
 		_renderers = std::move(other._renderers);
 		_meshParts = std::move(other._meshParts);
+		MainLight = std::move(other.MainLight);
 		for (auto& renderer : _renderers)
 		{
 			renderer->_owner = this;
@@ -80,7 +85,7 @@ void RenderingManager::Execute()
 
 		for (auto& part : _meshParts)
 		{
-			if (renderer->IsRenderPassTypeSupported(part.PassType));
+			if (renderer->IsRenderPassTypeSupported(part.PassType))
 				renderer->Draw(part.Part, &part.Part->Material);
 		}
 

@@ -128,14 +128,17 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 
 		cb1.WorldViewProjLight =
 			cb0.World *
-			ShadowMapRenderer::ComputeLightViewMatrix(_owner->MainLight.LightDirection) *
-			ShadowMapRenderer::ComputeLightProjectionMatrix(_device->Resolution());
+			shadowMapRenderer->ComputeLightViewMatrix(_owner->MainLight.LightDirection) *
+			shadowMapRenderer->ComputeLightProjectionMatrix(_device->Resolution());
 
 		cb1.InvViewProj = Math::Matrix4x4::Invert(part->View * part->Projection);
 		cb1.LightDirection = _owner->MainLight.LightDirection;
 
 		cb1.ShadowBias = shadowMapRenderer->ShadowBias;
 		cb1.ShadowIntensity = shadowMapRenderer->ShadowIntensity;
+
+		effect->SetTexture(shadowMapRenderer->GetShadowMap()->GetDepthTexture(), 1);
+		effect->SetSampler(shadowMapRenderer->GetShadowSampler(), 1);
 	}
 	else
 	{
@@ -146,6 +149,8 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 	size_t idTexture = 0;
 	for (auto& texture : part->Textures)
 	{
+		if (idTexture == 1) idTexture++;
+
 		if (texture != nullptr)
 			effect->SetTexture(texture.get(), idTexture++);
 	}
