@@ -111,12 +111,12 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			Math::Matrix4x4 World;
 		} cb0;
 
-		effect->SetData<Shadow_ConstantBuffer0>(&cb0, 0);
-
 		cb0.WorldViewProjection = part->MVP();
 		cb0.World = part->World;
 
-		struct Shadow_ConstantBuffer1
+		effect->SetData<Shadow_ConstantBuffer0>(&cb0, 0);
+
+		struct alignas(16) Shadow_ConstantBuffer1
 		{
 			Math::Matrix4x4 WorldViewProjLight; // MVP transformation for light
 			Math::Matrix4x4 InvViewProj; //Camera Inv(VP)
@@ -136,6 +136,8 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 
 		cb1.ShadowBias = shadowMapRenderer->ShadowBias;
 		cb1.ShadowIntensity = shadowMapRenderer->ShadowIntensity;
+
+		effect->SetData<Shadow_ConstantBuffer1>(&cb1, 1);
 
 		effect->SetTexture(shadowMapRenderer->GetShadowMap()->GetDepthTexture(), 1);
 		effect->SetSampler(shadowMapRenderer->GetShadowSampler(), 1);
@@ -171,6 +173,12 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 
 void ForwardRenderer::End()
 {
+	// Unbind the shadow map depth texture from the pixel/vertex shader resource slots.
+	// Otherwise it remains bound as a shader input while ShadowMapRenderer::Begin() tries
+	// to bind the same resource as the depth-stencil render target on the next frame,
+	// which triggers a D3D11 debug layer hazard warning (DEVICE_OMSETRENDERTARGETS_HAZARD).
+	_shadowEffect->SetTexture(nullptr, 1);
+
 	_beginCalled = false;
 }
 

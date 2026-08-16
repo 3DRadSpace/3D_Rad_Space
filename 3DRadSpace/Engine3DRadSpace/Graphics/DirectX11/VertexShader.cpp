@@ -207,7 +207,11 @@ VertexShader::VertexShader(GraphicsDevice*Device, const std::filesystem::path &p
 void VertexShader::SetTexture(unsigned index, ITexture1D* texture)
 {
 	if(texture == nullptr)
+	{
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_device->_context->VSSetShaderResources(index, 1, &nullSRV);
 		return;
+	}
 
 	auto dxTexture = static_cast<Texture1D*>(texture);
 	_device->_context->VSSetShaderResources(index, 1, dxTexture->_shaderResourceView.GetAddressOf());
@@ -220,7 +224,11 @@ void VertexShader::SetTextures(std::span<ITexture1D*> textures)
 
 	for(decltype(len) i = 0; i < len; i++)
 	{
-		srvs[i] = static_cast<Texture1D*>(textures[i])->_shaderResourceView.Get();
+		auto texture = textures[i];
+		if(texture != nullptr)
+			srvs[i] = static_cast<Texture1D*>(textures[i])->_shaderResourceView.Get();
+		else
+			srvs[i] = nullptr;
 	}
 
 	_device->_context->VSSetShaderResources(0, len, srvs.get());
@@ -229,7 +237,11 @@ void VertexShader::SetTextures(std::span<ITexture1D*> textures)
 void VertexShader::SetTexture(unsigned index, ITexture2D *texture)
 {
 	if(texture == nullptr)
+	{
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_device->_context->VSSetShaderResources(index, 1, &nullSRV);
 		return;
+	}
 
 	auto dxTexture = dynamic_cast<DirectX11::Texture2D*>(texture);
 	_device->_context->VSSetShaderResources(index, 1, dxTexture->_resourceView.GetAddressOf());
@@ -249,8 +261,12 @@ void VertexShader::SetTextures(std::span<ITexture2D*> textures)
 
 void VertexShader::SetTexture(unsigned index, ITextureCube* texture)
 {
-	if(texture == nullptr)
+	if (texture == nullptr)
+	{
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_device->_context->VSSetShaderResources(index, 1, &nullSRV);
 		return;
+	}
 
 	auto dxTexture = static_cast<TextureCube*>(texture);
 	_device->_context->VSSetShaderResources(index, 1, dxTexture->_resourceView.GetAddressOf());
@@ -270,8 +286,14 @@ void VertexShader::SetTextures(std::span<ITextureCube*> textures)
 
 void VertexShader::SetSampler(unsigned index, ISamplerState *samplerState)
 {
-	auto dxSamplerState = static_cast<DirectX11::SamplerState*>(samplerState);
-	_device->_context->VSSetSamplers(index, 1, dxSamplerState->_samplerState.GetAddressOf());
+	if (samplerState == nullptr)
+	{
+		ID3D11SamplerState* nullSampler = nullptr;
+		_device->_context->VSSetSamplers(index, 1, &nullSampler);
+		return;
+	}
+	
+	_device->_context->VSSetSamplers(index, 1, static_cast<SamplerState*>(samplerState)->_samplerState.GetAddressOf());
 }
 
 void VertexShader::SetShader()

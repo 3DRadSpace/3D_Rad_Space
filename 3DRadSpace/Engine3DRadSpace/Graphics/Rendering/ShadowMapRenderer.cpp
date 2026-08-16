@@ -144,11 +144,13 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix(const Math::Poin
 		size = Math::Point(diameter, diameter);
 	}
 
-	// Far plane must cover the distance from the light's position (offset from the frustum
-	// center) to the far side of the bounding sphere encompassing the camera frustum.
+	// Near/far planes must bracket the bounding sphere of the camera frustum as seen from the
+	// light's position (offset from the frustum center by LightOffsetDistance). Without this,
+	// geometry closer to the light than the near plane gets clipped.
+	float nearPlane = radius > 0.0f ? std::max(0.1f, LightOffsetDistance - radius) : 1.0f;
 	float farPlane = radius > 0.0f ? LightOffsetDistance + radius : 1000.0f;
 
-	return Math::Matrix4x4::CreateOrthographicProjection(size, 1.0f, farPlane);
+	return Math::Matrix4x4::CreateOrthographicProjection(size, nearPlane, farPlane);
 }
 
 void ShadowMapRenderer::Begin()

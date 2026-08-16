@@ -78,5 +78,6 @@ float CalculateShadow(float3 worldPos)
 float4 PS_Main(VertexOut v) : SV_TARGET
 {
     float shadowFactor = CalculateShadow(v.WorldPos);
-    return TextureModel.Sample(TextureSampler, v.UV) * shadowFactor;
+    float4 textureSample = TextureModel.Sample(TextureSampler, v.UV);
+    return float4(textureSample.rgb * shadowFactor, textureSample.a);
 }

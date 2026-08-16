@@ -73,7 +73,10 @@ void FragmentShader::SetTextures(std::span<ITexture1D*> textures)
 
 	for(decltype(len) i = 0; i < len; i++)
 	{
-		srvs[i] = static_cast<Texture1D*>(textures[i])->_shaderResourceView.Get();
+		if (textures[i] == nullptr)
+			srvs[i] = nullptr;
+		else 
+			srvs[i] = static_cast<Texture1D*>(textures[i])->_shaderResourceView.Get();
 	}
 
 	_device->_context->PSSetShaderResources(0, len, srvs.get());
@@ -82,7 +85,11 @@ void FragmentShader::SetTextures(std::span<ITexture1D*> textures)
 void FragmentShader::SetTexture(unsigned index, ITexture2D *texture)
 {
 	if(texture == nullptr)
+	{
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_device->_context->PSSetShaderResources(index, 1, &nullSRV);
 		return;
+	}
 
 	auto dxTexture = static_cast<Texture2D*>(texture);
 	_device->_context->PSSetShaderResources(index, 1, dxTexture->_resourceView.GetAddressOf());
@@ -95,7 +102,9 @@ void FragmentShader::SetTextures(std::span<ITexture2D*> textures)
 
 	for(decltype(len) i = 0; i < len; i++)
 	{
-		srvs[i] = static_cast<Texture2D*>(textures[i])->_resourceView.Get();
+		if (textures[i] != nullptr)
+			srvs[i] = static_cast<Texture2D*>(textures[i])->_resourceView.Get();
+		else srvs[i] = nullptr;
 	}
 
 	_device->_context->PSSetShaderResources(0, len, srvs.get());
@@ -104,7 +113,11 @@ void FragmentShader::SetTextures(std::span<ITexture2D*> textures)
 void FragmentShader::SetTexture(unsigned index, ITextureCube* texture)
 {
 	if(texture == nullptr)
+	{
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_device->_context->PSSetShaderResources(index, 1, &nullSRV);
 		return;
+	}
 
 	auto dxTexture = static_cast<TextureCube*>(texture);
 	_device->_context->PSSetShaderResources(index, 1, dxTexture->_resourceView.GetAddressOf());
@@ -117,7 +130,10 @@ void FragmentShader::SetTextures(std::span<ITextureCube*> textures)
 
 	for(decltype(len) i = 0; i < len; i++)
 	{
-		srvs[i] = static_cast<TextureCube*>(textures[i])->_resourceView.Get();
+		if (textures[i] != nullptr)
+			srvs[i] = static_cast<TextureCube*>(textures[i])->_resourceView.Get();
+		else
+			srvs[i] = nullptr;
 	}
 
 	_device->_context->PSSetShaderResources(0, len, srvs.get());
@@ -125,8 +141,16 @@ void FragmentShader::SetTextures(std::span<ITextureCube*> textures)
 
 void FragmentShader::SetSampler(unsigned index, ISamplerState *samplerState)
 {
-	auto dxSamplerState = static_cast<SamplerState*>(samplerState);
-	_device->_context->PSSetSamplers(0, 1, dxSamplerState->_samplerState.GetAddressOf());
+	if (samplerState != nullptr)
+	{
+		auto dxSamplerState = static_cast<SamplerState*>(samplerState);
+		_device->_context->PSSetSamplers(0, 1, dxSamplerState->_samplerState.GetAddressOf());
+	}
+	else
+	{
+		ID3D11SamplerState* nullSampler = nullptr;
+		_device->_context->PSSetSamplers(index, 1, &nullSampler);
+	}
 }
 
 void FragmentShader::SetShader()

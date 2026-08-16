@@ -32,6 +32,8 @@ void DirectionalLight::Initialize()
 		_light = &(GetGame()->GetService<Rendering::RenderingManager>({})->MainLight);
 		_temporaryPointer = false;
 	}
+
+	Sync();
 }
 
 void DirectionalLight::Load()
@@ -95,6 +97,17 @@ Math::Color DirectionalLight::GetAmbientColor() const noexcept
 float DirectionalLight::GetIntensity() const noexcept
 {
 	return _light ? _light->Intensity : 1.0f;
+}
+
+void DirectionalLight::Sync() noexcept
+{
+	if (_light)
+	{
+		_light->LightDirection = GetLightDir();
+		_light->LightColor = GetLightColor();
+		_light->AmbientColor = GetAmbientColor();
+		_light->Intensity = GetIntensity();
+	}
 }
 
 Reflection::UUID DirectionalLight::GetUUID() const noexcept
