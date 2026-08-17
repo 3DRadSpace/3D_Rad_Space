@@ -135,7 +135,7 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 		// outside the light's frustum (shadows silently never show up).
 		cb1.LightViewProj =
 			shadowMapRenderer->ComputeLightViewMatrix(_owner->MainLight.LightDirection) *
-			shadowMapRenderer->ComputeLightProjectionMatrix(_device->Resolution());
+			shadowMapRenderer->ComputeLightProjectionMatrix();
 
 		cb1.InvViewProj = Math::Matrix4x4::Invert(part->View * part->Projection);
 		cb1.LightDirection = _owner->MainLight.LightDirection;

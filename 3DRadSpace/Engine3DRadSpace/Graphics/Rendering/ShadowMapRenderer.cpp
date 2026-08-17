@@ -7,7 +7,6 @@
 #include "../../Games/Game.hpp"
 #include "../IShaderCompiler.hpp"
 #include "RenderingManager.hpp"
-#include "../../Objects/CameraProvider.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -74,83 +73,50 @@ void ShadowMapRenderer::_loadEffect()
 	}
 }
 
-namespace
+Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection) const
 {
-	// Distance the light is offset from the camera frustum center along the light direction.
-	constexpr float LightOffsetDistance = 100.0f;
-}
+	// For a directional light, always look at the world origin from a fixed distance along the
+	// light direction. Deliberately NOT fit to the camera's viewing frustum: doing so causes the
+	// shadow map's world-space footprint (and therefore its texel size) to change every frame as
+	// the camera moves, which produces shimmering/swimming shadow acne no amount of texel
+	// snapping can fully fix (snapping only stabilizes position, not scale).
+	Vector3 dir = lightDirection;
+	float len = std::sqrt(Vector3::Dot(dir, dir));
+	if (len > 0.0001f) dir = dir * (1.0f / len);
+	else dir = Vector3(0.0f, -1.0f, 0.0f);
 
-Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection)
-{
-	// For a directional light, position it far along the light direction
-	// from the center of the camera's viewing frustum
-	Math::Vector3 target = Math::Vector3::Zero();
+	Vector3 lightPos = dir * -LightDistance;
+	Vector3 target = Vector3::Zero();
+	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
-	auto camera = _owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera();
-	if (camera)
-	{
-		auto corners = camera->GetViewingFrustum().Corners();
-		Math::Vector3 center = Math::Vector3::Zero();
-		for (auto& corner : corners)
-		{
-			center += corner;
-		}
-		target = center / static_cast<float>(corners.size());
-	}
-
-	Math::Vector3 lightPos = target - lightDirection * LightOffsetDistance; // Position light far away
-	Math::Vector3 up = Math::Vector3(0.0f, 1.0f, 0.0f);
-
-	// Adjust up vector if light direction is parallel to it
-	if (std::abs(Vector3::Dot(lightDirection, up)) > 0.99f)
-	{
-		up = Math::Vector3(1.0f, 0.0f, 0.0f);
-	}
+	// Avoid a degenerate basis when the light points straight up/down.
+	if (std::abs(Vector3::Dot(dir, up)) > 0.99f)
+		up = Vector3(1.0f, 0.0f, 0.0f);
 
 	return Math::Matrix4x4::CreateLookAtView(lightPos, target, up);
 }
 
-Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix(const Math::Point& screenSize)
+Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix() const
 {
-	// Size the orthographic projection to encompass the camera's viewing frustum
-	float radius = 500.0f;
+	// Orthographic projection sized in world units (square) covering the scene focus area.
+	// NOTE: the engine's CreateLookAtView yields NEGATIVE view-space Z for points in front of the
+	// camera (matching CreatePerspectiveProjection). The stock CreateOrthographicProjection instead
+	// assumes positive Z, which would push clip.z below 0 and get the geometry clipped (empty shadow
+	// map). We therefore build the matrix with a negated Z scale so clip.z lands in [0,1] for
+	// view-space Z in [-NearPlane, -FarPlane].
+	float extent = OrthographicExtent;
+	if (extent < 1.0f) extent = 1.0f;
 
-	auto camera = _owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera();
-	if (camera)
-	{
-		auto corners = camera->GetViewingFrustum().Corners();
-		Math::Vector3 center = Math::Vector3::Zero();
-		for (auto& corner : corners)
-		{
-			center += corner;
-		}
-		center = center / static_cast<float>(corners.size());
+	float w = 2.0f / extent;
+	float h = 2.0f / extent;
+	float invRange = 1.0f / (FarPlane - NearPlane);
 
-		radius = 0.0f;
-		for (auto& corner : corners)
-		{
-			float distance = (corner - center).Length();
-			if (distance > radius)
-			{
-				radius = distance;
-			}
-		}
-	}
-
-	Math::Point size(screenSize.X, screenSize.Y);
-	if (radius > 0.0f)
-	{
-		int diameter = static_cast<int>(radius * 2.0f);
-		size = Math::Point(diameter, diameter);
-	}
-
-	// Near/far planes must bracket the bounding sphere of the camera frustum as seen from the
-	// light's position (offset from the frustum center by LightOffsetDistance). Without this,
-	// geometry closer to the light than the near plane gets clipped.
-	float nearPlane = radius > 0.0f ? std::max(0.1f, LightOffsetDistance - radius) : 1.0f;
-	float farPlane = radius > 0.0f ? LightOffsetDistance + radius : 1000.0f;
-
-	return Math::Matrix4x4::CreateOrthographicProjection(size, nearPlane, farPlane);
+	return Math::Matrix4x4(
+		w, 0.0f, 0.0f, 0.0f,
+		0.0f, h, 0.0f, 0.0f,
+		0.0f, 0.0f, -invRange, 0.0f,
+		0.0f, 0.0f, -NearPlane * invRange, 1.0f
+	);
 }
 
 void ShadowMapRenderer::Begin()
@@ -213,7 +179,7 @@ void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* mate
 
 	_shadowMapEffect->SetAll();
 
-	auto lvp = ComputeLightViewMatrix(_owner->MainLight.LightDirection) * ComputeLightProjectionMatrix(_device->Resolution());
+	auto lvp = ComputeLightViewMatrix(_owner->MainLight.LightDirection) * ComputeLightProjectionMatrix();
 
 	// The depth pass must transform vertices from object space into light clip space,
 	// so the part's own World (and ImportOffset) transform has to be folded in here.

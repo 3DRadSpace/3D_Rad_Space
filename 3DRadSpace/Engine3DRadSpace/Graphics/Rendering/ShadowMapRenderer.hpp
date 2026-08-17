@@ -37,6 +37,28 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		float ShadowIntensity = 0.3f;
 
 		/// <summary>
+		/// Distance the light is offset from the world origin along the light direction.
+		/// </summary>
+		float LightDistance = 100.0f;
+
+		/// <summary>
+		/// World-space size (width/height) of the orthographic shadow frustum. Fixed rather than
+		/// fit to the camera frustum, so the shadow map's world-space texel size never changes
+		/// and does not shimmer/swim as the camera moves.
+		/// 
+		/// NOTE: this directly controls shadow map texel density: texelWorldSize = OrthographicExtent /
+		/// (screenResolution * ShadowMapSize). A larger extent covers more of the scene but makes
+		/// each texel cover more world space, causing thin geometry (poles, railings, thin edges)
+		/// to have interrupted/dashed shadows. Prefer the smallest extent that still covers the
+		/// area where shadows matter (e.g. around the camera/player), and increase ShadowMapSize
+		/// if more texel density is needed without shrinking the covered area.
+		/// </summary>
+		float OrthographicExtent = 150.0f;
+
+		float NearPlane = 1.0f;
+		float FarPlane = 1000.0f;
+
+		/// <summary>
 		/// Gets the shadow map depth texture.
 		/// </summary>
 		IDepthStencilBuffer* GetShadowMap() const noexcept;
@@ -48,17 +70,20 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		ISamplerState* GetShadowSampler() const noexcept;
 
 		/// <summary>
-		/// Computes the light view matrix for shadow mapping based on light direction and camera frustum.
+		/// Computes the light view matrix for shadow mapping. The light always looks at the world
+		/// origin from a fixed distance along its direction, avoiding any camera-dependent state
+		/// that would otherwise cause shadow shimmering/swimming.
 		/// </summary>
 		/// <param name="lightDirection">Direction of the light</param>
 		/// <returns>Light view matrix</returns>
-		Math::Matrix4x4 ComputeLightViewMatrix(const Math::Vector3& lightDirection);
+		Math::Matrix4x4 ComputeLightViewMatrix(const Math::Vector3& lightDirection) const;
 
 		/// <summary>
-		/// Computes the light projection matrix for shadow mapping based on camera frustum.
+		/// Computes the light projection matrix for shadow mapping. Uses a fixed world-space
+		/// orthographic extent rather than fitting to the camera frustum.
 		/// </summary>
 		/// <returns>Light projection matrix</returns>
-		Math::Matrix4x4 ComputeLightProjectionMatrix(const Math::Point& screenSize);
+		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
 
 		void Begin() override;
 		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
