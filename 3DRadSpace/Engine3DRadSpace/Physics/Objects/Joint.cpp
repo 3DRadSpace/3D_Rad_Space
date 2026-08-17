@@ -45,9 +45,9 @@ void Physics::Objects::Joint::Draw3D()
 {
 }
 
-float Physics::Objects::Joint::Intersects(const Math::Ray& r)
+float Physics::Objects::Joint::Intersects(const Math::Ray& r) const
 {
-	return -1.0f;
+	return std::numeric_limits<float>::quiet_NaN();
 }
 
 Reflection::UUID Physics::Objects::Joint::GetUUID() const noexcept

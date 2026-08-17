@@ -34,7 +34,7 @@ namespace Engine3DRadSpace::Objects
 		void Load() override;
 		void Load(const std::filesystem::path &path) override;
 
-		Math::Matrix4x4 GetModelMatrix() override;
+		Math::Matrix4x4 GetModelMatrix() const override;
 		/// <summary>
 		/// Gets the View matrix of the camera.
 		/// </summary>
@@ -59,7 +59,7 @@ namespace Engine3DRadSpace::Objects
 
 		void SetLookAt(const Math::Vector3& lookAt);
 
-		float Intersects(const Math::Ray &r) override;
+		float Intersects(const Math::Ray &r) const override;
 		Reflection::UUID GetUUID() const noexcept override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
 

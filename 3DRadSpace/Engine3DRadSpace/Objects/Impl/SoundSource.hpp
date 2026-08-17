@@ -42,7 +42,7 @@ namespace Engine3DRadSpace::Objects
 		SoundSource& operator=(SoundSource&&) noexcept = default;
 
 		void Draw3D() override;
-		float Intersects(const Math::Ray &r) override;
+		float Intersects(const Math::Ray &r) const override;
 
 		Reflection::UUID GetUUID() const noexcept override;
 

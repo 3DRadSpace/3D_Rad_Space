@@ -107,7 +107,7 @@ Reflection::UUID SpriteBillboard::GetUUID() const noexcept
 	return { 0xc083d382, 0x86d9, 0x40a0, { 0xaf, 0xcc, 0x16, 0x10, 0x9c, 0x9b, 0xc, 0x35 } };
 }
 
-float SpriteBillboard::Intersects(const Math::Ray& r)
+float SpriteBillboard::Intersects(const Math::Ray& r) const
 {
 	// Create a bounding box centered at the billboard's position
 	BoundingBox box(Position - (Scale / 2), Scale);
@@ -115,7 +115,7 @@ float SpriteBillboard::Intersects(const Math::Ray& r)
 	// Create a plane perpendicular to the billboard's axis passing through the billboard position
 	// The normal of the plane is the billboard's axis (RotationCenter)
 	BoundingPlane plane;
-	plane.Normal = RotationCenter.Normalize();
+	plane.Normal = Vector3::Normalize(RotationCenter);
 	plane.D = -Vector3::Dot(plane.Normal, Position);
 
 	// Check if ray intersects the plane

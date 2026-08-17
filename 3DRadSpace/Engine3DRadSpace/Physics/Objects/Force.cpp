@@ -87,7 +87,7 @@ Vector3 Force::Direction() const noexcept
 	return _direction;
 }
 
-float Force::Intersects(const Ray& r)
+float Force::Intersects(const Ray& r) const
 {
 	return std::numeric_limits<float>::quiet_NaN();
 }

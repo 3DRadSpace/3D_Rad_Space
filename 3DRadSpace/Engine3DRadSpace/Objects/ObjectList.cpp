@@ -2,6 +2,7 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
+using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Internal;
 
 ObjectList::ObjectList(IGame* owner) : IService(owner)
@@ -120,6 +121,21 @@ size_t ObjectList::Count() const noexcept
 {
 	return _objects.size();
 }
+
+BoundingBox ObjectList::GetBoundingBox() const noexcept
+{
+	BoundingBox box;
+	for (auto& [object, id] : _objects)
+	{
+		if (auto obj3d = dynamic_cast<IObject3D*>(object.get()); obj3d != nullptr)
+		{
+			if(obj3d->Visible)
+				box = BoundingBox(box, obj3d->GetBoundingBox());
+		}
+	}
+	return box;
+}
+
 
 std::vector<ObjectList::ObjectInstance>::iterator ObjectList::begin()
 {

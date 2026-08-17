@@ -4,6 +4,7 @@
 #include "ObjectType.hpp"
 #include "../Reflection/ReflectedObject.hpp"
 #include "../Core/IGame.hpp"
+#include "../Math/BoundingBox.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
@@ -98,6 +99,8 @@ namespace Engine3DRadSpace::Objects
 
 		std::vector<ObjectInstance>::const_iterator begin() const;
 		std::vector<ObjectInstance>::const_iterator end() const;
+
+		Math::BoundingBox GetBoundingBox() const noexcept;
 
 		friend class Camera;
 

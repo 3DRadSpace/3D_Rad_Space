@@ -3,6 +3,7 @@
 #include "BoundingPlane.hpp"
 #include "Math.hpp"
 #include "Ray.hpp"
+#include "Matrix4x4.hpp"
 
 using namespace Engine3DRadSpace::Math;
 
@@ -133,4 +134,20 @@ Vector3 BoundingBox::operator[](int i) const
 Vector3 BoundingBox::Center() const noexcept
 {
 	return Position + (Scale / 2);
+}
+
+BoundingBox BoundingBox::Transform(const Matrix4x4& m) const noexcept
+{
+	Vector3 center = Center();
+	Vector3 extents = Scale / 2;
+
+	Vector3 newCenter = Vector3::Transform(center, m);
+
+	Vector3 newExtents(
+		std::abs(extents.X * m.M11) + std::abs(extents.Y * m.M21) + std::abs(extents.Z * m.M31),
+		std::abs(extents.X * m.M12) + std::abs(extents.Y * m.M22) + std::abs(extents.Z * m.M32),
+		std::abs(extents.X * m.M13) + std::abs(extents.Y * m.M23) + std::abs(extents.Z * m.M33)
+	);
+
+	return BoundingBox(newCenter - newExtents, newExtents * 2);
 }

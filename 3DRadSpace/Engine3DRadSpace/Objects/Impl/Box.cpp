@@ -51,7 +51,7 @@ void Box::Draw3D()
 	}
 }
 
-float Box::Intersects(const Math::Ray& r)
+float Box::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingBox(Position, Scale));
 }

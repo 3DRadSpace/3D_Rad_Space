@@ -151,7 +151,7 @@ void RigidStatic::Draw3D()
 	}
 }
 
-float RigidStatic::Intersects(const Math::Ray& r)
+float RigidStatic::Intersects(const Math::Ray& r) const
 {
 	if(_collider == nullptr) return std::numeric_limits<float>::signaling_NaN();
 	return _collider->Intersects(r).value_or(std::numeric_limits<float>::signaling_NaN());
@@ -171,6 +171,14 @@ Model3D* RigidStatic::GetModel() const noexcept
 void RigidStatic::RequestTransformUpdate()
 {
 	_reqTransformUpdate = true;
+}
+
+BoundingBox RigidStatic::GetBoundingBox() const noexcept
+{
+	if (!_model) return BoundingBox(Position, Vector3(0, 0, 0));
+
+	BoundingBox box = _model->GetBoundingBox();
+	return box.Transform(GetModelMatrix());
 }
 
 template<>

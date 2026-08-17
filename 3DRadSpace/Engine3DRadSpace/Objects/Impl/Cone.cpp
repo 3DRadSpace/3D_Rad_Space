@@ -46,12 +46,12 @@ void Cone::Draw3D()
 	}
 }
 
-float Cone::Intersects(const Math::Ray& r)
+float Cone::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Cone::GetLocalMatrix()
+Math::Matrix4x4 Cone::GetLocalMatrix() const
 {
 	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }

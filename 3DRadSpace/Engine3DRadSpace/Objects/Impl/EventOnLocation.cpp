@@ -19,12 +19,14 @@ EventOnLocation::EventOnLocation(
 ) : IObject3D(name, enabled, visible, pos, Vector3::Zero(), Math::Quaternion(), scale),
 	Event(event),
 	TrackedObject(trackedObject),
-	Tolerance(tolerance)
+	Tolerance(tolerance),
+	IsSphere(false)
 {
 }
 
 void EventOnLocation::Initialize()
 {
+	_lst = GetGame()->RequireService<ObjectList>({});
 }
 
 void EventOnLocation::Load()
@@ -40,7 +42,7 @@ void EventOnLocation::Update()
 {
 	if (!Enabled) return;
 
-	auto trackedObj = TrackedObject.Get(GetGame()->RequireService<ObjectList>({}));
+	auto trackedObj = TrackedObject.Get(_lst);
 	if (trackedObj == nullptr) return;
 
 	auto trackedObj3D = dynamic_cast<IObject3D*>(trackedObj);
@@ -67,7 +69,7 @@ void EventOnLocation::Draw3D()
 	}
 }
 
-float EventOnLocation::Intersects(const Math::Ray& r)
+float EventOnLocation::Intersects(const Math::Ray& r) const
 {
 	BoundingBox box(Position, Scale);
 	BoundingSphere sphere(Position, Scale.X);
@@ -77,6 +79,15 @@ float EventOnLocation::Intersects(const Math::Ray& r)
 		return r.Intersects(sphere);
 	}
 	else return r.Intersects(box);
+}
+
+BoundingBox EventOnLocation::GetBoundingBox() const noexcept
+{
+	if (IsSphere)
+	{
+		return BoundingBox(BoundingSphere(Position, Scale.X));
+	}
+	else return BoundingBox(Position, Scale);
 }
 
 Gizmos::IGizmo* EventOnLocation::GetGizmo() const noexcept

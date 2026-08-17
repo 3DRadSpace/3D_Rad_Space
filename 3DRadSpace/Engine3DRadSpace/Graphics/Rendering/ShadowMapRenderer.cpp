@@ -7,6 +7,7 @@
 #include "../../Games/Game.hpp"
 #include "../IShaderCompiler.hpp"
 #include "RenderingManager.hpp"
+#include "../../Objects/ObjectList.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -85,8 +86,12 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 	if (len > 0.0001f) dir = dir * (1.0f / len);
 	else dir = Vector3(0.0f, -1.0f, 0.0f);
 
-	Vector3 lightPos = dir * -LightDistance;
-	Vector3 target = Vector3::Zero();
+	auto cam = dynamic_cast<Objects::IObject3D*>(_owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera());
+	auto objList = _owner->GetOwner()->RequireService<Objects::ObjectList>({});
+	auto sceneBBox = objList->GetBoundingBox();
+
+	Vector3 target = cam != nullptr ? cam->Position : Vector3::Zero();
+	Vector3 lightPos = target + dir * -100.0f;
 	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
 	// Avoid a degenerate basis when the light points straight up/down.

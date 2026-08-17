@@ -6,6 +6,7 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Physics;
 using namespace Engine3DRadSpace::Physics::Objects;
+using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Objects;
 
 RigidDynamic::RigidDynamic(
@@ -148,6 +149,7 @@ void RigidDynamic::ValidateChildren()
 			Math::BoundingBox bbox(box->Position, box->Scale);
 
 			_collider->AttachShape(bbox);
+			_bbox = BoundingBox(_bbox, bbox);
 		}
 
 		if (dynamic_cast<Engine3DRadSpace::Objects::Sphere*>(child) != nullptr)
@@ -157,6 +159,7 @@ void RigidDynamic::ValidateChildren()
 			Math::BoundingSphere sph(sphere->Position, sphere->Radius);
 
 			_collider->AttachShape(sph);
+			_bbox = BoundingBox(_bbox, sph);
 		}
 
 		if (isShape)
@@ -221,12 +224,18 @@ void RigidDynamic::Teleport(const Math::Vector3& position, const std::optional<M
 	_collider->UpdateTransform(position, Rotation);
 }
 
-float RigidDynamic::Intersects(const Math::Ray& r)
+float RigidDynamic::Intersects(const Math::Ray& r) const
 {
 	constexpr float nan = std::numeric_limits<float>::signaling_NaN();
 
 	if(_collider == nullptr) return nan;
 	return _collider->Intersects(r).value_or(nan);
+}
+
+BoundingBox RigidDynamic::GetBoundingBox() const noexcept
+{
+	if (_collider == nullptr) return BoundingBox(Position, Math::Vector3::Zero());
+	else return _bbox;
 }
 
 Reflection::UUID RigidDynamic::GetUUID() const noexcept

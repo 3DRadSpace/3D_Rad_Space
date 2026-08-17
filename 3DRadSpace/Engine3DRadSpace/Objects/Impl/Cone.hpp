@@ -25,8 +25,8 @@ namespace Engine3DRadSpace::Objects
 		void Update() override;
 
 		void Draw3D() override;
-		float Intersects(const Math::Ray& r) override;
-		Math::Matrix4x4 GetLocalMatrix() override;
+		float Intersects(const Math::Ray& r) const override;
+		Math::Matrix4x4 GetLocalMatrix() const override;
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;

@@ -46,12 +46,12 @@ void Sphere::Draw3D()
 	}
 }
 
-float Sphere::Intersects(const Math::Ray& r)
+float Sphere::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Sphere::GetLocalMatrix()
+Math::Matrix4x4 Sphere::GetLocalMatrix() const
 {
 	return Matrix4x4::CreateScale({Radius, Radius, Radius}) * Matrix4x4::CreateTranslation(Position);
 }

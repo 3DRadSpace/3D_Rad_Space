@@ -45,12 +45,12 @@ void Cylinder::Draw3D()
 	}
 }
 
-float Cylinder::Intersects(const Math::Ray& r)
+float Cylinder::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Cylinder::GetLocalMatrix()
+Math::Matrix4x4 Cylinder::GetLocalMatrix() const
 {
 	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }

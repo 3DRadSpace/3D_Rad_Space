@@ -28,18 +28,13 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		float ShadowMapSize = 1.0f;
 
-		float ShadowBias = 0.005f;
+		float ShadowBias = 0.002f;
 		float ShadowSlopeBias = 0.01f;
 
 		/// <summary>
 		/// Shadow intensity (0.0 = fully dark, 1.0 = no shadow)
 		/// </summary>
 		float ShadowIntensity = 0.3f;
-
-		/// <summary>
-		/// Distance the light is offset from the world origin along the light direction.
-		/// </summary>
-		float LightDistance = 100.0f;
 
 		/// <summary>
 		/// World-space size (width/height) of the orthographic shadow frustum. Fixed rather than

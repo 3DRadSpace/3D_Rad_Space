@@ -29,6 +29,8 @@ namespace Engine3DRadSpace::Physics::Objects
 		std::unique_ptr<physicsProperties> _properties = std::make_unique<physicsProperties>();
 
 		bool _kinematic = false;
+		
+		Math::BoundingBox _bbox;
 	public:
 		RigidDynamic(
 			const std::string& name = "RigidDynamic",
@@ -48,7 +50,8 @@ namespace Engine3DRadSpace::Physics::Objects
 		void Update() override;
 		void Draw3D() override;
 
-		float Intersects(const Math::Ray& r) override;
+		float Intersects(const Math::Ray& r) const override;
+		Math::BoundingBox GetBoundingBox() const noexcept override;
 		Reflection::UUID GetUUID() const noexcept override;
 		Engine3DRadSpace::Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
 

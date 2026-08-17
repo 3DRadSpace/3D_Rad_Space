@@ -78,7 +78,7 @@ void Skybox::Draw3D()
 	}
 }
 
-float Skybox::Intersects(const Math::Ray& r)
+float Skybox::Intersects(const Math::Ray& r) const
 {
 	return std::numeric_limits<float>::signaling_NaN();
 }

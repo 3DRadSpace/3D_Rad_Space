@@ -103,7 +103,7 @@ void Skinmesh::Draw3D()
 	_renderingManager->Draw(_model, passType);
 }
 
-float Skinmesh::Intersects(const Ray&r)
+float Skinmesh::Intersects(const Ray&r) const
 {
 	Matrix4x4 modelMatrix = GetModelMatrix();
 	float closestDistance = std::numeric_limits<float>::infinity();
@@ -155,6 +155,14 @@ float Skinmesh::Intersects(const Ray&r)
 Gizmos::IGizmo* Skinmesh::GetGizmo() const noexcept
 {
 	return Internal::GizmoOf<Skinmesh>(this);
+}
+
+BoundingBox Skinmesh::GetBoundingBox() const noexcept
+{
+	if (!_model) return BoundingBox(Position, Vector3(0, 0, 0));
+
+	BoundingBox box = _model->GetBoundingBox();
+	return box.Transform(GetModelMatrix());
 }
 
 REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")

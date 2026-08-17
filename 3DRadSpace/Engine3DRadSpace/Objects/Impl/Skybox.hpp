@@ -35,7 +35,7 @@ namespace Engine3DRadSpace::Objects
 		Reflection::UUID GetUUID() const noexcept override;
 		void Draw3D() override;
 
-		float Intersects(const Math::Ray& r) override;
+		float Intersects(const Math::Ray& r) const override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
 
 		~Skybox() override = default;

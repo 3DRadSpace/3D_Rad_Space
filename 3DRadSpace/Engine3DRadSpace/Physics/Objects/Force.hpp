@@ -36,7 +36,7 @@ namespace Engine3DRadSpace::Physics::Objects
 		void Update() override;
 		void Draw3D() override;
 		
-		float Intersects(const Math::Ray& r) override;
+		float Intersects(const Math::Ray& r) const override;
 		Reflection::UUID GetUUID() const noexcept override;
 		Engine3DRadSpace::Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
 	};

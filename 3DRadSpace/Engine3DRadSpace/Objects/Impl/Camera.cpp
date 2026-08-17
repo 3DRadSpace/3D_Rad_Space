@@ -63,12 +63,12 @@ void Camera::ForceUpdate()
 	game->Cameras->SetActiveCamera(this);
 }
 
-Matrix4x4 Camera::GetModelMatrix()
+Matrix4x4 Camera::GetModelMatrix() const
 {
 	return Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
-float Camera::Intersects(const Ray &r)
+float Camera::Intersects(const Ray &r) const
 {
 	if(!std::isnan(r.Intersects(BoundingSphere(Position, 1.5f))))
 		return (r.Origin - Position).Length();

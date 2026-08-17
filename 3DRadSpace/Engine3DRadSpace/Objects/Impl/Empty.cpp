@@ -35,7 +35,7 @@ void Empty::Draw3D()
 {
 }
 
-float Empty::Intersects(const Math::Ray& r)
+float Empty::Intersects(const Math::Ray& r) const
 {
 	return std::numeric_limits<float>::signaling_NaN();
 }
