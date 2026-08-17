@@ -112,13 +112,15 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 		} cb0;
 
 		cb0.WorldViewProjection = part->MVP();
-		cb0.World = part->World;
+		// Must match ImportOffset * World used by MVP(), since this is what gets multiplied
+		// with vertex positions to produce WorldPos in the vertex shader (used for shadow testing).
+		cb0.World = part->ImportOffset * part->World;
 
 		effect->SetData<Shadow_ConstantBuffer0>(&cb0, 0);
 
 		struct alignas(16) Shadow_ConstantBuffer1
 		{
-			Math::Matrix4x4 WorldViewProjLight; // MVP transformation for light
+			Math::Matrix4x4 LightViewProj; // World-space to light clip-space transform
 			Math::Matrix4x4 InvViewProj; //Camera Inv(VP)
 			Math::Vector3 LightDirection;
 			float ShadowBias;
@@ -126,8 +128,12 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			Math::Vector2 padding;
 		} cb1;
 
-		cb1.WorldViewProjLight =
-			cb0.World *
+		// NOTE: the pixel shader's CalculateShadow() receives an already WORLD-SPACE position
+		// (WorldPos = mul(vertex, matWorld)), so this matrix must only transform from world
+		// space into light clip space. It must NOT re-apply World/ImportOffset, otherwise the
+		// object's transform gets applied twice and the shadow test samples completely
+		// outside the light's frustum (shadows silently never show up).
+		cb1.LightViewProj =
 			shadowMapRenderer->ComputeLightViewMatrix(_owner->MainLight.LightDirection) *
 			shadowMapRenderer->ComputeLightProjectionMatrix(_device->Resolution());
 

@@ -10,7 +10,8 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 RenderingManager::RenderingManager(IGraphicsDevice* device) : IService(device->GetOwner()),
-	_device(device)
+	_device(device),
+	MainLight()
 {
 }
 

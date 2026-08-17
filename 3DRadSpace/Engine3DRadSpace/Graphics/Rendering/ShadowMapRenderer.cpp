@@ -212,10 +212,16 @@ void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* mate
 	if (materialDescriptor && !materialDescriptor->HasShadows) return;
 
 	_shadowMapEffect->SetAll();
-	
+
 	auto lvp = ComputeLightViewMatrix(_owner->MainLight.LightDirection) * ComputeLightProjectionMatrix(_device->Resolution());
 
-	_shadowMapEffect->SetData<Math::Matrix4x4>(&lvp, 0);
+	// The depth pass must transform vertices from object space into light clip space,
+	// so the part's own World (and ImportOffset) transform has to be folded in here.
+	// Without this, every mesh is rasterized using raw object-space positions, ignoring
+	// where it actually is in the scene.
+	auto worldLightViewProj = part->ImportOffset * part->World * lvp;
+
+	_shadowMapEffect->SetData<Math::Matrix4x4>(&worldLightViewProj, 0);
 
 	_context->SetTopology(VertexTopology::TriangleList);
 	_context->DrawVertexBufferWithindices(

@@ -6,7 +6,7 @@ cbuffer Data : register(b0)
 
 cbuffer ShadowData : register(b1)
 {
-    row_major matrix matWorldViewProjLight; // MVP transformation for light
+    row_major matrix matLightViewProj; // World-space to light clip-space transform
     row_major matrix matInvViewProj; //Camera Inv(VP)
     float3 LightDirection;
     float ShadowBias;
@@ -48,7 +48,7 @@ VertexOut VS_Main(VertexIn v)
 float CalculateShadow(float3 worldPos)
 {
     // Transform world position to light space
-    float4 lightSpacePos = mul(float4(worldPos, 1.0), matWorldViewProjLight);
+    float4 lightSpacePos = mul(float4(worldPos, 1.0), matLightViewProj);
 
     // Perform perspective divide
     float3 projCoords = lightSpacePos.xyz / lightSpacePos.w;

@@ -144,7 +144,7 @@ void FragmentShader::SetSampler(unsigned index, ISamplerState *samplerState)
 	if (samplerState != nullptr)
 	{
 		auto dxSamplerState = static_cast<SamplerState*>(samplerState);
-		_device->_context->PSSetSamplers(0, 1, dxSamplerState->_samplerState.GetAddressOf());
+		_device->_context->PSSetSamplers(index, 1, dxSamplerState->_samplerState.GetAddressOf());
 	}
 	else
 	{
