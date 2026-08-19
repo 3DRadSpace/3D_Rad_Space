@@ -14,12 +14,15 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<ISamplerState> _shadowSampler;
-		IRasterizerState* _oldRasterizerState = nullptr;
+		std::unique_ptr<IRasterizerState> _oldRasterizerState;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
-		IDepthStencilState* _oldDepthStencilState = nullptr;
+		std::unique_ptr<IDepthStencilState> _oldDepthStencilState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
 		Effect* _shadowMapEffect = nullptr;
 
+		float _extent;
+
+		void _determineExtent();
 		void _createShadowStates();
 		void _loadEffect();
 	public:
@@ -28,7 +31,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// <summary>
 		/// Defines the size of the shadow map as a multiplier of the screen resolution.
 		/// </summary>
-		float ShadowMapSize = 1.0f;
+		float ShadowMapSize = 4.0f;
 
 		float ShadowBias = 0.002f;
 		float ShadowSlopeBias = 0.01f;
@@ -37,19 +40,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Shadow intensity (0.0 = fully dark, 1.0 = no shadow)
 		/// </summary>
 		float ShadowIntensity = 0.3f;
-
-		/// <summary>
-		/// World-space size (width/height) of the orthographic shadow frustum. Fixed rather than
-		/// fit to the camera frustum, so the shadow map's world-space texel size never changes
-		/// and does not shimmer/swim as the camera moves.
-		/// </summary>
-		/// <remarks>
-		/// This directly controls shadow map texel density: texelWorldSize = OrthographicExtent /
-		/// (screenResolution * ShadowMapSize). A larger extent covers more of the scene but makes
-		/// each texel cover more world space, causing thin geometry (poles, railings, thin edges)
-		/// to have interrupted/dashed shadows.
-		/// </remarks>
-		float OrthographicExtent = 100.0f;
 
 		float NearPlane = 1.0f;
 		float FarPlane = 1000.0f;

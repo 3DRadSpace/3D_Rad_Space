@@ -74,21 +74,23 @@ void ShadowMapRenderer::_loadEffect()
 	}
 }
 
+void ShadowMapRenderer::_determineExtent()
+{
+	auto objList = _owner->GetOwner()->RequireService<Objects::ObjectList>({});
+	auto sceneBBox = objList->GetBoundingBox();
+
+	auto sceneExtend = BoundingSphere(sceneBBox).Radius * 2.0f;
+	_extent = std::max(1.0f, std::min(sceneExtend, FarPlane));
+}
+
 Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& lightDirection) const
 {
-	// For a directional light, always look at the world origin from a fixed distance along the
-	// light direction. Deliberately NOT fit to the camera's viewing frustum: doing so causes the
-	// shadow map's world-space footprint (and therefore its texel size) to change every frame as
-	// the camera moves, which produces shimmering/swimming shadow acne no amount of texel
-	// snapping can fully fix (snapping only stabilizes position, not scale).
 	Vector3 dir = lightDirection;
 	float len = std::sqrt(Vector3::Dot(dir, dir));
 	if (len > 0.0001f) dir = dir * (1.0f / len);
 	else dir = Vector3(0.0f, -1.0f, 0.0f);
 
 	auto cam = dynamic_cast<Objects::IObject3D*>(_owner->GetOwner()->RequireService<Objects::CameraProvider>({})->GetActiveCamera());
-	auto objList = _owner->GetOwner()->RequireService<Objects::ObjectList>({});
-	auto sceneBBox = objList->GetBoundingBox();
 
 	Vector3 target = cam != nullptr ? cam->Position : Vector3::Zero();
 
@@ -111,8 +113,8 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 	auto resolution = _device->Resolution();
 	float shadowMapWidth = resolution.X * ShadowMapSize;
 	float shadowMapHeight = resolution.Y * ShadowMapSize;
-	float texelSizeX = OrthographicExtent / std::max(shadowMapWidth, 1.0f);
-	float texelSizeY = OrthographicExtent / std::max(shadowMapHeight, 1.0f);
+	float texelSizeX = _extent / std::max(shadowMapWidth, 1.0f);
+	float texelSizeY = _extent / std::max(shadowMapHeight, 1.0f);
 
 	float distRight = Vector3::Dot(target, right);
 	float distUp = Vector3::Dot(target, actualUp);
@@ -135,11 +137,9 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix() const
 	// assumes positive Z, which would push clip.z below 0 and get the geometry clipped (empty shadow
 	// map). We therefore build the matrix with a negated Z scale so clip.z lands in [0,1] for
 	// view-space Z in [-NearPlane, -FarPlane].
-	float extent = OrthographicExtent;
-	if (extent < 1.0f) extent = 1.0f;
 
-	float w = 2.0f / extent;
-	float h = 2.0f / extent;
+	float w = 2.0f / _extent;
+	float h = 2.0f / _extent;
 	float invRange = 1.0f / (FarPlane - NearPlane);
 
 	return Math::Matrix4x4(
@@ -152,6 +152,8 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix() const
 
 void ShadowMapRenderer::Begin()
 {
+	_determineExtent();
+
 	auto context = _device->ImmediateContext();
 
 	auto resolution = _device->Resolution();
@@ -163,6 +165,9 @@ void ShadowMapRenderer::Begin()
 		0.0f,
 		1.0f
 	);
+
+	_oldRasterizerState = _device->GetRasterizerState();
+	_oldDepthStencilState = _device->GetDepthStencilState();
 
 	context->UnbindRenderTargetAndDepth();
 	context->SetDepthStencilBuffer(_shadowMap.get());
@@ -187,6 +192,9 @@ void ShadowMapRenderer::End()
 
 	// Unbind the shadow map depth buffer
 	_context->UnbindDepthBuffer();
+
+	//_context->SetRasterizerState(_oldRasterizerState.get());
+	//_context->SetDepthStencilState(_oldDepthStencilState.get(), 0);
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept

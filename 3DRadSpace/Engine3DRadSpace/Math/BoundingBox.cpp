@@ -22,15 +22,17 @@ BoundingBox::BoundingBox(const BoundingSphere& sphere):
 BoundingBox::BoundingBox(const BoundingBox& box1, const BoundingBox& box2)
 {
 	Vector3 minVec = Vector3(
-		std::min(box1.Position.X, box2.Position.X),
-		std::min(box1.Position.Y, box2.Position.Y),
-		std::min(box1.Position.Z, box2.Position.Z)
+		std::min(box1.Min().X, box2.Min().X),
+		std::min(box1.Min().Y, box2.Min().Y),
+		std::min(box1.Min().Z, box2.Min().Z)
 	);
+
 	Vector3 maxVec = Vector3(
-		std::max(box1.Position.X, box2.Position.X),
-		std::max(box1.Position.Y, box2.Position.Y),
-		std::max(box1.Position.Z, box2.Position.Z)
+		std::max(box1.Max().X, box2.Max().X),
+		std::max(box1.Max().Y, box2.Max().Y),
+		std::max(box1.Max().Z, box2.Max().Z)
 	);
+
 	Position = minVec;
 	Scale = maxVec - minVec;
 }

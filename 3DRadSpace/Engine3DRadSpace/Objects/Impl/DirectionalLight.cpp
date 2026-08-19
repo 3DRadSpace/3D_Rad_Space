@@ -33,7 +33,7 @@ void DirectionalLight::Initialize()
 		_temporaryPointer = false;
 	}
 
-	Sync();
+	Update();
 }
 
 void DirectionalLight::Load()
@@ -46,7 +46,7 @@ void DirectionalLight::Load(const std::filesystem::path& path)
 
 void DirectionalLight::Update()
 {
-	Sync();
+	if (Enabled) Sync();
 }
 
 void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept

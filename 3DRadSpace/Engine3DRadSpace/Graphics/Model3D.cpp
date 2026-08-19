@@ -136,7 +136,11 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 		auto aabbMax = scene->mMeshes[i]->mAABB.mMax;
 		mesh->_box = BoundingBox(
 			Vector3(aabbMin.x, aabbMin.y, aabbMin.z),
-			Vector3(aabbMax.x - aabbMin.x, aabbMax.y - aabbMin.y, aabbMax.z - aabbMin.z)
+			Vector3(
+				std::abs(aabbMax.x - aabbMin.x), 
+				std::abs(aabbMax.y - aabbMin.y),
+				std::abs(aabbMax.z - aabbMin.z)
+			)
 		);
 		mesh->_sphere = BoundingSphere(mesh->_box);
 		std::unique_ptr<ITexture2D> diffuseTexture;

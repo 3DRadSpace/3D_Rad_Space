@@ -19,8 +19,8 @@ BoundingSphere::BoundingSphere(const Vector3& center, float radius) :
 BoundingSphere::BoundingSphere(const BoundingBox& box) :
 	Center(box.Center())
 {
-	Vector3 diff = box.Position - box.Center();
-	Radius = fabs(std::max({ diff.X, diff.Y, diff.Z }));
+	Vector3 diff = box.Min() - box.Max();
+	Radius = diff.Length() / 2.0f;
 }
 
 BoundingSphere::BoundingSphere(const BoundingSphere& sph1, const BoundingSphere& sph2):
