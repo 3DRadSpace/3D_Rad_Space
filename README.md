@@ -35,10 +35,6 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
      <td>C# (MSBuild)</td>
      <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/msbuild.yml/badge.svg" alt="CSharp-Windows-x64"></td>
     </tr>
-    <tr>
-     <td>Visual Studio plugin</td>
-     <td align="center"><img src="https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/vsplugin.yml/badge.svg" alt="Visual-Studio-Plugin"></td>
-    </tr>
 </table>
 
 # Building 3DRadSpace
