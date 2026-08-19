@@ -1,6 +1,7 @@
 #pragma once
 #include "../Math/Math.hpp"
 #include "../Reflection/Reflection.hpp"
+#include "../Math/ViewingFrustum.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
@@ -33,6 +34,8 @@ namespace Engine3DRadSpace::Objects
 
 		virtual Math::Matrix4x4 GetViewMatrix() const noexcept = 0;
 		virtual Math::Matrix4x4 GetProjectionMatrix() const = 0;
+
+		virtual Math::ViewingFrustum GetViewingFrustum() const;
 
 		virtual ~ICamera() = default;
 	};

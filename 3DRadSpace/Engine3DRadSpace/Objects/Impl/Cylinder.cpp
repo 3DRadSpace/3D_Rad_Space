@@ -37,18 +37,20 @@ void Cylinder::Draw3D()
 	{
 		auto game = static_cast<Game*>(_game);
 		_cylinder->Transform = this->GetModelMatrix();
-		_cylinder->View = game->View;
-		_cylinder->Projection = game->Projection;
+		auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+		_cylinder->View = view;
+		_cylinder->Projection = proj;
 		_cylinder->Draw3D();
 	}
 }
 
-float Cylinder::Intersects(const Math::Ray& r)
+float Cylinder::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingSphere(Position, Radius));
 }
 
-Math::Matrix4x4 Cylinder::GetLocalMatrix()
+Math::Matrix4x4 Cylinder::GetLocalMatrix() const
 {
 	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }

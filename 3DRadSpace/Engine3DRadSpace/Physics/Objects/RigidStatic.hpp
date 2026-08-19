@@ -2,6 +2,7 @@
 #include "IPhysicsObject.hpp"
 #include "../IStaticCollider.hpp"
 #include "../../Objects/Impl/Skinmesh.hpp"
+#include "../../Graphics/Rendering/RenderingManager.hpp"
 
 namespace Engine3DRadSpace::Physics::Objects
 {
@@ -25,6 +26,7 @@ namespace Engine3DRadSpace::Physics::Objects
 		};
 
 		std::unique_ptr<physicsProperties> _properties = std::make_unique<physicsProperties>();
+		Graphics::Rendering::RenderingManager* _renderingManager = nullptr;
 	public:
 		RigidStatic();
 		RigidStatic(
@@ -60,13 +62,15 @@ namespace Engine3DRadSpace::Physics::Objects
 		void Update() override;
 		void Draw3D() override;
 
-		float Intersects(const Math::Ray& r) override;
+		float Intersects(const Math::Ray& r) const override;
 		Engine3DRadSpace::Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
 		Reflection::UUID GetUUID() const noexcept override;
 
 		IStaticCollider* GetCollider() const noexcept;
 		Graphics::Model3D* GetModel() const noexcept;
 		void RequestTransformUpdate();
+
+		Math::BoundingBox GetBoundingBox() const noexcept override;
 		
 		~RigidStatic() override = default;
 	};

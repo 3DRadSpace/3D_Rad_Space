@@ -1,6 +1,7 @@
 #include "ICamera.hpp"
 
 using namespace Engine3DRadSpace;
+using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Objects;
 
 ICamera::ICamera(
@@ -16,4 +17,10 @@ ICamera::ICamera(
 	NearPlaneDistance(npd),
 	FarPlaneDistance(fpd)
 {
+}
+
+ViewingFrustum ICamera::GetViewingFrustum() const
+{
+	ViewingFrustum frustum(GetViewMatrix(), GetProjectionMatrix());
+	return frustum;
 }

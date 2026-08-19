@@ -87,7 +87,7 @@ Vector3 Force::Direction() const noexcept
 	return _direction;
 }
 
-float Force::Intersects(const Ray& r)
+float Force::Intersects(const Ray& r) const
 {
 	return std::numeric_limits<float>::quiet_NaN();
 }
@@ -122,8 +122,8 @@ public:
 		_arrow->Transform = f->GetModelMatrix();
 		
 		auto g = static_cast<Game*>(Object->GetGame());
-		_arrow->View = g->View;
-		_arrow->Projection = g->Projection;
+		_arrow->View = g->Cameras->GetActiveCamera()->GetViewMatrix();
+		_arrow->Projection = g->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
 		_arrow->Draw3D();
 	}

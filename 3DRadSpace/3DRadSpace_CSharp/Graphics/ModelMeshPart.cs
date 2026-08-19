@@ -16,22 +16,14 @@ public class ModelMeshPart : NatPtrWrapper
 		ulong numVerts,
 		ulong structSize,
 		uint* indices,
-		ulong numIndices,
-		IntPtr shaders
+		ulong numIndices
 	);
 
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_Create2")]
 	extern static IntPtr _create2(
 		IntPtr vBuffer,
-		IntPtr iBuffer,
-		IntPtr shaders
+		IntPtr iBuffer
 	);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_Draw")]
-	extern static void _draw(IntPtr meshPart);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_DrawEffect")]
-	extern static void _drawEffect(IntPtr meshPart, IntPtr effect);
 
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetBoundingBox")]
 	extern static BoundingBox _bbox(IntPtr meshPart);
@@ -44,12 +36,6 @@ public class ModelMeshPart : NatPtrWrapper
 
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetIndexBuffer")]
 	extern static IntPtr _ibuff(IntPtr meshPart);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetShaders")]
-	extern static IntPtr _getEffect(IntPtr meshPart);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetShaders")]
-	extern static void _setEffect(IntPtr meshPart, IntPtr effect);
 
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetTransform")]
 	extern static Matrix4x4 _getMatrix(IntPtr meshPart);
@@ -67,24 +53,13 @@ public class ModelMeshPart : NatPtrWrapper
 		ulong numVerts,
 		ulong structSize,
 		uint* indices,
-		ulong numIndices,
-		Effect shaders
-	) : base(_create1(device.Handle, pVertexData, numVerts, structSize, indices, numIndices, shaders.Handle), _destroy)
+		ulong numIndices
+	) : base(_create1(device.Handle, pVertexData, numVerts, structSize, indices, numIndices), _destroy)
 	{
 	}
 
-	public ModelMeshPart(IVertexBuffer vbuff, IIndexBuffer ibuff, Effect effect) : base(_create2(vbuff.Handle, ibuff.Handle, effect.Handle), _destroy)
+	public ModelMeshPart(IVertexBuffer vbuff, IIndexBuffer ibuff, Effect effect) : base(_create2(vbuff.Handle, ibuff.Handle), _destroy)
 	{
-	}
-
-	public void Draw()
-	{
-		_draw(_handle);
-	}
-
-	public void Draw(Effect effect)
-	{
-		_drawEffect(_handle, effect.Handle);
 	}
 
 	public BoundingBox BoundingBox
@@ -105,12 +80,6 @@ public class ModelMeshPart : NatPtrWrapper
 	public IIndexBuffer IndexBuffer
 	{
 		get => new InstIIndexBuffer(_ibuff(_handle), ownsHandle: false);
-	}
-
-	public Effect Shaders
-	{
-		get => new Effect(_getEffect(_handle), ownsHandle: false);
-		set => _setEffect(_handle, value.Handle);
 	}
 
 	public unsafe Matrix4x4 Transform

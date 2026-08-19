@@ -6,30 +6,27 @@ namespace Engine3DRadSpace.Graphics;
 public class ModelMesh : NatPtrWrapper
 {
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_Create")]
-	extern static unsafe IntPtr _create(IntPtr *parts, ulong numParts);
+	extern static unsafe IntPtr _create(IntPtr* parts, ulong numParts);
 
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_Destroy")]
 	extern static void _destroy(IntPtr modelMesh);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_AddMeshPart")]
-        extern static void _addPart(IntPtr modelMesh, IntPtr part);
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_AddMeshPart")]
+	extern static void _addPart(IntPtr modelMesh, IntPtr part);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetMeshPart")]
-        extern static IntPtr _at(IntPtr modelMesh, uint idx);
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetMeshPart")]
+	extern static IntPtr _at(IntPtr modelMesh, uint idx);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_NumMeshParts")]
-        extern static ulong _count(IntPtr modelMesh);
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_NumMeshParts")]
+	extern static ulong _count(IntPtr modelMesh);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_Draw")]
-        extern static void _draw(IntPtr modelMesh);
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetBoundingBox")]
+	extern static Math.BoundingBox _bbox(IntPtr modelMesh);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetBoundingBox")]
-        extern static Math.BoundingBox _bbox(IntPtr modelMesh);
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetBoundingSphere")]
+	extern static Math.BoundingSphere _bsph(IntPtr modelMesh);
 
-        [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetBoundingSphere")]
-        extern static Math.BoundingSphere _bsph(IntPtr modelMesh);
-
-        public ModelMesh(IntPtr handle) : base(handle, _destroy)
+	public ModelMesh(IntPtr handle) : base(handle, _destroy)
 	{
 	}
 
@@ -37,8 +34,8 @@ public class ModelMesh : NatPtrWrapper
 	{
 		ulong numParts = (ulong)parts.Length;
 
-		IntPtr* ppParts = stackalloc IntPtr[(int)numParts]; 
-		for(ulong i = 0; i < numParts; i++)
+		IntPtr* ppParts = stackalloc IntPtr[(int)numParts];
+		for (ulong i = 0; i < numParts; i++)
 		{
 			ppParts[i] = parts[i].Handle;
 		}

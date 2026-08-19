@@ -5,6 +5,11 @@
 #include "../../Content/Assets/ModelAsset.hpp"
 #include "../../Reflection/Reflection.hpp"
 
+namespace Engine3DRadSpace::Graphics::Rendering
+{
+	class RenderingManager;
+}
+
 namespace Engine3DRadSpace::Objects
 {
 	using RefModel3D = Content::AssetID<Content::Assets::ModelAsset>;
@@ -13,6 +18,7 @@ namespace Engine3DRadSpace::Objects
 	{
 		Graphics::Model3D *_model;
 		std::unique_ptr<std::string> _path;
+		Graphics::Rendering::RenderingManager* _renderingManager = nullptr;
 	public:
 		Skinmesh();
 
@@ -49,7 +55,7 @@ namespace Engine3DRadSpace::Objects
 		void Load(const std::filesystem::path& path) override;
 		Reflection::UUID GetUUID() const noexcept override;
 		void Draw3D() override;
-		float Intersects(const Math::Ray &r) override;
+		float Intersects(const Math::Ray &r) const override;
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
 
 		bool HasShadows = true;
@@ -57,6 +63,8 @@ namespace Engine3DRadSpace::Objects
 		/// If true, the skinmesh will be rendered after all opaque objects.
 		/// </summary>
 		bool Transparent = false;
+
+		virtual Math::BoundingBox GetBoundingBox() const noexcept override;
 
 		~Skinmesh() override = default;
 	};

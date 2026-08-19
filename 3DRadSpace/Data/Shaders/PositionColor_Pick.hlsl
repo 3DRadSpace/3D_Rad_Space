@@ -26,9 +26,9 @@ VertexOut VS_Main(VertexIn v)
 
 struct PSOutput
 {
-	float4 Color : SV_Target0;
-	uint ID : SV_Target1;
-}
+    float4 Color : SV_Target0;
+    uint ID : SV_Target1;
+};
 
 PSOutput PS_Main(VertexOut v)
 {

@@ -2,6 +2,7 @@
 #include "../Games/Game.hpp"
 #include "Gizmos/SkinmeshGizmo.hpp"
 #include "Gizmos.hpp"
+#include "../../Graphics/Rendering/RenderingManager.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content::Assets;
@@ -51,6 +52,7 @@ Model3D* Skinmesh::GetModel()
 
 void Skinmesh::Initialize()
 {
+	_renderingManager = static_cast<Graphics::Rendering::RenderingManager*>(_game->RequireService(typeid(Graphics::Rendering::RenderingManager)));
 }
 
 void Skinmesh::Load()
@@ -86,13 +88,22 @@ Reflection::UUID Skinmesh::GetUUID() const noexcept
 
 void Skinmesh::Draw3D()
 {
+	if (!Visible || !_model) return;
+
 	auto game = static_cast<Game*>(_game);
 
-	if(Visible && _model)
-		_model->Draw(GetModelMatrix() * game->View * game->Projection);
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+	
+	_model->SetTransform(GetModelMatrix(), view, proj);
+
+	Rendering::RenderPassType passType = Transparent ? Rendering::RenderPassType::Transparent : Rendering::RenderPassType::Opaque;
+	passType = HasShadows ? passType : (Transparent ? Rendering::RenderPassType::TransparentNoShadow : Rendering::RenderPassType::OpaqueNoShadow);
+
+	_renderingManager->Draw(_model, passType);
 }
 
-float Skinmesh::Intersects(const Ray&r)
+float Skinmesh::Intersects(const Ray&r) const
 {
 	Matrix4x4 modelMatrix = GetModelMatrix();
 	float closestDistance = std::numeric_limits<float>::infinity();
@@ -144,6 +155,14 @@ float Skinmesh::Intersects(const Ray&r)
 Gizmos::IGizmo* Skinmesh::GetGizmo() const noexcept
 {
 	return Internal::GizmoOf<Skinmesh>(this);
+}
+
+BoundingBox Skinmesh::GetBoundingBox() const noexcept
+{
+	if (!_model) return BoundingBox(Position, Vector3(0, 0, 0));
+
+	BoundingBox box = _model->GetBoundingBox();
+	return box.Transform(GetModelMatrix());
 }
 
 REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")

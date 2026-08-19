@@ -120,10 +120,6 @@ ICharacterController* FPCharacter::GetController() const noexcept
 void FPCharacter::Draw3D()
 {
 	if(!Visible) return;
-
-	auto game = static_cast<Game*>(_game);
-	game->View = GetViewMatrix();
-	game->Projection = GetProjectionMatrix();
 	
 	Camera::Update();
 }

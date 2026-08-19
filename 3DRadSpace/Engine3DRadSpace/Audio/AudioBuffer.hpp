@@ -35,15 +35,42 @@ namespace Engine3DRadSpace::Audio
 		AudioBuffer& operator=(const AudioBuffer&) = delete;
 		AudioBuffer& operator=(AudioBuffer&&) noexcept = default;
 
+		/// <summary>
+		/// Type of loading error that could occur when loading a WAV file.
+		/// </summary>
 		enum class WAVLoadError
 		{
+			/// <summary>
+			/// No error.
+			/// </summary>
 			None,
+			/// <summary>
+			/// Cannot open file.
+			/// </summary>
 			CannotOpen,
+			/// <summary>
+			/// RIFF header not found in the file.
+			/// </summary>
 			RIFFNotFound,
+			/// <summary>
+			/// Format marker not found in the file.
+			/// </summary>
 			NoFormatMarker,
+			/// <summary>
+			/// Wrong format length.
+			/// </summary>
 			WrongFormatLength,
+			/// <summary>
+			/// Not PCM format.
+			/// </summary>
 			NotPCM,
+			/// <summary>
+			/// Null size.
+			/// </summary>
 			NullSize,
+			/// <summary>
+			/// Out of memory when allocating the PCM buffer.
+			/// </summary>
 			OutOfMemory
 		};
 

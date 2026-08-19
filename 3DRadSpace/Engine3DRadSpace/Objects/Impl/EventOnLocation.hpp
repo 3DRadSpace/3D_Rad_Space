@@ -6,11 +6,14 @@
 
 namespace Engine3DRadSpace::Objects
 {
+	class ObjectList;
 	/// <summary>
 	/// Represents an event object that executes an event when the player enters a specified area.
 	/// </summary>
 	class E3DRSP_OBJECTS_IMPL_EXPORT EventOnLocation : public IObject3D
 	{
+	protected:
+		ObjectList* _lst = nullptr;
 	public:
 		/// <summary>
 		/// Constructs an event on location object.
@@ -78,8 +81,9 @@ namespace Engine3DRadSpace::Objects
 		/// </summary>
 		/// <param name="r">Ray</param>
 		/// <returns>Distance or NaN</returns>
-		float Intersects(const Math::Ray& r) override;
-		
+		float Intersects(const Math::Ray& r) const override;
+		Math::BoundingBox GetBoundingBox() const noexcept override;
+
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
 		Reflection::UUID GetUUID() const noexcept override;
 

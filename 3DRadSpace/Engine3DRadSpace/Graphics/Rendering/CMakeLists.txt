@@ -10,8 +10,6 @@ add_library(3DRadSpace.Graphics.Rendering STATIC
 	"IRenderer.cpp"
 	"LinearPixelFogEffect.hpp"
 	"LinearPixelFogEffect.cpp"
-	"MeshBatcher.hpp"
-	"MeshBatcher.cpp"
 	"NullRenderer.hpp"
 	"NullRenderer.cpp"
 	"PostProcessCollection.hpp"
@@ -23,6 +21,8 @@ add_library(3DRadSpace.Graphics.Rendering STATIC
 	"RenderPassType.hpp"
 	"ShadowMapRenderer.hpp"
 	"ShadowMapRenderer.cpp"
+	"TransparentForwardRenderer.hpp"
+	"TransparentForwardRenderer.cpp"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

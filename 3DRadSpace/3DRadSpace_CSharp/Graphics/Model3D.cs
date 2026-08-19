@@ -9,18 +9,6 @@ public class Model3D : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_Create")]
 	extern static IntPtr _create(IntPtr device, string path);
 
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_Draw")]
-	extern static void _draw(IntPtr model);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_Draw2")]
-	extern static unsafe void _draw(IntPtr model, Matrix4x4 *mat);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_DrawEffect2")]
-	extern static void _draw(IntPtr model, IntPtr effect);
-
-	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_DrawEffect2")]
-	extern static unsafe void _draw(IntPtr model, IntPtr effect, Matrix4x4 *mat);
-
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_NumMeshes")]
 	extern static ulong _num(IntPtr model);
 
@@ -51,26 +39,6 @@ public class Model3D : NatPtrWrapper
 
 	public Model3D(IGraphicsDevice device, string path) : base(_create(device.Handle, path), _destroy)
 	{
-	}
-
-	public void Draw()
-	{
-		_draw(_handle);
-	}
-
-	public unsafe void Draw(Matrix4x4 mat)
-	{
-		_draw(_handle, &mat);
-	}
-
-	public void Draw(Effect effect)
-	{
-		_draw(_handle, effect.Handle);
-	}
-
-	public unsafe void Draw(Matrix4x4 mat, Effect effect)
-	{
-		_draw(_handle, effect.Handle, &mat);
 	}
 
 	public ulong NumMeshes

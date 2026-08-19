@@ -80,6 +80,8 @@ void RigidStatic::SetRestitution(float restitution)
 void RigidStatic::Initialize()
 {
 	IPhysicsObject::Initialize();
+
+	_renderingManager = static_cast<Graphics::Rendering::RenderingManager*>(_game->RequireService<Graphics::Rendering::RenderingManager>({}));
 }
 
 void RigidStatic::Load()
@@ -139,11 +141,17 @@ void RigidStatic::Draw3D()
 {
 	auto game = static_cast<Game*>(_game);
 
-	if(Visible && _model)
-		_model->Draw(GetModelMatrix() * game->View * game->Projection);
+	auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+	auto proj = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
+
+	if (Visible && _model)
+	{
+		_model->SetTransform(GetModelMatrix(), view, proj);
+		_renderingManager->Draw(_model, Rendering::RenderPassType::Opaque);
+	}
 }
 
-float RigidStatic::Intersects(const Math::Ray& r)
+float RigidStatic::Intersects(const Math::Ray& r) const
 {
 	if(_collider == nullptr) return std::numeric_limits<float>::signaling_NaN();
 	return _collider->Intersects(r).value_or(std::numeric_limits<float>::signaling_NaN());
@@ -163,6 +171,14 @@ Model3D* RigidStatic::GetModel() const noexcept
 void RigidStatic::RequestTransformUpdate()
 {
 	_reqTransformUpdate = true;
+}
+
+BoundingBox RigidStatic::GetBoundingBox() const noexcept
+{
+	if (!_model) return BoundingBox(Position, Vector3(0, 0, 0));
+
+	BoundingBox box = _model->GetBoundingBox();
+	return box.Transform(GetModelMatrix());
 }
 
 template<>

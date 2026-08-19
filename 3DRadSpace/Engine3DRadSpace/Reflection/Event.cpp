@@ -131,7 +131,7 @@ Event::ConstIterator::pointer Event::ConstIterator::operator->()
 
 Event::ConstIterator& Event::ConstIterator::operator++()
 {
-	_iterator++;
+	++_iterator;
 	return *this;
 }
 

@@ -42,40 +42,33 @@ Matrix4x4 Camera::GetProjectionMatrix() const
 
 void Camera::Draw3D()
 {
-	if(Visible)
-	{
-		auto game = static_cast<Game*>(_game);
-
-		game->View = GetViewMatrix();
-		game->Projection = GetProjectionMatrix();
-		Update();
-	}
 }
 
 void Camera::Update() 
-{ 
-	if(Visible)
-	{
-		auto game = static_cast<Game*>(_game);
-		game->Objects->_camera = this;
-	}
+{
+	if (!Visible) return;
+
+	auto game = static_cast<Game*>(_game);
+
+	auto activeCam = game->Cameras->GetActiveCamera();
+
+	if(activeCam == nullptr)
+		game->Cameras->SetActiveCamera(this);
 }
 
 void Camera::ForceUpdate()
 {
 	auto game = static_cast<Game*>(_game);
 
-	game->Objects->_camera = this;
-	game->View = GetViewMatrix();
-	game->Projection = GetProjectionMatrix();
+	game->Cameras->SetActiveCamera(this);
 }
 
-Matrix4x4 Camera::GetModelMatrix()
+Matrix4x4 Camera::GetModelMatrix() const
 {
 	return Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
-float Camera::Intersects(const Ray &r)
+float Camera::Intersects(const Ray &r) const
 {
 	if(!std::isnan(r.Intersects(BoundingSphere(Position, 1.5f))))
 		return (r.Origin - Position).Length();
@@ -116,8 +109,8 @@ Camera::~Camera()
 	//Remove the camera reference from the game object list.
 	if(_game)
 	{
-		if(auto game = static_cast<Game*>(_game); game->Objects->_camera == this)
-			game->Objects->_camera = nullptr;
+		if(auto game = static_cast<Game*>(_game); game->Cameras->GetActiveCamera() == this)
+			game->Cameras->SetActiveCamera(nullptr);
 	}
 }
 

@@ -2,13 +2,23 @@
 #include "Gizmo.hpp"
 #include "../Impl/SoundSource.hpp"
 
+namespace Engine3DRadSpace::Graphics
+{
+	class ITexture2D;
+
+	namespace Primitives
+	{
+		class SphericalBillboard;
+	}
+}
+
 namespace Engine3DRadSpace::Objects::Gizmos
 {
 	template<>
 	class E3DRSP_OBJECTS_GIZMOS_EXPORT Gizmo<SoundSource> final : public IGizmo
 	{
-		STD_UPtrTypeless _billboard;
-		STD_UPtrTypeless _soundImage;
+		std::unique_ptr<Graphics::Primitives::SphericalBillboard> _billboard;
+		std::unique_ptr<Graphics::ITexture2D> _soundImage;
 	public:
 		Gizmo();
 
@@ -18,6 +28,6 @@ namespace Engine3DRadSpace::Objects::Gizmos
 		void Load(const std::filesystem::path& path) override;
 		void Update() override;
 
-		~Gizmo() = default;
+		~Gizmo();
 	};
 }

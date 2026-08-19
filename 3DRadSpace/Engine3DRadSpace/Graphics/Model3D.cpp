@@ -16,41 +16,9 @@ using namespace Engine3DRadSpace::Math;
 
 Assimp::Importer importer;
 
-Effect* Model3D::_loadBasicShader(IGraphicsDevice* device)
-{
-	constexpr const char* basicEffectPath = "Data\\Shaders\\PositionNormalTangentUV.hlsl";
-
-	auto vsBasicEffect = ShaderDescFile(
-		basicEffectPath,
-		"VS_Main",
-		ShaderType::Vertex
-	);
-
-	auto psBasicEffect = ShaderDescFile(
-		basicEffectPath,
-		"PS_Main",
-		ShaderType::Fragment
-	);
-
-	std::array<ShaderDesc*, 2> basicEffectDesc =
-	{
-		&vsBasicEffect,
-		&psBasicEffect
-	};
-
-	auto result = device->ShaderCompiler()->CompileEffect(basicEffectDesc);
-	if (result.second.Succeded == false)
-	{
-		throw Exception("Failed to compile default shader for Model3D!" + result.second.Log);
-	}
-	return result.first;
-}
-
 Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 	_device(Device)
 {
-	auto basicEffect = _loadBasicShader(Device);
-
 	if (!std::filesystem::exists(path)) throw AssetLoadingError(Tag<Model3D>{}, path, "This file doesn't exist!");
 
 	auto steps = 
@@ -161,14 +129,18 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 			continue;
 		}
 
-		auto mesh = std::make_unique<ModelMeshPart>(Device, &vertices[0], numVerts, structSize, indices, basicEffect);
+		auto mesh = std::make_unique<ModelMeshPart>(Device, &vertices[0], numVerts, structSize, indices);
 		
 		//determine bounding box and sphere
 		auto aabbMin = scene->mMeshes[i]->mAABB.mMin;
 		auto aabbMax = scene->mMeshes[i]->mAABB.mMax;
 		mesh->_box = BoundingBox(
 			Vector3(aabbMin.x, aabbMin.y, aabbMin.z),
-			Vector3(aabbMax.x - aabbMin.x, aabbMax.y - aabbMin.y, aabbMax.z - aabbMin.z)
+			Vector3(
+				std::abs(aabbMax.x - aabbMin.x), 
+				std::abs(aabbMax.y - aabbMin.y),
+				std::abs(aabbMax.z - aabbMin.z)
+			)
 		);
 		mesh->_sphere = BoundingSphere(mesh->_box);
 		std::unique_ptr<ITexture2D> diffuseTexture;
@@ -214,7 +186,7 @@ Model3D::Model3D(IGraphicsDevice* Device, const std::filesystem::path& path) :
 
 		mesh->Textures.push_back(std::move(diffuseTexture));
 		mesh->TextureSamplers.push_back(Device->CreateSamplerState_AnisotropicWrap());
-		mesh->GetShaders()->operator[](0)->SetSampler(0, mesh->TextureSamplers[0].get());
+		//mesh->GetShaders()->operator[](0)->SetSampler(0, mesh->TextureSamplers[0].get());
 		meshParts.push_back(std::move(mesh));
 	}
 
@@ -267,7 +239,7 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 		if(parts[node->mMeshes[i]] == nullptr) continue;
 
 		lparts.push_back(std::move(parts[node->mMeshes[i]]));
-		lparts[i]->Transform = Matrix4x4(reinterpret_cast<float*>(&node->mTransformation));
+		lparts[i]->ImportOffset = Matrix4x4(reinterpret_cast<float*>(&node->mTransformation));
 	}
 	_meshes.push_back(std::make_unique<ModelMesh>(lparts));
 
@@ -277,43 +249,37 @@ void Model3D::_processNode(std::vector<std::unique_ptr<ModelMeshPart>> &parts, v
 	}
 }
 
-void Model3D::SetTransform(const Matrix4x4&m)
+void Model3D::SetTransform(const Matrix4x4& v, const Matrix4x4& p)
 {
-	for(const auto &mesh : _meshes)
+	for(size_t i = 0; i < _meshes.size(); i++)
 	{
-		for(auto &meshPart : *mesh.get())
+		for(auto &meshPart : *_meshes[i].get())
 		{
-			meshPart->Transform = m;
+			meshPart->View = v;
+			meshPart->Projection = p;
 		}
 	}
 }
 
-void Model3D::Draw()
+void Model3D::SetTransform(const Matrix4x4& m, const Matrix4x4& v, const Matrix4x4& p)
 {
-	for (auto& mesh :_meshes)
+	for (size_t i = 0; i < _meshes.size(); i++)
 	{
-		mesh->Draw();
-	}
-}
-
-void Model3D::Draw(const Matrix4x4&m)
-{
-	for(auto &mesh : _meshes)
-	{
-		for(auto &meshPart : *mesh.get())
+		for (auto& meshPart : *_meshes[i].get())
 		{
-			meshPart->Transform = m;
-			meshPart->Draw();
+			meshPart->World = m;
+			meshPart->View = v;
+			meshPart->Projection = p;
 		}
 	}
 }
 
-Model3D::iterator Model3D::begin()
+std::vector<std::unique_ptr<ModelMesh>>::iterator Model3D::begin()
 {
 	return _meshes.begin();
 }
 
-Model3D::iterator Model3D::end()
+std::vector<std::unique_ptr<ModelMesh>>::iterator Model3D::end()
 {
 	return _meshes.end();
 }
@@ -331,56 +297,6 @@ BoundingBox Model3D::GetBoundingBox() const noexcept
 BoundingSphere Model3D::GetBoundingSphere() const noexcept
 {
 	return _sphere;
-}
-
-void Model3D::SetShader(Effect* effect)
-{
-	for (auto& mesh : _meshes)
-	{
-		for (auto& meshPart : *mesh.get())
-		{
-			meshPart->SetShaders(effect);
-		}
-	}
-}
-
-void Model3D::SetShaders(std::span<Effect*> effects)
-{
-	size_t i = 0;
-	size_t len = effects.size();
-
-	for (auto const& mesh : _meshes)
-	{
-		for (auto const& meshPart : *mesh.get())
-		{
-			if (i < len)
-				meshPart->SetShaders(effects[i++]);
-			else return;
-		}
-	}
-}
-
-void Model3D::DrawEffect(Effect *effect)
-{
-	for (auto& mesh : _meshes)
-	{
-		for (auto& meshPart : *mesh.get())
-		{
-			meshPart->Draw(effect);
-		}
-	}
-}
-
-void Model3D::DrawEffect(Effect* effect, const Math::Matrix4x4& mvp)
-{
-	for(auto &mesh : _meshes)
-	{
-		for(auto &meshPart : *mesh.get())
-		{
-			meshPart->Transform = mvp;
-			meshPart->Draw(effect);
-		}
-	}
 }
 
 ModelMesh* Model3D::operator[](unsigned i)

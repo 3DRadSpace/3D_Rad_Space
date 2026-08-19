@@ -28,17 +28,14 @@ void Gizmo<TextPrint>::Draw2D()
 	if (Object == nullptr) return;
 
 	auto textPrint = static_cast<TextPrint*>(Object);
-	if (textPrint != nullptr)
+	if (Selected)
 	{
-		if (Selected)
-		{
-			auto oldColor = textPrint->Colour;
-			textPrint->Colour = Color(1.0f, 0.5f, 0.0f, 1.0f);
-			textPrint->Draw2D();
-			textPrint->Colour = oldColor;
-		}
-		else textPrint->Draw2D();
+		auto oldColor = textPrint->Colour;
+		textPrint->Colour = Color(1.0f, 0.5f, 0.0f, 1.0f);
+		textPrint->Draw2D();
+		textPrint->Colour = oldColor;
 	}
+	else textPrint->Draw2D();
 }
 
 void Gizmo<TextPrint>::Draw3D()

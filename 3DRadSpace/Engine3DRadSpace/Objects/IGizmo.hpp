@@ -9,6 +9,14 @@ namespace Engine3DRadSpace::Objects::Gizmos
 	{
 	protected:
 		IGizmo() = default;
+		IGizmo(
+			bool allow3DRendering,
+			bool allow2DRendering,
+			bool allowUpdating,
+			bool allowTranslating,
+			bool allowRotating,
+			bool allowScaling
+		);
 
 		IGizmo(const IGizmo&) = default;
 		IGizmo& operator=(const IGizmo&) = default;

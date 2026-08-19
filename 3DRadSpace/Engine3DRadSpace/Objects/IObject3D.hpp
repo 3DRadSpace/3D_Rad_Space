@@ -3,6 +3,7 @@
 #include "../Core/IDrawable3D.hpp"
 #include "../Math/Ray.hpp"
 #include "../Math/Quaternion.hpp"
+#include "../Math/BoundingBox.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
@@ -25,14 +26,16 @@ namespace Engine3DRadSpace::Objects
 
 		Math::Vector3 Scale;
 
-		virtual Math::Matrix4x4 GetModelMatrix();
-		virtual Math::Matrix4x4 GetLocalMatrix();
+		virtual Math::Matrix4x4 GetModelMatrix() const;
+		virtual Math::Matrix4x4 GetLocalMatrix() const;
 		/// <summary>
 		/// Returns the distance from the ray origin to the intersection point, or NaN if there is no intersection.
 		/// </summary>
 		/// <param name="r">Ray in world space</param>
 		/// <returns>Distance from the ray origin to the intersection point, or NaN if there is no intersection</returns>
-		virtual float Intersects(const Math::Ray &r) = 0;
+		virtual float Intersects(const Math::Ray &r) const = 0;
+
+		virtual Math::BoundingBox GetBoundingBox() const noexcept;
 
 		~IObject3D() = default;
 	};

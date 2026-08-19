@@ -45,13 +45,13 @@ void Box::Draw3D()
 	{
 		auto game = static_cast<Game*>(_game);
 		_box->Transform = this->GetModelMatrix();
-		_box->View = game->View;
-		_box->Projection = game->Projection;
+		_box->View = game->Cameras->GetActiveCamera()->GetViewMatrix();
+		_box->Projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 		_box->Draw3D();
 	}
 }
 
-float Box::Intersects(const Math::Ray& r)
+float Box::Intersects(const Math::Ray& r) const
 {
 	return r.Intersects(BoundingBox(Position, Scale));
 }

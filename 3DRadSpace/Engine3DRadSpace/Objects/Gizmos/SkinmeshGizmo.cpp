@@ -86,6 +86,7 @@ void Gizmo<Skinmesh>::Load()
 
 	if(_wasLoaded) return;
 
+	Object->Initialize();
 	Object->Load();
 }
 
@@ -98,39 +99,49 @@ void Gizmo<Skinmesh>::Draw3D()
 	if(Object != nullptr)
 	{
 		auto skinmesh = static_cast<Skinmesh*>(Object);
-		if(skinmesh != nullptr)
-		{
-			skinmesh->Draw3D();
-		}
 
-		if(Selected)
+		if (Selected)
 		{
-			if(skinmesh->GetModel() == nullptr) return;
+			if (skinmesh->GetModel() == nullptr) return;
 
-			auto device = skinmesh->GetGraphicsDeviceHandle();		
+			auto device = skinmesh->GetGraphicsDeviceHandle();
 			auto oldRasterizerState = device->GetRasterizerState();
 			auto oldDepthState = device->GetDepthStencilState();
 			auto wireframe = static_cast<IRasterizerState*>(_wireframe_RasterizerState.get());
 			auto cmd = device->ImmediateContext();
 
-			//cmd->UnbindDepthBuffer();
 			cmd->SetRasterizerState(wireframe);
 			cmd->SetDepthStencilState(_depthStencilState.get(), 0);
 
 			auto game = static_cast<Game*>(skinmesh->GetGame());
-			
+
 			auto highlightColor = Color(1.0f, 0.5f, 0.0f, 1.0f);
 			_highlightEffect->SetData<Color>(&highlightColor, 1);
 
-			skinmesh->GetModel()->DrawEffect(
-				_highlightEffect,
-				skinmesh->GetModelMatrix() * game->View * game->Projection
-			);
+			auto view = game->Cameras->GetActiveCamera()->GetViewMatrix();
+			auto projection = game->Cameras->GetActiveCamera()->GetProjectionMatrix();
 
-			//cmd->SetRenderTargetAndDepth(nullptr, nullptr);
+			for (auto &meshPart : *skinmesh->GetModel())
+			{
+				for (auto &part : *meshPart)
+				{
+					auto mvp = part->MVP();
+					_highlightEffect->operator[](0)->SetData<Math::Matrix4x4>(&mvp, 0);
+					_highlightEffect->SetAll();
+
+					cmd->SetTopology(VertexTopology::TriangleList);
+					cmd->DrawVertexBufferWithindices(
+						part->GetVertexBuffer(),
+						part->GetIndexBuffer()
+					);
+				}
+			}
+
 			cmd->SetRasterizerState(oldRasterizerState.get());
 			cmd->SetDepthStencilState(oldDepthState.get(), 0);
 		}
+
+		skinmesh->Draw3D();
 	}
 }
 

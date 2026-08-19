@@ -10,8 +10,7 @@ E3DRSP_ModelMeshPart E3DRSP_ModelMeshPart_Create(
 	size_t numVerts,
 	size_t structSize,
 	unsigned* indices,
-	size_t numIndices,
-	E3DRSP_Effect shaders
+	size_t numIndices
 )
 {
 	return new ModelMeshPart(
@@ -19,8 +18,7 @@ E3DRSP_ModelMeshPart E3DRSP_ModelMeshPart_Create(
 		vertices,
 		numVerts,
 		structSize,
-		std::span<unsigned>(indices, numIndices),
-		reinterpret_cast<Effect*>(shaders)
+		std::span<unsigned>(indices, numIndices)
 	);
 }
 
@@ -32,19 +30,8 @@ E3DRSP_ModelMeshPart E3DRSP_ModelMeshPart_Create2(
 {
 	return new ModelMeshPart(
 		reinterpret_cast<IVertexBuffer*>(vertexBuffer),
-		reinterpret_cast<IIndexBuffer*>(indexBuffer),
-		reinterpret_cast<Effect*>(shaders)
+		reinterpret_cast<IIndexBuffer*>(indexBuffer)
 	);
-}
-
-void E3DRSP_ModelMeshPart_Draw(E3DRSP_ModelMeshPart meshPart)
-{
-	static_cast<ModelMeshPart*>(meshPart)->Draw();
-}
-
-void E3DRSP_ModelMeshPart_DrawEffect(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effect effect)
-{
-	static_cast<ModelMeshPart*>(meshPart)->Draw(reinterpret_cast<Effect*>(effect));
 }
 
 E3DRSP_BoundingBox E3DRSP_ModelMeshPart_GetBoundingBox(E3DRSP_ModelMeshPart meshPart)
@@ -75,28 +62,18 @@ E3DRSP_IIndexBuffer E3DRSP_ModelMeshPart_GetIndexBuffer(E3DRSP_ModelMeshPart mes
 	return static_cast<ModelMeshPart*>(meshPart)->GetIndexBuffer();
 }
 
-E3DRSP_Effect E3DRSP_ModelMeshPart_GetShaders(E3DRSP_ModelMeshPart meshPart)
-{
-	return static_cast<ModelMeshPart*>(meshPart)->GetShaders();
-}
-
-void E3DRSP_ModelMeshPart_SetShaders(E3DRSP_ModelMeshPart meshPart, E3DRSP_Effect shaders)
-{
-	static_cast<ModelMeshPart*>(meshPart)->SetShaders(reinterpret_cast<Effect*>(shaders));
-}
-
-E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetTransform(E3DRSP_ModelMeshPart meshPart)
+E3DRSP_Matrix4x4 E3DRSP_ModelMeshPart_GetWorldTransform(E3DRSP_ModelMeshPart meshPart)
 {
 	E3DRSP_Matrix4x4 result;
-	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->Transform;
+	auto transform = reinterpret_cast<ModelMeshPart*>(meshPart)->World;
 	memcpy_s(&result, sizeof(float) * 16, &transform, sizeof(Math::Matrix4x4));
 
 	return result;
 }
 
-void E3DRSP_ModelMeshPart_SetTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform)
+void E3DRSP_ModelMeshPart_SetWorldTransform(E3DRSP_ModelMeshPart meshPart, const E3DRSP_Matrix4x4* transform)
 {
-	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->Transform, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
+	memcpy_s(&static_cast<ModelMeshPart*>(meshPart)->World, sizeof(Math::Matrix4x4), transform, sizeof(E3DRSP_Matrix4x4));
 }
 
 void E3DRSP_ModelMeshPart_Destroy(E3DRSP_ModelMeshPart meshPart)

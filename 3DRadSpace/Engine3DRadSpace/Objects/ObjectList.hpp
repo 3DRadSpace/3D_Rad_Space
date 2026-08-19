@@ -1,10 +1,10 @@
 #pragma once
-#include "ICamera.hpp"
 #include "IObject3D.hpp"
 #include "IObject2D.hpp"
 #include "ObjectType.hpp"
 #include "../Reflection/ReflectedObject.hpp"
 #include "../Core/IGame.hpp"
+#include "../Math/BoundingBox.hpp"
 
 namespace Engine3DRadSpace::Objects
 {
@@ -43,7 +43,6 @@ namespace Engine3DRadSpace::Objects
 		};
 	private:
 		std::vector<ObjectInstance> _objects;
-		Objects::ICamera* _camera;
 
 		void _validate(ObjectInstance& instance);
 		void _validate(IObject* instance);
@@ -74,9 +73,6 @@ namespace Engine3DRadSpace::Objects
 		template<GameObject O>
 		O* Find(unsigned i = 0) const;
 
-		ICamera* GetRenderingCamera() const noexcept;
-		void SetRenderingCamera(ICamera* cam) noexcept;
-
 		void Remove(unsigned id);
 		void Remove(const std::string& name);
 		void Remove(IObject* obj);
@@ -103,6 +99,8 @@ namespace Engine3DRadSpace::Objects
 
 		std::vector<ObjectInstance>::const_iterator begin() const;
 		std::vector<ObjectInstance>::const_iterator end() const;
+
+		Math::BoundingBox GetBoundingBox() const noexcept;
 
 		friend class Camera;
 

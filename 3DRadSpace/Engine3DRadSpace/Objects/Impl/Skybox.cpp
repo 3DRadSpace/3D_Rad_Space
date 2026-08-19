@@ -66,7 +66,7 @@ void Skybox::Draw3D()
 
 	if(_skybox && Visible)
 	{
-		auto camera = game->Objects->GetRenderingCamera();
+		auto camera = game->Cameras->GetActiveCamera();
 
 		auto viewMatrix = camera->GetViewMatrix();
 		viewMatrix.M41 = 0;
@@ -78,7 +78,7 @@ void Skybox::Draw3D()
 	}
 }
 
-float Skybox::Intersects(const Math::Ray& r)
+float Skybox::Intersects(const Math::Ray& r) const
 {
 	return std::numeric_limits<float>::signaling_NaN();
 }

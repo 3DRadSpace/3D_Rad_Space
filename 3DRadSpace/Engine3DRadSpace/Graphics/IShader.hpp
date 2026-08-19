@@ -51,6 +51,12 @@ namespace Engine3DRadSpace::Graphics
 			Set(name, &data, sizeof(T));
 		}
 
+		template<typename T>
+		void SetData(const T* data, unsigned index)
+		{
+			SetData(index, data, sizeof(T));
+		}
+
 		virtual std::string_view GetEntryName() const noexcept = 0;
 		virtual const char* GetCompilationErrorsAndWarnings() const noexcept = 0;
 

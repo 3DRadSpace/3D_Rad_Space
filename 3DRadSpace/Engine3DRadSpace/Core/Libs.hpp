@@ -47,5 +47,8 @@
 #include "Libs.h"
 
 #pragma region Typedefs and usings
-using STD_UPtrTypeless = std::unique_ptr<void, std::function<void(void*)>>;
+
 #pragma endregion
+
+//Microsoft Security Development Lifecycle (SDL) banned APIs
+#include "banned.h"

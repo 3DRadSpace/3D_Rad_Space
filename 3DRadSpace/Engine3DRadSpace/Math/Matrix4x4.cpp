@@ -140,8 +140,11 @@ Matrix4x4 Matrix4x4::CreateOrthographicProjection(const Point &screenSize, float
 {
 	float w = 2.0f / screenSize.X;
 	float h = 2.0f / screenSize.Y;
-	float a = 1.0f / (fpd - npd);
-	float b = -a * npd;
+	// View-space Z is negative for points in front of the camera (CreateLookAtView's forward
+	// axis points from look_at to pos), so the depth must be negated here to map correctly
+	// into the [0,1] depth range, matching the convention used by CreatePerspectiveProjection.
+	float a = -1.0f / (fpd - npd);
+	float b = a * npd;
 
 	return Matrix4x4(
 		w, 0, 0, 0,
@@ -190,7 +193,14 @@ Matrix4x4 Matrix4x4::CreateSphericalBillboard(const Vector3 &objectPos,const Vec
 	return r;
 }
 
-Matrix4x4 Matrix4x4::CreateCylindricalBillboard(const Vector3& objectPos, const Vector3& cameraPos, const Vector3& cameraUp, const Vector3& cameraForward, const Vector3& axis, std::optional<Vector3> objectForward)
+Matrix4x4 Matrix4x4::CreateCylindricalBillboard(
+	const Vector3& objectPos,
+	const Vector3& cameraPos,
+	const Vector3& cameraUp,
+	const Vector3& cameraForward, 
+	const Vector3& axis, 
+	std::optional<Vector3> objectForward
+)
 {
 	Matrix4x4 result;
 

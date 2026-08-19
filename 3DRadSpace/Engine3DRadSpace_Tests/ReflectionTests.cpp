@@ -50,16 +50,16 @@ public:
 
 	Reflection::UUID GetUUID() const noexcept override
 	{
-	// {017161C9-9EB7-4C10-AEEE-24347466586D}
-	return {0x17161c9, 0x9eb7, 0x4c10, { 0xae, 0xee, 0x24, 0x34, 0x74, 0x66, 0x58, 0x6d }};
-}
+		// {017161C9-9EB7-4C10-AEEE-24347466586D}
+		return {0x17161c9, 0x9eb7, 0x4c10, { 0xae, 0xee, 0x24, 0x34, 0x74, 0x66, 0x58, 0x6d }};
+	}
 
-float Intersects(const Ray &r) override
-{
-	return std::numeric_limits<float>::signaling_NaN();
-}
+	float Intersects(const Ray &r) const override
+	{
+		return std::numeric_limits<float>::signaling_NaN();
+	}
 
-int MyMethod(int a, int b)
+	int MyMethod(int a, int b)
 	{
 		return a + b + Integer;
 	}

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.21)
 project("Engine3DRadSpace.Objects")
 
 add_library(3DRadSpace.Objects SHARED 
+	"CameraProvider.hpp"
+	"CameraProvider.cpp"
 	"ChildObjectCollection.hpp"
 	"ChildObjectCollection.cpp"	
 	"Gizmos.hpp"
@@ -49,5 +51,6 @@ target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Math)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Audio)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Graphics)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Content)
+target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Logging)
 target_link_libraries(3DRadSpace.Objects PRIVATE 3DRadSpace.Reflection)
 target_include_directories(3DRadSpace.Objects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)

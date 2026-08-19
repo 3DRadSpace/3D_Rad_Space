@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
     {
         Math::Color LightColor;
         Math::Color AmbientColor;
-        Math::Vector3 LightDirection;
-        float Intensity;
+        Math::Vector3 LightDirection = Math::Vector3::Down();
+        float Intensity = 0.5f;
     };
 }

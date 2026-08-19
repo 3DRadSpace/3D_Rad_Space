@@ -81,12 +81,12 @@ void E3DRSP_Window_SetMousePosition(E3DRSP_Window window, const E3DRSP_Point* p)
 	static_cast<Window*>(window)->SetMousePosition({p->X, p->Y});
 }
 
-void E3DRSP_NATIVE_EXPORT E3DRSP_Window_SetTitle(E3DRSP_Window window, const char* title)
+void E3DRSP_Window_SetTitle(E3DRSP_Window window, const char* title)
 {
 	static_cast<Window*>(window)->SetTitle(title);
 }
 
-void E3DRSP_NATIVE_EXPORT E3DRSP_Window_Destroy(E3DRSP_Window window)
+void E3DRSP_Window_Destroy(E3DRSP_Window window)
 {
 	delete static_cast<Window*>(window);
 }

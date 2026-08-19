@@ -6,6 +6,7 @@ namespace Engine3DRadSpace::Math
 	struct BoundingSphere;
 	struct BoundingPlane;
 	struct Ray;
+	struct Matrix4x4;
 	struct E3DRSP_MATH_EXPORT BoundingBox
 	{
 		Vector3 Position;
@@ -89,5 +90,17 @@ namespace Engine3DRadSpace::Math
 		/// 7: Max
 		/// </remarks>
 		Vector3 operator[](int i) const;
+
+		/// <summary>
+		/// Returns the smallest axis-aligned BoundingBox that contains this BoundingBox after being transformed by m.
+		/// </summary>
+		/// <param name="m">Transformation matrix (translation, rotation and/or scale).</param>
+		/// <returns>A new, axis-aligned BoundingBox that fully contains the transformed box.</returns>
+		/// <remarks>
+		/// Unlike transforming Position and Scale directly, this correctly accounts for rotation
+		/// by re-deriving the axis-aligned extents from the transformed center/half-extents,
+		/// guaranteeing the result always contains every corner of the original box.
+		/// </remarks>
+		BoundingBox Transform(const Matrix4x4& m) const noexcept;
 	};
 }

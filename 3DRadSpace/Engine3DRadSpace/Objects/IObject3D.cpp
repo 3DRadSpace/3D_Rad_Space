@@ -14,7 +14,7 @@ IObject3D::IObject3D(const std::string &name, bool enabled, bool visible, const 
 {
 }
 
-Matrix4x4 IObject3D::GetLocalMatrix()
+Matrix4x4 IObject3D::GetLocalMatrix() const
 {
 	return  Matrix4x4::CreateScale(Scale)*
 			Matrix4x4::CreateTranslation(-RotationCenter)*
@@ -23,7 +23,7 @@ Matrix4x4 IObject3D::GetLocalMatrix()
 			Matrix4x4::CreateTranslation(Position);
 }
 
-Matrix4x4 IObject3D::GetModelMatrix()
+Matrix4x4 IObject3D::GetModelMatrix() const
 {
 	Matrix4x4 local = GetLocalMatrix();
 
@@ -35,4 +35,9 @@ Matrix4x4 IObject3D::GetModelMatrix()
 		return local * parent3D->GetModelMatrix();
 	else
 		return local;
+}
+
+BoundingBox IObject3D::GetBoundingBox() const noexcept
+{
+	return BoundingBox(Position, Vector3(0, 0, 0));
 }

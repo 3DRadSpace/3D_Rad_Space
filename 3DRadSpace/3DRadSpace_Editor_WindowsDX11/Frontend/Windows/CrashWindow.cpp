@@ -117,7 +117,7 @@ void CrashWindow::ShowDialog()
 			continue;
 		}
 
-		if (!IsDialogMessage(hwnd, &msg))
+		if (!IsDialogMessageA(hwnd, &msg))
 		{
 			TranslateMessage(&msg);
 			DispatchMessageA(&msg);

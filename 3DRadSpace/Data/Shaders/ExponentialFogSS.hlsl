@@ -7,6 +7,8 @@
 Texture2D Main : register(t0);
 Texture2D Depth : register(t1);
 SamplerState TextureSampler : register(s0);
+SamplerState DepthSampler : register(s1);
+
 
 cbuffer FogInfo : register(b0)
 {
@@ -17,5 +19,5 @@ cbuffer FogInfo : register(b0)
 float4 PS_Main(VertexOut v) : SV_TARGET
 {
     return Main.Sample(TextureSampler, v.UV) + //color component
-    FogColor * (1 / exp(Density * Depth.Sample(TextureSampler, v.UV))); //linear fog component
+    FogColor * (1 / exp(Density * Depth.Sample(DepthSampler, v.UV))); //linear fog component
 }

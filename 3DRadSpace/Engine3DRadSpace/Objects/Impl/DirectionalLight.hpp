@@ -31,6 +31,8 @@ namespace Engine3DRadSpace::Objects
 		Math::Color GetAmbientColor() const noexcept;
 		float GetIntensity() const noexcept;
 
+		void Sync() noexcept;
+
 		void Initialize() override;
 		void Update() override;
 		void Load() override;

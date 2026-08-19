@@ -3,6 +3,7 @@
 #include "BoundingPlane.hpp"
 #include "Math.hpp"
 #include "Ray.hpp"
+#include "Matrix4x4.hpp"
 
 using namespace Engine3DRadSpace::Math;
 
@@ -21,15 +22,17 @@ BoundingBox::BoundingBox(const BoundingSphere& sphere):
 BoundingBox::BoundingBox(const BoundingBox& box1, const BoundingBox& box2)
 {
 	Vector3 minVec = Vector3(
-		std::min(box1.Position.X, box2.Position.X),
-		std::min(box1.Position.Y, box2.Position.Y),
-		std::min(box1.Position.Z, box2.Position.Z)
+		std::min(box1.Min().X, box2.Min().X),
+		std::min(box1.Min().Y, box2.Min().Y),
+		std::min(box1.Min().Z, box2.Min().Z)
 	);
+
 	Vector3 maxVec = Vector3(
-		std::max(box1.Position.X, box2.Position.X),
-		std::max(box1.Position.Y, box2.Position.Y),
-		std::max(box1.Position.Z, box2.Position.Z)
+		std::max(box1.Max().X, box2.Max().X),
+		std::max(box1.Max().Y, box2.Max().Y),
+		std::max(box1.Max().Z, box2.Max().Z)
 	);
+
 	Position = minVec;
 	Scale = maxVec - minVec;
 }
@@ -133,4 +136,20 @@ Vector3 BoundingBox::operator[](int i) const
 Vector3 BoundingBox::Center() const noexcept
 {
 	return Position + (Scale / 2);
+}
+
+BoundingBox BoundingBox::Transform(const Matrix4x4& m) const noexcept
+{
+	Vector3 center = Center();
+	Vector3 extents = Scale / 2;
+
+	Vector3 newCenter = Vector3::Transform(center, m);
+
+	Vector3 newExtents(
+		std::abs(extents.X * m.M11) + std::abs(extents.Y * m.M21) + std::abs(extents.Z * m.M31),
+		std::abs(extents.X * m.M12) + std::abs(extents.Y * m.M22) + std::abs(extents.Z * m.M32),
+		std::abs(extents.X * m.M13) + std::abs(extents.Y * m.M23) + std::abs(extents.Z * m.M33)
+	);
+
+	return BoundingBox(newCenter - newExtents, newExtents * 2);
 }
