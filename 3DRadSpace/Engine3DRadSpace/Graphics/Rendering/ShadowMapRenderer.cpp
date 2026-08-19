@@ -193,8 +193,8 @@ void ShadowMapRenderer::End()
 	// Unbind the shadow map depth buffer
 	_context->UnbindDepthBuffer();
 
-	//_context->SetRasterizerState(_oldRasterizerState.get());
-	//_context->SetDepthStencilState(_oldDepthStencilState.get(), 0);
+	_context->SetRasterizerState(_oldRasterizerState.get());
+	_context->SetDepthStencilState(_oldDepthStencilState.get(), 0);
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept
