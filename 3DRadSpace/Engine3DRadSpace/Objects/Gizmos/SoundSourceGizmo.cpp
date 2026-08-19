@@ -1,6 +1,8 @@
 #include "SoundSourceGizmo.hpp"
 #include "../../Games/Game.hpp"
 #include "../../Graphics/IRasterizerState.hpp"
+#include "../../Graphics/ITexture2D.hpp"
+#include "../../Graphics/Primitives/SphericalBillboard.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -37,4 +39,8 @@ void Gizmo<SoundSource>::Draw2D()
 void Gizmo<SoundSource>::Update()
 {
 
+}
+
+Gizmo<SoundSource>::~Gizmo()
+{
 }
