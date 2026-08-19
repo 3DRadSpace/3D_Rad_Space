@@ -1,3 +1,5 @@
+#include "PCF.hlsl"
+
 cbuffer Data : register(b0)
 {
     row_major matrix matWorldViewProj; // MVP transformation
@@ -11,7 +13,7 @@ cbuffer ShadowData : register(b1)
     float3 LightDirection;
     float ShadowBias;
     float ShadowIntensity;
-    float2 padding;
+    float2 TexelSize;
 }
 
 Texture2D TextureModel : register(t0);
@@ -63,16 +65,7 @@ float CalculateShadow(float3 worldPos)
         projCoords.z > 1.0)
         return 1.0;
 
-    // Get closest depth from shadow map
-    float closestDepth = ShadowMap.Sample(ShadowSampler, projCoords.xy).r;
-
-    // Get current fragment depth
-    float currentDepth = projCoords.z;
-
-    // Compare depths with bias
-    float shadow = (currentDepth - ShadowBias) > closestDepth ? ShadowIntensity : 1.0;
-
-    return shadow;
+    return PCF_CalculateShadow(ShadowMap, ShadowSampler, projCoords.xy, projCoords.z, TexelSize, ShadowBias, ShadowIntensity);
 }
 
 float4 PS_Main(VertexOut v) : SV_TARGET

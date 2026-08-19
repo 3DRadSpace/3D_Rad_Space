@@ -39,7 +39,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// <summary>
 		/// Shadow intensity (0.0 = fully dark, 1.0 = no shadow)
 		/// </summary>
-		float ShadowIntensity = 0.3f;
+		float ShadowIntensity = 0.1f;
 
 		float NearPlane = 1.0f;
 		float FarPlane = 1000.0f;

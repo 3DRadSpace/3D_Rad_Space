@@ -125,7 +125,7 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			Math::Vector3 LightDirection;
 			float ShadowBias;
 			float ShadowIntensity;
-			Math::Vector2 padding;
+			Math::Vector2 TexelSize;
 		} cb1;
 
 		// NOTE: the pixel shader's CalculateShadow() receives an already WORLD-SPACE position
@@ -142,6 +142,10 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 
 		cb1.ShadowBias = shadowMapRenderer->ShadowBias;
 		cb1.ShadowIntensity = shadowMapRenderer->ShadowIntensity;
+		cb1.TexelSize = Math::Vector2(
+			1.0f / (_device->Resolution().X * shadowMapRenderer->ShadowMapSize),
+			1.0f / (_device->Resolution().Y * shadowMapRenderer->ShadowMapSize)
+		);
 
 		effect->SetData<Shadow_ConstantBuffer1>(&cb1, 1);
 
