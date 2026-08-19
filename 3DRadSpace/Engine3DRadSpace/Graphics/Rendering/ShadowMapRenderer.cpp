@@ -30,7 +30,7 @@ void ShadowMapRenderer::_createShadowStates()
 	// Create rasterizer state with depth bias for shadow mapping
 	_shadowRasterizerState = _device->CreateRasterizerState(
 		RasterizerFillMode::Solid,
-		RasterizerCullMode::CullBack,
+		RasterizerCullMode::None,
 		false, // frontCounterClockwise
 		static_cast<int>(ShadowBias * 100000.0f), // depthBias (scaled)
 		0.0f, // depthBiasClamp
@@ -110,9 +110,9 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 	// Snap the camera-follow target to whole-texel increments along the light's right/up axes.
 	// Snapping must happen in this basis (not world X/Y/Z), otherwise the shadow map's texel grid
 	// slides relative to the light as the camera moves, causing shimmering shadow acne.
-	auto resolution = _device->Resolution();
-	float shadowMapWidth = resolution.X * ShadowMapSize;
-	float shadowMapHeight = resolution.Y * ShadowMapSize;
+	auto shadowMapResolution = GetShadowMapResolution();
+	float shadowMapWidth = shadowMapResolution.X;
+	float shadowMapHeight = shadowMapResolution.Y;
 	float texelSizeX = _extent / std::max(shadowMapWidth, 1.0f);
 	float texelSizeY = _extent / std::max(shadowMapHeight, 1.0f);
 
@@ -154,14 +154,9 @@ void ShadowMapRenderer::Begin()
 {
 	_determineExtent();
 
-	auto context = _device->ImmediateContext();
-
-	auto resolution = _device->Resolution();
-	unsigned int shadowMapWidth = static_cast<unsigned int>(resolution.X * ShadowMapSize);
-	unsigned int shadowMapHeight = static_cast<unsigned int>(resolution.Y * ShadowMapSize);
-
+	auto shadowMapResolution = GetShadowMapResolution();
 	Viewport shadowViewport(
-		Math::RectangleF(0.0f, 0.0f, static_cast<float>(shadowMapWidth), static_cast<float>(shadowMapHeight)),
+		Math::RectangleF(0.0f, 0.0f, static_cast<float>(shadowMapResolution.X), static_cast<float>(shadowMapResolution.Y)),
 		0.0f,
 		1.0f
 	);
@@ -169,14 +164,14 @@ void ShadowMapRenderer::Begin()
 	_oldRasterizerState = _device->GetRasterizerState();
 	_oldDepthStencilState = _device->GetDepthStencilState();
 
-	context->UnbindRenderTargetAndDepth();
-	context->SetDepthStencilBuffer(_shadowMap.get());
-	context->ClearDepthBuffer(_shadowMap.get());
+	_context->UnbindRenderTargetAndDepth();
+	_context->SetDepthStencilBuffer(_shadowMap.get());
+	_context->ClearDepthBuffer(_shadowMap.get());
 
-	context->SetViewport(shadowViewport);
+	_context->SetViewport(shadowViewport);
 
-	context->SetRasterizerState(_shadowRasterizerState.get());
-	context->SetDepthStencilState(_shadowDepthState.get(), 0);
+	_context->SetRasterizerState(_shadowRasterizerState.get());
+	_context->SetDepthStencilState(_shadowDepthState.get(), 0);
 }
 
 void ShadowMapRenderer::End()
@@ -243,4 +238,10 @@ bool ShadowMapRenderer::IsRenderPassTypeSupported(RenderPassType passType) const
 	default:
 		return false;
 	}
+}
+
+Math::Vector2 ShadowMapRenderer::GetShadowMapResolution() const noexcept
+{
+	auto resolution = _device->Resolution();
+	return Math::Vector2(resolution.X * ShadowMapSize, resolution.Y * ShadowMapSize);
 }

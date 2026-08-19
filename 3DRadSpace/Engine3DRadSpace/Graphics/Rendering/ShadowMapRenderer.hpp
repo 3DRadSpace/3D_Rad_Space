@@ -20,7 +20,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
 		Effect* _shadowMapEffect = nullptr;
 
-		float _extent;
+		float _extent = 0.0f;
 
 		void _determineExtent();
 		void _createShadowStates();
@@ -70,6 +70,12 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		/// <returns>Light projection matrix</returns>
 		Math::Matrix4x4 ComputeLightProjectionMatrix() const;
+
+		/// <summary>
+		/// Returns the shadow map resolution.
+		/// </summary>
+		/// <returns>Shadow map resolution, usually backbuffer resolution multiplied by ShadowMapSize</returns>
+		Math::Vector2 GetShadowMapResolution() const noexcept;
 
 		void Begin() override;
 		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
