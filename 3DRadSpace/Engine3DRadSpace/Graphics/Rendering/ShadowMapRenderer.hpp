@@ -10,6 +10,10 @@
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	class RenderingManager;
+
+	/// <summary>
+	/// Represents the shadow map depth pass.
+	/// </summary>
 	class E3DRSP_GRAPHICS_RENDERING_EXPORT ShadowMapRenderer : public IRenderer
 	{
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
@@ -26,6 +30,10 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		void _createShadowStates();
 		void _loadEffect();
 	public:
+		/// <summary>
+		/// Creates an instance of a ShadowMapRenderer.
+		/// </summary>
+		/// <param name="owner"></param>
 		explicit ShadowMapRenderer(RenderingManager* owner);
 
 		/// <summary>
@@ -77,6 +85,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// <returns>Shadow map resolution, usually backbuffer resolution multiplied by ShadowMapSize</returns>
 		Math::Vector2 GetShadowMapResolution() const noexcept;
 
+		/// <summary>
+		/// </summary>
 		void Begin() override;
 		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
 		void End() override;

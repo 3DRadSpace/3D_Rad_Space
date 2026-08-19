@@ -73,7 +73,17 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		void Clear() noexcept;
 
+		/// <summary>
+		/// Submits an model instance to be processed by the render passes.
+		/// </summary>
+		/// <param name="model">Model instance</param>
+		/// <param name="passType">Render pass type</param>
 		void Draw(Model3D* model, RenderPassType passType = RenderPassType::Opaque);
+		/// <summary>
+		/// Submits a mesh part to be processed by the render passes.
+		/// </summary>
+		/// <param name="part">Mesh part instance</param>
+		/// <param name="passType">Render pass type</param>
 		void Draw(ModelMeshPart* part, RenderPassType passType = RenderPassType::Opaque);
 
 		/// <summary>
@@ -81,9 +91,28 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		void Execute();
 
+		/// <summary>
+		/// Creates a RenderingManager with classical forward rendering and shadow mapping passes.
+		/// </summary>
+		/// <param name="device">Graphics device to use for rendering.</param>
+		/// <returns>Unique pointer to the created RenderingManager instance.</returns>
 		static std::unique_ptr<RenderingManager> CreateForward(IGraphicsDevice* device);
+		/// <summary>
+		/// Creates a RenderingManager with an ForwardRenderer without shadow mapping support.
+		/// </summary>
+		/// <param name="device">Graphics device to use for rendering.</param>
+		/// <returns>Unique pointer to the created RenderingManager instance.</returns>
+		static std::unique_ptr<RenderingManager> CreateTrivial(IGraphicsDevice* device);
+		/// <summary>
+		/// Creates a RenderingManager with an NullRenderer that does not perform any rendering, useful for testing and debugging.
+		/// </summary>
+		/// <param name="device">Graphics device to use for rendering.</param>
+		/// <returns>Unique pointer to the created RenderingManager instance.</returns>
 		static std::unique_ptr<RenderingManager> CreateNull(IGraphicsDevice* device);
 
+		/// <summary>
+		/// The main directional light used for rendering.
+		/// </summary>
 		DirectionalLight MainLight;
 
 		/// <summary>

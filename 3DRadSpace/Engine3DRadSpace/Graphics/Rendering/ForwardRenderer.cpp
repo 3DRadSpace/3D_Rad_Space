@@ -187,7 +187,8 @@ void ForwardRenderer::End()
 	// Otherwise it remains bound as a shader input while ShadowMapRenderer::Begin() tries
 	// to bind the same resource as the depth-stencil render target on the next frame,
 	// which triggers a D3D11 debug layer hazard warning (DEVICE_OMSETRENDERTARGETS_HAZARD).
-	_shadowEffect->SetTexture(nullptr, 1);
+	if(_shadowEffect)
+		_shadowEffect->SetTexture(nullptr, 1);
 
 	_beginCalled = false;
 }

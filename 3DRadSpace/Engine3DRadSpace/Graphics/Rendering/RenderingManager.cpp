@@ -125,6 +125,13 @@ std::unique_ptr<RenderingManager> RenderingManager::CreateForward(IGraphicsDevic
 	return std::make_unique<RenderingManager>(std::move(manager));
 }
 
+std::unique_ptr<RenderingManager> RenderingManager::CreateTrivial(IGraphicsDevice* device)
+{
+	RenderingManager manager(device);
+	manager.Add<ForwardRenderer>();
+	return std::make_unique<RenderingManager>(std::move(manager));
+}
+
 std::unique_ptr<RenderingManager> RenderingManager::CreateNull(IGraphicsDevice* device)
 {
 	RenderingManager manager(device);

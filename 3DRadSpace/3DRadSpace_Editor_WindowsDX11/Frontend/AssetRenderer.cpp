@@ -27,7 +27,7 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 
 	auto model = modelAsset->Get();
 
-	auto renderer = Rendering::RenderingManager::CreateForward(device);
+	auto renderer = Rendering::RenderingManager::CreateTrivial(device);
 
 	if(device && model)
 	{
@@ -52,8 +52,8 @@ template<> bool AssetRenderer(IGraphicsDevice *device, const std::string &imageP
 				Matrix4x4::CreatePerspectiveProjection(4.f / 3.f, 65, 0.01f, 500.0f)
 			);
 
-			
 			renderer->Draw(model, Rendering::RenderPassType::OpaqueNoShadow);
+			renderer->Execute();
 
 			cmd->Present();
 		}

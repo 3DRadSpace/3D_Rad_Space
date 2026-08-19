@@ -218,17 +218,25 @@ void AssetManagerDialog::_loadAssetIcons()
 			HRESULT r;
 			if (SUCCEEDED(r = SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appdataPath)))
 			{
-				auto assetPath = std::filesystem::path(asset.Path).lexically_relative(GetExecutablePath());
-
 				if (!std::filesystem::exists(asset.Path))
 				{
 					throw Logging::Exception("Asset is not located in the executable root directory!");
 				}
 
+				auto exeDir = std::filesystem::path(GetExecutablePath());
+				auto dataDir = exeDir / "Data";
+				auto absAssetPath = std::filesystem::absolute(asset.Path);
+
+				std::filesystem::path assetPath;
+				auto relativeToData = absAssetPath.lexically_relative(dataDir);
+				if (!relativeToData.empty() && relativeToData.native()[0] != '.')
+					assetPath = relativeToData;
+				else
+					assetPath = absAssetPath.lexically_relative(exeDir);
+
 				imagePath = appdataPath + (R"(\3DRadSpace\AssetImages\)" + assetPath.string()) + ".png";
 
-				auto dirPath = std::filesystem::path(imagePath).remove_filename().lexically_relative(GetExecutablePath());
-				if (dirPath.empty()) dirPath = std::filesystem::path(imagePath).remove_filename();
+				auto dirPath = std::filesystem::path(imagePath).remove_filename();
 
 				create_directories(dirPath);
 			}
