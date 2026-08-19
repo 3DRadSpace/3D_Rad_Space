@@ -91,14 +91,40 @@ Math::Matrix4x4 ShadowMapRenderer::ComputeLightViewMatrix(const Math::Vector3& l
 	auto sceneBBox = objList->GetBoundingBox();
 
 	Vector3 target = cam != nullptr ? cam->Position : Vector3::Zero();
-	Vector3 lightPos = target + dir * -100.0f;
+
 	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
 	// Avoid a degenerate basis when the light points straight up/down.
 	if (std::abs(Vector3::Dot(dir, up)) > 0.99f)
 		up = Vector3(1.0f, 0.0f, 0.0f);
 
-	return Math::Matrix4x4::CreateLookAtView(lightPos, target, up);
+	// Build a stable light-space basis: right/up are perpendicular to the light direction, so the
+	// shadow map's texel grid is aligned with the light's own view axes rather than world axes.
+	Vector3 right = Vector3::Cross(up, dir);
+	float rightLen = std::sqrt(Vector3::Dot(right, right));
+	right = right * (1.0f / rightLen);
+	Vector3 actualUp = Vector3::Cross(dir, right);
+
+	// Snap the camera-follow target to whole-texel increments along the light's right/up axes.
+	// Snapping must happen in this basis (not world X/Y/Z), otherwise the shadow map's texel grid
+	// slides relative to the light as the camera moves, causing shimmering shadow acne.
+	auto resolution = _device->Resolution();
+	float shadowMapWidth = resolution.X * ShadowMapSize;
+	float shadowMapHeight = resolution.Y * ShadowMapSize;
+	float texelSizeX = OrthographicExtent / std::max(shadowMapWidth, 1.0f);
+	float texelSizeY = OrthographicExtent / std::max(shadowMapHeight, 1.0f);
+
+	float distRight = Vector3::Dot(target, right);
+	float distUp = Vector3::Dot(target, actualUp);
+	float distForward = Vector3::Dot(target, dir);
+
+	distRight = std::floor(distRight / texelSizeX) * texelSizeX;
+	distUp = std::floor(distUp / texelSizeY) * texelSizeY;
+
+	Vector3 snappedTarget = right * distRight + actualUp * distUp + dir * distForward;
+	Vector3 lightPos = snappedTarget + dir * -100.0f;
+
+	return Math::Matrix4x4::CreateLookAtView(lightPos, snappedTarget, actualUp);
 }
 
 Math::Matrix4x4 ShadowMapRenderer::ComputeLightProjectionMatrix() const
@@ -128,7 +154,6 @@ void ShadowMapRenderer::Begin()
 {
 	auto context = _device->ImmediateContext();
 
-	// Calculate shadow map viewport on-demand
 	auto resolution = _device->Resolution();
 	unsigned int shadowMapWidth = static_cast<unsigned int>(resolution.X * ShadowMapSize);
 	unsigned int shadowMapHeight = static_cast<unsigned int>(resolution.Y * ShadowMapSize);
@@ -139,15 +164,12 @@ void ShadowMapRenderer::Begin()
 		1.0f
 	);
 
-	// Clear and set the shadow map as the depth target
 	context->UnbindRenderTargetAndDepth();
 	context->SetDepthStencilBuffer(_shadowMap.get());
 	context->ClearDepthBuffer(_shadowMap.get());
 
-	// Set shadow viewport
 	context->SetViewport(shadowViewport);
 
-	// Set shadow states
 	context->SetRasterizerState(_shadowRasterizerState.get());
 	context->SetDepthStencilState(_shadowDepthState.get(), 0);
 }

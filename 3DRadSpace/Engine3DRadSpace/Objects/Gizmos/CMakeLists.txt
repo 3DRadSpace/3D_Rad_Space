@@ -5,6 +5,8 @@ project("Engine3DRadSpace.Objects.Gizmos")
 add_library(3DRadSpace.Objects.Gizmos STATIC 
 	"CameraGizmo.hpp"
 	"CameraGizmo.cpp"
+	"DirectionalLightGizmo.hpp"
+	"DirectionalLightGizmo.cpp"
 	"EOLGizmo.hpp"
 	"EOLGizmo.cpp"
 	"Gizmo.hpp"

@@ -46,6 +46,7 @@ void DirectionalLight::Load(const std::filesystem::path& path)
 
 void DirectionalLight::Update()
 {
+	Sync();
 }
 
 void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept
@@ -101,7 +102,7 @@ float DirectionalLight::GetIntensity() const noexcept
 
 void DirectionalLight::Sync() noexcept
 {
-	if (_light)
+	if (_light && Enabled)
 	{
 		_light->LightDirection = GetLightDir();
 		_light->LightColor = GetLightColor();

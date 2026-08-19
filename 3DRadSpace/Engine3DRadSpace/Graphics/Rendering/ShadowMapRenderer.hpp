@@ -14,7 +14,9 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	{
 		std::unique_ptr<IDepthStencilBuffer> _shadowMap;
 		std::unique_ptr<ISamplerState> _shadowSampler;
+		IRasterizerState* _oldRasterizerState = nullptr;
 		std::unique_ptr<IRasterizerState> _shadowRasterizerState;
+		IDepthStencilState* _oldDepthStencilState = nullptr;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
 		Effect* _shadowMapEffect = nullptr;
 
@@ -40,15 +42,14 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// World-space size (width/height) of the orthographic shadow frustum. Fixed rather than
 		/// fit to the camera frustum, so the shadow map's world-space texel size never changes
 		/// and does not shimmer/swim as the camera moves.
-		/// 
-		/// NOTE: this directly controls shadow map texel density: texelWorldSize = OrthographicExtent /
+		/// </summary>
+		/// <remarks>
+		/// This directly controls shadow map texel density: texelWorldSize = OrthographicExtent /
 		/// (screenResolution * ShadowMapSize). A larger extent covers more of the scene but makes
 		/// each texel cover more world space, causing thin geometry (poles, railings, thin edges)
-		/// to have interrupted/dashed shadows. Prefer the smallest extent that still covers the
-		/// area where shadows matter (e.g. around the camera/player), and increase ShadowMapSize
-		/// if more texel density is needed without shrinking the covered area.
-		/// </summary>
-		float OrthographicExtent = 150.0f;
+		/// to have interrupted/dashed shadows.
+		/// </remarks>
+		float OrthographicExtent = 100.0f;
 
 		float NearPlane = 1.0f;
 		float FarPlane = 1000.0f;
