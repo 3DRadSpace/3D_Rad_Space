@@ -27,8 +27,13 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 	class E3DRSP_GRAPHICS_DX11_EXPORT GraphicsCommandList : public IGraphicsCommandList
 	{
 	protected:
-		GraphicsDevice* _device;
-		ID3D11DeviceContext* _context;
+		GraphicsDevice* _device = nullptr;
+		ID3D11DeviceContext* _context = nullptr;
+
+		std::array<RenderTarget*, 8> _currentRenderTargets = {};
+		DepthStencilBuffer* _currentDepthBuffer = nullptr;
+
+		void _setRTVList1(IRenderTarget* rtv);
 	public:
 		GraphicsCommandList(GraphicsDevice* device);
 
@@ -47,6 +52,12 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		/// </summary>
 		/// <param name="remderTarget">Render target pointer reference. Using null will use the backbuffer.</param>
 		void SetRenderTarget(IRenderTarget* renderTarget) override;
+
+		/// <summary>
+		/// Sets multiple render targets. Depth buffer is preserved.
+		/// </summary>
+		/// <param name="rtvs">Render target views</param>
+		void SetRenderTargets(const std::array<IRenderTarget*, 8>& rtvs) override;
 		/// <summary>
 		/// Unbinds the current render target and depth buffer. 
 		/// </summary>
@@ -70,6 +81,8 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		/// <param name="renderTarget">Render surface to be drawn into. If null, it is set to the backbuffer.</param>
 		void SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget) override;
 
+		std::array<IRenderTarget*, 8> GetRenderTargets() override;
+		IDepthStencilBuffer* GetDepthStencilBuffer() override;
 		/// <summary>
 		/// Draws a vertex buffer into the selected render target.
 		/// </summary>

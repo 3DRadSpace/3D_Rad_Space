@@ -39,6 +39,7 @@ namespace Engine3DRadSpace::Graphics
 		virtual Viewport GetViewport() = 0;
 
 		virtual void SetRenderTarget(IRenderTarget* renderTarget) = 0;
+		virtual void SetRenderTargets(const std::array<IRenderTarget*, 8>& rtvs) = 0;
 
 		virtual void UnbindRenderTargetAndDepth() = 0;
 
@@ -47,6 +48,9 @@ namespace Engine3DRadSpace::Graphics
 		virtual void SetRenderTargetAndDepth(IRenderTarget* renderTarget, IDepthStencilBuffer* depthBuffer) = 0;
 
 		virtual void SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget) = 0;
+
+		virtual std::array<IRenderTarget*, 8> GetRenderTargets() = 0;
+		virtual IDepthStencilBuffer* GetDepthStencilBuffer() = 0;
 
 		virtual void DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned startSlot = 0) = 0;
 		virtual void DrawVertexBufferWithindices(IVertexBuffer* vertexBuffer, IIndexBuffer* indexBuffer) = 0;

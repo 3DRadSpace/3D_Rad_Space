@@ -24,15 +24,3 @@ void* RenderTarget::RenderTargetHandle() const noexcept
 {
 	return nullptr;
 }
-
-RenderTarget RenderTarget::GetCurrentRenderTarget(GraphicsDevice* device)
-{
-	(void)device;
-	return RenderTarget(nullptr, 0, 0, PixelFormat::Unknown);
-}
-std::array<RenderTarget*, 8> RenderTarget::GetCurrentRenderTargets(GraphicsDevice* device)
-{
-	(void)device;
-	std::array<RenderTarget*, 8> r{0};
-	return r;
-}

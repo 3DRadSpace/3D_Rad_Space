@@ -93,6 +93,10 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 
 		IRenderTarget* GetBackBuffer() const noexcept override;
 		ITexture2D *GetBackBufferTexture() const noexcept override;
+		/// <summary>
+		/// Returns the default depth buffer.
+		/// </summary>
+		/// <returns>Default depth buffer</returns>
 		IDepthStencilBuffer& GetDepthBuffer() override;
 
 		std::unique_ptr<IDepthStencilState> GetDepthStencilState() override;

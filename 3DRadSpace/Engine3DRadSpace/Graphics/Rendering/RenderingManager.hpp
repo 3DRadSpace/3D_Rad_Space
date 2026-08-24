@@ -23,6 +23,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::vector<std::unique_ptr<IRenderer>> _renderers;
 		std::vector<MeshPartDrawInfo> _meshParts;
 
+		
+
 		RenderingManager(IGraphicsDevice* device, std::nullptr_t dummy);
 	public:
 		/// <summary>

@@ -1,5 +1,6 @@
 #include "GraphicsCommandList.hpp"
 #include "RasterizerState.hpp"
+#include "DepthStencilBuffer.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -51,6 +52,11 @@ void GraphicsCommandList::SetRenderTarget(IRenderTarget* renderTarget)
 	(void)renderTarget;
 }
 
+void GraphicsCommandList::SetRenderTargets(const std::array<IRenderTarget*, 8>& rtvs)
+{
+	(void)rtvs;
+}
+
 void GraphicsCommandList::UnbindRenderTargetAndDepth()
 {
 }
@@ -68,6 +74,16 @@ void GraphicsCommandList::SetRenderTargetAndDepth(IRenderTarget* renderTarget, I
 void GraphicsCommandList::SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget)
 {
 	(void)renderTarget;
+}
+
+std::array<IRenderTarget*, 8> GraphicsCommandList::GetRenderTargets()
+{
+	return std::array<IRenderTarget*, 8>{};
+}
+
+IDepthStencilBuffer* GraphicsCommandList::GetDepthStencilBuffer()
+{
+	return nullptr;
 }
 
 void GraphicsCommandList::DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned startSlot)
@@ -97,11 +113,6 @@ void GraphicsCommandList::SetRasterizerState(const IRasterizerState* state)
 {
 	(void)state;
 }
-
-//std::unique_ptr<IRasterizerState> GraphicsCommandList::GetRasterizerState()
-//{
-//	return std::make_unique<RasterizerState>(_device);
-//}
 
 void GraphicsCommandList::SetDepthStencilBuffer(IDepthStencilBuffer* depthBuffer)
 {

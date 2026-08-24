@@ -23,6 +23,9 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::unique_ptr<IDepthStencilState> _oldDepthStencilState;
 		std::unique_ptr<IDepthStencilState> _shadowDepthState;
 		Effect* _shadowMapEffect = nullptr;
+		IDepthStencilBuffer* _oldDepthStencilBuffer = nullptr;
+		std::array<IRenderTarget*, 8> _oldRTVs = {};
+		Viewport _oldViewport;
 
 		float _extent = 0.0f;
 

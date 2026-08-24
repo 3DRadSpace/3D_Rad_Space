@@ -80,8 +80,6 @@ void ForwardRenderer::Begin()
 {
 	if (_beginCalled) return;
 	_beginCalled = true;
-
-	_device->ImmediateContext()->SetRenderTargetAndDepth(nullptr, nullptr);
 }
 
 void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* material)

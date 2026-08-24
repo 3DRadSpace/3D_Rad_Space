@@ -23,6 +23,13 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		std::unique_ptr<Texture2D> _depthTexture;
 		GraphicsDevice *_device;
 		void _createDepthTexture(size_t x, size_t y);
+
+		DepthStencilBuffer(
+			GraphicsDevice* device,
+			Microsoft::WRL::ComPtr<ID3D11DepthStencilView>&& depthView,
+			Microsoft::WRL::ComPtr<ID3D11Texture2D>&& depthTexture,
+			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& depthShaderView
+		);
 	public:
 		/// <summary>
 		/// Creates a depth stencil buffer.

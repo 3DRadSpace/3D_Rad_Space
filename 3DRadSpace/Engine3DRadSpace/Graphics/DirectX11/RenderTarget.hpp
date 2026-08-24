@@ -45,9 +45,6 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 
 		void* RenderTargetHandle() const noexcept override;
 
-		static RenderTarget GetCurrentRenderTarget(GraphicsDevice* device);
-		static std::array<RenderTarget*, D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT> GetCurrentRenderTargets(GraphicsDevice* device);
-
 		~RenderTarget() = default;
 
 		friend class GraphicsDevice;

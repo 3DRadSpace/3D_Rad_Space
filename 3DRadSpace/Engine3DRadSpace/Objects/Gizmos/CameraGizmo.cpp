@@ -118,6 +118,7 @@ void Gizmo<Camera>::Draw2D()
 				static_cast<IObject3D*>(obj.Object.get())->Draw3D();
 			}
 		}
+		game->RenderingManager->Execute();
 
 		cmd->SetViewport();
 		cmd->SetRenderTargetAndDepth(nullptr, nullptr);

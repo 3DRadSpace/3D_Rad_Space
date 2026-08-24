@@ -8,6 +8,19 @@ using namespace Engine3DRadSpace::Graphics;
 using namespace Engine3DRadSpace::Graphics::DirectX11;
 using namespace Engine3DRadSpace::Logging;
 
+DepthStencilBuffer::DepthStencilBuffer(
+	GraphicsDevice* device,
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>&& depthView,
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>&& depthTexture,
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& depthShaderView
+) :
+	_device(device),
+	_depthView(std::move(depthView)),
+	_depthTexture(std::make_unique<Texture2D>(_device, std::move(depthTexture), std::move(depthShaderView)))
+{
+
+}	
+
 D3D11_TEXTURE2D_DESC DepthStencilBuffer::_defaultDepthDesc(size_t x, size_t y)
 {
 	D3D11_TEXTURE2D_DESC desc{};

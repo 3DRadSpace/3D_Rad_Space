@@ -19,9 +19,6 @@ namespace Engine3DRadSpace::Graphics::Null
 
 		void* RenderTargetHandle() const noexcept override;
 
-		static RenderTarget GetCurrentRenderTarget(GraphicsDevice* device);
-		static std::array<RenderTarget*, 8> GetCurrentRenderTargets(GraphicsDevice* device);
-
 		~RenderTarget() = default;
 
 		friend class GraphicsDevice;

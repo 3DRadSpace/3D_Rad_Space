@@ -25,7 +25,6 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		void _debugInfoRT();
 
 	protected:
-		explicit Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& resource);
 		explicit Texture2D(GraphicsDevice* device, std::monostate dummy, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture);
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture;
@@ -70,6 +69,14 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 		/// <param name="device">Device context</param>
 		/// <param name="path">Image file</param>
 		Texture2D(GraphicsDevice* device, const std::filesystem::path& path);
+
+		/// <summary>
+		/// Constructs an Texture2D instance directly from D3D11 texture and shader resource view.
+		/// </summary>
+		/// <param name="device">Device context</param>
+		/// <param name="texture">D3D11 texture</param>
+		/// <param name="resource">D3D11 shader resource view</param>
+		explicit Texture2D(GraphicsDevice* device, Microsoft::WRL::ComPtr<ID3D11Texture2D>&& texture, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>&& resource);
 
 		/// <summary>
 		/// Creates a texture from a span of Colors.

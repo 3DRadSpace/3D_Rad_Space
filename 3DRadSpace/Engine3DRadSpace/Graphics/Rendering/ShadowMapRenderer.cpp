@@ -164,6 +164,10 @@ void ShadowMapRenderer::Begin()
 	_oldRasterizerState = _device->GetRasterizerState();
 	_oldDepthStencilState = _device->GetDepthStencilState();
 
+	_oldDepthStencilBuffer = _context->GetDepthStencilBuffer();
+	_oldRTVs = _context->GetRenderTargets();
+	_oldViewport = _context->GetViewport();
+
 	_context->UnbindRenderTargetAndDepth();
 	_context->SetDepthStencilBuffer(_shadowMap.get());
 	_context->ClearDepthBuffer(_shadowMap.get());
@@ -176,20 +180,16 @@ void ShadowMapRenderer::Begin()
 
 void ShadowMapRenderer::End()
 {
-	// Restore default viewport (screen resolution)
-	auto resolution = _device->Resolution();
-	Viewport defaultViewport(
-		Math::RectangleF(0.0f, 0.0f, static_cast<float>(resolution.X), static_cast<float>(resolution.Y)),
-		0.0f,
-		1.0f
-	);
-	_context->SetViewport(defaultViewport);
+	// Restore the viewport that was active before the shadow pass began.
+	_context->SetViewport(_oldViewport);
 
 	// Unbind the shadow map depth buffer
 	_context->UnbindDepthBuffer();
 
 	_context->SetRasterizerState(_oldRasterizerState.get());
 	_context->SetDepthStencilState(_oldDepthStencilState.get(), 0);
+	_context->SetDepthStencilBuffer(_oldDepthStencilBuffer);
+	_context->SetRenderTargets(_oldRTVs);
 }
 
 IDepthStencilBuffer* ShadowMapRenderer::GetShadowMap() const noexcept

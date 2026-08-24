@@ -46,17 +46,6 @@ RenderTarget::RenderTarget(GraphicsDevice* device, std::monostate cpy) :
 	if(FAILED(r)) throw Exception("Failed to get the texture from the render target!");
 }
 
-RenderTarget RenderTarget::GetCurrentRenderTarget(GraphicsDevice* device)
-{
-	return RenderTarget(device, {});
-}
-
-std::array<RenderTarget*, D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT> RenderTarget::GetCurrentRenderTargets(GraphicsDevice* device)
-{
-	//TODO: Return references to current render targets.
-	return std::array<RenderTarget*, D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT>();
-}
-
 void* RenderTarget::RenderTargetHandle() const noexcept
 {
 	return _renderTarget.Get();

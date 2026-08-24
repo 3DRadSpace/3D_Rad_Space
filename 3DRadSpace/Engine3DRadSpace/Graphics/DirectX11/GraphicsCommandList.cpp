@@ -37,9 +37,21 @@ void GraphicsCommandList::Clear(const Color& clearColor)
 	_context->ClearDepthStencilView(
 		_device->_stencilBuffer->_depthView.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
-		1.0f, 
+		1.0f,
 		0x00
 	);
+
+	_setRTVList1(_device->_backbufferRT.get());
+	_currentDepthBuffer = _device->_stencilBuffer.get();
+}
+
+void GraphicsCommandList::_setRTVList1(IRenderTarget* rtv)
+{
+	_currentRenderTargets[0] = static_cast<RenderTarget*>(rtv);
+	for (size_t i = 1; i < _currentRenderTargets.size(); ++i)
+	{
+		_currentRenderTargets[i] = nullptr;
+	}
 }
 
 void GraphicsCommandList::ClearRenderTarget(IRenderTarget* rt, const Color& clearColor)
@@ -103,16 +115,34 @@ void GraphicsCommandList::SetRenderTarget(IRenderTarget* renderTarget)
 	auto dxrt = static_cast<RenderTarget*>(renderTarget);
 	auto rt = dxrt != nullptr ? dxrt->_renderTarget.GetAddressOf() : _device->_backbufferRT->_renderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, rt, _device->_stencilBuffer->_depthView.Get());
+
+	_setRTVList1(renderTarget);
+}
+
+void GraphicsCommandList::SetRenderTargets(const std::array<IRenderTarget*, 8>& rtvs)
+{
+	std::array<ID3D11RenderTargetView*, 8> dxrtvs;
+	for (size_t i = 0; i < rtvs.size(); ++i)
+	{
+		dxrtvs[i] = rtvs[i] != nullptr ? static_cast<RenderTarget*>(rtvs[i])->_renderTarget.Get() : nullptr;
+	}
+	_context->OMSetRenderTargets(D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT, dxrtvs.data(), _device->_stencilBuffer->_depthView.Get());
 }
 
 void GraphicsCommandList::UnbindRenderTargetAndDepth()
 {
-	ID3D11RenderTargetView* nullRTV = nullptr;
-	_context->OMSetRenderTargets(1, &nullRTV, nullptr);
+	_context->OMSetRenderTargets(0, nullptr, nullptr);
+
+	for (size_t i = 0; i < _currentRenderTargets.size(); ++i)
+	{
+		_currentRenderTargets[i] = nullptr;
+	}
+	_currentDepthBuffer = nullptr;
 }
 
 void GraphicsCommandList::UnbindDepthBuffer()
 {
+	//Preserve RTVs.
 	std::array<ID3D11RenderTargetView*, D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT> rts;
 	_context->OMGetRenderTargets(D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT, &rts[0], nullptr);
 
@@ -122,6 +152,7 @@ void GraphicsCommandList::UnbindDepthBuffer()
 	{
 		if (rt) rt->Release();
 	}
+	_currentDepthBuffer = nullptr;
 }
 
 void GraphicsCommandList::SetRenderTargetAndDepth(IRenderTarget* renderTarget, IDepthStencilBuffer* depthBuffer)
@@ -132,6 +163,13 @@ void GraphicsCommandList::SetRenderTargetAndDepth(IRenderTarget* renderTarget, I
 	auto depthviewBuffer = dxrt != nullptr ? dxdepth->_depthView.Get() : _device->_stencilBuffer->_depthView.Get();
 	auto renderTargetView = dxrt != nullptr ? dxrt->_renderTarget.GetAddressOf() : _device->_backbufferRT->_renderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, renderTargetView, depthviewBuffer);
+
+	_currentRenderTargets[0] = static_cast<RenderTarget*>(renderTarget);
+	for (size_t i = 1; i < _currentRenderTargets.size(); ++i)
+	{
+		_currentRenderTargets[i] = nullptr;
+	}
+	_currentDepthBuffer = static_cast<DepthStencilBuffer*>(depthBuffer);
 }
 
 void GraphicsCommandList::SetRenderTargetAndDisableDepth(IRenderTarget* renderTarget)
@@ -139,6 +177,28 @@ void GraphicsCommandList::SetRenderTargetAndDisableDepth(IRenderTarget* renderTa
 	auto dxrt = static_cast<RenderTarget*>(renderTarget);
 	auto renderTargetView = renderTarget != nullptr ? dxrt->_renderTarget.GetAddressOf() : _device->_backbufferRT->_renderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, renderTargetView, nullptr);
+	_currentRenderTargets[0] = static_cast<RenderTarget*>(renderTarget);
+	for (size_t i = 1; i < _currentRenderTargets.size(); ++i)
+	{
+		_currentRenderTargets[i] = nullptr;
+	}
+	_currentDepthBuffer = nullptr;
+}
+
+std::array<IRenderTarget*, 8> GraphicsCommandList::GetRenderTargets()
+{
+	std::array<IRenderTarget*, 8> rts;
+	
+	for (size_t i = 0; i < _currentRenderTargets.size(); ++i)
+	{
+		rts[i] = _currentRenderTargets[i];
+	}
+	return rts;
+}
+
+IDepthStencilBuffer* GraphicsCommandList::GetDepthStencilBuffer()
+{
+	return _currentDepthBuffer;
 }
 
 void GraphicsCommandList::DrawVertexBuffer(IVertexBuffer* vertexBuffer, unsigned startSlot)

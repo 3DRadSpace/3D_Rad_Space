@@ -51,7 +51,7 @@ namespace Engine3DRadSpace::Graphics
 		virtual std::string_view BackendName() const noexcept = 0;
 
 		/// <summary>
-		/// Gets the depth stencil buffer that's currently created.
+		/// Gets the depth stencil buffer that's currently set.
 		/// </summary>
 		/// <returns>An copy of the depth stencil state.</returns>
 		virtual std::unique_ptr<IDepthStencilState> GetDepthStencilState() = 0;
