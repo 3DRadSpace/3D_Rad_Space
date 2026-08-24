@@ -137,7 +137,7 @@ void EditorWindow::_writeProject(const std::filesystem::path& fileName)
 
 void EditorWindow::_findUpdate()
 {
-	if(!_changesSaved) _saveProject();
+	if (!_changesSaved) _saveProject();
 
 	const std::string updateFilePath = "UpdateInfo.txt";
 
@@ -174,16 +174,18 @@ void EditorWindow::_findUpdate()
 		return;
 	}
 
-	std::string version;
+	int year, month, day;
 	std::string downloadPath;
-	updateDataFile >> version >> downloadPath;
+	updateDataFile >> year >> month >> day >> downloadPath;
 
 	updateDataFile.close();
 
 	std::filesystem::remove(updateFilePath); //Delete info file
 
+	std::chrono::year_month_day versionDate{std::chrono::year(year), std::chrono::month(month), std::chrono::day(day)};
+
 	//Check version
-	if (version == EngineVersion)
+	if (versionDate <= EngineRelTime)
 	{
 		//MessageBoxA(_mainWindow, "No new updates were found.", "Update information", MB_ICONINFORMATION | MB_OK);
 		return;
