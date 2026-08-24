@@ -13,7 +13,14 @@ namespace Engine3DRadSpace::Math
 	{
 		float X, Y, Z, W;
 
-		Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) : X(x), Y(y), Z(z), W(w) {};
+		explicit constexpr Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) : X(x), Y(y), Z(z), W(w) {};
+		explicit constexpr Quaternion(std::initializer_list<float> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0.0f),
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0.0f),
+			Z(lst.size() > 2 ? *(lst.begin() + 2) : 0.0f),
+			W(lst.size() > 3 ? *(lst.begin() + 3) : 1.0f)
+		{
+		}
 
 		static Quaternion FromYawPitchRoll(float yaw, float pitch, float roll);
 		static Quaternion FromAxisAngle(const Vector3& axis, float angle);

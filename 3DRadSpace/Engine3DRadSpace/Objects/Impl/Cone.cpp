@@ -53,7 +53,7 @@ float Cone::Intersects(const Math::Ray& r) const
 
 Math::Matrix4x4 Cone::GetLocalMatrix() const
 {
-	return Matrix4x4::CreateScale({Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
+	return Matrix4x4::CreateScale(Vector3{Radius, Height, Radius}) * Matrix4x4::CreateFromQuaternion(Rotation) * Matrix4x4::CreateTranslation(Position);
 }
 
 Gizmos::IGizmo* Cone::GetGizmo() const noexcept

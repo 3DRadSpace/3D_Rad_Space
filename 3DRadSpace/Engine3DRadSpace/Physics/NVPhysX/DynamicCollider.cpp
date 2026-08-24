@@ -241,8 +241,8 @@ void DynamicCollider::UpdateTransform()
 	if(_rigidbody == nullptr) return;
 
 	auto tr = _rigidbody->getGlobalPose();
-	_position = {tr.p.x, tr.p.y, tr.p.z};
-	_rotation = {-tr.q.x, -tr.q.y, -tr.q.z, tr.q.w};
+	_position = Vector3{tr.p.x, tr.p.y, tr.p.z};
+	_rotation = Quaternion{-tr.q.x, -tr.q.y, -tr.q.z, tr.q.w};
 }
 
 void DynamicCollider::UpdateTransform(const Math::Vector3 &position, const Math::Quaternion & rotation)

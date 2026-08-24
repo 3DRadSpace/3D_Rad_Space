@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Graphics::Null
 	class E3DRSP_GRAPHICS_NULL_EXPORT GraphicsCommandList final : public IGraphicsCommandList
 	{
 	public:
-		GraphicsCommandList(GraphicsDevice* device);
+		explicit GraphicsCommandList(GraphicsDevice* device);
 
 		virtual void Clear(const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) override;
 		virtual void ClearRenderTarget(IRenderTarget* rt, const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) override;

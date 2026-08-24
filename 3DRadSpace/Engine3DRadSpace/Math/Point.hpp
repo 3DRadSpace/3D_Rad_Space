@@ -8,7 +8,12 @@ namespace Engine3DRadSpace
 	{
 		struct E3DRSP_MATH_EXPORT Point
 		{
-			constexpr Point(int x = 0, int y = 0) : X(x), Y(y) {};
+			explicit constexpr Point(int x = 0, int y = 0) : X(x), Y(y) {};
+			explicit constexpr Point(std::initializer_list<int> lst) :
+				X(lst.size() > 0 ? *(lst.begin()) : 0),
+				Y(lst.size() > 1 ? *(lst.begin() + 1) : 0)
+			{
+			};
 
 			int X;
 			int Y;

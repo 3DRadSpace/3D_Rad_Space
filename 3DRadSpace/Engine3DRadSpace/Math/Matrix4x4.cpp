@@ -680,36 +680,36 @@ float Matrix4x4::Determinant() const noexcept
 
 Vector3 Matrix4x4::Forward() const noexcept
 {
-	return { -M31, -M32, -M33 };
+	return Vector3{ -M31, -M32, -M33 };
 }
 
 Vector3 Matrix4x4::Backward() const noexcept
 {
-	return { M31, M32, M33 };
+	return Vector3{ M31, M32, M33 };
 }
 
 Vector3 Matrix4x4::Up() const noexcept
 {
-	return { M21, M22, M23 };
+	return Vector3{ M21, M22, M23 };
 }
 
 Vector3 Matrix4x4::Down() const noexcept
 {
-	return { -M21, -M22, -M23 };
+	return Vector3{ -M21, -M22, -M23 };
 }
 Vector3 Matrix4x4::Left() const noexcept
 {
-	return { -M11, -M12, -M13 };
+	return Vector3{ -M11, -M12, -M13 };
 }
 
 Vector3 Matrix4x4::Right() const noexcept
 {
-	return { M11, M12, M13 };
+	return Vector3{ M11, M12, M13 };
 }
 
 Vector3 Matrix4x4::Translation() const noexcept
 {
-	return { M41, M42, M43 };
+	return Vector3{ M41, M42, M43 };
 }
 
 

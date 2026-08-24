@@ -26,7 +26,7 @@ void Box::Initialize()
 
 void Box::Load()
 {
-	_box = std::make_unique<Primitives::Box>(GetGraphicsDeviceHandle(), BoundingBox({0,0,0}, {1,1,1}), Colour);
+	_box = std::make_unique<Primitives::Box>(GetGraphicsDeviceHandle(), BoundingBox(Math::Vector3{0,0,0}, Math::Vector3{1,1,1}), Colour);
 }
 
 void Box::Load(const std::filesystem::path& path)

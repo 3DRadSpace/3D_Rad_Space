@@ -377,7 +377,7 @@ void EditorGame::Update()
 
 	bool areTopButtonsVisible = _selectedObject != nullptr && _selectedObject->GetGizmo();
 
-	if(areTopButtonsVisible && Mouse.Position().Y >= ((1.0f / 9.0f) * Window->Size()))
+	if(areTopButtonsVisible && Mouse.Position().Y >= ((1.0f / 9.0f) * Window->Size().Y))
 	{
 		_controlCamera();
 		_picking();

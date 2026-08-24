@@ -13,7 +13,14 @@ namespace Engine3DRadSpace::Math
 		float Y;
 		float Z;
 
-		Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
+		explicit constexpr Vector3(float x = 0, float y = 0, float z = 0) : X(x), Y(y), Z(z) {};
+
+		explicit constexpr Vector3(std::initializer_list<float> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0.0f),
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0.0f),
+			Z(lst.size() > 2 ? *(lst.begin() + 2) : 0.0f)
+		{
+		};
 
 		static Vector3 Zero();
 		static Vector3 UnitX();

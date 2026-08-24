@@ -43,7 +43,7 @@ E3DRSP_Ray E3DRSP_Game_GetMouseRay(
 	memcpy_s(&m_proj, sizeof(Matrix4x4), projection, sizeof(E3DRSP_Matrix4x4));
 
 	auto ray = static_cast<Game*>(game)->GetMouseRay(
-		{mousePos.X, mousePos.Y},
+		Vector2{mousePos.X, mousePos.Y},
 		m_view,
 		m_proj
 	);

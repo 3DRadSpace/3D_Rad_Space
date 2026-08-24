@@ -15,7 +15,7 @@ E3DRSP_Vector3 E3DRSP_Camera_GetNormal(E3DRSP_Camera camera)
 }
 void E3DRSP_Camera_SetNormal(E3DRSP_Camera camera, const E3DRSP_Vector3* vector)
 {
-	static_cast<Camera*>(camera)->Normal = {vector->X, vector->Y, vector->Z};
+	static_cast<Camera*>(camera)->Normal = Vector3{vector->X, vector->Y, vector->Z};
 }
 
 float E3DRSP_Camera_GetAspectRatio(E3DRSP_Camera camera)

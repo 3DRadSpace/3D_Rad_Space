@@ -53,7 +53,7 @@ float Sphere::Intersects(const Math::Ray& r) const
 
 Math::Matrix4x4 Sphere::GetLocalMatrix() const
 {
-	return Matrix4x4::CreateScale({Radius, Radius, Radius}) * Matrix4x4::CreateTranslation(Position);
+	return Matrix4x4::CreateScale(Vector3{Radius, Radius, Radius}) * Matrix4x4::CreateTranslation(Position);
 }
 
 Gizmos::IGizmo* Sphere::GetGizmo() const noexcept

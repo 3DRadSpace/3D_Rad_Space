@@ -3,6 +3,7 @@
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Input;
+using namespace Engine3DRadSpace::Math;
 using namespace Engine3DRadSpace::Native;
 
 E3DRSP_Window E3DRSP_Window_Create(const char* title, size_t width, size_t height)
@@ -78,7 +79,7 @@ bool E3DRSP_Window_IsFocused(E3DRSP_Window window)
 
 void E3DRSP_Window_SetMousePosition(E3DRSP_Window window, const E3DRSP_Point* p)
 {
-	static_cast<Window*>(window)->SetMousePosition({p->X, p->Y});
+	static_cast<Window*>(window)->SetMousePosition(Point{p->X, p->Y});
 }
 
 void E3DRSP_Window_SetTitle(E3DRSP_Window window, const char* title)

@@ -27,15 +27,15 @@ namespace Engine3DRadSpace::Audio
 		/// <summary>
 		/// Position in space of the sound source.
 		/// </summary>
-		Math::Vector3 Position;
+		Math::Vector3 Position = Math::Vector3::Zero();
 		/// <summary>
 		/// Velocity if the object emmiting the sound. Used for doppler effect.
 		/// </summary>
-		Math::Vector3 Velocity;
+		Math::Vector3 Velocity = Math::Vector3::Zero();
 		/// <summary>
 		/// Normalized direction of the sound source. Used for directional sound.
 		/// </summary>
-		Math::Vector3 Direction;
+		Math::Vector3 Direction = Math::Vector3::Zero();
 
 		/// <summary>
 		/// Maximum distance at which the sound can be heard.

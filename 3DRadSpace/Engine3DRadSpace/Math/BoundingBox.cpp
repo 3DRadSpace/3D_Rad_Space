@@ -75,7 +75,7 @@ bool BoundingBox::Intersects(const BoundingSphere& sphere) const noexcept
 				dst = d;
 		}
 
-		return dst;
+		return Vector3(dst);
 	};
 
 	//https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_sphere_aabb.html

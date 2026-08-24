@@ -50,8 +50,8 @@ float E3DRSP_ICollider_Intersects(E3DRSP_ICollider* collider, const E3DRSP_Ray* 
 	auto dst = reinterpret_cast<ICollider*>(collider)->Intersects(
 		Ray
 		{
-			.Origin = {r->Origin.X, r->Origin.Y, r->Origin.Z},
-			.Direction = {r->Direction.X, r->Direction.Y, r->Direction.Z}
+			.Origin = Vector3{r->Origin.X, r->Origin.Y, r->Origin.Z},
+			.Direction = Vector3{r->Direction.X, r->Direction.Y, r->Direction.Z}
 		}
 	);
 

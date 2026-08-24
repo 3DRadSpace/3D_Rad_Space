@@ -5,32 +5,32 @@ using namespace Engine3DRadSpace::Math;
 
 Vector4 Vector4::Zero()
 {
-	return {0, 0, 0, 0};
+	return Vector4{0, 0, 0, 0};
 }
 
 Vector4 Vector4::UnitX()
 {
-    return { 1,0,0,0 };
+    return Vector4{ 1,0,0,0 };
 }
 
 Vector4 Vector4::UnitY()
 {
-	return { 0, 1, 0, 0 };
+	return Vector4{ 0, 1, 0, 0 };
 }
 
 Vector4 Vector4::UnitZ()
 {
-	return { 0, 0, 1, 0 };
+	return Vector4{ 0, 0, 1, 0 };
 }
 
 Vector4 Vector4::UnitW()
 {
-	return { 0, 0, 0, 1 };
+	return Vector4{ 0, 0, 0, 1 };
 }
 
 Vector4 Vector4::One()
 {
-	return { 1,1,1,1 };
+	return Vector4{ 1,1,1,1 };
 }
 
 float Vector4::Length() const
@@ -86,7 +86,7 @@ Vector4& Vector4::Hadamard(const Vector4& v)
 
 Vector4 Vector4::operator+(const Vector4& v) const
 {
-	return
+	return Vector4
 	{
 		X + v.X,
 		Y + v.Y,
@@ -116,12 +116,12 @@ Vector4& Engine3DRadSpace::Math::Vector4::operator-()
 
 Vector4 Vector4::operator-() const
 {
-	return { -X, -Y, -Z, -W };
+	return Vector4{ -X, -Y, -Z, -W };
 }
 
 Vector4 Vector4::operator-(const Vector4& v) const
 {
-	return
+	return Vector4
 	{
 		X - v.X,
 		Y - v.Y,
@@ -142,7 +142,7 @@ Vector4& Vector4::operator-=(const Vector4& v)
 
 Vector4 Vector4::operator*(float scalar) const
 {
-	return { X * scalar, Y * scalar, Z * scalar, W * scalar };
+	return Vector4{ X * scalar, Y * scalar, Z * scalar, W * scalar };
 }
 
 Vector4& Vector4::operator*=(float scalar)
@@ -157,7 +157,7 @@ Vector4& Vector4::operator*=(float scalar)
 
 Vector4 Vector4::operator/(float f) const
 {
-	return { X / f, Y / f, Z / f, W / f };
+	return Vector4{ X / f, Y / f, Z / f, W / f };
 }
 
 Vector4& Vector4::operator/=(float f)

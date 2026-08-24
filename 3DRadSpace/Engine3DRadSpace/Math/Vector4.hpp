@@ -7,8 +7,15 @@ namespace Engine3DRadSpace::Math
 	{
 		float X, Y, Z, W;
 
-		Vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) : X(x), Y(y), Z(z), W(w) {};
-		Vector4(Vector3 v) : X(v.X), Y(v.Y), Z(v.Z), W(1) {};
+		explicit constexpr Vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) : X(x), Y(y), Z(z), W(w) {};
+		explicit constexpr Vector4(Vector3 v) : X(v.X), Y(v.Y), Z(v.Z), W(1) {};
+		explicit constexpr Vector4(std::initializer_list<float> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0.0f),
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0.0f),
+			Z(lst.size() > 2 ? *(lst.begin() + 2) : 0.0f),
+			W(lst.size() > 3 ? *(lst.begin() + 3) : 0.0f)
+		{
+		};
 
 		static Vector4 Zero();
 		static Vector4 UnitX();

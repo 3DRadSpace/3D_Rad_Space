@@ -9,12 +9,9 @@ src.Pitch = source.Pitch; \
 src.ConeInnerAngle = source.ConeInnerAngle; \
 src.ConeOuterAngle = source.ConeOuterAngle; \
 src.ConeOuterGain = source.ConeOuterGain; \
-src.Direction = \
-{ \
-	source.Direction.X, \
-	source.Direction.Y, \
-	source.Direction.Z \
-}; \
+src.Direction.X = source.Direction.X; \
+src.Direction.Y = source.Direction.Y; \
+src.Direction.Z = source.Direction.Z; \
 src.Gain = source.Gain; \
 src.Looping = source.Looping; \
 src.MaxDistance = source.MaxDistance; \

@@ -72,7 +72,7 @@ LRESULT CALLBACK Engine3DRadSpace::Native::GameWndProc(HWND hwnd, UINT msg, WPAR
 			bool mBtn = (bool)(wParam & MK_MBUTTON);
 			bool rBtn = (bool)(wParam & MK_RBUTTON);
 
-			window->_handleMouse({ x,y }, lBtn, mBtn, rBtn);
+			window->_handleMouse(Point{ x,y }, lBtn, mBtn, rBtn);
 			return 0;
 		}
 		case WM_LBUTTONDOWN:
@@ -329,7 +329,7 @@ Point Window::Size() const noexcept
 	RECT r;
 	GetClientRect(static_cast<HWND>(_window), &r);
 
-	return { r.right - r.left, r.bottom - r.top };
+	return Point{ r.right - r.left, r.bottom - r.top };
 }
 
 RectangleF Window::RectangleF() const noexcept

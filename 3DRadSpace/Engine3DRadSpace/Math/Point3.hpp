@@ -5,7 +5,13 @@ namespace Engine3DRadSpace::Math
 {
 	struct E3DRSP_MATH_EXPORT Point3
 	{
-		constexpr Point3(int x = 0, int y = 0, int z = 0) : X(x), Y(y), Z(z) {};
+		explicit constexpr Point3(int x = 0, int y = 0, int z = 0) : X(x), Y(y), Z(z) {};
+		explicit constexpr Point3(std::initializer_list<int> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0), 
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0), 
+			Z(lst.size() > 2 ? *(lst.begin() + 2) : 0) 
+		{
+		};
 
 		int X;
 		int Y;

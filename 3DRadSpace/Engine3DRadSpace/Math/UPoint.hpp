@@ -7,7 +7,12 @@ namespace Engine3DRadSpace
 	{
 		struct E3DRSP_MATH_EXPORT UPoint
 		{
-			constexpr UPoint(unsigned x = 0, unsigned y = 0) : X(x), Y(y) {};
+			explicit constexpr UPoint(unsigned x = 0, unsigned y = 0) : X(x), Y(y) {};
+			explicit constexpr UPoint(std::initializer_list<unsigned> lst) :
+				X(lst.size() > 0 ? *(lst.begin()) : 0),
+				Y(lst.size() > 1 ? *(lst.begin() + 1) : 0)
+			{
+			};
 
 			unsigned X;
 			unsigned Y;

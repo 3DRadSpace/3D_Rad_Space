@@ -84,7 +84,7 @@ Vector3& Vector3::Normalize()
 Vector3 Vector3::Normalize(const Vector3& v)
 {
 	float l = v.Length();
-	return { v.X / l, v.Y / l, v.Z / l };
+	return Vector3{ v.X / l, v.Y / l, v.Z / l };
 }
 
 Vector3& Vector3::operator+=(const Vector3& v)

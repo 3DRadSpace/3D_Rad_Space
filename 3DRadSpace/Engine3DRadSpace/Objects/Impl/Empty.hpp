@@ -12,10 +12,10 @@ namespace Engine3DRadSpace::Objects
 	public:
 		Empty(
 			const std::string& name = "",
-			const Math::Vector3& pos = {0,0,0},
-			const Math::Vector3& pivot = {0,0,0},
+			const Math::Vector3& pos = Math::Vector3{0,0,0},
+			const Math::Vector3& pivot = Math::Vector3{0,0,0},
 			const Math::Quaternion& rot = Math::Quaternion(),
-			const Math::Vector3& scale = {1,1,1}
+			const Math::Vector3& scale = Math::Vector3{1,1,1}
 		);
 
 		Empty(Empty&&) noexcept = default;

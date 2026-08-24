@@ -35,7 +35,7 @@ namespace Engine3DRadSpace::Graphics::DirectX11
 
 		void _setRTVList1(IRenderTarget* rtv);
 	public:
-		GraphicsCommandList(GraphicsDevice* device);
+		explicit GraphicsCommandList(GraphicsDevice* device);
 
 		void Clear(const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) override;
 		void ClearRenderTarget(IRenderTarget* rt, const Math::Color& clearColor = { 0.0f, 0.0f, 0.0f, 1.0f }) override;

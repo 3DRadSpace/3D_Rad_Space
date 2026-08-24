@@ -11,7 +11,12 @@ namespace Engine3DRadSpace::Math
 	{
 		float X, Y;
 
-		Vector2(float x = 0.0f, float y = 0.0f) :X(x), Y(y) {};
+		explicit constexpr Vector2(float x = 0.0f, float y = 0.0f) :X(x), Y(y) {};
+		explicit constexpr Vector2(std::initializer_list<float> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0.0f),
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0.0f)
+		{
+		};
 
 		static Vector2 Zero();
 		static Vector2 UnitX();

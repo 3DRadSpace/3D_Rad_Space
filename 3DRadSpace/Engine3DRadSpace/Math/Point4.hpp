@@ -6,7 +6,14 @@ namespace Engine3DRadSpace::Math
 {
 	struct E3DRSP_MATH_EXPORT Point4
 	{
-		constexpr Point4(int x = 0, int y = 0, int z = 0, int w = 0) : X(x), Y(y), Z(z), W(w) {};
+		explicit constexpr Point4(int x = 0, int y = 0, int z = 0, int w = 0) : X(x), Y(y), Z(z), W(w) {};
+		explicit constexpr Point4(std::initializer_list<int> lst) :
+			X(lst.size() > 0 ? *(lst.begin()) : 0),
+			Y(lst.size() > 1 ? *(lst.begin() + 1) : 0),
+			Z(lst.size() > 2 ? *(lst.begin() + 2) : 0),
+			W(lst.size() > 3 ? *(lst.begin() + 3) : 0)
+		{
+		};
 
 		int X;
 		int Y;
