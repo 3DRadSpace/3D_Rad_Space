@@ -454,7 +454,7 @@ void EditorGame::SelectObject(IObject* obj)
 	}
 }
 
-void EditorGame::_gizmoFn(Gizmos::IGizmo* g, std::array<Button*, 3> btns, void (Button::* fn)(), uint8_t allow2D)
+void EditorGame::_gizmoFn(Gizmos::IGizmo* g,const std::array<Button*, 3> &btns, void (Button::* fn)(), uint8_t allow2D)
 {
 	if(g->Allow2DRendering)
 	{

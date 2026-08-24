@@ -43,27 +43,86 @@ namespace Engine3DRadSpace
 namespace Engine3DRadSpace::Reflection
 {
 	class Event;
-
+	/// <summary>
+	/// Field representation type for serialization.
+	/// </summary>
 	enum class FieldRepresentationType
 	{
+		/// <summary>
+		/// No serializable representation.
+		/// </summary>
 		None,
+		/// <summary>
+		///	Boolean type, usually a checkbox.
+		/// </summary>
 		Boolean,
+		/// <summary>
+		/// Integer, usually a NumericTextbox control.
+		/// </summary>
 		Integer,
+		/// <summary>
+		/// Unsigned integer, similar to Integer.
+		/// </summary>
 		Unsigned,
+		/// <summary>
+		/// 32-bit floating point number, usually a NumericTextbox control.
+		/// </summary>
 		Float,
+		/// <summary>
+		/// Quaternion, usually represented as Euler angles in three NumericTextbox controls.
+		/// </summary>
 		Quaternion,
+		/// <summary>
+		/// String, usually represented as a TextBox/EDIT control.
+		/// </summary>
 		String,
+		/// <summary>
+		/// Texture2D numeric reference.
+		/// </summary>
 		Image,
+		/// <summary>
+		/// Model3D numeric reference
+		/// </summary>
 		Model,
+		/// <summary>
+		/// Font numeric reference
+		/// </summary>
 		Font,
+		/// <summary>
+		/// Keyboard key, usually represented as a hotkey control
+		/// </summary>
 		Key,
+		/// <summary>
+		///	Enumeratino type, usually represented as a combobox.
+		/// </summary>
 		Enum,
+		/// <summary>
+		/// RGBA color, usually represented as a color picker control.
+		/// </summary>
 		Color,
+		/// <summary>
+		/// Skybox asset numeric reference
+		/// </summary>
 		Skybox,
+		/// <summary>
+		/// Sound asset numeric reference
+		/// </summary>
 		Sound,
+		/// <summary>
+		/// ???
+		/// </summary>
 		Function,
+		/// <summary>
+		/// Event type, usually represented as a list of bound functions.
+		/// </summary>
 		Event,
+		/// <summary>
+		/// Object ID from the ObjectList
+		/// </summary>
 		ObjectID,
+		/// <summary>
+		/// Custom representation, to be used by extensions and plugins. The engine will not know how to serialize this type.
+		/// </summary>
 		Custom,
 	};
 
@@ -80,50 +139,83 @@ namespace Engine3DRadSpace::Reflection
 	protected:
 		ListFieldRepresentations _values;
 	public:
+		/// <summary>
+		/// Constructs a FieldRepresentation from multiple (Type, Name) pairs.
+		/// </summary>
+		/// <param name="pairs">(enum FieldRepresentationType type, std::string Name) pairs</param>
 		FieldRepresentation(std::initializer_list<FieldRepresentationPair> pairs) noexcept : _values(pairs)
 		{
 		}
-
+		/// <summary>
+		/// Constructs a FieldRepresentation from a vector of (Type, Name) pairs.
+		/// </summary>
+		/// <param name="pairs">std::vector<FieldRepresentationPair></param>
 		FieldRepresentation(const ListFieldRepresentations& pairs) noexcept : _values(pairs)
 		{
 		}
-
+		/// <summary>
+		/// Returns the underlying vector.
+		/// </summary>
+		/// <returns>stored values</returns>
 		ListFieldRepresentations operator()() const noexcept
 		{
 			return _values;
 		}
-
+		/// <summary>
+		/// Iterator begin for the underlying vector.
+		/// </summary>
+		/// <returns> std::vector<FieldRepresentationPair>::iterator::begin()</returns>
 		ListFieldRepresentations::iterator begin() noexcept
 		{
 			return _values.begin();
 		}
-
+		/// <summary>
+		/// Const iterator begin for the underlying vector
+		/// </summary>
+		/// <returns> std::vector<FieldRepresentationPair>::const_iterator::begin()</returns>
 		ListFieldRepresentations::const_iterator begin() const noexcept
 		{
 			return _values.begin();
 		}
-
+		/// <summary>
+		/// Returns the end iterator for the underlying list.
+		/// </summary>
+		/// <returns> std::vector<FieldRepresentationPair>::iterator::end()</returns>
 		ListFieldRepresentations::iterator end() noexcept
 		{
 			return _values.end();
 		}
-
+		/// <summary>
+		/// Returns the const end iterator for the underlying list.
+		/// </summary>
+		/// <returns> std::vector<FieldRepresentationPair>::const_iterator::end()</returns>
 		ListFieldRepresentations::const_iterator end() const noexcept
 		{
 			return _values.cend();
 		}
-
+		/// <summary>
+		/// Returns the idx-th pair.
+		/// </summary>
+		/// <param name="idx">index</param>
+		/// <returns>_values[idx]</returns>
 		FieldRepresentationPair operator[](size_t idx) const
 		{
 			return _values[idx];
 		}
-
-		size_t Size() const noexcept
+		/// <summary>
+		/// Returns the number of pairs in this FieldRepresentation.
+		/// </summary>
+		/// <returns>Number of pairs</returns>
+		size_t Count() const noexcept
 		{
 			return _values.size();
 		}
 	};
 
+	/// <summary>
+	/// Invalid FieldRepresentation.
+	/// </summary>
+	/// <typeparam name="T">Typename that is not serializable.</typeparam>
 	template<typename T>
 	class FieldRepresentationInstance : public FieldRepresentation
 	{
@@ -278,6 +370,11 @@ namespace Engine3DRadSpace::Reflection
 	template<typename T>
 	concept ReflectableType = std::is_same_v<typename FieldRepresentationInstance<T>::Type, T>;
 
+	/// <summary>
+	/// Gets the field representation of the specified type.
+	/// </summary>
+	/// <typeparam name="T">Type</typeparam>
+	/// <returns>Field representation of T</returns>
 	template<ReflectableType T>
 	FieldRepresentation::ListFieldRepresentations GetFieldRepresentation()
 	{

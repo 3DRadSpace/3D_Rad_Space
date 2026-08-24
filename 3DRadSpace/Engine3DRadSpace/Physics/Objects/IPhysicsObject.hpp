@@ -11,7 +11,7 @@ namespace Engine3DRadSpace::Physics::Objects
 	class E3DRSP_PHYSICS_EXPORT IPhysicsObject : public Engine3DRadSpace::Objects::IObject3D
 	{
 	protected:
-		IPhysicsEngine* _physics;
+		IPhysicsEngine* _physics = nullptr;
 		IPhysicsObject() = default;
 		/// <summary>
 		/// Complete IPhysicsObject interface constructor.

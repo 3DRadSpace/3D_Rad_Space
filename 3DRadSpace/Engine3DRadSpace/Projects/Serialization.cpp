@@ -131,9 +131,9 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		json jsonField;
 		intptr_t offset = 0;
 		auto repr = field->Representation();
-		bool useDirectGet = (field->FieldOffset() == 0 && repr.Size() == 1);
+		bool useDirectGet = (field->FieldOffset() == 0 && repr.Count() == 1);
 	
-		if (field->TypeSize() == 0 || repr.Size() == 0)
+		if (field->TypeSize() == 0 || repr.Count() == 0)
 			continue;
 
 		for (int i = 0; auto &[reprType, sFieldName] : repr)
@@ -148,7 +148,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 			auto subFieldName = !sFieldName.empty() ? sFieldName : "f";
 
 			auto str_i = std::to_string(i);
-			size_t numSubFields = field->TypeSize() / field->Representation().Size();
+			size_t numSubFields = field->TypeSize() / field->Representation().Count();
 			switch (reprType)
 			{
 				case FieldRepresentationType::Boolean:
@@ -400,10 +400,10 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 		auto newStruct = std::make_unique<uint8_t[]>(structSize);
 		int offset = 0;
 
-		if (field->TypeSize() == 0 || repr.Size() == 0)
+		if (field->TypeSize() == 0 || repr.Count() == 0)
 			continue;
 
-		bool useDirectSet = (field->FieldOffset() == 0 && repr.Size() == 1);
+		bool useDirectSet = (field->FieldOffset() == 0 && repr.Count() == 1);
 		std::vector<Event*> placedEvents;
 
 		for (int i = 0; auto & [reprType, sFieldName] : repr)
@@ -434,7 +434,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				{
 					if (useDirectSet)
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(int8_t):
 							{
@@ -466,7 +466,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 					}
 					else
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(int8_t) :
 							{
@@ -510,7 +510,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				{
 					if (useDirectSet)
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(uint8_t):
 							{
@@ -542,7 +542,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 					}
 					else
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(uint8_t) :
 							{
@@ -582,7 +582,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 				{
 					if (useDirectSet)
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(float):
 							{
@@ -602,7 +602,7 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 					}
 					else
 					{
-						switch (structSize / field->Representation().Size())
+						switch (structSize / field->Representation().Count())
 						{
 							case sizeof(float) :
 							{

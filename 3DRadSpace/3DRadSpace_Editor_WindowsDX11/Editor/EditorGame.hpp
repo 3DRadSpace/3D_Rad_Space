@@ -64,7 +64,7 @@ class EditorGame : public Engine3DRadSpace::Game
 	/// <param name="btns">Array of buttons, usually btn[]X, btn[]Y, btn[]Z</param>
 	/// <param name="fn">Function, usually Draw2D(), or Update().</param>
 	/// <param name="allow2D">Flag value that limits what what buttons are affected when Allow2DRendering is true.</param>
-	void _gizmoFn(Gizmos::IGizmo* g, std::array<Button*, 3> btns, void (Button::* fn)(), uint8_t allow2D = 0b11);
+	void _gizmoFn(Gizmos::IGizmo* g,const std::array<Button*, 3> &btns, void (Button::* fn)(), uint8_t allow2D = 0b11);
 	void _controlCamera();
 	void _picking();
 	void _gizmoButtons();

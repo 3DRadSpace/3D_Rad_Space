@@ -21,7 +21,7 @@ TextureCube::TextureCube(GraphicsDevice *device, const std::filesystem::path &fi
 	_setDebugInfo();
 }
 
-TextureCube::TextureCube(GraphicsDevice *device, std::array<ITexture2D*, 6> cubeMap) :
+TextureCube::TextureCube(GraphicsDevice *device,const std::array<ITexture2D*, 6> &cubeMap) :
 	_device(device)
 {
 	std::array<ID3D11Texture2D*, 6> textures;

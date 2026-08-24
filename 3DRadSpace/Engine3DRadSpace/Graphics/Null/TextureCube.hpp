@@ -9,7 +9,7 @@ namespace Engine3DRadSpace::Graphics::Null
 	{
 	public:
 		TextureCube(GraphicsDevice* device, const std::filesystem::path& filePath);
-		TextureCube(GraphicsDevice* device, std::array<ITexture2D*, 6> cubeMap);
+		TextureCube(GraphicsDevice* device, const std::array<ITexture2D*, 6> &cubeMap);
 
 		Math::UPoint Size() const noexcept override;
 		unsigned Width() const noexcept override;

@@ -4,13 +4,20 @@
 namespace Engine3DRadSpace::Reflection
 {
 	/// <summary>
-	/// MultiEvent is a collection of function pointers that can be invoked together.
+	/// MultiEvent is a collection of function pointers with the same return type and arguments that can be invoked together.
 	/// </summary>
 	class E3DRSP_REFLECTION_EXPORT MultiEvent : public IEvent
 	{
 		std::vector<std::function<Any(std::vector<Any>)>> _callbacks;
 	public:
+		/// <summary>
+		/// Constructs a MultiEvent with no callbacks.
+		/// </summary>
 		MultiEvent() = default;
+		/// <summary>
+		/// Constructs a MultiEvent with a single callback.
+		/// </summary>
+		/// <param name="callback"></param>
 		MultiEvent(std::function<Any(std::vector<Any>)> callback);
 
 		void Bind(std::function<Any(std::vector<Any>)> callback) override;

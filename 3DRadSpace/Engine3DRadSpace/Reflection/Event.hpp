@@ -81,10 +81,22 @@ namespace Engine3DRadSpace::Reflection
 		};
 
 		std::vector<MemberFunctionInvoker> _fns;
-		bool _empty;
+		bool _empty = true;
 	public:
+		/// <summary>
+		/// Constructs a empty Event.
+		/// </summary>
 		Event();
 
+		/// <summary>
+		/// Constructs a Event with the given method.
+		/// </summary>
+		/// <typeparam name="R">Return type</typeparam>
+		/// <typeparam name="O">Class type of the method</typeparam>
+		/// <typeparam name="F">Method type</typeparam>
+		/// <typeparam name="...Args">Argument pack for the method</typeparam>
+		/// <param name="object">object instance</param>
+		/// <param name="fn">member function pointer</param>
 		template<typename R, typename O, typename F, typename ...Args>
 		Event(O* object, O::F fn)
 		{
@@ -96,7 +108,11 @@ namespace Engine3DRadSpace::Reflection
 		/// </summary>
 		/// <param name="other">From</param>
 		Event(const Event& other);
-		Event(Event&&) = default;
+		/// <summary>
+		/// Move constructor for this Event.
+		/// </summary>
+		/// <param name="other"></param>
+		Event(Event&& other) = default;
 
 		/// <summary>
 		/// Creates a deep clone of the Event.
@@ -106,6 +122,13 @@ namespace Engine3DRadSpace::Reflection
 		Event& operator=(const Event& other);
 		Event& operator=(Event&&) = default;
 
+		/// <summary>
+		/// Binds the given function to this event.
+		/// </summary>
+		/// <typeparam name="R">Return type</typeparam>
+		/// <typeparam name="F">Function type</typeparam>
+		/// <typeparam name="...Args">Function parameter pack</typeparam>
+		/// <param name="fn">Function pointer</param>
 		template<typename R, typename F, typename ...Args>
 		void Bind(F fn)
 		{
@@ -113,6 +136,15 @@ namespace Engine3DRadSpace::Reflection
 			_fns.emplace_back(std::move(invoker));
 		}
 
+		/// <summary>
+		/// Binds a member function to this event.
+		/// </summary>
+		/// <typeparam name="R">Return type</typeparam>
+		/// <typeparam name="O">Object type</typeparam>
+		/// <typeparam name="F">Function type</typeparam>
+		/// <typeparam name="...Args">Argument pack</typeparam>
+		/// <param name="object">Object pointer</param>
+		/// <param name="fn">Member function pointer</param>
 		template<typename R, typename O, typename F, typename ...Args>
 		void Bind(O* object, F fn)
 		{
@@ -120,16 +152,40 @@ namespace Engine3DRadSpace::Reflection
 			_fns.emplace_back(std::move(invoker));
 		}
 
+		/// <summary>
+		/// Binds an typeless function to this event.
+		/// </summary>
+		/// <param name="fn">Function reflection data</param>
+		/// <param name="objID">Object ID in the ObjectList.</param>
+		/// <param name="fnID">Function ID</param>
 		void Bind(std::unique_ptr<IReflectedFunction> &&fn, size_t objID, size_t fnID);
+		/// <summary>
+		/// Binds an function by finding it in the ObjectList and reflection metadata.
+		/// </summary>
+		/// <param name="objID">object ID from an object list</param>
+		/// <param name="fnID">function ID in metadata</param>
 		void BindIncomplete(size_t objID, size_t fnID);
 
+		/// <summary>
+		/// Calls the index-th bound function.
+		/// </summary>
+		/// <typeparam name="R">Return type</typeparam>
+		/// <typeparam name="...Args">Argument pack</typeparam>
+		/// <param name="index">Index of the function</param>
+		/// <param name="...args">Argument pack</param>
+		/// <returns>The result of the function</returns>
 		template<typename R, typename ...Args>
 		R operator()(int index, Args&& ...args)
 		{
 			auto fn = dynamic_cast<Reflection::ReflectedFunction<R, Args...>*>(_fns[index].Fn.get());
 			return fn(std::forward<Args>(args)...);
 		}
-
+		/// <summary>
+		/// Invokes all functions
+		/// </summary>
+		/// <typeparam name="R">Return type</typeparam>
+		/// <param name="args">Type erased argument pack</param>
+		/// <returns>A list of returned values</returns>
 		template<typename R>
 		std::vector<R> InvokeAll(std::span<Any> args)
 		{
@@ -140,7 +196,10 @@ namespace Engine3DRadSpace::Reflection
 			}
 			return ret;
 		}
-
+		/// <summary>
+		/// Invokes all functions ignoring the return value.
+		/// </summary>
+		/// <param name="args">Type erased argument pack</param>
 		void InvokeAll(std::span<Any> args = std::span<Any>())
 		{
 			for (auto& fn : _fns)
@@ -160,16 +219,42 @@ namespace Engine3DRadSpace::Reflection
 		/// </summary>
 		/// <param name="idx">0 < idx < Count().</param>
 		void Unbind(size_t idx);
-
+		/// <summary>
+		/// Binds the given function pointer to this event.
+		/// </summary>
+		/// <param name="fn">Type erased function</param>
 		void Bind(std::function<Any(std::vector<Any>)> fn) override;
+		/// <summary>
+		/// Calls all the functions with the specified argument pack.
+		/// </summary>
+		/// <param name="args">type erased argument pack</param>
+		/// <returns>List of return values</returns>
 		Any operator()(std::vector<Any> &args) override;
+		/// <summary>
+		/// Clears all the bound functions.
+		/// </summary>
 		void Reset() noexcept override;
-
+		/// <summary>
+		/// Returns an raw pointer to the i-th bound function.
+		/// </summary>
+		/// <param name="i">index</param>
+		/// <returns>type erased function or member function pointer</returns>
 		const void* operator[](size_t i) const;
+		/// <summary>
+		/// Returns an invoker at the specified index.
+		/// </summary>
+		/// <param name="i">index</param>
+		/// <returns>Structure containing function metadata</returns>
 		const MemberFunctionInvoker& At(size_t i) const;
-
+		/// <summary>
+		/// Returns the number of bound functions.
+		/// </summary>
+		/// <returns></returns>
 		size_t Count() const noexcept;
 
+		/// <summary>
+		/// Wraps the vector iterator with a const iterator to prevent modification of the bound functions.
+		/// </summary>
 		class ConstIterator
 		{
 			using internal_iterator = std::vector<MemberFunctionInvoker>::const_iterator;
@@ -191,14 +276,28 @@ namespace Engine3DRadSpace::Reflection
 			bool operator== (const ConstIterator& a) const;
 			bool operator!= (const ConstIterator& a) const;
 		};
-
+		/// <summary>
+		/// Const begin iterator for this event.
+		/// </summary>
+		/// <returns>const begin iterator</returns>
 		ConstIterator cbegin() const;
+		/// <summary>
+		/// Const end iterator for this event
+		/// </summary>
+		/// <returns>const end iterator</returns>
 		ConstIterator cend() const;
 
 		// could use an other custom operator class that exposes the function pointer only, and not the entire details.
 		using Iterator = std::vector<MemberFunctionInvoker>::iterator;
-
+		/// <summary>
+		/// Begin iterator for this event.
+		/// </summary>
+		/// <returns>std::vector<MemberFunctionInvoker>::iterator::begin()</returns>
 		Iterator begin();
+		/// <summary>
+		/// End iterator for this event
+		/// </summary>
+		/// <returns>std::vector<MemberFunctionInvoker>::iterator::end()</returns>
 		Iterator end();
 
 		/// <summary>

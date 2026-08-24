@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 
 		std::unique_ptr<IBlendState> _blendState;
 	public:
-		CylindricalBillboard(IGraphicsDevice* device);
+		explicit CylindricalBillboard(IGraphicsDevice* device);
 
 		/// <summary>
 		/// Camera view matrix.

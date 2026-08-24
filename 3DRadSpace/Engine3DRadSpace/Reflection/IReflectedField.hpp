@@ -9,11 +9,11 @@ namespace Engine3DRadSpace::Reflection
 	class E3DRSP_REFLECTION_EXPORT IReflectedField
 	{
 	protected:
-		size_t _typeHash;
+		size_t _typeHash = 0;
 		std::type_index _typeIndex;
 
-		size_t _size;
-		size_t _offset;
+		size_t _size = 0;
+		size_t _offset = 0;
 		std::string _name;
 		std::string _desc;
 

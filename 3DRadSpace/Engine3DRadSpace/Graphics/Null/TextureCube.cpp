@@ -10,7 +10,7 @@ TextureCube::TextureCube(GraphicsDevice* device, const std::filesystem::path& fi
 	(void)filePath;
 }
 
-TextureCube::TextureCube(GraphicsDevice* device, std::array<ITexture2D*, 6> cubeMap)
+TextureCube::TextureCube(GraphicsDevice* device, const std::array<ITexture2D*, 6> &cubeMap)
 {
 	(void)device;
 	(void)cubeMap;

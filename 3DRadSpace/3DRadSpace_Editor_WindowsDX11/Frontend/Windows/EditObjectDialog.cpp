@@ -158,7 +158,7 @@ void EditObjectDialog::createForms()
 		int px = x;
 		int inc_y = 0;
 
-		bool createGroup = field->Representation().Size() > 1;
+		bool createGroup = field->Representation().Count() > 1;
 
 		//create a group if the field is a quaternion.
 		if(createGroup == false) createGroup = field->Representation()[0].Type == FieldRepresentationType::Quaternion;
@@ -192,7 +192,7 @@ void EditObjectDialog::createForms()
 		}
 
 		auto representations = field->Representation();
-		for (int j = 0, fOffset = 0; j < representations.Size(); j++)
+		for (int j = 0, fOffset = 0; j < representations.Count(); j++)
 		{
 			auto& repr = *(representations.begin() + j);
 
@@ -293,7 +293,7 @@ void EditObjectDialog::createForms()
 
 				//Get signed numeric value.
 				int64_t value = 0;
-				switch (field->TypeSize() / field->Representation().Size())
+				switch (field->TypeSize() / field->Representation().Count())
 				{
 					case sizeof(int8_t) :
 						value = *reinterpret_cast<const int8_t*>(reinterpret_cast<const char*>(valuePtr) + fOffset );
@@ -329,7 +329,7 @@ void EditObjectDialog::createForms()
 
 				//Get unsigned value.
 				uint64_t value = 0;
-				switch (field->TypeSize() / field->Representation().Size())
+				switch (field->TypeSize() / field->Representation().Count())
 				{
 					case sizeof(uint8_t) :
 						value = *reinterpret_cast<const uint8_t *>(static_cast<const char *>(valuePtr) + fOffset);
@@ -364,7 +364,7 @@ void EditObjectDialog::createForms()
 				px += sx + 5;
 
 				double value = 0;
-				switch (field->TypeSize() / field->Representation().Size())
+				switch (field->TypeSize() / field->Representation().Count())
 				{
 					case sizeof(float) :
 						value = *reinterpret_cast<const float *>(static_cast<const std::byte*>(valuePtr) + fOffset);
@@ -681,7 +681,7 @@ void EditObjectDialog::setObject()
 					auto numericTextbox = static_cast<NumericTextbox*>(std::get<IControl*>(windows[i++]));
 					GetWindowTextA(*numericTextbox, text, 255);
 
-					switch(structSize / field->Representation().Size())
+					switch(structSize / field->Representation().Count())
 					{
 						case sizeof(int8_t) :
 						{
@@ -721,7 +721,7 @@ void EditObjectDialog::setObject()
 					auto numericTextbox = static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++]));
 					GetWindowTextA(*numericTextbox, text, 255);
 
-					switch(structSize / field->Representation().Size())
+					switch(structSize / field->Representation().Count())
 					{
 						case sizeof(uint8_t) :
 						{
@@ -761,7 +761,7 @@ void EditObjectDialog::setObject()
 					auto numericTextbox = static_cast<NumericTextbox *>(std::get<IControl *>(windows[i++]));
 					GetWindowTextA(*numericTextbox, text, 255);
 
-					switch(structSize / field->Representation().Size())
+					switch(structSize / field->Representation().Count())
 					{
 						case sizeof(float) :
 						{

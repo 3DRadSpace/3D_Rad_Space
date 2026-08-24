@@ -3,6 +3,9 @@
 
 namespace Engine3DRadSpace::Reflection
 {
+	/// <summary>
+	/// Represents a universally unique identifier, used to identify object types during serialization/deserialization and runtime.
+	/// </summary>
 	struct E3DRSP_REFLECTION_EXPORT UUID
 	{
 		unsigned long  Data1;
@@ -10,9 +13,22 @@ namespace Engine3DRadSpace::Reflection
 		unsigned short Data3;
 		unsigned char  Data4[8];
 
-		bool operator ==(const UUID &) const = default;
-		bool operator !=(const UUID &) const = default;
-
+		/// <summary>
+		/// Checks if this UUID is equal to another UUID.
+		/// </summary>
+		/// <param name="other">other uuid</param>
+		/// <returns>True if equal.</returns>
+		bool operator ==(const UUID &other) const = default;
+		/// <summary>
+		/// Checks if this UUID is not equal to another UUID.
+		/// </summary>
+		/// <param name="other">other uuid</param>
+		/// <returns>True if different.</returns>
+		bool operator !=(const UUID &other) const = default;
+		/// <summary>
+		/// Creates a new UUID, version 4 variant 10.
+		/// </summary>
+		/// <returns></returns>
 		static UUID New();
 	};
 }

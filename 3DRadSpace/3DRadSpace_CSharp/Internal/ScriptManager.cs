@@ -128,7 +128,9 @@ public static class ScriptManager
 		}
 		catch
 		{
-		}
+			//If somehow failed, just directly remove anyway, without cleanup.
+            _loadedScripts.Remove(scriptId);
+        }
 	}
 
 	/// <summary>

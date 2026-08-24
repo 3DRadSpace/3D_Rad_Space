@@ -133,7 +133,8 @@ AddFunctionDialog::AddFunctionDialog(
 	HINSTANCE hInstance,
 	ObjectList* list
 ) : Dialog(owner, hInstance, AddFunctionDialog_DlgProc, "Find object method", 400, 230),
-	_list(list)
+	_list(list),
+	_selectedObject(nullptr)
 {
 }
 
@@ -282,8 +283,8 @@ void AddFunctionDialog::fillArgsGrid()
 
 	for (auto& arg : _selectedFunction->ParametersInfo())
 	{
-		if (arg.Size() == 0) continue;
-		if (arg.Size() == 1)
+		if (arg.Count() == 0) continue;
+		if (arg.Count() == 1)
 		{
 			PROPGRIDITEM newCtrl{};
 			PropGrid_ItemInit(newCtrl);

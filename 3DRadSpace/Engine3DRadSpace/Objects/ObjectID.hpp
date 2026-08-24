@@ -45,7 +45,7 @@ namespace Engine3DRadSpace::Objects
 		/// <summary>
 		/// Underlying ID value.
 		/// </summary>
-		size_t ID;
+		size_t ID = -1;
 
 		/// <summary>
 		/// Conversion operator to size_t.
