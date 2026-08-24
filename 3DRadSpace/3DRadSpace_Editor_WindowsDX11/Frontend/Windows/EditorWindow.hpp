@@ -39,7 +39,7 @@ constexpr int CMD_Homepage = 527;
 constexpr int CMD_Github = 528;
 
 constexpr int CMD_SwitchObjectList = 529;
-constexpr int CMD_SwitchPropertyGrid = 530;
+constexpr int CMD_SwitchToolbar = 530;
 
 constexpr int CMD_EditObject = 531;
 constexpr int CMD_DeleteObject = 532;
@@ -61,6 +61,8 @@ class EditorWindow
 
 	bool _running;
 	bool _changesSaved = true;
+	bool _isTreeViewVisible = true;
+	bool _isToolbarVisible = true;
 
 	std::filesystem::path _currentFile;
 	void _openProject(const std::filesystem::path& filename);
@@ -94,6 +96,10 @@ public:
 
 	bool WarnNotSaved();
 	void OpenRecentProject(uint8_t id);
+
+	void Resize();
+	void SwitchObjectList();
+	void SwitchToolbar();
 
 	static void PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* list, HWND treeView);
 

@@ -418,7 +418,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 		throw Exception("Failed to create the view menu!");
 
 	AppendMenuA(viewMenu, MF_STRING | MF_CHECKED, CMD_SwitchObjectList, "Objects list");
-	AppendMenuA(viewMenu, MF_STRING | MF_UNCHECKED, CMD_SwitchObjectList, "Property grid");
+	AppendMenuA(viewMenu, MF_STRING | MF_CHECKED, CMD_SwitchToolbar, "Toolbar");
 
 	HMENU optionsMenu = CreateMenu();
 	if(optionsMenu == nullptr)
@@ -735,6 +735,46 @@ void EditorWindow::OpenRecentProject(uint8_t id)
 	gEditorWindow->_openProject(gEditorWindow->_recentFiles[id]);
 }
 
+void EditorWindow::Resize()
+{
+	RECT rcWnd{};
+	GetClientRect(_mainWindow, &rcWnd);
+	int wndWidth = rcWnd.right - rcWnd.left;
+	int wndHeight = rcWnd.bottom - rcWnd.top;
+
+	RECT rcToolbar{};
+	GetClientRect(_toolbar, &rcToolbar);
+	int toolbarHeight = _isToolbarVisible ? rcToolbar.bottom - rcToolbar.top : 0;
+
+	SetWindowPos(_treeView, nullptr, 0, toolbarHeight, 150, wndHeight - toolbarHeight, 0);
+	SetWindowPos(_toolbar, nullptr, 0, 0, wndWidth, 25, 0);
+	SetWindowPos(
+		_handleRenderWindow,
+		nullptr,
+		_isTreeViewVisible ? 150 : 0, 
+		toolbarHeight,
+		wndWidth - (_isTreeViewVisible ? 150 : 0),
+		wndHeight - toolbarHeight,
+		0
+	);
+}
+
+void EditorWindow::SwitchObjectList()
+{
+	_isTreeViewVisible = !_isTreeViewVisible;
+	CheckMenuItem(GetMenu(_mainWindow), CMD_SwitchObjectList, _isTreeViewVisible ? MF_CHECKED : MF_UNCHECKED);
+	ShowWindow(_treeView, _isTreeViewVisible ? SW_SHOW : SW_HIDE);
+	Resize();
+}
+
+void EditorWindow::SwitchToolbar()
+{
+	_isToolbarVisible = !_isToolbarVisible;
+	CheckMenuItem(GetMenu(_mainWindow), CMD_SwitchToolbar, _isToolbarVisible ? MF_CHECKED : MF_UNCHECKED);
+	ShowWindow(_toolbar, _isToolbarVisible ? SW_SHOW : SW_HIDE);
+	Resize();
+}
+
 void EditorWindow::_addRecentProject(const std::filesystem::path& filename)
 {
     // Remove if already present
@@ -965,6 +1005,12 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_Github:
 					ShellExecuteA(gEditorWindow->_mainWindow, nullptr, "https://github.com/3DRadSpace/3D_Rad_Space/", nullptr, nullptr, SW_NORMAL);
 					break;
+				case CMD_SwitchObjectList:
+					gEditorWindow->SwitchObjectList();
+					break;
+				case CMD_SwitchToolbar:
+					gEditorWindow->SwitchToolbar();
+					break;
 				case CMD_EditObject:
 				{
 					auto objID = gEditorWindow->_getSelectedObjectID();
@@ -1053,18 +1099,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		}
 		case WM_SIZE:
 		{
-			RECT rcWnd{};
-			GetClientRect(hwnd, &rcWnd);
-			int wndWidth = rcWnd.right - rcWnd.left;
-			int wndHeight = rcWnd.bottom - rcWnd.top;
-
-			RECT rcToolbar{};
-			GetClientRect(gEditorWindow->_toolbar, &rcToolbar);
-			int toolbarHeight = rcToolbar.bottom - rcToolbar.top;
-
-			SetWindowPos(gEditorWindow->_treeView, nullptr, 0, toolbarHeight, 150, wndHeight - toolbarHeight, 0);
-			SetWindowPos(gEditorWindow->_toolbar, nullptr, 0, 0, wndWidth, 25, 0);
-			SetWindowPos(gEditorWindow->_handleRenderWindow, nullptr, 150, toolbarHeight, wndWidth - 150, wndHeight - toolbarHeight, 0);
+			gEditorWindow->Resize();
 			break;
 		}
 		case WM_DROPFILES:
