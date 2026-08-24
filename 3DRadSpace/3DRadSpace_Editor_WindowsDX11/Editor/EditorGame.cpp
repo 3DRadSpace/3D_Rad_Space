@@ -527,6 +527,11 @@ bool EditorGame::IsEditor() const noexcept
 	return true;
 }
 
+Vector3 EditorGame::Get3DCursor() const noexcept
+{
+	return cursor3D;
+}
+
 EditorGame::~EditorGame()
 {
 }

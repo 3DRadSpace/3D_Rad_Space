@@ -82,6 +82,7 @@ public:
 
 	bool IsFocused() const;
 	void Reset3DCursor();
+	Vector3 Get3DCursor() const noexcept;
 	void SelectObject(IObject* obj);
 
 	~EditorGame();

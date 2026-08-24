@@ -637,6 +637,11 @@ IObject* EditorWindow::CreateNewObject()
 			gizmo->Load();
 		}
 
+		if (auto obj3d = dynamic_cast<IObject3D*>(obj); obj3d != nullptr)
+		{
+			obj3d->Position = this->editor->Get3DCursor();
+		}
+
 		return obj;
 	}
 	
@@ -972,7 +977,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 							gEditorWindow->GetContentManager(),
 							obj
 						));
-						if(new_obj != reinterpret_cast<void *>(IDCANCEL) && new_obj != nullptr)
+						if(new_obj != nullptr)
 						{
 							TVITEMA item{};
 							item.mask = TVIF_TEXT;
