@@ -23,10 +23,10 @@ ModelMeshPart::ModelMeshPart(
 	size_t structSize, 
 	std::span<unsigned> indices
 ):
-	_device(Device)
+	_device(Device),
+	VertexBuffer(Device->CreateVertexBuffer(vertices, structSize, numVerts, BufferUsage::ReadOnlyGPU_WriteOnlyCPU)),
+	IndexBuffer(Device->CreateIndexBuffer(indices))
 {
-	VertexBuffer = Device->CreateVertexBuffer(vertices, structSize, numVerts, BufferUsage::ReadOnlyGPU_WriteOnlyCPU);
-	IndexBuffer = Device->CreateIndexBuffer(indices);
 }
 
 BoundingSphere ModelMeshPart::GetBoundingSphere() const noexcept

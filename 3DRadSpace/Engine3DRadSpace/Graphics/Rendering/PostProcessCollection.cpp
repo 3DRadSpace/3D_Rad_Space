@@ -7,18 +7,17 @@
 using namespace Engine3DRadSpace::Graphics::Rendering;
 
 PostProcessCollection::PostProcessCollection(IGraphicsDevice* device):
-	_device(device)
-{
-	//TODO - Get the backbuffer and depth buffer format from the device, don't hardcode them.
-	_backbuffer_cpy = device->CreateTexture2D(
+	_device(device),
+	_backbuffer_cpy(device->CreateTexture2D(
 		nullptr,
 		device->Resolution().X,
 		device->Resolution().Y,
 		PixelFormat::R16G16B16A16_Float,
 		BufferUsage::ReadOnlyGPU_WriteOnlyCPU
-	);
-
-	_depthbuffer_cpy = device->GetDepthBuffer().CloneDepthTexture();
+	)),
+	_depthbuffer_cpy(device->GetDepthBuffer().CloneDepthTexture())
+{
+	//TODO - Get the backbuffer and depth buffer format from the device, don't hardcode them.
 }
 
 size_t PostProcessCollection::Length() const noexcept

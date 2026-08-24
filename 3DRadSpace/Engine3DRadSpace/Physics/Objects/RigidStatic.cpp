@@ -19,9 +19,9 @@ RigidStatic::RigidStatic(
 	const Vector3 position,
 	const Quaternion& rotation,
 	const Vector3& scale
-) : IPhysicsObject(name, enabled, visible, position, rotation, scale)
+) : IPhysicsObject(name, enabled, visible, position, rotation, scale),
+_path(std::make_unique<std::string>(path.string()))
 {
-	_path = std::make_unique<std::string>(path.string());
 }
 
 RigidStatic::RigidStatic() : RigidStatic("RigidStatic", false, false, "")

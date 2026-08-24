@@ -19,11 +19,11 @@ CharacterController::CharacterController(
 	float height, 
 	float radius,
 	const Math::Vector3& position
-) : ICharacterController(physics)
+) : ICharacterController(physics),
+	_position(position)
 {
 	_height = height;
 	_radius = radius;
-	_position = position;
 
 	auto nvPhysics = static_cast<physx::PxPhysics*>(static_cast<PhysicsEngine*>(physics)->GetPhysics());
 	auto nvControllerManager = static_cast<physx::PxControllerManager*>(static_cast<PhysicsEngine*>(physics)->_controllerManager.get());
