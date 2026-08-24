@@ -4,7 +4,7 @@
 namespace Engine3DRadSpace::Graphics::Rendering
 {
 	/// <summary>
-	/// A forward renderer that supports transparency.
+	/// Transparency forward renderer pass.
 	/// </summary>
 	class E3DRSP_GRAPHICS_RENDERING_EXPORT TransparentForwardRenderer : public ForwardRenderer
 	{

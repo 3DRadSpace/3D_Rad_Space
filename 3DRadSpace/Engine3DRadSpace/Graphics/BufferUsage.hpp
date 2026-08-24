@@ -2,6 +2,9 @@
 
 namespace Engine3DRadSpace::Graphics
 {		
+	/// <summary>
+	/// Represents CPU/GPU access to an GPU resource that contains an buffer.
+	/// </summary>
 	enum class BufferUsage : unsigned int
 	{
 		/// <summary>

@@ -12,7 +12,7 @@ namespace Engine3DRadSpace::Objects
 		std::vector<IObject*> _objects;
 		IObject* _owner = nullptr;
 	public:
-		ChildObjectCollection(IObject* owner);
+		explicit ChildObjectCollection(IObject* owner);
 		/// <summary>
 		/// Adds an IObject pointer reference to this list.
 		/// </summary>
@@ -62,9 +62,25 @@ namespace Engine3DRadSpace::Objects
 		/// <returns>A vector of IObject pointers that match the predicate.</returns>
 		std::vector<IObject*> Find(std::function<bool(IObject*)> predicate) const noexcept;
 
+		/// <summary>
+		/// Begin iterator for range-based for loops.
+		/// </summary>
+		/// <returns>Iterator to the beginning of the collection.</returns>
 		std::vector<IObject*>::iterator begin() noexcept;
+		/// <summary>
+		/// Begin const iterator for range-based for loops.
+		/// </summary>
+		/// <returns>Const iterator to the beginning of the collection.</returns>
 		std::vector<IObject*>::const_iterator begin() const noexcept;
+		/// <summary>
+		/// End iterator for range-based for loops.
+		/// </summary>
+		/// <returns>Iterator to the end of the collection.</returns>
 		std::vector<IObject*>::iterator end() noexcept;
+		/// <summary>
+		/// End const iterator for range-based for loops.
+		/// </summary>
+		/// <returns>Const iterator to the end of the collection.</returns>
 		std::vector<IObject*>::const_iterator end() const noexcept;
 
 		friend class IObject;

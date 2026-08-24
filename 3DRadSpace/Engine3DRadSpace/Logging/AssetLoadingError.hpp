@@ -6,6 +6,9 @@ namespace Engine3DRadSpace
 {
 	namespace Logging
 	{
+		/// <summary>
+		/// Represents an exception that is thrown when an asset fails to load.
+		/// </summary>
 		class E3DRSP_LOGGING_EXPORT AssetLoadingError : public Exception
 		{
 		public:

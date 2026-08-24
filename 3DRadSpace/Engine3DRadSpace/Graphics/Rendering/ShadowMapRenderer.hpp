@@ -89,10 +89,22 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		Math::Vector2 GetShadowMapResolution() const noexcept;
 
 		/// <summary>
+		/// Prepares the graphics pipeline for shadow map rendering.
 		/// </summary>
 		void Begin() override;
+		/// <summary>
+		/// Submits a mesh part to the shadow map rendering pass.
+		/// </summary>
 		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
+		/// <summary>
+		///	Resets the graphics pipeline and prepares it for the next rendering passes, usually color passes.
+		/// </summary>
 		void End() override;
+		/// <summary>
+		/// Returns true for render passes that allow shadows.
+		/// </summary>
+		/// <param name="passType">The type of the render pass.</param>
+		/// <returns>True if the render pass type supports shadows, false otherwise.</returns>
 		bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept override;
 
 		~ShadowMapRenderer() override = default;

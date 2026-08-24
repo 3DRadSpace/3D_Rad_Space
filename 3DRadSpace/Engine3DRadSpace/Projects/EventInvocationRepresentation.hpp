@@ -25,9 +25,16 @@ namespace Engine3DRadSpace::Projects
 		/// Arguments pack.
 		/// </summary>
 		std::vector<std::any> Args;
-
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
 		EventInvocationRepresentation();
-
+		/// <summary>
+		///	Finds an reflected function from the given object and function index.
+		/// </summary>
+		/// <param name="reflObject">The reflected object to search for the function.</param>
+		/// <param name="idxFn">The index of the function within the reflected object's function list.</param>
+		/// <returns>The reflected function if found; otherwise, nullptr.</returns>
 		static Reflection::IReflectedFunction* FindFunction(Reflection::ReflectedObject* reflObject, size_t idxFn);
 	};
 }

@@ -23,6 +23,7 @@ void Empty::Load()
 
 void Empty::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 Reflection::UUID Empty::GetUUID() const noexcept

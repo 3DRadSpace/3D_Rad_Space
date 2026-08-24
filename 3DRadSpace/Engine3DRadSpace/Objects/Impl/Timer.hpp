@@ -83,7 +83,15 @@ namespace Engine3DRadSpace::Objects
 		/// </summary>
 		void ResetTimer() noexcept;
 
+		/// <summary>
+		/// Gets the UUID of the Timer type.
+		/// </summary>
+		/// <returns>{2A1521AE-A905-48A0-8671-D2AC6B09B30D}</returns>
 		Reflection::UUID GetUUID() const noexcept override;
+		/// <summary>
+		/// Returns null.
+		/// </summary>
+		/// <returns>Null gizmo pointer</returns>
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
 
 		~Timer() override = default;

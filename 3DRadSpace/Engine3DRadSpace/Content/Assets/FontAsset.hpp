@@ -15,6 +15,11 @@ namespace Engine3DRadSpace
 		{
 			FontAsset(Internal::AssetUUIDReader dummy);
 		public:
+			/// <summary>
+			/// Constructs an font asset
+			/// </summary>
+			/// <param name="device">IGraphicsDevice instance used to load the font</param>
+			/// <param name="path">Path to the font file (ttf)</param>
 			FontAsset(IService* device, const std::filesystem::path &path);
 
 			/// <summary>
@@ -25,9 +30,13 @@ namespace Engine3DRadSpace
 			/// <summary>
 			/// Supported file types, used internally.
 			/// </summary>
-			/// <returns></returns>
+			/// <returns>Supported file types</returns>
 			const char* FileExtension() const noexcept override;
 
+			/// <summary>
+			/// Returns typeid(IGraphicsDevice)
+			/// </summary>
+			/// <returns>typeid(IGraphicsDevice)</returns>
 			std::type_index InitializationService() const noexcept override;
 
 			~FontAsset() override = default;

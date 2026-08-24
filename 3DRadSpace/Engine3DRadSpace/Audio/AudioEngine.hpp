@@ -29,7 +29,7 @@ namespace Engine3DRadSpace::Audio
 		/// Creates an AudioEngine with given device name.
 		/// </summary>
 		/// <param name="deviceName">Audio device name.</param>
-		AudioEngine(const std::string& deviceName);
+		explicit AudioEngine(const std::string& deviceName);
 
 		AudioEngine(const AudioEngine&) = delete;
 		AudioEngine(AudioEngine&&) = delete;

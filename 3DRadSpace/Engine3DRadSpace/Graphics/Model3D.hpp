@@ -41,16 +41,45 @@ namespace Engine3DRadSpace::Graphics
 			const Math::Matrix4x4& p
 		);
 
+		/// <summary>
+		/// Sets the view and projection matrices.
+		/// </summary>
+		/// <param name="v">View matrix</param>
+		/// <param name="p">Projection matrix</param>
 		void SetTransform(const Math::Matrix4x4& v, const Math::Matrix4x4& p);
 
+		/// <summary>
+		/// Gets the i-th ModelMesh in the model. No null checking.
+		/// </summary>
+		/// <param name="i">The index of the ModelMesh to retrieve.</param>
+		/// <returns>The i-th ModelMesh.</returns>
 		ModelMesh* operator[](unsigned i);
 
+		/// <summary>
+		/// Begin iterator for the collection of ModelMesh instances in the model.
+		/// </summary>
+		/// <returns>An iterator to the beginning of the collection of ModelMesh instances.</returns>
 		std::vector<std::unique_ptr<ModelMesh>>::iterator begin();
+		/// <summary>
+		/// End iterator for the collection of ModelMesh instances in the model.
+		/// </summary>
+		/// <returns>An iterator to the end of the collection of ModelMesh instances.</returns>
 		std::vector<std::unique_ptr<ModelMesh>>::iterator end();
-
+		/// <summary>
+		///	Returns the number of ModelMesh instances in this model.
+		/// </summary>
+		/// <returns></returns>
 		size_t NumMeshes();
 
+		/// <summary>
+		/// Gets the bounding box of this entire model instance.
+		/// </summary>
+		/// <returns>The bounding box of this entire model instance.</returns>
 		Math::BoundingBox GetBoundingBox() const noexcept;
+		/// <summary>
+		/// Gets the bounding sphere of this entire model instance.
+		/// </summary>
+		/// <returns>The bounding sphere of this entire model instance.</returns>
 		Math::BoundingSphere GetBoundingSphere() const noexcept;
 
 		~Model3D() = default;

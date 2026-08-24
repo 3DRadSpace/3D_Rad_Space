@@ -49,6 +49,14 @@ namespace Engine3DRadSpace::Reflection
 				FunctionID(static_cast<size_t>(-1))
 			{
 			}
+			/// <summary>
+			/// Creates a valid MemberFunctionInvoker with the given parameters.
+			/// </summary>
+			/// <param name="object"></param>
+			/// <param name="fn"></param>
+			/// <param name="returnType"></param>
+			/// <param name="objID"></param>
+			/// <param name="fnID"></param>
 			MemberFunctionInvoker(
 				void* object,
 				std::unique_ptr<IReflectedFunction> &&fn,

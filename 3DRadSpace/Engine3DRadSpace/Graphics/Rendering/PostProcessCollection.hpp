@@ -22,7 +22,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Instantiates the list of effects.
 		/// </summary>
 		/// <param name="device">Graphics device.</param>
-		PostProcessCollection(IGraphicsDevice* device);
+		explicit PostProcessCollection(IGraphicsDevice* device);
 
 		PostProcessCollection(PostProcessCollection&&) noexcept = default;
 		PostProcessCollection& operator=(PostProcessCollection&&) noexcept = default;

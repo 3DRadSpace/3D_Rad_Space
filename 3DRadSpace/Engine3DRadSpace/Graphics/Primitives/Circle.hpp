@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Graphics::Primitives
 	{
 		float _radius;
 	public:
-		Circle(IGraphicsDevice* device, float radius = 1.0f, Math::Color color = Math::Colors::White, unsigned resolution = 100);
+		explicit Circle(IGraphicsDevice* device, float radius = 1.0f, Math::Color color = Math::Colors::White, unsigned resolution = 100);
 
 		[[nodiscard]] static std::vector<VertexPositionColor> CreateCircleVertices(float radius, unsigned resolution, Math::Color color);
 

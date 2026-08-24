@@ -24,6 +24,11 @@ namespace Engine3DRadSpace::Graphics
         /// </summary>
         /// <returns>Blend factor.</returns>
         virtual Math::Color BlendFactor() const noexcept = 0;
+        
+        /// <summary>
+        /// Gets the sample mask.
+        /// </summary>
+        /// <returns>Sample mask.</returns>
         virtual unsigned int SampleMask() const noexcept = 0;
 
 		~IBlendState() override = default;

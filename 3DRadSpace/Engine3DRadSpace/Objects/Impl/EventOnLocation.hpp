@@ -31,9 +31,17 @@ namespace Engine3DRadSpace::Objects
 			const ObjectID trackedObject = 0,
 			float tolerance = 0.1f
 		);
-
-		EventOnLocation(EventOnLocation&&) noexcept = default;
-		EventOnLocation& operator=(EventOnLocation&&) noexcept = default;
+		/// <summary>
+		/// Move constructor. Moves the event on location object.
+		/// </summary>
+		/// <param name="other">The other event on location object to move from.</param>
+		EventOnLocation(EventOnLocation&& other) noexcept = default;
+		/// <summary>
+		/// Move assignment operator. Moves the event on location object.
+		/// </summary>
+		/// <param name="other">The other event on location object to move from.</param>
+		/// <returns>The current event on location object.</returns>
+		EventOnLocation& operator=(EventOnLocation&& other) noexcept = default;
 
 		/// <summary>
 		/// Determines if the area is either an sphere(true) or AABB(false).
@@ -82,9 +90,20 @@ namespace Engine3DRadSpace::Objects
 		/// <param name="r">Ray</param>
 		/// <returns>Distance or NaN</returns>
 		float Intersects(const Math::Ray& r) const override;
+		/// <summary>
+		///	Gets the bounding box used by this event object.
+		/// </summary>
+		/// <returns>Either BoundingBox of the sphere or AABB</returns>
 		Math::BoundingBox GetBoundingBox() const noexcept override;
-
+		/// <summary>
+		///	Returns a null gizmo.
+		/// </summary>
+		/// <returns>inexistent gizmo</returns>
 		Gizmos::IGizmo* GetGizmo() const noexcept override;
+		/// <summary>
+		/// Gets the UUID of EoL.
+		/// </summary>
+		/// <returns>{043F89A6-D54B-497D-AF5D-7C1C6158515A}</returns>
 		Reflection::UUID GetUUID() const noexcept override;
 
 		~EventOnLocation() override = default;

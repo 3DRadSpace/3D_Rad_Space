@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Graphics::Null
 	class E3DRSP_GRAPHICS_NULL_EXPORT RasterizerState final : public IRasterizerState
 	{
 	public:
-		RasterizerState(
+		explicit RasterizerState(
 			GraphicsDevice *device,
 			RasterizerFillMode filling = RasterizerFillMode::Solid,
 			RasterizerCullMode culling = RasterizerCullMode::CullBack,

@@ -131,9 +131,28 @@ namespace Engine3DRadSpace::Graphics
 		SpriteBatch& operator=(SpriteBatch &) = delete;
 		SpriteBatch& operator=(SpriteBatch &&) noexcept = default;
 
+		/// <summary>
+		/// Begins a sprite batch with the specified sorting mode.
+		/// </summary>
+		/// <param name="sortingMode">The sorting mode to use for the sprite batch.</param>
 		void Begin(SpriteBatchSortMode sortingMode = SpriteBatchSortMode::Immediate);
+		/// <summary>
+		/// Begins a sprite batch with the specified sorting mode and sampler state.
+		/// </summary>
+		/// <param name="sortingMode">The sorting mode to use for the sprite batch.</param>
+		/// <param name="samplerState">The sampler state to use for the sprite batch.</param>
 		void Begin(SpriteBatchSortMode sortingMode, std::unique_ptr<ISamplerState> &&samplerState);
 		
+		/// <summary>
+		/// Draws a sprite with normalized coordinates and source rectangle.
+		/// </summary>
+		/// <param name="texture">The texture to draw.</param>
+		/// <param name="coords">The normalized coordinates of the sprite.</param>
+		/// <param name="source">The source rectangle of the texture.</param>
+		/// <param name="tintColor">The tint color to apply to the sprite.</param>
+		/// <param name="rotation">The rotation of the sprite in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the sprite.</param>
+		/// <param name="depth">The depth of the sprite.</param>
 		void DrawNormalized(
 			ITexture2D* texture,
 			const Math::RectangleF& coords,
@@ -144,6 +163,16 @@ namespace Engine3DRadSpace::Graphics
 			float depth = 0
 		);
 
+		/// <summary>
+		///	Draws a sprite with normalized coordinates and source rectangle.
+		/// </summary>
+		/// <param name="texture">The texture to draw.</param>
+		/// <param name="coords">The normalized coordinates of the sprite.</param>
+		/// <param name="source">The source rectangle of the texture.</param>
+		/// <param name="tintColor">The tint color to apply to the sprite.</param>
+		/// <param name="rotation">The rotation of the sprite in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the sprite.</param>
+		/// <param name="depth">The depth of the sprite.</param>
 		void DrawNormalized(
 			ITexture2D* texture,
 			const Math::RectangleF& coords,
@@ -154,6 +183,16 @@ namespace Engine3DRadSpace::Graphics
 			float depth = 0
 		);
 
+		/// <summary>
+		/// Draws a sprite with pixel screen coordinates and source rectangle.
+		/// </summary>
+		/// <param name="texture">The texture to draw.</param>
+		/// <param name="coords">The pixel screen coordinates of the sprite.</param>
+		/// <param name="source">The source rectangle of the texture.</param>
+		/// <param name="tintColor">The tint color to apply to the sprite.</param>
+		/// <param name="rotation">The rotation of the sprite in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the sprite.</param>
+		/// <param name="depth">The depth of the sprite.</param>
 		void Draw(
 			ITexture2D* texture,
 			const Math::Rectangle& coords,
@@ -163,6 +202,15 @@ namespace Engine3DRadSpace::Graphics
 			FlipMode flipMode = FlipMode::None,
 			float depth = 0
 		);
+		/// <summary>
+		/// Draws a sprite with pixel screen coordinates and no source rectangle.
+		/// </summary>
+		/// <param name="texture">The texture to draw.</param>
+		/// <param name="coords">The pixel screen coordinates of the sprite.</param>
+		/// <param name="tintColor">The tint color to apply to the sprite.</param>
+		/// <param name="rotation">The rotation of the sprite in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the sprite.</param>
+		/// <param name="depth">The depth of the sprite.</param>
 		void Draw(
 			ITexture2D* texture, 
 			const Math::Rectangle& coords,
@@ -172,6 +220,17 @@ namespace Engine3DRadSpace::Graphics
 			float depth = 0
 		);
 
+		/// <summary>
+		/// Draws a string using the specified font, position, size, and other parameters.
+		/// </summary>
+		/// <param name="font">The font to use for drawing the text.</param>
+		/// <param name="text">The text to draw.</param>
+		/// <param name="pos">The position to draw the text.</param>
+		/// <param name="size">The size of the text.</param>
+		/// <param name="tintColor">The tint color to apply to the text.</param>
+		/// <param name="rotation">The rotation of the text in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the text.</param>
+		/// <param name="depth">The depth of the text.</param>
 		void DrawString(
 			Font* font,
 			const std::string& text, 
@@ -183,6 +242,17 @@ namespace Engine3DRadSpace::Graphics
 			float depth = 0
 		);
 
+		/// <summary>
+		/// Draws a string using the specified font, position, size, and other parameters.
+		/// </summary>
+		/// <param name="font">The font to use for drawing the text.</param>
+		/// <param name="text">The text to draw.</param>
+		/// <param name="pos">The position to draw the text.</param>
+		/// <param name="size">The size of the text.</param>
+		/// <param name="tintColor">The tint color to apply to the text.</param>
+		/// <param name="rotation">The rotation of the text in radians.</param>
+		/// <param name="flipMode">The flip mode to apply to the text.</param>
+		/// <param name="depth">The depth of the text.</param>
 		void DrawString(
 			Font* font, 
 			const std::string& text,
@@ -194,6 +264,9 @@ namespace Engine3DRadSpace::Graphics
 			float depth = 0
 		);
 
+		/// <summary>
+		///	Stop receiving draw commands, submit all data to the GPU then flush the internal data of this instance.
+		/// </summary>
 		void End();
 
 		~SpriteBatch() override = default;

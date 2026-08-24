@@ -3,6 +3,12 @@
 
 namespace Engine3DRadSpace::Graphics
 {
+	/// <summary>
+	///	Represents an interface for a vertex shader. A IVertexShader is guaranteed to be a IShader.
+	/// </summary>
+	/// <remarks>
+	/// The interface is detached from the IShader interface to fix an diamond issue.
+	/// </remarks>
 	class E3DRSP_GRAPHICS_EXPORT IVertexShader
 	{
 	protected:

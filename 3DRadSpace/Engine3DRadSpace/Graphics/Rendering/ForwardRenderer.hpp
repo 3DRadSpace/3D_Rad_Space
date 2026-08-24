@@ -35,6 +35,11 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		void End() override;
 		
+		/// <summary>
+		/// Determines whether the specified render pass type is supported by this renderer.
+		/// </summary>
+		/// <param name="passType">The render pass type to check.</param>
+		/// <returns>True if the render pass type is supported; otherwise, false.</returns>
 		bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept override;
 
 		~ForwardRenderer() override = default;

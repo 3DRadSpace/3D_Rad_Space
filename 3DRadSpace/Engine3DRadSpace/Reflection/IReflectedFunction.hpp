@@ -4,9 +4,21 @@
 
 namespace Engine3DRadSpace::Reflection
 {
+	/// <summary>
+	/// Polymorphic interface for reflected functions.
+	/// </summary>
 	class E3DRSP_REFLECTION_EXPORT IReflectedFunction : public IReflectedField
 	{
 	protected:
+		/// <summary>
+		/// Constructs an instance of <see cref="IReflectedFunction"/>.
+		/// </summary>
+		/// <param name="numParams"></param>
+		/// <param name="fieldInfo"></param>
+		/// <param name="returnRepr"></param>
+		/// <param name="name"></param>
+		/// <param name="signature"></param>
+		/// <param name="info"></param>
 		IReflectedFunction(
 			unsigned int numParams,
 			std::initializer_list<FieldRepresentation> fieldInfo,

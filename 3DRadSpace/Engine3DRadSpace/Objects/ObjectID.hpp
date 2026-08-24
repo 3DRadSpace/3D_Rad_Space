@@ -55,9 +55,14 @@ namespace Engine3DRadSpace::Objects
 		/// <summary>
 		/// Same as list[ID].
 		/// </summary>
-		/// <param name="list"></param>
-		/// <returns></returns>
+		/// <param name="list">Object list</param>
+		/// <returns>Pointer to the object with this ID</returns>
 		IObject* Get(ObjectList* list) const noexcept;
+		/// <summary>
+		/// Same as collection[ID].
+		/// </summary>
+		/// <param name="collection">Child object collection</param>
+		/// <returns>Pointer to the object with this ID</returns>
 		IObject* Get(ChildObjectCollection* collection) const noexcept;
 	};
 }

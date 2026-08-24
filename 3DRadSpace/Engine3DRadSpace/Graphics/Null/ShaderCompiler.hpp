@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Graphics::Null
 	class E3DRSP_GRAPHICS_EXPORT ShaderCompiler final : public IShaderCompiler
 	{
     public:
-        ShaderCompiler(GraphicsDevice* device);
+        explicit ShaderCompiler(GraphicsDevice* device);
 
         ShaderCompiler(const ShaderCompiler&) = delete;
         ShaderCompiler(ShaderCompiler&&) = delete;

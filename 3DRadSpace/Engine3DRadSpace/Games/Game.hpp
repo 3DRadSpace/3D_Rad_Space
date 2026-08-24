@@ -34,8 +34,21 @@ namespace Engine3DRadSpace
 		void _initialize();
 		void _loadScene();
 	public:
+		/// <summary>
+		/// Constructs an application instance.
+		/// </summary>
+		/// <param name="title">Title of the window</param>
+		/// <param name="width">Width of the window and backbuffer</param>
+		/// <param name="height">Height of the window and backbuffer</param>
 		Game(const std::string &title, size_t width = 800, size_t height = 600);
-		Game(Native::Window&& window);
+		/// <summary>
+		/// Constructs an application window from the specified window.
+		/// </summary>
+		/// <param name="window">Window used to create the application instance. Ownership will be transferred to this.</param>
+		/// <remarks>
+		/// Backbuffer size will be the same as Window.Size().
+		/// </remarks>
+		explicit Game(Native::Window&& window);
 
 		Game(Game&) = delete;
 		Game(Game&&) = delete;

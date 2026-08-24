@@ -3,6 +3,9 @@
 
 namespace Engine3DRadSpace
 {
+	/// <summary>
+	/// Type for objects that require explicit initialization.
+	/// </summary>
 	class E3DRSP_CORE_EXPORT IInitializable
 	{
 	protected:
@@ -14,6 +17,9 @@ namespace Engine3DRadSpace
 		IInitializable(IInitializable&&) noexcept = default;
 		IInitializable& operator=(IInitializable&&) noexcept = default;
 	public:
+		/// <summary>
+		/// Initialization method.
+		/// </summary>
 		virtual void Initialize() = 0;
 		virtual ~IInitializable() = default;
 	};

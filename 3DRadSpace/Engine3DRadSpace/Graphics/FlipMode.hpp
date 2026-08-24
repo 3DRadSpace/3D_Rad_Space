@@ -8,9 +8,21 @@ namespace Engine3DRadSpace::Graphics
 	/// </summary>
 	enum class FlipMode : uint8_t
 	{
+		/// <summary>
+		/// Do not flip the image.
+		/// </summary>
 		None = 0,
+		/// <summary>
+		///	Flip around the Y axis (horizontal flip).
+		/// </summary>
 		FlipHorizontally = 0b1,
+		/// <summary>
+		/// Flip around the X axis (vertical flip).
+		/// </summary>
 		FlipVertically = 0b10,
+		/// <summary>
+		/// Flip around both the X and Y axes (horizontal and vertical flip).
+		/// </summary>
 		FlipHorizontallyAndVertically = 0b11,
 	};
 

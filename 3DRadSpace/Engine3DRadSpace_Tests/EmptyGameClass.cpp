@@ -15,7 +15,7 @@ class EmptyGame : public Game
 	int numFrames = 0;
 	int limNumFrames;
 public:
-	EmptyGame(int numFrames);
+	explicit EmptyGame(int numFrames);
 
 	void Update() override
 	{

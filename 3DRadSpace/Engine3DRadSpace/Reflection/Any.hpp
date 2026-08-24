@@ -74,19 +74,17 @@ namespace Engine3DRadSpace::Reflection
 						auto pLeft = reinterpret_cast<U**>(dst);
 						auto pRight = reinterpret_cast<const U* const*>(src);
 
-						auto left = std::launder<U>(*pLeft);
-						auto right = *pRight;
+						const U* right = *pRight;
 
 						if (!right) return;
-
-						if (!pLeft)
-						{
-							pLeft = new U* ();
-						}
 
 						if (*pLeft == nullptr)
 						{
 							*pLeft = new U(*right);
+						}
+						else
+						{
+							**pLeft = *right;
 						}
 					}
 				};
@@ -109,7 +107,7 @@ namespace Engine3DRadSpace::Reflection
 		/// <typeparam name="T">Type of the object being constructed.</typeparam>
 		/// <param name="value">The value to be stored in the Any container.</param>
 		template<typename T> 
-		requires std::is_nothrow_move_constructible_v<T> && !std::is_same_v<std::remove_cvref_t<T>, Any>
+		requires std::is_nothrow_move_constructible_v<T> && (!std::is_same_v<std::remove_cvref_t<T>, Any>)
 		Any(T&& value) :
 			_type(typeid(T)),
 			_destroyFn(nullptr),
@@ -137,7 +135,7 @@ namespace Engine3DRadSpace::Reflection
 		/// <typeparam name="T">Type of the object being constructed.</typeparam>
 		/// <param name="value">The value to be stored in the Any container.</param>
 		template<typename T>
-		requires !std::is_same_v<std::remove_cvref_t<T>, Any>
+		requires (!std::is_same_v<std::remove_cvref_t<T>, Any>)
 		Any(const T& value) :
 			_type(typeid(T)),
 			_destroyFn(nullptr),
@@ -163,7 +161,7 @@ namespace Engine3DRadSpace::Reflection
 		/// <typeparam name="T">Type of the object being constructed.</typeparam>
 		/// <param name="value">The value to be stored in the Any container.</param>
 		template<typename T>
-		requires !std::is_same_v<std::remove_cvref_t<T>, Any>
+		requires (!std::is_same_v<std::remove_cvref_t<T>, Any>)
 		Any(T& value) :
 			_type(typeid(T)),
 			_destroyFn(nullptr),

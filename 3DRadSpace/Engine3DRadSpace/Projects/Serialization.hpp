@@ -19,6 +19,9 @@ namespace Engine3DRadSpace::Projects
 	class E3DRSP_PROJECTS_EXPORT Serializer
 	{
 	public:
+		/// <summary>
+		/// Static class.
+		/// </summary>
 		Serializer() = delete;
 		/// <summary>
 		/// Serializes a object into JSON.

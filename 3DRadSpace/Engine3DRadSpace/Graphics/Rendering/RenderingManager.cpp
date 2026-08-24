@@ -143,3 +143,11 @@ IGraphicsDevice* RenderingManager::GetDevice() const noexcept
 {
 	return _device;
 }
+
+RenderingManager::~RenderingManager()
+{
+	//for (auto& renderer : _renderers)
+	//{
+	//	renderer->_owner = nullptr;
+	//}
+}

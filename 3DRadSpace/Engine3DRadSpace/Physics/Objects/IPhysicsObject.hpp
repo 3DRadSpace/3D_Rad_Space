@@ -13,6 +13,15 @@ namespace Engine3DRadSpace::Physics::Objects
 	protected:
 		IPhysicsEngine* _physics;
 		IPhysicsObject() = default;
+		/// <summary>
+		/// Complete IPhysicsObject interface constructor.
+		/// </summary>
+		/// <param name="name">Name of this object</param>
+		/// <param name="enabled">Indicates whether this object is enabled</param>
+		/// <param name="visible">Indicates whether this object is visible</param>
+		/// <param name="position">Initial position of this object</param>
+		/// <param name="rotation">Initial rotation of this object</param>
+		/// <param name="scale">Initial scale of this object</param>
 		IPhysicsObject(
 			const std::string& name,
 			bool enabled,
@@ -28,6 +37,9 @@ namespace Engine3DRadSpace::Physics::Objects
 		IPhysicsObject(IPhysicsObject&&) noexcept = default;
 		IPhysicsObject& operator=(IPhysicsObject&&) noexcept = default;
 	public:
+		/// <summary>
+		/// Loads the relevant services.
+		/// </summary>
 		void Initialize() override;
 
 		virtual ~IPhysicsObject() = default;

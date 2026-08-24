@@ -38,6 +38,7 @@ void Fog::Initialize()
 
 void Fog::Load(const std::filesystem::path& path)
 {
+	(void)path;
 	Load();
 }
 

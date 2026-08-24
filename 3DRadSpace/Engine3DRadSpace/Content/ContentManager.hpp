@@ -68,7 +68,7 @@ namespace Engine3DRadSpace::Content
 
 			IGame* _owner; 
 		public:
-			AssetFactory(IGame* owner);
+			explicit AssetFactory(IGame* owner);
 
 			template<AssetType T>
 			std::unique_ptr<T> Create(const std::filesystem::path& path)
@@ -241,15 +241,6 @@ namespace Engine3DRadSpace::Content
 
 		~ContentManager() override = default;
 	};
-
-
-
-
-
-
-
-
-
 
 	///
 	///										IMPLEMENTATION FOR ContentManager TEMPLATE METHODS

@@ -42,10 +42,13 @@ LRESULT WINAPI NumericTextBoxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			HANDLE clipboardData = GetClipboardData(CF_OEMTEXT);
 			if (clipboardData == nullptr) return 0;
 
-			char* clipboardString = static_cast<char*>(GlobalLock(clipboardData));
-			if (clipboardString == nullptr) return 0;
+			char* clipboardRawString = static_cast<char*>(GlobalLock(clipboardData));
+			if (clipboardRawString == nullptr) return 0;
+			std::string_view clipboardString(clipboardRawString);
 
-			for (size_t i = 0; i < strlen(clipboardString); i++)
+			std::string cliptBoardString2(clipboardString);
+
+			for (size_t i = 0; i < clipboardString.size(); i++)
 			{
 				SendMessageA(hwnd, WM_CHAR, clipboardString[i], 0);
 			}

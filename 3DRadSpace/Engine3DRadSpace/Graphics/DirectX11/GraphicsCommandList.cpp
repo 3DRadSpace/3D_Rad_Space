@@ -160,7 +160,7 @@ void GraphicsCommandList::SetRenderTargetAndDepth(IRenderTarget* renderTarget, I
 	auto dxrt = static_cast<RenderTarget*>(renderTarget);
 	auto dxdepth = static_cast<DepthStencilBuffer*>(depthBuffer);
 
-	auto depthviewBuffer = dxrt != nullptr ? dxdepth->_depthView.Get() : _device->_stencilBuffer->_depthView.Get();
+	auto depthviewBuffer = dxdepth != nullptr ? dxdepth->_depthView.Get() : _device->_stencilBuffer->_depthView.Get();
 	auto renderTargetView = dxrt != nullptr ? dxrt->_renderTarget.GetAddressOf() : _device->_backbufferRT->_renderTarget.GetAddressOf();
 	_context->OMSetRenderTargets(1, renderTargetView, depthviewBuffer);
 

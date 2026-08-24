@@ -40,6 +40,7 @@ void SettingsManager::Load()
 
 void SettingsManager::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 void SettingsManager::Update()

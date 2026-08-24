@@ -23,18 +23,25 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		std::vector<std::unique_ptr<IRenderer>> _renderers;
 		std::vector<MeshPartDrawInfo> _meshParts;
 
-		
-
 		RenderingManager(IGraphicsDevice* device, std::nullptr_t dummy);
 	public:
 		/// <summary>
 		/// Creates an RenderingManager with classical forward rendering and shadow mapping passes.
 		/// </summary>
 		///	<param name="device">Graphics device to use for rendering.</param>
-		RenderingManager(IGraphicsDevice* device);
+		explicit RenderingManager(IGraphicsDevice* device);
 
-		RenderingManager(RenderingManager&&) noexcept;
-		RenderingManager& operator=(RenderingManager&&) noexcept;
+		/// <summary>
+		/// Move constructor for RenderingManager. Transfers ownership of the renderers and mesh parts from another instance.
+		/// </summary>
+		/// <param name="other">The RenderingManager instance to move from.</param>
+		RenderingManager(RenderingManager&& other) noexcept;
+		/// <summary>
+		/// Move assignment operator for RenderingManager. Transfers ownership of the renderers and mesh parts from another instance.
+		/// </summary>
+		/// <param name="other">The RenderingManager instance to move from.</param>
+		/// <returns>The current RenderingManager instance.</returns>
+		RenderingManager& operator=(RenderingManager&& other) noexcept;
 
 		/// <summary>
 		/// Emplaces a new renderer of type R with the given arguments.
@@ -141,6 +148,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 
 		IGraphicsDevice* GetDevice() const noexcept;
 
-		~RenderingManager() override = default;
+		~RenderingManager() override;
 	};
 }

@@ -7,9 +7,21 @@ namespace Engine3DRadSpace::Math
 	struct BoundingPlane;
 	struct Ray;
 	struct Matrix4x4;
+	/// <summary>
+	/// Represents a axis aligned bounding box in 3D space defined by position and scale.
+	/// </summary>
+	/// <remarks>
+	/// This bounding box has the boundaries specified as (Position, Position + Scale). The scale should be positive in all coordinates.
+	/// </remarks>
 	struct E3DRSP_MATH_EXPORT BoundingBox
 	{
+		/// <summary>
+		/// Minimal point of the bounding box.
+		/// </summary>
 		Vector3 Position;
+		/// <summary>
+		///	Abs(Max-Min). All components need to be positive.
+		/// </summary>
 		Vector3 Scale;
 
 		/// <summary>
@@ -26,7 +38,7 @@ namespace Engine3DRadSpace::Math
 		/// Create a bounding box that contains the given bounding sphere.
 		/// </summary>
 		/// <param name="sphere">Bounding sphere</param>
-		BoundingBox(const BoundingSphere& sphere);
+		explicit BoundingBox(const BoundingSphere& sphere);
 		/// <summary>
 		/// Creates a bounding box that contains both given bounding boxes.
 		/// </summary>
@@ -62,9 +74,29 @@ namespace Engine3DRadSpace::Math
 		/// <returns> Position + Scale.</returns>
 		Vector3 Max() const noexcept;
 
+		/// <summary>
+		///	Does this intersect with the given bounding box?
+		/// </summary>
+		/// <param name="box">The bounding box to test for intersection</param>
+		/// <returns>True if this bounding box intersects with the given bounding box, false otherwise.</returns>
 		bool Intersects(const BoundingBox& box) const noexcept;
+		/// <summary>
+		/// Does this intersect with the given bounding sphere?
+		/// </summary>
+		/// <param name="sphere">The bounding sphere to test for intersection</param>
+		/// <returns>True if this bounding box intersects with the given bounding sphere, false otherwise.</returns>
 		bool Intersects(const BoundingSphere& sphere) const noexcept;
+		/// <summary>
+		/// Does this intersect with the given bounding plane?
+		/// </summary>
+		/// <param name="plane">The bounding plane to test for intersection</param>
+		/// <returns>True if this bounding box intersects with the given bounding plane, false otherwise.</returns>
 		bool Intersects(const BoundingPlane& plane) const noexcept;
+		/// <summary>
+		/// Does this intersect with the given ray?
+		/// </summary>
+		/// <param name="ray">The ray to test for intersection</param>
+		/// <returns>True if this bounding box intersects with the given ray, false otherwise.</returns>
 		bool Intersects(const Ray& ray) const noexcept;
 
 		/// <summary>

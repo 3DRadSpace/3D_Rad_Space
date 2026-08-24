@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Loads the screen space linear interpolated fog shader.
 		/// </summary>
 		/// <param name="device"></param>
-		LinearPixelFogEffect(IGraphicsDevice* device);
+		explicit LinearPixelFogEffect(IGraphicsDevice* device);
 
 		LinearPixelFogEffect(const LinearPixelFogEffect&) = delete;
 		LinearPixelFogEffect& operator=(const LinearPixelFogEffect&) = delete;

@@ -15,7 +15,6 @@ ExitFade::ExitFade(const std::string& name, const std::filesystem::path& project
 
 void ExitFade::Update()
 {
-	if(!Enabled) return;
 }
 
 void ExitFade::Draw2D()

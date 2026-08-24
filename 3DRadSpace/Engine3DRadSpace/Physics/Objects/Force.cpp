@@ -44,6 +44,7 @@ void Force::Load()
 
 void Force::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 void Force::Update()
@@ -89,6 +90,7 @@ Vector3 Force::Direction() const noexcept
 
 float Force::Intersects(const Ray& r) const
 {
+	(void)r;
 	return std::numeric_limits<float>::quiet_NaN();
 }
 

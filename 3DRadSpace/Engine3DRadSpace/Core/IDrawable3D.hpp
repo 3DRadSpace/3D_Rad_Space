@@ -3,6 +3,9 @@
 
 namespace Engine3DRadSpace
 {
+	/// <summary>
+	/// Interface for 3D drawable objects.
+	/// </summary>
 	class E3DRSP_CORE_EXPORT IDrawable3D
 	{
 	protected:
@@ -14,6 +17,9 @@ namespace Engine3DRadSpace
 		IDrawable3D(IDrawable3D&&) noexcept = default;
 		IDrawable3D& operator=(IDrawable3D&&) noexcept = default;
 	public:
+		/// <summary>
+		/// Main draw function for 3D objects.
+		/// </summary>
 		virtual void Draw3D() = 0;
 		virtual ~IDrawable3D() = default;
 	};

@@ -8,9 +8,21 @@ namespace Engine3DRadSpace::Math
 	/// </summary>
 	struct E3DRSP_MATH_EXPORT Color
 	{
+		/// <summary>
+		/// Red channel. Values are in the range [0, 1].
+		/// </summary>
 		float R;
+		/// <summary>
+		/// Green channel. Values are in the range [0, 1].
+		/// </summary>
 		float G;
+		/// <summary>
+		/// Blue channel. Values are in the range [0, 1].
+		/// </summary>
 		float B;
+		/// <summary>
+		/// Alpha(Transparency) channel. Values are in the range [0, 1].
+		/// </summary>
 		float A;
 
 		/// <summary>
@@ -43,6 +55,11 @@ namespace Engine3DRadSpace::Math
 		/// <returns>this multiplied by c</returns>
 		constexpr Color& operator *=(const Color& c) noexcept;
 
+		/// <summary>
+		/// Gets the color component at the given index. 0 = R, 1 = G, 2 = B, 3 = A.
+		/// </summary>
+		/// <param name="i">The index of the color component.</param>
+		/// <returns>The value of the color component at the given index.</returns>
 		constexpr float operator[](int i) const;
 
 		friend auto operator <=>(const Color& a, const Color& b) noexcept = default;

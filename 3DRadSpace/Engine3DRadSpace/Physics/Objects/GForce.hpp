@@ -20,7 +20,7 @@ namespace Engine3DRadSpace::Physics::Objects
 		/// <param name="enabled">Enables physics at startup?</param>
 		/// <param name="tag">String tag</param>
 		/// <param name="gravity">Gravitatioal acceleration</param>
-		GForce(
+		explicit GForce(
 			const std::string& name = "GForce",
 			bool enabled = true,
 			const Math::Vector3& gravity = Math::Vector3(0, -9.81f, 0)

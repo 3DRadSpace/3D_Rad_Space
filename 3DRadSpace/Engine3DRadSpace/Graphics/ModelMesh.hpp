@@ -33,7 +33,15 @@ namespace Engine3DRadSpace::Graphics
 		ModelMesh &operator=(ModelMesh &) = delete;
 		ModelMesh &operator=(ModelMesh &&) noexcept = default;
 
+		/// <summary>
+		///	Begin iterator for ModelMeshPart collection.
+		/// </summary>
+		/// <returns>Iterator to the beginning of the ModelMeshPart collection.</returns>
 		std::vector<std::unique_ptr<ModelMeshPart>>::iterator begin();
+		/// <summary>
+		///	End iterator for ModelMeshPart collection.
+		/// </summary>
+		/// <returns>Iterator to the end of the ModelMeshPart collection.</returns>
 		std::vector<std::unique_ptr<ModelMeshPart>>::iterator end();
 
 		/// <summary>
@@ -49,6 +57,10 @@ namespace Engine3DRadSpace::Graphics
 		/// <returns>i-th ModelMeshPart.</returns>
 		ModelMeshPart* operator[](unsigned i);
 
+		/// <summary>
+		/// Returns the number of ModelMeshParts in this ModelMesh.
+		/// </summary>
+		/// <returns>Number of ModelMeshParts.</returns>
 		size_t NumMeshParts() const noexcept;
 
 		/// <summary>

@@ -15,6 +15,18 @@ namespace Engine3DRadSpace::Objects
 	class E3DRSP_OBJECTS_IMPL_EXPORT Camera : public IObject3D, public ICamera
 	{
 	public:
+		/// <summary>
+		/// Complete camera constructor.
+		/// </summary>
+		/// <param name="name">Name of the object</param>
+		/// <param name="visible">Visibility of the camera</param>
+		/// <param name="pos">Position of the camera</param>
+		/// <param name="rotation">Rotation of the camera</param>
+		/// <param name="up">Up direction of the camera</param>
+		/// <param name="aspectRatio">Aspect ratio of the camera</param>
+		/// <param name="fov">Field of view of the camera in radians</param>
+		/// <param name="npd">Near plane distance of the camera</param>
+		/// <param name="fpd">Far plane distance of the camera</param>
 		Camera(
 			const std::string& name = "Camera",
 			bool visible = true,
@@ -26,12 +38,29 @@ namespace Engine3DRadSpace::Objects
 			float npd = 0.01f,
 			float fpd = 500.0f
 		);
-
+		/// <summary>
+		/// Move constructor for Camera.
+		/// </summary>
+		/// <param name="other">The Camera to move from</param>
 		Camera(Camera&&) noexcept = default;
+		/// <summary>
+		/// Move assignment operator for Camera.
+		/// </summary>
+		/// <param name="other">The Camera to move from</param>
 		Camera& operator=(Camera&&) noexcept = default;
 
+		/// <summary>
+		/// Updates the camera.
+		/// </summary>
 		void Initialize() override;
+		/// <summary>
+		/// Does nothing.
+		/// </summary>
 		void Load() override;
+		/// <summary>
+		/// Does nothing.
+		/// </summary>
+		/// <param name="path">unused</param>
 		void Load(const std::filesystem::path &path) override;
 
 		Math::Matrix4x4 GetModelMatrix() const override;

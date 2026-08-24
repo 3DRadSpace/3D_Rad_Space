@@ -3,6 +3,9 @@
 
 namespace Engine3DRadSpace
 {
+	/// <summary>
+	/// Represents an interface for objects that be can drawn on the screen as 2D elements.
+	/// </summary>
 	class E3DRSP_CORE_EXPORT IDrawable2D
 	{
 	protected:
@@ -14,6 +17,9 @@ namespace Engine3DRadSpace
 		IDrawable2D(IDrawable2D&&) noexcept = default;
 		IDrawable2D& operator=(IDrawable2D&&) noexcept = default;
 	public:
+		/// <summary>
+		/// Main drawing function for 2D elements.
+		/// </summary>
 		virtual void Draw2D() = 0;
 		virtual ~IDrawable2D() = default;
 	};

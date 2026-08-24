@@ -97,6 +97,7 @@ void Camera::Load()
 
 void Camera::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 void Camera::SetLookAt(const Math::Vector3& lookAt)

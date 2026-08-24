@@ -35,6 +35,7 @@ void EventOnKey::Load()
 
 void EventOnKey::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 Reflection::UUID EventOnKey::GetUUID() const noexcept

@@ -30,10 +30,19 @@ namespace Engine3DRadSpace::Audio
 		AudioBuffer(char* buffer, int numChannels, int sampleRate, int bps, int format, int size);
 
 		AudioBuffer(const AudioBuffer&) = delete;
-		AudioBuffer(AudioBuffer&&) noexcept = default;
+		/// <summary>
+		/// Move constructor. Transfers ownership of the PCM buffer to this instance.
+		/// </summary>
+		/// <param name="other">The AudioBuffer instance to move from</param>
+		AudioBuffer(AudioBuffer&& other) noexcept = default;
 
 		AudioBuffer& operator=(const AudioBuffer&) = delete;
-		AudioBuffer& operator=(AudioBuffer&&) noexcept = default;
+		/// <summary>
+		/// Move assignment operator. Transfers ownership of the PCM buffer to this instance.
+		/// </summary>
+		/// <param name="other">The AudioBuffer instance to move from</param>
+		/// <returns>Reference to this instance</returns>
+		AudioBuffer& operator=(AudioBuffer&& other) noexcept = default;
 
 		/// <summary>
 		/// Type of loading error that could occur when loading a WAV file.
@@ -112,7 +121,10 @@ namespace Engine3DRadSpace::Audio
 		/// <param name="path">Path to the OGG file</param>
 		/// <returns>AudioBuffer instance or OGGLoadError</returns>
 		static std::expected<AudioBuffer, OGGLoadError> FromOGG(const std::filesystem::path& path);
-
+		
+		/// <summary>
+		/// Destructor. Releases the PCM buffer.
+		/// </summary>
 		~AudioBuffer() = default;
 
 		friend class Sound;

@@ -20,9 +20,20 @@ namespace Engine3DRadSpace::Logging
 		Exception(Exception&) = default;
 		Exception(Exception&&) = default;
 
+		/// <summary>
+		///	Same as std::exception::what(), but returns a std::string instead of const char*.
+		/// </summary>
+		/// <returns></returns>
 		virtual std::string What() const;
+		/// <summary>
+		/// Returns a C-style string describing the general cause of the current error.
+		/// </summary>
+		/// <returns>C-style string describing the general cause of the current error</returns>
 		const char* what() const override;
-
+		/// <summary>
+		/// Gets the stacktrace of where the exception was thrown.
+		/// </summary>
+		/// <returns>Stacktrace of where the exception was thrown</returns>
 		const std::stacktrace& GetStacktrace() const noexcept;
 
 		~Exception() override = default;

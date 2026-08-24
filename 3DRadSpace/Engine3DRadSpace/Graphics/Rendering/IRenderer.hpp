@@ -44,6 +44,11 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		virtual void End() = 0;
 
+		/// <summary>
+		/// Determines whether the specified render pass type is supported by this renderer.
+		/// </summary>
+		/// <param name="passType">The render pass type to check.</param>
+		/// <returns>True if the render pass type is supported; otherwise, false.</returns>
 		virtual bool IsRenderPassTypeSupported(RenderPassType passType) const noexcept = 0;
 
 		virtual ~IRenderer() = default;

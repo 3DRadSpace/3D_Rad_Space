@@ -58,7 +58,7 @@ class EditorGame : public Engine3DRadSpace::Game
 	Button* _selectedTransformButton = nullptr;
 
 	/// <summary>
-	/// Helper function. Calls specified function fn on the specified buttons depending on whenever g allows 2D or 3D rendering.
+	/// Helper function. Calls specified function fn on the specified buttons if g allows 2D or 3D rendering.
 	/// </summary>
 	/// <param name="g">Object gizmo.</param>
 	/// <param name="btns">Array of buttons, usually btn[]X, btn[]Y, btn[]Z</param>

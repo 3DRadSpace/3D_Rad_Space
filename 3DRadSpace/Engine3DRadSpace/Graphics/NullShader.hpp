@@ -5,6 +5,9 @@ namespace Engine3DRadSpace::Graphics
 {
 	class IGraphicsDevice;
 
+	/// <summary>
+	/// Represents a mock shader implementation.
+	/// </summary>
 	class E3DRSP_GRAPHICS_EXPORT NullShader final : public IShader
 	{
 	public:

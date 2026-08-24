@@ -2,6 +2,9 @@
 
 namespace Engine3DRadSpace::Graphics
 {
+	/// <summary>
+	/// Represents the shader feature level.
+	/// </summary>
 	enum class ShaderFeatureLevel : char
 	{
 		/// <summary>

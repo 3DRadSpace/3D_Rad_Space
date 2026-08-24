@@ -185,7 +185,7 @@ D3D11_COLOR_WRITE_ENABLE BlendState::convert3DRSPColorWrite_toDX11(ColorWriteEna
 	{
 		case ColorWriteEnable::Red:
 			return D3D11_COLOR_WRITE_ENABLE_RED;
-		case ColorWriteEnable::Greed:
+		case ColorWriteEnable::Green:
 			return D3D11_COLOR_WRITE_ENABLE_GREEN;
 		case ColorWriteEnable::Blue:
 			return D3D11_COLOR_WRITE_ENABLE_BLUE;

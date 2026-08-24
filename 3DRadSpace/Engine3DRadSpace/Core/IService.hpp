@@ -22,6 +22,10 @@ namespace Engine3DRadSpace
 		IService(IService&&) noexcept = default;
 		IService& operator=(IService&&) noexcept = default;
 	public:
+		/// <summary>
+		/// Gets the owner of this instance.
+		/// </summary>
+		/// <returns>IGame owner</returns>
 		IGame* GetOwner() const noexcept;
 
 		virtual ~IService() = default;
@@ -29,6 +33,9 @@ namespace Engine3DRadSpace
 		friend class IGame;
 	};
 
+	/// <summary>
+	/// Is S a service?
+	/// </summary>
 	template<typename S>
 	concept Service = std::is_base_of_v<IService, S>;
 }

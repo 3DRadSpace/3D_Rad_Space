@@ -204,6 +204,7 @@ void RigidDynamic::Load()
 
 void RigidDynamic::Load(const std::filesystem::path& path)
 {
+	(void)path;
 }
 
 void RigidDynamic::Update()

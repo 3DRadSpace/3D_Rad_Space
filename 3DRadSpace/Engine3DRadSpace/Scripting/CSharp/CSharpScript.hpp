@@ -13,7 +13,7 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		int _id = -1;
 		bool _initialized = false;
 	public:
-		CSharpScript(
+		explicit CSharpScript(
 			const std::string& name = "C# Script",
 			bool enabled = true,
 			const std::string& src = ""

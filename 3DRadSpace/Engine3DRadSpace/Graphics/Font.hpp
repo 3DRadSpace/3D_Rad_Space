@@ -57,10 +57,19 @@ namespace Engine3DRadSpace::Graphics
 		Font(IGraphicsDevice* device, const std::filesystem::path &path);
 
 		Font(const Font&) = delete;
+		/// <summary>
+		/// Move constructor. Transfers the ownership of the given Font instance to this instance.
+		/// </summary>
+		/// <param name="font">The Font to move from.</param>
 		Font(Font&& font) noexcept;
 
 		Font& operator=(const Font&) = delete;
-		Font& operator=(Font&&) noexcept;
+		/// <summary>
+		/// Move assignment operator. 
+		/// </summary>
+		/// <param name="other">The Font to move from.</param>
+		/// <returns>The moved Font.</returns>
+		Font& operator=(Font&& other) noexcept;
 
 		/// <summary>
 		/// Returns the size the font was created with.
@@ -70,13 +79,13 @@ namespace Engine3DRadSpace::Graphics
 		/// <summary>
 		/// Returns a copy of the supported characters.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>A string containing the supported characters.</returns>
 		const std::string SupportedCharacters() const noexcept;
 
 		/// <summary>
 		/// Returns the texture containing all glyphs.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The texture containing all glyphs.</returns>
 		ITexture2D* GetTexture() const noexcept;
 
 		/// <summary>
