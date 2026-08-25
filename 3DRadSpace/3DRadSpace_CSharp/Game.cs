@@ -6,34 +6,28 @@ namespace Engine3DRadSpace;
 
 public class Game : InstIGame
 {
-	private IntPtr _gameHandle = IntPtr.Zero;
-
 	protected List<Tuple<int, object>> objects;
 
-	//[DllImport("3DRadSpace.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "??0Game@Engine3DRadSpace@@QEAA@$$QEAVWindow@1@@Z")]
-	//static extern private IntPtr _createGameFromWindow();
+	[DllImport("3DRadSpace.FFI.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "E3DRSP_Game_Create")]
+	static extern private IntPtr _createGame(string title, ulong width, ulong height);
 
-	//[DllImport("3DRadSpace.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "?Run@Game@Engine3DRadSpace@@QEAAXXZ")]
-	//static extern private void _runGame(IntPtr gameHandle);
+	[DllImport("3DRadSpace.FFI.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "E3DRSP_Game_Run")]
+	static extern private void _runGame(IntPtr gameHandle);
 
-	public Game(string title, uint width = 800, uint height = 600) : base(IntPtr.Zero)
+    [DllImport("3DRadSpace.FFI.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "E3DRSP_Game_RunOneFrame")]
+    static extern private void _runOneFrame(IntPtr gameHandle);
+
+    public Game(string title, uint width = 800, uint height = 600) : base(_createGame(title, (ulong)width, (ulong)height))
 	{
-		//_gameHandle = _createGameFromWindow();
-		objects = new List<Tuple<int, object>>();
-		Window = new Window(title, width, height);
-		Device = null;
-
+		
 	}
-	public Window Window { get; private set; }
-	public IGraphicsDevice Device { get; private set; }
-
-	public IntPtr InstanceHandle
-	{
-		get => _gameHandle;
-	}
-
 	public void Run()
 	{
-		//_runGame(_gameHandle);
+		_runGame(_handle);
+	}
+
+	public void RunOneFrame()
+	{
+		_runOneFrame(_handle);
 	}
 }

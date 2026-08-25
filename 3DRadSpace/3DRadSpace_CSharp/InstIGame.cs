@@ -1,10 +1,12 @@
 ﻿using Engine3DRadSpace.Content;
+using Engine3DRadSpace.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Engine3DRadSpace
 {
@@ -25,7 +27,15 @@ namespace Engine3DRadSpace
 		[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IGame_Destroy")]
 		private static extern void _destroy(IntPtr handle);
 
-		public InstIGame(IntPtr handle) : base(handle, _destroy)
+        [DllImport("3DRadSpace.FFI.dll", EntryPoint ="E3DRSP_Game_GetMouseRay")]
+        private static extern Ray _getMouseRay(
+			IntPtr handle,
+			Vector2 pos,
+			in Matrix4x4 view, 
+			in Matrix4x4 projection
+		);
+
+        public InstIGame(IntPtr handle) : base(handle, _destroy)
 		{
 		}
 
@@ -37,6 +47,11 @@ namespace Engine3DRadSpace
 		{
 			_exit(_handle);
 		}
+		
+        public Ray GetMouseRay(Vector2 pos, in Matrix4x4 view, in Matrix4x4 projection)
+        {
+            return _getMouseRay(_handle, pos, view, projection);
+        }
 
 		public bool WasInitialized
 		{

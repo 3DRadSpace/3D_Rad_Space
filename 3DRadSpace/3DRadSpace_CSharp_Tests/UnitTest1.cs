@@ -2,16 +2,25 @@ using Engine3DRadSpace;
 
 namespace Engine3DRadSpace_CSharp_Tests
 {
-	[TestClass]
-	public class UnitTest1
+    class TestGame : Game
+    {
+        public TestGame() : base("3DRadSpace C# Sample")
+        {
+        }
+
+    }
+
+    [TestClass]
+	public class GameTests
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public void Run10Frames()
 		{
-			//GraphicsDevice device = new GraphicsDevice(IntPtr.Zero, 800, 600);
-			//device.Dispose();
-
-			Assert.AreEqual(1, 1);
+			TestGame game = new TestGame();
+			for (int i = 0; i < 10; i++)
+			{
+				game.RunOneFrame();
+			}
 		}
 	}
 }

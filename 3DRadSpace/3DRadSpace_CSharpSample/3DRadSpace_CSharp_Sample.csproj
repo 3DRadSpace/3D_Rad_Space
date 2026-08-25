@@ -9,6 +9,7 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>false</IsTestProject>
     <PlatformTarget>x64</PlatformTarget>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
