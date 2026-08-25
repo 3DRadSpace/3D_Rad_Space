@@ -33,6 +33,12 @@ Setting<float> Settings::GizmoSensitivity =
 	.Max = 20.0f
 };
 
+Setting<bool> Settings::PreferArcShot =
+{
+	.Name = "Prefer Arc shot camera",
+	.Value = true
+};
+
 template<typename Fn, typename ...Args>
 void try_emptycatch(Fn&& fn, Args&& ...args)
 {
@@ -71,6 +77,7 @@ void Settings::Load()
 	try_emptycatch([&]() {StartupUpdate.Value = settings["Updates"]["StartupUpdate"].get<bool>(); });
 	try_emptycatch([&]() {ShowGrid.Value = settings["Editor"]["ShowGrid"].get<bool>(); });
 	try_emptycatch([&]() {GizmoSensitivity.Value = settings["Editor"]["GizmoSensitivity"].get<float>(); });
+	try_emptycatch([&]() {PreferArcShot.Value = settings["Editor"]["PreferArcShot"].get<bool>(); });
 }
 
 void Settings::Save()
@@ -82,6 +89,7 @@ void Settings::Save()
 	jsonSettings["Updates"]["StartupUpdate"] = StartupUpdate.Value;
 	jsonSettings["Editor"]["ShowGrid"] = ShowGrid.Value;
 	jsonSettings["Editor"]["GizmoSensitivity"] = GizmoSensitivity.Value;
+	jsonSettings["Editor"]["PreferArcShot"] = PreferArcShot.Value;
 
 	std::ofstream jsonFile(GetAppDataFolder() + "Settings.json");
 	jsonFile << std::setw(4) << jsonSettings;

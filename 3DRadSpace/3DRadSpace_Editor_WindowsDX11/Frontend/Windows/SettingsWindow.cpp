@@ -188,6 +188,7 @@ void SettingsWindow::_createControls()
 	_addSetting(Settings::CameraSensitivity);
 	_addSetting(Settings::StartupUpdate);
 	_addSetting(Settings::ShowGrid);
+	_addSetting(Settings::PreferArcShot);
 
 	HDC hdc = GetDC(window);
 

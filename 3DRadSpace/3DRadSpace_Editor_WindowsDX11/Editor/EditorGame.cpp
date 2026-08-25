@@ -60,6 +60,19 @@ void EditorGame::Initialize()
 	grid = std::make_unique<Primitives::LineList>(Device.get(), dLines);
 
 	Camera.InternalInitialize(this);
+
+	if (Settings::PreferArcShot.Value)
+	{
+		Camera.Rotation = Quaternion::FromYawPitchRoll(cameraPos.X, cameraPos.Y, 0);
+	}
+	else
+	{
+		//cameraPos is stored using the orbit-camera convention (negated in Update() for fp look),
+		//so it needs to be pre-negated here to start out looking at the same angle as the arc-shot camera.
+		cameraPos = -cameraPos;
+		Camera.Rotation = Quaternion::FromYawPitchRoll(-cameraPos.X, -cameraPos.Y, 0);
+	}
+	Camera.Position = cursor3D + Vector3::UnitZ().Transform(Camera.Rotation) * (zoom + 5);
 	Camera.FarPlaneDistance = 1000.0f;
 }
 
@@ -390,10 +403,55 @@ void EditorGame::Update()
 
 	_gizmoButtons();
 
-	Camera.Rotation = Quaternion::FromYawPitchRoll(cameraPos.X, cameraPos.Y, 0);
-	Camera.Position = cursor3D + Vector3::UnitZ().Transform(Camera.Rotation) * (zoom + 5);
-
+	if (Settings::PreferArcShot.Value)
+	{
+		Camera.Rotation = Quaternion::FromYawPitchRoll(cameraPos.X, cameraPos.Y, 0);
+		Camera.Position = cursor3D + Vector3::UnitZ().Transform(Camera.Rotation) * (zoom + 5);
+	}
+	else
+	{
+		Camera.Rotation = Quaternion::FromYawPitchRoll(-cameraPos.X, -cameraPos.Y, 0);
+		_handlefpControls();
+	}
 	Cameras->SetActiveCamera(&Camera);
+}
+
+void EditorGame::_handlefpControls()
+{
+	Vector3 fwd = Vector3::Transform(-Vector3::UnitZ(), Camera.Rotation);
+	Vector3 right = Vector3::Cross(fwd, Camera.Normal);
+
+	float movementSpeed = (float)Update_dt * (zoom + 50);
+
+	if(Keyboard.IsKeyDown(Key::LeftShift) || Keyboard.IsKeyDown(Key::RightShift))
+	{
+		movementSpeed *= 5;
+	}
+
+	if (Keyboard.IsKeyDown(Key::W) || Keyboard.IsKeyDown(Key::UpArrow))
+	{
+		Camera.Position += fwd * movementSpeed;
+	}
+	if (Keyboard.IsKeyDown(Key::S) || Keyboard.IsKeyDown(Key::DownArrow))
+	{
+		Camera.Position -= fwd * movementSpeed;
+	}
+	if (Keyboard.IsKeyDown(Key::A) || Keyboard.IsKeyDown(Key::LeftArrow))
+	{
+		Camera.Position -= right * movementSpeed;
+	}
+	if (Keyboard.IsKeyDown(Key::D) || Keyboard.IsKeyDown(Key::RightArrow))
+	{
+		Camera.Position += right * movementSpeed;
+	}
+	if (Keyboard.IsKeyDown(Key::Q) || Keyboard.IsKeyDown(Key::PageDown))
+	{
+		Camera.Position.Z += movementSpeed;
+	}
+	if (Keyboard.IsKeyDown(Key::E) || Keyboard.IsKeyDown(Key::PageUp))
+	{
+		Camera.Position.Z -= movementSpeed;
+	}
 }
 
 void EditorGame::Draw3D()

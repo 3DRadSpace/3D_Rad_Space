@@ -68,6 +68,7 @@ class EditorGame : public Engine3DRadSpace::Game
 	void _controlCamera();
 	void _picking();
 	void _gizmoButtons();
+	void _handlefpControls();
 public:
 	EditorGame(HWND parent, HINSTANCE hInstance);
 
