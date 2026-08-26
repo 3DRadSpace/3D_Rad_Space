@@ -38,11 +38,6 @@ namespace Engine3DRadSpace::Audio
 		AudioEngine& operator=(AudioEngine&&) = delete;
 
 		/// <summary>
-		/// Specifies the listener for this audio engine.
-		/// </summary>
-		class Listener Listener;
-
-		/// <summary>
 		/// Returns an list of all available audio devices on the machine.
 		/// </summary>
 		/// <returns>Vec<string> audio devices</returns>

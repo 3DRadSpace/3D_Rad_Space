@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/IService.h"
 #include "IAsset.h"
 #include "../Reflection/UUID.h"
 

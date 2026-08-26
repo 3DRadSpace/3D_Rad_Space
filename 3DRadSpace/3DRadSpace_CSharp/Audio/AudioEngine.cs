@@ -28,6 +28,12 @@ public class AudioEngine : IDisposable
 	[DllImport("3DRadSpace.FFI.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "E3DRSP_IAudioEngine_Destroy")]
 	private static extern void destroy(IntPtr audio);
 
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IAudioEngine_GetListener")]
+	private static extern Listener getListener(IntPtr audio);
+
+	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IAudioEngine_SetListener")]
+	private static extern void setListener(IntPtr audio,in Listener listener);
+
 	public AudioEngine()
 	{
 		_audio = create();
@@ -91,7 +97,13 @@ public class AudioEngine : IDisposable
 		get => _audio;
 	}
 
-	public void Dispose()
+	public Listener Listener
+    {
+        get => getListener(_audio);
+        set => setListener(_audio, value);
+    }
+
+    public void Dispose()
 	{
 		Dispose(true);
 		GC.SuppressFinalize(this);

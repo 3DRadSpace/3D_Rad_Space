@@ -21,7 +21,9 @@ namespace Engine3DRadSpace::Audio
 		/// Max volume of the sound. Range is [0.0, 1.0]. Default is 1.0.
 		/// </summary>
 		float MaxGain;
+		/// <summary>
 		/// Minimum volume of the sound. Range is [0.0, 1.0]. Default is 0.0.
+		/// </summary>
 		float MinGain;
 
 		/// <summary>
@@ -52,17 +54,17 @@ namespace Engine3DRadSpace::Audio
 		float RolloffFactor;
 
 		/// <summary>
-		///
+		/// Gain multiplier applied to the sound when the listener is outside the outer cone angle. Range is [0.0, 1.0]. Default is 0.0.
 		/// </summary>
 		float ConeOuterGain;
 
 		/// <summary>
-		/// 
+		/// Angle, in degrees, of the inner sound cone within which the sound is heard at full gain. Range is [0, 360]. Default is 360.
 		/// </summary>
 		float ConeInnerAngle;
 
 		/// <summary>
-		/// 
+		/// Angle, in degrees, of the outer sound cone beyond which the sound is attenuated to ConeOuterGain. Range is [0, 360]. Default is 360.
 		/// </summary>
 		float ConeOuterAngle;
 

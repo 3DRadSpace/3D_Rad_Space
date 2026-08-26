@@ -1,6 +1,5 @@
 #pragma once
 #include "../Math/Vector3.h"
-#include "../Core/Libs.h"
 
 typedef struct E3DRSP_Listener
 {
@@ -8,7 +7,7 @@ typedef struct E3DRSP_Listener
 	E3DRSP_Vector3 Position;
 	E3DRSP_Vector3 Velocity;
 
-	E3DRSP_Vector3 Directio;
+	E3DRSP_Vector3 Direction;
 	E3DRSP_Vector3 Normal;
 
 	bool Enabled;

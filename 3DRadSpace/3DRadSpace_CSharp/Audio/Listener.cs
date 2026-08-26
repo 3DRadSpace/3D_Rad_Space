@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Engine3DRadSpace.Audio;
 
 [StructLayout(LayoutKind.Sequential)]
-struct Listener
+public struct Listener
 {
 	float Volume;
 	Vector3 Position;

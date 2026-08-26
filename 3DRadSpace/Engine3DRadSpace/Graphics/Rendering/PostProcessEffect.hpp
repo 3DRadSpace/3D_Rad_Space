@@ -26,7 +26,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		/// <param name="device">The graphics device.</param>
 		/// <param name="effect">The shader description.</param>
-		PostProcessEffect(IGraphicsDevice* device, ShaderDesc& effect);
+		PostProcessEffect(IGraphicsDevice* device, const ShaderDesc& effect);
 		/// <summary>
 		/// Is this effect enabled?
 		/// </summary>

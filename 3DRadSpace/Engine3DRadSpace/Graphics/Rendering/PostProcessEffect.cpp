@@ -9,7 +9,7 @@ using namespace Engine3DRadSpace::Graphics::Rendering;
 
 PostProcessEffect::PostProcessEffect(
 	IGraphicsDevice* device,
-	ShaderDesc& effectDesc
+	const ShaderDesc& effectDesc
 ) :
 	_vertex(nullptr),
 	_device(device),
