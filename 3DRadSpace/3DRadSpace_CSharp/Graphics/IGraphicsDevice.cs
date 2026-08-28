@@ -50,9 +50,10 @@ public interface IGraphicsDevice : IPtrWrapper
     public IDepthStencilState CreateDepthStencilState_DepthReadReverseZ();
 
     public IShaderCompiler ShaderCompiler();
-    ///<summmary
-    ///Returns a 2x2 blank white texture.
-    ///</summary
+    /// <summary>
+    /// Returns a white blank texture.
+    /// </summary>
+    /// <returns></returns>
     public ITexture2D WhiteBlank();
 
     public IVertexBuffer GetScreenQuad();

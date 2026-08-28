@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine3DRadSpace.Graphics;
 
-public class InstIGraphicsDevice : NatPtrWrapper, IGraphicsDevice
+public class InstIGraphicsDevice : InstIService, IGraphicsDevice
 {
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IGraphicsDevice_Destroy")]
 	extern static void _destroy(IntPtr handle);

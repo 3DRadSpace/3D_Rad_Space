@@ -4,7 +4,7 @@ namespace Engine3DRadSpace.Scripting
 {
     public class Script : IScript
     {
-        public IObject? Object { get; internal set; }
+        public IObject Object { get; internal set; }
 
         public Script() 
         {

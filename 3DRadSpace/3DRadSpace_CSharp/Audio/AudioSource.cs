@@ -24,6 +24,5 @@ public struct AudioSource
 	float ConeOuterGain;
 	float ConeInnerAngle;
 	float ConeOuterAngle;
-
 	byte Looping;
 }
