@@ -22,6 +22,15 @@ extern "C"
 		const E3DRSP_Matrix4x4* view,
 		const E3DRSP_Matrix4x4* projection
 	);
+
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetSpriteBatch(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetIGraphicsDevice(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetPostProcessCollection(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetIPhysicsEngine(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetRenderingManager(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetObjectList(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetContentManager(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetCameraProvider(E3DRSP_Game game);
 #ifdef __cplusplus
 }
 #endif

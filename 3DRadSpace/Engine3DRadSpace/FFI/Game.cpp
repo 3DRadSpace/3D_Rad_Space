@@ -54,3 +54,51 @@ E3DRSP_Ray E3DRSP_Game_GetMouseRay(
 		E3DRSP_Vector3{ray.Direction.X, ray.Direction.Y, ray.Direction.Z},
 	};
 }
+
+void* E3DRSP_Game_GetSpriteBatch(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->SpriteBatch.get();
+}
+
+void* E3DRSP_Game_GetIGraphicsDevice(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Device.get();
+}
+
+void* E3DRSP_Game_GetPostProcessCollection(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->PostProcesses.get();
+}
+
+void* E3DRSP_Game_GetIPhysicsEngine(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Physics.get();
+}
+
+void* E3DRSP_Game_GetRenderingManager(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->RenderingManager.get();
+}
+
+void* E3DRSP_Game_GetObjectList(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Objects.get();
+}
+
+void* E3DRSP_Game_GetContentManager(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Content.get();
+}
+
+void* E3DRSP_Game_GetCameraProvider(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Cameras.get();
+}
