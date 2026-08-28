@@ -220,11 +220,11 @@ public class InstIGraphicsDevice : InstIService, IGraphicsDevice
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IGraphicsDevice_NativeHandle")]
 	extern static IntPtr _nativeHandle(IntPtr handle);
 
-	public InstIGraphicsDevice(IntPtr handle) : base(handle, _destroy)
+	public InstIGraphicsDevice(IntPtr handle) : base(handle)
 	{
 	}
 
-	internal InstIGraphicsDevice(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle ? _destroy : null)
+	internal InstIGraphicsDevice(IntPtr handle, bool ownsHandle) : base(handle)
 	{
 	}
 
