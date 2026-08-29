@@ -126,4 +126,5 @@ REFL_BEGIN(FreeCam, "FreeCam", "Camera objects", "Perspective camera")
 	REFL_METHOD(FreeCam, Matrix4x4, &FreeCam::GetViewMatrix, "Get View Matrix")
 	REFL_METHOD(FreeCam, Matrix4x4, &FreeCam::GetProjectionMatrix, "Get Projection Matrix")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/FreeCam.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_FreeCam.png")
 REFL_END

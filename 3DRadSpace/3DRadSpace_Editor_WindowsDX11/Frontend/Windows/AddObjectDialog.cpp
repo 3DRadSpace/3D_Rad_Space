@@ -118,7 +118,7 @@ IObject* AddObjectDialog::ShowDialog()
 
 struct objectItem
 {
-	LPCWSTR image;
+	std::string image;
 	int categoryID;
 };
 
@@ -146,14 +146,6 @@ void AddObjectDialog::createForms()
 	int k = 1;
 	for (size_t j = 0; j < Objects.size(); j++)
 	{
-		int pngResourceID = IDB_PNG1 + static_cast<int>(j);
-		if (pngResourceID > IDB_PNG24)
-		{
-			pngResourceID = IDB_PNG24;
-		}
-
-		auto image = MAKEINTRESOURCEW(pngResourceID);
-
 		int categoryID = 0;
 
 		if(categories.find(Objects[j]->Category) == categories.end())
@@ -168,13 +160,27 @@ void AddObjectDialog::createForms()
 			categoryID = categories[Objects[j]->Category];
 		}
 
-		objects.emplace_back(std::string(Objects[j]->Name), objectItem{image, categoryID});
+		std::string imagePath = "Data\\Editor\\OBJ_Empty.png";
+		for (auto& field : *Objects[j])
+		{
+			if (auto attr = dynamic_cast<Attribute*>(field); attr != nullptr)
+			{
+				if (attr->FieldName() == "Icon")
+				{
+					imagePath = attr->FieldDesc();
+					break;
+				}
+			}
+		}
+
+		objects.emplace_back(std::string(Objects[j]->Name), objectItem{imagePath, categoryID});
 	}
 
 	//Populate the image list with the object data (icons and names)
 	for (auto& [name, obj] : objects)
 	{
-		HBITMAP img = loadImgResource(obj.image, L"PNG", static_cast<HMODULE>(hInstance));
+		unsigned w, h;
+		HBITMAP img = loadImageFromFile(obj.image, w, h);
 		int imgIndex = ImageList_Add(imageList, img, nullptr);
 		DeleteObject(img);
 

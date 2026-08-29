@@ -93,4 +93,5 @@ REFL_BEGIN(Timer, "Timer", "Events", "Event object that executes an event at a s
 	REFL_METHOD(Timer, void, &Timer::Disable, "Pause")
 	REFL_METHOD(Timer, void, &Timer::ResetTimer, "Reset")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Timer.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Timer.png")
 REFL_END

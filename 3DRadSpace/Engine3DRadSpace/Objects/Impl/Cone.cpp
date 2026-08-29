@@ -91,4 +91,5 @@ REFL_BEGIN(Cone, "Cone", "3D Primitives", "3D box")
 	REFL_METHOD(Cone, void, &Cone::Hide, "Hide")
 	REFL_METHOD(Cone, bool, &Cone::SwitchVisibility, "Switch Visibility")
 	REFL_ATTR("HelpURL","https://3dradspace.github.io/docs/Cone.html")
+	REFL_ATTR("Icon","Data\\Editor\\OBJ_Cone.png")
 REFL_END

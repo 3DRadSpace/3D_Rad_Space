@@ -132,4 +132,5 @@ REFL_BEGIN(Camera,"Camera","Camera objects","Perspective camera")
 	REFL_METHOD(Camera, Matrix4x4, &Camera::GetViewMatrix, "Get View Matrix")
 	REFL_METHOD(Camera, Matrix4x4, &Camera::GetProjectionMatrix, "Get Projection Matrix")
 	REFL_ATTR("HelpURL","https://3dradspace.github.io/docs/Camera.html")
+	REFL_ATTR("Icon","Data\\Editor\\OBJ_Camera.png")
 REFL_END

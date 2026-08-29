@@ -1,5 +1,7 @@
 #include "IPrimitive.hpp"
 #include "../IShaderCompiler.hpp"
+#include "../Rendering/RenderingManager.hpp"
+#include "../../Core/IGame.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Graphics;
@@ -58,4 +60,19 @@ void IPrimitive::Draw3D()
 
     cmd->SetTopology(VertexTopology::TriangleList);
     cmd->DrawVertexBufferWithindices(_vertices.get(), _indices.get());
+}
+
+IVertexBuffer* IPrimitive::GetVertexBuffer() const noexcept
+{
+	return _vertices.get();
+}
+
+IIndexBuffer* IPrimitive::GetIndexBuffer() const noexcept
+{
+	return _indices.get();
+}
+
+Effect* IPrimitive::GetShader() const noexcept
+{
+	return _shader;
 }

@@ -314,4 +314,5 @@ REFL_FIELD_GS(SoundSource, bool, ss_getlooping, ss_setlooping, "Is looping", tru
 REFL_METHOD(SoundSource, void, &SoundSource::Enable, "Play")
 REFL_METHOD(SoundSource, void, &SoundSource::Disable, "Pause")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SoundSource.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_SoundSource.png")
 REFL_END

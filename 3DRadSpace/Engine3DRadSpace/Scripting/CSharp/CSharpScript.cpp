@@ -89,4 +89,6 @@ REFL_FIELD(CSharpScript, bool, Enabled, "Enabled", true, "Whether the script is 
 REFL_FIELD(CSharpScript, std::string, ScriptPath, "Script path", "", "Path to script file")
 REFL_FIELD(CSharpScript, std::string, Class, "Entry classname", "", "Name of the class being constructed")
 REFL_ATTR("CustomWindow", "CreateCSharpEditorWindow")
+REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/CSharpScript.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_CSharpScript.png")
 REFL_END

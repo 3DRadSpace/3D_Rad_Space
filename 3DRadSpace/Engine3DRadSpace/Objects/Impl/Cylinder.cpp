@@ -86,4 +86,5 @@ REFL_BEGIN(Cylinder, "Cylinder", "3D Primitives", "3D box")
 	REFL_METHOD(Cylinder, void, &Cylinder::Hide, "Hide")
 	REFL_METHOD(Cylinder, bool, &Cylinder::SwitchVisibility, "Switch Visibility")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/docs/Cylinder.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Cylinder.png")
 REFL_END

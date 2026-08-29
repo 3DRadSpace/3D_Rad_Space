@@ -68,6 +68,7 @@
 /// - "CustomWindow": Specifies that the given object doesn't use the default editor window, but an custom one instead. The value is the name of the function that creates the custom window.
 ///                   Refer to CustomEditObjectWindow inside the Plugin library for more details.
 ///                   WARNING: The function name must be unique across all loaded modules.
+/// - "Icon" : Specifies an path to an icon file that will be used as an visible icon in the editor.
 #include "Attribute.hpp"
 
 #define REFL_ATTR(Name, Value) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::Attribute(Name, Value)),

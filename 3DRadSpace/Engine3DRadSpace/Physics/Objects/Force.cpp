@@ -173,4 +173,5 @@ REFL_FIELD(Force, bool, Torque, "Torque", false, "Whether the force is a torque 
 REFL_METHOD(Force, void, &Force::Enable, "Enable")
 REFL_METHOD(Force, void, &Force::Disable, "Disable")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Force.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_Force.png")
 REFL_END

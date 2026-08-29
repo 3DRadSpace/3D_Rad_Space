@@ -164,4 +164,5 @@ REFL_METHOD(FPCharacter, Matrix4x4, &FPCharacter::GetModelMatrix, "Get World Mat
 REFL_METHOD(FPCharacter, Matrix4x4, &FPCharacter::GetViewMatrix, "Get View Matrix")
 REFL_METHOD(FPCharacter, Matrix4x4, &FPCharacter::GetProjectionMatrix, "Get Projection Matrix")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/FPCharacter.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_FPCharacter.png")
 REFL_END

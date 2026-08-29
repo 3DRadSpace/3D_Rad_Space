@@ -4,6 +4,7 @@
 #include "../ModelMeshPart.hpp"
 #include "../Effect.hpp"
 #include "../VertexDeclarations.hpp"
+#include "../Rendering/RenderPassType.hpp"
 
 namespace Engine3DRadSpace::Graphics::Primitives
 {
@@ -48,6 +49,12 @@ namespace Engine3DRadSpace::Graphics::Primitives
 		Math::Matrix4x4 Transform;
 
 		void Draw3D() override;
+
+		void DrawEx(Rendering::RenderPassType passType);
+
+		IVertexBuffer* GetVertexBuffer() const noexcept;
+		IIndexBuffer* GetIndexBuffer() const noexcept;
+		Effect* GetShader() const noexcept;
 
 		~IPrimitive() override = default;
 	};

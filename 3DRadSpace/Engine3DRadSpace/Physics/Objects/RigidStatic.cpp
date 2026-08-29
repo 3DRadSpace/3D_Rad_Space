@@ -302,4 +302,5 @@ REFL_FIELD_GS(RigidStatic, float, rigidstatic_getStaticFriction, rigidStatic_set
 REFL_FIELD_GS(RigidStatic, float, rigidstatic_getDynamicFriction, rigidStatic_setDynamicFriction, "Dynamic Friction", 0.5f, "Dynamic friction of the material")
 REFL_FIELD_GS(RigidStatic, float, rigidstatic_getRestitution, rigidStatic_setRestitution, "Restitution", 0.5f, "Bounciness of the material")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/RigidStatic.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_RigidStatic.png")
 REFL_END

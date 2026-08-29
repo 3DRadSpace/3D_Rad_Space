@@ -117,4 +117,5 @@ REFL_BEGIN(TextPrint, "TextPrint", "2D Objects", "Text element on the screen")
     REFL_METHOD(TextPrint, void, &TextPrint::Hide, "Hide")
     REFL_METHOD(TextPrint, bool, &TextPrint::SwitchVisibility, "Switch visibility")
     REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/TextPrint.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_TextPrint.png")
 REFL_END

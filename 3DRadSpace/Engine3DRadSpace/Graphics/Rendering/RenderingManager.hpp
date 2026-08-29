@@ -4,6 +4,7 @@
 #include "../IGraphicsDevice.hpp"
 #include "RenderPassType.hpp"
 #include "DirectionalLight.hpp"
+#include "../../Objects/IObject.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {

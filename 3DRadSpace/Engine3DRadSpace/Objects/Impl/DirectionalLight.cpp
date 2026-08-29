@@ -46,7 +46,7 @@ void DirectionalLight::Load(const std::filesystem::path& path)
 
 void DirectionalLight::Update()
 {
-	if (Enabled) Sync();
+	if (Visible) Sync();
 }
 
 void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept
@@ -102,7 +102,7 @@ float DirectionalLight::GetIntensity() const noexcept
 
 void DirectionalLight::Sync() noexcept
 {
-	if (_light && Enabled)
+	if (_light && Visible)
 	{
 		_light->LightDirection = GetLightDir();
 		_light->LightColor = GetLightColor();
@@ -141,5 +141,9 @@ REFL_FIELD_GS(DirectionalLight, Math::Vector3, dl_getlightdir, dl_setlightdir, "
 REFL_FIELD_GS(DirectionalLight, Math::Color, dl_getlightcolor, dl_setlightcolor, "Light Color", Math::Color(1.0f, 1.0f, 1.0f), "Color of the light")
 REFL_FIELD_GS(DirectionalLight, Math::Color, dl_getambientcolor, dl_setambientcolor, "Ambient Color", Math::Color(0.1f, 0.1f, 0.1f), "Ambient color of the light")
 REFL_FIELD_GS(DirectionalLight, float, dl_getintensity, dl_setintensity, "Intensity", 1.0f, "Intensity of the light")
+REFL_METHOD(DirectionalLight, void, (&DirectionalLight::Show), "Show")
+REFL_METHOD(DirectionalLight, void, (&DirectionalLight::Hide), "Hide")
+REFL_METHOD(DirectionalLight, bool, (&DirectionalLight::SwitchVisibility), "Switch Visibility")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/DirectionalLight.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_DirectionalLight.png")
 REFL_END

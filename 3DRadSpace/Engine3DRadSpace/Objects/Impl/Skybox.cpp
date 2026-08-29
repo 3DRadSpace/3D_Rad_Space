@@ -96,4 +96,5 @@ REFL_BEGIN(Skybox, "Skybox", "3D Objects", "3D sky box")
 	REFL_METHOD(Skybox, void, &Skybox::Hide, "Hide")
 	REFL_METHOD(Skybox, bool, &Skybox::SwitchVisibility, "Switch Visibility")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Skybox.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Skybox.png")
 REFL_END

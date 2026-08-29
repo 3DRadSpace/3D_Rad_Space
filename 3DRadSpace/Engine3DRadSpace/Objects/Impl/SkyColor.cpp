@@ -53,4 +53,5 @@ REFL_BEGIN(SkyColor,"SkyColor", "Rendering", "Sets the backbuffer clear color")
 	REFL_METHOD(SkyColor, void, &SkyColor::Disable, "Disable")
 	REFL_METHOD(SkyColor, bool, &SkyColor::Switch, "Switch")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SkyColor.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_SkyColor.png")
 REFL_END

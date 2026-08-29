@@ -200,4 +200,5 @@ REFL_FIELD_GS(SoundEffect, float, ss_getpitch, ss_setpitch, "Pitch", 1.0f, "Pitc
 REFL_METHOD(SoundEffect, void, &SoundEffect::Enable, "Play")
 REFL_METHOD(SoundEffect, void, &SoundEffect::Disable, "Pause")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SoundEffect.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_SoundEffect.png")
 REFL_END

@@ -16,7 +16,8 @@ SpriteBillboard::SpriteBillboard(
 	const Math::Vector3& axis,
 	bool spherical
 ) : IObject3D(name, visible, visible, pos, axis), 
-	IsSpherical(spherical)
+	IsSpherical(spherical),
+	_texture(nullptr)
 {
 	if (!texturePath.empty())
 	{
@@ -32,12 +33,14 @@ SpriteBillboard::SpriteBillboard(
 	const Math::Vector3& axis,
 	bool spherical
 ) : IObject3D(name, visible, visible, pos, axis),
-	IsSpherical(spherical)
+	IsSpherical(spherical),
+	_texture(nullptr)
 {
 }
 
 void SpriteBillboard::Initialize()
 {
+	//_blendState = this->GetGraphicsDeviceHandle()->CreateBlendState_AlphaBlend();
 }
 
 void SpriteBillboard::Load()
@@ -149,4 +152,5 @@ REFL_METHOD(SpriteBillboard, void, &SpriteBillboard::Show, "Show")
 REFL_METHOD(SpriteBillboard, void, &SpriteBillboard::Hide, "Hide")
 REFL_METHOD(SpriteBillboard, bool, &SpriteBillboard::SwitchVisibility, "Switch visibility")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SpriteBillboard.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_SpriteBillboard.png")
 REFL_END

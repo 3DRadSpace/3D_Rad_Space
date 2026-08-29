@@ -64,6 +64,12 @@ Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/rele
 
 4.) Compile the solution (Ctrl+Shift+B or F5) with any desired configuration (`x64-Debug`/`x64-Release`).
 
+## Troubleshooting
+
+- If there are crashes related to loading assets, copy the `Data` folder into the executable folder, it was likely not copied by CMake.
+
+- Copy `Lexilla.dll` and `Scintilla.dll` from release or vcpkg binary to enable the scintilla component in the C# script dialog
+
 Notices: 
 
 - Only x64-Windows is supported. No support for x86 is planned. 

@@ -83,4 +83,5 @@ REFL_BEGIN(Sphere, "Sphere", "3D Primitives", "3D box")
 	REFL_METHOD(Sphere, void, &Sphere::Hide, "Hide")
 	REFL_METHOD(Sphere, bool, &Sphere::SwitchVisibility, "Switch visibility")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Sphere.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Sphere.png")
 REFL_END

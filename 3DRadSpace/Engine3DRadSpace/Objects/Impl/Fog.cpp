@@ -87,4 +87,5 @@ REFL_BEGIN(Fog, "Fog", "Post effects", "Post process linear fog")
 	REFL_METHOD(Fog, void, &Fog::Disable, "Disable")
 	REFL_METHOD(Fog, bool, &Fog::Switch, "Switch")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Fog.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Fog.png")
 REFL_END

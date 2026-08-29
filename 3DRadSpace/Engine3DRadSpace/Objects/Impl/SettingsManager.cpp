@@ -65,4 +65,5 @@ REFL_FIELD(SettingsManager, bool, VSyncEnabled, "VSyncEnabled", true, "Whether t
 REFL_FIELD(SettingsManager, bool, FullscreenEnabled, "FullscreenEnabled", false, "Whether to enable fullscreen mode or not")
 REFL_METHOD(SettingsManager, void, &SettingsManager::Initialize, "Apply")
 REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/SettingsManager.html")
+REFL_ATTR("Icon", "Data\\Editor\\OBJ_GameSettings.png")
 REFL_END

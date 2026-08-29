@@ -82,4 +82,5 @@ REFL_BEGIN(Counter, "Counter", "Events", "Counter")
 	REFL_METHOD(Counter, void, &Counter::Enable, "Increment")
 	REFL_METHOD(Counter, void, &Counter::Save, "Save")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Counter.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Counter.png")
 REFL_END

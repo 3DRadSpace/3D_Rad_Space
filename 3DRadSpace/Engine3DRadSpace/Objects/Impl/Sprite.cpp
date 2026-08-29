@@ -200,4 +200,5 @@ REFL_BEGIN(Sprite, "Sprite", "2D Objects", "A single drawable image")
 	REFL_METHOD(Sprite, void, &Sprite::Hide, "Hide")
 	REFL_METHOD(Sprite, bool, &Sprite::SwitchVisibility, "Switch visibility")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Sprite.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Sprite.png")
 REFL_END

@@ -179,4 +179,5 @@ REFL_BEGIN(Skinmesh, "Skinmesh", "3D Objects", "3D model")
 	REFL_METHOD(Skinmesh, void, &Skinmesh::Hide, "Hide")
 	REFL_METHOD(Skinmesh, bool, &Skinmesh::SwitchVisibility, "Switch Visibility")
 	REFL_ATTR("HelpURL", "https://3dradspace.github.io/Docs/Skinmesh.html")
+	REFL_ATTR("Icon", "Data\\Editor\\OBJ_Skinmesh.png")
 REFL_END
