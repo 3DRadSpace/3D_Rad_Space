@@ -7,7 +7,7 @@ namespace Engine3DRadSpace.Graphics.Rendering
         [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IRenderer_Begin")]
         private static extern void E3DRSP_IRenderer_Begin(IntPtr renderer);
         [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IRenderer_Draw")]
-        private static extern void E3DRSP_IRenderer_Draw(IntPtr renderer, IntPtr mesh, in MaterialDescriptor descriptor);
+        private static extern void E3DRSP_IRenderer_Draw(IntPtr renderer, in MeshPartDrawInfo descriptor);
         [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IRenderer_End")]
         private static extern void E3DRSP_IRenderer_End(IntPtr renderer);
         [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IRenderer_IsRenderPassTypeSupported")]
@@ -18,7 +18,7 @@ namespace Engine3DRadSpace.Graphics.Rendering
         public InstIRenderer(IntPtr nativePtr) : base(nativePtr, null) { }
 
         public void Begin() => E3DRSP_IRenderer_Begin(_handle);
-        public void Draw(ModelMeshPart meshPart, in MaterialDescriptor descriptor) => E3DRSP_IRenderer_Draw(_handle, meshPart.Handle, in descriptor);
+        public void Draw(MeshPartDrawInfo meshPart) => E3DRSP_IRenderer_Draw(_handle, in meshPart);
         public void End() => E3DRSP_IRenderer_End(_handle);
         public bool IsRenderPassTypeSupported(int passType) => E3DRSP_IRenderer_IsRenderPassTypeSupported(_handle, passType); 
     }

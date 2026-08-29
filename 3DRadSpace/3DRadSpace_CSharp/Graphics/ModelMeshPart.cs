@@ -1,4 +1,5 @@
-﻿using Engine3DRadSpace.Math;
+﻿using Engine3DRadSpace.Graphics.Rendering;
+using Engine3DRadSpace.Math;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -43,7 +44,13 @@ public class ModelMeshPart : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_SetTransform")]
 	extern static unsafe void _setMatrix(IntPtr meshPart, Matrix4x4 *matrix);
 
-	public ModelMeshPart(IntPtr handle) : base(handle, _destroy)
+    [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_GetMaterial")]
+    extern static MaterialDescriptor _getDescriptor(IntPtr meshPart);
+
+    [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_SetMaterial")]
+    extern static void _setDescriptor(IntPtr meshPart, MaterialDescriptor descriptor);
+
+    public ModelMeshPart(IntPtr handle) : base(handle, _destroy)
 	{
 	}
 
@@ -87,4 +94,10 @@ public class ModelMeshPart : NatPtrWrapper
 		get => _getMatrix(_handle);
 		set => _setMatrix(_handle, &value);
 	}
+
+	public MaterialDescriptor Material
+	{
+		get => _getDescriptor(_handle);
+        set => _setDescriptor(_handle, value);
+    }
 }

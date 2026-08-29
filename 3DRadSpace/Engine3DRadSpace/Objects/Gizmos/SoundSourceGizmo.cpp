@@ -20,25 +20,42 @@ Gizmo<SoundSource>::Gizmo()
 void Gizmo<SoundSource>::Load()
 {
 	if(Object == nullptr) return;
+	auto device = Object->GetGraphicsDeviceHandle();
+
+	if (_soundImage == nullptr)
+	{
+		_soundImage = device->CreateTexture2D("Data\\Sprites\\Sound.png");
+	}
+
+	if (_billboard == nullptr)
+	{
+		_billboard = std::make_unique<Primitives::CylindricalBillboard>(device);
+		_billboard->Texture = _soundImage.get();
+		_billboard->Axis = Math::Vector3::UnitY();
+	}
+	_cameras = Object->GetGame()->GetService<CameraProvider>({});
 }
 
 void Gizmo<SoundSource>::Load(const std::filesystem::path& path)
 {
+	Load();
 }
 
 void Gizmo<SoundSource>::Draw3D()
 {
-
+	auto camera = _cameras->GetActiveCamera();
+	_billboard->Transform = dynamic_cast<IObject3D*>(Object)->GetModelMatrix();
+	_billboard->View = camera->GetViewMatrix();
+	_billboard->Projection = camera->GetProjectionMatrix();
+	_billboard->Draw3D();
 }
 
 void Gizmo<SoundSource>::Draw2D()
 {
-
 }
 
 void Gizmo<SoundSource>::Update()
 {
-
 }
 
 Gizmo<SoundSource>::~Gizmo()

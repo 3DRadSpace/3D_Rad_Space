@@ -223,7 +223,7 @@ void SoundSource::Draw3D()
 
 float SoundSource::Intersects(const Math::Ray &r) const
 {
-	return r.Intersects(Math::BoundingSphere(Position, 1.0f));
+	return r.Intersects(Math::BoundingSphere(Position, 0.5f));
 }
 
 Reflection::UUID SoundSource::GetUUID() const noexcept

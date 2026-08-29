@@ -2,6 +2,6 @@
 public interface IRenderer
 {
     public void Begin();
-    public void Draw(ModelMeshPart meshPart, in MaterialDescriptor descriptor);
+    public void Draw(MeshPartDrawInfo meshPartInfo);
     public void End();
 }
