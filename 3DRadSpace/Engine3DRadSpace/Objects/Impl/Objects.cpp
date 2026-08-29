@@ -81,6 +81,10 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&SpriteBillboardReflInstance
 	};
 
+	if (GetInternalObjectsList().size() > 0)
+	{
+		return;
+	}
 	GetInternalObjectsList().insert_range(GetInternalObjectsList().begin(), ppDefaultObjects);
 }
 

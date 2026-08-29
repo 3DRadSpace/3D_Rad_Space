@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Core/Libs.hpp"
 
 namespace Engine3DRadSpace::Graphics::Rendering
 {

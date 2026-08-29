@@ -10,10 +10,9 @@ void NullRenderer::Begin()
 {
 }
 
-void NullRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor)
+void NullRenderer::Draw(const MeshPartDrawInfo& part)
 {
 	(void)part;
-	(void)materialDescriptor;
 }
 
 void NullRenderer::End()

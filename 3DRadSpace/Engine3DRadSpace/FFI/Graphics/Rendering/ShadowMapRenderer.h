@@ -29,6 +29,9 @@ extern "C"
 	E3DRSP_FFI_EXPORT float E3DRSP_ShadowMapRenderer_GetNearPlane(E3DRSP_ShadowMapRenderer renderer);
 	E3DRSP_FFI_EXPORT void E3DRSP_ShadowMapRenderer_SetNearPlane(E3DRSP_ShadowMapRenderer renderer, float nearPlane);
 
+	E3DRSP_FFI_EXPORT float E3DRSP_ShadowMapRenderer_GetNormalOffsetScale(E3DRSP_ShadowMapRenderer renderer);
+	E3DRSP_FFI_EXPORT void E3DRSP_ShadowMapRenderer_SetNormalOffsetScale(E3DRSP_ShadowMapRenderer renderer, float normalOffsetScale);
+
 	E3DRSP_FFI_EXPORT E3DRSP_IDepthStencilBuffer E3DRSP_ShadowMapRenderer_GetShadowMap(E3DRSP_ShadowMapRenderer renderer);
 	E3DRSP_FFI_EXPORT E3DRSP_ISamplerState E3DRSP_ShadowMapRenderer_GetSamplerState(E3DRSP_ShadowMapRenderer renderer);
 

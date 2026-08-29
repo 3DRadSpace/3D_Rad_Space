@@ -60,6 +60,16 @@ void E3DRSP_ShadowMapRenderer_SetNearPlane(E3DRSP_ShadowMapRenderer renderer, fl
 	static_cast<ShadowMapRenderer*>(renderer)->NearPlane = nearPlane;
 }
 
+float E3DRSP_ShadowMapRenderer_GetNormalOffsetScale(E3DRSP_ShadowMapRenderer renderer)
+{
+	return static_cast<ShadowMapRenderer*>(renderer)->NormalOffsetScale;
+}
+
+void E3DRSP_ShadowMapRenderer_SetNormalOffsetScale(E3DRSP_ShadowMapRenderer renderer, float normalOffsetScale)
+{
+	static_cast<ShadowMapRenderer*>(renderer)->NormalOffsetScale = normalOffsetScale;
+}
+
 E3DRSP_IDepthStencilBuffer E3DRSP_ShadowMapRenderer_GetShadowMap(E3DRSP_ShadowMapRenderer renderer)
 {
 	return static_cast<ShadowMapRenderer*>(renderer)->GetShadowMap();

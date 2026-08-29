@@ -44,8 +44,8 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		float ShadowMapSize = 4.0f;
 
-		float ShadowBias = 0.002f;
-		float ShadowSlopeBias = 0.01f;
+		float ShadowBias = 0.00002f;
+		float ShadowSlopeBias = 0.001f;
 
 		/// <summary>
 		/// Shadow intensity (0.0 = fully dark, 1.0 = no shadow)
@@ -54,6 +54,13 @@ namespace Engine3DRadSpace::Graphics::Rendering
 
 		float NearPlane = 1.0f;
 		float FarPlane = 1000.0f;
+
+		/// <summary>
+		/// Scale factor for normal offset shadows: offsets the world position used for shadow
+		/// sampling along the surface normal (proportional to the shadow map texel size) to
+		/// reduce shadow acne/peter-panning.
+		/// </summary>
+		float NormalOffsetScale = 2.0f;
 
 		/// <summary>
 		/// Gets the shadow map depth texture.
@@ -95,7 +102,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// <summary>
 		/// Submits a mesh part to the shadow map rendering pass.
 		/// </summary>
-		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = nullptr) override;
+		void Draw(const MeshPartDrawInfo& part) override;
 		/// <summary>
 		///	Resets the graphics pipeline and prepares it for the next rendering passes, usually color passes.
 		/// </summary>

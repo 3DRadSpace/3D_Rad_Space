@@ -12,12 +12,6 @@ namespace Engine3DRadSpace::Graphics::Rendering
 	/// </summary>
 	class RenderingManager : public IService
 	{
-		struct MeshPartDrawInfo
-		{
-			ModelMeshPart* Part;
-			RenderPassType PassType;
-		};
-
 		IGraphicsDevice* _device;
 
 		std::vector<std::unique_ptr<IRenderer>> _renderers;

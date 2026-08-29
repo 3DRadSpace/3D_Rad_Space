@@ -30,7 +30,7 @@ void ShadowMapRenderer::_createShadowStates()
 	// Create rasterizer state with depth bias for shadow mapping
 	_shadowRasterizerState = _device->CreateRasterizerState(
 		RasterizerFillMode::Solid,
-		RasterizerCullMode::None,
+		RasterizerCullMode::CullFront,
 		false, // frontCounterClockwise
 		static_cast<int>(ShadowBias * 100000.0f), // depthBias (scaled)
 		0.0f, // depthBiasClamp
@@ -202,10 +202,10 @@ ISamplerState* ShadowMapRenderer::GetShadowSampler() const noexcept
 	return _shadowSampler.get();
 }
 
-void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor)
+void ShadowMapRenderer::Draw(const MeshPartDrawInfo& part)
 {
-	if (!part) return;
-	if (materialDescriptor && !materialDescriptor->HasShadows) return;
+	if (!part.Part) return;
+	if (!part.Part->Material.HasShadows) return;
 
 	_shadowMapEffect->SetAll();
 
@@ -215,14 +215,14 @@ void ShadowMapRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* mate
 	// so the part's own World (and ImportOffset) transform has to be folded in here.
 	// Without this, every mesh is rasterized using raw object-space positions, ignoring
 	// where it actually is in the scene.
-	auto worldLightViewProj = part->ImportOffset * part->World * lvp;
+	auto worldLightViewProj = part.Part->ImportOffset * part.World * lvp;
 
 	_shadowMapEffect->SetData<Math::Matrix4x4>(&worldLightViewProj, 0);
 
 	_context->SetTopology(VertexTopology::TriangleList);
 	_context->DrawVertexBufferWithindices(
-		part->GetVertexBuffer(),
-		part->GetIndexBuffer()
+		part.Part->GetVertexBuffer(),
+		part.Part->GetIndexBuffer()
 	);
 }
 

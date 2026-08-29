@@ -14,6 +14,8 @@ cbuffer ShadowData : register(b1)
     float ShadowBias;
     float ShadowIntensity;
     float2 TexelSize;
+    float NormalOffsetScale;
+    float _padding0;
 }
 
 Texture2D TextureModel : register(t0);
@@ -33,9 +35,10 @@ struct VertexIn
 
 struct VertexOut
 {
-    float4 Position : SV_POSITION;
-    float3 WorldPos : POSITION;
-    float2 UV: TEXCOORD;
+	float4 Position : SV_POSITION;
+	float3 WorldPos : POSITION;
+	float3 WorldNormal : NORMAL;
+	float2 UV: TEXCOORD;
 };
 
 VertexOut VS_Main(VertexIn v)
@@ -43,14 +46,21 @@ VertexOut VS_Main(VertexIn v)
 	VertexOut r;
 	r.Position = mul(float4(v.Position.xyz,1), matWorldViewProj);
 	r.WorldPos = mul(float4(v.Position.xyz,1), matWorld).xyz;
+	r.WorldNormal = normalize(mul(float4(v.Normal.xyz,0), matWorld).xyz);
 	r.UV = v.UV;
 	return r;
 }
 
-float CalculateShadow(float3 worldPos)
+float CalculateShadow(float3 worldPos, float3 worldNormal)
 {
-    // Transform world position to light space
-    float4 lightSpacePos = mul(float4(worldPos, 1.0), matLightViewProj);
+	// Normal offset shadows: push the sample position along the surface normal,
+	// proportional to the shadow map texel size, to reduce shadow acne/peter-panning
+	// without relying solely on depth bias.
+	float texelWorldSize = max(TexelSize.x, TexelSize.y);
+	float3 offsetPos = worldPos + worldNormal * (NormalOffsetScale * texelWorldSize);
+
+	// Transform world position to light space
+	float4 lightSpacePos = mul(float4(offsetPos, 1.0), matLightViewProj);
 
     // Perform perspective divide
     float3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
@@ -70,7 +80,7 @@ float CalculateShadow(float3 worldPos)
 
 float4 PS_Main(VertexOut v) : SV_TARGET
 {
-    float shadowFactor = CalculateShadow(v.WorldPos);
+    float shadowFactor = CalculateShadow(v.WorldPos, normalize(v.WorldNormal));
     float4 textureSample = TextureModel.Sample(TextureSampler, v.UV);
     return float4(textureSample.rgb * shadowFactor, textureSample.a);
 }

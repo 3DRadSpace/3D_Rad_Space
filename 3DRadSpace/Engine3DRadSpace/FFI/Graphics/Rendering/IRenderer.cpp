@@ -10,9 +10,9 @@ void E3DRSP_IRenderer_Begin(E3DRSP_IRenderer renderer)
 	static_cast<IRenderer*>(renderer)->Begin();
 }
 
-void E3DRSP_IRenderer_Draw(E3DRSP_IRenderer renderer, E3DRSP_ModelMeshPart mesh, const E3DRSP_MaterialDescriptor* descriptor)
+void E3DRSP_IRenderer_Draw(E3DRSP_IRenderer renderer, const E3DRSP_MeshPartDrawInfo* part)
 {
-	static_cast<IRenderer*>(renderer)->Draw(static_cast<ModelMeshPart*>(mesh), std::bit_cast<const MaterialDescriptor*>(descriptor));
+	static_cast<IRenderer*>(renderer)->Draw(std::bit_cast<const MeshPartDrawInfo>(*part));
 }
 
 void E3DRSP_IRenderer_End(E3DRSP_IRenderer renderer)

@@ -20,7 +20,7 @@ namespace Engine3DRadSpace::Scripting::CSharp
 		);
 
 		std::string ScriptPath;
-		std::string Class;
+		std::string Class = "MyClass";
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;

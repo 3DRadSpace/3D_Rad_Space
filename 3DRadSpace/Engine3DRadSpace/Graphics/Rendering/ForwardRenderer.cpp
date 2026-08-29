@@ -82,16 +82,14 @@ void ForwardRenderer::Begin()
 	_beginCalled = true;
 }
 
-void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* material)
+void ForwardRenderer::Draw(const MeshPartDrawInfo& part)
 {
 	if (!_beginCalled)
 	{
 		throw Logging::Exception("Begin() must be called before Draw()!");
 	}
 
-	if (part == nullptr) return;
-
-	bool hasShadows = material->HasShadows;
+	bool hasShadows = part.Part->Material.HasShadows;
 	Effect* effect = hasShadows ? _shadowEffect : _trivialEffect;
 
 	auto shadowMapRenderer = _owner->Get<ShadowMapRenderer>();
@@ -109,10 +107,10 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			Math::Matrix4x4 World;
 		} cb0;
 
-		cb0.WorldViewProjection = part->MVP();
+		cb0.WorldViewProjection = part.World * part.View * part.Projection;
 		// Must match ImportOffset * World used by MVP(), since this is what gets multiplied
 		// with vertex positions to produce WorldPos in the vertex shader (used for shadow testing).
-		cb0.World = part->ImportOffset * part->World;
+		cb0.World = part.Part->ImportOffset * part.World;
 
 		effect->SetData<Shadow_ConstantBuffer0>(&cb0, 0);
 
@@ -124,6 +122,8 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			float ShadowBias;
 			float ShadowIntensity;
 			Math::Vector2 TexelSize;
+			float NormalOffsetScale;
+			float _padding0;
 		} cb1;
 
 		// NOTE: the pixel shader's CalculateShadow() receives an already WORLD-SPACE position
@@ -135,7 +135,7 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			shadowMapRenderer->ComputeLightViewMatrix(_owner->MainLight.LightDirection) *
 			shadowMapRenderer->ComputeLightProjectionMatrix();
 
-		cb1.InvViewProj = Math::Matrix4x4::Invert(part->View * part->Projection);
+		cb1.InvViewProj = Math::Matrix4x4::Invert(part.View * part.Projection);
 		cb1.LightDirection = _owner->MainLight.LightDirection;
 
 		cb1.ShadowBias = shadowMapRenderer->ShadowBias;
@@ -144,6 +144,8 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 			1.0f / (_device->Resolution().X * shadowMapRenderer->ShadowMapSize),
 			1.0f / (_device->Resolution().Y * shadowMapRenderer->ShadowMapSize)
 		);
+		cb1.NormalOffsetScale = shadowMapRenderer->NormalOffsetScale;
+		cb1._padding0 = 0.0f;
 
 		effect->SetData<Shadow_ConstantBuffer1>(&cb1, 1);
 
@@ -152,12 +154,12 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 	}
 	else
 	{
-		auto mvp = part->MVP();
+		auto mvp = part.World * part.View * part.Projection;
 		effect->SetData<Math::Matrix4x4>(&mvp, 0);
 	}
 
 	size_t idTexture = 0;
-	for (auto& texture : part->Textures)
+	for (auto& texture : part.Part->Textures)
 	{
 		if (idTexture == 1) idTexture++;
 
@@ -166,7 +168,7 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 	}
 
 	idTexture = 0;
-	for (auto& samplerState : part->TextureSamplers)
+	for (auto& samplerState : part.Part->TextureSamplers)
 	{
 		if (samplerState != nullptr)
 			effect->SetSampler(samplerState.get(), idTexture++);
@@ -174,8 +176,8 @@ void ForwardRenderer::Draw(ModelMeshPart* part, const MaterialDescriptor* materi
 
 	_context->SetTopology(VertexTopology::TriangleList);
 	_context->DrawVertexBufferWithindices(
-		part->GetVertexBuffer(),
-		part->GetIndexBuffer()
+		part.Part->GetVertexBuffer(),
+		part.Part->GetIndexBuffer()
 	);
 }
 

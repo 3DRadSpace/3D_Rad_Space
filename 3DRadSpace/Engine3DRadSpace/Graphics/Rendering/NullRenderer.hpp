@@ -21,8 +21,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Does nothing.
 		/// </summary>
 		/// <param name="part">unused</param>
-		/// <param name="materialDescriptor">unused</param>
-		void Draw(ModelMeshPart* part, const MaterialDescriptor* materialDescriptor = 0) override;
+		void Draw(const MeshPartDrawInfo& part) override;
 		/// <summary>
 		/// Does nothing.
 		/// </summary>

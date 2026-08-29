@@ -1,7 +1,6 @@
 #pragma once
-#include "../ModelMeshPart.hpp"
-#include "RenderPassType.hpp"
 #include "MaterialDescriptor.hpp"
+#include "MeshPartDrawInfo.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -38,7 +37,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// Submits a mesh part to this effect.
 		/// </summary>
 		/// <param name="part">Mesh</param>
-		virtual void Draw(ModelMeshPart* part, const MaterialDescriptor* material) = 0;
+		virtual void Draw(const MeshPartDrawInfo& part) = 0;
 		/// <summary>
 		/// Draws all supported mesh parts.
 		/// </summary>

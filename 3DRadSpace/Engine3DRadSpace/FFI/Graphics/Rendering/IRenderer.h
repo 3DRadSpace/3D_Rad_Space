@@ -6,6 +6,15 @@
 
 typedef void* E3DRSP_IRenderer;
 
+typedef struct E3DRSP_MeshPartDrawInfo
+{
+	E3DRSP_ModelMeshPart* Part;
+	E3DRSP_RenderPassType PassType;
+	E3DRSP_Matrix4x4 World;
+	E3DRSP_Matrix4x4 View;
+	E3DRSP_Matrix4x4 Projection;
+};
+
 #ifdef __cplusplus
 extern "C"
 {

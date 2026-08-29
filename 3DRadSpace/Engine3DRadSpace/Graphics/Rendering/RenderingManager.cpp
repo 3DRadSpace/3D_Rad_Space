@@ -87,7 +87,7 @@ void RenderingManager::Execute()
 		for (auto& part : _meshParts)
 		{
 			if (renderer->IsRenderPassTypeSupported(part.PassType))
-				renderer->Draw(part.Part, &part.Part->Material);
+				renderer->Draw(part);
 		}
 
 		renderer->End();
@@ -113,7 +113,14 @@ void RenderingManager::Draw(ModelMeshPart* part, RenderPassType passType)
 {
 	if (part == nullptr) return;
 	part->Material.HasShadows = (passType == RenderPassType::Opaque || passType == RenderPassType::Transparent);
-	_meshParts.push_back({ part, passType });
+	_meshParts.push_back({
+		part, 
+		passType,
+		part->World, 
+		part->View,
+		part->Projection 
+		}
+	);
 }
 
 std::unique_ptr<RenderingManager> RenderingManager::CreateForward(IGraphicsDevice* device)

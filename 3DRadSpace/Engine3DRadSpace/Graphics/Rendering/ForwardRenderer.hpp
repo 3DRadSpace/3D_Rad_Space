@@ -28,7 +28,7 @@ namespace Engine3DRadSpace::Graphics::Rendering
 		/// </summary>
 		void Begin() override;
 
-		void Draw(ModelMeshPart* part, const MaterialDescriptor* material) override;
+		void Draw(const MeshPartDrawInfo& part) override;
 
 		/// <summary>
 		/// Ends drawing.
