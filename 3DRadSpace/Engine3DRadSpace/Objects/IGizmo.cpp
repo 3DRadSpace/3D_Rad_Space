@@ -1,6 +1,6 @@
 #include "IGizmo.hpp"
 
-using namespace Engine3DRadSpace::Objects;
+using namespace Engine3DRadSpace::Objects::Gizmos;
 
 IGizmo::IGizmo(
 	bool allow3DRendering,

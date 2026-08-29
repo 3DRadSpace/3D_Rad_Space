@@ -12,6 +12,7 @@ add_library(3DRadSpace.Objects SHARED
 	"ICamera.hpp"
 	"ICamera.cpp"
 	"IGizmo.hpp"
+	"IGizmo.cpp"
 	"IObject.hpp"
 	"IObject.cpp"
 	"IObject2D.hpp"

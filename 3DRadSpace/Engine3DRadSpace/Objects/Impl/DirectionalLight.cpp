@@ -1,6 +1,8 @@
 #include "DirectionalLight.hpp"
 #include "../../Graphics/Rendering/RenderingManager.hpp"
 #include "../../Core/IGame.hpp"
+#include "../Gizmos.hpp"
+#include "../Gizmos/DirectionalLightGizmo.hpp"
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -53,7 +55,7 @@ void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept
 {
 	if (_light)
 	{
-		_light->LightDirection = direction;
+		_light->LightDirection = Math::Vector3::Normalize(direction);
 	}
 }
 
@@ -119,7 +121,7 @@ Reflection::UUID DirectionalLight::GetUUID() const noexcept
 
 Gizmos::IGizmo* DirectionalLight::GetGizmo() const noexcept
 {
-	return nullptr;
+	return Internal::GizmoOf<DirectionalLight>(this);
 }
 
 static void dl_setlightdir(DirectionalLight& dl, const Math::Vector3& dir) { dl.SetLightDir(dir); }

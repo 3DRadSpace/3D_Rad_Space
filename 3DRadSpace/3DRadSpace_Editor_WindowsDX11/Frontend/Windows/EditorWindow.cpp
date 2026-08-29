@@ -838,6 +838,13 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 						gEditorWindow->editor->Reset3DCursor();
 						gEditorWindow->editor->Content->Clear();
 						gEditorWindow->editor->Objects->Clear();
+						gEditorWindow->editor->RenderingManager->MainLight =
+						{
+							Colors::White,
+							Colors::White,
+							-Vector3::UnitY(),
+							0.5f
+						};
 						SendMessageA(gEditorWindow->_treeView, TVM_DELETEITEM, 0, reinterpret_cast<LPARAM>(TVI_ROOT));
 						gEditorWindow->_changesSaved = true;
 					}

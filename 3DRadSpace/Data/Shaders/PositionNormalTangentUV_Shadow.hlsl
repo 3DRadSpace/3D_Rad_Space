@@ -75,7 +75,7 @@ float CalculateShadow(float3 worldPos, float3 worldNormal)
         projCoords.z > 1.0)
         return 1.0;
 
-    return PCF_CalculateShadow(ShadowMap, ShadowSampler, projCoords.xy, projCoords.z, TexelSize, ShadowBias, ShadowIntensity);
+    return PCF_CalculateShadow(ShadowMap, ShadowSampler, projCoords.xyz, TexelSize, ShadowBias, ShadowIntensity);
 }
 
 float4 PS_Main(VertexOut v) : SV_TARGET

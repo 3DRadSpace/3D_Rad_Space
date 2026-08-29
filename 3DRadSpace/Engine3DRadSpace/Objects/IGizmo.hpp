@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Objects::Gizmos
 	/// <summary>
 	/// Base type for all gizmos.
 	/// </summary>
-	class E3DRSP_OBJECTS_GIZMOS_EXPORT IGizmo: public IUpdateable, public IDrawable3D, public IDrawable2D, public ILoadable
+	class E3DRSP_OBJECTS_EXPORT IGizmo: public IUpdateable, public IDrawable3D, public IDrawable2D, public ILoadable
 	{
 	protected:
 		/// <summary>
