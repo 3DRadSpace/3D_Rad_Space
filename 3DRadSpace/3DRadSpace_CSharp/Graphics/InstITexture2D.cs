@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Engine3DRadSpace.Reflection;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Engine3DRadSpace.Graphics;
@@ -63,5 +64,13 @@ public class InstITexture2D : InstGPUMultiBuffer, ITexture2D
 	public void SaveToFile(string path)
 	{
 		_save(_handle, path);
+	}
+
+	public static UUID UUID
+	{
+		get
+		{
+			return new UUID(0x5aae5c7a, 0xc0e7, 0x405a, 0xb6, 0xfd, 0x3, 0xcf, 0x9e, 0x3e, 0x36, 0xcc);
+		}
 	}
 }

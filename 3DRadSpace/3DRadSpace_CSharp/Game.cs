@@ -1,6 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using Engine3DRadSpace.Native;
 using Engine3DRadSpace.Graphics;
+using Engine3DRadSpace.Graphics.Rendering;
+using Engine3DRadSpace.Physics;
+using Engine3DRadSpace.Objects;
+using Engine3DRadSpace.Content;
 
 namespace Engine3DRadSpace;
 
@@ -17,6 +21,30 @@ public class Game : InstIGame
     [DllImport("3DRadSpace.FFI.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "E3DRSP_Game_RunOneFrame")]
     static extern private void _runOneFrame(IntPtr gameHandle);
 
+	[DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetSpriteBatch(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetIGraphicsDevice(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetPostProcessCollection(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetIPhysicsEngine(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetRenderingManager(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetObjectList(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetContentManager(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetCameraProvider(IntPtr game);
+
     public Game(string title, uint width = 800, uint height = 600) : base(_createGame(title, (ulong)width, (ulong)height))
 	{
 		
@@ -30,4 +58,44 @@ public class Game : InstIGame
 	{
 		_runOneFrame(_handle);
 	}
+
+	public SpriteBatch SpriteBatch
+	{
+		get => new SpriteBatch(E3DRSP_Game_GetSpriteBatch(_handle));
+    }
+
+	public IGraphicsDevice GraphicsDevice
+    {
+        get => new InstIGraphicsDevice(E3DRSP_Game_GetIGraphicsDevice(_handle));
+    }
+
+	public PostProcessCollection PostProcessCollection
+    {
+        get => new PostProcessCollection(E3DRSP_Game_GetPostProcessCollection(_handle));
+    }
+
+	public IPhysicsEngine PhysicsEngine
+    {
+        get => new IPhysicsEngine(E3DRSP_Game_GetIPhysicsEngine(_handle));
+    }
+
+    public RenderingManager RenderingManager
+    {
+        get => new RenderingManager(E3DRSP_Game_GetRenderingManager(_handle));
+    }
+
+    public ObjectList ObjectList
+    {
+        get => new ObjectList(E3DRSP_Game_GetObjectList(_handle));
+    }
+
+    public ContentManager ContentManager
+    {
+        get => new ContentManager(E3DRSP_Game_GetContentManager(_handle));
+    }
+
+    public CameraProvider CameraProvider
+    {
+        get => new CameraProvider(E3DRSP_Game_GetCameraProvider(_handle));
+    }
 }
