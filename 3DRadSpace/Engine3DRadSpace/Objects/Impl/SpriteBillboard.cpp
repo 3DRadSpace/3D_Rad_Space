@@ -40,6 +40,7 @@ SpriteBillboard::SpriteBillboard(
 
 void SpriteBillboard::Initialize()
 {
+	PostRender = true;
 	//_blendState = this->GetGraphicsDeviceHandle()->CreateBlendState_AlphaBlend();
 }
 

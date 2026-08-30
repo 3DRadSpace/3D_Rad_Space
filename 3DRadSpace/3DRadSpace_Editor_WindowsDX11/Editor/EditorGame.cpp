@@ -486,6 +486,7 @@ void EditorGame::Draw3D()
 			if(obj.InternalType == ObjectType::IObject3D)
 			{
 				auto obj_3d = static_cast<IObject3D*>(obj.Object.get());
+				if (obj_3d->PostRender) continue;
 
 				auto gizmo = obj_3d->GetGizmo();
 				if(gizmo != nullptr)
@@ -500,6 +501,28 @@ void EditorGame::Draw3D()
 
 	//Main rendering pass
 	drawAllObjects();	
+}
+
+void EditorGame::Draw3D(bool transparent)
+{
+	(void)transparent;
+
+	for (auto& obj : *Objects)
+	{
+		if (obj.InternalType == ObjectType::IObject3D)
+		{
+			auto obj_3d = static_cast<IObject3D*>(obj.Object.get());
+			if (!obj_3d->PostRender) continue;
+
+			auto gizmo = obj_3d->GetGizmo();
+			if (gizmo != nullptr)
+			{
+				gizmo->Selected = obj.Object.get() == this->_selectedObject;
+				gizmo->Object = obj.Object.get();
+				gizmo->Draw3D();
+			}
+		}
+	}
 }
 
 void EditorGame::SelectObject(IObject* obj)

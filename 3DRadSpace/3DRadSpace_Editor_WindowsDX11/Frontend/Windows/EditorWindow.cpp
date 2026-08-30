@@ -598,6 +598,7 @@ void EditorWindow::Run()
 		cmd->Clear(editor->ClearColor);
 		this->editor->Draw3D();
 		this->editor->RenderingManager->Execute();
+		this->editor->Draw3D(true);
 		this->editor->PostProcesses->ApplyAll();
 		this->editor->Draw2D();
 		cmd->Present();

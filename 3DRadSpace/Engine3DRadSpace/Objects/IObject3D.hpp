@@ -39,6 +39,15 @@ namespace Engine3DRadSpace::Objects
 		/// </summary>
 		Math::Vector3 Scale;
 		/// <summary>
+		/// Forces a second draw pass after the main rendering passes completes.
+		/// </summary>
+		/// <remarks>
+		/// WARNING: If the object's Draw3D implementation uses RenderingManager before returning, 
+		/// those commands will not be executed since RenderingManager.Execute() runs after all 
+		/// initial Draw3D() calls complete.
+		/// </remarks>
+		bool PostRender = false;
+		/// <summary>
 		/// Gets the world matrix of this object, considering the entire hierarchy of parent objects.
 		/// </summary>
 		/// <returns>World matrix of this object</returns>

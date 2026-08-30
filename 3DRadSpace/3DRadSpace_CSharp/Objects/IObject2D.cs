@@ -2,7 +2,7 @@
 
 namespace Engine3DRadSpace.Objects;
 
-internal interface IObject2D : IObject, IDrawable2D
+public interface IObject2D : IObject, IDrawable2D
 {
 	public Vector2 Position { get; set; }
 	public Vector2 RotationCenter { get; set; }

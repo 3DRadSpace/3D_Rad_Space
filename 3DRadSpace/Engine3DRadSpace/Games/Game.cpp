@@ -180,7 +180,6 @@ void Game::RunOneFrame()
 	cmd->Clear(ClearColor);
 
 	Draw3D();
-	RenderingManager->Execute();
 
 	PostProcesses->ApplyAll();
 
@@ -256,7 +255,25 @@ void Game::Draw3D()
 	{
 		if (type == ObjectType::IObject3D)
 		{
-			(static_cast<IObject3D*>(object.get()))->Draw3D();
+			auto obj3d = static_cast<IObject3D*>(object.get());
+			if(!obj3d->PostRender)
+			{
+				obj3d->Draw3D();
+			}
+		}
+	}
+	
+	RenderingManager->Execute();
+
+	for (auto& [object, type] : *Objects)
+	{
+		if (type == ObjectType::IObject3D)
+		{
+			auto obj3d = static_cast<IObject3D*>(object.get());
+			if (obj3d->PostRender)
+			{
+				obj3d->Draw3D();
+			}
 		}
 	}
 }

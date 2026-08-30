@@ -78,6 +78,7 @@ public:
 	void Draw2D() override;
 
 	void Draw3D() override;
+	void Draw3D(bool transparent);
 
 	bool IsEditor() const noexcept override;
 
