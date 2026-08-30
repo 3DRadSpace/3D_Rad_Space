@@ -96,6 +96,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	InitializeGDI();
 	InitializeCommonControls();
 	SetWorkingDirectory();
+	Internal::LoadDefaultObjects();
 
 	if (FAILED(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED)))
 		return -1;
