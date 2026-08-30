@@ -5,6 +5,7 @@ using Engine3DRadSpace.Graphics.Rendering;
 using Engine3DRadSpace.Physics;
 using Engine3DRadSpace.Objects;
 using Engine3DRadSpace.Content;
+using Engine3DRadSpace.Input;
 
 namespace Engine3DRadSpace;
 
@@ -44,6 +45,18 @@ public class Game : InstIGame
 
     [DllImport("3DRadSpace.FFI.dll")]
     static extern private IntPtr E3DRSP_Game_GetCameraProvider(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private Mouse E3DRSP_Game_GetMouse(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private IntPtr E3DRSP_Game_GetKeyboard(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private float E3DRSP_Game_GetDrawDeltaTime(IntPtr game);
+
+    [DllImport("3DRadSpace.FFI.dll")]
+    static extern private float E3DRSP_Game_GetUpdateDeltaTime(IntPtr game);
 
     public Game(string title, uint width = 800, uint height = 600) : base(_createGame(title, (ulong)width, (ulong)height))
 	{
@@ -97,5 +110,25 @@ public class Game : InstIGame
     public CameraProvider CameraProvider
     {
         get => new CameraProvider(E3DRSP_Game_GetCameraProvider(_handle));
+    }
+
+    public Mouse Mouse
+    {
+        get => E3DRSP_Game_GetMouse(_handle);
+    }
+
+    public Keyboard Keyboard
+    {
+        get => new Keyboard(E3DRSP_Game_GetKeyboard(_handle));
+    }
+
+    public float DrawDeltaTime
+    {
+        get => E3DRSP_Game_GetDrawDeltaTime(_handle);
+    }
+
+    public float UpdateDeltaTime
+    {
+        get => E3DRSP_Game_GetUpdateDeltaTime(_handle);
     }
 }

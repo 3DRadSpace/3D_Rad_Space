@@ -420,24 +420,36 @@ generate:
 	}
 
 	//TODO Parse project files, actually copy only necessary assets.
+	
+	auto fnCopy = [](const std::filesystem::path& from, const std::filesystem::path& to)
+	{
+		std::filesystem::copy(
+			from,
+			to,
+			std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive
+		);
+	};
+
 	std::println("Copying Assets folder.");
 	try
 	{
-		auto fnCopy = [](const std::filesystem::path& to)
-		{
-			std::filesystem::copy(
-				".\\\\Data\\",
-				to,
-				std::filesystem::copy_options::overwrite_existing | std::filesystem::copy_options::recursive
-			);
-		};
-
-		fnCopy(std::filesystem::canonical(info.Output) / "Data");
-		fnCopy(std::filesystem::canonical(info.Output) / "x64" / "Release" / "Data");
+		fnCopy(".\\\\Data\\", std::filesystem::canonical(info.Output) / "Data");
+		fnCopy(".\\\\Data\\", std::filesystem::canonical(info.Output) / "x64" / "Release" / "Data");
 	}
 	catch(const std::filesystem::filesystem_error& e)
 	{
 		std::println("Copying assets failed {}", e.what());
+	}
+
+	std::println("Copying Plugins folder.");
+	try
+	{
+		fnCopy(".\\\\Plugins\\", std::filesystem::canonical(info.Output) / "Plugins");
+		fnCopy(".\\\\Plugins\\", std::filesystem::canonical(info.Output) / "x64" / "Release" / "Plugins");
+	}
+	catch(const std::filesystem::filesystem_error& e)
+	{
+		std::println("Copying plugins failed {}", e.what());
 	}
 
 	if(playProject)

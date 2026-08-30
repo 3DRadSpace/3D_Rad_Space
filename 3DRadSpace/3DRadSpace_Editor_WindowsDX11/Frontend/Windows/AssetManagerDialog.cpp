@@ -71,7 +71,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 						OPENFILENAMEA ofn{};
 						ofn.lStructSize = sizeof(OPENFILENAMEA);
-						ofn.Flags = 0;
+						ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 						ofn.hwndOwner = assetManager->window;
 						ofn.hInstance = assetManager->hInstance;
 						ofn.lpstrFilter = assetManager->_fileFilter;

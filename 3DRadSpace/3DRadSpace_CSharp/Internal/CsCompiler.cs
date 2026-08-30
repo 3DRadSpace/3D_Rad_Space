@@ -270,6 +270,10 @@ public static class CsCompiler
 		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Collections.dll")));
 		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Linq.dll")));
 		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Console.dll")));
+		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Drawing.dll")));
+		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Drawing.Primitives.dll")));
+		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Numerics.dll")));
+		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "System.Numerics.Vectors.dll")));
 		references.Add(MetadataReference.CreateFromFile(Path.Combine(runtimePath, "netstandard.dll")));
 
 		references.Add(MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location));

@@ -102,3 +102,54 @@ void* E3DRSP_Game_GetCameraProvider(E3DRSP_Game game)
 	if (game == nullptr) return nullptr;
 	return static_cast<Game*>(game)->Cameras.get();
 }
+
+E3DRSP_Mouse E3DRSP_Game_GetMouse(E3DRSP_Game game)
+{
+	if (game == nullptr) return E3DRSP_Mouse{};
+	return E3DRSP_Mouse{
+		static_cast<Game*>(game)->Mouse.LeftButton() == Input::ButtonState::Pressed ? E3DRSP_Pressed : E3DRSP_Released,
+		static_cast<Game*>(game)->Mouse.MiddleButton() == Input::ButtonState::Pressed ? E3DRSP_Pressed : E3DRSP_Released,
+		static_cast<Game*>(game)->Mouse.RightButton() == Input::ButtonState::Pressed ? E3DRSP_Pressed : E3DRSP_Released,
+		E3DRSP_Point{
+			static_cast<int>(static_cast<Game*>(game)->Mouse.Position().X),
+			static_cast<int>(static_cast<Game*>(game)->Mouse.Position().Y)
+		},
+		static_cast<float>(static_cast<Game*>(game)->Mouse.ScrollWheel())
+	};
+}
+
+E3DRSP_Keyboard E3DRSP_Game_GetKeyboard(E3DRSP_Game game)
+{
+	if (game == nullptr) return E3DRSP_Keyboard{};
+
+	uint8_t keys[10];
+
+	return E3DRSP_Keyboard{
+		*static_cast<Game*>(game)->Keyboard.Buffer(),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 1),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 2),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 3),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 4),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 5),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 6),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 7),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 8),
+		*(static_cast<Game*>(game)->Keyboard.Buffer() + 9),
+	};
+}
+
+E3DRSP_Window E3DRSP_Game_GetWindow(E3DRSP_Game game)
+{
+	if (game == nullptr) return nullptr;
+	return static_cast<Game*>(game)->Window.get();
+}
+
+float E3DRSP_Game_GetDrawDeltaTime(E3DRSP_Game game)
+{
+	return static_cast<Game*>(game)->Draw_dt;
+}
+
+float E3DRSP_Game_GetUpdateDeltaTime(E3DRSP_Game game)
+{
+	return static_cast<Game*>(game)->Update_dt;
+}

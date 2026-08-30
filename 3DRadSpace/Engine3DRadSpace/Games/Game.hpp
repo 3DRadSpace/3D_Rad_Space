@@ -17,6 +17,7 @@
 #include "../Graphics/Rendering/RenderingManager.hpp"
 #include "../Objects/CameraProvider.hpp"
 #include "../Core/IGame.hpp"
+#include "../Plugins/PluginManager.hpp"
 
 namespace Engine3DRadSpace
 {
@@ -74,6 +75,7 @@ namespace Engine3DRadSpace
 
 		std::unique_ptr<Objects::CameraProvider> Cameras;
 		std::unique_ptr<Objects::ObjectList> Objects;
+		std::unique_ptr<Plugins::PluginManager> Plugins;
 
 		IService* RequireService(const std::type_index& type);
 

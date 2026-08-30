@@ -1,6 +1,5 @@
 #include "PluginsWindow.hpp"
-
-extern std::vector<Engine3DRadSpace::Plugins::PluginInfo> pluginInfos;
+#include <Engine3DRadSpace/Plugins/PluginManager.hpp>
 
 INT_PTR WINAPI PluginsWindow_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -59,7 +58,8 @@ void PluginsWindow::createForms()
 		nullptr
 	);
 
-	for(const auto& plugin : pluginInfos)
+	auto pluginManager = _game->RequireService<Engine3DRadSpace::Plugins::PluginManager>({});
+	for(const auto& plugin : *pluginManager)
 	{
 		SendMessageA(pluginsListBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(plugin.Name));
 	}
@@ -133,16 +133,20 @@ void PluginsWindow::createForms()
 
 void PluginsWindow::onPluginSelected(int index)
 {
-	SetWindowTextA(pluginLabelName, std::format("Name: {}", pluginInfos[index].Name).c_str());
-	SetWindowTextA(pluginLabelVersion, std::format("Version: {}", pluginInfos[index].Version).c_str());
-	SetWindowTextA(pluginLabelAuthor, std::format("Author: {}", pluginInfos[index].Author).c_str());
-	SetWindowTextA(pluginLabelDescription, std::format("Description: {}", pluginInfos[index].Description).c_str());
+	auto pluginInfo = _game->RequireService<Engine3DRadSpace::Plugins::PluginManager>({})->GetPluginInfo(index);
+
+	SetWindowTextA(pluginLabelName, std::format("Name: {}", pluginInfo.Name).c_str());
+	SetWindowTextA(pluginLabelVersion, std::format("Version: {}", pluginInfo.Version).c_str());
+	SetWindowTextA(pluginLabelAuthor, std::format("Author: {}", pluginInfo.Author).c_str());
+	SetWindowTextA(pluginLabelDescription, std::format("Description: {}", pluginInfo.Description).c_str());
 }
 
 PluginsWindow::PluginsWindow(
 	HWND owner,
-	HINSTANCE hInstance
-) : Dialog(owner, hInstance, PluginsWindow_DlgProc, "Plugins", 400, 210)
+	HINSTANCE hInstance,
+	Engine3DRadSpace::IGame* game
+) : Dialog(owner, hInstance, PluginsWindow_DlgProc, "Plugins", 400, 210), 
+	_game(game)
 {
 }
 

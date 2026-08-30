@@ -53,6 +53,11 @@ namespace Engine3DRadSpace
 			/// <param name="k">specified key</param>
 			/// <returns>Key state of the specified key</returns>
 			KeyState operator[](const Key k);
+			/// <summary>
+			/// Low level access to the internal key buffer.
+			/// </summary>
+			/// <returns>An pointer to the buffer of type uint8_t[10]</returns>
+			uint8_t* Buffer() const noexcept;
 
 			friend class Native::Window;
 		};

@@ -19,6 +19,7 @@ using namespace Engine3DRadSpace::Objects;
 
 void Game::_initialize()
 {
+	RequireService(typeid(Plugins::PluginManager));
 	AddService<IGraphicsDevice>(Device.get());
 
 	Content = std::make_unique<Content::ContentManager>(this);
@@ -110,6 +111,13 @@ IService* Game::RequireService(const std::type_index& type)
 		AddService(Cameras.get());
 		return Cameras.get();
 	}
+	if (typeid(Plugins::PluginManager) == type)
+	{
+		if (Plugins) return Plugins.get();
+		Plugins = std::make_unique<Plugins::PluginManager>(this);
+		AddService(Plugins.get());
+		return Plugins.get();
+	}
 
 	return nullptr;
 }
@@ -133,7 +141,6 @@ Game::Game(Native::Window &&window) :
 	Math::Point size = Window->Size();
 
 	Device = GameFactory::CreateGraphicsDevice("", Window->NativeHandle(), size.X, size.Y);
-
 	_initialize();
 }
 

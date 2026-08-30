@@ -98,21 +98,19 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 			if (editor->_script->ScriptPath.empty())
 			{
 				editor->_script->ScriptPath = editor->saveFileDialog().string();
-				editor->save(editor->_script->ScriptPath);
 			}
+			editor->save(editor->_script->ScriptPath);
+
+			HWND classNameTextbox = GetDlgItem(editor->_window, IDC_EDIT2);
+			int lenClass = GetWindowTextLengthA(classNameTextbox);
+			std::unique_ptr<char[]> classBuffer = std::make_unique<char[]>(lenClass + 1);
+			GetWindowTextA(classNameTextbox, classBuffer.get(), lenClass + 1);
+			editor->_script->Class = classBuffer.get();
+
 			if (editor->_script->Class.empty())
 			{
-				HWND classNameTextbox = GetDlgItem(editor->_window, IDC_EDIT2);
-				int lenClass = GetWindowTextLengthA(classNameTextbox);
-				std::unique_ptr<char[]> classBuffer = std::make_unique<char[]>(lenClass + 1);
-				GetWindowTextA(classNameTextbox, classBuffer.get(), lenClass + 1);
-				editor->_script->Class = classBuffer.get();
-
-				if (editor->_script->Class.empty())
-				{
-					MessageBoxA(hwndDlg, "Please specify a class name before compiling.", "Compilation Error", MB_OK | MB_ICONWARNING);
-					break;
-				}
+				MessageBoxA(hwndDlg, "Please specify a class name before compiling.", "Compilation Error", MB_OK | MB_ICONWARNING);
+				break;
 			}
 			try
 			{
@@ -142,9 +140,15 @@ INT_PTR CALLBACK CSharpEditorDlgProc(
 			editor->openFile();
 			return TRUE;
 		case IDC_BUTTON3:
-			editor->_script->ScriptPath = editor->saveFileDialog().string();
+		{
+			auto path = editor->_script->ScriptPath;
+			if (path.empty())
+			{
+				editor->_script->ScriptPath = editor->saveFileDialog().string();
+			}
 			editor->save(editor->_script->ScriptPath);
 			return TRUE;
+		}
 		case IDC_BUTTON4:
 			ShellExecuteA(nullptr, "open", "https://3dradspace.github.io/docs/scripting/csharp.html", nullptr, nullptr, SW_SHOWNORMAL);
 			return TRUE;
@@ -408,18 +412,30 @@ CSharpScript* CSharpScriptEditor::ShowDialog()
 	return nullptr;
 }
 
+void SetWorkingDirectory()
+{
+	char buffer[MAX_PATH];
+	if (GetModuleFileNameA(NULL, buffer, MAX_PATH))
+	{
+		std::filesystem::path exePath(buffer);
+		std::filesystem::path exeDir = exePath.parent_path();
+		SetCurrentDirectoryA(exeDir.string().c_str());
+	}
+}
+
 std::filesystem::path CSharpScriptEditor::saveFileDialog()
 {
 	OPENFILENAMEA ofn{};
 	char fileName[MAX_PATH] = { 0 };	
 	ofn.lStructSize = sizeof(ofn);
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
 	ofn.hwndOwner = _window;
 	ofn.lpstrFile = fileName;
 	ofn.nMaxFile = sizeof(fileName);
 
 	if (GetSaveFileNameA(&ofn))
 	{
+		SetWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};
@@ -436,6 +452,7 @@ std::filesystem::path CSharpScriptEditor::openFileDialog()
 	ofn.nMaxFile = sizeof(fileName);
 	if (GetOpenFileNameA(&ofn))
 	{
+		SetWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};

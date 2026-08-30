@@ -74,3 +74,8 @@ KeyState Keyboard::operator[](const Key k)
     }
     return KeyState::Down;
 }
+
+uint8_t* Keyboard::Buffer() const noexcept
+{
+	return const_cast<uint8_t*>(_keys);
+}

@@ -556,13 +556,6 @@ void EditorGame::Draw2D()
 	this->ClearColor = Color(0, 0, 0, 1);
 
 	SpriteBatch->Begin();
-	//SpriteBatch->DrawString(
-	//	_font.get(),
-	//	std::format("Mouse {} {} FPS {}", cameraPos.X, cameraPos.Y, static_cast<int>(1.0f / Draw_dt)),
-	//	Point(20, 20),
-	//	1
-	//);
-
 	for(auto& obj : *Objects)
 	{
 		auto obj2d = static_cast<IObject2D*>(obj.Object.get());

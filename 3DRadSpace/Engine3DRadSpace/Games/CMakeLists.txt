@@ -52,6 +52,7 @@ target_link_libraries(3DRadSpace.Games PRIVATE 3DRadSpace.Physics.NVPhysX)
 target_link_libraries(3DRadSpace.Games PRIVATE 3DRadSpace.Physics.Objects)
 target_link_libraries(3DRadSpace.Games PRIVATE 3DRadSpace.Projects)
 target_link_libraries(3DRadSpace.Games PRIVATE 3DRadSpace.Reflection)
+target_link_libraries(3DRadSpace.Games PRIVATE 3DRadSpace.Plugins)
 target_include_directories(3DRadSpace.Games PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
 #Nlohmann JSON

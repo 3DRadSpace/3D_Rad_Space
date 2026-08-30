@@ -5,18 +5,19 @@
 #include <d3d11.h>
 #include <assert.h>
 #include <ranges>
+#include <thread>
 
 #include "AddObjectDialog.hpp"
 #include "SettingsWindow.hpp"
 #include "Engine3DRadSpace/Logging/Exception.hpp"
 #include <Engine3DRadSpace/Objects/ObjectList.hpp>
 #include <Engine3DRadSpace/Objects/IGizmo.hpp>
+#include <Engine3DRadSpace\Projects\Serialization.hpp>
+#include <Engine3DRadSpace\Plugins\PluginManager.hpp>
+#include <Engine3DRadSpace\Objects\Impl\Objects.hpp>
 
 #include "../AutoupdaterState.hpp"
 #include "UpdateProgressWindow.hpp"
-#include <Engine3DRadSpace\Objects\Impl\Objects.hpp>
-#include <thread>
-#include <Engine3DRadSpace\Projects\Serialization.hpp>
 #include "PluginsWindow.hpp"
 #include "AboutWindow.hpp"
 
@@ -28,8 +29,6 @@ using namespace Engine3DRadSpace::Objects;
 using namespace Engine3DRadSpace::Projects;
 
 EditorWindow* gEditorWindow = nullptr;
-
-extern std::vector<Plugins::PluginInfo> pluginInfos;
 
 void EditorWindow::_openProject(const std::filesystem::path& filename)
 {
@@ -99,6 +98,8 @@ void EditorWindow::PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* lis
 	}
 }
 
+extern void SetWorkingDirectory();
+
 void EditorWindow::_saveProject(const std::filesystem::path &filename)
 {
 	if (filename.empty())
@@ -116,6 +117,7 @@ void EditorWindow::_saveProject(const std::filesystem::path &filename)
 
 		if (GetSaveFileNameA(&ofn))
 		{
+			SetWorkingDirectory();
 			_writeProject(ofn.lpstrFile);
 		}
 		else if (GetLastError() != 0)
@@ -426,11 +428,6 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Preferences, "Preferences");
 	AppendMenuA(optionsMenu, MF_STRING, CMD_Update, "Search for updates");
-
-	if(!pluginInfos.empty())
-	{
-		AppendMenuA(optionsMenu, MF_STRING, CMD_Plugins, "Plugins");
-	}
 		
 	HMENU helpMenu = CreateMenu();
 	if(helpMenu == nullptr)
@@ -543,6 +540,12 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
 	this->editor = std::make_unique<EditorGame>(_mainWindow, _hInstance);
+
+	auto& pluginManager = editor->Plugins;
+	if (pluginManager != nullptr && pluginManager->begin() != pluginManager->end())
+	{
+		AppendMenuA(optionsMenu, MF_STRING, CMD_Plugins, "Plugins");
+	}
 
 	_handleRenderWindow = static_cast<HWND>(this->editor->Window->NativeHandle());
 
@@ -994,7 +997,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				}
 				case CMD_Plugins:
 				{
-					PluginsWindow wnd(gEditorWindow->_mainWindow, gEditorWindow->_hInstance);
+					PluginsWindow wnd(gEditorWindow->_mainWindow, gEditorWindow->_hInstance, gEditorWindow->editor.get());
 					wnd.ShowDialog();
 					break;
 				}

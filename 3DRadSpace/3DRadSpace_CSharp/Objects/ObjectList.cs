@@ -30,14 +30,14 @@ public class ObjectList : NatPtrWrapper
 		return _add(_handle, obj);
 	}
 
-	public IntPtr Find(uint id)
+	public IObject Find(uint id)
 	{
-		return _findByID(_handle, id);
+		return new InstIObject(_findByID(_handle, id));
 	}
 
-	public IntPtr Find(string name)
+	public IObject Find(string name)
 	{
-		return _findByName(_handle, name);
+		return new InstIObject(_findByName(_handle, name));
 	}
 
 	public void Remove(uint id)

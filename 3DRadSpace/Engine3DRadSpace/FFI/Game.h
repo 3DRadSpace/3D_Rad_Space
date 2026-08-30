@@ -4,6 +4,9 @@
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Math/Matrix4x4.h"
+#include "Input/Keyboard.h"
+#include "Input/Mouse.h"
+#include "Native/Window.h"
 
 typedef void* E3DRSP_Game;
 
@@ -31,6 +34,13 @@ extern "C"
 	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetObjectList(E3DRSP_Game game);
 	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetContentManager(E3DRSP_Game game);
 	E3DRSP_FFI_EXPORT void* E3DRSP_Game_GetCameraProvider(E3DRSP_Game game);
+
+	E3DRSP_FFI_EXPORT E3DRSP_Mouse E3DRSP_Game_GetMouse(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT E3DRSP_Keyboard E3DRSP_Game_GetKeyboard(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT E3DRSP_Window E3DRSP_Game_GetWindow(E3DRSP_Game game);
+
+	E3DRSP_FFI_EXPORT float E3DRSP_Game_GetDrawDeltaTime(E3DRSP_Game game);
+	E3DRSP_FFI_EXPORT float E3DRSP_Game_GetUpdateDeltaTime(E3DRSP_Game game);
 #ifdef __cplusplus
 }
 #endif

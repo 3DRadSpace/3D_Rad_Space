@@ -73,75 +73,6 @@ void ReportLiveObjects()
 }
 #endif
 
-std::vector<void*> plugins;
-std::vector<Plugins::PluginInfo> pluginInfos;
-
-void LoadAllPlugins()
-{
-	std::filesystem::create_directories("Plugins");
-	auto dirIterator = std::filesystem::directory_iterator("Plugins");
-
-	//Count .dll files in "./Plugins"
-	unsigned numPlugins = 0;
-	for (auto const& entry : dirIterator)
-	{
-		if (entry.path().extension() == ".dll")
-		{
-			++numPlugins;
-		}
-	}
-
-	Logging::PrintMessage(std::format("Found {} plugins:", numPlugins));
-
-	dirIterator = std::filesystem::directory_iterator("Plugins");
-
-	//Load all dll files in "./Plugins"
-	for (auto const& entry : dirIterator)
-	{
-		auto file = entry.path();
-		if (file.has_extension() && file.extension() == ".dll")
-		{
-			auto p = Plugins::LoadPlugin(file);
-			std::ignore = p.and_then([](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
-				{
-					pluginInfos.push_back(plugin.first);
-
-					auto& [info, handle] = plugin;
-					plugins.push_back(handle);
-
-					Logging::PrintMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
-
-					auto numLoadedObjects = Plugins::LoadCustomObjectsFromLibHandle(handle);
-					Logging::PrintMessage(std::format("Loaded {} custom object types from plugin {}", numLoadedObjects, info.Name));
-
-					return plugin;
-				}
-			).or_else([&file](Plugins::PluginLoadingError err) -> decltype(p)
-				{
-					std::string msg = "Unknown error";
-					switch (err)
-					{
-					case Plugins::PluginLoadingError::UnableToLoadPluginLibrary:
-						msg = "Unable to load library.";
-						break;
-					case Plugins::PluginLoadingError::NotA3DRadSpacePlugin:
-						msg = "Not a 3DRadSpace Plugin!\r\nFunction \"bool PluginMain()\" was not found!";
-						break;
-					case Plugins::PluginLoadingError::InitializationFunctionFailure:
-						msg = "Plugin initialization failed!";
-						break;
-					default:
-						break;
-					}
-
-					Logging::PrintWarning(std::format("Failed to load plugin at {}!\r\n{}", file.string(), msg));
-					return std::unexpected(err);
-				}
-			);
-		}
-	}
-}
-
 int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR cmdArgs, _In_ int nShowCmd)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
@@ -171,7 +102,6 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	Internal::LoadDefaultObjects();
 	Settings::Load();
-	LoadAllPlugins();
 
 	try
 	{
@@ -193,16 +123,6 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		std::runtime_error unknownError("An unknown error occurred. (exception type doesn't inherit from std::exception)");
 		CrashWindow crash(nullptr, hInstance, unknownError, std::stacktrace::current());
 		crash.ShowDialog();
-	}
-
-	//unload plugins
-	for (auto plugin : plugins)
-	{
-		auto f = Native::GetFunctionFromLibrary<Plugins::PluginUnload>(plugin, "PluginUnload");
-		if (f != nullptr)
-		{
-			if (!f()) Logging::PrintMessage(std::format("PluginUnload() returned false! Handle {:x}", reinterpret_cast<intptr_t>(plugin)));
-		}
 	}
 	
 	Internal::UnloadGizmos();
