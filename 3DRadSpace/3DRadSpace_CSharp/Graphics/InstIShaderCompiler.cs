@@ -13,7 +13,7 @@ public class InstIShaderCompiler : NatPtrWrapper, IShaderCompiler
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IShaderCompiler_CompileEffect")]
 	extern static EffectCompileOutput _compileEffect(IntPtr compiler, IntPtr ppDescs, ulong numDescs);
 
-	public InstIShaderCompiler(IntPtr handle) : base(handle, _destroy)
+	public InstIShaderCompiler(IntPtr handle) : base(handle, null)
 	{
 	}
 

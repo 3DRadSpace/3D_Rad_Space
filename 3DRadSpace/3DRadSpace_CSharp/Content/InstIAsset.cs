@@ -14,7 +14,7 @@ internal class InstIAsset : NatPtrWrapper,  IAsset
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IAsset_Destroy")]
 	static extern void _destroy(IntPtr asset);
 
-	internal InstIAsset(IntPtr asset) : base(asset, _destroy)
+	internal InstIAsset(IntPtr asset) : base(asset, null)
 	{
 	}
 

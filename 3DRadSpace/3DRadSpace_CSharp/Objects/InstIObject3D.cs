@@ -74,7 +74,7 @@ public class InstIObject3D : NatPtrWrapper
 		return float.IsNaN(result) ? null : result;
 	}
 
-	public InstIObject3D(IntPtr natPtr) : base(natPtr, _destroy)
+	public InstIObject3D(IntPtr natPtr) : base(natPtr, null)
 	{
 	}
 }

@@ -66,7 +66,7 @@ public class InstIObject : InstIUpdateable, IObject
 	InstILoadable _loadable;
 	ObjectCollection _children;
 
-	public InstIObject(IntPtr handle) : base(handle)
+	public InstIObject(IntPtr handle) : base(handle, false)
 	{
 		_initializable = new InstIInitializable(handle);
 		_loadable = new InstILoadable(handle);

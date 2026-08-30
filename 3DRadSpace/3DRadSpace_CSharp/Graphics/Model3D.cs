@@ -33,11 +33,11 @@ public class Model3D : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "EDRSP_Model3D_Destroy")]
 	extern static void _destroy(IntPtr model);
 
-	public Model3D(IntPtr handle) : base(handle, _destroy)
+	public Model3D(IntPtr handle) : base(handle, null)
 	{
 	}
 
-	public Model3D(IGraphicsDevice device, string path) : base(_create(device.Handle, path), _destroy)
+	public Model3D(IGraphicsDevice device, string path) : base(_create(device.Handle, path), null)
 	{
 	}
 

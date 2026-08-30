@@ -62,6 +62,11 @@ public class Game : InstIGame
 	{
 		
 	}
+
+    public Game(IntPtr handle) : base(handle)
+    {
+    }
+
 	public void Run()
 	{
 		_runGame(_handle);

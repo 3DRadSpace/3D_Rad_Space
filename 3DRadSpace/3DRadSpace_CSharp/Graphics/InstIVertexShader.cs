@@ -11,7 +11,7 @@ public class InstIVertexShader : NatPtrWrapper, IVertexShader
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IVertexShader_Destroy")]
 	extern static void _destroy(IntPtr vshader);
 
-	public InstIVertexShader(IntPtr handle) : base(handle, _destroy)
+	public InstIVertexShader(IntPtr handle) : base(handle, null)
 	{
 	}
 

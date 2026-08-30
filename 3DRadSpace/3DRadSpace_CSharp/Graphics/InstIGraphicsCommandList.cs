@@ -86,7 +86,7 @@ class InstIGraphicsCommandList : InstGPUResource, IGraphicsCommandList
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IGraphicsCommandList_UnbindRenderTargetAndDepth")]
 	extern static void _unbindRTD(IntPtr resource);
 
-	public InstIGraphicsCommandList(IntPtr handle) : base(handle) 
+	public InstIGraphicsCommandList(IntPtr handle) : base(handle, false) 
 	{
 	}
 

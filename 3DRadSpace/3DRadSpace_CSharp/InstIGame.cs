@@ -35,7 +35,7 @@ namespace Engine3DRadSpace
 			in Matrix4x4 projection
 		);
 
-        public InstIGame(IntPtr handle) : base(handle, _destroy)
+        public InstIGame(IntPtr handle) : base(handle, null)
 		{
 		}
 

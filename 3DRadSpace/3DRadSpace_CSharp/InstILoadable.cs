@@ -13,7 +13,7 @@ public class InstILoadable : NatPtrWrapper, ILoadable
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ILoadable_Destroy")]
 	internal extern static void _destroy(IntPtr handle);
 
-	public InstILoadable(IntPtr handle) : base(handle, _destroy)
+	public InstILoadable(IntPtr handle) : base(handle, null)
 	{
 	}
 

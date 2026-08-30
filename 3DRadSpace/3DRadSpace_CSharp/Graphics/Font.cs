@@ -26,15 +26,15 @@ public class Font : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_Font_Destroy")]
 	extern static void _destroy(IntPtr font);
 
-	public Font(IGraphicsDevice device, string path, uint size, string supportedCharacters) : base(_create(device.Handle, path, size, supportedCharacters), _destroy)
+	public Font(IGraphicsDevice device, string path, uint size, string supportedCharacters) : base(_create(device.Handle, path, size, supportedCharacters), null)
 	{
 	}
 
-	public Font(IGraphicsDevice device, string path, uint size = 14) : base(_create(device.Handle, path, size, ""), _destroy)
+	public Font(IGraphicsDevice device, string path, uint size = 14) : base(_create(device.Handle, path, size, ""), null)
 	{
 	}
 
-	public Font(IntPtr handle) : base(handle, _destroy)
+	public Font(IntPtr handle) : base(handle, null)
 	{
 	}
 

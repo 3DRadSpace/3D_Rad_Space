@@ -13,7 +13,7 @@ public class InstGPUResource : NatPtrWrapper, IGPUResource
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IGPUResource_Destroy")]
 	extern static void _destroy(IntPtr resource);
 
-	protected InstGPUResource(IntPtr handle) : base(handle, _destroy)
+	protected InstGPUResource(IntPtr handle) : base(handle, null)
 	{
 	}
 

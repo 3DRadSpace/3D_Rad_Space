@@ -68,7 +68,7 @@ public class InstIObject2D : NatPtrWrapper
 		set => _setDepth(_handle, value);
 	}
 
-	public InstIObject2D(IntPtr natPtr) : base(natPtr, _destroy)
+	public InstIObject2D(IntPtr natPtr) : base(natPtr, null)
 	{
 	}
 }

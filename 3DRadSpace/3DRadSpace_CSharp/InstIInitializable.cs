@@ -10,7 +10,7 @@ public class InstIInitializable : NatPtrWrapper, IInitializable
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_IInitializable_Destroy")]
 	internal extern static void _destroy(IntPtr handle);
 
-	public InstIInitializable(IntPtr handle) : base(handle, _destroy)
+	public InstIInitializable(IntPtr handle) : base(handle, null)
 	{
 	}
 

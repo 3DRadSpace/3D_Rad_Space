@@ -26,7 +26,7 @@ public class ModelMesh : NatPtrWrapper
 	[DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMesh_GetBoundingSphere")]
 	extern static Math.BoundingSphere _bsph(IntPtr modelMesh);
 
-	public ModelMesh(IntPtr handle) : base(handle, _destroy)
+	public ModelMesh(IntPtr handle) : base(handle, null)
 	{
 	}
 

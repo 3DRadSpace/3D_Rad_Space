@@ -50,11 +50,11 @@ public class ObjectList : NatPtrWrapper
 		_removeByName(_handle, name);
 	}
 
-	public ObjectList(IPtrWrapper game) : base(_create(game.Handle), _destroy)
+	public ObjectList(IPtrWrapper game) : base(_create(game.Handle), null)
 	{
 	}
 
-	public ObjectList(IntPtr natPtr) : base(natPtr, _destroy)
+	public ObjectList(IntPtr natPtr) : base(natPtr, null)
 	{
 	}
 }

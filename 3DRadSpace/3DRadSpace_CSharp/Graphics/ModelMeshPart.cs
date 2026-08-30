@@ -50,7 +50,7 @@ public class ModelMeshPart : NatPtrWrapper
     [DllImport("3DRadSpace.FFI.dll", EntryPoint = "E3DRSP_ModelMeshPart_SetMaterial")]
     extern static void _setDescriptor(IntPtr meshPart, MaterialDescriptor descriptor);
 
-    public ModelMeshPart(IntPtr handle) : base(handle, _destroy)
+    public ModelMeshPart(IntPtr handle) : base(handle, null)
 	{
 	}
 
@@ -61,7 +61,7 @@ public class ModelMeshPart : NatPtrWrapper
 		ulong structSize,
 		uint* indices,
 		ulong numIndices
-	) : base(_create1(device.Handle, pVertexData, numVerts, structSize, indices, numIndices), _destroy)
+	) : base(_create1(device.Handle, pVertexData, numVerts, structSize, indices, numIndices), null)
 	{
 	}
 
