@@ -84,8 +84,15 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 	auto& internalList = GetInternalObjectsList();
 	for (auto& refl : ppDefaultObjects)
 	{
-		if(std::find(internalList.begin(), internalList.end(), refl) == internalList.end())
+		if (std::find_if(internalList.begin(), internalList.end(), 
+			[refl](ReflectedObject* obj)
+			{
+				return obj->ObjectUUID == refl->ObjectUUID;
+			}
+		) == internalList.end())
+		{
 			internalList.push_back(refl);
+		}
 	}
 }
 
