@@ -19,7 +19,6 @@ using namespace Engine3DRadSpace::Objects;
 
 void Game::_initialize()
 {
-	RequireService(typeid(Plugins::PluginManager));
 	AddService<IGraphicsDevice>(Device.get());
 
 	Content = std::make_unique<Content::ContentManager>(this);
@@ -33,6 +32,7 @@ void Game::_initialize()
 	RequireService(typeid(ObjectList));
 	RequireService(typeid(Content::ContentManager));
 	RequireService(typeid(Objects::CameraProvider));
+	RequireService(typeid(Plugins::PluginManager));
 
 	Internal::RegisterDefaultTypes(Content.get());
 

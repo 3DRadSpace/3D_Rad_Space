@@ -81,11 +81,12 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&SpriteBillboardReflInstance
 	};
 
-	if (GetInternalObjectsList().size() > 0)
+	auto& internalList = GetInternalObjectsList();
+	for (auto& refl : ppDefaultObjects)
 	{
-		return;
+		if(std::find(internalList.begin(), internalList.end(), refl) == internalList.end())
+			internalList.push_back(refl);
 	}
-	GetInternalObjectsList().insert_range(GetInternalObjectsList().begin(), ppDefaultObjects);
 }
 
 ReflectedObject* Engine3DRadSpace::Internal::GetReflDataFromUUID(const Reflection::UUID& uuid)
