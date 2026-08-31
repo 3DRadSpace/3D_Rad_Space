@@ -10,6 +10,7 @@ namespace Engine3DRadSpace::Objects
 	/// </summary>
 	class E3DRSP_OBJECTS_IMPL_EXPORT DirectionalLight : public IObject
 	{
+		Graphics::Rendering::DirectionalLight _lightCpy;
 		Graphics::Rendering::DirectionalLight* _light = nullptr;
 		bool _temporaryPointer = false;
 	public:

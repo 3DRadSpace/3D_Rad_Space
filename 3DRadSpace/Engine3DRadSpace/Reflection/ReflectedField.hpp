@@ -187,6 +187,7 @@ namespace Engine3DRadSpace::Reflection
 			assert(value != nullptr);
 
 			_setter(*static_cast<C*>(objPtr), *static_cast<const T*>(value));
+			_copy = *static_cast<const T*>(value);
 		}
 		/// <summary>
 		/// Calls the setter function
@@ -201,6 +202,7 @@ namespace Engine3DRadSpace::Reflection
 			assert(value != nullptr);
 
 			_setter(*static_cast<C*>(objPtr), *value);
+			_copy = *value;
 		}
 		/// <summary>
 		/// Calls the getter function

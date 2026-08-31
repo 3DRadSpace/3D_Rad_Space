@@ -18,19 +18,12 @@ DirectionalLight::DirectionalLight(
 ) : IObject(name, true, visible)
 {
 	_temporaryPointer = true;
-	_light = new Rendering::DirectionalLight{
-		.LightColor = lightColor,
-		.AmbientColor = ambientColor,
-		.LightDirection = direction,
-		.Intensity = intensity
-	};
 }
 
 void DirectionalLight::Initialize()
 {
-	if (_temporaryPointer && _light)
+	if (_temporaryPointer && !_light)
 	{
-		delete _light;
 		_light = &(GetGame()->GetService<Rendering::RenderingManager>({})->MainLight);
 		_temporaryPointer = false;
 	}
@@ -57,6 +50,7 @@ void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept
 	{
 		_light->LightDirection = Math::Vector3::Normalize(direction);
 	}
+	_lightCpy.LightDirection = Math::Vector3::Normalize(direction);
 }
 
 void DirectionalLight::SetLightColor(const Math::Color& color) noexcept
@@ -65,6 +59,7 @@ void DirectionalLight::SetLightColor(const Math::Color& color) noexcept
 	{
 		_light->LightColor = color;
 	}
+	_lightCpy.LightColor = color;
 }
 
 void DirectionalLight::SetAmbientColor(const Math::Color& color) noexcept
@@ -73,6 +68,7 @@ void DirectionalLight::SetAmbientColor(const Math::Color& color) noexcept
 	{
 		_light->AmbientColor = color;
 	}
+	_lightCpy.AmbientColor = color;
 }
 void DirectionalLight::SetIntensity(float intensity) noexcept
 {
@@ -80,26 +76,27 @@ void DirectionalLight::SetIntensity(float intensity) noexcept
 	{
 		_light->Intensity = intensity;
 	}
+	_lightCpy.Intensity = intensity;
 }
 
 Math::Vector3 DirectionalLight::GetLightDir() const noexcept
 {
-	return _light ? _light->LightDirection : Math::Vector3(0.0f, -1.0f, 0.0f);
+	return _light ? _light->LightDirection : _lightCpy.LightDirection;
 }
 
 Math::Color DirectionalLight::GetLightColor() const noexcept
 {
-	return _light ? _light->LightColor : Math::Color(1.0f, 1.0f, 1.0f, 1.0f);
+	return _light ? _light->LightColor : _lightCpy.LightColor;
 }
 
 Math::Color DirectionalLight::GetAmbientColor() const noexcept
 {
-	return _light ? _light->AmbientColor : Math::Color(0.0f, 0.0f, 0.0f, 1.0f);
+	return _light ? _light->AmbientColor : _lightCpy.AmbientColor;
 }
 
 float DirectionalLight::GetIntensity() const noexcept
 {
-	return _light ? _light->Intensity : 1.0f;
+	return _light ? _light->Intensity : _lightCpy.Intensity;
 }
 
 void DirectionalLight::Sync() noexcept
