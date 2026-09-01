@@ -51,4 +51,5 @@ REFL_FIELD(AngelScriptObject, bool, Enabled, "Enabled", "", "Is the object enabl
 REFL_FIELD(AngelScriptObject, std::string, ScriptPath, "Script path", "", "Path to script file")
 REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Enable), "Enable")
 REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Disable), "Disable")
+REFL_ATTR("Icon","Data\\Editor\\OBJ_AngelScript.png")
 REFL_END

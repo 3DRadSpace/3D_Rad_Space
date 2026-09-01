@@ -19,7 +19,7 @@ namespace Engine3DRadSpace::Objects
 	class E3DRSP_OBJECTS_EXPORT ObjectList : public IService
 	{
 	public:
-		struct ObjectInstance
+		struct E3DRSP_OBJECTS_EXPORT ObjectInstance
 		{
 			std::unique_ptr<IObject> Object;
 

@@ -138,6 +138,6 @@ namespace Engine3DRadSpace::Input
 		Tilde = 0xC0,
 	};
 
-	Key KeyFromVirtualKeyCode(const std::string& keyName);
-	uint8_t KeyIntFromVirtualKeyCode(const std::string& keyName);
+	E3DRSP_INPUT_EXPORT Key KeyFromVirtualKeyCode(const std::string& keyName);
+	E3DRSP_INPUT_EXPORT uint8_t KeyIntFromVirtualKeyCode(const std::string& keyName);
 }

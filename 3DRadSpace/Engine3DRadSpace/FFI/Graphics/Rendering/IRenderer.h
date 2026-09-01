@@ -13,7 +13,7 @@ typedef struct E3DRSP_MeshPartDrawInfo
 	E3DRSP_Matrix4x4 World;
 	E3DRSP_Matrix4x4 View;
 	E3DRSP_Matrix4x4 Projection;
-};
+} E3DRSP_MeshPartDrawInfo;
 
 #ifdef __cplusplus
 extern "C"

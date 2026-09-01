@@ -37,11 +37,11 @@ extern "C"
 	void E3DRSP_SCRIPTING_EXPORT iObjectOrientationReset(unsigned obj_x, const Engine3DRadSpace::Math::Quaternion& q);
 	void E3DRSP_SCRIPTING_EXPORT iObjectLocation(unsigned obj_x, Engine3DRadSpace::Math::Vector3& v);
 	void E3DRSP_SCRIPTING_EXPORT iObjectLocationSet(unsigned obj_x,const Engine3DRadSpace::Math::Vector3 &v);
-	void E3DRSP_SCRIPTING_EXPORT iObjectLocationReset(unsigned obj_x, Engine3DRadSpace::Math::Vector3& v);
+	void E3DRSP_SCRIPTING_EXPORT iObjectLocationReset(unsigned obj_x, const Engine3DRadSpace::Math::Vector3& v);
 	void E3DRSP_SCRIPTING_EXPORT iObjectPositionReset(
 		unsigned OBJ_X,
-		Engine3DRadSpace::Math::Quaternion& outRotation,
-		Engine3DRadSpace::Math::Vector3& outLocation
+		const Engine3DRadSpace::Math::Quaternion& rotation,
+		const Engine3DRadSpace::Math::Vector3& location
 	);
 	void E3DRSP_SCRIPTING_EXPORT iObjectScaleSet(unsigned obj_x, const Engine3DRadSpace::Math::Vector3& v);
 	void E3DRSP_SCRIPTING_EXPORT iObjectScale(unsigned obj_x, Engine3DRadSpace::Math::Vector3& v);
@@ -236,8 +236,7 @@ extern "C"
 
 	bool E3DRSP_SCRIPTING_EXPORT iQuaternionCompare(
 		const Engine3DRadSpace::Math::Quaternion& a,
-		const Engine3DRadSpace::Math::Quaternion& b,
-		float tolerance
+		const Engine3DRadSpace::Math::Quaternion& b
 	);
 
 	int E3DRSP_SCRIPTING_EXPORT iFileReadOpen(const std::string& filename);
@@ -324,8 +323,8 @@ extern "C"
 	bool E3DRSP_SCRIPTING_EXPORT i3DPointVisible(unsigned camera, const Engine3DRadSpace::Math::Vector3& point);
 	bool E3DRSP_SCRIPTING_EXPORT iSphereVisible(unsigned camera, const Engine3DRadSpace::Math::Vector3& center, float radius);
 	void E3DRSP_SCRIPTING_EXPORT i3DLocationToScreen(
-		Engine3DRadSpace::Math::Vector3& outScreenLocation,
-		const Engine3DRadSpace::Math::Vector3& location,
+		Engine3DRadSpace::Math::Vector3& outScreenPos,
+		const Engine3DRadSpace::Math::Vector3& worldPos,
 		unsigned camera
 	);
 	void E3DRSP_SCRIPTING_EXPORT iScreenRay(

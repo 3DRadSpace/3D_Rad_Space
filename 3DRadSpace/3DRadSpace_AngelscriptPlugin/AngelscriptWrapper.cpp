@@ -305,13 +305,114 @@ AngelScriptWrapper::AngelScriptWrapper()
 	r = engine->RegisterGlobalFunction("void iObjectShowHideSwitch(const uint)", asFUNCTION(iObjectShowHideSwitch), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectOrientation(const uint, Quaternion& in)", asFUNCTION(iObjectOrientation), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectOrientationSet(const uint, const Quaternion& in)", asFUNCTION(iObjectOrientationSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectOrientationReset(const uint, const Quaternion& in)", asFUNCTION(iObjectOrientationReset), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectLocation(const uint, Vector3& in)", asFUNCTION(iObjectLocation), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectLocationSet(const uint,const Vector3& in)", asFUNCTION(iObjectLocationSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectLocationReset(const uint,const Vector3& in)", asFUNCTION(iObjectLocationReset), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectPositionReset(const uint, const Quaternion& in, const Vector3& in)", asFUNCTION(iObjectPositionReset), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectScaleSet(const uint, const Vector3& in)", asFUNCTION(iObjectScaleSet), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectScale(const uint, Vector3& in)", asFUNCTION(iObjectScale), asCALL_CDECL); assert(r >= 0);
-#pragma endregion
-
+	// Physics functions
+	r = engine->RegisterGlobalFunction("float iObjectKmh(const uint)", asFUNCTION(iObjectKmh), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectVelocity(const uint, Vector3& in)", asFUNCTION(iObjectVelocity), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectVelocitySet(const uint, Vector3& in)", asFUNCTION(iObjectVelocitySet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectSpin(const uint, Vector3& in)", asFUNCTION(iObjectSpin), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectSpinSet(const uint, Vector3& in)", asFUNCTION(iObjectSpinSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectTorqueApply(const uint, Vector3& in)", asFUNCTION(iObjectTorqueApply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectAngularAccelerationApply(const uint, Vector3& in)", asFUNCTION(iObjectAngularAccelerationApply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectForceApply(const uint, Vector3& in, Vector3& in)", asFUNCTION(iObjectForceApply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectAccelerationApply(const uint, const Vector3& in)", asFUNCTION(iObjectAccelerationApply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectDampingApply(const uint, Vector3& in, bool, bool)", asFUNCTION(iObjectDampingApply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iObjectPicked(const uint, Vector3& in)", asFUNCTION(iObjectPicked), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iObjectScan(const uint, const Vector3& in, const Vector3& in, float, Vector3& in, Vector3& in)", asFUNCTION(iObjectScan), asCALL_CDECL); assert(r >= 0);
+	// Object field manipulation functions
+	r = engine->RegisterGlobalFunction("void iObjectTextSet(const uint, const string& in)", asFUNCTION(iObjectTextSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectParamSet(const uint, int, float)", asFUNCTION(iObjectParamSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectRefresh(const uint, const string& in)", asFUNCTION(iObjectRefresh), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectReset(const uint)", asFUNCTION(iObjectReset), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iObjectChildTransform(const uint, const uint, const Vector3& in, const Vector3& in)", asFUNCTION(iObjectChildTransform), asCALL_CDECL); assert(r >= 0);
+	// String functions
+	r = engine->RegisterGlobalFunction("int iStringLen(const string& in)", asFUNCTION(iStringLen), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringUCase(string& out, const string& in)", asFUNCTION(iStringUCase), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringLCase(string& out, const string& in)", asFUNCTION(iStringLCase), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringMid(string& out, const string& in, int, int)", asFUNCTION(iStringMid), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringLeft(string& out, const string& in, int)", asFUNCTION(iStringLeft), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringRight(string& out, const string& in, int)", asFUNCTION(iStringRight), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iStringFind(const string& in, const string& in, int)", asFUNCTION(iStringFind), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringReplace(string& out, const string& in, const string& in, const string& in)", asFUNCTION(iStringReplace), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iStringStr(string& out, const string& in)", asFUNCTION(iStringStr), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iStringVal(const string& in)", asFUNCTION(iStringVal), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iPrint(const string& in,float,float, uint)", asFUNCTION(iPrint), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iGlobalStringSet(const string& in, int)", asFUNCTION(iGlobalStringSet), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iGlobalStringGet(string& in, int)", asFUNCTION(iGlobalStringGet), asCALL_CDECL); assert(r >= 0);
+	// Float functions
+	r = engine->RegisterGlobalFunction("float iFloatRand(float a, float b)", asFUNCTION(iFloatRand), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFloatAbs(float)", asFUNCTION(iFloatAbs), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFloatSin(float)", asFUNCTION(iFloatSin), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFloatCos(float)", asFUNCTION(iFloatCos), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFloatSqrt(float)", asFUNCTION(iFloatSqrt), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFloatInterpolate(float, float, float, float, float, float)", asFUNCTION(iFloatInterpolate), asCALL_CDECL); assert(r >= 0);
+	// Vector functions
+	r = engine->RegisterGlobalFunction("float iVectorLength(const Vector3& in)", asFUNCTION(iVectorLength), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iVectorLengthSq(const Vector3& in)", asFUNCTION(iVectorLengthSq), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iVectorLengthSet(Vector3& out, const Vector3& in, float)", asFUNCTION(iVectorLengthSq), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iVectorDot(const Vector3& in, const Vector3& in)", asFUNCTION(iVectorDot), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iVectorCross(Vector3& out, const Vector3& in, const Vector3& in)", asFUNCTION(iVectorCross), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iVectorRotate(Vector3& out, const Vector3& in, const Quaternion& in)", asFUNCTION(iVectorRotate), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iVectorEulerRotate(Vector3& out, const Vector3& in, float, float, float, string)", asFUNCTION(iVectorEulerRotate), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iVectorCompare(const Vector3& in, const Vector3& in, float)", asFUNCTION(iVectorCompare), asCALL_CDECL); assert(r >= 0);
+	//Quaternion functions
+	r = engine->RegisterGlobalFunction("void iQuaternionFromAxisAngle(Quaternion& out, const Vector3& in)", asFUNCTION(iQuaternionFromAxisAngle), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionFromEulerAngles(Quaternion& out, Vector3& in, float)", asFUNCTION(iQuaternionFromAxisAngle), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionToEulerAngles(Vector3& out, const Quaternion& in)", asFUNCTION(iQuaternionToEulerAngles), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionLookAt(Quaternion& out, const Vector3& in, const Vector3& in)", asFUNCTION(iQuaternionLookAt), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionInterpolate(Quaternion& out, const Quaternion& in, const Quaternion& in, float)", asFUNCTION(iQuaternionInterpolate), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionMultiply(Quaternion& out, const Quaternion& in, const Quaternion& in)", asFUNCTION(iQuaternionMultiply), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iQuaternionCompare(const Quaternion& in, const Quaternion& in)", asFUNCTION(iQuaternionCompare), asCALL_CDECL); assert(r >= 0);
+	//File functions
+	r = engine->RegisterGlobalFunction("int iFileReadOpen(const string& in)", asFUNCTION(iFileReadOpen), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iFileWriteOpen(const string& in)", asFUNCTION(iFileWriteOpen), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iFileClose(int)", asFUNCTION(iFileClose), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iFileValueRead(int)", asFUNCTION(iFileValueRead), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileValueWrite(int, float)", asFUNCTION(iFileValueWrite), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iFileByteRead(int)", asFUNCTION(iFileByteRead), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileByteWrite(int, int)", asFUNCTION(iFileByteWrite), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileStringRead(int, string& out)", asFUNCTION(iFileStringRead), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileStringWrite(int, const string& in)", asFUNCTION(iFileStringWrite), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("bool iFileEOF(int)", asFUNCTION(iFileEOF), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("bool iFileExists(const string& in)", asFUNCTION(iFileExists), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileCopy(const string& in, const string& in)", asFUNCTION(iFileCopy), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFileDelete(const string& in)", asFUNCTION(iFileDelete), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFolderCreate(const string& in)", asFUNCTION(iFolderCreate), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iFolderDelete(const string& in)", asFUNCTION(iFolderDelete), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iFileSize(const string& in)", asFUNCTION(iFileSize), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iLocalFolder(const string& in)", asFUNCTION(iLocalFolder), asCALL_CDECL); assert(r >= 0);
+	//Mouse functions
+	r = engine->RegisterGlobalFunction("float iMouseX(Vector2& out)", asFUNCTION(iMouseX), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iMouseY(Vector2& out)", asFUNCTION(iMouseY), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("float iMouseZ(Vector2& out)", asFUNCTION(iMouseZ), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("bool iMouseButtonDown(int)", asFUNCTION(iMouseButtonDown), asCALL_CDECL); assert(r >= 0);
 	
+	r = engine->RegisterGlobalFunction("int iObjectHandle(int)", asFUNCTION(iObjectHandle), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iSystemTime(int)", asFUNCTION(iSystemTime), asCALL_CDECL); assert(r >= 0);
+	//Graphics functions
+	r = engine->RegisterGlobalFunction("int iDisplayWidth()", asFUNCTION(iDisplayWidth), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("int iDisplayHeight()", asFUNCTION(iDisplayHeight), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iVertexShaderVersion(int)", asFUNCTION(iShaderVersion), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iPixelShaderVersion(int)", asFUNCTION(iShaderVersion), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iRenderingEnable(bool)", asFUNCTION(iRenderingEnable), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iEscKeyEnable()", asFUNCTION(iEscKeyEnable), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iEscKeyDisable()", asFUNCTION(iEscKeyDisable), asCALL_CDECL); assert(r >= 0);
+	// OS functions
+	r = engine->RegisterGlobalFunction("void iCommand(const string& in)", asFUNCTION(iCommand), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iCommandContinue(const string& in)", asFUNCTION(iCommandContinue), asCALL_CDECL); assert(r >= 0);
+	// Viewing frustum functions
+	r = engine->RegisterGlobalFunction("void i3DLocationToScreen(Vector3& out, uint, Vector4& out, const Vector3& in)", asFUNCTION(i3DLocationToScreen), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iScreenRay(Vector3& out, Vector3& out, const Vector3& in, uint)", asFUNCTION(iScreenRay), asCALL_CDECL); assert(r >= 0);
+	// Uncategorized functions
+	r = engine->RegisterGlobalFunction("int iSphereSegmentIntersect(const Vector3& in, float, const Vector3& in, const Vector3& in, Vector3& out, Vector3& out)", asFUNCTION(iSphereSegmentIntersect), asCALL_CDECL); assert(r >= 0);
+	r = engine->RegisterGlobalFunction("void iScreenshotSave(const string& in)", asFUNCTION(iScreenshotSave), asCALL_CDECL); assert(r >= 0);
+#pragma endregion
 }
 
 void AngelScriptWrapper::Call(int scriptHandle, const std::string& name)

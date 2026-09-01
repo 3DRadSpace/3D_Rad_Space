@@ -77,7 +77,7 @@ std::vector<PluginInfo>::const_iterator PluginManager::end() const noexcept
 PluginManager::PluginLoadResult PluginManager::LoadPlugin(const std::filesystem::path& pluginPath)
 {
 	auto p = Plugins::LoadPlugin(pluginPath);
-	std::ignore = p.and_then([this](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
+	auto result = p.and_then([this](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
 		{
 			pluginInfos.push_back(plugin.first);
 
@@ -113,6 +113,17 @@ PluginManager::PluginLoadResult PluginManager::LoadPlugin(const std::filesystem:
 			return std::unexpected(err);
 		}
 	);
+
+	if (result.has_value())
+	{
+		auto& [info, handle] = result.value();
+		return { handle, info, plugins.size() - 1 };
+
+	}
+	else
+	{
+		return { nullptr, {}, static_cast<size_t>(-1) };
+	}
 }
 
 void PluginManager::UnloadPlugin(size_t index)

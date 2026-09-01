@@ -91,23 +91,22 @@ void iObjectOrientationSet(unsigned obj_x, const Quaternion& q)
 	if(auto obj = dynamic_cast<IObject2D*>(refobj); obj != nullptr) obj->Rotation = q.X;
 }
 
-void iObjectOrientationReset(unsigned obj_x, Quaternion& q)
+void iObjectOrientationReset(unsigned obj_x, const Quaternion& q)
 {
 	std::unique_ptr<IObject> temp;
 	temp.reset(Serializer::LoadObjectFromProject(projectPath, obj_x));
 
 	if(auto refobj_lst = dynamic_cast<IObject3D*>((*objList)[obj_x]), temp_obj = dynamic_cast<IObject3D*>(temp.get()); refobj_lst != nullptr && temp_obj != nullptr)
 	{
-		q = refobj_lst->Rotation = temp_obj->Rotation;
-		return;
+		temp_obj->Rotation = q;
 	}
 
 	if(auto refobj_lst = dynamic_cast<IObject2D*>((*objList)[obj_x]), temp_obj = dynamic_cast<IObject2D*>(temp.get()); refobj_lst != nullptr && temp_obj != nullptr)
 	{
-		float theta = refobj_lst->Rotation = temp_obj->Rotation;
-		q = Quaternion(theta, theta, theta, theta);
-		return;
+		temp_obj->Rotation = q.X;
 	}
+
+	objList->Replace(temp.release(), obj_x);
 }
 
 void iObjectLocation(unsigned obj_x, Vector3& v)
@@ -124,26 +123,29 @@ void iObjectLocationSet(unsigned obj_x, const Vector3& v)
 	if(auto obj = dynamic_cast<IObject2D*>(refobj); obj != nullptr) obj->Position = Vector2(v.X, v.Y);
 }
 
-void iObjectLocationReset(unsigned obj_x, Engine3DRadSpace::Math::Vector3& v)
+void iObjectLocationReset(unsigned obj_x, const Engine3DRadSpace::Math::Vector3& v)
 {
 	std::unique_ptr<IObject> temp;
 	temp.reset(Serializer::LoadObjectFromProject(projectPath, obj_x));
 
 	if(auto refobj_lst = dynamic_cast<IObject3D*>((*objList)[obj_x]), temp_obj = dynamic_cast<IObject3D*>(temp.get()); refobj_lst != nullptr && temp_obj != nullptr)
 	{
-		v = refobj_lst->Position = temp_obj->Position;
+		temp_obj->Position = v;
+		objList->Replace(temp.release(), obj_x);
 	}
 }
 
-void iObjectPositionReset(unsigned obj_x, Engine3DRadSpace::Math::Quaternion& outRotation, Engine3DRadSpace::Math::Vector3& outLocation)
+void iObjectPositionReset(unsigned obj_x,const Engine3DRadSpace::Math::Quaternion& rotation,const Engine3DRadSpace::Math::Vector3& location)
 {
 	std::unique_ptr<IObject> temp;
 	temp.reset(Serializer::LoadObjectFromProject(projectPath, obj_x));
 	if(auto refobj_lst = dynamic_cast<IObject3D*>((*objList)[obj_x]), temp_obj = dynamic_cast<IObject3D*>(temp.get()); refobj_lst != nullptr && temp_obj != nullptr)
 	{
-		outLocation = refobj_lst->Position = temp_obj->Position;
-		outRotation = refobj_lst->Rotation = temp_obj->Rotation;
+		temp_obj->Position = location;
+		temp_obj->Rotation = rotation;
 	}
+
+	objList->Replace(temp.release(), obj_x);
 }
 
 void iObjectScaleSet(unsigned obj_x, const Vector3& v)
@@ -369,18 +371,18 @@ int iStringLen(const std::string &str)
 	return str.length();
 }
 
-void iStringUCase(const std::string &in, std::string &out)
+void iStringUCase(std::string &out, const std::string &in)
 {
 	out = in;
 
 	std::transform(in.begin(), in.end(), out.begin(),
 	[](char c) -> char
 	{
-		return std::tolower(c);
+		return std::toupper(c);
 	});
 }
 
-void iStringLCase(const std::string& in, std::string& out)
+void iStringLCase(std::string& out, const std::string& in)
 {
 	out = in;
 
@@ -716,11 +718,15 @@ float iFileValueRead(int fileHandle)
 	return 0.0f;
 }
 
-void iFileValueWrite(int fileHandle, float value)
+void iFileValueWrite(int fileHandle, float value, bool useNewline)
 {
 	if (fileHandle >= 0 && fileHandle < static_cast<int>(files.size()) && files[fileHandle])
 	{
 		files[fileHandle]->write(reinterpret_cast<const char*>(&value), sizeof(float));
+		if (useNewline)
+		{
+			files[fileHandle]->put('\n');
+		}
 	}
 }
 
@@ -744,13 +750,13 @@ void iFileByteWrite(int fileHandle, int byte)
 	}
 }
 
-void iFileStringRead(int fileHandle, std::string& outStr, int length)
+void iFileStringRead(int fileHandle, std::string& outStr)
 {
 	if (fileHandle >= 0 && fileHandle < static_cast<int>(files.size()) && files[fileHandle])
 	{
-		std::vector<char> buffer(length);
-		files[fileHandle]->read(buffer.data(), length);
-		outStr.assign(buffer.data(), length);
+		std::string result;
+		(*files[fileHandle]) >> result;
+		outStr = result;
 	}
 }
 
@@ -758,7 +764,7 @@ void iFileStringWrite(int fileHandle, const std::string& value, bool useNewline)
 {
 	if (fileHandle >= 0 && fileHandle < static_cast<int>(files.size()) && files[fileHandle])
 	{
-		files[fileHandle]->write(value.data(), value.size());
+		files[fileHandle]->write(value.c_str(), value.size());
 		if (useNewline)
 		{
 			files[fileHandle]->put('\n');
@@ -780,9 +786,9 @@ bool iFileExists(const std::string& filename)
 	return std::filesystem::exists(filename);
 }
 
-void iFileCopy(const std::string& source, const std::string& destination, bool overwrite)
+void iFileCopy(const std::string& source, const std::string& destination)
 {
-	std::filesystem::copy(source, destination, overwrite ? std::filesystem::copy_options::overwrite_existing : std::filesystem::copy_options::none);
+	std::filesystem::copy(source, destination);
 }
 
 void iFileDelete(const std::string& filename)
@@ -844,13 +850,19 @@ int iTypedChar()
 float iMouseX()
 {
 	auto game = static_cast<Game*>(objList->GetOwner());
-	return static_cast<float>(game->Mouse.Position().X);
+	return static_cast<float>(game->Mouse.Position().X) / game->Device->Resolution().X;
 }
 
 float iMouseY()
 {
 	auto game = static_cast<Game*>(objList->GetOwner());
-	return static_cast<float>(game->Mouse.Position().Y);
+	return static_cast<float>(game->Mouse.Position().Y) / game->Device->Resolution().Y;
+}
+
+float iMouseZ()
+{
+	auto game = static_cast<Game*>(objList->GetOwner());
+	return static_cast<float>(game->Mouse.ScrollWheel());
 }
 
 bool iMouseButtonDown(int button)
@@ -989,7 +1001,7 @@ bool iSphereVisible(unsigned camera, const Engine3DRadSpace::Math::Vector3& cent
 	return false;
 }
 
-void i3DLocationToScreen(Math::Vector3& outScreenPos, unsigned camera, const Engine3DRadSpace::Math::Vector3& worldPos)
+void i3DLocationToScreen(Math::Vector3& outScreenPos, const Engine3DRadSpace::Math::Vector3& worldPos, unsigned camera)
 {
 	auto obj = dynamic_cast<IObject3D*>((*objList)[camera]);
 	if (auto cam = dynamic_cast<ICamera*>(obj); cam != nullptr)
@@ -1008,10 +1020,10 @@ void iScreenRay(
 	Engine3DRadSpace::Math::Vector3& outRayOrigin,
 	Engine3DRadSpace::Math::Vector3& outRayDirection,
 	const Engine3DRadSpace::Math::Vector3& screenLocation,
-	unsigned camera
+	unsigned cameraID
 )
 {
-	auto camera = ((*objList)[camera]);
+	auto camera = ((*objList)[cameraID]);
 	auto game = static_cast<Game*>(objList->GetOwner());
 
 	auto mousePos = game->Mouse.Position();
