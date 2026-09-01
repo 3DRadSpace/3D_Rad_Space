@@ -22,7 +22,7 @@ namespace Engine3DRadSpace::Math
 		/// Creates a vector from a Vector3, setting W to 1.
 		/// </summary>
 		/// <param name="v">The source Vector3.</param>
-		explicit constexpr Vector4(Vector3 v) : X(v.X), Y(v.Y), Z(v.Z), W(1) {};
+		explicit constexpr Vector4(Vector3 v, float w = 1.0f) : X(v.X), Y(v.Y), Z(v.Z), W(w) {};
 		/// <summary>
 		/// Creates a vector from an initializer list of floats.
 		/// </summary>

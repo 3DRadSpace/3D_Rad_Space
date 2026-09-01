@@ -137,7 +137,7 @@ extern "C"
 	void E3DRSP_SCRIPTING_EXPORT iStringMid(std::string& result, const std::string& in, int start, int length);
 	void E3DRSP_SCRIPTING_EXPORT iStringStr(std::string& result, float, const std::string& format);
 	float E3DRSP_SCRIPTING_EXPORT iStringVal(const std::string& str);
-	size_t E3DRSP_SCRIPTING_EXPORT iStringFind(const std::string& str, const std::string& substr, int start, bool case_sensitive);
+	int E3DRSP_SCRIPTING_EXPORT iStringFind(const std::string& str, const std::string& substr, int start, bool case_sensitive);
 	void E3DRSP_SCRIPTING_EXPORT iStringReplace(
 		std::string& result,
 		const std::string& str,
@@ -155,7 +155,7 @@ extern "C"
 	float E3DRSP_SCRIPTING_EXPORT iFloatSin(float x);
 	float E3DRSP_SCRIPTING_EXPORT iFloatCos(float x);
 	float E3DRSP_SCRIPTING_EXPORT iFloatSqrt(float x);
-	float E3DRSP_SCRIPTING_EXPORT iFloatInterpolate(float x, float scrmin, float scrmax, float dstmin, float dstmax, bool clamp);
+	float E3DRSP_SCRIPTING_EXPORT iFloatInterpolate(float x, float srcmin, float srcmax, float dstmin, float dstmax, bool clamp);
 	/*
 	Modes:
 	Use 0 to reduce variation speed when closer to the target value.
@@ -163,11 +163,11 @@ extern "C"
 	Use 2 to reduce variation speed when closer to the reference and target values.
 	Use 3 to reduce variation speed when closer to the middle point between reference and target values.
 	*/
-	float E3DRSP_SCRIPTING_EXPORT iFloatTendTo(float adjust, float ref, float target, float speed, int mode);
-	float E3DRSP_SCRIPTING_EXPORT iFloatTrend(float adjust, float ref, float target, float speed, int mode);
+	//float E3DRSP_SCRIPTING_EXPORT iFloatTendTo(float adjust, float ref, float target, float speed, int mode);
+	//float E3DRSP_SCRIPTING_EXPORT iFloatTrend(float adjust, float ref, float target, float speed, int mode);
 	float E3DRSP_SCRIPTING_EXPORT iVectorLength(const Engine3DRadSpace::Math::Vector3& vec);
 	float E3DRSP_SCRIPTING_EXPORT iVectorLengthSq(const Engine3DRadSpace::Math::Vector3& vec);
-	float E3DRSP_SCRIPTING_EXPORT iVectorLengthSet( Engine3DRadSpace::Math::Vector3& out, const Engine3DRadSpace::Math::Vector3& src, float length);
+	void E3DRSP_SCRIPTING_EXPORT iVectorLengthSet( Engine3DRadSpace::Math::Vector3& out, const Engine3DRadSpace::Math::Vector3& src, float length);
 	float E3DRSP_SCRIPTING_EXPORT iVectorDot(const Engine3DRadSpace::Math::Vector3& a, const Engine3DRadSpace::Math::Vector3& b);
 	void E3DRSP_SCRIPTING_EXPORT iVectorCross(
 		Engine3DRadSpace::Math::Vector3& out,
@@ -234,11 +234,6 @@ extern "C"
 		float t
 	);
 
-	bool E3DRSP_SCRIPTING_EXPORT iQuaternionCompare2(
-		const Engine3DRadSpace::Math::Quaternion& a,
-		const Engine3DRadSpace::Math::Quaternion& b
-	);
-
 	bool E3DRSP_SCRIPTING_EXPORT iQuaternionCompare(
 		const Engine3DRadSpace::Math::Quaternion& a,
 		const Engine3DRadSpace::Math::Quaternion& b,
@@ -247,7 +242,7 @@ extern "C"
 
 	int E3DRSP_SCRIPTING_EXPORT iFileReadOpen(const std::string& filename);
 	int E3DRSP_SCRIPTING_EXPORT iFileWriteOpen(const std::string& filename);
-	int E3DRSP_SCRIPTING_EXPORT iFileClose(int fileHandle);
+	void E3DRSP_SCRIPTING_EXPORT iFileClose(int fileHandle);
 	float E3DRSP_SCRIPTING_EXPORT iFileValueRead(int fileHandle);
 	void E3DRSP_SCRIPTING_EXPORT iFileValueWrite(int fileHandle, float value, bool useNewline);
 	int E3DRSP_SCRIPTING_EXPORT iFileByteRead(int fileHandle);
@@ -260,12 +255,12 @@ extern "C"
 	void E3DRSP_SCRIPTING_EXPORT iFileDelete(const std::string& filename);
 	void E3DRSP_SCRIPTING_EXPORT iFolderCreate(const std::string& folderName);
 	void E3DRSP_SCRIPTING_EXPORT iFolderDelete(const std::string& folderName);
-	int E3DRSP_SCRIPTING_EXPORT iFileDownload(const std::string& url, const std::string& destination);
-	int E3DRSP_SCRIPTING_EXPORT iFileDownloadPB(const std::string& url, const std::string& destination);
+	//int E3DRSP_SCRIPTING_EXPORT iFileDownload(const std::string& url, const std::string& destination);
+	//int E3DRSP_SCRIPTING_EXPORT iFileDownloadPB(const std::string& url, const std::string& destination);
 	int E3DRSP_SCRIPTING_EXPORT iFileSize(const std::string& filename);
 	void E3DRSP_SCRIPTING_EXPORT iLocalFolder(std::string& folderName);
-	bool E3DRSP_SCRIPTING_EXPORT iFileOpenDialog(std::string& initialPath_outResult, const std::string& filter, std::string& title);
-	bool E3DRSP_SCRIPTING_EXPORT iFileSaveDialog(std::string& initialPath_outResult, const std::string& filter, std::string& title);
+	//bool E3DRSP_SCRIPTING_EXPORT iFileOpenDialog(std::string& initialPath_outResult, const std::string& filter, std::string& title);
+	//bool E3DRSP_SCRIPTING_EXPORT iFileSaveDialog(std::string& initialPath_outResult, const std::string& filter, std::string& title);
 
 	bool E3DRSP_SCRIPTING_EXPORT iKeyDown(int key);
 	int E3DRSP_SCRIPTING_EXPORT iKeyCode(const std::string& keyName);
@@ -276,17 +271,17 @@ extern "C"
 	float E3DRSP_SCRIPTING_EXPORT iMouseZ();
 	/*  mouse button codes can be 0=left, 1=right, 2=middle */
 	bool E3DRSP_SCRIPTING_EXPORT iMouseButtonDown(int idBtn);
-	bool E3DRSP_SCRIPTING_EXPORT iMouseButtonClick(int idBtn);
+	//bool E3DRSP_SCRIPTING_EXPORT iMouseButtonClick(int idBtn);
 	//float E3DRSP_SCRIPTING_EXPORT iMouseLookX();
 	//float E3DRSP_SCRIPTING_EXPORT iMouseLookY();
 	//void E3DRSP_SCRIPTING_EXPORT iMouseLookSet(float x, float y);
 	//iMouseLookSpeedSet(float,float)
 	//iMouseLookYRangeSet(float,float)
-	int E3DRSP_SCRIPTING_EXPORT iDLLLoad(const std::string& dllName);
-	int E3DRSP_SCRIPTING_EXPORT iDLLUnload(int dllHandle);
-	bool E3DRSP_SCRIPTING_EXPORT iDLLCall(int dllHandle, const std::string& functionName, int arg);
-	void E3DRSP_SCRIPTING_EXPORT iDLLArraySet(int dllHandle, int index, float value);
-	float E3DRSP_SCRIPTING_EXPORT iDLLArrayGet(int dllHandle, int index);
+	//int E3DRSP_SCRIPTING_EXPORT iDLLLoad(const std::string& dllName);
+	//void E3DRSP_SCRIPTING_EXPORT iDLLUnload(int dllHandle);
+	//bool E3DRSP_SCRIPTING_EXPORT iDLLCall(int dllHandle, const std::string& functionName, int arg);
+	//void E3DRSP_SCRIPTING_EXPORT iDLLArraySet(int dllHandle, int index, float value);
+	//float E3DRSP_SCRIPTING_EXPORT iDLLArrayGet(int dllHandle, int index);
 
 	bool E3DRSP_SCRIPTING_EXPORT iInitializing();
 	bool E3DRSP_SCRIPTING_EXPORT iDeinitializing();
@@ -310,9 +305,11 @@ extern "C"
 	int E3DRSP_SCRIPTING_EXPORT iSystemTime(int identifier);
 	int E3DRSP_SCRIPTING_EXPORT iDisplayWidth();
 	int E3DRSP_SCRIPTING_EXPORT iDisplayHeight();
-	bool E3DRSP_SCRIPTING_EXPORT iBoundingSphereFrustumCheckSet(bool enableCheck);
-	int E3DRSP_SCRIPTING_EXPORT iVertexShaderVersion(bool minor);
-	int E3DRSP_SCRIPTING_EXPORT iPixelShaderVersion(bool minor);
+	// NO-OP: No reason to disable the sphere frustum check.
+	//void E3DRSP_SCRIPTING_EXPORT iBoundingSphereFrustumCheckSet(bool enableCheck);
+	
+	//iVertexShaderVersion = iVertexShaderVersion.
+	int E3DRSP_SCRIPTING_EXPORT iShaderVersion(bool minor);
 	void E3DRSP_SCRIPTING_EXPORT iRenderingEnable(bool enable);
 	void E3DRSP_SCRIPTING_EXPORT iShadowsEnable(bool enable);
 	void E3DRSP_SCRIPTING_EXPORT iEscKeyEnable();
@@ -343,8 +340,8 @@ extern "C"
 		float radius,
 		const Engine3DRadSpace::Math::Vector3& segStart,
 		const Engine3DRadSpace::Math::Vector3& segEnd,
-		Engine3DRadSpace::Math::Vector3& outIntersectionPoint,
-		Engine3DRadSpace::Math::Vector3& outNormal
+		Engine3DRadSpace::Math::Vector3& outIntersectionPoint1,
+		Engine3DRadSpace::Math::Vector3& outIntersectionPoint2
 	);
 
 	//bool E3DRSP_SCRIPTING_EXPORT iScreenAreaPicked(float topX, float topY, float bottomX, float bottomY, bool once);

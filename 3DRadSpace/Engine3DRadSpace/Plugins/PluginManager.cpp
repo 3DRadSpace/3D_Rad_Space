@@ -33,43 +33,9 @@ PluginManager::PluginManager(IGame* owner)
 		auto file = entry.path();
 		if (file.has_extension() && file.extension() == ".dll")
 		{
-			auto p = Plugins::LoadPlugin(file);
-			std::ignore = p.and_then([this](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
-				{
-					pluginInfos.push_back(plugin.first);
-
-					auto& [info, handle] = plugin;
-					plugins.push_back(handle);
-
-					Logging::PrintMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
-
-					auto numLoadedObjects = Plugins::LoadCustomObjectsFromLibHandle(handle);
-					Logging::PrintMessage(std::format("Loaded {} custom object types from plugin {}", numLoadedObjects, info.Name));
-
-					return plugin;
-				}
-			).or_else([&file](Plugins::PluginLoadingError err) -> decltype(p)
-				{
-					std::string msg = "Unknown error";
-					switch (err)
-					{
-					case Plugins::PluginLoadingError::UnableToLoadPluginLibrary:
-						msg = "Unable to load library.";
-						break;
-					case Plugins::PluginLoadingError::NotA3DRadSpacePlugin:
-						msg = "Not a 3DRadSpace Plugin!\r\nFunction \"bool PluginMain()\" was not found!";
-						break;
-					case Plugins::PluginLoadingError::InitializationFunctionFailure:
-						msg = "Plugin initialization failed!";
-						break;
-					default:
-						break;
-					}
-
-					Logging::PrintWarning(std::format("Failed to load plugin at {}!\r\n{}", file.string(), msg));
-					return std::unexpected(err);
-				}
-			);
+			auto p = LoadPlugin(file);
+			pluginInfos.emplace_back(p.Info);
+			plugins.emplace_back(p.Handle);
 		}
 	}
 }
@@ -106,4 +72,58 @@ std::vector<PluginInfo>::const_iterator PluginManager::begin() const noexcept
 std::vector<PluginInfo>::const_iterator PluginManager::end() const noexcept
 {
 	return pluginInfos.end();
+}
+
+PluginManager::PluginLoadResult PluginManager::LoadPlugin(const std::filesystem::path& pluginPath)
+{
+	auto p = Plugins::LoadPlugin(pluginPath);
+	std::ignore = p.and_then([this](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
+		{
+			pluginInfos.push_back(plugin.first);
+
+			auto& [info, handle] = plugin;
+			plugins.push_back(handle);
+
+			Logging::PrintMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
+
+			auto numLoadedObjects = Plugins::LoadCustomObjectsFromLibHandle(handle);
+			Logging::PrintMessage(std::format("Loaded {} custom object types from plugin {}", numLoadedObjects, info.Name));
+
+			return plugin;
+		}
+	).or_else([&pluginPath](Plugins::PluginLoadingError err) -> decltype(p)
+		{
+			std::string msg = "Unknown error";
+			switch (err)
+			{
+			case Plugins::PluginLoadingError::UnableToLoadPluginLibrary:
+				msg = "Unable to load library.";
+				break;
+			case Plugins::PluginLoadingError::NotA3DRadSpacePlugin:
+				msg = "Not a 3DRadSpace Plugin!\r\nFunction \"bool PluginMain()\" was not found!";
+				break;
+			case Plugins::PluginLoadingError::InitializationFunctionFailure:
+				msg = "Plugin initialization failed!";
+				break;
+			default:
+				break;
+			}
+
+			Logging::PrintWarning(std::format("Failed to load plugin at {}!\r\n{}", pluginPath.string(), msg));
+			return std::unexpected(err);
+		}
+	);
+}
+
+void PluginManager::UnloadPlugin(size_t index)
+{
+	if (index >= plugins.size()) return;
+	auto plugin = plugins[index];
+	auto f = Native::GetFunctionFromLibrary<Plugins::PluginUnload>(plugin, "PluginUnload");
+	if (f != nullptr)
+	{
+		if (!f()) Logging::PrintMessage(std::format("PluginUnload() returned false! Handle {:x}", reinterpret_cast<intptr_t>(plugin)));
+	}
+	plugins.erase(plugins.begin() + index);
+	pluginInfos.erase(pluginInfos.begin() + index);
 }

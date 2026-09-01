@@ -24,6 +24,16 @@ namespace Engine3DRadSpace::Plugins
 		std::vector<PluginInfo>::const_iterator begin() const noexcept;
 		std::vector<PluginInfo>::const_iterator end() const noexcept;
 
+		struct PluginLoadResult
+		{
+			void* Handle;
+			PluginInfo Info;
+			size_t Index;
+		};
+
+		PluginLoadResult LoadPlugin(const std::filesystem::path& path);
+		void UnloadPlugin(size_t index);
+
 		~PluginManager();
 	};
 }
