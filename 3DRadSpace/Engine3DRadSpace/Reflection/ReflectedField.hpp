@@ -187,7 +187,7 @@ namespace Engine3DRadSpace::Reflection
 			assert(value != nullptr);
 
 			_setter(*static_cast<C*>(objPtr), *static_cast<const T*>(value));
-			_copy = *static_cast<const T*>(value);
+			_copy = (_getter)(*static_cast<C*>(objPtr));
 		}
 		/// <summary>
 		/// Calls the setter function
@@ -202,7 +202,7 @@ namespace Engine3DRadSpace::Reflection
 			assert(value != nullptr);
 
 			_setter(*static_cast<C*>(objPtr), *value);
-			_copy = *value;
+			Get<T>(objPtr); // update the copy
 		}
 		/// <summary>
 		/// Calls the getter function
@@ -214,8 +214,8 @@ namespace Engine3DRadSpace::Reflection
 		T Get(void* objPtr) const
 		{
 			assert(objPtr != nullptr);
-
-			return (_getter)(*static_cast<C*>(objPtr));
+			auto value = (_getter)(*static_cast<C*>(objPtr));
+			_copy = value;
 		}
 		/// <summary>
 		/// Returns the field representation.

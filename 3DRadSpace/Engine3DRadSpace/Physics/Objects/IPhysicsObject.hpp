@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Physics::Objects
 	/// <summary>
 	/// Base class for all objects that interact with the physics engine.
 	/// </summary>
-	class E3DRSP_PHYSICS_EXPORT IPhysicsObject : public Engine3DRadSpace::Objects::IObject3D
+	class E3DRSP_PHYSICS_OBJ_EXPORT IPhysicsObject : public Engine3DRadSpace::Objects::IObject3D
 	{
 	protected:
 		IPhysicsEngine* _physics = nullptr;

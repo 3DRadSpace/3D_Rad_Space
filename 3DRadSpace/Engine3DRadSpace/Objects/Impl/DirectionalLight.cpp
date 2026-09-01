@@ -46,11 +46,12 @@ void DirectionalLight::Update()
 
 void DirectionalLight::SetLightDir(const Math::Vector3& direction) noexcept
 {
+	auto normalizedDir = Math::Vector3::Normalize(direction);
 	if (_light)
 	{
-		_light->LightDirection = Math::Vector3::Normalize(direction);
+		_light->LightDirection = normalizedDir;
 	}
-	_lightCpy.LightDirection = Math::Vector3::Normalize(direction);
+	_lightCpy.LightDirection = normalizedDir;
 }
 
 void DirectionalLight::SetLightColor(const Math::Color& color) noexcept
@@ -81,22 +82,22 @@ void DirectionalLight::SetIntensity(float intensity) noexcept
 
 Math::Vector3 DirectionalLight::GetLightDir() const noexcept
 {
-	return _light ? _light->LightDirection : _lightCpy.LightDirection;
+	return _lightCpy.LightDirection;
 }
 
 Math::Color DirectionalLight::GetLightColor() const noexcept
 {
-	return _light ? _light->LightColor : _lightCpy.LightColor;
+	return _lightCpy.LightColor;
 }
 
 Math::Color DirectionalLight::GetAmbientColor() const noexcept
 {
-	return _light ? _light->AmbientColor : _lightCpy.AmbientColor;
+	return _lightCpy.AmbientColor;
 }
 
 float DirectionalLight::GetIntensity() const noexcept
 {
-	return _light ? _light->Intensity : _lightCpy.Intensity;
+	return _lightCpy.Intensity;
 }
 
 void DirectionalLight::Sync() noexcept

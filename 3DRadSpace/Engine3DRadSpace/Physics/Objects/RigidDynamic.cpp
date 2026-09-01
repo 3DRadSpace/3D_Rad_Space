@@ -245,6 +245,11 @@ Reflection::UUID RigidDynamic::GetUUID() const noexcept
 	return {0xe360b70e, 0x266c, 0x4b9b, { 0xa1, 0x4c, 0x62, 0x97, 0x9b, 0x93, 0xd, 0x3c }};
 }
 
+IDynamicCollider* RigidDynamic::GetCollider() const noexcept
+{
+	return _collider.get();
+}
+
 template<>
 class Engine3DRadSpace::Objects::Gizmos::Gizmo<RigidDynamic> final : public Engine3DRadSpace::Objects::Gizmos::IGizmo
 {

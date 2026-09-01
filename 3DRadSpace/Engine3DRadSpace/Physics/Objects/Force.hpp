@@ -7,7 +7,7 @@ namespace Engine3DRadSpace::Physics::Objects
 	/// <summary>
 	/// Represents a force that can affect a dynamic physics object. The affected object is the parent of this object.
 	/// </summary>
-	class Force : public IPhysicsObject
+	class E3DRSP_PHYSICS_OBJ_EXPORT Force : public IPhysicsObject
 	{
 		Math::Vector3 _direction = Math::Vector3::Forward();
 		float _time = 0;

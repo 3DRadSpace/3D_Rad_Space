@@ -1,8 +1,5 @@
 #include "AngelscriptWrapper.hpp"
-
 //#define AS_USE_NAMESPACE
-#include <angelscript.h>
-#include "AngelScript_AddOns\scriptstdstring.h"
 
 #include <cassert>
 #include <format>
@@ -313,11 +310,18 @@ AngelScriptWrapper::AngelScriptWrapper()
 	r = engine->RegisterGlobalFunction("void iObjectScaleSet(const uint, const Vector3& in)", asFUNCTION(iObjectScaleSet), asCALL_CDECL); assert(r >= 0);
 	r = engine->RegisterGlobalFunction("void iObjectScale(const uint, Vector3& in)", asFUNCTION(iObjectScale), asCALL_CDECL); assert(r >= 0);
 #pragma endregion
+
+	
 }
 
-void AngelScriptWrapper::Call(const std::string& name)
+void AngelScriptWrapper::Call(int scriptHandle, const std::string& name)
 {
 	auto engine = static_cast<asIScriptEngine*>(_engine);
+}
+
+int AngelScriptWrapper::Compile(const std::string& scriptPath)
+{
+	return 0;
 }
 
 AngelScriptWrapper::~AngelScriptWrapper()

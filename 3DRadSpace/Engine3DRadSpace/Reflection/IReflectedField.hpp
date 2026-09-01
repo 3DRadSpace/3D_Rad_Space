@@ -1,5 +1,6 @@
 #pragma once
 #include "FieldRepresentation.hpp"
+#include "../Logging/Exception.hpp"
 
 namespace Engine3DRadSpace::Reflection
 {
@@ -71,9 +72,16 @@ namespace Engine3DRadSpace::Reflection
 		/// <param name="offset">additional offset in bytes</param>
 		/// <returns></returns>
 		template<typename T>
-		T GetAtOffset(void* objPtr, intptr_t offset)
+		const T GetAtOffset(void* objPtr, intptr_t offset) const
 		{
-			return *std::launder<T>(reinterpret_cast<T*>(static_cast<std::byte*>(objPtr) + FieldOffset() + offset));
+			if (TypeSize() == 0) throw Logging::Exception("GetAtOffset<T> called on a field with null size!");
+			if (sizeof(T) > TypeSize())
+				throw Logging::Exception("Can't read T that is larger than the field's type size!");
+
+			auto ptr = static_cast<const std::byte*>(Get(objPtr));
+			if (ptr == nullptr) return *static_cast<const T*>(DefaultValue());
+
+			return *std::launder<const T>(reinterpret_cast<const T*>(ptr + offset));
 		}
 		/// <summary>
 		/// Returns a pointer to the default value of the field's type.

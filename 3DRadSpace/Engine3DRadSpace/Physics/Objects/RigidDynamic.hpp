@@ -14,7 +14,7 @@ namespace Engine3DRadSpace::Physics::Objects
 	/// - Box 
 	/// - Sphere
 	/// </remarks>
-	class E3DRSP_PHYSICS_EXPORT RigidDynamic : public IPhysicsObject
+	class E3DRSP_PHYSICS_OBJ_EXPORT RigidDynamic : public IPhysicsObject
 	{
 	protected:
 		std::unique_ptr<IDynamicCollider> _collider;

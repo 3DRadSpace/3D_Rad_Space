@@ -17,7 +17,6 @@ namespace Engine3DRadSpace::Angelscript
 		);
 
 		std::string ScriptPath;
-		std::string Class;
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;

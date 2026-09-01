@@ -5,7 +5,7 @@
 
 namespace Engine3DRadSpace::Scripting
 {
-	class E3DRSP_SCRIPTING_EXPORT IScript: public IUpdateable
+	class E3DRSP_SCRIPTING_EXPORT IScript : public IUpdateable
 	{
 	protected:
 		/// <summary>

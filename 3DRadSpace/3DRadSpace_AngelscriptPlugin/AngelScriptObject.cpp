@@ -28,6 +28,7 @@ Objects::Gizmos::IGizmo* AngelScriptObject::GetGizmo() const noexcept
 
 void AngelScriptObject::Initialize()
 {
+	p_angelscriptWrapper->Compile(ScriptPath);
 }
 
 void AngelScriptObject::Load()
@@ -48,5 +49,6 @@ REFL_BEGIN(AngelScriptObject, "AngelScript Script", "Scripting", "AngelScript sc
 REFL_FIELD(AngelScriptObject, std::string, Name, "Name", "AngelScript script", "Name of the script object")
 REFL_FIELD(AngelScriptObject, bool, Enabled, "Enabled", "", "Is the object enabled")
 REFL_FIELD(AngelScriptObject, std::string, ScriptPath, "Script path", "", "Path to script file")
-REFL_FIELD(AngelScriptObject, std::string, Class, "Entry classname", "", "Path to script file")
+REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Enable), "Enable")
+REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Disable), "Disable")
 REFL_END

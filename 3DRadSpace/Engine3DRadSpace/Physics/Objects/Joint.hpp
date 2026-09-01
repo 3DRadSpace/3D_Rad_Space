@@ -8,7 +8,7 @@ namespace Engine3DRadSpace::Physics::Objects
 	/// <summary>
 	/// A physics object representing a joint constraint between two actors.
 	/// </summary>
-	class E3DRSP_PHYSICS_EXPORT Joint : public IPhysicsObject
+	class E3DRSP_PHYSICS_OBJ_EXPORT Joint : public IPhysicsObject
 	{
 	protected:
 		std::unique_ptr<IJoint> _joint;

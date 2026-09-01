@@ -740,9 +740,10 @@ json Engine3DRadSpace::Projects::Serializer::SerializeObject(IObject* obj)
 
 bool Engine3DRadSpace::Projects::Serializer::LoadProject(ObjectList* lst, ContentManager *content, const std::filesystem::path& projectPath)
 {
-	std::ifstream file(projectPath);
+	if (std::filesystem::file_size(projectPath) == 0) return false;
 
-	if (file.bad() || file.fail()) return false;
+	std::ifstream file(projectPath);
+	if (file.bad() || file.fail() || file.eof()) return false;
 
 	json j;
 	file >> j;
