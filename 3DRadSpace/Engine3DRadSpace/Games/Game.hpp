@@ -105,6 +105,7 @@ namespace Engine3DRadSpace
 		virtual void Draw2D() override;
 
 		void AppendScene(const std::filesystem::path& path) override;
+		std::filesystem::path GetCurrentScene() const noexcept;
 
 		~Game() override;
 	};

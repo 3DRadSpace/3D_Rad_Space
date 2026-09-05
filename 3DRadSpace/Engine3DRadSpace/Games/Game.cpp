@@ -302,6 +302,11 @@ void Game::AppendScene(const std::filesystem::path& path)
 	if(!r) throw Logging::Exception("Failed to load project " + path.string());
 }
 
+std::filesystem::path Game::GetCurrentScene() const noexcept
+{
+	return _newScene.value_or(std::filesystem::path()); 
+}
+
 void Game::Initialize()
 {
 	for (auto& [object, type] : *Objects)

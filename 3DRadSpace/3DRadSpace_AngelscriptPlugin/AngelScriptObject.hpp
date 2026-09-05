@@ -9,14 +9,26 @@ namespace Engine3DRadSpace::Angelscript
 	/// </summary>
 	class __declspec(dllexport) AngelScriptObject final : public Engine3DRadSpace::Objects::IObject
 	{
+		int64_t _scriptHandle = -1;
 	public:
+		AngelScriptObject();
+
 		AngelScriptObject(
-			const std::string& name = "AngelScript Script", 
-			bool enabled = true,
-			const std::string& src = ""
+			const std::string& name,
+			bool enabled,
+			const std::filesystem::path& scriptFilename
 		);
 
-		std::string ScriptPath;
+		AngelScriptObject(
+			const std::string& name,
+			bool enabled,
+			const std::string_view& scriptSource
+		);
+
+		AngelScriptObject(AngelScriptObject&&) noexcept;
+		AngelScriptObject& operator=(AngelScriptObject&&) noexcept;
+
+		std::filesystem::path ScriptPath;
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
@@ -26,7 +38,10 @@ namespace Engine3DRadSpace::Angelscript
 		void Load(const std::filesystem::path& path) override;
 		void Update() override;
 
-		~AngelScriptObject() override = default;
+		int GetHandle() const noexcept;
+		bool TryCompile(std::string& err);
+
+		~AngelScriptObject() override;
 	};
 }
 

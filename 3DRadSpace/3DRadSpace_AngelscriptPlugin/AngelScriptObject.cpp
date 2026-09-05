@@ -1,5 +1,9 @@
 #include "AngelScriptObject.hpp"
 #include "AngelscriptWrapper.hpp"
+#include <Engine3DRadSpace/Logging/Warning.hpp>
+#include "Legacy.hpp"
+#include <Engine3DRadSpace/Games/Game.hpp>
+#include <filesystem>
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Objects;
@@ -9,10 +13,49 @@ using namespace Engine3DRadSpace::Angelscript;
 
 extern std::unique_ptr<AngelScriptWrapper> p_angelscriptWrapper;
 
-AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, const std::string& source) :
+AngelScriptObject::AngelScriptObject() :
+	IObject("AngelScript Script", true),
+	ScriptPath()
+{
+	Legacy::SetObjectList(GetGame()->RequireService<Engine3DRadSpace::Objects::ObjectList>({}));
+	Legacy::SetProjectPath(static_cast<Game*>(GetGame())->GetCurrentScene());
+}
+
+AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, const std::filesystem::path& source) :
 	IObject(name, enabled),
 	ScriptPath(source)
 {
+}
+
+AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, const std::string_view& source) :
+	IObject(name, enabled),
+	ScriptPath()
+{
+	std::filesystem::path tempPath = std::filesystem::temp_directory_path() / (name + ".as");
+	std::ofstream file(tempPath);
+	file << source;
+	file.close();
+	ScriptPath = tempPath;
+}
+
+AngelScriptObject::AngelScriptObject(AngelScriptObject&& other) noexcept :
+	IObject(std::move(other)),
+	ScriptPath(std::move(other.ScriptPath)),
+	_scriptHandle(other._scriptHandle)
+{
+	other._scriptHandle = -1;
+}
+
+AngelScriptObject& AngelScriptObject::operator=(AngelScriptObject&& other) noexcept
+{
+	if (this != &other)
+	{
+		IObject::operator=(std::move(other));
+		ScriptPath = std::move(other.ScriptPath);
+		_scriptHandle = other._scriptHandle;
+		other._scriptHandle = -1;
+	}
+	return *this;
 }
 
 Reflection::UUID AngelScriptObject::GetUUID() const noexcept
@@ -28,7 +71,16 @@ Objects::Gizmos::IGizmo* AngelScriptObject::GetGizmo() const noexcept
 
 void AngelScriptObject::Initialize()
 {
-	p_angelscriptWrapper->Compile(ScriptPath);
+	std::string err;
+	bool b = TryCompile(err);
+	if (!b)
+	{
+		Logging::PrintWarning(std::format("Failed to compile AngelScript script '{}': {}", ScriptPath.string(), err));
+		return;
+	}
+
+	p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Initialize);
+	p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Main);
 }
 
 void AngelScriptObject::Load()
@@ -42,7 +94,33 @@ void AngelScriptObject::Load(const std::filesystem::path& path)
 
 void AngelScriptObject::Update()
 {
+	p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Main);
+}
 
+bool AngelScriptObject::TryCompile(std::string& err)
+{
+	if (!std::filesystem::exists(ScriptPath))
+	{
+		err = "Script file does not exist.";
+		return false;
+	}
+	int handle = p_angelscriptWrapper->Compile(ScriptPath);
+	if (handle < 0)
+	{
+		err = "Failed to compile script.";
+		return false;
+	}
+	_scriptHandle = handle;
+	return true;
+}
+
+AngelScriptObject::~AngelScriptObject()
+{
+	if (_scriptHandle >= 0)
+	{
+		p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Deinitialize);
+		p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Main);
+	}
 }
 
 REFL_BEGIN(AngelScriptObject, "AngelScript Script", "Scripting", "AngelScript script")
