@@ -79,10 +79,7 @@ PluginManager::PluginLoadResult PluginManager::LoadPlugin(const std::filesystem:
 	auto p = Plugins::LoadPlugin(pluginPath);
 	auto result = p.and_then([this](std::pair<Plugins::PluginInfo, void*> plugin) -> decltype(p)
 		{
-			pluginInfos.push_back(plugin.first);
-
 			auto& [info, handle] = plugin;
-			plugins.push_back(handle);
 
 			Logging::PrintMessage(std::format("Loaded plugin {} ver {} handle 0x{:x}", info.Name, info.Version, reinterpret_cast<intptr_t>(handle)));
 

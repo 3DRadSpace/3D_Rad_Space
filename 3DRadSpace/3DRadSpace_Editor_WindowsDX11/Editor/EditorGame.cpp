@@ -239,7 +239,7 @@ void EditorGame::_picking()
 			{
 				auto dst = static_cast<IObject3D*>(obj.Object.get())->Intersects(ray);
 
-				if(!std::isnan(dst) && dst > 0.0f && dst < closestDistance)
+				if(!std::isnan(dst) && dst > 0.0f && dst <= closestDistance)
 				{
 					closestDistance = dst;
 					closestIntersection = ray.Origin + (ray.Direction * dst);

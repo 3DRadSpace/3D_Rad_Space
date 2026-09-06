@@ -112,7 +112,8 @@ float Skinmesh::Intersects(const Ray&r) const
 	{
 		for (auto& meshPart : *mesh)
 		{
-			if(std::isnan(r.Intersects(meshPart->GetBoundingBox()))) continue;
+			auto bbox = meshPart->GetBoundingBox().Transform(modelMatrix);
+			if(std::isnan(r.Intersects(bbox))) continue;
 
 			auto [vertex, index] = meshPart->CreateStagingBuffers();
 
