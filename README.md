@@ -10,6 +10,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/3DRadSpace/3D_Rad_Space.svg)](https://GitHub.com/3DRadSpace/3D_Rad_Space/issues/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/a1a0b919-bbc5-4d87-a3e9-4b6007b704e0" />
+
+
 # Downloading releases
 
 Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases) (Lastest release: 0.0.6a, currently working on 0.1.0a)
