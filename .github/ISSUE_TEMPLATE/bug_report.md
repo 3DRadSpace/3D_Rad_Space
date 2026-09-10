@@ -1,23 +1,23 @@
 ---
 name: Bug report
-about: Create a bug report to help improve the project
-title: "[BUG] <Bug name>"
+about: Create a bug report ticket
+title: "bug: <Bug name>"
 labels: bug
-assignees: NicusorN5
-
 ---
 
+**Version**: Official release/master branch (examples include 0.1.0Alpha, or master:d514f6f6ea28ae21f2a07b83316f7a4555af804f)
+
 **Short description**
-Try to explain the bug you occured.
+Try to explain the bug you had encountered.
 
 **Steps**
-Steps to reproduce the error:
-Format:
-1. Do a thing
-2. Do an other thing
+Steps to reproduce the bug:
+
+1. Step 1
+2. Step 2
 
 **Screenshots**
-Post links to some screenshots that show the error (glitch,bug,etc) if you have any.
+(If available, otherwise do not include)
 
 **Crash report**
-Copy and paste crash ,exception crashes if any.
+(Stacktraces, exception info, WinDbg reports, if available)
