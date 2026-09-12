@@ -17,8 +17,6 @@ AngelScriptObject::AngelScriptObject() :
 	IObject("AngelScript Script", true),
 	ScriptPath()
 {
-	Legacy::SetObjectList(GetGame()->RequireService<Engine3DRadSpace::Objects::ObjectList>({}));
-	Legacy::SetProjectPath(static_cast<Game*>(GetGame())->GetCurrentScene());
 }
 
 AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, const std::filesystem::path& source) :
@@ -71,6 +69,9 @@ Objects::Gizmos::IGizmo* AngelScriptObject::GetGizmo() const noexcept
 
 void AngelScriptObject::Initialize()
 {
+	Legacy::SetObjectList(GetGame()->RequireService<Engine3DRadSpace::Objects::ObjectList>({}));
+	Legacy::SetProjectPath(static_cast<Game*>(GetGame())->GetCurrentScene());
+
 	std::string err;
 	bool b = TryCompile(err);
 	if (!b)
@@ -130,4 +131,5 @@ REFL_FIELD(AngelScriptObject, std::string, ScriptPath, "Script path", "", "Path 
 REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Enable), "Enable")
 REFL_METHOD(AngelScriptObject, void, (&AngelScriptObject::Disable), "Disable")
 REFL_ATTR("Icon","Data\\Editor\\OBJ_AngelScript.png")
+REFL_ATTR("CustomWindow", "CreateAngelScriptEditorWindow")
 REFL_END

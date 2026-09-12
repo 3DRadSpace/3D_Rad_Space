@@ -15,12 +15,14 @@ using namespace Engine3DRadSpace::Math;
 
 void AngelScriptWrapper_MessageCallback(const asSMessageInfo* msg, void* param)
 {
+	if (strlen(msg->message) == 0) return;
+
 	if(msg->type == asMSGTYPE_WARNING)
-		PrintWarning(std::format("({}, {}) : Warning {}", msg->section, msg->row, msg->col, msg->message));
+		PrintWarning(std::format("{} ({}, {}) : Warning {}", msg->section, msg->row, msg->col, msg->message));
 	else if(msg->type == asMSGTYPE_INFORMATION)
-		PrintMessage(std::format("({}, {}) : Information {}", msg->section, msg->row, msg->col, msg->message));
+		PrintMessage(std::format("{} ({}, {}) : Information {}", msg->section, msg->row, msg->col, msg->message));
 	if(msg->type == asMSGTYPE_ERROR)
-		PrintWarning(std::format("({}, {}) : Error {}", msg->section, msg->row, msg->col, msg->message));
+		PrintWarning(std::format("{} ({}, {}) : Error {}", msg->section, msg->row, msg->col, msg->message));
 }
 
 static void v2ctor_def(Vector2* self)

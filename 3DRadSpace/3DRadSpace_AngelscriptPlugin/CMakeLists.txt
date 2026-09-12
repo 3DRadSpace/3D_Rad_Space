@@ -4,6 +4,7 @@ project("3DRadSpace.AngelScript")
 
 file(GLOB_RECURSE 3DRadSpace.AngelScript-src CONFIGURE_DEPENDS "*.cpp" "*.hpp" )
 add_library(3DRadSpace.AngelScript SHARED ${3DRadSpace.AngelScript-src})
+target_sources(3DRadSpace.AngelScript PRIVATE "Resources.rc")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 3DRadSpace.AngelScript PROPERTY CXX_STANDARD 23)
