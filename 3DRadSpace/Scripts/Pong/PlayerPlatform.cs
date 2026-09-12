@@ -12,13 +12,13 @@ namespace Pong
 {
     public class PlayerPlatform : Script
     {
-        IObject2D platform;
+        InstIObject2D platform;
         Game game;
 
         Vector2 resolution;
         public override void Start()
         {
-            platform = Object.Parent as IObject2D;
+            platform = new InstIObject2D(Object.Parent.Handle);
             if (platform == null) throw new NullReferenceException("This script is supposed to be attached to a Sprite");
 
             game = Object.Game as Game;

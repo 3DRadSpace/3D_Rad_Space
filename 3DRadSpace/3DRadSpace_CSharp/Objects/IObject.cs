@@ -2,7 +2,7 @@
 
 namespace Engine3DRadSpace.Objects;
 
-public interface IObject : IInitializable, IUpdateable, ILoadable
+public interface IObject : IInitializable, IUpdateable, ILoadable, IPtrWrapper
 {
 	   public string Name { get; set; }
 	   public bool Enabled { get; set; }

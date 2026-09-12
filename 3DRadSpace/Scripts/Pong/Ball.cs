@@ -8,17 +8,17 @@ using System.Numerics;
 using System.Drawing;
 using Engine3DRadSpace.Objects;
 
-namespace _3DRadSpace_CSharp_Sample
+namespace Pong
 {
     public class PongBall : Script
     {
-        IObject2D ball;
+        InstIObject2D ball;
         Game game;
 
         ObjectList list;
 
-        IObject2D playerPlatform;
-        IObject2D cpuPlatform;
+        InstIObject2D playerPlatform;
+        InstIObject2D cpuPlatform;
 
         TextPrint scoreText;
 
@@ -37,7 +37,7 @@ namespace _3DRadSpace_CSharp_Sample
 
         public override void Start()
         {
-            ball = Object.Parent as IObject2D;
+            ball = new InstIObject2D(Object.Parent.Handle);
             if (ball == null ) throw new NullReferenceException("This script is supposed to atteched to a Sprite");
 
             game = ((Object.GraphicsDevice as InstIGraphicsDevice).Owner as Game);
@@ -46,10 +46,10 @@ namespace _3DRadSpace_CSharp_Sample
             list = game.ObjectList;
             if(list == null ) throw new NullReferenceException("ObjectList is null");
 
-            playerPlatform = list.Find(1) as IObject2D;
+            playerPlatform = new InstIObject2D(list.Find(1).Handle);
             if(playerPlatform == null) throw new NullReferenceException("Player platform is null");
 
-            cpuPlatform = list.Find(2) as IObject2D;
+            cpuPlatform = new InstIObject2D(list.Find(2).Handle);
             if(cpuPlatform == null) throw new NullReferenceException("CPU platform is null");
 
             Reset();
@@ -92,7 +92,7 @@ namespace _3DRadSpace_CSharp_Sample
             }
         }
 
-        bool collidesWith(IObject2D other)
+        bool collidesWith(InstIObject2D other)
         {
             return ball.Position.X < other.Position.X + other.Scale.X &&
                    ball.Position.X + ball.Scale.X > other.Position.X &&

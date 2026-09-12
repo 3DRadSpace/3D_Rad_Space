@@ -2,13 +2,14 @@
 using Engine3DRadSpace.Objects;
 using Engine3DRadSpace.Scripting;
 using System.Numerics;
+using System;
 
-namespace _3DRadSpace_CSharp_Sample
+namespace Pong
 {
     public class CpuPlatform : Script
     {
-        IObject2D platform;
-        IObject2D ball;
+        InstIObject2D platform;
+        InstIObject2D ball;
 
         Game game;
 
@@ -20,13 +21,13 @@ namespace _3DRadSpace_CSharp_Sample
 
         public override void Start()
         {
-            platform = Object.Parent as IObject2D;
+            platform = new InstIObject2D(Object.Parent.Handle);
             if (platform == null) throw new NullReferenceException("This script is supposed to be attached to a Sprite");
 
             game = Object.Game as Game;
             if (game == null) throw new NullReferenceException("Game is null");
 
-            ball = game.ObjectList.Find(0) as IObject2D;
+            ball = new InstIObject2D(game.ObjectList.Find(0).Handle);
             if (ball == null) throw new NullReferenceException("Ball is null");
         }
 
