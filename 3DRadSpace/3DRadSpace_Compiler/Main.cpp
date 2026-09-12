@@ -452,6 +452,17 @@ generate:
 		std::println("Copying plugins failed {}", e.what());
 	}
 
+	std::println("Copying Scripts folder.");
+	try
+	{
+		fnCopy(".\\\\Scripts\\", std::filesystem::canonical(info.Output) / "Scripts");
+		fnCopy(".\\\\Scripts\\", std::filesystem::canonical(info.Output) / "x64" / "Release" / "Scripts");
+	}
+	catch (const std::filesystem::filesystem_error& e)
+	{
+		std::println("Copying scripts failed {}", e.what());
+	}
+
 	if(playProject)
 	{
 		std::println("[5/{}] Starting project...", numSteps);

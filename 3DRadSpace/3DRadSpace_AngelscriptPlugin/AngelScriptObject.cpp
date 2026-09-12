@@ -21,7 +21,7 @@ AngelScriptObject::AngelScriptObject() :
 
 AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, const std::filesystem::path& source) :
 	IObject(name, enabled),
-	ScriptPath(source)
+	ScriptPath(source.string())
 {
 }
 
@@ -33,7 +33,7 @@ AngelScriptObject::AngelScriptObject(const std::string& name, bool enabled, cons
 	std::ofstream file(tempPath);
 	file << source;
 	file.close();
-	ScriptPath = tempPath;
+	ScriptPath = tempPath.string();
 }
 
 AngelScriptObject::AngelScriptObject(AngelScriptObject&& other) noexcept :
@@ -76,7 +76,7 @@ void AngelScriptObject::Initialize()
 	bool b = TryCompile(err);
 	if (!b)
 	{
-		Logging::PrintWarning(std::format("Failed to compile AngelScript script '{}': {}", ScriptPath.string(), err));
+		Logging::PrintWarning(std::format("Failed to compile AngelScript script '{}': {}", ScriptPath, err));
 		return;
 	}
 
@@ -117,10 +117,15 @@ bool AngelScriptObject::TryCompile(std::string& err)
 
 AngelScriptObject::~AngelScriptObject()
 {
+}
+
+void AngelScriptObject::Uninitialize()
+{
 	if (_scriptHandle >= 0)
 	{
 		p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Deinitialize);
 		p_angelscriptWrapper->Call(_scriptHandle, AngelScriptWrapper::FunctionID::Main);
+		_scriptHandle = -1;
 	}
 }
 

@@ -40,7 +40,7 @@ bool Keyboard::IsKeyDown(Key k) const noexcept
 {
     for (int i = 0; i < 10; i++)
     {
-        if (static_cast<uint8_t>(k) == _keys[i])\
+        if (static_cast<uint8_t>(k) == _keys[i])
             return true;
     }
     return false;

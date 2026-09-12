@@ -830,7 +830,7 @@ void iLocalFolder(std::string& folderName)
 	folderName = std::filesystem::current_path().string();
 }
 
-bool isKeyDown(int keyCode)
+bool iKeyDown(int keyCode)
 {
 	auto game = static_cast<Game*>(objList->GetOwner());
 	return game->Keyboard.IsKeyDown(static_cast<Input::Key>(keyCode));
@@ -841,7 +841,7 @@ int iKeyCode(const std::string& keyName)
 	return static_cast<int>(Input::KeyIntFromVirtualKeyCode(keyName));
 }
 
-int iTypedChar()
+int iTypedChar(bool b)
 {
 	auto game = static_cast<Game*>(objList->GetOwner());
 	return static_cast<int>(*game->Keyboard.Buffer());

@@ -245,6 +245,7 @@ namespace Engine3DRadSpace::Reflection
 	E3DRSP_DEFINE_FLDREPR_T(unsigned_integer, ({{FieldRepresentationType::Unsigned,""}}));
 	E3DRSP_DEFINE_FLDREPR_T(std::floating_point, ({{FieldRepresentationType::Float, ""}}));
 	E3DRSP_DEFINE_FLDREPR(std::string, ({{FieldRepresentationType::String, ""}}));
+	E3DRSP_DEFINE_FLDREPR(std::filesystem::path, ({{FieldRepresentationType::String, ""}}));
 
 	E3DRSP_DEFINE_FLDREPR(Content::AssetID<Content::Assets::TextureAsset>, ({{FieldRepresentationType::Image, ""}}));
 	E3DRSP_DEFINE_FLDREPR(Content::AssetID<Content::Assets::ModelAsset>, ({{FieldRepresentationType::Model, ""}}));

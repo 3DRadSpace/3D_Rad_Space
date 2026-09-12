@@ -104,6 +104,10 @@ size_t IObject::GetChildrenCount() const noexcept
 	return Children.Count();
 }
 
+void IObject::Uninitialize() 
+{
+}
+
 IObject::~IObject()
 {
 }

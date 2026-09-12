@@ -28,7 +28,7 @@ namespace Engine3DRadSpace::Angelscript
 		AngelScriptObject(AngelScriptObject&&) noexcept;
 		AngelScriptObject& operator=(AngelScriptObject&&) noexcept;
 
-		std::filesystem::path ScriptPath;
+		std::string ScriptPath;
 
 		Reflection::UUID GetUUID() const noexcept override;
 		Objects::Gizmos::IGizmo* GetGizmo() const noexcept override;
@@ -37,6 +37,7 @@ namespace Engine3DRadSpace::Angelscript
 		void Load() override;
 		void Load(const std::filesystem::path& path) override;
 		void Update() override;
+		void Uninitialize() override;
 
 		int GetHandle() const noexcept;
 		bool TryCompile(std::string& err);

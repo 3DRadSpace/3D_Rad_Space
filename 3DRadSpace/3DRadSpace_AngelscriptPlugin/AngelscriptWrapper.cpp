@@ -133,7 +133,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 	RegisterStdString(_engine);
 
 #pragma region Matrix3x3
-	r = _engine->RegisterObjectType("Matrix3x3", sizeof(Matrix3x3), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Matrix3x3", sizeof(Matrix3x3), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 	// fields
 	r = _engine->RegisterObjectProperty("Matrix3x3", "float M11", asOFFSET(Matrix3x3, M11)); assert(r >= 0);
 	r = _engine->RegisterObjectProperty("Matrix3x3", "float M12", asOFFSET(Matrix3x3, M12)); assert(r >= 0);
@@ -147,7 +147,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 #pragma endregion
 
 #pragma region Matrix4x4
-	r = _engine->RegisterObjectType("Matrix4x4", sizeof(Matrix4x4), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Matrix4x4", sizeof(Matrix4x4), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 	// fields
 	r = _engine->RegisterObjectProperty("Matrix4x4", "float M11", asOFFSET(Matrix4x4, M11)); assert(r >= 0);
 	r = _engine->RegisterObjectProperty("Matrix4x4", "float M12", asOFFSET(Matrix4x4, M12)); assert(r >= 0);
@@ -168,7 +168,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 #pragma endregion
 
 #pragma region Vector2
-	r = _engine->RegisterObjectType("Vector2", sizeof(Vector2), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Vector2", sizeof(Vector2), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 
 	//constructors
 	r = _engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(v2ctor_def), asCALL_CDECL_OBJLAST); assert( r >= 0 );
@@ -187,7 +187,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 	r = _engine->RegisterObjectMethod("Vector2", "float Length()", asMETHOD(Vector2, Length), asCALL_THISCALL); assert(r >= 0);
 	r = _engine->RegisterObjectMethod("Vector2", "float LengthSquared()", asMETHOD(Vector2, LengthSquared), asCALL_THISCALL); assert(r >= 0);
 	r = _engine->RegisterObjectMethod("Vector2", "float Angle()", asMETHOD(Vector2, Angle), asCALL_THISCALL); assert(r >= 0);
-	r = _engine->RegisterObjectMethod("Vector2", "float Dot(Vector2)", asMETHODPR(Vector2,Dot,(const Vector2&) const,float), asCALL_THISCALL); assert(r >= 0);
+	r = _engine->RegisterObjectMethod("Vector2", "float Dot(const Vector2&in)", asMETHODPR(Vector2,Dot,(const Vector2&) const,float), asCALL_THISCALL); assert(r >= 0);
 	r = _engine->RegisterObjectMethod("Vector2", "Vector2& Normalize()", asMETHODPR(Vector2, Normalize, (), Vector2&), asCALL_THISCALL); assert(r >= 0);
 	r = _engine->RegisterObjectMethod("Vector2", "Vector2& RotateBy(float theta)", asMETHOD(Vector2, RotateBy), asCALL_THISCALL); assert(r >= 0);
 	r = _engine->RegisterObjectMethod("Vector2", "Vector2& Hadamard(const Vector2& in)", asMETHODPR(Vector2, Hadamard, (const Vector2&), Vector2&),  asCALL_THISCALL); assert(r >= 0);
@@ -208,7 +208,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 #pragma endregion
 
 #pragma region Quaternion
-	r = _engine->RegisterObjectType("Quaternion", sizeof(Quaternion), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Quaternion", sizeof(Quaternion), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 
 	//constructors
 	r = _engine->RegisterObjectBehaviour("Quaternion", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(q_ctor_def), asCALL_CDECL_OBJLAST); assert(r >= 0);
@@ -244,7 +244,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 #pragma endregion
 
 #pragma region Vector3
-	r = _engine->RegisterObjectType("Vector3", sizeof(Vector3), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Vector3", sizeof(Vector3), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 
 	//constructors
 	r = _engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(v3ctor_def), asCALL_CDECL_OBJLAST); assert( r >= 0 );
@@ -285,7 +285,7 @@ AngelScriptWrapper::AngelScriptWrapper()
 #pragma endregion
 
 #pragma region Vector4
-	r = _engine->RegisterObjectType("Vector4", sizeof(Vector4), asOBJ_VALUE | asOBJ_POD); assert(r >= 0);
+	r = _engine->RegisterObjectType("Vector4", sizeof(Vector4), asOBJ_VALUE | asOBJ_APP_CLASS_CA | asOBJ_POD); assert(r >= 0);
 
 	//constructors
 	r = _engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(v4ctor_def), asCALL_CDECL_OBJLAST); assert(r >= 0);
@@ -420,6 +420,11 @@ AngelScriptWrapper::AngelScriptWrapper()
 	r = _engine->RegisterGlobalFunction("float iMouseZ(Vector2& out)", asFUNCTION(iMouseZ), asCALL_CDECL); assert(r >= 0);
 	r = _engine->RegisterGlobalFunction("bool iMouseButtonDown(int)", asFUNCTION(iMouseButtonDown), asCALL_CDECL); assert(r >= 0);
 	
+	//Keyboard functions
+	r = _engine->RegisterGlobalFunction("bool iKeyDown(int)", asFUNCTION(iKeyDown), asCALL_CDECL); assert(r >= 0);
+	r = _engine->RegisterGlobalFunction("int iKeyCode(string)", asFUNCTION(iKeyCode), asCALL_CDECL); assert(r >= 0);
+	r = _engine->RegisterGlobalFunction("int iTypedChar(bool)", asFUNCTION(iTypedChar), asCALL_CDECL); assert(r >= 0);
+
 	r = _engine->RegisterGlobalFunction("int iObjectHandle(int)", asFUNCTION(iObjectHandle), asCALL_CDECL); assert(r >= 0);
 	r = _engine->RegisterGlobalFunction("int iSystemTime(int)", asFUNCTION(iSystemTime), asCALL_CDECL); assert(r >= 0);
 	//Graphics functions

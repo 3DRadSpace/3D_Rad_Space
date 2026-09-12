@@ -21,6 +21,10 @@ namespace Engine3DRadSpace
 		/// Initialization method.
 		/// </summary>
 		virtual void Initialize() = 0;
+		/// <summary>
+		///	Called before the object has the destructor called.
+		/// </summary>
+		virtual void Uninitialize() = 0;
 		virtual ~IInitializable() = default;
 	};
 }

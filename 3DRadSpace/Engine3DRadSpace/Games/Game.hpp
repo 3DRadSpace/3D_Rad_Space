@@ -93,6 +93,7 @@ namespace Engine3DRadSpace
 		Math::Ray GetMouseRay(const Math::Vector2& mousePosition, const Math::Matrix4x4& view, const Math::Matrix4x4& projection);
 
 		virtual void Initialize() override;
+		virtual void Uninitialize() override;
 		virtual void Load() override;
 		/// <summary>
 		/// Loads a scene from file.

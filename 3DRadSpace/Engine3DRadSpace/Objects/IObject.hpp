@@ -149,6 +149,8 @@ namespace Engine3DRadSpace
 			/// <returns>The new visibility state.</returns>
 			virtual bool SwitchVisibility();
 
+			void Uninitialize() override;
+
 			virtual ~IObject();
 
 			friend class Game;

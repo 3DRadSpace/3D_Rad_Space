@@ -316,6 +316,14 @@ void Game::Initialize()
 	}
 }
 
+void Game::Uninitialize()
+{
+	for (auto& [object, type] : *Objects)
+	{
+		object->Uninitialize();
+	}
+}
+
 Ray Game::GetMouseRay(const Vector2 &mousePosition, const Matrix4x4 &view, const Matrix4x4 &projection)
 {
 	Vector3 nearPoint = Vector3(mousePosition.X, mousePosition.Y, 0.0f);
