@@ -15,7 +15,7 @@
 
 # Downloading releases
 
-Old releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases) (Lastest release: 0.0.6a, currently working on 0.1.0a)
+Releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases).
 
 # Current build status
 
