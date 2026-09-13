@@ -7,6 +7,9 @@
 #include <ranges>
 #include <thread>
 
+#include <wininet.h>
+#pragma comment(lib, "wininet.lib")
+
 #include "AddObjectDialog.hpp"
 #include "SettingsWindow.hpp"
 #include "Engine3DRadSpace/Logging/Exception.hpp"
@@ -143,6 +146,7 @@ void EditorWindow::_findUpdate()
 
 	const std::string updateFilePath = "UpdateInfo.txt";
 
+	DeleteUrlCacheEntryA("https://3dradspace.github.io/UpdateInfo/LastestVersion.txt");
 	HRESULT r = URLDownloadToFileA(
 		nullptr, //IUnknown pCaller
 		"https://3dradspace.github.io/UpdateInfo/LastestVersion.txt", //const* char url
@@ -220,6 +224,7 @@ void EditorWindow::_findUpdate()
 				});
 			downloaderUIThread.detach(); //Run the UI at the same time with the downloader.
 
+			DeleteUrlCacheEntryA(downloadPath.c_str());
 			HRESULT r = URLDownloadToFileA(nullptr, downloadPath.c_str(), "Setup.exe", BINDF_GETNEWESTVERSION, updaterState.Get());
 			switch (r)
 			{

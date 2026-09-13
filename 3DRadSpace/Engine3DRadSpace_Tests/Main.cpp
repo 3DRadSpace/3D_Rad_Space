@@ -48,12 +48,6 @@ int WinMain(
 	(void)lpCmdLine;
 	(void)nShowCmd;
 
-	auto r = Engine3DRadSpace::Plugins::LoadPlugin("Plugins\\3DRadSpace.Scripting.CSharp.dll");
-	if (!r.has_value())
-	{
-		return -1;
-	}
-
 	MyGame game;
 	game.Run();
 	return 0;
