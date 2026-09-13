@@ -41,6 +41,7 @@ add_subdirectory(Engine3DRadSpace/Games)
 add_subdirectory(Engine3DRadSpace/FFI)
 
 add_subdirectory(3DRadSpace_Editor_WindowsDX11)
+add_subdirectory(3DRadSpace_Player)
 add_subdirectory(3DRadSpace_Compiler)
 add_subdirectory(Engine3DRadSpace_Tests)
 add_subdirectory(3DRadSpace_AngelscriptPlugin)
