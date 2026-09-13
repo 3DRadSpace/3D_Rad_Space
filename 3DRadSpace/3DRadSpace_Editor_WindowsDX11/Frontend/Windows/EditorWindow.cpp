@@ -460,7 +460,7 @@ EditorWindow::EditorWindow(HINSTANCE hInstance,const std::string &cmdArgs) :
 	_mainWindow = CreateWindowExA(
 		WS_EX_ACCEPTFILES,
 		EditorWindowClassName,
-		"3DRadSpace v0.1.0a - Editor",
+		"3DRadSpace v0.1.1a - Editor",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,

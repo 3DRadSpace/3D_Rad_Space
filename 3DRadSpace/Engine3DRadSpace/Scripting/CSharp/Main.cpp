@@ -143,7 +143,7 @@ PluginInfo LoadPluginInfo()
 	return PluginInfo
 	{
 		.Name = "3DRadSpace C# Scripting",
-		.Version = "0.1.0 Alpha",
+		.Version = "0.1.1 Alpha",
 		.Author = "3DRadSpace",
 
 		.Description = "Support for C# scripting in 3DRadSpace through C# Script objects",
