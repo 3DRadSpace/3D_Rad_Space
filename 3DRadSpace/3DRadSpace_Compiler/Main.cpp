@@ -178,14 +178,16 @@ auto startProject(std::filesystem::path& outDir, const std::string& projectName)
 	//	&pi
 	//);
 
-	return reinterpret_cast<INT_PTR>(ShellExecuteA(
+	if (reinterpret_cast<INT_PTR>(ShellExecuteA(
 		nullptr,
 		"open",
 		exePath.c_str(),
 		"",
 		runningFolder.c_str(),
 		SW_MAXIMIZE
-	)) > 32;
+	)) > 32) return true;
+
+
 #endif
 #ifdef _LINUX
 
@@ -415,7 +417,8 @@ generate:
 			printBuildMsg(Clang_Build(info, compiler->Path), "Clang");
 			break;
 		default:
-			std::println("[STOP] Unknown compiler type.");
+			std::system(std::format("3DRadSpace.Player.exe {}", info.EntryProject.string()).c_str());
+			std::print("[STOP] No compiler found.");
 			return -1;
 	}
 

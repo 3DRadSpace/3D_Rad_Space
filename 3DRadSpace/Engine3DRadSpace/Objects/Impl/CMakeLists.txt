@@ -31,6 +31,8 @@ add_library(3DRadSpace.Objects.Impl STATIC
 	"FreeCam.cpp"
 	"Objects.hpp"
 	"Objects.cpp"
+	"Scanner.hpp"
+	"Scanner.cpp"
 	"SettingsManager.hpp"
 	"SettingsManager.cpp"
 	"Skinmesh.hpp"
