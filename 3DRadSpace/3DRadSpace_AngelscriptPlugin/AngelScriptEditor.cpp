@@ -1,5 +1,6 @@
 #include "AngelScriptEditor.hpp"
 #include <Engine3DRadSpace/Logging/Warning.hpp>
+#include <Engine3DRadSpace/Native/Directory.hpp>
 #include <scintilla/Scintilla.h>
 #include <scintilla/ILexer.h>
 #include <lexilla/SciLexer.h>
@@ -395,17 +396,6 @@ AngelScriptObject* AngelScriptEditor::ShowDialog()
 	return nullptr;
 }
 
-void SetWorkingDirectory()
-{
-	char buffer[MAX_PATH];
-	if (GetModuleFileNameA(NULL, buffer, MAX_PATH))
-	{
-		std::filesystem::path exePath(buffer);
-		std::filesystem::path exeDir = exePath.parent_path();
-		SetCurrentDirectoryA(exeDir.string().c_str());
-	}
-}
-
 std::filesystem::path AngelScriptEditor::saveFileDialog()
 {
 	OPENFILENAMEA ofn{};
@@ -418,7 +408,7 @@ std::filesystem::path AngelScriptEditor::saveFileDialog()
 
 	if (GetSaveFileNameA(&ofn))
 	{
-		SetWorkingDirectory();
+		Engine3DRadSpace::Native::SetDefaultWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};
@@ -435,7 +425,7 @@ std::filesystem::path AngelScriptEditor::openFileDialog()
 	ofn.nMaxFile = sizeof(fileName);
 	if (GetOpenFileNameA(&ofn))
 	{
-		SetWorkingDirectory();
+		Native::SetDefaultWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};

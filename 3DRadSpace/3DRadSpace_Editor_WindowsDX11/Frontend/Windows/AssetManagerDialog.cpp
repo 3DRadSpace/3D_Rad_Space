@@ -1,5 +1,6 @@
 #include "AssetManagerDialog.hpp"
 #include <Engine3DRadSpace/Logging/Exception.hpp>
+#include <Engine3DRadSpace/Native/Directory.hpp>
 #include <Engine3DRadSpace/Core/Tag.hpp>
 #include <shlobj_core.h>
 #include "../HelperFunctions.hpp"
@@ -8,8 +9,6 @@
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Content;
 using namespace Engine3DRadSpace::Content::Assets;
-
-void SetWorkingDirectory();
 
 INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -80,7 +79,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 
 						if (GetOpenFileNameA(&ofn))
 						{
-							SetWorkingDirectory();
+							Engine3DRadSpace::Native::SetDefaultWorkingDirectory();
 
 							auto path = std::filesystem::path(filename);
 
@@ -100,7 +99,7 @@ INT_PTR WINAPI AssetManager_DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 								EndDialog(assetManager->window, ref);
 							}
 						}
-						SetWorkingDirectory();
+						Engine3DRadSpace::Native::SetDefaultWorkingDirectory();
 					}
 					break;
 				}

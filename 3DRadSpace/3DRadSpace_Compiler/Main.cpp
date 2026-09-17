@@ -187,11 +187,19 @@ auto startProject(std::filesystem::path& outDir, const std::string& projectName)
 		SW_MAXIMIZE
 	)) > 32) return true;
 
-
+	if (reinterpret_cast<INT_PTR>(ShellExecuteA(
+		nullptr,
+		"open",
+		"3DRadSpace.Player.exe",
+		exePath.c_str(),
+		runningFolder.c_str(),
+		SW_SHOWNORMAL
+	)) > 32) return true;
 #endif
 #ifdef _LINUX
 
 #endif
+	return false;
 }
 
 auto main(int argc, char** argv) -> int

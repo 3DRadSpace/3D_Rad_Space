@@ -5,6 +5,7 @@
 #include <lexilla/SciLexer.h>
 #include <lexilla/Lexilla.h>
 #include <string>
+#include "../../Native/Directory.hpp"
 
 using namespace Engine3DRadSpace::Scripting::CSharp;
 
@@ -412,17 +413,6 @@ CSharpScript* CSharpScriptEditor::ShowDialog()
 	return nullptr;
 }
 
-void SetWorkingDirectory()
-{
-	char buffer[MAX_PATH];
-	if (GetModuleFileNameA(NULL, buffer, MAX_PATH))
-	{
-		std::filesystem::path exePath(buffer);
-		std::filesystem::path exeDir = exePath.parent_path();
-		SetCurrentDirectoryA(exeDir.string().c_str());
-	}
-}
-
 std::filesystem::path CSharpScriptEditor::saveFileDialog()
 {
 	OPENFILENAMEA ofn{};
@@ -435,7 +425,7 @@ std::filesystem::path CSharpScriptEditor::saveFileDialog()
 
 	if (GetSaveFileNameA(&ofn))
 	{
-		SetWorkingDirectory();
+		Native::SetDefaultWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};
@@ -452,7 +442,7 @@ std::filesystem::path CSharpScriptEditor::openFileDialog()
 	ofn.nMaxFile = sizeof(fileName);
 	if (GetOpenFileNameA(&ofn))
 	{
-		SetWorkingDirectory();
+		Native::SetDefaultWorkingDirectory();
 		return std::filesystem::path(fileName);
 	}
 	else return {};

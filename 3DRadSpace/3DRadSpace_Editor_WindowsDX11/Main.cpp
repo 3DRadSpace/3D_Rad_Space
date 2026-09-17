@@ -33,6 +33,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <Engine3DRadSpace/Plugins/EditorPlugin.hpp>
 #include <Engine3DRadSpace/Plugins/CustomObject.hpp>
 #include <Engine3DRadSpace/Native/LibraryLoader.hpp>
+#include <Engine3DRadSpace/Native/Directory.hpp>
 #include <Engine3DRadSpace/Objects/Gizmos.hpp>
 #include <Engine3DRadSpace/Objects/Impl/Objects.hpp>
 #undef LoadLibrary
@@ -42,16 +43,6 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Logging;
-
-void SetWorkingDirectory()
-{
-	//Sets working directory to the executable's folder.
-	wchar_t currentDir[_MAX_PATH]{};
-	GetModuleFileNameW(nullptr, currentDir, _MAX_PATH);
-	PathCchRemoveFileSpec(currentDir, _MAX_PATH);
-
-	SetCurrentDirectoryW(currentDir);
-}
 
 void InitializeCommonControls()
 {
@@ -95,7 +86,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	InitializeGDI();
 	InitializeCommonControls();
-	SetWorkingDirectory();
+	Native::SetDefaultWorkingDirectory();
 	Internal::LoadDefaultObjects();
 
 	if (FAILED(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED)))

@@ -18,6 +18,7 @@
 #include <Engine3DRadSpace\Projects\Serialization.hpp>
 #include <Engine3DRadSpace\Plugins\PluginManager.hpp>
 #include <Engine3DRadSpace\Objects\Impl\Objects.hpp>
+#include <Engine3DRadSpace\Native\Directory.hpp>
 
 #include "../AutoupdaterState.hpp"
 #include "UpdateProgressWindow.hpp"
@@ -101,8 +102,6 @@ void EditorWindow::PopulateObjectList(Engine3DRadSpace::Objects::ObjectList* lis
 	}
 }
 
-extern void SetWorkingDirectory();
-
 void EditorWindow::_saveProject(const std::filesystem::path &filename)
 {
 	if (filename.empty())
@@ -120,7 +119,7 @@ void EditorWindow::_saveProject(const std::filesystem::path &filename)
 
 		if (GetSaveFileNameA(&ofn))
 		{
-			SetWorkingDirectory();
+			Native::SetDefaultWorkingDirectory();
 			_writeProject(ofn.lpstrFile);
 		}
 		else if (GetLastError() != 0)
@@ -734,13 +733,11 @@ void EditorWindow::SelectObject(std::optional<unsigned> id)
 	}
 }
 
-void SetWorkingDirectory();
-
 void EditorWindow::OpenRecentProject(uint8_t id)
 {
 	if (id >= _recentFiles.size()) return;
 
-	SetWorkingDirectory();
+	Native::SetDefaultWorkingDirectory();
 	gEditorWindow->_openProject(gEditorWindow->_recentFiles[id]);
 }
 
@@ -800,7 +797,7 @@ void EditorWindow::_addRecentProject(const std::filesystem::path& filename)
 
     // Only write if there are recent files
     if (!_recentFiles.empty()) {
-        SetWorkingDirectory();
+        Native::SetDefaultWorkingDirectory();
         std::ofstream recent_projects(RecentProjectFile, std::ios::trunc);
         for (const auto& file : _recentFiles)
             recent_projects << file.string() << std::endl;
@@ -875,7 +872,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(GetOpenFileNameA(&ofn))
 					{
-						SetWorkingDirectory();
+						Native::SetDefaultWorkingDirectory();
 						gEditorWindow->_openProject(ofn.lpstrFile);
 					}
 					else if(GetLastError() != 0)
@@ -917,18 +914,18 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_SaveProject:
 				case ACC_SAVE_PROJECT:
 					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
-					SetWorkingDirectory();
+					Native::SetDefaultWorkingDirectory();
 					break;
 				case CMD_SaveProjectAs:
 				case ACC_SAVE_PROJECT_AS:
 					gEditorWindow->_saveProject();
-					SetWorkingDirectory();
+					Native::SetDefaultWorkingDirectory();
 					break;
 				case CMD_PlayProject:
 				case ACC_PLAY_PROJECT:
 				{
 					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
-					SetWorkingDirectory();
+					Native::SetDefaultWorkingDirectory();
 
 					auto cmd = std::format("-p -e \"{}\"", gEditorWindow->_currentFile.string());
 					auto r = reinterpret_cast<INT_PTR>(ShellExecuteA(
@@ -945,7 +942,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				case CMD_BuildProject:
 				case ACC_BUILD_PROJECT:
 					gEditorWindow->_saveProject(gEditorWindow->_currentFile);
-					SetWorkingDirectory();
+					Native::SetDefaultWorkingDirectory();
 					break;
 				case CMD_Exit:
 				{
@@ -977,7 +974,7 @@ LRESULT __stdcall EditorWindow_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 
 					if(GetOpenFileNameA(&ofn))
 					{
-						SetWorkingDirectory();
+						Native::SetDefaultWorkingDirectory();
 						Serializer::LoadProject(gEditorWindow->editor->Objects.get(), gEditorWindow->editor->Content.get(), filebuff);
 					}
 					else if(GetLastError() != 0)

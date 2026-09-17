@@ -1,4 +1,5 @@
 #include <Engine3DRadSpace/Games/Game.hpp>
+#include <Engine3DRadSpace/Native/Directory.hpp>
 
 class MyGame : public Engine3DRadSpace::Game
 {
@@ -29,6 +30,28 @@ int WinMain(HINSTANCE hInstnace, HINSTANCE hPrevInstnace, LPSTR lpCmdLine, int n
 		if (std::filesystem::exists(path))
 		{
 			projectPath = path;
+		}
+
+		if (path == "-d")
+		{
+			char filename[MAX_PATH] = "";
+
+			OPENFILENAMEA ofn{};
+			ofn.lStructSize = sizeof(ofn);
+			ofn.Flags = OFN_FILEMUSTEXIST;
+			ofn.lpstrFilter = "3DRadSpace Project (*.3drsp)\0*.3drsp\0\0";
+			ofn.lpstrFile = filename;
+			ofn.hInstance = hInstnace;
+			ofn.nMaxFile = MAX_PATH;
+			ofn.lpstrFileTitle = const_cast<char*>("Open a 3DRadSpace Project to be played");
+
+			if (GetOpenFileNameA(&ofn))
+			{
+				projectPath = ofn.lpstrFile;
+				Engine3DRadSpace::Native::SetDefaultWorkingDirectory();
+				
+				break;
+			}
 		}
 	}
 
