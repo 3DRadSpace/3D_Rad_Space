@@ -1,3 +1,4 @@
+#pragma once
 #include "../IObject3D.hpp"
 #include "../../Reflection/Reflection.hpp"
 #include "../../Reflection/Event.hpp"
@@ -47,3 +48,5 @@ namespace Engine3DRadSpace::Objects
 		bool GetLastHit() const noexcept;
 	};
 }
+
+REFL_FWD(Scanner)

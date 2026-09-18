@@ -10,6 +10,8 @@ add_library(3DRadSpace.Objects.Gizmos STATIC
 	"EOLGizmo.hpp"
 	"EOLGizmo.cpp"
 	"Gizmo.hpp"
+	"ScannerGizmo.hpp"
+	"ScannerGizmo.cpp"
 	"SkinmeshGizmo.hpp"
 	"SkinmeshGizmo.cpp"
 	"SoundSourceGizmo.hpp"

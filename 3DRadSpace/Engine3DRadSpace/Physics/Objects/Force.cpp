@@ -149,6 +149,7 @@ public:
 
 	void Load(const std::filesystem::path& path) override
 	{
+		Load();
 	}
 
 	void Update() override

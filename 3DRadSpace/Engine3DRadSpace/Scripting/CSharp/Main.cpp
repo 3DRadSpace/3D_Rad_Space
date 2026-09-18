@@ -104,6 +104,26 @@ Fn LoadCSFunction(const char_t* static_class_and_assembly_name, const char_t* fn
 
 bool PluginMain()
 {
+	std::initializer_list<const char*> requiredFiles =
+	{
+		"3DRadSpace_CSharp.dll",
+		"3DRadSpace_CSharp.deps.json",
+		"3DRadSpace_CSharp.runtimeconfig.json",
+		"3DRadSpace_CSharp.comhost.dll",
+		"Microsoft.CodeAnalysis.dll",
+		"Microsoft.CodeAnalysis.CSharp.dll",
+		"System.CodeDom.dll"
+	};
+
+	for (auto &file : requiredFiles)
+	{
+		if (!std::filesystem::exists(file))
+		{
+			Logging::PrintWarning(std::format("Required file {} is not found!", file));
+			return false;
+		}
+	}
+
 	if (!load_hostfxr())
 	{
 		Logging::PrintWarning("load_hostfxr() failed!");
