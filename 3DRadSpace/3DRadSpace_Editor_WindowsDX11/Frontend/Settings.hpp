@@ -32,6 +32,7 @@ public:
 	static Setting<bool> ShowGrid;
 	static Setting<float> GizmoSensitivity;
 	static Setting<bool> PreferArcShot;
+	static Setting<bool> ClearLogsAtStartup;
 
 	static void Load();
 	static void Save();

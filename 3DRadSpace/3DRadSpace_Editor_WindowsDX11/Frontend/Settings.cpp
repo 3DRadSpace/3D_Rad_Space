@@ -39,6 +39,12 @@ Setting<bool> Settings::PreferArcShot =
 	.Value = true
 };
 
+Setting<bool> Settings::ClearLogsAtStartup
+{
+	.Name = "Delete log files at startup",
+	.Value = false
+};
+
 template<typename Fn, typename ...Args>
 void try_emptycatch(Fn&& fn, Args&& ...args)
 {
@@ -78,6 +84,7 @@ void Settings::Load()
 	try_emptycatch([&]() {ShowGrid.Value = settings["Editor"]["ShowGrid"].get<bool>(); });
 	try_emptycatch([&]() {GizmoSensitivity.Value = settings["Editor"]["GizmoSensitivity"].get<float>(); });
 	try_emptycatch([&]() {PreferArcShot.Value = settings["Editor"]["PreferArcShot"].get<bool>(); });
+	try_emptycatch([&]() {ClearLogsAtStartup.Value = settings["Editor"]["ClearLogs"].get<bool>(); });
 }
 
 void Settings::Save()
@@ -90,6 +97,7 @@ void Settings::Save()
 	jsonSettings["Editor"]["ShowGrid"] = ShowGrid.Value;
 	jsonSettings["Editor"]["GizmoSensitivity"] = GizmoSensitivity.Value;
 	jsonSettings["Editor"]["PreferArcShot"] = PreferArcShot.Value;
+	jsonSettings["Editor"]["ClearLogs"] = ClearLogsAtStartup.Value;
 
 	std::ofstream jsonFile(GetAppDataFolder() + "Settings.json");
 	jsonFile << std::setw(4) << jsonSettings;

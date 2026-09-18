@@ -69,6 +69,12 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(hPrevInstance); //hPrevInstance was only used in 16-bit Windows applications.
 	UNREFERENCED_PARAMETER(nShowCmd); //The editor windows is maximized anyways.
 
+	if (Settings::ClearLogsAtStartup.Value)
+	{
+		std::filesystem::remove("Logs.log");
+		std::filesystem::remove("Warnings.log");
+	}
+
 #ifdef _DEBUG
 	std::atexit(ReportLiveObjects); // Lists leaked DX11 objects
 #endif
