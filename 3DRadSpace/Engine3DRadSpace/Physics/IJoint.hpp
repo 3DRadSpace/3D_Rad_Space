@@ -1,4 +1,5 @@
 #pragma once
+#include "IPhysicsActor.hpp"
 #include "JointType.hpp"
 #include "../Math/Vector3.hpp"
 #include "../Math/Quaternion.hpp"
@@ -11,10 +12,9 @@ namespace Engine3DRadSpace::Physics
 	/// <summary>
 	/// Base interface for all physics joints.
 	/// </summary>
-	class E3DRSP_PHYSICS_EXPORT IJoint
+	class E3DRSP_PHYSICS_EXPORT IJoint : public IPhysicsActor
 	{
 	protected:
-		IPhysicsEngine* _physics;
 		JointType _type;
 
 		IDynamicCollider* _actor0;

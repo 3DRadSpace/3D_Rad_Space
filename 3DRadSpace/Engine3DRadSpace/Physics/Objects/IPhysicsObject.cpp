@@ -22,3 +22,8 @@ void IPhysicsObject::Initialize()
 {
 	_physics = static_cast<IPhysicsEngine*>(_game->RequireService(typeid(IPhysicsEngine)));
 }
+
+IPhysicsEngine* IPhysicsObject::GetPhysicsEngine() const noexcept
+{
+	return _physics;
+}

@@ -49,5 +49,7 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 		bool IsGrounded() override;
 
 		~CharacterController() override = default;
+
+		friend class PhysicsEngine;
 	};
 }

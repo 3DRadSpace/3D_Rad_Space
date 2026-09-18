@@ -1,4 +1,5 @@
 #pragma once
+#include "IPhysicsActor.hpp"
 #include "../Math/Vector3.hpp"
 #include "../Math/Quaternion.hpp"
 #include "../Math/Ray.hpp"
@@ -10,11 +11,9 @@ namespace Engine3DRadSpace::Physics
 	/// <summary>
 	/// Base polymorphic type for physics objects that interact with the scene.
 	/// </summary>
-	class E3DRSP_PHYSICS_EXPORT ICollider
+	class E3DRSP_PHYSICS_EXPORT ICollider : public IPhysicsActor
 	{
 	protected:
-		IPhysicsEngine* _physics;
-
 		float _mass = 1.0f;
 		Math::Vector3 _position;
 		Math::Quaternion _rotation;
@@ -58,11 +57,6 @@ namespace Engine3DRadSpace::Physics
 		/// </summary>
 		/// <param name="rotation">The rotation quaternion.</param>
 		virtual void SetRotation(const Math::Quaternion& rotation) = 0;
-		/// <summary>
-		/// Gets the physics engine that this collider is associated with.
-		/// </summary>
-		/// <returns></returns>
-		IPhysicsEngine* GetPhysics() const noexcept;
 		/// <summary>
 		/// Returns the distance from the ray origin to the intersection point if the ray intersects with this collider, or std::nullopt if there is no intersection.
 		/// </summary>

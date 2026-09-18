@@ -11,6 +11,8 @@ add_library(3DRadSpace.Physics SHARED
 	"IDynamicCollider.cpp"
 	"IJoint.hpp"
 	"IJoint.cpp"
+	"IPhysicsActor.hpp"
+	"IPhysicsActor.cpp"
 	"IPhysicsEngine.hpp"
 	"IStaticCollider.hpp"
 	"IStaticCollider.cpp"

@@ -71,6 +71,7 @@ namespace Engine3DRadSpace::Physics::NVPhysX
 		std::unique_ptr<IJoint> CreateJoint(JointType type) override;
 		double dt() const noexcept override;
 
+		void Remove(IPhysicsActor* actor) override;
 		friend class CharacterController;
 		friend class Joint;
 

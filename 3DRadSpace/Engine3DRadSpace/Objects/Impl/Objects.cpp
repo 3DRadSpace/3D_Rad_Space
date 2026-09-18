@@ -34,6 +34,7 @@ REFL_FWD(Timer)
 REFL_FWD(DirectionalLight)
 REFL_FWD(SpriteBillboard)
 REFL_FWD(Scanner)
+REFL_FWD(Projectile)
 
 using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Reflection;
@@ -80,7 +81,8 @@ void Engine3DRadSpace::Internal::LoadDefaultObjects()
 		&TimerReflInstance,
 		&DirectionalLightReflInstance,
 		&SpriteBillboardReflInstance,
-		&ScannerReflInstance
+		&ScannerReflInstance,
+		&ProjectileReflInstance
 	};
 
 	auto& internalList = GetInternalObjectsList();

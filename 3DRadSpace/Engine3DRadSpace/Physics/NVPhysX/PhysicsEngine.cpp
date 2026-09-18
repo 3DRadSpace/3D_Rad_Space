@@ -149,3 +149,26 @@ double PhysicsEngine::dt() const noexcept
 {
 	return _timeStep;
 }
+
+void PhysicsEngine::Remove(IPhysicsActor* actor)
+{
+	if (auto staticCollider = dynamic_cast<StaticMeshCollider*>(actor); actor != nullptr)
+	{
+		PX_RELEASE(staticCollider->_rigidbody)
+		PX_RELEASE(staticCollider->_material)
+	}
+	else if (auto dynCollder = dynamic_cast<DynamicCollider*>(actor); actor != nullptr)
+	{
+		PX_RELEASE(dynCollder->_rigidbody)
+		PX_RELEASE(dynCollder->_material)
+	}
+	else if (auto chr = dynamic_cast<CharacterController*>(actor); actor != nullptr)
+	{
+		PX_RELEASE(chr->_controller)
+		PX_RELEASE(chr->_material)
+	}
+	else if (auto j = dynamic_cast<Joint*>(actor); actor != nullptr)
+	{
+		PX_RELEASE(j->_joint)
+	}
+}

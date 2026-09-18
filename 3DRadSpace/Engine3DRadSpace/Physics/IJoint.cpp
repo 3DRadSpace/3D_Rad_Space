@@ -4,11 +4,17 @@ using namespace Engine3DRadSpace;
 using namespace Engine3DRadSpace::Physics;
 
 IJoint::IJoint(IPhysicsEngine* physics, JointType type)
-	: _physics(physics), _type(type), _actor0(nullptr), _actor1(nullptr),
-	  _localFrame0Position(Math::Vector3::Zero()), _localFrame0Rotation(Math::Quaternion()),
-	  _localFrame1Position(Math::Vector3::Zero()), _localFrame1Rotation(Math::Quaternion()),
-	  _breakForce(std::numeric_limits<float>::max()), _breakTorque(std::numeric_limits<float>::max()),
-	  _isBroken(false)
+	: IPhysicsActor(physics),
+	_type(type), 
+	_actor0(nullptr),
+	_actor1(nullptr),
+	_localFrame0Position(Math::Vector3::Zero()),
+	_localFrame0Rotation(Math::Quaternion()),
+	_localFrame1Position(Math::Vector3::Zero()), 
+	_localFrame1Rotation(Math::Quaternion()),
+	_breakForce(std::numeric_limits<float>::max()),
+	_breakTorque(std::numeric_limits<float>::max()),
+	_isBroken(false)
 {
 }
 

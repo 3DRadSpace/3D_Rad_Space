@@ -10,6 +10,7 @@ namespace Engine3DRadSpace::Graphics
 
 namespace Engine3DRadSpace::Physics
 {
+	class IPhysicsActor;
 	class IStaticCollider;
 	class IDynamicCollider;
 	class ICharacterController;
@@ -80,6 +81,11 @@ namespace Engine3DRadSpace::Physics
 		/// </summary>
 		/// <returns>gravity in m/s^2</returns>
 		virtual Math::Vector3 GetGravity() const = 0;
+		/// <summary>
+		/// Removes the specified collider from the scene. Make sure that the collider isn't referenced ANYWHERE before removal.
+		/// </summary>
+		/// <param name="collider">Physics actor.</param>
+		virtual void Remove(IPhysicsActor* collider) = 0;
 
 		~IPhysicsEngine() override = default;
 	};

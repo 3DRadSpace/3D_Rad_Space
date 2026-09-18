@@ -41,6 +41,11 @@ namespace Engine3DRadSpace::Physics::Objects
 		/// Loads the relevant services.
 		/// </summary>
 		void Initialize() override;
+		/// <summary>
+		/// Gets the physics engine associated with this object.
+		/// </summary>
+		/// <returns>Physics engine instance.</returns>
+		IPhysicsEngine* GetPhysicsEngine() const noexcept;
 
 		virtual ~IPhysicsObject() = default;
 	};
