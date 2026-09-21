@@ -14,6 +14,9 @@
 /// Reflects a field with specified get/set functions.
 #define REFL_FIELD_GS(ObjectType, FieldType, FnGet, FnSet, FieldVisibleName, DefaultValue, Description) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>(new ::Engine3DRadSpace::Reflection::ReflectedFieldGS<FieldType, ObjectType>( FieldVisibleName, Description, FnGet, FnSet, DefaultValue)),
 
+/// Reflects a vector field with the specified element type and default values using an initializer list.
+#define REFL_FIELD_VEC(ObjectType, ElementType, FieldName, FieldVisibleName, Description, ...) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedField<std::vector<ElementType>>(offsetof(ObjectType, FieldName), FieldVisibleName, Description, __VA_ARGS__)),
+
 //Reflection "declaration" ending.
 #define REFL_END static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedField<void>())});
 

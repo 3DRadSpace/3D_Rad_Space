@@ -79,6 +79,11 @@ Projectile::ProjectileInfo Projectile::_createProjectile()
 			newCollider->AttachShape(BoundingSphere(sphere->Position, sphere->Radius));
 		}
 	}
+
+	return ProjectileInfo{
+		.instance = newCollider.release(),
+		.lifetime = Lifetime
+	};
 }
 
 void Projectile::Update()

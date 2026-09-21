@@ -416,4 +416,123 @@ namespace Engine3DRadSpace::Reflection
 
 		~ReflectedField() override = default;
 	};
+
+	/// <summary>
+	/// Reflection metadata of an field of the type std::vector<T>
+	/// </summary>
+	/// <typeparam name="T">Typename. Must satisfy the ReflectableType constrtaints.</typeparam>
+	template<ReflectableType T>
+	class E3DRSP_REFLECTION_EXPORT ReflectedField<std::vector<T>> final : public IReflectedField
+	{
+	public:
+		using VecT = std::vector<T>;
+		using InitializerT = std::initializer_list<T>;
+	private:
+		std::vector<T> _defaultVal;
+
+	public:
+		ReflectedField(
+			const size_t offset_obj_field,
+			const std::string& visibleName,
+			const std::string& description,
+			InitializerT defaultValues
+		) :
+			IReflectedField(offset_obj_field, sizeof(VecT), visibleName, description, typeid(VecT)),
+			_defaultVal(defaultValues)
+		{
+		}
+
+		// Additional constructor for cloning with vector argument
+		ReflectedField(
+			const size_t offset_obj_field,
+			const std::string& visibleName,
+			const std::string& description,
+			const VecT& defaultValues
+		) :
+			IReflectedField(offset_obj_field, sizeof(VecT), visibleName, description, typeid(VecT)),
+			_defaultVal(defaultValues)
+		{
+		}
+		/// <summary>
+		/// Returns the default value.
+		/// </summary>
+		/// <returns>default value. nullptr if unspecified.</returns>
+		[[nodiscard]] const void* DefaultValue() const noexcept override
+		{
+			return static_cast<const void*>(&_defaultVal);
+		}
+		/// <summary>
+		/// Returns a pointer to the field value if the underlying optional field has a value. Otherwise, returns nullptr.
+		/// </summary>
+		/// <param name="objPtr">Pointer to the object that contains this field</param>
+		/// <returns>pointer to the value, nullptr if the optional field is empty</returns>
+		[[nodiscard]] const void* Get(void* objPtr) const override
+		{
+			assert(objPtr != nullptr);
+
+			return std::launder(reinterpret_cast<VecT*>(static_cast<std::byte*>(objPtr) + _offset));
+		}
+		/// <summary>
+		/// Sets the field value.
+		/// </summary>
+		/// <param name="objPtr">Pointer to the object that contains this field</param>
+		/// <param name="value">new value</param>
+		void Set(void* objPtr, const void* value) const override
+		{
+			assert(objPtr != nullptr);
+
+			VecT* lhs = std::launder(reinterpret_cast<VecT*>(static_cast<std::byte*>(objPtr) + _offset));
+			const VecT* rhs = static_cast<const VecT*>(value);
+
+			if (value != nullptr) *lhs = *rhs;
+			else *lhs = VecT();
+		}
+		/// <summary>
+		/// Sets the field value.
+		/// </summary>
+		/// <typeparam name="T">Type of the field</typeparam>
+		/// <param name="objPtr">Pointer to the object that contains this field</param>
+		/// <param name="value">new value</param>
+		template<typename T>
+		void Set(void* objPtr, const T* value)  const
+		{
+			assert(objPtr != nullptr);
+			assert(value != nullptr);
+
+			VecT* lhs = std::launder(reinterpret_cast<VecT*>(static_cast<std::byte*>(objPtr) + _offset));
+			const VecT* rhs = static_cast<const VecT*>(value);
+			*lhs = *rhs;
+		}
+		/// <summary>
+		/// Returns a copy of the field value if the underlying optional field has a value. Otherwise, returns nullptr.
+		/// </summary>
+		/// <typeparam name="T">Type of the field</typeparam>
+		/// <param name="objPtr">Pointer to the object that contains this field</param>
+		/// <returns>pointer to the value, nullptr if the optional field is empty</returns>
+		template<typename T>
+		T& Get(void* objPtr) const
+		{
+			assert(objPtr != nullptr);
+
+			return (*std::launder(reinterpret_cast<VecT*>(static_cast<std::byte*>(objPtr) + _offset)));
+		}
+		/// <summary>
+		/// Returns the field representation of the underlying type.
+		/// </summary>
+		/// <returns>Field representation.</returns>
+		FieldRepresentation Representation() const noexcept override
+		{
+			return GetFieldRepresentation<T>();
+		}
+		/// <summary>
+		/// Performs a deep clone.
+		/// </summary>
+		/// <returns>A unique pointer to the deep clone.</returns>
+		std::unique_ptr<IReflectedField> Clone() const override
+		{
+			return std::make_unique<ReflectedField<std::vector<T>>>(_offset, _name, _desc, _defaultVal);
+		}
+
+		~ReflectedField() override = default;
+	};
 }
