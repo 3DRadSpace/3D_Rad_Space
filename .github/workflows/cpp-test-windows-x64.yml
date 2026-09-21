@@ -15,14 +15,21 @@ jobs:
     runs-on: [windows-latest, x64, gpu, self-hosted]
     needs: build
     steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cmake-windows-x64
+        path: build
+
     - name: Copy Asset folders
       shell: cmd
       working-directory: ${{ github.workspace }}
-      run: xcopy 3DRadSpace\Data\ build\Release\Data\ /s /e /h /y
+      run: xcopy build\Data\ build\Release\Data\ /s /e /h /y
+
     - name: Copy Test folders
       shell: cmd
       working-directory: ${{ github.workspace }}
-      run: xcopy 3DRadSpace\Testing\ build\Release\Testing\ /s /e /h /y
+      run: xcopy build\Testing\ build\Release\Testing\ /s /e /h /y
     - name: Run tests
       shell: cmd
       working-directory: ${{ github.workspace }}\build\Release\
