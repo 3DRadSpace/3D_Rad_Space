@@ -1,9 +1,9 @@
-title: feat: fix: docs: Title...
+title: feat: fix: docs: chore: Title...
 
 # Describe your changes
 
 ## Related issue
-(If not, write "None")
+(If not, write "None". Otherwise "Closes #ID")
 
 ## Tasklist
 - [ ] Task A
