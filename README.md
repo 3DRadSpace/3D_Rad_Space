@@ -21,7 +21,7 @@ Releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases
 
 Windows x64 build artifacts are available from successful [C++ CMake workflow runs](https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/cmake-windows-x64.yml). Open a workflow run, scroll to **Artifacts**, and download `cmake-windows-x64`. Extract the archive before running the programs.
 
-The archive includes the Release binaries and the `Data` folder required by the editor and player. Keep `Data` next to the `Release` folder, or copy it into the folder containing the executable if you move an executable out of the downloaded layout.
+The archive includes the Release binaries with the `Data` folder required by the editor and player already copied into it. Keep the downloaded folder layout intact, or copy `Data` into the folder containing the executable if you move an executable elsewhere.
 
 # Current build status
 

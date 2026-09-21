@@ -21,15 +21,6 @@ jobs:
         name: cmake-windows-x64
         path: build
 
-    - name: Copy Asset folders
-      shell: cmd
-      working-directory: ${{ github.workspace }}
-      run: xcopy build\Data\ build\Release\Data\ /s /e /h /y
-
-    - name: Copy Test folders
-      shell: cmd
-      working-directory: ${{ github.workspace }}
-      run: xcopy build\Testing\ build\Release\Testing\ /s /e /h /y
     - name: Run tests
       shell: cmd
       working-directory: ${{ github.workspace }}\build\Release\
