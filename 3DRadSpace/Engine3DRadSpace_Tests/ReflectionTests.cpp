@@ -24,6 +24,9 @@ public:
 	std::vector<int> IntVector;
 	std::vector<float> FloatVector;
 	std::vector<Vector3> VectorVector;
+	std::array<int, 3> IntArray;
+	std::array<float, 4> FloatArray;
+	std::array<Vector3, 2> Vector3Array;
 
 	// Inherited via IObject
 	void Initialize() override
@@ -106,6 +109,9 @@ REFL_BEGIN(TestObject, "Test Object", "Tests", "Dummy test object")
 	REFL_FIELD_VEC(TestObject, int, IntVector, "IntVector", "Vector of integers", {1, 2, 3})
 	REFL_FIELD_VEC(TestObject, float, FloatVector, "FloatVector", "Vector of floats", {1.1f, 2.2f, 3.3f})
 	REFL_FIELD_VEC(TestObject, Vector3, VectorVector, "VectorVector", "Vector of Vector3", {})
+	REFL_FIELD_ARRAY(TestObject, int, 3, IntArray, "IntArray", "Array of 3 integers", ({ 1, 2, 3 }))
+	REFL_FIELD_ARRAY(TestObject, float, 4, FloatArray, "FloatArray", "Array of 4 floats", ({ 1.1f, 2.2f, 3.3f, 4.4f }))
+	REFL_FIELD_ARRAY(TestObject, Vector3, 2, Vector3Array, "Vector3Array", "Array of 4 floats", ({ Vector3::Zero(), Vector3::One() }))
 	REFL_METHOD(TestObject, int, &TestObject::MyMethod, "Test method", int, int)
 	REFL_METHOD(TestObject, void, &TestObject::Method, "Method")
 	REFL_FUNCTION(int, MyFunction, "Test function", int, int)
@@ -650,4 +656,271 @@ TEST(ReflectionTests, VectorComplexElementsRead)
 	EXPECT_FLOAT_EQ((*readVec)[1].X, 10.f);
 	EXPECT_FLOAT_EQ((*readVec)[1].Y, 11.f);
 	EXPECT_FLOAT_EQ((*readVec)[1].Z, 12.f);
+}
+
+// Tests for std::array<T,N> specialization using reflection
+
+TEST(ReflectionTests, ArrayIntReflectionDefaultValue)
+{
+	// Test that array fields have correct default values through reflection
+	const auto* field = TestObjectReflInstance["IntArray"];
+	EXPECT_NE(field, nullptr);
+
+	const std::array<int, 3>* defVal = static_cast<const std::array<int, 3>*>(field->DefaultValue());
+	EXPECT_EQ((*defVal)[0], 1);
+	EXPECT_EQ((*defVal)[1], 2);
+	EXPECT_EQ((*defVal)[2], 3);
+}
+
+TEST(ReflectionTests, ArrayFloatReflectionDefaultValue)
+{
+	// Test that float array fields have correct default values through reflection
+	const auto* field = TestObjectReflInstance["FloatArray"];
+	EXPECT_NE(field, nullptr);
+
+	const std::array<float, 4>* defVal = static_cast<const std::array<float, 4>*>(field->DefaultValue());
+	EXPECT_FLOAT_EQ((*defVal)[0], 1.1f);
+	EXPECT_FLOAT_EQ((*defVal)[1], 2.2f);
+	EXPECT_FLOAT_EQ((*defVal)[2], 3.3f);
+	EXPECT_FLOAT_EQ((*defVal)[3], 4.4f);
+}
+
+TEST(ReflectionTests, ArrayIntReflectionWrite)
+{
+	// Test writing to an array field through reflection
+	TestObject test;
+	const auto* field = TestObjectReflInstance["IntArray"];
+
+	std::array<int, 3> newArr = {10, 20, 30};
+	field->Set(&test, &newArr);
+
+	EXPECT_EQ(test.IntArray[0], 10);
+	EXPECT_EQ(test.IntArray[1], 20);
+	EXPECT_EQ(test.IntArray[2], 30);
+}
+
+TEST(ReflectionTests, ArrayFloatReflectionWrite)
+{
+	// Test writing to a float array field through reflection
+	TestObject test;
+	const auto* field = TestObjectReflInstance["FloatArray"];
+
+	std::array<float, 4> newArr = {5.5f, 6.6f, 7.7f, 8.8f};
+	field->Set(&test, &newArr);
+
+	EXPECT_FLOAT_EQ(test.FloatArray[0], 5.5f);
+	EXPECT_FLOAT_EQ(test.FloatArray[1], 6.6f);
+	EXPECT_FLOAT_EQ(test.FloatArray[2], 7.7f);
+	EXPECT_FLOAT_EQ(test.FloatArray[3], 8.8f);
+}
+
+TEST(ReflectionTests, ArrayIntReflectionRead)
+{
+	// Test reading from an array field through reflection
+	TestObject test;
+	test.IntArray = {100, 200, 300};
+	const auto* field = TestObjectReflInstance["IntArray"];
+
+	const void* ptr = field->Get(&test);
+	const std::array<int, 3>* readArr = static_cast<const std::array<int, 3>*>(ptr);
+
+	EXPECT_EQ((*readArr)[0], 100);
+	EXPECT_EQ((*readArr)[1], 200);
+	EXPECT_EQ((*readArr)[2], 300);
+}
+
+TEST(ReflectionTests, ArrayFloatReflectionRead)
+{
+	// Test reading from a float array field through reflection
+	TestObject test;
+	test.FloatArray = {11.1f, 22.2f, 33.3f, 44.4f};
+	const auto* field = TestObjectReflInstance["FloatArray"];
+
+	const void* ptr = field->Get(&test);
+	const std::array<float, 4>* readArr = static_cast<const std::array<float, 4>*>(ptr);
+
+	EXPECT_FLOAT_EQ((*readArr)[0], 11.1f);
+	EXPECT_FLOAT_EQ((*readArr)[1], 22.2f);
+	EXPECT_FLOAT_EQ((*readArr)[2], 33.3f);
+	EXPECT_FLOAT_EQ((*readArr)[3], 44.4f);
+}
+
+TEST(ReflectionTests, ArrayIntReflectionOffset)
+{
+	// Test that array fields report correct offset through reflection
+	const auto* field = TestObjectReflInstance["IntArray"];
+	EXPECT_EQ(field->FieldOffset(), offsetof(TestObject, IntArray));
+}
+
+TEST(ReflectionTests, ArrayFloatReflectionOffset)
+{
+	// Test that float array fields report correct offset through reflection
+	const auto* field = TestObjectReflInstance["FloatArray"];
+	EXPECT_EQ(field->FieldOffset(), offsetof(TestObject, FloatArray));
+}
+
+TEST(ReflectionTests, ArrayIntReflectionMetadata)
+{
+	// Test field name and description through reflection
+	const auto* field = TestObjectReflInstance["IntArray"];
+	EXPECT_EQ(field->FieldName(), std::string("IntArray"));
+	EXPECT_EQ(field->FieldDesc(), std::string("Array of 3 integers"));
+}
+
+TEST(ReflectionTests, ArrayFloatReflectionMetadata)
+{
+	// Test field name and description for float array through reflection
+	const auto* field = TestObjectReflInstance["FloatArray"];
+	EXPECT_EQ(field->FieldName(), std::string("FloatArray"));
+	EXPECT_EQ(field->FieldDesc(), std::string("Array of 4 floats"));
+}
+
+TEST(ReflectionTests, ArrayIntReflectionRoundtrip)
+{
+	// Test write then read returns same value through reflection
+	TestObject test;
+	const auto* field = TestObjectReflInstance["IntArray"];
+
+	std::array<int, 3> originalArr = {7, 14, 21};
+	field->Set(&test, &originalArr);
+
+	const void* ptr = field->Get(&test);
+	const std::array<int, 3>* readBack = static_cast<const std::array<int, 3>*>(ptr);
+
+	EXPECT_EQ(originalArr, *readBack);
+}
+
+TEST(ReflectionTests, ArrayVector3ReflectionDefaultValue)
+{
+	// Test array of complex types (Vector3) has correct default values
+	const auto* field = TestObjectReflInstance["Vector3Array"];
+	EXPECT_NE(field, nullptr);
+
+	const std::array<Vector3, 2>* defVal = static_cast<const std::array<Vector3, 2>*>(field->DefaultValue());
+	EXPECT_FLOAT_EQ((*defVal)[0].X, 0.f);
+	EXPECT_FLOAT_EQ((*defVal)[0].Y, 0.f);
+	EXPECT_FLOAT_EQ((*defVal)[0].Z, 0.f);
+	EXPECT_FLOAT_EQ((*defVal)[1].X, 1.f);
+	EXPECT_FLOAT_EQ((*defVal)[1].Y, 1.f);
+	EXPECT_FLOAT_EQ((*defVal)[1].Z, 1.f);
+}
+
+TEST(ReflectionTests, ArrayVector3ReflectionWrite)
+{
+	// Test writing complex element types (Vector3) to array through reflection
+	TestObject test;
+	const auto* field = TestObjectReflInstance["Vector3Array"];
+
+	std::array<Vector3, 2> vectors = {Vector3(1, 2, 3), Vector3(4, 5, 6)};
+	field->Set(&test, &vectors);
+
+	EXPECT_FLOAT_EQ(test.Vector3Array[0].X, 1.f);
+	EXPECT_FLOAT_EQ(test.Vector3Array[0].Y, 2.f);
+	EXPECT_FLOAT_EQ(test.Vector3Array[0].Z, 3.f);
+	EXPECT_FLOAT_EQ(test.Vector3Array[1].X, 4.f);
+	EXPECT_FLOAT_EQ(test.Vector3Array[1].Y, 5.f);
+	EXPECT_FLOAT_EQ(test.Vector3Array[1].Z, 6.f);
+}
+
+TEST(ReflectionTests, ArrayVector3ReflectionRead)
+{
+	// Test reading complex element types (Vector3) from array through reflection
+	TestObject test;
+	test.Vector3Array = {Vector3(7, 8, 9), Vector3(10, 11, 12)};
+
+	const auto* field = TestObjectReflInstance["Vector3Array"];
+	const void* ptr = field->Get(&test);
+	const std::array<Vector3, 2>* readArr = static_cast<const std::array<Vector3, 2>*>(ptr);
+
+	EXPECT_FLOAT_EQ((*readArr)[0].X, 7.f);
+	EXPECT_FLOAT_EQ((*readArr)[0].Y, 8.f);
+	EXPECT_FLOAT_EQ((*readArr)[0].Z, 9.f);
+	EXPECT_FLOAT_EQ((*readArr)[1].X, 10.f);
+	EXPECT_FLOAT_EQ((*readArr)[1].Y, 11.f);
+	EXPECT_FLOAT_EQ((*readArr)[1].Z, 12.f);
+}
+
+// Tests for std::array<T,N> specialization using direct instantiation
+
+TEST(ReflectionTests, ArrayIntDefaultValue)
+{
+	// Test that array fields have correct default values
+	ReflectedField<std::array<int, 3>> field(offsetof(TestObject, IntArray), "IntArray", "Array of 3 integers", std::array<int, 3>{1, 2, 3});
+
+	const std::array<int, 3>* defVal = static_cast<const std::array<int, 3>*>(field.DefaultValue());
+	EXPECT_EQ((*defVal)[0], 1);
+	EXPECT_EQ((*defVal)[1], 2);
+	EXPECT_EQ((*defVal)[2], 3);
+}
+
+TEST(ReflectionTests, ArrayFloatDefaultValue)
+{
+	// Test that array fields have correct default values
+	ReflectedField<std::array<float, 4>> field(offsetof(TestObject, FloatArray), "FloatArray", "Array of 4 floats", std::array<float, 4>{1.1f, 2.2f, 3.3f, 4.4f});
+
+	const std::array<float, 4>* defVal = static_cast<const std::array<float, 4>*>(field.DefaultValue());
+	EXPECT_FLOAT_EQ((*defVal)[0], 1.1f);
+	EXPECT_FLOAT_EQ((*defVal)[1], 2.2f);
+	EXPECT_FLOAT_EQ((*defVal)[2], 3.3f);
+	EXPECT_FLOAT_EQ((*defVal)[3], 4.4f);
+}
+
+TEST(ReflectionTests, ArrayIntWrite)
+{
+	// Test writing to an array field
+	TestObject test;
+	std::array<int, 3> newArr = {10, 20, 30};
+	ReflectedField<std::array<int, 3>> field(offsetof(TestObject, IntArray), "IntArray", "Array of 3 integers", {});
+
+	field.Set(&test, &newArr);
+
+	EXPECT_EQ(test.IntArray[0], 10);
+	EXPECT_EQ(test.IntArray[1], 20);
+	EXPECT_EQ(test.IntArray[2], 30);
+}
+
+TEST(ReflectionTests, ArrayFloatWrite)
+{
+	// Test writing to a float array field
+	TestObject test;
+	std::array<float, 4> newArr = {5.5f, 6.6f, 7.7f, 8.8f};
+	ReflectedField<std::array<float, 4>> field(offsetof(TestObject, FloatArray), "FloatArray", "Array of 4 floats", {});
+
+	field.Set(&test, &newArr);
+
+	EXPECT_FLOAT_EQ(test.FloatArray[0], 5.5f);
+	EXPECT_FLOAT_EQ(test.FloatArray[1], 6.6f);
+	EXPECT_FLOAT_EQ(test.FloatArray[2], 7.7f);
+	EXPECT_FLOAT_EQ(test.FloatArray[3], 8.8f);
+}
+
+TEST(ReflectionTests, ArrayIntRead)
+{
+	// Test reading from an array field
+	TestObject test;
+	test.IntArray = {100, 200, 300};
+	ReflectedField<std::array<int, 3>> field(offsetof(TestObject, IntArray), "IntArray", "Array of 3 integers", {});
+
+	const void* ptr = field.Get(&test);
+	const std::array<int, 3>* readArr = static_cast<const std::array<int, 3>*>(ptr);
+
+	EXPECT_EQ((*readArr)[0], 100);
+	EXPECT_EQ((*readArr)[1], 200);
+	EXPECT_EQ((*readArr)[2], 300);
+}
+
+TEST(ReflectionTests, ArrayFloatRead)
+{
+	// Test reading from a float array field
+	TestObject test;
+	test.FloatArray = {11.1f, 22.2f, 33.3f, 44.4f};
+	ReflectedField<std::array<float, 4>> field(offsetof(TestObject, FloatArray), "FloatArray", "Array of 4 floats", {});
+
+	const void* ptr = field.Get(&test);
+	const std::array<float, 4>* readArr = static_cast<const std::array<float, 4>*>(ptr);
+
+	EXPECT_FLOAT_EQ((*readArr)[0], 11.1f);
+	EXPECT_FLOAT_EQ((*readArr)[1], 22.2f);
+	EXPECT_FLOAT_EQ((*readArr)[2], 33.3f);
+	EXPECT_FLOAT_EQ((*readArr)[3], 44.4f);
 }

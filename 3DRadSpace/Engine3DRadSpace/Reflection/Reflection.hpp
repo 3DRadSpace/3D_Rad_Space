@@ -17,6 +17,10 @@
 /// Reflects a vector field with the specified element type and default values using an initializer list.
 #define REFL_FIELD_VEC(ObjectType, ElementType, FieldName, FieldVisibleName, Description, ...) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedField<std::vector<ElementType>>(offsetof(ObjectType, FieldName), FieldVisibleName, Description, __VA_ARGS__)),
 
+/// Reflects an array field with the specified element type, size and default values.
+/// Usage: REFL_FIELD_ARRAY(TestObject, int, 3, IntArray, "IntArray", "Array of 3 integers", ({1, 2, 3)} )
+#define REFL_FIELD_ARRAY(ObjectType, ElementType, ArraySize, FieldName, FieldVisibleName, Description, ...) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedField<std::array<ElementType, ArraySize>>(offsetof(ObjectType, FieldName), FieldVisibleName, Description, std::array<ElementType, ArraySize> __VA_ARGS__ )),
+
 //Reflection "declaration" ending.
 #define REFL_END static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::ReflectedField<void>())});
 
@@ -65,6 +69,8 @@
 /// ---------------------------------------------------------------------------
 ///								Metadata
 /// ---------------------------------------------------------------------------
+#include "Attribute.hpp"
+
 /// Supported attributes are:
 /// - "HelpURL": Provides a URL to the help documentation for the object being reflected.
 /// - "Title" : Custom title for the editor object window. Default is "{Object name} object"
@@ -72,6 +78,4 @@
 ///                   Refer to CustomEditObjectWindow inside the Plugin library for more details.
 ///                   WARNING: The function name must be unique across all loaded modules.
 /// - "Icon" : Specifies an path to an icon file that will be used as an visible icon in the editor.
-#include "Attribute.hpp"
-
 #define REFL_ATTR(Name, Value) static_cast<::Engine3DRadSpace::Reflection::IReflectedField*>( new ::Engine3DRadSpace::Reflection::Attribute(Name, Value)),
