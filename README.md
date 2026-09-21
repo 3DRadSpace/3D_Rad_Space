@@ -17,6 +17,12 @@
 
 Releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases).
 
+# Downloading build artifacts
+
+Windows x64 build artifacts are available from successful [C++ CMake workflow runs](https://github.com/3DRadSpace/3D_Rad_Space/actions/workflows/cmake-windows-x64.yml). Open a workflow run, scroll to **Artifacts**, and download `cmake-windows-x64`. Extract the archive before running the programs.
+
+The archive includes the Release binaries with the `Data` folder required by the editor and player already copied into it. Keep the downloaded folder layout intact, or copy `Data` into the folder containing the executable if you move an executable elsewhere.
+
 # Current build status
 
 <table>
@@ -69,7 +75,7 @@ Releases can be found [here](https://github.com/3DRadSpace/3D_Rad_Space/releases
 
 ## Troubleshooting
 
-- If there are crashes related to loading assets, copy the `Data` folder into the executable folder, it was likely not copied by CMake.
+- If there are crashes related to loading assets after moving an executable, copy the `Data` folder into the executable folder.
 
 - Copy `Lexilla.dll` and `Scintilla.dll` from release or vcpkg binary to enable the scintilla component in the C# script dialog
 

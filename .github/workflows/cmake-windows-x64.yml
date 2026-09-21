@@ -50,3 +50,16 @@ jobs:
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ github.workspace }}/build --config Release 
+
+    - name: Prepare downloadable build
+      shell: powershell
+      run: |
+        Copy-Item -Path 3DRadSpace\Data -Destination build\Release\Data -Recurse -Force
+        Copy-Item -Path 3DRadSpace\Testing -Destination build\Release\Testing -Recurse -Force
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cmake-windows-x64
+        path: build/Release
+        if-no-files-found: error
